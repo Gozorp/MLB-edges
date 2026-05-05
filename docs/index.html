@@ -75,6 +75,81 @@
   .muted { color: var(--muted); }
   .signals { font-size: 0.8rem; color: var(--muted); }
   .why { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .row-clickable { cursor: pointer; }
+  .row-clickable:hover { background: rgba(88, 166, 255, 0.08); }
+  .chev { display: inline-block; width: 1em; color: var(--muted); transition: transform 0.15s; }
+  .chev.open { transform: rotate(90deg); color: var(--accent); }
+  .details-row { display: none; }
+  .details-row.open { display: table-row; }
+  .details-row td {
+    background: var(--bg);
+    padding: 1rem 1.25rem 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .narrative h4 {
+    margin: 1rem 0 0.4rem 0; font-size: 0.85rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+  }
+  .narrative h4:first-child { margin-top: 0; }
+  .narrative p { margin: 0.3rem 0; line-height: 1.55; }
+  .narrative ul { margin: 0.3rem 0 0.6rem 1.2rem; padding: 0; }
+  .narrative li { margin: 0.15rem 0; }
+  .narrative .verdict {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--bg-elev); border-left: 3px solid var(--accent);
+    border-radius: 4px;
+  }
+  .narrative .flag {
+    color: var(--yellow); font-weight: 500;
+  }
+  .narrative .flag-red { color: var(--red); }
+  .narrative .flag-green { color: var(--green); }
+
+  /* ----- Post-game result indicators ----- */
+  .result-chip {
+    display: inline-block; padding: 0.15rem 0.5rem;
+    border-radius: 4px; font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .result-chip.win  { background: rgba(63, 185, 80, 0.18); color: var(--green); }
+  .result-chip.loss { background: rgba(248, 81, 73, 0.18); color: var(--red); }
+  .result-chip.tbd  { background: rgba(139, 148, 158, 0.18); color: var(--muted); }
+  .result-banner {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.9rem; margin-bottom: 0.9rem;
+    border-radius: 6px;
+    border-left: 4px solid var(--border);
+    background: var(--bg-elev);
+    font-size: 0.95rem;
+  }
+  .result-banner.win  { border-left-color: var(--green); }
+  .result-banner.loss { border-left-color: var(--red); }
+  .result-banner.tbd  { border-left-color: var(--muted); }
+  .result-banner .score {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--text); font-weight: 600;
+  }
+  .failure-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin: 0.6rem 0 1rem 0;
+  }
+  @media (max-width: 720px) {
+    .failure-grid { grid-template-columns: 1fr; }
+  }
+  .failure-card {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.85rem 1rem;
+  }
+  .failure-card h5 {
+    margin: 0 0 0.4rem 0; font-size: 0.8rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+  }
+  .failure-card.actual h5 { color: var(--red); }
+  .failure-card p { margin: 0.25rem 0; font-size: 0.88rem; }
+  .failure-card ul { margin: 0.3rem 0 0 1.1rem; padding: 0; }
+  .failure-card li { margin: 0.15rem 0; font-size: 0.88rem; }
   .picker { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
   .picker select, .picker input {
     background: var(--bg-elev); color: var(--text);
@@ -353,19 +428,454 @@ function parseParlayGrades(text) {
   return out;
 }
 
-function renderSlate(rows, gradeMap) {
+// =============================================================================
+// Post-game results — fetch finals from MLB statsapi (public, CORS-enabled),
+// normalize into a matchup map, and infer pass/fail vs the model's pick.
+// =============================================================================
+async function fetchMLBResults(date) {
+  try {
+    const url = `https://statsapi.mlb.com/api/v1/schedule?date=${date}&sportId=1`;
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) return {};
+    const j = await r.json();
+    const games = (j.dates && j.dates[0] && j.dates[0].games) || [];
+    const out = {};
+    for (const g of games) {
+      const away = (g.teams && g.teams.away) || {};
+      const home = (g.teams && g.teams.home) || {};
+      const status = g.status || {};
+      const awayAbbr = (away.team && away.team.abbreviation) || "";
+      const homeAbbr = (home.team && home.team.abbreviation) || "";
+      const awayName = (away.team && away.team.name) || "";
+      const homeName = (home.team && home.team.name) || "";
+      const isFinal  = status.abstractGameState === "Final"
+                    || /final/i.test(status.detailedState || "");
+      const aSc = (away.score != null) ? away.score : null;
+      const hSc = (home.score != null) ? home.score : null;
+      let winner = null;
+      if (isFinal && aSc != null && hSc != null && aSc !== hSc) {
+        winner = aSc > hSc ? awayAbbr : homeAbbr;
+      }
+      const entry = {
+        awayAbbr, homeAbbr, awayName, homeName,
+        awayScore: aSc, homeScore: hSc, winner,
+        isFinal, statusText: status.detailedState || ""
+      };
+      // Index multiple ways since CSV matchup string varies
+      out[`${awayAbbr}@${homeAbbr}`] = entry;
+      out[`${homeAbbr}@${awayAbbr}`] = entry;
+    }
+    return out;
+  } catch (e) {
+    console.warn("fetchMLBResults failed:", e);
+    return {};
+  }
+}
+
+function pickedTeam(r) {
+  // Try to extract a team abbreviation from r.pick (e.g. "ATL", "Atlanta Braves")
+  const pick = (r.pick || "").trim();
+  if (!pick) return "";
+  const m = pick.match(/[A-Z]{2,4}/);
+  return m ? m[0] : pick.toUpperCase();
+}
+
+function matchResult(r, results) {
+  if (!results) return null;
+  const matchup = (r.matchup || "").trim();
+  if (!matchup) return null;
+  // Pull two ALL-CAPS abbrev tokens out of the matchup string
+  const abbrs = matchup.match(/[A-Z]{2,4}/g);
+  if (abbrs && abbrs.length >= 2) {
+    const a = abbrs[0], b = abbrs[1];
+    return results[`${a}@${b}`] || results[`${b}@${a}`] || null;
+  }
+  return null;
+}
+
+function predictionAccuracy(r, result) {
+  if (!result || !result.winner) return null;
+  const picked = pickedTeam(r);
+  if (!picked) return null;
+  // Forgive partial matches (e.g. picked = "ATL", winner = "ATL")
+  if (picked === result.winner) return "win";
+  if (picked === result.awayAbbr || picked === result.homeAbbr) return "loss";
+  return null;  // pick didn't match either team — can't grade
+}
+
+// =============================================================================
+// Failure analysis — ONLY shown when the prediction lost.  Composes a
+// side-by-side block: left = what the model thought, right = what happened
+// and which signal was most likely the culprit.
+// =============================================================================
+function formatFailureAnalysis(r, result, gradeInfo) {
+  const pickedAbbr = pickedTeam(r);
+  const winner = result.winner;
+  const winningName = winner === result.awayAbbr ? result.awayName : result.homeName;
+  const losingName  = winner === result.awayAbbr ? result.homeName : result.awayName;
+  const wScore = winner === result.awayAbbr ? result.awayScore : result.homeScore;
+  const lScore = winner === result.awayAbbr ? result.homeScore : result.awayScore;
+  const margin = Math.abs((wScore || 0) - (lScore || 0));
+
+  const f5    = parseFloat(r.f5_prob);
+  const full  = parseFloat(r.full_prob || r.p_model);
+  const fair  = parseFloat(r.fair_prob);
+  const edge  = parseFloat(r.edge_pp);
+  const reasons = (gradeInfo && gradeInfo.reasons) || r.grade_reasons || "";
+
+  // Identify the most likely failure mode — list every applicable cause
+  const causes = [];
+  const isThinEdge = !isNaN(edge) && Math.abs(edge) < 4;
+  const wasContrarian = !isNaN(fair) && fair < 0.50;
+  const wasChalk      = !isNaN(fair) && fair >= 0.50;
+  const stage12Disagreed = !isNaN(f5) && !isNaN(full) && (f5 >= 0.50) !== (full >= 0.50);
+  const noMarket = isNaN(fair);
+  const isBlowout = margin >= 5;
+  const isClose   = margin <= 2;
+
+  if (noMarket) {
+    causes.push({
+      label: "No market validation",
+      text: `Vegas fair probability was missing for this game, so the Odds-API guard was active. `
+          + `Without an external check, model overconfidence cannot be filtered. The model leaned on `
+          + `internal signals only and they pointed the wrong way.`
+    });
+  }
+  if (isThinEdge) {
+    causes.push({
+      label: "Thin edge → high variance",
+      text: `The edge was only ${isNaN(edge) ? "—" : edge.toFixed(1) + "pp"}, which falls inside the `
+          + `noise band. Even a correct model loses ${(100 - (full*100)).toFixed(1)}% of the time at `
+          + `that probability. This loss is statistically expected at this confidence level.`
+    });
+  }
+  if (stage12Disagreed) {
+    causes.push({
+      label: "Stage 1 / Stage 2 conflict",
+      text: `Stage 1 (pitching) and Stage 2 (full-game with bullpen) disagreed on the side. `
+          + `When that happens, the bullpen and lineup-depth factors usually win, but the grader `
+          + `weighted the pitching edge too heavily here. This is exactly the failure mode the `
+          + `Stage 1/2 agreement penalty is meant to catch — the penalty either didn't fire or wasn't strong enough.`
+    });
+  }
+  if (wasChalk && !isThinEdge) {
+    causes.push({
+      label: "Chalk upset",
+      text: `The model and market both favored ${pickedAbbr}, and ${pickedAbbr} still lost. `
+          + `These are pure variance — no signal was wrong, the dice just didn't land. About `
+          + `1 in ${(1/(1-full)).toFixed(1)} games at this confidence level go this way.`
+    });
+  }
+  if (wasContrarian) {
+    causes.push({
+      label: "Contrarian failure",
+      text: `The model picked ${pickedAbbr} as the underdog. The market priced this game roughly correctly, `
+          + `and the model's "edge" was actually noise. Contrarian losses are the most expensive failure `
+          + `mode because the variance is asymmetric — the diversity reserve cap (max 2 contrarian per `
+          + `parlay) exists to limit damage when this clusters.`
+    });
+  }
+  if (isBlowout) {
+    causes.push({
+      label: "Blowout — process failure, not variance",
+      text: `Final margin was ${margin} runs. This isn't a variance loss — something the model didn't see `
+          + `was driving the result. Likely a missed late-breaking news event (SP scratch, bullpen injury, `
+          + `lineup change, weather) or a true skill gap the features didn't capture. Worth a manual audit.`
+    });
+  } else if (isClose) {
+    causes.push({
+      label: "One-run / coin-flip game",
+      text: `Decided by ${margin} run${margin === 1 ? "" : "s"}. Even a perfectly-calibrated model loses these `
+          + `~50% of the time. No process change is warranted from a single close-game miss.`
+    });
+  }
+  if (/compound.*small.*sample|small.*sample.*cap/i.test(reasons)) {
+    causes.push({
+      label: "Small-sample SP cap",
+      text: `Both starting pitchers had thin recent workloads, which the compound-small-sample cap flagged. `
+          + `The grade was already capped at B+, signaling we knew the SP-edge layer was unreliable. `
+          + `This loss confirms the cap was justified.`
+    });
+  }
+  if (/F-signal.*cap/i.test(reasons)) {
+    causes.push({
+      label: "No F-signal lineup confirmation",
+      text: `No F-signal (F2 xwOBA, F3 swing-take) fired, so the F-signal-required cap held the grade at A-. `
+          + `Pure-pitching wishful thinking without lineup confirmation often loses to bullpen-driven swings.`
+    });
+  }
+  if (causes.length === 0) {
+    causes.push({
+      label: "Model held conviction; outcome went the other way",
+      text: `No specific failure mode jumps out from the data — the signals were aligned, the market `
+          + `agreed, and the convergence held. This loss is most consistent with normal variance at the `
+          + `model's confidence level.`
+    });
+  }
+
+  // Left card: what the model said
+  const left = `
+    <div class="failure-card">
+      <h5>What the model expected</h5>
+      <p><strong>${pickedAbbr}</strong> wins at ${isNaN(full) ? "—" : (full*100).toFixed(1) + "%"} `
+        + `full-game probability${!isNaN(fair) ? `, vs ${(fair*100).toFixed(1)}% Vegas-implied` : ""}.</p>
+      <p class="muted">Edge: ${isNaN(edge) ? "—" : edge.toFixed(1) + "pp"} · Tier: ${r.tier || "—"} · `
+        + `Grade: ${(gradeInfo && gradeInfo.grade) || "—"}</p>
+      ${reasons ? `<p class="muted" style="font-style:italic;font-size:0.85rem;">${reasons.replace(/\|/g, " · ")}</p>` : ""}
+    </div>`;
+
+  // Right card: what actually happened + most likely cause
+  const right = `
+    <div class="failure-card actual">
+      <h5>What actually happened</h5>
+      <p><strong>${winningName} ${wScore}, ${losingName} ${lScore}</strong> — `
+        + `${winner} won ${isClose ? "in a close game" : isBlowout ? "in a blowout" : "by " + margin + " runs"}.</p>
+      <p><strong>Most likely failure mode${causes.length > 1 ? "s" : ""}:</strong></p>
+      <ul>
+        ${causes.map(c => `<li><strong>${c.label}.</strong> ${c.text}</li>`).join("")}
+      </ul>
+    </div>`;
+
+  return `<h4>Why the prediction failed</h4><div class="failure-grid">${left}${right}</div>`;
+}
+
+// =============================================================================
+// In-depth narrative — explains "why this team will win" using every signal
+// the model produced.  Composed from CSV columns + parlay-text grade modifiers.
+// =============================================================================
+function formatNarrative(r, gradeInfo, result) {
+  const pick      = (r.pick    || "").trim();
+  const matchup   = (r.matchup || "").trim();
+  const tier      = (r.tier    || "").trim();
+  const signals   = (r.signals || "").trim();
+  const f5        = parseFloat(r.f5_prob);
+  const full      = parseFloat(r.full_prob || r.p_model);
+  const fair      = parseFloat(r.fair_prob);
+  const edge      = parseFloat(r.edge_pp);
+  const grade     = (gradeInfo && gradeInfo.grade) || (r.grade || "").trim() || "—";
+  const reasons   = (gradeInfo && gradeInfo.reasons) || r.grade_reasons || "";
+  const whySkip   = (r.why_skipped || "").trim();
+
+  const stage12Coherent = !isNaN(f5) && !isNaN(full) && (f5 >= 0.50) === (full >= 0.50);
+  const fpct = (v) => isNaN(v) ? "—" : (v * 100).toFixed(1) + "%";
+  const isChalk = !isNaN(fair) && fair >= 0.50;
+  const noMarket = isNaN(fair);
+
+  // ----- 0. Post-game result banner (only if we have finals for this game) -----
+  let html = `<div class="narrative">`;
+  let accuracy = null;
+  if (result && result.isFinal && result.winner) {
+    accuracy = predictionAccuracy(r, result);
+    const winName = result.winner === result.awayAbbr ? result.awayName : result.homeName;
+    const losName = result.winner === result.awayAbbr ? result.homeName : result.awayName;
+    const wSc = result.winner === result.awayAbbr ? result.awayScore : result.homeScore;
+    const lSc = result.winner === result.awayAbbr ? result.homeScore : result.awayScore;
+    if (accuracy === "win") {
+      html += `<div class="result-banner win">
+        <span class="result-chip win">PREDICTION CORRECT</span>
+        <span class="score">${winName} ${wSc}, ${losName} ${lSc}</span>
+        <span class="muted">— model picked ${pickedTeam(r)}, ${result.winner} won.</span>
+      </div>`;
+    } else if (accuracy === "loss") {
+      html += `<div class="result-banner loss">
+        <span class="result-chip loss">PREDICTION WRONG</span>
+        <span class="score">${winName} ${wSc}, ${losName} ${lSc}</span>
+        <span class="muted">— model picked ${pickedTeam(r)}, ${result.winner} won instead.</span>
+      </div>`;
+    }
+  } else if (result && !result.isFinal && result.statusText) {
+    html += `<div class="result-banner tbd">
+      <span class="result-chip tbd">${result.statusText.toUpperCase()}</span>
+      <span class="muted">— result not yet final.</span>
+    </div>`;
+  }
+
+  // ----- 0b. Side-by-side failure analysis (ONLY when prediction lost) -----
+  if (accuracy === "loss") {
+    html += formatFailureAnalysis(r, result, gradeInfo);
+  }
+
+  // ----- 1. Headline -----
+  html += `<h4>Headline</h4>`;
+  html += `<p>The model picks <strong>${pick}</strong> at grade `
+        + `<span class="grade ${gradeClass(grade)}">${grade}</span>. `;
+  if (grade === "A" || grade === "A-") {
+    html += `This is an <span class="flag-green">anchor-quality</span> pick — `
+          + `the convergence of pitching edge, lineup signals, and market gating all align.`;
+  } else if (grade === "B+") {
+    html += `This is a <span class="flag">stretch leg</span> — edge is real but at least one `
+          + `supporting layer is weaker than ideal. Use sparingly.`;
+  } else if (grade === "B" || grade === "B-") {
+    html += `<span class="flag">Do not parlay.</span> Some merit, but not enough confirming `
+          + `signals to justify multiplicative risk.`;
+  } else if (grade === "C" || grade === "D") {
+    html += `<span class="flag-red">Avoid.</span> Either market data is missing (Odds-API guard) `
+          + `or the model lacks confirming signals.`;
+  } else {
+    html += `Grade not assigned — likely filtered before reaching the grader.`;
+  }
+  html += `</p>`;
+
+  // ----- 2. Pitching matchup (Stage 1) -----
+  html += `<h4>Pitching matchup (Stage 1, first 5 innings)</h4>`;
+  if (!isNaN(f5)) {
+    const f5Lean = f5 >= 0.50 ? `leans toward <strong>${pick}</strong>` : `leans <em>against</em> the pick`;
+    const f5Mag  = Math.abs(f5 - 0.50);
+    const f5Strong = f5Mag >= 0.10 ? "a meaningful edge" :
+                     f5Mag >= 0.05 ? "a moderate edge" : "a thin edge";
+    html += `<p>Stage 1 first-five-innings probability is <strong>${fpct(f5)}</strong>. `
+          + `This is built almost entirely off SP quality — xERA, xwOBA-allowed, K-BB%, `
+          + `and SIERA — with a small lineup-quality term. The F5 number ${f5Lean}, `
+          + `representing ${f5Strong} on the pitching side of the ledger.</p>`;
+  } else {
+    html += `<p class="muted">Stage 1 probability not available for this game.</p>`;
+  }
+
+  // ----- 3. Full-game outlook (Stage 2) -----
+  html += `<h4>Full-game outlook (Stage 2, bullpen + late leverage)</h4>`;
+  if (!isNaN(full)) {
+    const fullLean = full >= 0.50 ? `holds for <strong>${pick}</strong>` : `flips against the pick`;
+    html += `<p>Stage 2 takes the F5 output as a feature and layers in bullpen state, `
+          + `lineup depth past the SP, fatigue, and late-game leverage. The full-game probability `
+          + `is <strong>${fpct(full)}</strong>, which ${fullLean}. `;
+    if (stage12Coherent) {
+      html += `<span class="flag-green">Stage 1 and Stage 2 agree on the side</span> — `
+            + `coherence between the F5 and full-game models adds conviction.`;
+    } else {
+      html += `<span class="flag">Stage 1 and Stage 2 disagree on the side</span> — `
+            + `bullpen or late-leverage factors push back against the pitching edge. `
+            + `The grade reflects this with a Stage 1/2 agreement penalty.`;
+    }
+    html += `</p>`;
+  } else {
+    html += `<p class="muted">Stage 2 probability not available.</p>`;
+  }
+
+  // ----- 4. Market positioning -----
+  html += `<h4>Market positioning</h4>`;
+  if (noMarket) {
+    html += `<p><span class="flag-red">No Vegas fair probability available</span> — the Odds API `
+          + `did not return a price for this game. Without market validation, the Odds-API guard `
+          + `caps the grade at C regardless of how strong the model thinks the edge is. This is a `
+          + `deliberate guardrail: if we can't cross-check overconfidence externally, we don't bet.</p>`;
+  } else {
+    const edgeAbs = Math.abs(edge);
+    const edgeWord = isNaN(edge) ? "unknown" :
+                     edgeAbs >= 7 ? "substantial" :
+                     edgeAbs >= 4 ? "moderate" :
+                     edgeAbs >= 2 ? "slim"      : "marginal";
+    const sideWord = isChalk ? "favorite (chalk)" : "underdog (contrarian)";
+    const sideRisk = isChalk
+      ? "lower per-leg variance, smaller payouts, more correlated across the slate"
+      : "higher variance, larger payouts, but vulnerable to clustered bad days";
+    html += `<p>Vegas implied fair probability: <strong>${fpct(fair)}</strong>. `
+          + `Model probability: <strong>${fpct(full)}</strong>. `
+          + `Edge: <strong>${isNaN(edge) ? "—" : edge.toFixed(1) + "pp"}</strong> `
+          + `(${edgeWord}). The market views this side as the <strong>${sideWord}</strong> — `
+          + `${sideRisk}.</p>`;
+  }
+
+  // ----- 5. Independent signals (convergence layer) -----
+  if (signals) {
+    const sigList = signals.split(/[;,|]/).map(s => s.trim()).filter(Boolean);
+    html += `<h4>Independent signals firing</h4>`;
+    html += `<ul>`;
+    for (const sig of sigList) html += `<li>${sig}</li>`;
+    html += `</ul>`;
+    html += `<p>The model only commits with conviction when multiple independent layers agree. `;
+    if (sigList.length >= 3) {
+      html += `<span class="flag-green">${sigList.length} signals firing</span> — strong convergence.`;
+    } else if (sigList.length === 2) {
+      html += `<span class="flag-green">Two signals agree</span> — meets the convergence bar.`;
+    } else {
+      html += `<span class="flag">Only ${sigList.length} signal fires</span> — single-layer edge, `
+            + `treated cautiously.`;
+    }
+    html += `</p>`;
+  }
+
+  // ----- 6. Tier interpretation -----
+  if (tier) {
+    const tierMeans = {
+      "PLATINUM": "highest-conviction lineup-driven tier — only assigned when SP edge confirms (gated)",
+      "GOLD":     "strong conviction — multiple signals, SP edge, and market gate all agree",
+      "SILVER":   "moderate conviction — edge present but with at least one counterweight",
+      "BRONZE":   "low-conviction edge — meets minimum bar but lacks full confirming stack",
+    };
+    const tierU = tier.toUpperCase();
+    const meaning = tierMeans[tierU] || "internal tier";
+    html += `<h4>Internal tier</h4>`;
+    html += `<p><code>${tier}</code> — ${meaning}.</p>`;
+  }
+
+  // ----- 7. Grade-modifier breakdown -----
+  if (reasons) {
+    const mods = reasons.split(/\s*\|\s*/).filter(Boolean);
+    html += `<h4>How the grade was built</h4>`;
+    html += `<p>Each rule in the eight-layer grader contributes to the score. Here is the breakdown:</p>`;
+    html += `<ul>`;
+    for (const m of mods) html += `<li>${m}</li>`;
+    html += `</ul>`;
+  }
+
+  // ----- 8. Risk callouts -----
+  const flags = [];
+  if (noMarket) flags.push("Odds-API guard active — grade capped at C without market data.");
+  if (!isNaN(f5) && !isNaN(full) && !stage12Coherent)
+    flags.push("Stage 1 and Stage 2 disagree on the side — pitching edge fights bullpen/lineup edge.");
+  if (whySkip) flags.push(`Skip reason recorded: ${whySkip}`);
+  if (reasons.toLowerCase().includes("compound") || reasons.toLowerCase().includes("small sample"))
+    flags.push("Compound-small-sample cap may be active — both SPs have thin recent workloads.");
+  if (reasons.toLowerCase().includes("f-signal") && reasons.toLowerCase().includes("cap"))
+    flags.push("F-signal-required cap may be active — no lineup-conviction signal fired.");
+
+  if (flags.length) {
+    html += `<h4>Risk callouts</h4>`;
+    html += `<ul>`;
+    for (const f of flags) html += `<li class="flag">${f}</li>`;
+    html += `</ul>`;
+  }
+
+  // ----- 9. Verdict -----
+  html += `<div class="verdict"><strong>Bottom line:</strong> `;
+  if (grade === "A") {
+    html += `Anchor this pick. Model edge, SP quality, lineup conviction, and market validation `
+          + `all point the same direction.`;
+  } else if (grade === "A-") {
+    html += `Parlay-worthy. Edge is real and well-supported, just shy of anchor quality.`;
+  } else if (grade === "B+") {
+    html += `Stretch leg only. Cap at 1 per parlay ticket.`;
+  } else if (grade === "B" || grade === "B-") {
+    html += `Do not parlay. The pick exists, but the convergence isn't deep enough.`;
+  } else if (grade === "C") {
+    html += `Skip. Either market data is missing or the safety caps fired.`;
+  } else if (grade === "D") {
+    html += `Hard skip. Multiple safety rules failed.`;
+  } else {
+    html += `Filtered before reaching the grader — see Why-Skipped above.`;
+  }
+  html += `</div></div>`;
+
+  return html;
+}
+
+function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
+  const haveAnyResult = results && Object.keys(results).length > 0;
 
   let html = `<div class="card">
-    <h2>Slate (${rows.length} games)</h2>
+    <h2>Slate (${rows.length} games) <span class="muted" style="font-size:0.8rem;font-weight:normal;">— click any row for in-depth reasoning</span></h2>
     <table>
       <thead><tr>
+        <th></th>
         <th>Matchup</th><th>Pick</th><th>F5</th><th>Full</th>
         <th>Fair</th><th>Edge</th><th>Tier</th><th>Grade</th>
+        ${haveAnyResult ? "<th>Result</th>" : ""}
         <th>Reasons</th>
       </tr></thead><tbody>`;
-  for (const r of rows) {
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
     const matchupKey = (r.matchup || "").trim();
     const fromParlay = (gradeMap && gradeMap[matchupKey]) || {};
     const grade = (r.grade || fromParlay.grade || "").trim();
@@ -373,7 +883,24 @@ function renderSlate(rows, gradeMap) {
       .replace(/\|/g, " · ");
     const fairFmt = have(r.fair_prob) ? pct(r.fair_prob) : "—";
     const edgeFmt = have(r.edge_pp) ? `${parseFloat(r.edge_pp).toFixed(1)}pp` : "—";
-    html += `<tr>
+    const result = matchResult(r, results);
+    const accuracy = result && result.isFinal ? predictionAccuracy(r, result) : null;
+    let resultCell = "";
+    if (haveAnyResult) {
+      if (accuracy === "win") {
+        resultCell = `<td><span class="result-chip win">✓ WIN</span></td>`;
+      } else if (accuracy === "loss") {
+        resultCell = `<td><span class="result-chip loss">✗ LOSS</span></td>`;
+      } else if (result && !result.isFinal) {
+        resultCell = `<td><span class="result-chip tbd">${(result.statusText || "TBD").slice(0,12)}</span></td>`;
+      } else {
+        resultCell = `<td><span class="muted">—</span></td>`;
+      }
+    }
+    const narrative = formatNarrative(r, fromParlay, result);
+    const colspan = haveAnyResult ? 11 : 10;
+    html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
+      <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
       <td>${r.pick || "—"}</td>
       <td>${pct(r.f5_prob)}</td>
@@ -382,11 +909,25 @@ function renderSlate(rows, gradeMap) {
       <td>${edgeFmt}</td>
       <td>${r.tier || "—"}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
+      ${resultCell}
       <td class="why">${reasons || "<span class='muted'>—</span>"}</td>
+    </tr>
+    <tr class="details-row" id="details-${i}">
+      <td colspan="${colspan}">${narrative}</td>
     </tr>`;
   }
   html += "</tbody></table></div>";
   return html;
+}
+
+// Toggle expand/collapse for in-depth row narrative
+function toggleNarrative(i) {
+  const row  = document.getElementById("details-" + i);
+  const chev = document.getElementById("chev-" + i);
+  if (!row || !chev) return;
+  const open = row.classList.toggle("open");
+  chev.classList.toggle("open", open);
+  chev.textContent = open ? "▾" : "▸";
 }
 
 function renderParlay(text) {
@@ -397,7 +938,7 @@ function renderParlay(text) {
 }
 
 // Globals so the query interface + auto-refresh can introspect state
-window.__slate = { date: null, rows: [], gradeMap: {}, parlayText: "" };
+window.__slate = { date: null, rows: [], gradeMap: {}, results: {}, parlayText: "" };
 window.__poll  = { timer: null, lastSig: null, intervalMs: 3 * 60 * 1000 };  // 3 min
 window.__manifest = { dates: [], loadedAt: null };
 
@@ -555,10 +1096,11 @@ async function silentRefresh(date) {
     // Data changed — re-render and flash the slate to indicate update
     const rows = parseCSV(csvText);
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
-    window.__slate = { date, rows, gradeMap, parlayText: parlayText || "" };
+    const results = await fetchMLBResults(date);
+    window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
 
     const slateEl = document.getElementById("slate");
-    slateEl.innerHTML = renderSlate(rows, gradeMap);
+    slateEl.innerHTML = renderSlate(rows, gradeMap, results);
     slateEl.classList.add("change-flash");
     setTimeout(() => slateEl.classList.remove("change-flash"), 2500);
 
@@ -590,25 +1132,28 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR] = await Promise.allSettled([
+    const [csvR, txtR, resR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
+      fetchMLBResults(date),
     ]);
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
     const rows = csvR.status === "fulfilled" ? parseCSV(csvR.value) : [];
+    const results = resR.status === "fulfilled" ? resR.value : {};
 
     // Stash for the query interface
     window.__slate = {
       date,
       rows,
       gradeMap,
+      results,
       parlayText: txtR.status === "fulfilled" ? txtR.value : ""
     };
 
     const slateHtml = rows.length
-      ? renderSlate(rows, gradeMap)
+      ? renderSlate(rows, gradeMap, results)
       : `<div class="empty">No slate file found at <code>picks_${date}_diag.csv</code>.
          Run <code>python predict.py ${date}</code> locally and push, or wait for
          the nightly auto-run workflow to publish.</div>`;
@@ -649,26 +1194,21 @@ function answerQuery(q, slate) {
   const norm = q.trim().toLowerCase();
   if (!norm) return "";
 
-  // Helper: render a single game row with all the model output
+  // Helper: render a single game with the full in-depth narrative
   const formatGame = (r) => {
     const matchup = (r.matchup || "").trim();
-    const grade = (slate.gradeMap[matchup] || {}).grade || "—";
-    const reasons = (slate.gradeMap[matchup] || {}).reasons || "";
-    const f5 = pct(r.f5_prob), full = pct(r.full_prob || r.p_model);
-    const fair = r.fair_prob ? pct(r.fair_prob) : "—";
+    const gradeInfo = slate.gradeMap[matchup] || {};
+    const grade = gradeInfo.grade || "—";
     const pickStr = r.pick || "—";
+    const result = matchResult(r, slate.results || {});
     return `<div class="card" style="margin-top:0.75rem;">
-      <strong>${matchup}</strong> — pick <strong>${pickStr}</strong>
-      <span class="grade ${gradeClass(grade)}" style="margin-left:0.5rem;">${grade}</span>
-      <table style="margin-top:0.5rem;">
-        <tr><td class="muted">F5 win prob</td><td>${f5}</td></tr>
-        <tr><td class="muted">Full game prob</td><td>${full}</td></tr>
-        <tr><td class="muted">Market fair prob</td><td>${fair}</td></tr>
-        <tr><td class="muted">Tier</td><td>${r.tier || "—"}</td></tr>
-        <tr><td class="muted">Signals</td><td>${r.signals || "—"}</td></tr>
-        ${reasons ? `<tr><td class="muted">Grade reasons</td><td>${reasons.replace(/\|/g, " · ")}</td></tr>` : ""}
-        ${r.why_skipped ? `<tr><td class="muted">Why skipped</td><td>${r.why_skipped}</td></tr>` : ""}
-      </table>
+      <div style="display:flex;align-items:baseline;gap:0.6rem;margin-bottom:0.6rem;">
+        <strong style="font-size:1.05rem;">${matchup}</strong>
+        <span class="muted">— pick</span>
+        <strong>${pickStr}</strong>
+        <span class="grade ${gradeClass(grade)}">${grade}</span>
+      </div>
+      ${formatNarrative(r, gradeInfo, result)}
     </div>`;
   };
 
@@ -814,3 +1354,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 </body>
 </html>
+
