@@ -1,4 +1,5 @@
 @echo off
+setlocal enabledelayedexpansion
 REM Non-interactive auto-push.  Writes everything to push.log.
 REM Safe to run multiple times - re-pushing the same commit is a no-op.
 
@@ -28,39 +29,40 @@ set "LOG=%~dp0push.log"
     echo done.
     echo.
 
-    echo --- git status after stage ---
-    git status --short --cached
+    echo --- staged files ---
+    git diff --cached --name-only
     echo.
 
     echo --- committing ---
     git commit -m "Multi-date browser, auto-refresh on today, change-flash on update"
-    echo (commit exit code: %errorlevel% - non-zero is fine if nothing new to commit)
+    echo (commit exit code: !errorlevel! - non-zero is fine if nothing new to commit)
     echo.
 
     echo --- pulling remote first (rebase, in case workflow auto-committed) ---
     git pull --rebase 2>&1
-    echo (pull exit code: %errorlevel%)
+    echo (pull exit code: !errorlevel!)
     echo.
 
     echo --- pushing ---
     git push 2>&1
-    set PUSH_EXIT=%errorlevel%
-    echo (push exit code: %PUSH_EXIT%)
+    set PUSH_EXIT=!errorlevel!
+    echo (push exit code: !PUSH_EXIT!)
     echo.
 
     echo --- final state ---
     git log -1 --oneline
     git remote -v
 
-    if %PUSH_EXIT% EQU 0 (
+    if !PUSH_EXIT! EQU 0 (
         echo.
         echo SUCCESS
     ) else (
         echo.
-        echo FAILED with code %PUSH_EXIT%
+        echo FAILED with code !PUSH_EXIT!
     )
 )
 
 REM Open the log so user can see what happened
 notepad "%LOG%"
+endlocal
 exit /b 0
