@@ -38,8 +38,8 @@ set "LOG=%~dp0push.log"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
-    echo --- pulling remote first [rebase, in case workflow auto-committed] ---
-    git pull --rebase 2>&1
+    echo --- pulling remote first [rebase + autostash for any unstaged noise] ---
+    git pull --rebase --autostash 2>&1
     echo pull exit code: !errorlevel!
     echo.
 
