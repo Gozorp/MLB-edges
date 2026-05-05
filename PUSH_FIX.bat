@@ -34,7 +34,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Multi-date browser, auto-refresh on today, change-flash on update"
+    git commit -m "In-depth narrative + post-game result indicator + failure analysis"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
