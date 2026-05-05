@@ -35,18 +35,18 @@ set "LOG=%~dp0push.log"
 
     echo --- committing ---
     git commit -m "Multi-date browser, auto-refresh on today, change-flash on update"
-    echo (commit exit code: !errorlevel! - non-zero is fine if nothing new to commit)
+    echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
-    echo --- pulling remote first (rebase, in case workflow auto-committed) ---
+    echo --- pulling remote first [rebase, in case workflow auto-committed] ---
     git pull --rebase 2>&1
-    echo (pull exit code: !errorlevel!)
+    echo pull exit code: !errorlevel!
     echo.
 
     echo --- pushing ---
     git push 2>&1
     set PUSH_EXIT=!errorlevel!
-    echo (push exit code: !PUSH_EXIT!)
+    echo push exit code: !PUSH_EXIT!
     echo.
 
     echo --- final state ---
