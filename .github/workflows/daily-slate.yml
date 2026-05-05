@@ -1,0 +1,77 @@
+# =============================================================================
+# daily-slate.yml
+# -----------------------------------------------------------------------------
+# Runs predict.py once a day to generate the latest slate, then commits the
+# new picks_*_diag.csv and parlay_*.txt back to the repo.  The bake-data
+# workflow then fires on the new commit and copies the files into docs/data/
+# so the dashboard auto-updates.
+#
+# This is the "autonomous scrape + recalibrate" mechanism.  Pure browser-
+# side dashboards CAN'T do this — Python doesn't run in the browser.  By
+# running predict.py in CI, we get the freshness without standing up a
+# backend server.
+#
+# Trigger:
+#   - schedule: 7am UTC (~3am ET, before any first-pitch)
+#   - manual via "Run workflow"
+# =============================================================================
+name: Daily slate run
+
+on:
+  schedule:
+    - cron: "0 7 * * *"     # daily at 07:00 UTC
+  workflow_dispatch:
+    inputs:
+      slate_date:
+        description: 'Slate date YYYY-MM-DD (default: today)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Write .env from secret
+        run: |
+          echo "ODDS_API_KEY=${{ secrets.ODDS_API_KEY }}" > .env
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+
+      - name: Run predict.py
+        run: |
+          DATE_ARG="${{ inputs.slate_date }}"
+          if [ -z "$DATE_ARG" ]; then
+            python predict.py --skip-weights
+          else
+            python predict.py "$DATE_ARG" --skip-weights
+          fi
+
+      - name: Commit new slate output
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add picks_*.csv parlay_*.txt 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no slate changes to commit"
+          else
+            git commit -m "daily-slate: $(date -u +%Y-%m-%d) auto-run"
+            git push
+          fi

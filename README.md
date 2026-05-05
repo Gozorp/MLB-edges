@@ -190,6 +190,35 @@ and F-signal caps.
 
 ---
 
+## Live dashboard
+
+A static dashboard is published via GitHub Pages from the `docs/` folder.
+It loads slate CSVs and the parlay report client-side and renders the
+graded slate plus an interactive query box (e.g., type *"ATL vs SEA"*,
+*"best pick"*, *"contrarian"*, *"A grade"*, *"NYY"*).
+
+### Architecture (private-repo friendly)
+
+The dashboard fetches data from `docs/data/` (relative path), not from
+`raw.githubusercontent.com`. A GitHub Action (`.github/workflows/bake-data.yml`)
+copies `picks_*_diag.csv` and `parlay_*.txt` from the repo root into
+`docs/data/` on every push, so the deployed Pages site is self-contained.
+
+This means:
+- Repo can be **public or private** (Pages from private repos requires GitHub Pro)
+- The dashboard works without exposing your repo's raw URL
+- No browser-side cross-origin tricks
+
+### Auto-update workflow
+
+`.github/workflows/daily-slate.yml` runs `predict.py` daily at 07:00 UTC
+(via cron) and commits the new slate CSV. The bake-data workflow then
+fires on the new commit, the dashboard auto-refreshes.
+
+To enable: add an `ODDS_API_KEY` secret in **Settings → Secrets and
+variables → Actions**. Without it, the workflow runs but produces a slate
+with no `fair_prob` column (Odds-API guard caps everything at C grade).
+
 ## License
 
 MIT — see [LICENSE](LICENSE) · Repo: <https://github.com/Gozorp/MLB-edges>.

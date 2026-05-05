@@ -110,7 +110,25 @@
   <div class="picker">
     <input type="date" id="datePicker" />
     <button id="loadBtn">Load slate</button>
+    <button id="refreshBtn" title="Re-fetch with cache bypass">Refresh data</button>
     <span class="muted" id="status"></span>
+  </div>
+
+  <div class="card" id="queryCard" style="display:none;">
+    <h2>Ask the slate</h2>
+    <p class="muted" style="margin-top:-0.5rem;font-size:0.85rem;">
+      Try: <code>ATL vs SEA</code> · <code>best pick</code> · <code>parlay legs</code> ·
+      <code>contrarian</code> · <code>NYY</code> · <code>show A grades</code>
+    </p>
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;">
+      <input type="text" id="queryInput"
+             placeholder="Ask a question about the loaded slate…"
+             style="flex:1;background:var(--bg);color:var(--text);
+                    border:1px solid var(--border);border-radius:4px;
+                    padding:0.5rem 0.75rem;font-size:0.95rem;" />
+      <button id="askBtn">Ask</button>
+    </div>
+    <div id="queryResult"></div>
   </div>
 
   <div id="slate"></div>
@@ -119,17 +137,28 @@
   <div class="card">
     <h2>About this dashboard</h2>
     <p>
-      Static GitHub Pages dashboard for the
-      <a href="https://github.com/Gozorp/MLB-edges" style="color: var(--accent);">mlb_edge</a>
-      project. Loads the most recent <code>picks_YYYY-MM-DD_diag.csv</code> and
-      <code>parlay_YYYY-MM-DD.txt</code> directly from the repo and renders them client-side.
+      Static GitHub Pages dashboard for the mlb_edge project. Slate data is
+      baked into <code>docs/data/</code> via a GitHub Action on every push, so
+      the dashboard is self-contained — no cross-origin fetches, works whether
+      the source repo is public or private.
     </p>
     <p>
-      Grades are produced by an eight-rule grader: SP edge with small-sample dampening,
-      PQI (bullpen quality), team-quality modifier, F-signal cap, compound-small-sample
-      cap, Odds-API guard, PLATINUM gating, and Stage 1/2 agreement. See the
+      Grades are produced by an eight-rule grader: SP edge with small-sample
+      dampening, PQI (bullpen quality), team-quality modifier, F-signal cap,
+      compound-small-sample cap, Odds-API guard, PLATINUM gating, and Stage 1/2
+      agreement. See the
       <a href="https://github.com/Gozorp/MLB-edges#the-grading-rubric" style="color: var(--accent);">README</a>
       for the full rubric.
+    </p>
+    <p>
+      <strong>Autonomous updates:</strong> a daily workflow runs <code>predict.py</code>
+      at 07:00 UTC, generates the new slate, and commits it. The dashboard
+      auto-refreshes within a minute or two of the commit landing.
+    </p>
+    <p>
+      <strong>Interactive query:</strong> ask the slate about specific games or
+      categories using the query box above. Searches the loaded CSV + parlay
+      data — no LLM call, no network.
     </p>
     <p class="muted">
       Not financial or betting advice. Sports wagering is governed by local laws.
@@ -144,12 +173,19 @@
 
 <script>
 // =============================================================================
-// Dashboard logic — load CSV + TXT from the repo and render
+// Dashboard logic — load CSV + TXT from the bundled data folder
 // =============================================================================
-// GitHub Pages serves /docs as the root — it can't reach files in the repo
-// root via relative paths.  Fetch directly from the raw.githubusercontent.com
-// CDN, which serves everything in the repo.
-const REPO_RAW_BASE = "https://raw.githubusercontent.com/Gozorp/MLB-edges/main/";
+// We fetch from a relative `data/` directory inside docs/.  The
+// `bake-data.yml` GitHub Action copies the latest picks_*_diag.csv and
+// parlay_*.txt from the repo root into docs/data/ on every push, so the
+// dashboard is self-contained and works whether the repo is public or
+// private (as long as GitHub Pages is enabled).
+const REPO_RAW_BASE = "data/";
+
+// Fallback to raw.githubusercontent.com only used if the local data fetch
+// fails AND we know the repo is public.  Toggle this if you flip to private.
+const FALLBACK_RAW_BASE = "https://raw.githubusercontent.com/Gozorp/MLB-edges/main/";
+const USE_FALLBACK_ON_404 = true;   // set false when repo goes private
 
 function gradeClass(g) {
   if (g === "A")   return "grade-A";
@@ -194,8 +230,68 @@ function pct(v) {
   return isNaN(f) ? "—" : (f * 100).toFixed(1) + "%";
 }
 
-function renderSlate(rows) {
+// Parse the parlay_*.txt report to extract grade + reasons per matchup.
+// The text format from parlay_builder.write_parlay_report includes lines like:
+//   "  CIN @ CHC       CHC  p=64.7%  GOLD      filtered"
+//   "      reasons: F-signal fires (+1) | SP edge ... (+2) | ..."
+// And in the DO NOT PARLAY section:
+//   "  BOS @ DET       DET  p=52.7%  grade=B-"
+function parseParlayGrades(text) {
+  if (!text) return {};
+  const out = {};
+  const lines = text.split("\n");
+
+  let currentGrade = null;
+  // Match a matchup line in the GRADE A / A- / B+ sections (no "grade=" suffix).
+  const gradedMatchupRe = /^\s+([A-Z]{2,4}\s@\s[A-Z]{2,4}|[A-Za-z. ]+\s@\s[A-Za-z. ]+)\s+([A-Z]{2,4})\s+p=([\d.]+)%/;
+  // Match a "grade=X" line in DO NOT PARLAY.
+  const doNotParlayRe = /^\s+([A-Z]{2,4}\s@\s[A-Z]{2,4})\s+([A-Z]{2,4})\s+p=([\d.]+)%\s+grade=([A-Z][+-]?)/;
+  // Match longer grades first; require whitespace after to avoid `B+` being
+  // truncated to `B` when the \b boundary fires between B and + (since + is
+  // non-word, \b matches there and stops the capture too early).
+  const gradeHeaderRe = /^GRADE\s+(A-|A|B\+|B-|B|C|D)(?=\s|$)/;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Stop processing once we hit the RECOMMENDED PARLAYS section — the
+    // matchups listed there are duplicates of earlier entries (with no
+    // reasons) and would clobber the rich entries we already collected.
+    if (/^\s*RECOMMENDED PARLAYS/.test(line)) break;
+
+    const hdr = line.match(gradeHeaderRe);
+    if (hdr) { currentGrade = hdr[1]; continue; }
+    if (/^DO NOT PARLAY/.test(line)) { currentGrade = null; continue; }
+
+    // Try the "grade=X" suffix form first (DO NOT PARLAY section)
+    const dn = line.match(doNotParlayRe);
+    if (dn) {
+      // Don't overwrite a richer entry from an earlier section
+      if (!out[dn[1]]) out[dn[1]] = { grade: dn[4], reasons: "" };
+      continue;
+    }
+
+    // Then the section-header-attributed form (A/A-/B+ sections)
+    if (currentGrade) {
+      const m = line.match(gradedMatchupRe);
+      if (m) {
+        let reasons = "";
+        for (let j = i + 1; j < Math.min(i + 4, lines.length); j++) {
+          const rl = lines[j].trim();
+          if (rl.startsWith("reasons:")) { reasons = rl.slice("reasons:".length).trim(); break; }
+          if (rl === "") continue;
+          break;
+        }
+        out[m[1].trim()] = { grade: currentGrade, reasons };
+      }
+    }
+  }
+  return out;
+}
+
+function renderSlate(rows, gradeMap) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
+  const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
 
   let html = `<div class="card">
     <h2>Slate (${rows.length} games)</h2>
@@ -206,17 +302,23 @@ function renderSlate(rows) {
         <th>Reasons</th>
       </tr></thead><tbody>`;
   for (const r of rows) {
-    const grade = (r.grade || "").trim();
+    const matchupKey = (r.matchup || "").trim();
+    const fromParlay = (gradeMap && gradeMap[matchupKey]) || {};
+    const grade = (r.grade || fromParlay.grade || "").trim();
+    const reasons = (r.grade_reasons || fromParlay.reasons || r.signals || "")
+      .replace(/\|/g, " · ");
+    const fairFmt = have(r.fair_prob) ? pct(r.fair_prob) : "—";
+    const edgeFmt = have(r.edge_pp) ? `${parseFloat(r.edge_pp).toFixed(1)}pp` : "—";
     html += `<tr>
-      <td><strong>${r.matchup || "—"}</strong></td>
+      <td><strong>${matchupKey || "—"}</strong></td>
       <td>${r.pick || "—"}</td>
       <td>${pct(r.f5_prob)}</td>
       <td>${pct(r.full_prob || r.p_model)}</td>
-      <td>${pct(r.fair_prob)}</td>
-      <td>${r.edge_pp || "—"}</td>
+      <td>${fairFmt}</td>
+      <td>${edgeFmt}</td>
       <td>${r.tier || "—"}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
-      <td class="why">${(r.grade_reasons || r.signals || "").replace(/\|/g, " · ")}</td>
+      <td class="why">${reasons || "<span class='muted'>—</span>"}</td>
     </tr>`;
   }
   html += "</tbody></table></div>";
@@ -230,30 +332,179 @@ function renderParlay(text) {
   }</pre></div>`;
 }
 
-async function loadSlate(date) {
+// Globals so the query interface can introspect the loaded slate
+window.__slate = { date: null, rows: [], gradeMap: {}, parlayText: "" };
+
+async function loadSlate(date, { bust = false } = {}) {
   const status = document.getElementById("status");
-  status.textContent = "Loading…";
+  status.textContent = bust ? "Refreshing (bypassing cache)…" : "Loading…";
   try {
-    const csvUrl   = `${REPO_RAW_BASE}picks_${date}_diag.csv`;
-    const parlayUrl = `${REPO_RAW_BASE}parlay_${date}.txt`;
+    const q = bust ? `?v=${Date.now()}` : "";
+    const fetchOpts = bust ? { cache: "no-store" } : {};
+
+    // Try local docs/data first, fall back to raw.githubusercontent.com
+    // if 404 and fallback is enabled
+    async function fetchOneOf(file) {
+      for (const base of [REPO_RAW_BASE, USE_FALLBACK_ON_404 ? FALLBACK_RAW_BASE : null]) {
+        if (!base) continue;
+        try {
+          const r = await fetch(base + file + q, fetchOpts);
+          if (r.ok) return await r.text();
+        } catch (e) { /* try next */ }
+      }
+      throw new Error("not found in any source");
+    }
 
     const [csvR, txtR] = await Promise.allSettled([
-      fetch(csvUrl).then(r => r.ok ? r.text() : Promise.reject(r.status)),
-      fetch(parlayUrl).then(r => r.ok ? r.text() : Promise.reject(r.status)),
+      fetchOneOf(`picks_${date}_diag.csv`),
+      fetchOneOf(`parlay_${date}.txt`),
     ]);
 
-    const slateHtml = csvR.status === "fulfilled"
-      ? renderSlate(parseCSV(csvR.value))
-      : `<div class="empty">No slate file found at <code>picks_${date}_diag.csv</code></div>`;
+    const gradeMap = txtR.status === "fulfilled"
+      ? parseParlayGrades(txtR.value) : {};
+    const rows = csvR.status === "fulfilled" ? parseCSV(csvR.value) : [];
 
+    // Stash for the query interface
+    window.__slate = {
+      date,
+      rows,
+      gradeMap,
+      parlayText: txtR.status === "fulfilled" ? txtR.value : ""
+    };
+
+    const slateHtml = rows.length
+      ? renderSlate(rows, gradeMap)
+      : `<div class="empty">No slate file found at <code>picks_${date}_diag.csv</code>.
+         Run <code>python predict.py ${date}</code> locally and push, or wait for
+         the nightly auto-run workflow to publish.</div>`;
     const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
 
     document.getElementById("slate").innerHTML = slateHtml;
     document.getElementById("parlay").innerHTML = parlayHtml;
-    status.textContent = csvR.status === "fulfilled" ? `Loaded ${date}` : "";
+    document.getElementById("queryCard").style.display = rows.length ? "" : "none";
+    document.getElementById("queryResult").innerHTML = "";
+    status.textContent = csvR.status === "fulfilled"
+      ? `Loaded ${date} (${rows.length} games)` : "";
   } catch (e) {
     status.textContent = "Load failed: " + e;
   }
+}
+
+// =============================================================================
+// Interactive query — answer questions about the currently-loaded slate.
+// Pure browser-side: searches the CSV rows + parlay-derived grade map.
+// =============================================================================
+function answerQuery(q, slate) {
+  if (!slate.rows.length) {
+    return `<div class="empty">No slate loaded — pick a date first.</div>`;
+  }
+  const norm = q.trim().toLowerCase();
+  if (!norm) return "";
+
+  // Helper: render a single game row with all the model output
+  const formatGame = (r) => {
+    const matchup = (r.matchup || "").trim();
+    const grade = (slate.gradeMap[matchup] || {}).grade || "—";
+    const reasons = (slate.gradeMap[matchup] || {}).reasons || "";
+    const f5 = pct(r.f5_prob), full = pct(r.full_prob || r.p_model);
+    const fair = r.fair_prob ? pct(r.fair_prob) : "—";
+    const pickStr = r.pick || "—";
+    return `<div class="card" style="margin-top:0.75rem;">
+      <strong>${matchup}</strong> — pick <strong>${pickStr}</strong>
+      <span class="grade ${gradeClass(grade)}" style="margin-left:0.5rem;">${grade}</span>
+      <table style="margin-top:0.5rem;">
+        <tr><td class="muted">F5 win prob</td><td>${f5}</td></tr>
+        <tr><td class="muted">Full game prob</td><td>${full}</td></tr>
+        <tr><td class="muted">Market fair prob</td><td>${fair}</td></tr>
+        <tr><td class="muted">Tier</td><td>${r.tier || "—"}</td></tr>
+        <tr><td class="muted">Signals</td><td>${r.signals || "—"}</td></tr>
+        ${reasons ? `<tr><td class="muted">Grade reasons</td><td>${reasons.replace(/\|/g, " · ")}</td></tr>` : ""}
+        ${r.why_skipped ? `<tr><td class="muted">Why skipped</td><td>${r.why_skipped}</td></tr>` : ""}
+      </table>
+    </div>`;
+  };
+
+  // 1. Direct matchup like "ATL vs SEA" or "ATL @ SEA"
+  const teamsInQ = norm.match(/\b([a-z]{2,4})\s*(?:vs|@|v\.?|versus)\s*([a-z]{2,4})\b/);
+  if (teamsInQ) {
+    const a = teamsInQ[1].toUpperCase(), b = teamsInQ[2].toUpperCase();
+    const hits = slate.rows.filter(r => {
+      const m = (r.matchup || "").toUpperCase();
+      return m.includes(a) && m.includes(b);
+    });
+    if (hits.length) return hits.map(formatGame).join("");
+    return `<div class="empty">No game found between ${a} and ${b} on ${slate.date}.</div>`;
+  }
+
+  // 2. Single team mention — show that team's game
+  const singleTeam = norm.match(/\b([A-Z]{2,4}|nyy|laa|lad|kc|sf|sd|cws|tb|tor|chc|chw)\b/i);
+  if (singleTeam) {
+    const t = singleTeam[1].toUpperCase();
+    const hits = slate.rows.filter(r => (r.matchup || "").toUpperCase().includes(t));
+    if (hits.length) return hits.map(formatGame).join("");
+  }
+
+  // 3. "best pick" / "top pick" / "anchor" / "A grade" → list A and A- picks
+  if (/best|top|anchor|a-?\s*grade|highest/i.test(norm)) {
+    const hits = slate.rows.filter(r => {
+      const g = (slate.gradeMap[(r.matchup||"").trim()] || {}).grade;
+      return g === "A" || g === "A-";
+    });
+    if (hits.length) {
+      return `<p>${hits.length} A/A- pick(s) for ${slate.date}:</p>` + hits.map(formatGame).join("");
+    }
+    return `<div class="empty">No A or A- grade picks on ${slate.date}.</div>`;
+  }
+
+  // 4. "parlay" / "parlay legs" → show parlay-eligible picks (A, A-, B+)
+  if (/parlay/i.test(norm)) {
+    const hits = slate.rows.filter(r => {
+      const g = (slate.gradeMap[(r.matchup||"").trim()] || {}).grade;
+      return ["A", "A-", "B+"].includes(g);
+    });
+    if (hits.length) {
+      return `<p>${hits.length} parlay-eligible pick(s) (A, A-, B+):</p>` + hits.map(formatGame).join("");
+    }
+    return `<div class="empty">No parlay-eligible picks on ${slate.date}.</div>`;
+  }
+
+  // 5. "contrarian" → picks where market disagrees (fair_prob < 0.50)
+  if (/contrarian|underdog|fade/i.test(norm)) {
+    const hits = slate.rows.filter(r => {
+      const fp = parseFloat(r.fair_prob);
+      return !isNaN(fp) && fp < 0.50;
+    });
+    if (hits.length) {
+      return `<p>${hits.length} contrarian pick(s) (model picks the market underdog):</p>`
+             + hits.map(formatGame).join("");
+    }
+    return `<div class="empty">No contrarian picks on ${slate.date} (no fair_prob data).</div>`;
+  }
+
+  // 6. "show <grade>" → all games with that grade
+  const gradeQ = norm.match(/(?:show|list)?\s*([abcd][-+]?)\s*grade/);
+  if (gradeQ) {
+    const target = gradeQ[1].toUpperCase().replace("PLUS", "+").replace("MINUS", "-");
+    const hits = slate.rows.filter(r => {
+      const g = (slate.gradeMap[(r.matchup||"").trim()] || {}).grade;
+      return g === target;
+    });
+    if (hits.length) {
+      return `<p>${hits.length} game(s) graded ${target}:</p>` + hits.map(formatGame).join("");
+    }
+    return `<div class="empty">No ${target}-graded games on ${slate.date}.</div>`;
+  }
+
+  // 7. Fallback: search matchup strings substring-wise
+  const free = slate.rows.filter(r => (r.matchup||"").toLowerCase().includes(norm)
+                                    || (r.pick||"").toLowerCase().includes(norm));
+  if (free.length) return free.map(formatGame).join("");
+
+  return `<div class="empty">
+    Didn't understand "${q}". Try a matchup (<code>ATL vs SEA</code>),
+    a team (<code>NYY</code>), or a category (<code>best pick</code>,
+    <code>parlay legs</code>, <code>contrarian</code>, <code>A grade</code>).
+  </div>`;
 }
 
 function todayISO() {
@@ -264,9 +515,26 @@ function todayISO() {
 document.addEventListener("DOMContentLoaded", () => {
   const picker = document.getElementById("datePicker");
   picker.value = todayISO();
+
   document.getElementById("loadBtn").addEventListener("click", () => {
     loadSlate(picker.value);
   });
+  document.getElementById("refreshBtn").addEventListener("click", () => {
+    loadSlate(picker.value, { bust: true });
+  });
+
+  // Date-picker change auto-loads (no need to click)
+  picker.addEventListener("change", () => loadSlate(picker.value));
+
+  const ask = () => {
+    const q = document.getElementById("queryInput").value;
+    document.getElementById("queryResult").innerHTML = answerQuery(q, window.__slate);
+  };
+  document.getElementById("askBtn").addEventListener("click", ask);
+  document.getElementById("queryInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") ask();
+  });
+
   // Auto-load today on first visit
   loadSlate(picker.value);
 });

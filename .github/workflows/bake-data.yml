@@ -1,0 +1,70 @@
+# =============================================================================
+# bake-data.yml
+# -----------------------------------------------------------------------------
+# Copies the latest slate output files (picks_*_diag.csv, picks_*_news_overrides.csv,
+# parlay_*.txt) from the repo root into docs/data/ on every push to main.
+#
+# Why: the dashboard at docs/index.html fetches its data via the relative
+# path `data/...` so it works regardless of repo visibility.  Without this
+# workflow, the dashboard would have to fetch from raw.githubusercontent.com
+# (which only serves PUBLIC repos to anonymous browsers).  Baking the files
+# into docs/data/ makes the deployed Pages site self-contained.
+#
+# Triggers:
+#   - push to main (any branch update)
+#   - manual via "Run workflow" button in the GitHub UI
+# =============================================================================
+name: Bake slate data into docs/
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "picks_*_diag.csv"
+      - "picks_*_news_overrides.csv"
+      - "parlay_*.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # needs to commit docs/data/ updates back
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Copy slate files into docs/data/
+        run: |
+          mkdir -p docs/data
+          cp -v picks_*_diag.csv          docs/data/ 2>/dev/null || echo "no diag CSVs"
+          cp -v picks_*_news_overrides.csv docs/data/ 2>/dev/null || echo "no news CSVs"
+          cp -v parlay_*.txt              docs/data/ 2>/dev/null || echo "no parlay TXTs"
+
+      - name: Build manifest of available dates
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          d = Path("docs/data")
+          dates = set()
+          for f in d.glob("picks_*_diag.csv"):
+              m = re.search(r"(\d{4}-\d{2}-\d{2})", f.name)
+              if m: dates.add(m.group(1))
+          manifest = {"dates": sorted(dates, reverse=True)}
+          (d / "manifest.json").write_text(json.dumps(manifest, indent=2))
+          print(f"manifest: {len(dates)} dates")
+          PY
+
+      - name: Commit baked data if it changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "bake-data: refresh docs/data/ from latest slates"
+            git push
+          fi
