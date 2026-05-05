@@ -631,6 +631,58 @@ async function _fetchTeamRoster(teamId) {
   }
 }
 
+async function _fetchBoxscore(gamePk) {
+  try {
+    const url = `https://statsapi.mlb.com/api/v1/game/${gamePk}/boxscore`;
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) {
+    console.warn("boxscore fetch failed:", e);
+    return null;
+  }
+}
+
+function _extractTeamFromBox(teamBox) {
+  const players = teamBox.players || {};
+  const pitcherIds = teamBox.pitchers || [];
+  const battingOrder = teamBox.battingOrder || [];
+  const out = { startingPitcher: null, bullpen: [], batters: [] };
+  pitcherIds.forEach((pid, idx) => {
+    const p = players["ID" + pid];
+    if (!p) return;
+    const gs = (p.stats && p.stats.pitching) || {};
+    const ss = (p.seasonStats && p.seasonStats.pitching) || {};
+    const entry = {
+      name: (p.person && p.person.fullName) || "",
+      ip: gs.inningsPitched || "0",
+      r: gs.runs || 0, er: gs.earnedRuns || 0,
+      h: gs.hits || 0, bb: gs.baseOnBalls || 0, k: gs.strikeOuts || 0,
+      hr: gs.homeRuns || 0,
+      seasonEra: ss.era || "-", seasonWhip: ss.whip || "-",
+      decisions: gs.note || ""
+    };
+    if (idx === 0) out.startingPitcher = entry;
+    else out.bullpen.push(entry);
+  });
+  battingOrder.forEach((pid, idx) => {
+    const p = players["ID" + pid];
+    if (!p) return;
+    const gs = (p.stats && p.stats.batting) || {};
+    const pos = (p.position && p.position.abbreviation) || "";
+    out.batters.push({
+      order: idx + 1, name: (p.person && p.person.fullName) || "",
+      pos,
+      ab: gs.atBats || 0, h: gs.hits || 0, r: gs.runs || 0,
+      hr: gs.homeRuns || 0, rbi: gs.rbi || 0,
+      bb: gs.baseOnBalls || 0, k: gs.strikeOuts || 0,
+      "2b": gs.doubles || 0, "3b": gs.triples || 0,
+      sb: gs.stolenBases || 0
+    });
+  });
+  return out;
+}
+
 async function fetchGamePreview(result) {
   if (!result || !result.gamePk) return null;
   const key = "g" + result.gamePk;
@@ -639,11 +691,33 @@ async function fetchGamePreview(result) {
   const out = {
     awayName: result.awayName, homeName: result.homeName,
     awayAbbr: result.awayAbbr, homeAbbr: result.homeAbbr,
+    isFinal: !!result.isFinal,
+    awayScore: result.awayScore, homeScore: result.homeScore, winner: result.winner,
+    // upcoming-game fields
     awayPitcher: null, homePitcher: null,
     awayBullpen: [], homeBullpen: [],
     awayBatters: [], homeBatters: [],
-    awayLineup: [], homeLineup: []
+    awayLineup: [], homeLineup: [],
+    // past-game fields (filled from boxscore when isFinal)
+    awayActualSP: null, homeActualSP: null,
+    awayBullpenUsed: [], homeBullpenUsed: [],
+    awayLineupActual: [], homeLineupActual: []
   };
+
+  // Branch: past game → boxscore; upcoming → probable + roster proxy
+  if (result.isFinal) {
+    const box = await _fetchBoxscore(result.gamePk);
+    if (box && box.teams) {
+      const aT = _extractTeamFromBox(box.teams.away || {});
+      const hT = _extractTeamFromBox(box.teams.home || {});
+      out.awayActualSP = aT.startingPitcher; out.homeActualSP = hT.startingPitcher;
+      out.awayBullpenUsed = aT.bullpen;      out.homeBullpenUsed = hT.bullpen;
+      out.awayLineupActual = aT.batters;     out.homeLineupActual = hT.batters;
+    }
+    window.__previewCache[key] = out;
+    return out;
+  }
+
 
   // 1. Batched pitcher stats
   const pids = [result.awayPitcherId, result.homePitcherId].filter(Boolean);
@@ -714,9 +788,73 @@ function _batImpact(ops_f) {
   return "below-mean OPS — neutral run-impact for now, easier out for the opposing SP.";
 }
 
-function formatGamePreview(preview) {
-  if (!preview) return "";
+function _spImpactFinal(sp) {
+  const ip = parseFloat((sp.ip || "0").toString().replace(" ", ""));
+  const er = parseInt(sp.er || 0);
+  if (ip >= 6 && er <= 2) return "Quality start — held the line and gave his bullpen a clean handoff. This is the 'elite SP' game outcome the model prices in.";
+  if (ip >= 5 && er <= 3) return "Standard start — kept his team in the game without dominating; the bullpen and offense decided the rest.";
+  if (ip < 4)             return "Short outing — bullpen exposed early. This is the failure mode the bullpen-quality term tries to anticipate.";
+  if (er >= 5)            return "Knocked around — surrendered a big inning that flipped win expectancy. The pitching edge inverted vs the projected matchup.";
+  return "In-between outing — neither dominant nor disastrous; result hinged on the bullpen and offense.";
+}
+function _bpImpactFinal(rel) {
+  const ip = parseFloat((rel.ip || "0").toString().replace(" ", ""));
+  const er = parseInt(rel.er || 0);
+  if (ip >= 1 && er === 0) return "Clean inning — preserved whatever leverage state he inherited.";
+  if (er >= 2)             return "Crooked-number outing — gave back leverage; one-run games often flip here.";
+  return "Held with traffic — survived but used high-leverage time he can't repeat tomorrow.";
+}
+function _batterImpactFinal(b) {
+  if (b.hr >= 1)          return "Game-impact bat — each HR moves the run line directly.";
+  if (b.h >= 2 || b.rbi >= 2) return "Driver of offense — multi-hit / multi-RBI day kept the run column moving.";
+  if (b.h >= 1)           return "Productive contact — kept the lineup turning over.";
+  if (b.bb >= 1)          return "Patient at-bats; took bases without hitting safely.";
+  return "0-for; neutral contribution at the plate.";
+}
 
+function _formatGamePreviewFinal(preview) {
+  const fmtSP = (sp, teamName) => {
+    if (!sp) return `<li class="muted">${teamName} starting pitcher not in boxscore.</li>`;
+    return `<li><strong>${sp.name}</strong> — ${sp.ip} IP, ${sp.h} H, ${sp.r} R, ${sp.er} ER, ${sp.bb} BB, ${sp.k} K (season ${sp.seasonEra} ERA, ${sp.seasonWhip} WHIP). ${_spImpactFinal(sp)}</li>`;
+  };
+  const fmtBP = (rels, teamName) => {
+    if (!rels.length) return `<li class="muted">${teamName} bullpen not used (rare — full SP game).</li>`;
+    return rels.map(r =>
+      `<li><strong>${r.name}</strong> — ${r.ip} IP, ${r.h} H, ${r.r} R, ${r.er} ER, ${r.bb} BB, ${r.k} K. ${_bpImpactFinal(r)}</li>`
+    ).join("");
+  };
+  const fmtBatter = (b) => {
+    return `<li><strong>${b.order}. ${b.name}</strong> (${b.pos || "-"}) — ${b.h}/${b.ab}, ${b.r} R, ${b.hr} HR, ${b.rbi} RBI, ${b.bb} BB, ${b.k} K. ${_batterImpactFinal(b)}</li>`;
+  };
+  const winLabel = (preview.winner ? `${preview.winner} won ${preview.awayScore}-${preview.homeScore}` : "Final");
+  return `
+    <h4>Actual game — who pitched and who hit (${winLabel})</h4>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <h5>${preview.awayName} starting pitcher</h5>
+        <ul>${fmtSP(preview.awayActualSP, preview.awayName)}</ul>
+        <h5>${preview.homeName} starting pitcher</h5>
+        <ul>${fmtSP(preview.homeActualSP, preview.homeName)}</ul>
+      </div>
+      <div class="preview-card">
+        <h5>${preview.awayName} bullpen used (in order)</h5>
+        <ul>${fmtBP(preview.awayBullpenUsed, preview.awayName)}</ul>
+        <h5>${preview.homeName} bullpen used (in order)</h5>
+        <ul>${fmtBP(preview.homeBullpenUsed, preview.homeName)}</ul>
+      </div>
+      <div class="preview-card">
+        <h5>${preview.awayName} batting order</h5>
+        <ul>${preview.awayLineupActual.map(fmtBatter).join("")}</ul>
+      </div>
+      <div class="preview-card">
+        <h5>${preview.homeName} batting order</h5>
+        <ul>${preview.homeLineupActual.map(fmtBatter).join("")}</ul>
+      </div>
+    </div>
+  `;
+}
+
+function _formatGamePreviewUpcoming(preview) {
   const fmtPitcher = (p, abbr) => {
     if (!p) return `<li>${abbr}: TBD</li>`;
     const hand = p.hand || "?";
@@ -795,6 +933,13 @@ function formatGamePreview(preview) {
     </div>
   `;
 }
+
+function formatGamePreview(preview) {
+  if (!preview) return "";
+  if (preview.isFinal) return _formatGamePreviewFinal(preview);
+  return _formatGamePreviewUpcoming(preview);
+}
+
 
 function pickedTeam(r) {
   // Try to extract a team abbreviation from r.pick (e.g. "ATL", "Atlanta Braves")

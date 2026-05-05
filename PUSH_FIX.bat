@@ -34,7 +34,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Add lazy-loaded game preview: probable SPs, bullpen, top hitters, posted lineup"
+    git commit -m "Past-game preview: actual SP, bullpen used in order, full batting order with game lines"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
