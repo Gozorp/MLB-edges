@@ -1,0 +1,107 @@
+{
+  "n_rows": 2900710,
+  "year_counts": {
+    "2022": 693969,
+    "2023": 707374,
+    "2024": 689571,
+    "2025": 589179,
+    "2026": 220617
+  },
+  "features_stuff": [
+    "release_speed",
+    "release_pos_x",
+    "release_pos_y",
+    "release_pos_z",
+    "release_extension",
+    "release_spin_rate",
+    "spin_axis",
+    "pfx_x",
+    "pfx_z",
+    "vx0",
+    "vy0",
+    "vz0",
+    "ax",
+    "ay",
+    "az",
+    "pitch_type",
+    "p_throws",
+    "stand"
+  ],
+  "features_location": [
+    "plate_x",
+    "plate_z",
+    "balls",
+    "strikes",
+    "sz_top",
+    "sz_bot",
+    "p_throws",
+    "stand",
+    "pitch_type"
+  ],
+  "target": "delta_run_exp",
+  "filter_log": [
+    "raw chunks                       :  3,289,237",
+    "after year filter ([2022, 2023, 2024, 2025, 2026])    :  3,289,237",
+    "after pitchout/IBB/auto-ball drop  :  3,279,167",
+    "after release_speed >= 65.0      :  3,226,180",
+    "after target-not-null              :  3,226,131",
+    "after pitch-type >= 5,000 (train) :  3,219,633",
+    "  kept pitch types                : ['CH', 'CU', 'FC', 'FF', 'FS', 'KC', 'SI', 'SL', 'ST', 'SV']",
+    "after Stuff+ numeric complete      :  3,204,679",
+    "after pitcher >= 500 pitches (train):  2,900,710"
+  ],
+  "top10_pitchers_by_count": [
+    {
+      "pitcher_id": 656302,
+      "n_pitches": 14451
+    },
+    {
+      "pitcher_id": 592332,
+      "n_pitches": 13651
+    },
+    {
+      "pitcher_id": 657277,
+      "n_pitches": 13581
+    },
+    {
+      "pitcher_id": 664285,
+      "n_pitches": 13332
+    },
+    {
+      "pitcher_id": 656605,
+      "n_pitches": 13225
+    },
+    {
+      "pitcher_id": 605135,
+      "n_pitches": 13191
+    },
+    {
+      "pitcher_id": 668678,
+      "n_pitches": 12916
+    },
+    {
+      "pitcher_id": 622491,
+      "n_pitches": 12782
+    },
+    {
+      "pitcher_id": 571945,
+      "n_pitches": 12781
+    },
+    {
+      "pitcher_id": 605400,
+      "n_pitches": 12747
+    }
+  ],
+  "pitch_type_counts": {
+    "FF": 925862,
+    "SI": 463673,
+    "SL": 441767,
+    "CH": 315411,
+    "FC": 228558,
+    "CU": 195859,
+    "ST": 180915,
+    "FS": 75881,
+    "KC": 58938,
+    "SV": 13846
+  }
+}

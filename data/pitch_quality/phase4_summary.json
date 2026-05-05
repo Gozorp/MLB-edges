@@ -1,0 +1,161 @@
+{
+  "train_size": 2175,
+  "val_size": 2121,
+  "shrinkage_summary": [
+    {
+      "group": "SP",
+      "tau": 600,
+      "n_full_weight": 1683,
+      "n_zero_eff": 133,
+      "n_total": 2175,
+      "median_weight": 0.7322623828647925
+    },
+    {
+      "group": "Bullpen",
+      "tau": 3000,
+      "n_full_weight": 2175,
+      "n_zero_eff": 0,
+      "n_total": 2175,
+      "median_weight": 0.8409837803455953
+    },
+    {
+      "group": "HL_Bullpen",
+      "tau": 1000,
+      "n_full_weight": 2175,
+      "n_zero_eff": 0,
+      "n_total": 2175,
+      "median_weight": 0.9012150548256446
+    },
+    {
+      "group": "Lineup",
+      "tau": 9,
+      "n_full_weight": 2175,
+      "n_zero_eff": 0,
+      "n_total": 2175,
+      "median_weight": 0.5
+    }
+  ],
+  "clean": {
+    "n": 2121,
+    "brier": 0.2620863914489746,
+    "log_loss": 0.7233833090750137,
+    "hit_rate": 0.5365393682225366
+  },
+  "shrunk": {
+    "n": 2121,
+    "brier": 0.2631593644618988,
+    "log_loss": 0.7254707761012366,
+    "hit_rate": 0.5365393682225366
+  },
+  "brier_delta": 0.0010729730129241943,
+  "bootstrap_ci95": [
+    -0.002898820489645004,
+    0.0007396407425403595
+  ],
+  "bootstrap_mean": -0.0010546139776706695,
+  "ship_gate_pass": false,
+  "reliability_bins": [
+    {
+      "bin": "(0.00, 0.40]",
+      "n_clean": 468,
+      "gap_clean_pp": 18.56722085394411,
+      "n_shrunk": 455,
+      "gap_shrunk_pp": 18.963223715404887
+    },
+    {
+      "bin": "(0.40, 0.45]",
+      "n_clean": 196,
+      "gap_clean_pp": 6.021773085302234,
+      "n_shrunk": 178,
+      "gap_shrunk_pp": 7.4374765157699585
+    },
+    {
+      "bin": "(0.45, 0.50]",
+      "n_clean": 204,
+      "gap_clean_pp": 8.705221496376335,
+      "n_shrunk": 217,
+      "gap_shrunk_pp": 6.0925882807525085
+    },
+    {
+      "bin": "(0.50, 0.55]",
+      "n_clean": 250,
+      "gap_clean_pp": 2.5852396011352585,
+      "n_shrunk": 239,
+      "gap_shrunk_pp": 4.371504080345446
+    },
+    {
+      "bin": "(0.55, 0.60]",
+      "n_clean": 224,
+      "gap_clean_pp": -5.220267602375572,
+      "n_shrunk": 227,
+      "gap_shrunk_pp": -0.6199191320310105
+    },
+    {
+      "bin": "(0.60, 0.65]",
+      "n_clean": 207,
+      "gap_clean_pp": -4.594532735105872,
+      "n_shrunk": 232,
+      "gap_shrunk_pp": -8.638410116064133
+    },
+    {
+      "bin": "(0.65, 1.00]",
+      "n_clean": 572,
+      "gap_clean_pp": -14.71649733456698,
+      "n_shrunk": 573,
+      "gap_shrunk_pp": -16.132723016056506
+    }
+  ],
+  "tier_segmented": [
+    {
+      "p_clean_band": "(0.00, 0.55]",
+      "n": 1118,
+      "brier_clean": 0.2661137580871582,
+      "brier_shrunk": 0.26656097173690796,
+      "delta_brier": 0.00044721364974975586,
+      "hit_clean": 0.5035778175313059,
+      "hit_shrunk": 0.5,
+      "delta_hit": -0.003577817531305927
+    },
+    {
+      "p_clean_band": "(0.55, 0.60]",
+      "n": 224,
+      "brier_clean": 0.2535713016986847,
+      "brier_shrunk": 0.2556208670139313,
+      "delta_brier": 0.002049565315246582,
+      "hit_clean": 0.5223214285714286,
+      "hit_shrunk": 0.5357142857142857,
+      "delta_hit": 0.013392857142857095
+    },
+    {
+      "p_clean_band": "(0.60, 0.65]",
+      "n": 207,
+      "brier_clean": 0.2457142025232315,
+      "brier_shrunk": 0.24944880604743958,
+      "delta_brier": 0.003734603524208069,
+      "hit_clean": 0.5797101449275363,
+      "hit_shrunk": 0.5845410628019324,
+      "delta_hit": 0.004830917874396157
+    },
+    {
+      "p_clean_band": "(0.65, 0.72]",
+      "n": 266,
+      "brier_clean": 0.2532753348350525,
+      "brier_shrunk": 0.2557261884212494,
+      "delta_brier": 0.0024508535861968994,
+      "hit_clean": 0.5827067669172933,
+      "hit_shrunk": 0.5827067669172933,
+      "delta_hit": 0.0
+    },
+    {
+      "p_clean_band": "(0.72, 1.00]",
+      "n": 306,
+      "brier_clean": 0.2723398208618164,
+      "brier_shrunk": 0.2719859778881073,
+      "delta_brier": -0.00035384297370910645,
+      "hit_clean": 0.5980392156862745,
+      "hit_shrunk": 0.5980392156862745,
+      "delta_hit": 0.0
+    }
+  ],
+  "archetype_check": []
+}

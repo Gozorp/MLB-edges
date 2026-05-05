@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>mlb_edge — daily slate</title>
+<style>
+  :root {
+    --bg: #0e1117;
+    --bg-elev: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --orange: #db6d28;
+    --red: #f85149;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.5;
+  }
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: baseline; gap: 1.5rem; flex-wrap: wrap;
+  }
+  header h1 {
+    margin: 0; font-size: 1.5rem; font-weight: 600;
+  }
+  header .meta { color: var(--muted); font-size: 0.9rem; }
+  main {
+    max-width: 1400px; margin: 0 auto; padding: 2rem;
+  }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .card h2 { margin-top: 0; font-size: 1.1rem; color: var(--accent); }
+  table {
+    width: 100%; border-collapse: collapse; font-size: 0.9rem;
+  }
+  th {
+    text-align: left; padding: 0.5rem; border-bottom: 2px solid var(--border);
+    color: var(--muted); font-weight: 500; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  td {
+    padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: rgba(88, 166, 255, 0.05); }
+  .grade {
+    display: inline-block; min-width: 28px; text-align: center;
+    padding: 0.15rem 0.4rem; border-radius: 4px; font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .grade-A   { background: rgba(63, 185, 80, 0.2); color: var(--green); }
+  .grade-A-  { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+  .grade-Bp  { background: rgba(210, 153, 34, 0.2); color: var(--yellow); }
+  .grade-B   { background: rgba(139, 148, 158, 0.2); color: var(--muted); }
+  .grade-Bm  { background: rgba(139, 148, 158, 0.2); color: var(--muted); }
+  .grade-C   { background: rgba(219, 109, 40, 0.2); color: var(--orange); }
+  .grade-D   { background: rgba(248, 81, 73, 0.2); color: var(--red); }
+  pre {
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 1rem; border-radius: 4px; overflow-x: auto;
+    font-size: 0.85rem; line-height: 1.4;
+    white-space: pre-wrap;
+  }
+  .muted { color: var(--muted); }
+  .signals { font-size: 0.8rem; color: var(--muted); }
+  .why { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+  .picker { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .picker select, .picker input {
+    background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.4rem 0.6rem; font-size: 0.9rem;
+  }
+  .picker button {
+    background: var(--accent); color: var(--bg);
+    border: none; border-radius: 4px; padding: 0.4rem 1rem;
+    cursor: pointer; font-weight: 500;
+  }
+  .picker button:hover { opacity: 0.9; }
+  .empty {
+    color: var(--muted); padding: 2rem; text-align: center;
+    border: 1px dashed var(--border); border-radius: 8px;
+  }
+  footer {
+    margin-top: 3rem; padding: 2rem; text-align: center;
+    color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>mlb_edge</h1>
+  <div class="meta">Daily MLB slate predictions with multi-rule grading</div>
+</header>
+
+<main>
+  <div class="picker">
+    <input type="date" id="datePicker" />
+    <button id="loadBtn">Load slate</button>
+    <span class="muted" id="status"></span>
+  </div>
+
+  <div id="slate"></div>
+  <div id="parlay"></div>
+
+  <div class="card">
+    <h2>About this dashboard</h2>
+    <p>
+      Static GitHub Pages dashboard for the
+      <a href="https://github.com/Gozorp/MLB-edges" style="color: var(--accent);">mlb_edge</a>
+      project. Loads the most recent <code>picks_YYYY-MM-DD_diag.csv</code> and
+      <code>parlay_YYYY-MM-DD.txt</code> directly from the repo and renders them client-side.
+    </p>
+    <p>
+      Grades are produced by an eight-rule grader: SP edge with small-sample dampening,
+      PQI (bullpen quality), team-quality modifier, F-signal cap, compound-small-sample
+      cap, Odds-API guard, PLATINUM gating, and Stage 1/2 agreement. See the
+      <a href="https://github.com/Gozorp/MLB-edges#the-grading-rubric" style="color: var(--accent);">README</a>
+      for the full rubric.
+    </p>
+    <p class="muted">
+      Not financial or betting advice. Sports wagering is governed by local laws.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <a href="https://github.com/Gozorp/MLB-edges">GitHub</a> ·
+  Built with vanilla JS · No analytics, no cookies
+</footer>
+
+<script>
+// =============================================================================
+// Dashboard logic — load CSV + TXT from the repo and render
+// =============================================================================
+const REPO_RAW_BASE = "../";   // relative path: docs/ → repo root → picks_*.csv
+
+function gradeClass(g) {
+  if (g === "A")   return "grade-A";
+  if (g === "A-")  return "grade-A-";
+  if (g === "B+")  return "grade-Bp";
+  if (g === "B")   return "grade-B";
+  if (g === "B-")  return "grade-Bm";
+  if (g === "C")   return "grade-C";
+  if (g === "D")   return "grade-D";
+  return "";
+}
+
+function parseCSV(text) {
+  // Lightweight CSV parser — handles quoted commas
+  const rows = [];
+  let row = [], cell = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      if (inQuotes && text[i + 1] === '"') { cell += '"'; i++; }
+      else inQuotes = !inQuotes;
+    } else if (c === "," && !inQuotes) {
+      row.push(cell); cell = "";
+    } else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (cell !== "" || row.length > 0) { row.push(cell); rows.push(row); }
+      row = []; cell = "";
+      if (c === "\r" && text[i + 1] === "\n") i++;
+    } else cell += c;
+  }
+  if (cell !== "" || row.length > 0) { row.push(cell); rows.push(row); }
+  if (rows.length === 0) return [];
+  const headers = rows.shift();
+  return rows.filter(r => r.length === headers.length).map(r => {
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = r[i]);
+    return obj;
+  });
+}
+
+function pct(v) {
+  const f = parseFloat(v);
+  return isNaN(f) ? "—" : (f * 100).toFixed(1) + "%";
+}
+
+function renderSlate(rows) {
+  if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
+
+  let html = `<div class="card">
+    <h2>Slate (${rows.length} games)</h2>
+    <table>
+      <thead><tr>
+        <th>Matchup</th><th>Pick</th><th>F5</th><th>Full</th>
+        <th>Fair</th><th>Edge</th><th>Tier</th><th>Grade</th>
+        <th>Reasons</th>
+      </tr></thead><tbody>`;
+  for (const r of rows) {
+    const grade = (r.grade || "").trim();
+    html += `<tr>
+      <td><strong>${r.matchup || "—"}</strong></td>
+      <td>${r.pick || "—"}</td>
+      <td>${pct(r.f5_prob)}</td>
+      <td>${pct(r.full_prob || r.p_model)}</td>
+      <td>${pct(r.fair_prob)}</td>
+      <td>${r.edge_pp || "—"}</td>
+      <td>${r.tier || "—"}</td>
+      <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
+      <td class="why">${(r.grade_reasons || r.signals || "").replace(/\|/g, " · ")}</td>
+    </tr>`;
+  }
+  html += "</tbody></table></div>";
+  return html;
+}
+
+function renderParlay(text) {
+  if (!text) return "";
+  return `<div class="card"><h2>Parlay report</h2><pre>${
+    text.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+  }</pre></div>`;
+}
+
+async function loadSlate(date) {
+  const status = document.getElementById("status");
+  status.textContent = "Loading…";
+  try {
+    const csvUrl   = `${REPO_RAW_BASE}picks_${date}_diag.csv`;
+    const parlayUrl = `${REPO_RAW_BASE}parlay_${date}.txt`;
+
+    const [csvR, txtR] = await Promise.allSettled([
+      fetch(csvUrl).then(r => r.ok ? r.text() : Promise.reject(r.status)),
+      fetch(parlayUrl).then(r => r.ok ? r.text() : Promise.reject(r.status)),
+    ]);
+
+    const slateHtml = csvR.status === "fulfilled"
+      ? renderSlate(parseCSV(csvR.value))
+      : `<div class="empty">No slate file found at <code>picks_${date}_diag.csv</code></div>`;
+
+    const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
+
+    document.getElementById("slate").innerHTML = slateHtml;
+    document.getElementById("parlay").innerHTML = parlayHtml;
+    status.textContent = csvR.status === "fulfilled" ? `Loaded ${date}` : "";
+  } catch (e) {
+    status.textContent = "Load failed: " + e;
+  }
+}
+
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().split("T")[0];
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const picker = document.getElementById("datePicker");
+  picker.value = todayISO();
+  document.getElementById("loadBtn").addEventListener("click", () => {
+    loadSlate(picker.value);
+  });
+  // Auto-load today on first visit
+  loadSlate(picker.value);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+{
+  "version": "v1",
+  "trained_at": "2026-05-02T08:22:27.913441+00:00",
+  "train_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "validate_year": 2025,
+  "categories": {
+    "pitch_type": [
+      "CH",
+      "CU",
+      "FC",
+      "FF",
+      "FS",
+      "KC",
+      "SI",
+      "SL",
+      "ST",
+      "SV"
+    ],
+    "p_throws": [
+      "L",
+      "R"
+    ],
+    "stand": [
+      "L",
+      "R"
+    ]
+  },
+  "stuff_plus": {
+    "mean": -0.00045972035150043666,
+    "sd": 0.02583577297627926,
+    "center": 100,
+    "scale": 10,
+    "r2_train": 0.02686154842376709,
+    "r2_val": 0.013988971710205078,
+    "best_iteration": 633,
+    "features": [
+      "release_speed",
+      "release_pos_x",
+      "release_pos_y",
+      "release_pos_z",
+      "release_extension",
+      "release_spin_rate",
+      "spin_axis",
+      "pfx_x",
+      "pfx_z",
+      "vx0",
+      "vy0",
+      "vz0",
+      "ax",
+      "ay",
+      "az",
+      "pitch_type",
+      "p_throws",
+      "stand"
+    ]
+  },
+  "location_plus": {
+    "mean": -0.00045275824959389865,
+    "sd": 0.04620052129030228,
+    "center": 100,
+    "scale": 10,
+    "r2_train": 0.06456995010375977,
+    "r2_val": 0.04608476161956787,
+    "best_iteration": 1499,
+    "features": [
+      "plate_x",
+      "plate_z",
+      "balls",
+      "strikes",
+      "sz_top",
+      "sz_bot",
+      "p_throws",
+      "stand",
+      "pitch_type"
+    ]
+  }
+}

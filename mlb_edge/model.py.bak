@@ -1,0 +1,263 @@
+"""
+model.py
+--------
+Two-stage gradient-boosted model.
+
+Stage 1 (F5 model):
+    Inputs  : ONLY starting-pitcher gap features.
+    Target  : home team leads after 5 innings (binary).
+    Rationale: Lock in the SP signal before bullpen/offense variables have a
+               chance to dilute it in Stage 2's feature space.
+
+Stage 2 (Full game model):
+    Inputs  : Stage 1 predicted probability + offense + bullpen + context.
+    Target  : home team wins the game (binary).
+    Rationale: Stage 1's output is a strong anchor feature. Because it is
+               derived purely from SP data, Stage 2 cannot "unlearn" the SP
+               effect even if it overfits to a noisy offensive stat.
+
+Monotonic constraints enforce that, e.g., a bigger SP xERA gap in our favor
+cannot decrease our predicted win probability. This is a formal guardrail
+against overfitting-driven nonsense splits.
+"""
+from __future__ import annotations
+
+import logging
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+import joblib
+import numpy as np
+import pandas as pd
+
+import xgboost as xgb
+from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
+from sklearn.model_selection import TimeSeriesSplit
+
+from .config import (
+    EARLY_STOPPING_ROUNDS,
+    F5_MONOTONE,
+    FULL_MONOTONE,
+    XGB_PARAMS_F5,
+    XGB_PARAMS_FULL,
+)
+
+log = logging.getLogger(__name__)
+
+
+F5_FEATURES: List[str] = [
+    "sp_xera_gap", "sp_xwoba_allowed_gap", "sp_fip_gap", "sp_siera_gap",
+    "sp_k_bb_pct_gap", "sp_recent_form_gap", "sp_hardhit_gap", "sp_stamina_gap",
+    # Tier-1 enrichments (rest days, velocity drop, handedness matchup).
+    # Populated when the caller passes a Statcast frame into
+    # build_game_row / _build_game_row. `train_stage1_f5` and
+    # `_oof_f5_predictions` below filter this list to columns that actually
+    # exist, so older cached parquets without these columns still train
+    # cleanly — they just fall back to the original 8-feature SP model.
+    "sp_rest_gap", "sp_velo_drop_gap", "sp_vs_lineup_gap",
+]
+
+FULL_FEATURES_EXTRA: List[str] = [
+    "f5_model_output",
+    "team_wrcplus_gap", "team_woba_gap", "team_bbk_gap", "team_hardhit_gap",
+    "bullpen_siera_gap", "bullpen_fatigue_gap",
+    "park_runs_factor", "park_hr_factor",
+    "home_ump_boost", "away_ump_boost",
+    "home_catcher_penalty", "away_catcher_penalty",
+    "home_sp_luck", "away_sp_luck",
+    "is_divisional", "tz_diff", "is_opener", "is_quick_turnaround",
+]
+
+
+# ---------------------------------------------------------------------------
+# Utilities
+# ---------------------------------------------------------------------------
+def _monotone_tuple(features: List[str], mono_map: Dict[str, int]) -> str:
+    """XGBoost expects a parenthesized string like '(1,1,0,-1,0,...)'."""
+    return "(" + ",".join(str(mono_map.get(f, 0)) for f in features) + ")"
+
+
+def _xy_split(df: pd.DataFrame, feature_cols: List[str],
+              target_col: str) -> Tuple[pd.DataFrame, pd.Series]:
+    X = df[feature_cols].copy()
+    y = df[target_col].astype(int)
+    # XGBoost handles NaNs natively via default direction learning.
+    return X, y
+
+
+# ---------------------------------------------------------------------------
+# Trainers
+# ---------------------------------------------------------------------------
+@dataclass
+class TrainedModel:
+    booster: xgb.XGBClassifier
+    feature_cols: List[str]
+    metadata: Dict
+
+
+def train_stage1_f5(train: pd.DataFrame,
+                    valid: Optional[pd.DataFrame] = None) -> TrainedModel:
+    """
+    Fit the F5 model. Target column must be `home_f5_win` (home team leads
+    after 5 innings, including ties broken in favor of home or dropped).
+    """
+    feats = [c for c in F5_FEATURES if c in train.columns]
+    if len(feats) < 3:
+        raise ValueError(f"Too few SP features available; have {feats}")
+
+    params = {**XGB_PARAMS_F5, "monotone_constraints": _monotone_tuple(feats, F5_MONOTONE)}
+
+    X_tr, y_tr = _xy_split(train, feats, "home_f5_win")
+    eval_set = None
+    if valid is not None and not valid.empty:
+        X_va, y_va = _xy_split(valid, feats, "home_f5_win")
+        eval_set = [(X_va, y_va)]
+        # Early stopping only makes sense with an eval_set; otherwise XGBoost
+        # raises in 3.x.
+        params["early_stopping_rounds"] = EARLY_STOPPING_ROUNDS
+
+    model = xgb.XGBClassifier(**params)
+    model.fit(X_tr, y_tr, eval_set=eval_set, verbose=False)
+    meta = {
+        "n_train": len(X_tr),
+        "n_valid": 0 if valid is None else len(valid),
+        "train_auc": roc_auc_score(y_tr, model.predict_proba(X_tr)[:, 1]),
+    }
+    if eval_set:
+        meta["valid_auc"] = roc_auc_score(y_va, model.predict_proba(X_va)[:, 1])
+        meta["valid_logloss"] = log_loss(y_va, model.predict_proba(X_va)[:, 1])
+    return TrainedModel(model, feats, meta)
+
+
+def _oof_f5_predictions(train: pd.DataFrame, n_inner_splits: int = 4) -> np.ndarray:
+    """
+    Generate out-of-fold Stage 1 predictions for the training frame.
+
+    The inner split is time-series so the Stage 1 used to score row i has only
+    seen games strictly earlier than i. This avoids the in-sample leakage that
+    arises from using a Stage 1 fitted on all `train` rows to score those same
+    rows before Stage 2 training — which lets Stage 2 lean on a feature that
+    is artificially well-calibrated on its own training targets.
+
+    Rows that fall in the first inner-fold training window (never seen as a
+    validation row) get NaN and should be dropped by the caller before fit.
+    """
+    train_sorted = train.sort_values("game_date").reset_index(drop=True)
+    feats = [c for c in F5_FEATURES if c in train_sorted.columns]
+    oof = np.full(len(train_sorted), np.nan)
+    tscv = TimeSeriesSplit(n_splits=n_inner_splits)
+    for tr_idx, va_idx in tscv.split(train_sorted):
+        inner = train_stage1_f5(train_sorted.iloc[tr_idx])
+        oof[va_idx] = inner.booster.predict_proba(
+            train_sorted.iloc[va_idx][feats].values
+        )[:, 1]
+    train_sorted["f5_model_output"] = oof
+    return train_sorted
+
+
+def train_stage2_full(train: pd.DataFrame,
+                      stage1: TrainedModel,
+                      valid: Optional[pd.DataFrame] = None) -> TrainedModel:
+    """
+    Fit the full-game model.
+
+    For training: `f5_model_output` is computed via an inner TimeSeriesSplit
+    so each row's Stage 1 score comes from a model that has NOT seen that row.
+    Using the in-sample Stage 1 predictions here was the old path and leaks —
+    Stage 2's dominant feature ends up artificially calibrated on its own
+    training labels, inflating fit quality and over-concentrating bets.
+
+    For validation + inference: the main `stage1` model is used directly,
+    which matches what `predict()` will do at live-scoring time.
+    """
+    train_oof = _oof_f5_predictions(train)
+    # Drop rows from the earliest inner-fold where no OOF score exists.
+    train_oof = train_oof.dropna(subset=["f5_model_output"]).reset_index(drop=True)
+
+    if valid is not None and not valid.empty:
+        valid = valid.copy()
+        valid["f5_model_output"] = stage1.booster.predict_proba(
+            valid[stage1.feature_cols].values
+        )[:, 1]
+
+    feats = [c for c in FULL_FEATURES_EXTRA if c in train_oof.columns]
+    params = {**XGB_PARAMS_FULL, "monotone_constraints": _monotone_tuple(feats, FULL_MONOTONE)}
+
+    X_tr, y_tr = _xy_split(train_oof, feats, "home_win")
+    eval_set = None
+    if valid is not None and not valid.empty:
+        X_va, y_va = _xy_split(valid, feats, "home_win")
+        eval_set = [(X_va, y_va)]
+        params["early_stopping_rounds"] = EARLY_STOPPING_ROUNDS
+
+    model = xgb.XGBClassifier(**params)
+    model.fit(X_tr, y_tr, eval_set=eval_set, verbose=False)
+    meta = {
+        "n_train": len(X_tr),
+        "n_valid": 0 if valid is None else len(valid),
+        "train_auc": roc_auc_score(y_tr, model.predict_proba(X_tr)[:, 1]),
+    }
+    if eval_set:
+        meta["valid_auc"] = roc_auc_score(y_va, model.predict_proba(X_va)[:, 1])
+        meta["valid_brier"] = brier_score_loss(y_va, model.predict_proba(X_va)[:, 1])
+        meta["valid_logloss"] = log_loss(y_va, model.predict_proba(X_va)[:, 1])
+    return TrainedModel(model, feats, meta)
+
+
+# ---------------------------------------------------------------------------
+# Inference
+# ---------------------------------------------------------------------------
+def predict(stage1: TrainedModel, stage2: TrainedModel,
+            games: pd.DataFrame) -> pd.DataFrame:
+    """Return home-team win probabilities (+ F5 probability) for a slate."""
+    out = games.copy()
+    out["f5_prob"] = stage1.booster.predict_proba(
+        games[stage1.feature_cols].values
+    )[:, 1]
+    enriched = out.copy()
+    enriched["f5_model_output"] = out["f5_prob"]
+    out["model_prob"] = stage2.booster.predict_proba(
+        enriched[stage2.feature_cols].values
+    )[:, 1]
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Time-series CV wrapper
+# ---------------------------------------------------------------------------
+def time_series_cv(df: pd.DataFrame, n_splits: int = 5) -> List[Tuple[pd.DataFrame, pd.DataFrame]]:
+    """
+    Split by `game_date` so the validation set is always future-dated relative
+    to training. Essential for a sports model: random CV leaks information.
+    """
+    df = df.sort_values("game_date").reset_index(drop=True)
+    tscv = TimeSeriesSplit(n_splits=n_splits)
+    out = []
+    for tr_idx, va_idx in tscv.split(df):
+        out.append((df.iloc[tr_idx].reset_index(drop=True),
+                    df.iloc[va_idx].reset_index(drop=True)))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Persistence
+# ---------------------------------------------------------------------------
+def save(stage1: TrainedModel, stage2: TrainedModel, path: str) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    joblib.dump({"stage1": stage1, "stage2": stage2}, path)
+
+
+def load(path: str) -> Tuple[TrainedModel, TrainedModel]:
+    bundle = joblib.load(path)
+    return bundle["stage1"], bundle["stage2"]
+
+
+# ---------------------------------------------------------------------------
+# Feature importance helpers
+# ---------------------------------------------------------------------------
+def importance_table(model: TrainedModel, kind: str = "gain") -> pd.DataFrame:
+    """Pretty feature-importance table ordered descending."""
+    raw = model.booster.get_booster().get_score(importance_type=kind)
+    rows = [{"feature": f, "importance": raw.get(f, 0.0)} for f in model.feature_cols]
+    return pd.DataFrame(rows).sort_values("importance", ascending=False).reset_index(drop=True)

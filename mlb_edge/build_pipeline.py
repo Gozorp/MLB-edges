@@ -1,0 +1,868 @@
+"""
+build_pipeline.py
+-----------------
+The glue that turns raw Statcast + odds + weather into a model-ready frame.
+
+Three entry points:
+  - build_historical_frame(season, through=None)
+        Returns DataFrame ready for model training / backtesting.
+  - build_slate_frame(day)
+        Returns DataFrame of today's games for live prediction.
+  - build_odds_frame(season, through=None)
+        Returns historical odds long-format frame for backtest simulation.
+"""
+from __future__ import annotations
+
+import logging
+from datetime import date, datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Optional
+
+import numpy as np
+import pandas as pd
+
+from . import catcher_framing as cf
+from . import data_ingestion as di
+from . import point_in_time as pit
+from . import weather as wx
+from . import stadiums as stadiums_mod
+from .stadiums import (DIVISIONS, STADIUMS, TEAM_ALIASES, get_stadium,
+                       is_divisional, normalize_team, roof_type,
+                       tz_offset_hours)
+from .config import TEMP_BASELINE_F, CARRY_FT_PER_10F
+
+log = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Game-level aggregation from raw Statcast
+# ---------------------------------------------------------------------------
+def _game_outcomes(statcast_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    One row per game_pk with final score + F5 score.
+    """
+    if statcast_df.empty:
+        return pd.DataFrame()
+
+    # Final scores from last pitch of the game
+    fin = statcast_df.sort_values(["game_pk", "inning", "at_bat_number", "pitch_number"])
+    finals = fin.groupby("game_pk").tail(1)[
+        ["game_pk", "game_date", "home_team", "away_team",
+         "post_home_score", "post_away_score"]
+    ].rename(columns={"post_home_score": "home_score",
+                      "post_away_score": "away_score"})
+
+    # F5 score = max bat_score + fld_score in innings 1-5
+    f5 = statcast_df[statcast_df["inning"] <= 5].copy()
+    if not f5.empty:
+        # Score accumulates in post_*_score columns; take max per game
+        f5_agg = f5.groupby("game_pk").agg(
+            home_f5_score=("post_home_score", "max"),
+            away_f5_score=("post_away_score", "max"),
+        ).reset_index()
+        finals = finals.merge(f5_agg, on="game_pk", how="left")
+    else:
+        finals["home_f5_score"] = np.nan
+        finals["away_f5_score"] = np.nan
+
+    finals["home_win"] = (finals["home_score"] > finals["away_score"]).astype(int)
+
+    # F5 label: nullable. Ties-at-5 are pushes (refund), not away-wins, so they
+    # must not train the model with a fake 0. Missing F5 scores (rain-shortened
+    # games, upstream data gaps) are likewise NaN so downstream `dropna` can
+    # strip them before training or bet simulation.
+    h5 = finals["home_f5_score"]
+    a5 = finals["away_f5_score"]
+    both = h5.notna() & a5.notna()
+    home_lead = h5 > a5
+    away_lead = h5 < a5
+    finals["home_f5_win"] = np.where(
+        ~both, np.nan,
+        np.where(home_lead, 1.0, np.where(away_lead, 0.0, np.nan)),
+    )
+    finals["game_date"] = pd.to_datetime(finals["game_date"])
+
+    return finals
+
+
+# ---------------------------------------------------------------------------
+# Historical frame (training + backtesting)
+# ---------------------------------------------------------------------------
+def build_historical_frame(season: int,
+                           through: Optional[date] = None,
+                           include_weather: bool = True,
+                           use_cache: bool = True) -> pd.DataFrame:
+    """
+    Build a complete per-game feature frame for `season`.
+
+    Features are cached to disk keyed by (season, through, include_weather).
+    A re-run with the same parameters loads the cached frame in ~1 second
+    instead of rebuilding it (which takes 5-10 min per season).
+
+    Delete files under ./data/feature_cache/ to force a rebuild.
+    """
+    # -----------------------------------------------------------------
+    # Cache check
+    # -----------------------------------------------------------------
+    cache_dir = Path("./data/feature_cache")
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    # Cache key version: bump whenever _build_game_row's output schema or
+    # the underlying feature values change meaning.
+    #   v2: added Tier-1 pitcher enrichments (rest/velo_drop/vs_lineup).
+    #   v3: early-season shrinkage of team offense + bullpen rate stats in
+    #       point_in_time. Column schema unchanged, but the numeric values
+    #       differ in the first ~6 weeks of each season, so old caches must
+    #       not be reused. Older caches stay on disk under their v2 filename.
+    #   v4: home/away_catcher_penalty replaced with real CSAE (called-strike-
+    #       above-expected, pp) via catcher_framing.catcher_framing_as_of.
+    #       Previously hardcoded to 1.0, so the model silently trained a
+    #       dead feature. Column schema unchanged but numeric values differ.
+    #   v5: per-hitter, lineup-aware offense via mlb_edge.lineup. Adds columns
+    #       home_lineup_xwoba, away_lineup_xwoba, home_lineup_wrc_plus,
+    #       away_lineup_wrc_plus, lineup_vs_sp_gap, lineup_wrcplus_gap,
+    #       lineup_hardhit_gap, plus per-side diagnostic counters
+    #       (lineup_n_vs_hand etc.). Feeds Stage 2 alongside the existing
+    #       team aggregates — see model.FULL_FEATURES_EXTRA.
+    #   v6: Savant bat-tracking gaps (team_bat_speed_gap,
+    #       team_squared_up_swing_gap, team_blast_swing_gap,
+    #       team_batter_run_value_gap, team_whiff_rate_gap). Loaded from daily
+    #       CSV snapshots in ./data/savant_bat_tracking/ via
+    #       data_sources.savant_bat_tracking. Zero-filled for dates without a
+    #       snapshot (pre-2025 backtests) so the schema is stable while
+    #       post-snapshot games get real signal.
+    #   v7: Baseball-Reference team-form gaps (team_win_pct_gap,
+    #       team_run_diff_pg_gap, team_pythagorean_gap). Loaded from daily
+    #       standings CSV snapshots in ./data/bref/standings/ via
+    #       data_sources.bref. Zero-filled when no snapshot exists on/before
+    #       `game_date` — same stability guarantee as v6.
+    #   v8: Starter-pitcher sample-size telemetry. Adds home_sp_n_pitches,
+    #       away_sp_n_pitches, and sp_sample_reliability so the booster can
+    #       attenuate predictions when one or both starters have thin samples
+    #       (e.g. returning-from-injury pitchers like Woodruff in 2026). The
+    #       conviction filter also uses the n_pitches columns directly to
+    #       gate F4 luck signals.
+    #   v9: Comprehensive feature expansion (2026-04-24). Adds:
+    #         - Defense: team_oaa_gap, team_frp_gap, team_frv_gap (Savant
+    #           OAA + Fielding Run Value, season-fallback for historical).
+    #         - Weather: humidity_pct, precip_prob, wind_dir_park (degrees),
+    #           home_roof_type (0/1/2).
+    #         - Schedule context: is_day_game, dow_sin, dow_cos.
+    #         - SP wear: sp_ttop3_penalty_gap (xwOBA difference between
+    #           1st and 3rd time through the order, computed inside
+    #           pitcher_as_of from per-game per-batter PA counts).
+    #   v10: SP small-sample shrinkage (2026-04-25). All SP rate stats
+    #         (xera, xwoba_allowed, k_bb_pct, k_pct, bb_pct, hardhit_pct,
+    #         recent_xfip, ttop3_penalty) are now blended toward a prior
+    #         using the linear weight w = min(n_pitches/1500, 1). The
+    #         prior is the pitcher's own prior-year mean if he threw
+    #         >= 800 pitches last season, else a league SP mean.
+    #         Triggered by the 2026-04-25 BOS@BAL miss, where Crochet's
+    #         small-sample 7.88 ERA produced a PLATINUM fade that lost
+    #         17-1. Stage-2 features built from these gaps now correctly
+    #         reflect that early-season Crochet ≈ his Cy Young-caliber
+    #         2025, not his first-4-starts ERA. Conviction filter F1 also
+    #         gains an n_pitches gate (sp_n_pitches_min_f1=600) so the
+    #         tier-driver firing logic respects sample size in addition
+    #         to the feature-level shrinkage.
+    # v11 (2026-04-25 evening): bullpen features now use the same two-tier
+    #    shrinkage as v10 SP — observed → team prior-year aggregate (if
+    #    sample >= 5000 pitches) → league mean. New gap features added:
+    #    bullpen_xwoba_gap, bullpen_k_pct_gap, bullpen_bb_pct_gap,
+    #    bullpen_hardhit_gap. Triggered by today's BOS@BAL 17-1 result —
+    #    BAL's bullpen surrendered 10 runs in the 9th, but the v10 model
+    #    saw bullpen_siera_gap = +0.68 (BAL "better" than BOS) because
+    #    25 team-games of April luck weren't shrunk hard enough. Same
+    #    fix pattern: prior-year anchor + larger stable point + sample
+    #    pass-throughs for a conviction filter gate (bp_n_pitches_min_f5).
+    # v12 (2026-04-26 afternoon): added high-leverage bullpen features
+    #    (hl_bullpen_xera_gap, hl_bullpen_xwoba_gap) computed from late-
+    #    inning relievers only (inning >= 7). Diagnoses the CLE @ TOR
+    #    loss where TOR's high-leverage corps (Hoffman, Rogers, Varland)
+    #    pitched 4.1 perfect innings — the team-aggregate bullpen xERA
+    #    we used in v11 was diluted by mop-up arms and missed this gap.
+    # v13 (2026-04-26 evening): added home-plate umpire effects
+    #    (ump_k_pct_delta, ump_bb_pct_delta, ump_cs_pct_delta) computed
+    #    from a per-umpire pitch-call database. Both teams face the same
+    #    umpire so these are scoring-environment features (similar to
+    #    park factor), not gap features. Built from data/umpire_effects
+    #    .parquet via scripts/build_umpire_db.py. Empty/zero when the
+    #    HP umpire isn't in our DB.
+    cache_key = f"features_{season}_{through or 'full'}_{int(include_weather)}_v13"
+    cache_path = cache_dir / f"{cache_key}.parquet"
+    targets_path = cache_dir / f"targets_{season}_v13.parquet"
+
+    if use_cache and cache_path.exists():
+        try:
+            df = pd.read_parquet(cache_path)
+            # Leakage scrub (2026-05-02): targets `home_win` and `home_f5_win`
+            # were moved out of the features parquet to a sidecar to prevent
+            # naive trainers from picking them up as features. Merge back in
+            # so downstream trainers (model.train_stage1_f5 /
+            # train_stage2_full / main.run_train) see the same shape they
+            # always have.
+            if targets_path.exists() and "home_win" not in df.columns:
+                tdf = pd.read_parquet(targets_path)
+                df = df.merge(tdf, on="game_id", how="left")
+                log.info("Merged targets sidecar from %s", targets_path)
+            log.info("Loaded cached feature frame from %s (%d games)",
+                     cache_path, len(df))
+            return df
+        except Exception as e:
+            log.warning("Feature cache corrupt (%s); rebuilding", e)
+
+    log.info("Building historical frame for season %d%s",
+             season, f" through {through}" if through else "")
+
+    # 1. Pull Statcast
+    if through:
+        sc = di.fetch_ytd_statcast(through)
+    else:
+        sc = di.fetch_season_statcast(season)
+    if sc.empty:
+        log.error("No Statcast data for season %d", season)
+        return pd.DataFrame()
+
+    # Keep only regular-season games, and only the requested season
+    sc["game_date"] = pd.to_datetime(sc["game_date"])
+    sc = sc[sc["game_date"].dt.year == season]
+    if through:
+        sc = sc[sc["game_date"].dt.date <= through]
+
+    log.info("Statcast pitches loaded: %d", len(sc))
+
+    # 1b. Multi-year Statcast for pitcher-only stats (v10). pitcher_as_of's
+    # prior-year shrinkage prior needs the previous calendar year's pitches.
+    # Loading prior season is fast — disk cache hit when the build_features
+    # for that season has already been called once. Concatenating with the
+    # current-season `sc` gives pitcher_as_of a multi-year window without
+    # affecting team/bullpen/lineup queries that legitimately want
+    # current-season-only data.
+    try:
+        sc_prior = di.fetch_season_statcast(season - 1)
+        if not sc_prior.empty:
+            sc_prior["game_date"] = pd.to_datetime(sc_prior["game_date"])
+            sc_prior = sc_prior[sc_prior["game_date"].dt.year == (season - 1)]
+            sc_pitcher = pd.concat([sc_prior, sc], ignore_index=True)
+            log.info("Multi-year SP frame: %d pitches (current=%d, prior=%d)",
+                     len(sc_pitcher), len(sc), len(sc_prior))
+        else:
+            log.info("No prior-season data; falling back to single-season SP")
+            sc_pitcher = sc
+    except Exception as e:
+        log.warning("Prior-season Statcast load failed (%s); SP uses current only", e)
+        sc_pitcher = sc
+
+    # 2. Infer starters
+    starters_by_team = pit.infer_starters_by_team(sc)
+
+    # 3. Per-game outcomes
+    outcomes = _game_outcomes(sc)
+    if outcomes.empty:
+        return pd.DataFrame()
+    log.info("Games in frame: %d", len(outcomes))
+
+    # 4. For each game, compute point-in-time features.
+    #
+    # Parallelized with joblib (added 2026-04-24): the per-game work is
+    # embarrassingly parallel — each call to _build_game_row touches the
+    # shared (read-only) Statcast frame and writes nothing back. Sequential
+    # builds across 4 cold seasons were running 4-6+ hours on this box;
+    # joblib with n_jobs=-1 across 20 cores cuts that to ~10-20 min while
+    # producing bit-identical output (modulo dict ordering which we don't
+    # depend on). Using a thread-based backend would also work since pandas
+    # releases the GIL for most filtering operations, but processes are
+    # safer here because some downstream calls (statsapi fallback) hold
+    # module-level dicts that aren't trivially threadsafe.
+    from joblib import Parallel, delayed
+
+    games = outcomes.to_dict("records")
+
+    def _process_one(g):
+        starters = pit.get_game_starters(sc, g["game_pk"])
+        if starters["home_sp"] is None or starters["away_sp"] is None:
+            return None
+        row = _build_game_row(
+            sc=sc,
+            sc_pitcher=sc_pitcher,
+            game_pk=g["game_pk"],
+            game_date=g["game_date"],
+            home_team=g["home_team"],
+            away_team=g["away_team"],
+            home_sp_id=starters["home_sp"],
+            away_sp_id=starters["away_sp"],
+            starters_by_team=starters_by_team,
+            include_weather=include_weather,
+        )
+        row["home_win"]    = g["home_win"]
+        row["home_f5_win"] = g["home_f5_win"]
+        return row
+
+    # Performance tuning. Dropped n_jobs from 14 to 8 after v12 retrain
+    # OOM-crashed (2026-04-26 13:30): 14 workers * ~2.5 GB statcast slice
+    # each = ~35 GB, exceeding the 32 GB box. 8 workers * 2.5 GB = 20 GB
+    # leaves comfortable headroom. Costs us ~25% wall-time vs 14 workers
+    # but actually finishes.
+    #
+    # FUTURE fix (deferred to mmap optimization at 09:00 tomorrow):
+    #   * joblib.dump(sc, mmap_mode='r') so workers share ONE mmap'd
+    #     frame instead of each receiving a pickled copy. Eliminates the
+    #     memory ceiling AND speeds up by 30-50%. Will let us safely
+    #     return to n_jobs=14 or higher.
+    log.info("  feature-building (parallel): %d games", len(games))
+    raw_rows = Parallel(n_jobs=8, backend="loky", batch_size=8,
+                        verbose=10)(
+        delayed(_process_one)(g) for g in games
+    )
+    rows = [r for r in raw_rows if r is not None]
+
+    if not rows:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(rows)
+    log.info("Feature frame complete: %d games, %d columns", len(df), len(df.columns))
+
+    # Save to cache for future runs. Leakage scrub (2026-05-02): targets
+    # `home_win` and `home_f5_win` are split out to a sidecar parquet so a
+    # naive trainer can't accidentally use them as features. The in-memory
+    # `df` returned to the caller still has the targets intact (merged at
+    # cache load above).
+    try:
+        targets_to_split = [c for c in ("home_win", "home_f5_win") if c in df.columns]
+        if targets_to_split:
+            sidecar = df[["game_id"] + targets_to_split].copy()
+            sidecar.to_parquet(targets_path, index=False)
+            log.info("Wrote targets sidecar to %s (%d cols)",
+                     targets_path, len(targets_to_split))
+            features_df = df.drop(columns=targets_to_split)
+        else:
+            features_df = df
+        features_df.to_parquet(cache_path, index=False)
+        log.info("Cached feature frame to %s (%d cols)", cache_path,
+                 len(features_df.columns))
+    except Exception as e:
+        log.warning("Failed to cache feature frame: %s", e)
+
+    return df
+
+
+# ---------------------------------------------------------------------------
+# Slate frame (live prediction)
+# ---------------------------------------------------------------------------
+def build_slate_frame(day: date,
+                      include_weather: bool = True) -> pd.DataFrame:
+    """
+    Build per-game features for `day`'s slate.
+
+    Pulls probable pitchers from MLB Stats API, joins against YTD Statcast
+    for point-in-time stats, fetches weather per stadium.
+    """
+    log.info("Building slate frame for %s", day)
+
+    schedule = di.fetch_schedule_mlb_api(day)
+    if not schedule:
+        log.warning("No games scheduled for %s", day)
+        return pd.DataFrame()
+
+    # Pull YTD Statcast (up to yesterday — today's games aren't in Statcast yet)
+    sc = di.fetch_ytd_statcast(day - timedelta(days=1))
+    if sc.empty:
+        log.error("No Statcast data available for YTD stats")
+        return pd.DataFrame()
+    sc["game_date"] = pd.to_datetime(sc["game_date"])
+
+    # Multi-year SP frame (v10). Prior calendar year + current YTD so
+    # pitcher_as_of's small-sample shrinkage anchors against the pitcher's
+    # own true talent. Critical for early-season slates: e.g. on 2026-04-25
+    # Crochet has 4 starts of inflated ERA but 2025 was Cy Young level.
+    try:
+        sc_prior = di.fetch_season_statcast(day.year - 1)
+        if not sc_prior.empty:
+            sc_prior["game_date"] = pd.to_datetime(sc_prior["game_date"])
+            sc_prior = sc_prior[sc_prior["game_date"].dt.year == (day.year - 1)]
+            sc_pitcher = pd.concat([sc_prior, sc], ignore_index=True)
+            log.info("Multi-year SP frame for predict: %d pitches "
+                     "(current=%d, prior=%d)",
+                     len(sc_pitcher), len(sc), len(sc_prior))
+        else:
+            sc_pitcher = sc
+    except Exception as e:
+        log.warning("Prior-season load failed (%s); predict SP uses current only", e)
+        sc_pitcher = sc
+
+    starters_by_team = pit.infer_starters_by_team(sc)
+
+    rows = []
+    for g in schedule:
+        # Skip games without probable pitchers announced yet
+        if not g.get("home_sp_id") or not g.get("away_sp_id"):
+            log.warning("Skipping game %s: probable pitcher not announced", g.get("game_pk"))
+            continue
+
+        home = normalize_team(g["home_team"])
+        away = normalize_team(g["away_team"])
+
+        row = _build_game_row(
+            sc=sc,
+            sc_pitcher=sc_pitcher,
+            game_pk=g["game_pk"],
+            game_date=pd.Timestamp(day),
+            home_team=home,
+            away_team=away,
+            home_sp_id=g["home_sp_id"],
+            away_sp_id=g["away_sp_id"],
+            starters_by_team=starters_by_team,
+            include_weather=include_weather,
+            game_time_utc=pd.to_datetime(g.get("game_date")),
+        )
+        rows.append(row)
+
+    return pd.DataFrame(rows) if rows else pd.DataFrame()
+
+
+# ---------------------------------------------------------------------------
+# Single-game row assembly — the core join
+# ---------------------------------------------------------------------------
+def _build_game_row(*, sc: pd.DataFrame, game_pk: int,
+                    game_date: pd.Timestamp,
+                    home_team: str, away_team: str,
+                    home_sp_id: int, away_sp_id: int,
+                    starters_by_team: Dict[str, set],
+                    include_weather: bool = True,
+                    game_time_utc: Optional[pd.Timestamp] = None,
+                    sc_pitcher: Optional[pd.DataFrame] = None) -> Dict:
+    """Assemble one model-ready row.
+
+    sc_pitcher: optional multi-year Statcast frame used ONLY for SP stats so
+    pitcher_as_of's prior-year shrinkage prior is accessible. If None, falls
+    back to `sc` (current-season only — pre-v10 behavior, no prior-year
+    blending available).
+    """
+    # SP point-in-time stats — use multi-year frame if provided so the
+    # `_pitcher_prior_year` lookup inside pitcher_as_of finds prior-season
+    # data and the small-sample shrinkage anchors against the pitcher's
+    # own true talent (cache v10 fix).
+    # DIAGNOSTIC 2026-04-26: v10 introduced sc_pitcher (current + prior year)
+    # to give pitcher_as_of more sample. But this BLENDED away the small-
+    # sample 2026 signal that v9 was correctly exploiting on 04-24 (12/14
+    # hit rate). For example, a HOU starter with 2025 elite + 2026 bad
+    # combined to "fine" — v9 saw the bad current year, picked NYY (won 12-4).
+    # Forcing sc_for_sp = sc reverts to v9-era current-year-only stats.
+    # If hit rate recovers, the multi-year frame was the real bug, not
+    # shrinkage. Will re-evaluate after this proves out.
+    sc_for_sp = sc
+    home_sp = pit.pitcher_as_of(sc_for_sp, home_sp_id, game_date)
+    away_sp = pit.pitcher_as_of(sc_for_sp, away_sp_id, game_date)
+
+    # Team offense point-in-time
+    home_off = pit.team_batting_as_of(sc, home_team, game_date)
+    away_off = pit.team_batting_as_of(sc, away_team, game_date)
+
+    # Bullpen aggregates (v11: pass multi-year sc_pitcher so the prior-year
+    # team aggregate has data to anchor against, mirroring the v10 SP fix)
+    home_bp  = pit.bullpen_as_of(sc_for_sp, home_team, game_date, starters_by_team)
+    away_bp  = pit.bullpen_as_of(sc_for_sp, away_team, game_date, starters_by_team)
+    home_fat = pit.bullpen_fatigue_as_of(sc, home_team, game_date, starters_by_team)
+    away_fat = pit.bullpen_fatigue_as_of(sc, away_team, game_date, starters_by_team)
+    # v12: high-leverage bullpen — late-inning relievers only (proxies the
+    # 7th/8th/9th-inning closer/setup corps). Aggregate bullpen xERA was
+    # diluted by mop-up arms, missing the differential between teams' actual
+    # late-game relief crews.
+    home_hl  = pit.high_leverage_bullpen_as_of(sc_for_sp, home_team, game_date, starters_by_team)
+    away_hl  = pit.high_leverage_bullpen_as_of(sc_for_sp, away_team, game_date, starters_by_team)
+
+    # Park
+    stadium = get_stadium(home_team)
+    park_runs = stadium["runs"] / 100.0
+    park_hr   = stadium["hr"] / 100.0
+
+    # Weather (if enabled & stadium known)
+    temp_f, wind_out = TEMP_BASELINE_F, 0.0
+    humidity, precip_prob, wind_dir_park = 50.0, 0.0, 0.0
+    if include_weather and stadium["lat"] != 0.0:
+        when = game_time_utc if game_time_utc is not None else pd.Timestamp(game_date) + pd.Timedelta(hours=19)
+        w = wx.get_weather(stadium["lat"], stadium["lon"], when.to_pydatetime())
+        temp_f = w["temp_f"]
+        wind_out = wx.wind_out_to_cf_mph(w["wind_mph"], w["wind_deg"], 0.0)
+        humidity = w.get("humidity", 50.0)
+        precip_prob = w.get("precip_prob", 0.0)
+        # Park-relative wind direction in degrees (0 = blowing straight out
+        # to CF). With orientation=0 fallback this is the raw compass bearing,
+        # which the model can still use as an azimuthal feature.
+        wind_dir_park = float(w.get("wind_deg", 0.0))
+
+    # Weather carry adjustment to HR factor
+    temp_bump = CARRY_FT_PER_10F * (temp_f - TEMP_BASELINE_F) / 10.0
+    wind_bump = max(wind_out, 0.0) * 1.0
+    park_hr_adj = park_hr * (1.0 + 0.004 * (temp_bump + wind_bump))
+
+    # Context
+    divisional = is_divisional(home_team, away_team)
+    tz_diff = tz_offset_hours(away_team, home_team)  # travel cost for away team
+
+    # Schedule features. is_day_game is heuristic when only the date is known
+    # (training): we look at the historical game's first-pitch local hour from
+    # the Statcast frame's earliest pitch timestamp; if absent, default to 0.
+    # dow_sin / dow_cos encode day-of-week cyclically so the model learns any
+    # weekend / weekday tilt without ordinal artifacts.
+    if game_time_utc is not None:
+        # Live: convert UTC time to home-park local hour
+        try:
+            local_hour = (pd.Timestamp(game_time_utc).tz_convert(stadium["tz"])
+                          .hour if pd.Timestamp(game_time_utc).tzinfo
+                          else pd.Timestamp(game_time_utc).hour)
+        except Exception:
+            local_hour = 19
+        is_day_game = int(local_hour < 17)
+    else:
+        # Backtest fallback: peek at the earliest pitch's `game_date` —
+        # Statcast's `game_date` is a calendar date only, so we infer
+        # day/night from the Stats API later if needed. For now flag as
+        # night (the modal MLB game) so training isn't biased.
+        is_day_game = 0
+    dow = pd.Timestamp(game_date).weekday()
+    dow_sin = float(np.sin(2 * np.pi * dow / 7.0))
+    dow_cos = float(np.cos(2 * np.pi * dow / 7.0))
+
+    # Roof type (0 open / 1 retractable / 2 fixed dome). Lets the model learn
+    # to discount weather features in domes where outdoor wind/rain are moot.
+    home_roof = roof_type(home_team)
+
+    # Tier-1 pitcher enrichments (rest days, velocity drop, handedness
+    # matchup). All three return np.nan when data is thin, so the model
+    # handles them via default-direction learning. Local import to keep
+    # the module's import graph flat (pitcher_enrichments has no deps
+    # back onto build_pipeline).
+    from . import pitcher_enrichments as penr
+    enrich = penr.build_pitcher_enrichments(
+        statcast=sc,
+        home_sp_id=home_sp_id,
+        away_sp_id=away_sp_id,
+        home_team_abbr=home_team,
+        away_team_abbr=away_team,
+        game_date=pd.Timestamp(game_date).date(),
+    )
+
+    # Catcher framing — identify the starting catcher for each side from the
+    # first pitch of each half of inning 1, then look up their CSAE as of the
+    # game date. Defaults to 0.0 (league-average) when ID can't be recovered
+    # or when the Statcast frame lacks fielder_2 / zone / description columns.
+    catchers = cf.get_game_catchers(sc, game_pk)
+    home_framing = cf.catcher_framing_as_of(
+        sc, catchers.get("home_catcher"), pd.Timestamp(game_date))
+    away_framing = cf.catcher_framing_as_of(
+        sc, catchers.get("away_catcher"), pd.Timestamp(game_date))
+
+    # Lineup-aware offense: batting-order-weighted per-hitter xwOBA / wRC+
+    # vs. the opposing SP's handedness. Complements the team-level aggregates
+    # (team_wrcplus_gap, team_woba_gap, etc.) by reflecting (a) which 9 guys
+    # are actually starting and (b) the L/R-split matchup for each slot. Uses
+    # a cascade inside lineup_aggregate: hand-split YTD -> overall YTD ->
+    # hitter_fallback (prior season) -> team aggregate. Returns a dict of
+    # `lineup_vs_sp_gap`, `lineup_wrcplus_gap`, `lineup_hardhit_gap`, plus
+    # per-side levels and per-lineup diagnostic counters for audit. All are
+    # NaN-safe (the model handles missingness via default direction).
+    from . import lineup as lu
+    home_sp_throws = lu.sp_throws_from_sc(sc, home_sp_id)
+    away_sp_throws = lu.sp_throws_from_sc(sc, away_sp_id)
+    lineup_feats = lu.build_lineup_features(
+        statcast_df=sc,
+        game_pk=game_pk,
+        game_date=pd.Timestamp(game_date),
+        home_team=home_team, away_team=away_team,
+        home_sp_throws=home_sp_throws,
+        away_sp_throws=away_sp_throws,
+        home_team_fallback=home_off,
+        away_team_fallback=away_off,
+    )
+
+    # Build gap features from perspective of HOME team
+    # (positive gap = home advantage)
+    def inv(a, b, k): return (b.get(k) or np.nan) - (a.get(k) or np.nan)
+    def fwd(a, b, k): return (a.get(k) or np.nan) - (b.get(k) or np.nan)
+
+    base = {
+        "game_id":   game_pk,
+        "game_date": pd.Timestamp(game_date),
+        "home_team": home_team,
+        "away_team": away_team,
+        # --- Stage 1 features: SP gaps ---
+        "sp_xera_gap":           inv(home_sp, away_sp, "sp_xera"),
+        "sp_xwoba_allowed_gap":  inv(home_sp, away_sp, "sp_xwoba_allowed"),
+        "sp_k_bb_pct_gap":       fwd(home_sp, away_sp, "sp_k_bb_pct"),
+        "sp_siera_gap":          inv(home_sp, away_sp, "sp_siera"),
+        "sp_fip_gap":            inv(home_sp, away_sp, "sp_fip"),
+        "sp_recent_form_gap":    inv(home_sp, away_sp, "sp_recent_xfip"),
+        "sp_hardhit_gap":        inv(home_sp, away_sp, "sp_hardhit_pct_allowed"),
+        "sp_stamina_gap":        fwd(home_sp, away_sp, "sp_ip_per_start"),
+        # Tier-1 enrichments (rest days, velo drop, handedness matchup).
+        # NaN when the underlying Statcast window is thin.
+        "sp_rest_gap":           enrich.get("sp_rest_gap", np.nan),
+        "sp_velo_drop_gap":      enrich.get("sp_velo_drop_gap", np.nan),
+        "sp_vs_lineup_gap":      enrich.get("sp_vs_lineup_gap", np.nan),
+        # --- Stage 2 features: team offense + bullpen ---
+        "team_wrcplus_gap":      fwd(home_off, away_off, "team_wrc_plus"),
+        "team_woba_gap":         fwd(home_off, away_off, "team_xwoba"),
+        "team_bbk_gap":          (fwd(home_off, away_off, "team_bb_pct")
+                                  - fwd(home_off, away_off, "team_k_pct")),
+        "team_hardhit_gap":      fwd(home_off, away_off, "team_hardhit_pct"),
+        "bullpen_siera_gap":     inv(home_bp, away_bp, "bullpen_xera"),
+        "bullpen_fatigue_gap":   home_fat - away_fat,
+        # v11: additional bullpen rate gap features. K%/BB% stabilize faster
+        # than xERA, so they complement the siera_gap signal — particularly
+        # valuable in April when xERA samples are noisy. Sign convention
+        # matches `inv()` for "bad" stats (BB%, hardhit%) and `fwd()` for
+        # "good" stats (K%) so positive = home advantage uniformly.
+        "bullpen_xwoba_gap":     inv(home_bp, away_bp, "bullpen_xwoba"),
+        "bullpen_k_pct_gap":     fwd(home_bp, away_bp, "bullpen_k_pct"),
+        "bullpen_bb_pct_gap":    inv(home_bp, away_bp, "bullpen_bb_pct"),
+        "bullpen_hardhit_gap":   inv(home_bp, away_bp, "bullpen_hardhit_pct"),
+        # Sample-size telemetry — used by conviction filter to suppress
+        # bullpen-driven Stage-2 disagreement on small April samples.
+        "home_bullpen_n_pitches": float(home_bp.get("bullpen_n_pitches") or 0.0),
+        "away_bullpen_n_pitches": float(away_bp.get("bullpen_n_pitches") or 0.0),
+        # v12: High-leverage bullpen gaps (late-inning closer/setup corps).
+        # Captures the actual game-deciding relief talent that the team-
+        # aggregate bullpen feature dilutes with mop-up arms. Triggered by
+        # the 2026-04-26 CLE @ TOR loss — TOR's HL pen (Hoffman, Rogers,
+        # Varland) was elite even though their team-bullpen xERA looked
+        # mediocre.
+        "hl_bullpen_xera_gap":   inv(home_hl, away_hl, "hl_bullpen_xera"),
+        "hl_bullpen_xwoba_gap":  inv(home_hl, away_hl, "hl_bullpen_xwoba"),
+        "home_hl_bullpen_n_pitches": float(home_hl.get("hl_bullpen_n_pitches") or 0.0),
+        "away_hl_bullpen_n_pitches": float(away_hl.get("hl_bullpen_n_pitches") or 0.0),
+        "park_runs_factor":      park_runs,
+        "park_hr_factor":        park_hr_adj,
+        # -----------------------------------------------------------------
+        # TODO(umpire-boost): currently a dead feature pinned at 1.0.
+        # -----------------------------------------------------------------
+        # Implementation plan once we're ready to wire this up:
+        #   1. New module `umpires.py`. Fetch /boxscore/{gamePk} from the
+        #      MLB Stats API (statsapi.mlb.com) and parse officials[role==
+        #      'Home Plate']. Cache results by game_pk.
+        #      Cost: ~7500 games/season × ~0.3 s/call = ~40 min per season,
+        #      one-time per cache. Resume-safe via per-game .json files.
+        #   2. Per-umpire K% / BB% deltas from the same SHADOW-zone called-
+        #      strike framework used for catchers (see catcher_framing.py).
+        #      Pitcher-friendly umps -> home_ump_boost > 1; hitter-friendly
+        #      umps -> home_ump_boost < 1. Symmetric for away side is a
+        #      single value since both pitchers face the same ump, so this
+        #      feature pair is really one signal doubled — keep both for
+        #      column-schema stability but expect the model to correlate
+        #      home_ump_boost ~ away_ump_boost strongly.
+        #   3. Bump cache key v4 -> v5, add to run_v8_pipeline.bat.
+        # Kept at 1.0 until the boxscore fetch lands. Model treats this as a
+        # constant, effectively ignoring it (splits are degenerate).
+        "home_ump_boost":        1.0,
+        "away_ump_boost":        1.0,
+        # v13 umpire effects (added 2026-04-26). HP umpire's per-pitch
+        # tendencies vs league average — K%/BB% deltas drive run scoring,
+        # called-strike rate drives whiff rate. Both teams face the same
+        # umpire so the gap is structurally zero — these are AMBIENT
+        # features that nudge scoring environment up/down (parallel to
+        # park factor). Filled with 0.0 when umpire isn't in our DB.
+        "ump_k_pct_delta":       pit.umpire_effects_for_game(game_pk).get("ump_k_pct_delta", 0.0),
+        "ump_bb_pct_delta":      pit.umpire_effects_for_game(game_pk).get("ump_bb_pct_delta", 0.0),
+        "ump_cs_pct_delta":      pit.umpire_effects_for_game(game_pk).get("ump_cs_pct_delta", 0.0),
+        # Catcher framing (CSAE, percentage points above league-average
+        # called-strike rate in the shadow zone). Positive = pitcher-friendly
+        # framer. Previously hardcoded to 1.0 (dead feature); now live as of
+        # cache v4. Shrunk toward 0.0 at small sample sizes. Returns 0.0
+        # (league-average) when catcher ID can't be identified or when the
+        # Statcast frame is missing required columns.
+        "home_catcher_penalty":  home_framing,
+        "away_catcher_penalty":  away_framing,
+        "home_sp_luck":          home_sp.get("sp_era_xera_gap", np.nan),
+        "away_sp_luck":          away_sp.get("sp_era_xera_gap", np.nan),
+        # Starter-pitcher sample-size telemetry (cache v8). Driven by the
+        # 2026-04-24 MIL-vs-Skenes blow-up: Woodruff was returning from injury
+        # with ~64 IP and the conviction filter still let an F4 luck signal
+        # qualify the pick as GOLD. Two layers of mitigation now sit on this:
+        #   1. Conviction filter F4 sample-size gate uses
+        #      home_sp_n_pitches / away_sp_n_pitches directly (see
+        #      edge_calculator.score_conviction).
+        #   2. The booster trains on `sp_sample_reliability` — a [0, 1]
+        #      reliability index across BOTH starters — so it can attenuate
+        #      probabilities when one starter has a thin season-to-date sample
+        #      and the other does not. Bounded to [0, 1] so the model treats
+        #      "fully reliable" as 1.0 regardless of which pitcher had the
+        #      higher pitch count.
+        "home_sp_n_pitches":     float(home_sp.get("sp_n_pitches") or 0.0),
+        "away_sp_n_pitches":     float(away_sp.get("sp_n_pitches") or 0.0),
+        "sp_sample_reliability": min(
+            min(float(home_sp.get("sp_n_pitches") or 0.0),
+                float(away_sp.get("sp_n_pitches") or 0.0)) / 1500.0,
+            1.0,
+        ),
+        # SP times-third-through-order penalty. Positive home value =
+        # home pitcher gets noticeably worse the third time through; the
+        # gap is computed so that positive overall = home ADVANTAGE
+        # (away SP wears down more than home SP).
+        "sp_ttop3_penalty_gap":  inv(home_sp, away_sp, "sp_ttop3_penalty"),
+        # --- Conviction filter inputs ---
+        "swing_take_gap":        fwd(home_off, away_off, "team_swing_take"),
+        # --- Context ---
+        "is_divisional":         int(divisional),
+        "tz_diff":               int(tz_diff),
+        "is_opener":             0,
+        "is_quick_turnaround":   0,
+        "is_day_game":           int(is_day_game),
+        "dow_sin":               dow_sin,
+        "dow_cos":               dow_cos,
+        "home_roof_type":        int(home_roof),
+        "temp_f":                temp_f,
+        "wind_out_mph":          wind_out,
+        "wind_dir_park":         wind_dir_park,
+        "humidity_pct":          float(humidity),
+        "precip_prob":           float(precip_prob),
+    }
+    # Merge lineup features. Kept in a separate dict so upstream code can
+    # still grep for the original keys, and so lineup fields arrive as a
+    # cohesive block in the parquet column ordering.
+    base.update(lineup_feats)
+
+    # Savant bat-tracking (cache v6). Returns zero gaps when no snapshot on or
+    # before `game_date` exists — training runs over 2022-2024 will see all
+    # zeros and XGBoost will learn to ignore the features there, while
+    # 2025-onward games get the real signal. Local import keeps the data
+    # source optional during install (no new hard dep).
+    from .data_sources import savant_bat_tracking as sbt
+    bat_feats = sbt.bat_tracking_gap_features(
+        home_team=home_team,
+        away_team=away_team,
+        as_of=pd.Timestamp(game_date).date(),
+    )
+    base.update(bat_feats)
+
+    # Baseball-Reference team-form (cache v7). Returns zero gaps pre-snapshot.
+    from .data_sources import bref as bref_src
+    bref_feats = bref_src.team_form_gap_features(
+        home_team=home_team,
+        away_team=away_team,
+        as_of=pd.Timestamp(game_date).date(),
+    )
+    base.update(bref_feats)
+
+    # Savant defense (cache v9). OAA + FRP + FRV gaps. Uses date-stamped
+    # leaderboard snapshots for current-season games and a 2025 full-season
+    # fallback when none exists. Returns zero gaps for 2023/2024 games where
+    # no historical CSV is available, so the schema stays stable while
+    # 2025+2026 portion of training carries real defensive signal.
+    from .data_sources import savant_defense as sdef
+    def_feats = sdef.defense_gap_features(
+        home_team=home_team,
+        away_team=away_team,
+        as_of=pd.Timestamp(game_date).date(),
+    )
+    base.update(def_feats)
+    return base
+
+
+# ---------------------------------------------------------------------------
+# Historical odds frame
+# ---------------------------------------------------------------------------
+def build_odds_frame(season: int,
+                     through: Optional[date] = None,
+                     snapshot_hour_utc: int = 22) -> pd.DataFrame:
+    """
+    Pull historical odds for a season from the-odds-api.
+
+    Matching to games: the-odds-api uses team names as strings; we normalize
+    both to our 3-letter abbreviations, then join on (home_team, away_team,
+    commence_date) against the features frame.
+    """
+    client = di.OddsClient()
+    raw = client.historical_for_season(season, through=through,
+                                       snapshot_hour_utc=snapshot_hour_utc)
+    if raw.empty:
+        return raw
+
+    raw["home_team_abbr"] = raw["home_team"].apply(normalize_team)
+    raw["away_team_abbr"] = raw["away_team"].apply(normalize_team)
+    raw["commence_date"] = pd.to_datetime(raw["commence_time"]).dt.date
+
+    # Sanity filter on American prices. Valid moneyline odds are always
+    # >= +100 or <= -100 (integers). We've seen corrupt rows like price=-1.0
+    # or price=67.5 slip through — when fed through american_to_decimal they
+    # become 100x+ payouts, which a Kelly bet on a model-favored side turns
+    # into a single ~$150 "profit" that contaminates the backtest.
+    n_before = len(raw)
+    raw = raw[raw["price"].notna() & (raw["price"].abs() >= 100)].copy()
+    dropped = n_before - len(raw)
+    if dropped:
+        log.warning("Dropped %d odds rows with corrupt American prices", dropped)
+
+    # Keep only H2H (moneyline) for now — totals handled separately later
+    h2h = raw[raw["market"] == "h2h"].copy()
+    # Normalize outcome names too (they're the team name, same aliases apply)
+    h2h["outcome_abbr"] = h2h["outcome"].apply(normalize_team)
+
+    return h2h
+
+
+def _american_to_decimal(p: float) -> float:
+    """American→decimal scalar converter (kept for one-off callers). For
+    column-wide conversion prefer `_american_to_decimal_vec` below — apply()
+    on 100k+ rows is ~10x slower than the numpy expression."""
+    if pd.isna(p):
+        return np.nan
+    return 1.0 + (p / 100.0 if p > 0 else 100.0 / (-p))
+
+
+def _american_to_decimal_vec(p: pd.Series) -> pd.Series:
+    """Vectorized American→decimal. NaN propagates; p==0 is not a valid
+    American price and is filtered upstream, so we don't guard against it."""
+    arr = p.to_numpy(dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        dec = np.where(arr > 0, 1.0 + arr / 100.0, 1.0 + 100.0 / (-arr))
+    return pd.Series(dec, index=p.index)
+
+
+def merge_games_and_odds(games: pd.DataFrame,
+                         odds: pd.DataFrame) -> pd.DataFrame:
+    """
+    Attach median-across-books home + away closing moneyline odds to each
+    game row, keyed on (home_team, away_team, game_date).
+
+    Odds are kept in DECIMAL form end-to-end (home_decimal, away_decimal).
+    An earlier revision medianed in decimal then rounded back to American via
+    -100/(d-1); that inverse blows up near d=1.0 and emitted impossible
+    prices like -1.0 or -2.5, which then produced 100x "profits" downstream.
+    Decimal is monotonic on [1, inf) with no pick'em discontinuity, and
+    every consumer (implied = 1/d, Kelly, EV) operates natively on it.
+
+    Performance: the matching step used to be an O(N*M) per-game boolean
+    scan via `apply(axis=1)`; it's now a pair of pandas merges (O(N log N)).
+    """
+    if games.empty or odds.empty:
+        return games
+
+    g = games.copy()
+    g["game_date_only"] = pd.to_datetime(g["game_date"]).dt.date
+
+    odds = odds.copy()
+    odds["decimal"] = _american_to_decimal_vec(odds["price"])
+
+    # One median per (matchup, date, outcome). Keep long form — we don't
+    # need the game-by-team pivot anymore; we merge by outcome instead.
+    med = (odds.groupby(["home_team_abbr", "away_team_abbr",
+                         "commence_date", "outcome_abbr"],
+                        sort=False)["decimal"]
+           .median().reset_index())
+
+    # The rows where outcome == home team give the home decimal; outcome ==
+    # away team give the away decimal. Split, rename, and merge by match key.
+    keys = ["home_team_abbr", "away_team_abbr", "commence_date"]
+    home_odds = (med.loc[med["outcome_abbr"] == med["home_team_abbr"], keys + ["decimal"]]
+                    .rename(columns={"decimal": "home_decimal"}))
+    away_odds = (med.loc[med["outcome_abbr"] == med["away_team_abbr"], keys + ["decimal"]]
+                    .rename(columns={"decimal": "away_decimal"}))
+    odds_wide = home_odds.merge(away_odds, on=keys, how="outer")
+
+    g = g.merge(
+        odds_wide,
+        left_on=["home_team", "away_team", "game_date_only"],
+        right_on=keys,
+        how="left",
+    )
+    drop_cols = [c for c in keys + ["game_date_only"] if c in g.columns]
+    return g.drop(columns=drop_cols)

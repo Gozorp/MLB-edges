@@ -1,0 +1,81 @@
+# =============================================================================
+# Secrets and credentials — never commit
+# =============================================================================
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# =============================================================================
+# Python build/cache artifacts
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# =============================================================================
+# Vendored / locally-installed Python libraries — these are huge and
+# should be re-installed via `pip install -r requirements.txt`
+# =============================================================================
+.pip_extra/
+.pip-target/
+.pip-target2/
+.pylib/
+.python_libs/
+venv/
+.venv/
+env/
+
+# =============================================================================
+# Cached external data — re-downloaded on each scrape run, no value in git
+# =============================================================================
+data/savant/
+data/savant_extra/
+data/savant_2025/
+data/savant_bat_tracking/
+data/statcast_cache/
+data/pybaseball_cache/
+data/feature_cache/
+data/news_cache/
+data/odds_cache/
+data/weather_cache/
+data/pitch_logs/
+data/bref/
+data/fangraphs/
+data/state/auto_weight_update.lock
+
+# Large derived artifacts (regenerable)
+*.parquet
+*.pkl
+*.feather
+*.h5
+*.npy
+
+# =============================================================================
+# Run logs (regenerated on every run, no value in versioning)
+# =============================================================================
+*.log
+logs/
+
+# =============================================================================
+# Editor / OS noise
+# =============================================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# =============================================================================
+# Local development scratch
+# =============================================================================
+tmp/
+scratch/
+*.tmp
+*.bash_view

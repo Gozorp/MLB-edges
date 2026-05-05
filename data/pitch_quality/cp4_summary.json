@@ -1,0 +1,33 @@
+{
+  "baseline": {
+    "n": 2523,
+    "brier": 0.24636106193065643,
+    "log_loss": 0.6858141445641232,
+    "hit_rate": 0.5525168450257629,
+    "p_pick_avg": 0.5325350761413574
+  },
+  "experiment": {
+    "n": 2523,
+    "brier": 0.246338352560997,
+    "log_loss": 0.6857161027158077,
+    "hit_rate": 0.5422116527942925,
+    "p_pick_avg": 0.5409915447235107
+  },
+  "bootstrap": {
+    "brier_delta_mean": 2.9891073703765868e-05,
+    "brier_delta_ci": [
+      -0.0010104712098836898,
+      0.0009984079748392102
+    ],
+    "log_loss_delta_mean": 0.0001128871567018217,
+    "log_loss_delta_ci": [
+      -0.00197739400392741,
+      0.0020754755475863996
+    ],
+    "n_resamples": 500
+  },
+  "ship_gate": 0.005,
+  "ship_pass": false,
+  "n_features_baseline": 75,
+  "n_features_experiment": 81
+}
