@@ -224,6 +224,30 @@
   }
   footer a { color: var(--accent); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  /* ----- Lazy-loaded game preview ----- */
+  .preview-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin: 0.6rem 0 1rem 0;
+  }
+  @media (max-width: 720px) {
+    .preview-grid { grid-template-columns: 1fr; }
+  }
+  .preview-card {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.85rem 1rem;
+  }
+  .preview-card h5 {
+    margin: 0 0 0.4rem 0; font-size: 0.8rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+  }
+  .preview-card h5:not(:first-child) { margin-top: 0.8rem; }
+  .preview-card ul { margin: 0.3rem 0 0 1.1rem; padding: 0; }
+  .preview-card li { margin: 0.2rem 0; font-size: 0.85rem; }
+  .preview-impact { font-size: 0.83rem; color: var(--muted); margin: 0.4rem 0 0 0; line-height: 1.5; }
+  .preview-loading { padding: 1rem; color: var(--muted); font-size: 0.9rem; font-style: italic; }
+
 </style>
 </head>
 <body>
@@ -466,7 +490,7 @@ function nameToAbbr(name) {
 
 async function fetchMLBResults(date) {
   try {
-    const url = `https://statsapi.mlb.com/api/v1/schedule?date=${date}&sportId=1`;
+    const url = `https://statsapi.mlb.com/api/v1/schedule?date=${date}&sportId=1&hydrate=probablePitcher,lineups,team`;
     const r = await fetch(url, { cache: "no-store" });
     if (!r.ok) return {};
     const j = await r.json();
@@ -495,7 +519,16 @@ async function fetchMLBResults(date) {
       const entry = {
         awayAbbr, homeAbbr, awayName, homeName,
         awayScore: aSc, homeScore: hSc, winner,
-        isFinal, statusText: status.detailedState || ""
+        isFinal, statusText: status.detailedState || "",
+        gamePk: g.gamePk,
+        awayTeamId: away.team && away.team.id,
+        homeTeamId: home.team && home.team.id,
+        awayPitcherId: away.probablePitcher && away.probablePitcher.id,
+        homePitcherId: home.probablePitcher && home.probablePitcher.id,
+        awayPitcherName: (away.probablePitcher && away.probablePitcher.fullName) || "",
+        homePitcherName: (home.probablePitcher && home.probablePitcher.fullName) || "",
+        awayLineupIds: (g.lineups && g.lineups.awayPlayers) ? g.lineups.awayPlayers.map(p => p.id) : [],
+        homeLineupIds: (g.lineups && g.lineups.homePlayers) ? g.lineups.homePlayers.map(p => p.id) : []
       };
       if (!awayAbbr || !homeAbbr) continue;
       const aliases = (a) => [a, TEAM_ABBR_ALIASES[a]].filter(Boolean);
@@ -511,6 +544,256 @@ async function fetchMLBResults(date) {
     console.warn("fetchMLBResults failed:", e);
     return {};
   }
+}
+
+
+// =============================================================================
+// Game preview — lazy-fetched per-game player breakdown.
+// On row expansion, pulls probable-pitcher stats + both rosters from statsapi
+// and renders named players with role-based impact analysis.
+// Cached per gamePk so repeat expansions don't re-fetch.
+// =============================================================================
+window.__previewCache = window.__previewCache || {};
+
+function _extractPitcherStats(p) {
+  const s = { id: p.id, name: p.fullName || "", hand: (p.pitchHand || {}).code || "?" };
+  for (const sg of p.stats || []) {
+    if ((sg.group || {}).displayName !== "pitching") continue;
+    for (const split of sg.splits || []) {
+      const st = split.stat || {};
+      s.era = st.era; s.whip = st.whip; s.ip = st.inningsPitched;
+      s.k9 = st.strikeoutsPer9Inn; s.bb9 = st.walksPer9Inn;
+      s.hr9 = st.homeRunsPer9; s.gs = st.gamesStarted;
+      s.w = st.wins; s.l = st.losses; s.sv = st.saves;
+      s.avg = st.avg;
+      break;
+    }
+    break;
+  }
+  return s;
+}
+
+async function _fetchTeamRoster(teamId) {
+  const url = `https://statsapi.mlb.com/api/v1/teams/${teamId}/roster?rosterType=active&hydrate=person(stats(group=[pitching,hitting],type=[season]))`;
+  try {
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) return { bullpen: [], batters: [], byId: {} };
+    const j = await r.json();
+    const bullpen = []; const batters = []; const byId = {};
+    for (const e of j.roster || []) {
+      const pos = (e.position || {}).abbreviation || "";
+      const p = e.person || {};
+      byId[p.id] = { name: p.fullName, pos };
+      if (pos === "P") {
+        // Pitchers: classify reliever if mostly out of bullpen
+        for (const sg of p.stats || []) {
+          if ((sg.group || {}).displayName !== "pitching") continue;
+          for (const split of sg.splits || []) {
+            const st = split.stat || {};
+            const games = parseInt(st.gamesPlayed || 0);
+            const gs    = parseInt(st.gamesStarted || 0);
+            if (games > 0 && gs <= games / 3) {
+              bullpen.push({
+                name: p.fullName, era: st.era || "-", whip: st.whip || "-",
+                sv: parseInt(st.saves || 0), hld: parseInt(st.holds || 0),
+                ip: st.inningsPitched || "0", k9: st.strikeoutsPer9Inn || "-"
+              });
+            }
+            break;
+          }
+          break;
+        }
+      } else {
+        // Hitters
+        for (const sg of p.stats || []) {
+          if ((sg.group || {}).displayName !== "hitting") continue;
+          for (const split of sg.splits || []) {
+            const st = split.stat || {};
+            const pa = parseInt(st.plateAppearances || 0);
+            if (pa < 30) break;
+            const ops = parseFloat(st.ops || "0");
+            batters.push({
+              name: p.fullName, pos, ops: st.ops, ops_f: ops,
+              avg: st.avg, hr: st.homeRuns, pa, rbi: st.rbi
+            });
+            break;
+          }
+          break;
+        }
+      }
+    }
+    bullpen.sort((a, b) => (b.sv * 2 + b.hld) - (a.sv * 2 + a.hld));
+    batters.sort((a, b) => b.ops_f - a.ops_f);
+    return { bullpen, batters, byId };
+  } catch (e) {
+    console.warn("roster fetch failed for team", teamId, e);
+    return { bullpen: [], batters: [], byId: {} };
+  }
+}
+
+async function fetchGamePreview(result) {
+  if (!result || !result.gamePk) return null;
+  const key = "g" + result.gamePk;
+  if (window.__previewCache[key]) return window.__previewCache[key];
+
+  const out = {
+    awayName: result.awayName, homeName: result.homeName,
+    awayAbbr: result.awayAbbr, homeAbbr: result.homeAbbr,
+    awayPitcher: null, homePitcher: null,
+    awayBullpen: [], homeBullpen: [],
+    awayBatters: [], homeBatters: [],
+    awayLineup: [], homeLineup: []
+  };
+
+  // 1. Batched pitcher stats
+  const pids = [result.awayPitcherId, result.homePitcherId].filter(Boolean);
+  if (pids.length) {
+    try {
+      const url = `https://statsapi.mlb.com/api/v1/people?personIds=${pids.join(",")}&hydrate=stats(group=[pitching],type=[season])`;
+      const r = await fetch(url, { cache: "no-store" });
+      if (r.ok) {
+        const j = await r.json();
+        for (const p of j.people || []) {
+          const stats = _extractPitcherStats(p);
+          if (p.id === result.awayPitcherId) out.awayPitcher = stats;
+          if (p.id === result.homePitcherId) out.homePitcher = stats;
+        }
+      }
+    } catch (e) { console.warn("pitcher stat fetch failed:", e); }
+  }
+
+  // 2. Parallel team rosters
+  const [aR, hR] = await Promise.all([
+    result.awayTeamId ? _fetchTeamRoster(result.awayTeamId) : Promise.resolve({ bullpen: [], batters: [], byId: {} }),
+    result.homeTeamId ? _fetchTeamRoster(result.homeTeamId) : Promise.resolve({ bullpen: [], batters: [], byId: {} })
+  ]);
+  out.awayBullpen = aR.bullpen.slice(0, 3);
+  out.homeBullpen = hR.bullpen.slice(0, 3);
+  out.awayBatters = aR.batters.slice(0, 4);
+  out.homeBatters = hR.batters.slice(0, 4);
+
+  // 3. Map posted lineup IDs to names if available
+  const idToBat = (ids, byId, batters) => (ids || []).map(id => {
+    if (byId[id]) {
+      const m = batters.find(b => b.name === byId[id].name);
+      return { id, name: byId[id].name, pos: byId[id].pos, ops: m ? m.ops : null };
+    }
+    return { id, name: "Player " + id };
+  });
+  if ((result.awayLineupIds || []).length) {
+    out.awayLineup = idToBat(result.awayLineupIds, aR.byId, aR.batters);
+  }
+  if ((result.homeLineupIds || []).length) {
+    out.homeLineup = idToBat(result.homeLineupIds, hR.byId, hR.batters);
+  }
+
+  window.__previewCache[key] = out;
+  return out;
+}
+
+function _pitcherImpact(p, oppName) {
+  if (!p) return "TBD pitcher — impact unknown until announced.";
+  const era = parseFloat(p.era != null ? p.era : 99);
+  const whip = parseFloat(p.whip != null ? p.whip : 99);
+  const k9 = parseFloat(p.k9 != null ? p.k9 : 0);
+  const ip = parseFloat((p.ip || "0").toString().replace(" ", ""));
+  const sizeNote = ip < 15 ? " <em>Sample is thin (under 15 IP) — projection has wider error bars.</em>" : "";
+  if (era < 2.50 && whip < 1.10)
+    return `<strong>Elite form</strong> — every inning he completes lowers his team's run-allowed expectation by ~0.5 vs an average arm. Lengthening this start past the 6th makes it harder for ${oppName} to scratch back.${sizeNote}`;
+  if (era < 3.50)
+    return `<strong>Above-average</strong> — keeps his side in every inning he pitches. Real weapon if his K/9 (${k9}) holds, since strikeouts neutralize ${oppName}'s contact threats.${sizeNote}`;
+  if (era < 4.50)
+    return `<strong>League-average</strong> — neither shifts the line meaningfully. Run prevention will depend on traffic-management when ${oppName} starts threatening.${sizeNote}`;
+  return `<strong>Below-average</strong> — his team is asking the offense to outscore traffic. ${oppName} should feast on barrel-prone counts; bullpen exposure will arrive early.${sizeNote}`;
+}
+
+function _batImpact(ops_f) {
+  if (ops_f >= 0.900) return "feature bat — shifts run expectancy of any inning he leads off; lineup turnover that brings him up with traffic is the swing-event of the game.";
+  if (ops_f >= 0.800) return "core run-producer — the pitcher must navigate a clean at-bat or commit to nibbling, which extends the inning.";
+  if (ops_f >= 0.700) return "connective tissue — keeps innings alive when stars don't drive runs in.";
+  return "below-mean OPS — neutral run-impact for now, easier out for the opposing SP.";
+}
+
+function formatGamePreview(preview) {
+  if (!preview) return "";
+
+  const fmtPitcher = (p, abbr) => {
+    if (!p) return `<li>${abbr}: TBD</li>`;
+    const hand = p.hand || "?";
+    return `<li><strong>${p.name}</strong> (${hand}HP) — ${p.gs || 0} GS, ${p.ip || "0"} IP, ${p.era || "-"} ERA, ${p.whip || "-"} WHIP, ${p.k9 || "-"} K/9</li>`;
+  };
+
+  const fmtBullpen = (rels) => {
+    if (!rels || !rels.length) return `<li class="muted">Roster fetch returned no qualified relievers.</li>`;
+    const labels = ["Closer (proxy)", "Setup", "Third lever"];
+    const blurbs = [
+      "Owns the 9th when his team leads; if the line is one-run, he is the inning that decides the game.",
+      "The 7th–8th-inning bridge; getting a clean lead to the closer starts here.",
+      "Used for high-leverage middle work or matchup work."
+    ];
+    let html = "";
+    for (let i = 0; i < Math.min(rels.length, 3); i++) {
+      const r = rels[i];
+      html += `<li><strong>${r.name}</strong> (${labels[i]}) — ${r.era} ERA, ${r.whip} WHIP, ${r.sv} SV, ${r.hld} HLD, ${r.ip} IP. ${blurbs[i]}</li>`;
+    }
+    return html;
+  };
+
+  const fmtBatters = (bats) => {
+    if (!bats || !bats.length) return `<li class="muted">No qualified hitters in the snapshot yet.</li>`;
+    let html = "";
+    for (const b of bats) {
+      html += `<li><strong>${b.name}</strong> (${b.pos}, ${b.ops} OPS, ${b.hr} HR / ${b.avg} AVG, ${b.pa} PA) — ${_batImpact(b.ops_f)}</li>`;
+    }
+    return html;
+  };
+
+  const fmtLineup = (lineup) => {
+    if (!lineup || !lineup.length) return `<p class="muted" style="font-size:0.85rem;">Lineup card not yet posted (typically released ~3 hours before first pitch).</p>`;
+    let html = `<ol style="margin:0.3rem 0 0 1.4rem;padding:0;">`;
+    for (const p of lineup) {
+      html += `<li><strong>${p.name}</strong> (${p.pos || "-"})${p.ops ? ` — ${p.ops} OPS` : ""}</li>`;
+    }
+    html += `</ol>`;
+    return html;
+  };
+
+  return `
+    <h4>Game preview — named players & impact</h4>
+    <div class="preview-grid">
+      <div class="preview-card">
+        <h5>Probable starters</h5>
+        <ul>
+          ${fmtPitcher(preview.awayPitcher, preview.awayAbbr || "Away")}
+          ${fmtPitcher(preview.homePitcher, preview.homeAbbr || "Home")}
+        </ul>
+        <p class="preview-impact">
+          ${preview.awayPitcher ? `<strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}` : ""}
+        </p>
+        <p class="preview-impact">
+          ${preview.homePitcher ? `<strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}` : ""}
+        </p>
+      </div>
+      <div class="preview-card">
+        <h5>${preview.awayName} bullpen — three highest-leverage arms</h5>
+        <ul>${fmtBullpen(preview.awayBullpen)}</ul>
+        <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
+        <ul>${fmtBullpen(preview.homeBullpen)}</ul>
+      </div>
+      <div class="preview-card">
+        <h5>${preview.awayName} top hitters (by 2026 OPS)</h5>
+        <ul>${fmtBatters(preview.awayBatters)}</ul>
+        <h5>${preview.awayName} posted lineup</h5>
+        ${fmtLineup(preview.awayLineup)}
+      </div>
+      <div class="preview-card">
+        <h5>${preview.homeName} top hitters (by 2026 OPS)</h5>
+        <ul>${fmtBatters(preview.homeBatters)}</ul>
+        <h5>${preview.homeName} posted lineup</h5>
+        ${fmtLineup(preview.homeLineup)}
+      </div>
+    </div>
+  `;
 }
 
 function pickedTeam(r) {
@@ -880,6 +1163,9 @@ function formatNarrative(r, gradeInfo, result) {
     html += `</ul>`;
   }
 
+  // ----- 8b. Game preview placeholder (lazy-loaded on row expand) -----
+  html += `<div class="preview-placeholder" data-loaded="0"></div>`;
+
   // ----- 9. Verdict -----
   html += `<div class="verdict"><strong>Bottom line:</strong> `;
   if (grade === "A") {
@@ -964,14 +1250,37 @@ function renderSlate(rows, gradeMap, results) {
   return html;
 }
 
-// Toggle expand/collapse for in-depth row narrative
-function toggleNarrative(i) {
+// Toggle expand/collapse for in-depth row narrative.  On expand, lazily
+// fetches probable-pitcher stats + both rosters from MLB statsapi and renders
+// the named-player preview block.
+async function toggleNarrative(i) {
   const row  = document.getElementById("details-" + i);
   const chev = document.getElementById("chev-" + i);
   if (!row || !chev) return;
   const open = row.classList.toggle("open");
   chev.classList.toggle("open", open);
   chev.textContent = open ? "▾" : "▸";
+
+  if (!open) return;
+  // Lazy-load the game preview if we haven't already
+  const placeholder = row.querySelector(".preview-placeholder");
+  if (!placeholder || placeholder.dataset.loaded === "1") return;
+  const r = (window.__slate.rows || [])[i];
+  if (!r) return;
+  const result = matchResult(r, window.__slate.results || {});
+  if (!result || !result.gamePk) {
+    placeholder.innerHTML = `<p class="muted preview-loading">No statsapi game record matched — preview unavailable.</p>`;
+    placeholder.dataset.loaded = "1";
+    return;
+  }
+  placeholder.innerHTML = `<p class="preview-loading">Loading probable pitchers, bullpen, and top hitters…</p>`;
+  try {
+    const preview = await fetchGamePreview(result);
+    placeholder.innerHTML = formatGamePreview(preview);
+    placeholder.dataset.loaded = "1";
+  } catch (e) {
+    placeholder.innerHTML = `<p class="muted preview-loading">Preview fetch failed: ${e}</p>`;
+  }
 }
 
 function renderParlay(text) {

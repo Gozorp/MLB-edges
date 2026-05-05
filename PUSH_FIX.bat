@@ -34,7 +34,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Fix blank Result column: derive team abbrev from name when MLB API omits it"
+    git commit -m "Add lazy-loaded game preview: probable SPs, bullpen, top hitters, posted lineup"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
