@@ -91,6 +91,58 @@
     color: var(--muted); padding: 2rem; text-align: center;
     border: 1px dashed var(--border); border-radius: 8px;
   }
+  .date-strip {
+    display: flex; gap: 0.4rem; flex-wrap: wrap;
+    margin-bottom: 1rem; padding: 0.75rem;
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .date-strip-label {
+    color: var(--muted); font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-right: 0.5rem; align-self: center;
+  }
+  .date-chip {
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.25rem 0.6rem; font-size: 0.85rem; cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .date-chip:hover { border-color: var(--accent); }
+  .date-chip.active {
+    background: var(--accent); color: var(--bg); border-color: var(--accent);
+  }
+  .date-chip.future { opacity: 0.55; font-style: italic; }
+  .date-chip.today {
+    border-color: var(--green);
+    box-shadow: 0 0 0 1px var(--green);
+  }
+  .live-indicator {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.2rem 0.5rem; border-radius: 4px;
+    font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .live-indicator.live    { background: rgba(63,185,80,0.2); color: var(--green); }
+  .live-indicator.archive { background: rgba(139,148,158,0.2); color: var(--muted); }
+  .live-indicator.pending { background: rgba(210,153,34,0.2); color: var(--yellow); }
+  .live-indicator .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: currentColor;
+  }
+  .live-indicator.live .dot {
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+  .change-flash {
+    animation: flash 2.5s ease-out;
+  }
+  @keyframes flash {
+    0%   { background: rgba(210, 153, 34, 0.45); }
+    100% { background: transparent; }
+  }
   footer {
     margin-top: 3rem; padding: 2rem; text-align: center;
     color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border);
@@ -107,10 +159,16 @@
 </header>
 
 <main>
+  <div class="date-strip" id="dateStrip">
+    <span class="date-strip-label">Slates:</span>
+    <span class="muted" style="font-size:0.85rem;align-self:center;">loading…</span>
+  </div>
+
   <div class="picker">
     <input type="date" id="datePicker" />
     <button id="loadBtn">Load slate</button>
     <button id="refreshBtn" title="Re-fetch with cache bypass">Refresh data</button>
+    <span id="liveIndicator"></span>
     <span class="muted" id="status"></span>
   </div>
 
@@ -152,8 +210,14 @@
     </p>
     <p>
       <strong>Autonomous updates:</strong> a daily workflow runs <code>predict.py</code>
-      at 07:00 UTC, generates the new slate, and commits it. The dashboard
-      auto-refreshes within a minute or two of the commit landing.
+      at 07:00 UTC, generates the new slate, and commits it. When you're viewing
+      <em>today's</em> slate, the dashboard polls every 3 minutes for changes
+      (look for the <span class="live-indicator live"><span class="dot"></span>LIVE</span>
+      indicator). When the model re-runs after a late SP scratch or line move,
+      the table flashes briefly and updates in place — no page reload needed.
+      Past slates are marked <span class="live-indicator archive"><span class="dot"></span>ARCHIVED</span>
+      and don't poll. Future slates show <span class="live-indicator pending"><span class="dot"></span>PENDING</span>
+      until <code>predict.py</code> can run for them.
     </p>
     <p>
       <strong>Interactive query:</strong> ask the slate about specific games or
@@ -332,8 +396,179 @@ function renderParlay(text) {
   }</pre></div>`;
 }
 
-// Globals so the query interface can introspect the loaded slate
+// Globals so the query interface + auto-refresh can introspect state
 window.__slate = { date: null, rows: [], gradeMap: {}, parlayText: "" };
+window.__poll  = { timer: null, lastSig: null, intervalMs: 3 * 60 * 1000 };  // 3 min
+window.__manifest = { dates: [], loadedAt: null };
+
+// Compute a tiny signature of the loaded data so we can detect changes
+// (SP scratches, line moves, etc.) without re-rendering on no-op fetches.
+function dataSignature(csvText, parlayText) {
+  let h = 0;
+  const s = (csvText || "") + "\n---\n" + (parlayText || "");
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  }
+  return h.toString(36);
+}
+
+// =============================================================================
+// Manifest of available slate dates
+// =============================================================================
+async function loadManifest() {
+  // Try docs/data/manifest.json first (built by bake-data workflow)
+  try {
+    const r = await fetch(REPO_RAW_BASE + "manifest.json", { cache: "no-store" });
+    if (r.ok) {
+      const j = await r.json();
+      if (Array.isArray(j.dates) && j.dates.length) {
+        window.__manifest = { dates: j.dates, loadedAt: Date.now(), source: "manifest.json" };
+        return j.dates;
+      }
+    }
+  } catch (e) { /* fall through */ }
+
+  // Fallback: scrape the GitHub API for picks_*_diag.csv files in the repo root
+  // (only works when repo is public — toggle USE_FALLBACK_ON_404 = false when private)
+  if (USE_FALLBACK_ON_404) {
+    try {
+      const r = await fetch("https://api.github.com/repos/Gozorp/MLB-edges/git/trees/main");
+      if (r.ok) {
+        const j = await r.json();
+        const dates = new Set();
+        for (const e of (j.tree || [])) {
+          const m = e.path.match(/^picks_(\d{4}-\d{2}-\d{2})_diag\.csv$/);
+          if (m) dates.add(m[1]);
+        }
+        const sorted = [...dates].sort().reverse();
+        window.__manifest = { dates: sorted, loadedAt: Date.now(), source: "github-api" };
+        return sorted;
+      }
+    } catch (e) { /* fall through */ }
+  }
+
+  window.__manifest = { dates: [], loadedAt: Date.now(), source: "none" };
+  return [];
+}
+
+function renderDateStrip(dates, currentDate) {
+  const strip = document.getElementById("dateStrip");
+  if (!dates.length) {
+    strip.innerHTML = '<span class="date-strip-label">Slates:</span>'
+                    + '<span class="muted" style="font-size:0.85rem;align-self:center;">'
+                    + 'no slate files found yet</span>';
+    return;
+  }
+  const today = todayISO();
+  // Show recent + a small future window
+  const visible = dates.filter(d => d <= addDays(today, 7));
+  let html = '<span class="date-strip-label">Slates:</span>';
+  for (const d of visible.slice(0, 14)) {
+    let cls = "date-chip";
+    if (d === currentDate) cls += " active";
+    if (d === today) cls += " today";
+    if (d > today) cls += " future";
+    html += `<button class="${cls}" data-date="${d}">${d.slice(5)}</button>`;
+  }
+  // Always show a "today" chip if today isn't already in the list
+  if (!visible.includes(today) && today > visible[0]) {
+    html += `<button class="date-chip today" data-date="${today}">${today.slice(5)} (today)</button>`;
+  }
+  strip.innerHTML = html;
+  strip.querySelectorAll(".date-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const d = btn.getAttribute("data-date");
+      document.getElementById("datePicker").value = d;
+      loadSlate(d);
+    });
+  });
+}
+
+function addDays(iso, n) {
+  const d = new Date(iso + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().split("T")[0];
+}
+
+// =============================================================================
+// Live / archive / pending state indicator
+// =============================================================================
+function classifyDate(date) {
+  const today = todayISO();
+  if (date === today) return "live";
+  if (date < today)   return "archive";
+  return "pending";
+}
+
+function renderLiveIndicator(date, dataPresent) {
+  const el = document.getElementById("liveIndicator");
+  const cls = classifyDate(date);
+  const label = !dataPresent && cls === "pending" ? "PENDING"
+              : !dataPresent && cls === "archive" ? "NO DATA"
+              : cls === "live"    ? "LIVE • auto-refreshing"
+              : cls === "archive" ? "ARCHIVED"
+              : "PENDING (slate not generated yet)";
+  el.innerHTML = `<span class="live-indicator ${cls}"><span class="dot"></span>${label}</span>`;
+}
+
+// =============================================================================
+// Auto-refresh polling — only active when viewing today
+// =============================================================================
+function startPolling(date) {
+  stopPolling();
+  if (date !== todayISO()) return;          // only poll for today
+  window.__poll.timer = setInterval(() => {
+    silentRefresh(date);
+  }, window.__poll.intervalMs);
+}
+
+function stopPolling() {
+  if (window.__poll.timer) {
+    clearInterval(window.__poll.timer);
+    window.__poll.timer = null;
+  }
+}
+
+async function silentRefresh(date) {
+  // Re-fetch with cache bust, compare signatures, re-render only if changed
+  try {
+    const q = `?v=${Date.now()}`;
+    const opts = { cache: "no-store" };
+    const [csvR, txtR] = await Promise.allSettled([
+      fetch(REPO_RAW_BASE + `picks_${date}_diag.csv` + q, opts).then(r => r.ok ? r.text() : null),
+      fetch(REPO_RAW_BASE + `parlay_${date}.txt` + q, opts).then(r => r.ok ? r.text() : null),
+    ]);
+    const csvText    = csvR.status === "fulfilled" ? csvR.value : null;
+    const parlayText = txtR.status === "fulfilled" ? txtR.value : null;
+    if (!csvText) return;
+
+    const sig = dataSignature(csvText, parlayText);
+    if (sig === window.__poll.lastSig) {
+      // No change — just update the "last checked" timestamp
+      const t = new Date().toLocaleTimeString();
+      const status = document.getElementById("status");
+      status.textContent = `${status.textContent.split(" • ")[0]} • last checked ${t}`;
+      return;
+    }
+    window.__poll.lastSig = sig;
+
+    // Data changed — re-render and flash the slate to indicate update
+    const rows = parseCSV(csvText);
+    const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
+    window.__slate = { date, rows, gradeMap, parlayText: parlayText || "" };
+
+    const slateEl = document.getElementById("slate");
+    slateEl.innerHTML = renderSlate(rows, gradeMap);
+    slateEl.classList.add("change-flash");
+    setTimeout(() => slateEl.classList.remove("change-flash"), 2500);
+
+    document.getElementById("parlay").innerHTML = parlayText ? renderParlay(parlayText) : "";
+    document.getElementById("status").textContent
+      = `Auto-updated ${date} (${rows.length} games) at ${new Date().toLocaleTimeString()}`;
+  } catch (e) {
+    console.warn("silentRefresh failed:", e);
+  }
+}
 
 async function loadSlate(date, { bust = false } = {}) {
   const status = document.getElementById("status");
@@ -385,6 +620,19 @@ async function loadSlate(date, { bust = false } = {}) {
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
       ? `Loaded ${date} (${rows.length} games)` : "";
+
+    // Update state indicator + (re)start polling if this is today
+    renderLiveIndicator(date, rows.length > 0);
+    window.__poll.lastSig = dataSignature(
+      csvR.status === "fulfilled" ? csvR.value : "",
+      txtR.status === "fulfilled" ? txtR.value : ""
+    );
+    startPolling(date);
+
+    // Re-highlight the active chip in the date strip
+    document.querySelectorAll(".date-chip").forEach(b => {
+      b.classList.toggle("active", b.getAttribute("data-date") === date);
+    });
   } catch (e) {
     status.textContent = "Load failed: " + e;
   }
@@ -512,9 +760,8 @@ function todayISO() {
   return d.toISOString().split("T")[0];
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const picker = document.getElementById("datePicker");
-  picker.value = todayISO();
 
   document.getElementById("loadBtn").addEventListener("click", () => {
     loadSlate(picker.value);
@@ -522,8 +769,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshBtn").addEventListener("click", () => {
     loadSlate(picker.value, { bust: true });
   });
-
-  // Date-picker change auto-loads (no need to click)
   picker.addEventListener("change", () => loadSlate(picker.value));
 
   const ask = () => {
@@ -535,8 +780,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") ask();
   });
 
-  // Auto-load today on first visit
-  loadSlate(picker.value);
+  // 1. Load the manifest of available slate dates first
+  const dates = await loadManifest();
+
+  // 2. Pick the best initial date: today if available, else most recent
+  const today = todayISO();
+  let initial = today;
+  if (dates.length && !dates.includes(today)) {
+    initial = dates.find(d => d <= today) || dates[0];
+  }
+  picker.value = initial;
+
+  // 3. Render the date strip
+  renderDateStrip(dates, initial);
+
+  // 4. Load the chosen slate (kicks off polling if it's today)
+  loadSlate(initial);
+
+  // 5. Re-load the manifest periodically so newly-added dates appear
+  setInterval(async () => {
+    const fresh = await loadManifest();
+    renderDateStrip(fresh, document.getElementById("datePicker").value);
+  }, 5 * 60 * 1000);  // every 5 minutes
+
+  // 6. When the page becomes visible again, do a one-shot refresh
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && picker.value === todayISO()) {
+      silentRefresh(picker.value);
+    }
+  });
 });
 </script>
 
