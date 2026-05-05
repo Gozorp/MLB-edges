@@ -431,7 +431,39 @@ function parseParlayGrades(text) {
 // =============================================================================
 // Post-game results — fetch finals from MLB statsapi (public, CORS-enabled),
 // normalize into a matchup map, and infer pass/fail vs the model's pick.
+// NOTE: statsapi schedule endpoint often returns empty team.abbreviation, so
+// we fall back to a hardcoded name→abbrev map so the UI doesn't go blank.
 // =============================================================================
+const TEAM_ABBR = {
+  "Arizona Diamondbacks":"ARI","Atlanta Braves":"ATL","Baltimore Orioles":"BAL",
+  "Boston Red Sox":"BOS","Chicago Cubs":"CHC","Chicago White Sox":"CWS",
+  "Cincinnati Reds":"CIN","Cleveland Guardians":"CLE","Colorado Rockies":"COL",
+  "Detroit Tigers":"DET","Houston Astros":"HOU","Kansas City Royals":"KC",
+  "Los Angeles Angels":"LAA","Los Angeles Dodgers":"LAD","Miami Marlins":"MIA",
+  "Milwaukee Brewers":"MIL","Minnesota Twins":"MIN","New York Mets":"NYM",
+  "New York Yankees":"NYY","Oakland Athletics":"OAK","Athletics":"ATH",
+  "Philadelphia Phillies":"PHI","Pittsburgh Pirates":"PIT","San Diego Padres":"SD",
+  "San Francisco Giants":"SF","Seattle Mariners":"SEA","St. Louis Cardinals":"STL",
+  "Tampa Bay Rays":"TB","Texas Rangers":"TEX","Toronto Blue Jays":"TOR",
+  "Washington Nationals":"WSH"
+};
+const TEAM_ABBR_ALIASES = {
+  "ATH":"OAK", "OAK":"ATH",
+  "CWS":"CHW", "CHW":"CWS",
+  "WSH":"WAS", "WAS":"WSH",
+  "KCR":"KC",  "KC":"KCR",
+  "SDP":"SD",  "SD":"SDP",
+  "SFG":"SF",  "SF":"SFG",
+  "TBR":"TB",  "TB":"TBR"
+};
+function nameToAbbr(name) {
+  if (!name) return "";
+  if (TEAM_ABBR[name]) return TEAM_ABBR[name];
+  const last = name.split(" ").pop();
+  if (TEAM_ABBR[last]) return TEAM_ABBR[last];
+  return "";
+}
+
 async function fetchMLBResults(date) {
   try {
     const url = `https://statsapi.mlb.com/api/v1/schedule?date=${date}&sportId=1`;
@@ -444,10 +476,14 @@ async function fetchMLBResults(date) {
       const away = (g.teams && g.teams.away) || {};
       const home = (g.teams && g.teams.home) || {};
       const status = g.status || {};
-      const awayAbbr = (away.team && away.team.abbreviation) || "";
-      const homeAbbr = (home.team && home.team.abbreviation) || "";
       const awayName = (away.team && away.team.name) || "";
       const homeName = (home.team && home.team.name) || "";
+      const awayAbbr = (away.team && away.team.abbreviation)
+                    || (away.team && away.team.fileCode && away.team.fileCode.toUpperCase())
+                    || nameToAbbr(awayName);
+      const homeAbbr = (home.team && home.team.abbreviation)
+                    || (home.team && home.team.fileCode && home.team.fileCode.toUpperCase())
+                    || nameToAbbr(homeName);
       const isFinal  = status.abstractGameState === "Final"
                     || /final/i.test(status.detailedState || "");
       const aSc = (away.score != null) ? away.score : null;
@@ -461,9 +497,14 @@ async function fetchMLBResults(date) {
         awayScore: aSc, homeScore: hSc, winner,
         isFinal, statusText: status.detailedState || ""
       };
-      // Index multiple ways since CSV matchup string varies
-      out[`${awayAbbr}@${homeAbbr}`] = entry;
-      out[`${homeAbbr}@${awayAbbr}`] = entry;
+      if (!awayAbbr || !homeAbbr) continue;
+      const aliases = (a) => [a, TEAM_ABBR_ALIASES[a]].filter(Boolean);
+      for (const aA of aliases(awayAbbr)) {
+        for (const hA of aliases(homeAbbr)) {
+          out[`${aA}@${hA}`] = entry;
+          out[`${hA}@${aA}`] = entry;
+        }
+      }
     }
     return out;
   } catch (e) {
@@ -497,10 +538,13 @@ function predictionAccuracy(r, result) {
   if (!result || !result.winner) return null;
   const picked = pickedTeam(r);
   if (!picked) return null;
-  // Forgive partial matches (e.g. picked = "ATL", winner = "ATL")
-  if (picked === result.winner) return "win";
-  if (picked === result.awayAbbr || picked === result.homeAbbr) return "loss";
-  return null;  // pick didn't match either team — can't grade
+  const aliasOf = (a) => new Set([a, TEAM_ABBR_ALIASES[a]].filter(Boolean));
+  const winnerAliases = aliasOf(result.winner);
+  const awayAliases   = aliasOf(result.awayAbbr);
+  const homeAliases   = aliasOf(result.homeAbbr);
+  if (winnerAliases.has(picked)) return "win";
+  if (awayAliases.has(picked) || homeAliases.has(picked)) return "loss";
+  return null;
 }
 
 // =============================================================================
