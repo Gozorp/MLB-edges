@@ -79,3 +79,20 @@ tmp/
 scratch/
 *.tmp
 *.bash_view
+
+# =============================================================================
+# Sandbox / runtime cache directories that leaked from earlier env setups
+# =============================================================================
+.cache/
+.fake-home/
+.pb_cache/
+.pip-tmp/
+.pip-tmpdir/
+.piptmp/
+.pyb_home/
+.pybaseball/
+.pybaseball_cache/
+.pybaseball_home/
+.runtime/
+.runtime_home/
+.touch_resync.txt
