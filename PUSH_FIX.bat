@@ -33,8 +33,13 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Add interactive query, B+ regex fix, bake-data + daily-slate workflows"
-    echo (commit exit code: %errorlevel%)
+    git commit -m "Multi-date browser, auto-refresh on today, change-flash on update"
+    echo (commit exit code: %errorlevel% - non-zero is fine if nothing new to commit)
+    echo.
+
+    echo --- pulling remote first (rebase, in case workflow auto-committed) ---
+    git pull --rebase 2>&1
+    echo (pull exit code: %errorlevel%)
     echo.
 
     echo --- pushing ---
