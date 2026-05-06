@@ -848,7 +848,14 @@ async function fetchGamePreview(result) {
   const idToBat = (ids, byId, batters) => (ids || []).map(id => {
     if (byId[id]) {
       const m = batters.find(b => b.name === byId[id].name);
-      return { id, name: byId[id].name, pos: byId[id].pos, ops: m ? m.ops : null };
+      return {
+        id, name: byId[id].name, pos: byId[id].pos,
+        ops: m ? m.ops : null,
+        avg: m ? m.avg : null,
+        hr:  m ? m.hr  : 0,
+        rbi: m ? m.rbi : 0,
+        pa:  m ? m.pa  : 0,
+      };
     }
     return { id, name: "Player " + id };
   });
@@ -859,7 +866,14 @@ async function fetchGamePreview(result) {
     const proj = await _fetchProjectedLineup(result.awayTeamId);
     out.awayLineup = proj.map(p => {
       const m = aR.batters.find(b => b.name === p.name);
-      return { id: p.id, name: p.name, pos: p.pos, ops: m ? m.ops : null };
+      return {
+        id: p.id, name: p.name, pos: p.pos,
+        ops: m ? m.ops : null,
+        avg: m ? m.avg : null,
+        hr:  m ? m.hr  : 0,
+        rbi: m ? m.rbi : 0,
+        pa:  m ? m.pa  : 0,
+      };
     });
     out.awayLineupSource = 'projected';
   }
@@ -870,7 +884,14 @@ async function fetchGamePreview(result) {
     const proj = await _fetchProjectedLineup(result.homeTeamId);
     out.homeLineup = proj.map(p => {
       const m = hR.batters.find(b => b.name === p.name);
-      return { id: p.id, name: p.name, pos: p.pos, ops: m ? m.ops : null };
+      return {
+        id: p.id, name: p.name, pos: p.pos,
+        ops: m ? m.ops : null,
+        avg: m ? m.avg : null,
+        hr:  m ? m.hr  : 0,
+        rbi: m ? m.rbi : 0,
+        pa:  m ? m.pa  : 0,
+      };
     });
     out.homeLineupSource = 'projected';
   }
@@ -924,6 +945,31 @@ function _batterImpactFinal(b) {
   if (b.h >= 1)           return "Productive contact — kept the lineup turning over.";
   if (b.bb >= 1)          return "Patient at-bats; took bases without hitting safely.";
   return "0-for; neutral contribution at the plate.";
+}
+
+
+// Single-game HR probability for a batter facing today's opposing SP.
+// Formula:  p = 1 - (1 - r)^N  where r = adjusted HR/PA, N = expected PAs.
+//   batter rate  = season HR / PA
+//   pitcher factor = SP HR/9 vs league avg (1.2)  — capped at [0.5, 2.0]
+//   expected PAs ≈ 4.3 per game for top-9 starters
+// Returns a probability in [0, 1] or null when sample is too small.
+function _hrProbability(batter, opposingSP, expectedPAs) {
+  if (!batter) return null;
+  const pa = parseInt(batter.pa || 0);
+  const hr = parseInt(batter.hr || 0);
+  if (pa < 30) return null;
+  const batterRate = hr / pa;
+  let pitcherFactor = 1.0;
+  if (opposingSP && opposingSP.hr9 != null) {
+    const phr9 = parseFloat(opposingSP.hr9);
+    if (!isNaN(phr9) && phr9 > 0) {
+      pitcherFactor = Math.max(0.5, Math.min(2.0, phr9 / 1.2));
+    }
+  }
+  const r = batterRate * pitcherFactor;
+  const N = expectedPAs || 4.3;
+  return 1 - Math.pow(1 - Math.max(0, Math.min(0.5, r)), N);
 }
 
 function _formatGamePreviewFinal(preview) {
@@ -1000,11 +1046,22 @@ function _formatGamePreviewUpcoming(preview) {
     return html;
   };
 
-  const fmtLineup = (lineup) => {
+  const fmtLineup = (lineup, opposingSP) => {
     if (!lineup || !lineup.length) return `<p class="muted" style="font-size:0.85rem;">Lineup card not yet posted (typically released ~3 hours before first pitch).</p>`;
     let html = `<ol style="margin:0.3rem 0 0 1.4rem;padding:0;">`;
     for (const p of lineup) {
-      html += `<li><strong>${p.name}</strong> (${p.pos || "-"})${p.ops ? ` — ${p.ops} OPS` : ""}</li>`;
+      const stats = [];
+      if (p.avg) stats.push(`${p.avg} AVG`);
+      if (p.ops) stats.push(`${p.ops} OPS`);
+      if (p.hr  != null) stats.push(`${p.hr} HR`);
+      if (p.rbi != null) stats.push(`${p.rbi} RBI`);
+      if (p.pa  != null && p.pa > 0) stats.push(`${p.pa} PA`);
+      const statLine = stats.length ? ` — <span class="muted" style="font-size:0.8rem;">${stats.join(' · ')}</span>` : "";
+      const hp = _hrProbability(p, opposingSP);
+      const hrLine = hp !== null
+        ? ` <span style="color:var(--accent);font-weight:600;">· HR prob ${(hp * 100).toFixed(1)}%</span>`
+        : "";
+      html += `<li><strong>${p.name}</strong> <span class="muted">(${p.pos || "-"})</span>${statLine}${hrLine}</li>`;
     }
     html += `</ol>`;
     return html;
@@ -1037,14 +1094,14 @@ function _formatGamePreviewUpcoming(preview) {
         <ul>${fmtBatters(preview.awayBatters)}</ul>
         <h5>${preview.awayName} ${preview.awayLineupSource === 'posted' ? 'posted lineup' : 'projected lineup'}</h5>
         ${preview.awayLineupSource === 'projected' ? '<p class="muted" style="font-size:0.8rem;margin:0.2rem 0;">Based on the team\'s most recent finalized game (heuristic; will update when the official card is posted ~3h before first pitch).</p>' : ''}
-        ${fmtLineup(preview.awayLineup)}
+        ${fmtLineup(preview.awayLineup, preview.homePitcher)}
       </div>
       <div class="preview-card">
         <h5>${preview.homeName} top hitters (by 2026 OPS)</h5>
         <ul>${fmtBatters(preview.homeBatters)}</ul>
         <h5>${preview.homeName} ${preview.homeLineupSource === 'posted' ? 'posted lineup' : 'projected lineup'}</h5>
         ${preview.homeLineupSource === 'projected' ? '<p class="muted" style="font-size:0.8rem;margin:0.2rem 0;">Based on the team\'s most recent finalized game (heuristic; will update when the official card is posted ~3h before first pitch).</p>' : ''}
-        ${fmtLineup(preview.homeLineup)}
+        ${fmtLineup(preview.homeLineup, preview.awayPitcher)}
       </div>
     </div>
   `;

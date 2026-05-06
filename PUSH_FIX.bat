@@ -38,7 +38,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Dashboard projected lineups: client-side fallback when MLB hasn't posted official card"
+    git commit -m "Lineup card: inline AVG/OPS/HR/RBI/PA per batter + per-game HR probability vs opposing SP"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
