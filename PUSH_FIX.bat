@@ -34,7 +34,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Fix daily-slate auto-run: commit models/, inline bake step, sanity-check before scoring"
+    git commit -m "Add BVP module + heuristic projected-lineup fallback (statsapi-only, no scraping)"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
