@@ -25,8 +25,16 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- staging ---
-    git add docs .github models README.md .gitignore requirements.txt LICENSE setup_github.ps1 PUSH_FIX.bat
+    git add docs .github mlb_edge models README.md .gitignore requirements.txt LICENSE setup_github.ps1 PUSH_FIX.bat
     echo done.
+
+    echo --- removing untracked slate files that block rebase [workflow regenerates them daily] ---
+    for /f "delims=" %%f in ('git ls-files --others --exclude-standard 2^>nul') do (
+        echo %%f | findstr /R "^picks_.*\.csv$ ^parlay_.*\.txt$" >nul && (
+            echo removing untracked: %%f
+            del /q /f "%%f" 2>nul
+        )
+    )
     echo.
 
     echo --- staged files ---
