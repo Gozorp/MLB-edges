@@ -38,7 +38,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Better date-picker UX: prev/next arrows + smart empty state with nearest-available chips"
+    git commit -m "Fix Result column: handle Postponed/Suspended games + add AZ/ARI and missing team aliases"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

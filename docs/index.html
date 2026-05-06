@@ -510,7 +510,10 @@ const TEAM_ABBR_ALIASES = {
   "KCR":"KC",  "KC":"KCR",
   "SDP":"SD",  "SD":"SDP",
   "SFG":"SF",  "SF":"SFG",
-  "TBR":"TB",  "TB":"TBR"
+  "TBR":"TB",  "TB":"TBR",
+  "ARI":"AZ",  "AZ":"ARI",
+  "TBD":"TB",  "ANA":"LAA", "LAA":"ANA",
+  "FLA":"MIA", "MIA":"FLA"
 };
 function nameToAbbr(name) {
   if (!name) return "";
@@ -540,8 +543,15 @@ async function fetchMLBResults(date) {
       const homeAbbr = (home.team && home.team.abbreviation)
                     || (home.team && home.team.fileCode && home.team.fileCode.toUpperCase())
                     || nameToAbbr(homeName);
-      const isFinal  = status.abstractGameState === "Final"
-                    || /final/i.test(status.detailedState || "");
+      // A game is truly "final" (decided) only if it actually played to completion.
+      // Postponed/Suspended/Cancelled games carry abstractGameState="Final" in
+      // statsapi but no winner, so we explicitly exclude them.
+      const detailed = (status.detailedState || "").toLowerCase();
+      const wasNotPlayed = /postpon|suspend|cancel/.test(detailed);
+      const isFinal = !wasNotPlayed && (
+        status.abstractGameState === "Final"
+        || /final/i.test(status.detailedState || "")
+      );
       const aSc = (away.score != null) ? away.score : null;
       const hSc = (home.score != null) ? home.score : null;
       let winner = null;
