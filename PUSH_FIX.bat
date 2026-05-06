@@ -28,13 +28,9 @@ set "LOG=%~dp0push.log"
     git add docs .github mlb_edge models README.md .gitignore requirements.txt LICENSE setup_github.ps1 PUSH_FIX.bat
     echo done.
 
-    echo --- removing untracked slate files that block rebase [workflow regenerates them daily] ---
-    for /f "delims=" %%f in ('git ls-files --others --exclude-standard 2^>nul') do (
-        echo %%f | findstr /R "^picks_.*\.csv$ ^parlay_.*\.txt$" >nul && (
-            echo removing untracked: %%f
-            del /q /f "%%f" 2>nul
-        )
-    )
+    echo --- removing untracked picks/parlay files that block rebase [workflow regenerates daily] ---
+    python -c "import os,subprocess; out=subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True); removed=[f for f in out.splitlines() if (f.startswith('picks_') or f.startswith('parlay_')) and os.path.exists(f) and (os.remove(f) or True)]; print('removed', len(removed), 'untracked slate files:', removed)" 2>&1
+    echo clean exit code: !errorlevel!
     echo.
 
     echo --- staged files ---
