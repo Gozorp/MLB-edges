@@ -35,8 +35,12 @@ set "LOG=%~dp0push.log"
     echo abort sequence complete [errors above are fine — means nothing to abort]
     echo.
 
-    echo --- resolving any UU [unmerged] files by taking origin's version ---
-    python -c "import subprocess as s; out = s.check_output(['git','status','--porcelain'], text=True); files = [l[3:].strip() for l in out.splitlines() if l.startswith('UU')]; [s.run(['git','checkout','--theirs',f]) or s.run(['git','add',f]) for f in files]; print('resolved', len(files), 'unmerged files:', files)" 2>&1
+    echo --- resolving any UU [unmerged] files by explicitly taking origin/main's version ---
+    REM During a rebase, "--theirs" means the local commit being replayed; during a merge it means upstream.
+    REM To avoid that inversion entirely, we fetch origin and check out origin/main's version directly.
+    REM This guarantees we keep the auto-run's fresh data instead of clobbering it with stale local copies.
+    git fetch origin main 2>&1
+    python -c "import subprocess as s; out = s.check_output(['git','status','--porcelain'], text=True); files = [l[3:].strip() for l in out.splitlines() if l.startswith('UU')]; [s.run(['git','checkout','origin/main','--',f]) or s.run(['git','add',f]) for f in files]; print('resolved', len(files), 'unmerged files (using origin/main):', files)" 2>&1
     echo unmerged-resolution sequence complete
     echo.
 
@@ -58,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Fix actual-curve fetch: statsapi /winProbability returns top-level array, not wrapped object"
+    git commit -m "PUSH_FIX: resolve UU files via origin/main instead of --theirs (avoids clobbering auto-run data)"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
