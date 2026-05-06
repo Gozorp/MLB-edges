@@ -38,7 +38,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Add BVP module + heuristic projected-lineup fallback (statsapi-only, no scraping)"
+    git commit -m "Better date-picker UX: prev/next arrows + smart empty state with nearest-available chips"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

@@ -248,6 +248,36 @@
   .preview-impact { font-size: 0.83rem; color: var(--muted); margin: 0.4rem 0 0 0; line-height: 1.5; }
   .preview-loading { padding: 1rem; color: var(--muted); font-size: 0.9rem; font-style: italic; }
 
+
+  /* ----- Rich empty state when a date has no slate ----- */
+  .empty-rich {
+    text-align: left; padding: 1.5rem 2rem; max-width: 700px; margin: 0 auto;
+  }
+  .empty-rich h3 { margin-top: 0; color: var(--text); font-size: 1.1rem; }
+  .empty-rich p  { color: var(--muted); margin: 0.6rem 0; line-height: 1.5; }
+  .empty-rich .empty-nav { margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .empty-rich .empty-jump {
+    background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.45rem 0.85rem; font-size: 0.9rem; cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .empty-rich .empty-jump:hover { border-color: var(--accent); color: var(--accent); }
+  .empty-rich .empty-chips {
+    display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem;
+  }
+  .empty-rich .empty-chips .date-chip { cursor: pointer; }
+
+  /* ----- Picker arrow buttons ----- */
+  .picker-arrow {
+    background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 0.4rem 0.6rem; font-size: 0.95rem; cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .picker-arrow:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .picker-arrow:disabled { opacity: 0.4; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
@@ -264,7 +294,9 @@
   </div>
 
   <div class="picker">
+    <button id="prevBtn" class="picker-arrow" title="Jump to previous available date">‹</button>
     <input type="date" id="datePicker" />
+    <button id="nextBtn" class="picker-arrow" title="Jump to next available date">›</button>
     <button id="loadBtn">Load slate</button>
     <button id="refreshBtn" title="Re-fetch with cache bypass">Refresh data</button>
     <span id="liveIndicator"></span>
@@ -1532,6 +1564,79 @@ function addDays(iso, n) {
 // =============================================================================
 // Live / archive / pending state indicator
 // =============================================================================
+
+// =============================================================================
+// Helpers for navigating the manifest of available dates
+// =============================================================================
+function _findPrevAvailable(target, available) {
+  const earlier = (available || []).filter(d => d < target).sort();
+  return earlier.length ? earlier[earlier.length - 1] : null;
+}
+function _findNextAvailable(target, available) {
+  const later = (available || []).filter(d => d > target).sort();
+  return later.length ? later[0] : null;
+}
+function _findNearestDates(target, available, n) {
+  if (!available || !available.length) return [];
+  const tgt = new Date(target).getTime();
+  const sorted = [...available].sort();
+  const withDist = sorted.map(d => ({date: d, dist: Math.abs(new Date(d).getTime() - tgt)}));
+  withDist.sort((a, b) => a.dist - b.dist);
+  return withDist.slice(0, n || 6).map(x => x.date).sort();
+}
+
+function jumpToDate(date) {
+  const picker = document.getElementById("datePicker");
+  if (picker) picker.value = date;
+  loadSlate(date);
+}
+window.jumpToDate = jumpToDate;
+
+function renderEmptyState(date, manifestDates) {
+  const today = todayISO();
+  const isFuture = date > today;
+  const isToday  = date === today;
+  const prev = _findPrevAvailable(date, manifestDates);
+  const next = _findNextAvailable(date, manifestDates);
+  const nearest = _findNearestDates(date, manifestDates, 6);
+
+  let why;
+  if (isFuture) {
+    why = "This date is in the future. The auto-run workflow generates each day's slate at 11 UTC, so future dates won't have data until that morning.";
+  } else if (isToday) {
+    why = "Today's slate may not have been generated yet — the auto-run fires at 11 UTC each morning. If it's earlier than that, check back later.";
+  } else {
+    why = "No slate is archived for this date. The auto-run only started recently, so earlier dates may not have published data unless backfilled manually.";
+  }
+
+  let nav = '';
+  if (prev) {
+    nav += `<button class="empty-jump" onclick="jumpToDate('${prev}')">‹ Previous available · ${prev}</button>`;
+  }
+  if (next) {
+    nav += `<button class="empty-jump" onclick="jumpToDate('${next}')">Next available · ${next} ›</button>`;
+  }
+
+  let chips = '';
+  if (nearest.length) {
+    chips = `<p style="margin-top:1.2rem;">Nearest available dates (click to load):</p><div class="empty-chips">`
+          + nearest.map(d => {
+              const cls = `date-chip${d === today ? ' today' : ''}`;
+              return `<span class="${cls}" onclick="jumpToDate('${d}')">${d}</span>`;
+            }).join('')
+          + `</div>`;
+  }
+
+  return `
+    <div class="empty empty-rich">
+      <h3>No slate available for ${date}</h3>
+      <p>${why}</p>
+      <div class="empty-nav">${nav}</div>
+      ${chips}
+    </div>
+  `;
+}
+
 function classifyDate(date) {
   const today = todayISO();
   if (date === today) return "live";
@@ -1652,9 +1757,7 @@ async function loadSlate(date, { bust = false } = {}) {
 
     const slateHtml = rows.length
       ? renderSlate(rows, gradeMap, results)
-      : `<div class="empty">No slate file found at <code>picks_${date}_diag.csv</code>.
-         Run <code>python predict.py ${date}</code> locally and push, or wait for
-         the nightly auto-run workflow to publish.</div>`;
+      : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
     const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
 
     document.getElementById("slate").innerHTML = slateHtml;
@@ -1803,6 +1906,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("loadBtn").addEventListener("click", () => {
     loadSlate(picker.value);
+  });
+
+  // Prev/next arrow buttons jump to adjacent available dates from the manifest
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    const dates = (window.__manifest && window.__manifest.dates) || [];
+    const target = _findPrevAvailable(picker.value, dates);
+    if (target) jumpToDate(target);
+  });
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    const dates = (window.__manifest && window.__manifest.dates) || [];
+    const target = _findNextAvailable(picker.value, dates);
+    if (target) jumpToDate(target);
   });
   document.getElementById("refreshBtn").addEventListener("click", () => {
     loadSlate(picker.value, { bust: true });
