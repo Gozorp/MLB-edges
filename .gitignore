@@ -56,6 +56,14 @@ data/state/auto_weight_update.lock
 *.h5
 *.npy
 
+# But: model bundles in models/ MUST be tracked so the GitHub Actions
+# auto-runner has a model to score with.  These are small (<10MB each)
+# and required at scoring time.
+!models/
+!models/*.pkl
+!models/*.json
+models/archive/
+
 # =============================================================================
 # Run logs (regenerated on every run, no value in versioning)
 # =============================================================================
@@ -82,17 +90,4 @@ scratch/
 
 # =============================================================================
 # Sandbox / runtime cache directories that leaked from earlier env setups
-# =============================================================================
-.cache/
-.fake-home/
-.pb_cache/
-.pip-tmp/
-.pip-tmpdir/
-.piptmp/
-.pyb_home/
-.pybaseball/
-.pybaseball_cache/
-.pybaseball_home/
-.runtime/
-.runtime_home/
-.touch_resync.txt
+# =================

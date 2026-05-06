@@ -25,7 +25,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- staging ---
-    git add docs .github README.md .gitignore requirements.txt LICENSE setup_github.ps1 PUSH_FIX.bat
+    git add docs .github models README.md .gitignore requirements.txt LICENSE setup_github.ps1 PUSH_FIX.bat
     echo done.
     echo.
 
@@ -34,7 +34,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Past-game preview: actual SP, bullpen used in order, full batting order with game lines"
+    git commit -m "Fix daily-slate auto-run: commit models/, inline bake step, sanity-check before scoring"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

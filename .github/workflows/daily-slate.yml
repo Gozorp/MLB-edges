@@ -1,25 +1,25 @@
 # =============================================================================
 # daily-slate.yml
 # -----------------------------------------------------------------------------
-# Runs predict.py once a day to generate the latest slate, then commits the
-# new picks_*_diag.csv and parlay_*.txt back to the repo.  The bake-data
-# workflow then fires on the new commit and copies the files into docs/data/
-# so the dashboard auto-updates.
+# Once-a-day autonomous slate generator.  Runs predict.py to score the day's
+# games, then BAKES the resulting picks_*.csv and parlay_*.txt directly into
+# docs/data/ as part of the same workflow run.  Both the new slate output and
+# the baked dashboard data ship in a single commit.
 #
-# This is the "autonomous scrape + recalibrate" mechanism.  Pure browser-
-# side dashboards CAN'T do this — Python doesn't run in the browser.  By
-# running predict.py in CI, we get the freshness without standing up a
-# backend server.
+# Why bake inline (instead of relying on the separate bake-data workflow):
+# pushes made via GITHUB_TOKEN do NOT trigger other workflows, so the
+# bake-data workflow won't fire on commits this job pushes.  Doing the bake
+# in the same job avoids that limitation.
 #
 # Trigger:
-#   - schedule: 7am UTC (~3am ET, before any first-pitch)
-#   - manual via "Run workflow"
+#   - schedule: 11:00 UTC (~7am ET, after lineups firm up overnight)
+#   - manual via "Run workflow" with optional slate_date input
 # =============================================================================
 name: Daily slate run
 
 on:
   schedule:
-    - cron: "0 7 * * *"     # daily at 07:00 UTC
+    - cron: "0 11 * * *"     # daily at 11:00 UTC
   workflow_dispatch:
     inputs:
       slate_date:
@@ -49,11 +49,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Sanity-check that the model bundle is present
+        run: |
+          if [ ! -f "models/latest.pkl" ]; then
+            echo "::error::models/latest.pkl is missing - predict.py cannot score without it."
+            ls -la models/ || true
+            exit 1
+          fi
+          ls -lh models/
+
       - name: Write .env from secret
         run: |
           echo "ODDS_API_KEY=${{ secrets.ODDS_API_KEY }}" > .env
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
 
       - name: Run predict.py
         run: |
@@ -64,14 +71,35 @@ jobs:
             python predict.py "$DATE_ARG" --skip-weights
           fi
 
-      - name: Commit new slate output
+      - name: Bake new slate files into docs/data/
+        run: |
+          mkdir -p docs/data
+          cp -v picks_*_diag.csv          docs/data/ 2>/dev/null || echo "no diag CSVs to bake"
+          cp -v picks_*_news_overrides.csv docs/data/ 2>/dev/null || echo "no news CSVs to bake"
+          cp -v parlay_*.txt              docs/data/ 2>/dev/null || echo "no parlay TXTs to bake"
+
+      - name: Rebuild manifest.json of available dates
+        run: |
+          python3 - <<'PY'
+          import json, re
+          from pathlib import Path
+          d = Path("docs/data")
+          dates = set()
+          for f in d.glob("picks_*_diag.csv"):
+              m = re.search(r"(\d{4}-\d{2}-\d{2})", f.name)
+              if m: dates.add(m.group(1))
+          (d / "manifest.json").write_text(json.dumps({"dates": sorted(dates, reverse=True)}, indent=2))
+          print(f"manifest now has {len(dates)} dates")
+          PY
+
+      - name: Commit + push slate output and baked data in one shot
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add picks_*.csv parlay_*.txt 2>/dev/null || true
+          git add picks_*.csv parlay_*.txt docs/data/ 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "no slate changes to commit"
+            echo "no changes to commit (nothing changed today)"
           else
-            git commit -m "daily-slate: $(date -u +%Y-%m-%d) auto-run"
+            git commit -m "daily-slate: $(date -u +%Y-%m-%d) auto-run + bake"
             git push
           fi
