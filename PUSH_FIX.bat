@@ -20,6 +20,30 @@ set "LOG=%~dp0push.log"
         exit /b 1
     )
 
+    echo --- removing any stale .git/index.lock ---
+    if exist ".git\index.lock" (
+        del /f /q ".git\index.lock" 2>nul
+        echo deleted stale lock
+    ) else (
+        echo no stale lock
+    )
+    echo.
+
+    echo --- aborting any in-progress rebase/merge from a previous failed run ---
+    git rebase --abort 2>nul
+    git merge --abort 2>nul
+    echo abort sequence complete [errors above are fine — means nothing to abort]
+    echo.
+
+    echo --- resolving any UU [unmerged] picks/parlay files by taking origin's version ---
+    for /f "tokens=2 delims= " %%f in ('git status --porcelain ^| findstr /R "^UU"') do (
+        echo resolving conflict on %%f via --theirs
+        git checkout --theirs "%%f" 2>nul
+        git add "%%f" 2>nul
+    )
+    echo unmerged-resolution sequence complete
+    echo.
+
     echo --- git status before ---
     git status --short
     echo.
@@ -38,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Add unique-visit counter pill in header (counterapi.dev, localStorage-gated)"
+    git commit -m "Win-probability chart per row: model forecast (dashed) + actual path overlay when game is final"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
