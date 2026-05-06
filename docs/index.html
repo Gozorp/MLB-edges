@@ -278,6 +278,23 @@
   .picker-arrow:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
   .picker-arrow:disabled { opacity: 0.4; cursor: not-allowed; }
 
+
+  /* ----- Unique visit counter (header pill) ----- */
+  .visit-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.25rem 0.7rem; margin-left: auto;
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 999px; font-size: 0.82rem; color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .visit-pill .visit-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(63, 185, 80, 0.6);
+  }
+  .visit-pill strong { color: var(--text); font-weight: 600; }
+  .visit-pill.muted-dim { opacity: 0.55; }
+
 </style>
 </head>
 <body>
@@ -285,6 +302,10 @@
 <header>
   <h1>mlb_edge</h1>
   <div class="meta">Daily MLB slate predictions with multi-rule grading</div>
+  <span id="visitPill" class="visit-pill muted-dim" title="Unique visit counter — one bump per browser">
+    <span class="visit-dot"></span>
+    <span id="visitText">… loading visits</span>
+  </span>
 </header>
 
 <main>
@@ -363,10 +384,52 @@
 
 <footer>
   <a href="https://github.com/Gozorp/MLB-edges">GitHub</a> ·
-  Built with vanilla JS · No analytics, no cookies
+  Built with vanilla JS · Visit counter via counterapi.dev (anonymous, no fingerprinting)
 </footer>
 
 <script>
+
+// =============================================================================
+// Unique visit counter (client-side gated by localStorage)
+// =============================================================================
+// Uses counterapi.dev — a free no-signup counter service.  Each browser
+// increments the counter once on first visit; subsequent reloads only read
+// the count.  This is "unique by browser" — same person on a different device
+// or after clearing storage will count as new.  For a static site without a
+// backend, that's the best we can do without third-party analytics.
+// =============================================================================
+async function _initVisitCounter() {
+  const VISIT_KEY = "mlbedge_visited_v1";
+  const NAMESPACE = "gozorp-mlb-edges";
+  const COUNTER   = "unique_visits";
+  const pill = document.getElementById("visitPill");
+  const text = document.getElementById("visitText");
+  if (!pill || !text) return;
+
+  const isNew = !localStorage.getItem(VISIT_KEY);
+  const endpoint = isNew
+    ? `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`
+    : `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}`;
+
+  try {
+    const r = await fetch(endpoint, { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json();
+    const count = (typeof j.count === "number") ? j.count
+                : (typeof j.value === "number") ? j.value
+                : null;
+    if (count == null) throw new Error("count field not found in response");
+    if (isNew) localStorage.setItem(VISIT_KEY, "1");
+    text.innerHTML = `<strong>${count.toLocaleString()}</strong> unique visit${count === 1 ? "" : "s"}`;
+    pill.classList.remove("muted-dim");
+  } catch (e) {
+    console.warn("visit counter failed:", e);
+    text.textContent = "visits offline";
+  }
+}
+document.addEventListener("DOMContentLoaded", _initVisitCounter);
+
+
 // =============================================================================
 // Dashboard logic — load CSV + TXT from the bundled data folder
 // =============================================================================
