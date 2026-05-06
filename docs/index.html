@@ -427,9 +427,10 @@ async function _initVisitCounter() {
   if (!pill || !text) return;
 
   const isNew = !localStorage.getItem(VISIT_KEY);
+  // Trailing slash on the read endpoint avoids a 301 that the fetch wouldn't follow cleanly.
   const endpoint = isNew
     ? `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`
-    : `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}`;
+    : `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/`;
 
   try {
     const r = await fetch(endpoint, { cache: "no-store" });
