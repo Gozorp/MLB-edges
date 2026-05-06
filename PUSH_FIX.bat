@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Visit counter: trailing-slash on read endpoint to avoid 301 (was showing offline for return visitors)"
+    git commit -m "Visit counter resilience: cache last count in localStorage + fall back to /up if read endpoint fails"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

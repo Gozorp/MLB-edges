@@ -420,6 +420,7 @@
 // =============================================================================
 async function _initVisitCounter() {
   const VISIT_KEY = "mlbedge_visited_v1";
+  const COUNT_KEY = "mlbedge_last_count_v1";  // cache the last known count
   const NAMESPACE = "gozorp-mlb-edges";
   const COUNTER   = "unique_visits";
   const pill = document.getElementById("visitPill");
@@ -427,26 +428,49 @@ async function _initVisitCounter() {
   if (!pill || !text) return;
 
   const isNew = !localStorage.getItem(VISIT_KEY);
-  // Trailing slash on the read endpoint avoids a 301 that the fetch wouldn't follow cleanly.
-  const endpoint = isNew
-    ? `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`
-    : `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/`;
 
-  try {
-    const r = await fetch(endpoint, { cache: "no-store" });
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const j = await r.json();
-    const count = (typeof j.count === "number") ? j.count
-                : (typeof j.value === "number") ? j.value
-                : null;
-    if (count == null) throw new Error("count field not found in response");
+  // Show cached count immediately so the UI never shows "offline" while we wait
+  // for the network.  We update it after the fetch succeeds.
+  const cached = parseInt(localStorage.getItem(COUNT_KEY) || "0", 10);
+  if (cached > 0) {
+    text.innerHTML = `<strong>${cached.toLocaleString()}</strong> unique visit${cached === 1 ? "" : "s"}`;
+    pill.classList.remove("muted-dim");
+  }
+
+  // Try /up for new visits, /up as fallback for returning if read fails.
+  // Both endpoints return the current count.
+  const tryEndpoints = isNew
+    ? [`https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`]
+    : [
+        `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/`,
+        `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`,
+      ];
+
+  let count = null;
+  for (const url of tryEndpoints) {
+    try {
+      const r = await fetch(url, { cache: "no-store", redirect: "follow" });
+      if (!r.ok) continue;
+      const j = await r.json();
+      const c = (typeof j.count === "number") ? j.count
+              : (typeof j.value === "number") ? j.value
+              : null;
+      if (c != null) { count = c; break; }
+    } catch (e) {
+      console.warn("visit counter endpoint failed:", url, e);
+    }
+  }
+
+  if (count != null) {
     if (isNew) localStorage.setItem(VISIT_KEY, "1");
+    localStorage.setItem(COUNT_KEY, String(count));
     text.innerHTML = `<strong>${count.toLocaleString()}</strong> unique visit${count === 1 ? "" : "s"}`;
     pill.classList.remove("muted-dim");
-  } catch (e) {
-    console.warn("visit counter failed:", e);
+  } else if (cached <= 0) {
+    // No network result and no cached count to fall back on
     text.textContent = "visits offline";
   }
+  // else: keep the cached count we already showed; don't flip to "offline"
 }
 document.addEventListener("DOMContentLoaded", _initVisitCounter);
 
