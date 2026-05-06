@@ -38,7 +38,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Fix Result column: handle Postponed/Suspended games + add AZ/ARI and missing team aliases"
+    git commit -m "Upgrade projected lineup: real handedness, recency-weighted starts, IL filter via active roster"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

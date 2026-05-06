@@ -158,6 +158,43 @@ def _boxscore_lineup(game_pk: int, team_id: int) -> List[Dict]:
 # ----------------------------------------------------------------------------
 # Top-level
 # ----------------------------------------------------------------------------
+def _get_active_roster_ids(team_id: int) -> set:
+    """Return IDs currently on the team's active 26-man roster.  Used to drop
+    players who have been moved to the IL since their last start (the boxscore
+    projection would otherwise still treat them as starters)."""
+    j = _http_get(f"{STATSAPI_BASE}/teams/{team_id}/roster?rosterType=active")
+    if not j:
+        return set()
+    out = set()
+    for entry in j.get("roster", []):
+        person = entry.get("person", {})
+        pid = person.get("id")
+        if pid:
+            out.add(int(pid))
+    return out
+
+
+def _fetch_handedness(player_ids) -> Dict[int, str]:
+    """Batch-fetch each player's batting side ('L', 'R', 'S').  Boxscore data
+    sometimes returns an empty batSide which kills our platoon adjustment;
+    /people/{ids} is the authoritative source."""
+    ids = list({int(p) for p in player_ids if p})
+    if not ids:
+        return {}
+    url = (f"{STATSAPI_BASE}/people?personIds=" + ",".join(str(i) for i in ids))
+    j = _http_get(url)
+    if not j:
+        return {}
+    out = {}
+    for p in j.get("people", []) or []:
+        pid = p.get("id")
+        if not pid:
+            continue
+        code = ((p.get("batSide") or {}).get("code") or "?").upper()
+        out[int(pid)] = code
+    return out
+
+
 def _platoon_boost(bat_hand: str, sp_throws: str) -> float:
     if bat_hand == "S":
         return PLATOON_BOOST_SWITCH
@@ -174,19 +211,36 @@ def project_lineup(
     exclude_injured: Optional[Set[int]] = None,
     before_date: Optional[str] = None,
     use_cache: bool = True,
+    apply_active_roster_filter: bool = True,
+    use_authoritative_handedness: bool = True,
 ) -> List[int]:
     """Return a projected batting order of 9 player IDs for `team_id`.
+
+    The projector uses three signals layered together:
+      1. **Recency-weighted start frequency** — how often each player has
+         started recently, with the most-recent 3 games counted 2x so day-off
+         patterns and platoon-day rotations don't get washed out by stale data.
+      2. **Platoon adjustment** — opposite-handed bats and switch-hitters get
+         a small boost vs the announced opposing SP.  This requires real
+         handedness data, which we fetch from /people in batch (boxscore
+         occasionally returns blank batSide).
+      3. **Active-roster filter** — players moved to the IL since their last
+         start are dropped automatically by checking the team's current active
+         26-man roster.
 
     Args:
         team_id: MLB team ID (statsapi).
         opposing_pitcher_throws: "L" or "R" — biases toward opposite-handed
-            and switch-hitters in the projection.
+            and switch-hitters.
         lookback_games: how many recent Final games to inspect.
-        exclude_injured: set of player IDs to drop from consideration (e.g.
-            from `injury_news.py`).  Pass None for no exclusion.
-        before_date: ISO date "YYYY-MM-DD" — use games strictly before this
-            date (useful for backtesting).  None = today.
+        exclude_injured: extra player IDs to drop (combined with the active-
+            roster filter).
+        before_date: ISO date — use games strictly before this date (backtest).
         use_cache: read from / write to data/cache/projected_lineup/.
+        apply_active_roster_filter: drop players not on today's 26-man roster.
+            Disable for backtesting against historical states.
+        use_authoritative_handedness: fetch batSide from /people (slower,
+            more accurate) instead of relying on boxscore.
 
     Returns:
         List of 9 player IDs in projected batting-order.  Returns [] on
@@ -205,25 +259,51 @@ def project_lineup(
         log.warning("no recent games found for team %s", team_id)
         return []
 
-    starts: Counter[int] = Counter()
+    # Recency weights: most recent game = 2x, second most = 2x, third = 2x,
+    # earlier games = 1x.  Captures manager rotation patterns where the last
+    # 2-3 starts are the strongest signal of today's lineup.
+    weights = [1.0] * len(pks)
+    for i in range(min(3, len(pks))):
+        weights[-(i + 1)] = 2.0
+    total_weight = sum(weights)
+
+    weighted_starts: Dict[int, float] = defaultdict(float)
     positions: Dict[int, List[int]] = defaultdict(list)
     meta: Dict[int, Dict] = {}
-    for pk in pks:
+    for game_idx, pk in enumerate(pks):
+        w = weights[game_idx]
         for entry in _boxscore_lineup(pk, team_id):
             pid = entry["id"]
-            starts[pid] += 1
+            weighted_starts[pid] += w
             positions[pid].append(entry["order"])
             meta[pid] = entry
 
-    excluded = exclude_injured or set()
+    # Pull handedness from the authoritative source if requested
+    handedness: Dict[int, str] = {}
+    if use_authoritative_handedness:
+        handedness = _fetch_handedness(meta.keys())
+
+    # Active-roster filter: drop anyone who's been IL'd since their last start
+    active_ids: Optional[set] = None
+    if apply_active_roster_filter:
+        active_ids = _get_active_roster_ids(team_id)
+        if not active_ids:
+            log.warning("active roster fetch returned empty for team %s; "
+                        "skipping IL filter for this run", team_id)
+            active_ids = None
+
+    excluded = set(exclude_injured or set())
     scored = []
-    for pid, n_starts in starts.items():
+    for pid, w_starts in weighted_starts.items():
         if pid in excluded:
             continue
+        if active_ids is not None and pid not in active_ids:
+            log.debug("dropping %s (not on active roster — likely IL)", meta[pid].get("name"))
+            continue
         m = meta[pid]
-        score = (n_starts / lookback_games) + _platoon_boost(
-            m.get("bats", "?"), sp_throws
-        )
+        bats = handedness.get(pid) or m.get("bats", "?") or "?"
+        platoon = _platoon_boost(bats, sp_throws)
+        score = (w_starts / total_weight) + platoon
         avg_order = sum(positions[pid]) / len(positions[pid])
         scored.append({
             "id": pid,
@@ -231,11 +311,12 @@ def project_lineup(
             "avg_order": avg_order,
             "name": m.get("name", ""),
             "pos": m.get("pos", ""),
-            "bats": m.get("bats", ""),
-            "starts": n_starts,
+            "bats": bats,
+            "starts": int(round(w_starts)),
+            "platoon_boost": round(platoon, 3),
         })
 
-    # Top 9 by start-frequency + platoon, then resorted by typical batting slot
+    # Take top 9 by score (start-recency + platoon), then resort by avg slot
     scored.sort(key=lambda x: -x["score"])
     top9 = scored[:9]
     top9.sort(key=lambda x: x["avg_order"])
@@ -250,35 +331,53 @@ def project_lineup_with_detail(
     team_id: int, opposing_pitcher_throws: str = "R", *, lookback_games: int = 7,
     exclude_injured: Optional[Set[int]] = None,
 ) -> List[Dict]:
-    """Same as project_lineup but returns enriched dicts (for debugging / display)."""
+    """Same heuristic as project_lineup but returns enriched dicts ordered by
+    score (debug / display).  Uses the same recency-weighted scoring + active-
+    roster filter + authoritative handedness as the production path."""
     sp_throws = (opposing_pitcher_throws or "R").upper()
     pks = _team_recent_final_pks(team_id, lookback_games)
     if not pks:
         return []
-    starts: Counter[int] = Counter()
+
+    # Recency weights: last 3 games count 2x, earlier games 1x
+    weights = [1.0] * len(pks)
+    for k in range(min(3, len(pks))):
+        weights[-(k + 1)] = 2.0
+    total_weight = sum(weights)
+
+    weighted_starts: Dict[int, float] = defaultdict(float)
     positions: Dict[int, List[int]] = defaultdict(list)
     meta: Dict[int, Dict] = {}
-    for pk in pks:
+    for game_idx, pk in enumerate(pks):
+        w = weights[game_idx]
         for e in _boxscore_lineup(pk, team_id):
             pid = e["id"]
-            starts[pid] += 1
+            weighted_starts[pid] += w
             positions[pid].append(e["order"])
             meta[pid] = e
-    excluded = exclude_injured or set()
+
+    handedness = _fetch_handedness(meta.keys())
+    active_ids = _get_active_roster_ids(team_id) or None
+    excluded = set(exclude_injured or set())
+
     scored = []
-    for pid, n in starts.items():
+    for pid, ws in weighted_starts.items():
         if pid in excluded:
             continue
+        if active_ids is not None and pid not in active_ids:
+            continue
         m = meta[pid]
+        bats = handedness.get(pid) or m.get("bats", "?") or "?"
+        platoon = _platoon_boost(bats, sp_throws)
         scored.append({
             "id": pid,
             "name": m.get("name", ""),
             "pos": m.get("pos", ""),
-            "bats": m.get("bats", ""),
-            "starts": n,
+            "bats": bats,
+            "starts": int(round(ws)),
             "avg_order": round(sum(positions[pid]) / len(positions[pid]), 2),
-            "score": round((n / lookback_games)
-                           + _platoon_boost(m.get("bats", "?"), sp_throws), 3),
+            "score": round((ws / total_weight) + platoon, 3),
+            "platoon": round(platoon, 3),
         })
     scored.sort(key=lambda x: -x["score"])
     return scored[:9]
