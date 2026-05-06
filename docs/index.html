@@ -1048,7 +1048,11 @@ async function _fetchActualWinProb(gamePk) {
     const r = await fetch(`https://statsapi.mlb.com/api/v1/game/${gamePk}/winProbability`, { cache: "no-store" });
     if (!r.ok) return null;
     const j = await r.json();
-    return Array.isArray(j.winProbability) ? j.winProbability : null;
+    // statsapi returns a top-level JSON array of at-bat entries (not an
+    // object with a `winProbability` field), so unwrap accordingly.
+    if (Array.isArray(j)) return j;
+    if (j && Array.isArray(j.winProbability)) return j.winProbability;
+    return null;
   } catch (e) {
     console.warn("winProbability fetch failed:", e);
     return null;

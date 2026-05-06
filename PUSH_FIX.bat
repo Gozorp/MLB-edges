@@ -35,12 +35,8 @@ set "LOG=%~dp0push.log"
     echo abort sequence complete [errors above are fine — means nothing to abort]
     echo.
 
-    echo --- resolving any UU [unmerged] picks/parlay files by taking origin's version ---
-    for /f "tokens=2 delims= " %%f in ('git status --porcelain ^| findstr /R "^UU"') do (
-        echo resolving conflict on %%f via --theirs
-        git checkout --theirs "%%f" 2>nul
-        git add "%%f" 2>nul
-    )
+    echo --- resolving any UU [unmerged] files by taking origin's version ---
+    python -c "import subprocess as s; out = s.check_output(['git','status','--porcelain'], text=True); files = [l[3:].strip() for l in out.splitlines() if l.startswith('UU')]; [s.run(['git','checkout','--theirs',f]) or s.run(['git','add',f]) for f in files]; print('resolved', len(files), 'unmerged files:', files)" 2>&1
     echo unmerged-resolution sequence complete
     echo.
 
@@ -62,7 +58,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Win-probability chart per row: model forecast (dashed) + actual path overlay when game is final"
+    git commit -m "Fix actual-curve fetch: statsapi /winProbability returns top-level array, not wrapped object"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
