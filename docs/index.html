@@ -2302,6 +2302,54 @@ async function silentRefresh(date) {
   }
 }
 
+
+// Synthesize "Pending" rows for MLB games on the slate that aren't in the
+// picks CSV.  Happens when a workflow run fires before MLB confirms probable
+// pitchers — predict.py skips TBD games and they don't appear in the diag.
+// We still want them visible on the dashboard with a clear pending state.
+function _addPendingGames(rows, results) {
+  if (!results) return rows;
+  const covered = new Set();
+  for (const r of (rows || [])) {
+    const abbrs = (r.matchup || "").match(/[A-Z]{2,4}/g);
+    if (!abbrs || abbrs.length < 2) continue;
+    const a = abbrs[0], b = abbrs[1];
+    covered.add(a + "@" + b);
+    covered.add(b + "@" + a);
+    const aliasOf = (x) => [x, TEAM_ABBR_ALIASES && TEAM_ABBR_ALIASES[x]].filter(Boolean);
+    for (const aA of aliasOf(a)) for (const bA of aliasOf(b)) {
+      covered.add(aA + "@" + bA);
+      covered.add(bA + "@" + aA);
+    }
+  }
+  const seen = new Set();
+  const additions = [];
+  for (const key in results) {
+    const entry = results[key];
+    if (!entry || !entry.gamePk) continue;
+    if (seen.has(entry.gamePk)) continue;
+    seen.add(entry.gamePk);
+    const a = entry.awayAbbr, b = entry.homeAbbr;
+    if (!a || !b) continue;
+    if (covered.has(a + "@" + b)) continue;
+    additions.push({
+      matchup: a + " @ " + b,
+      pick: "TBD",
+      f5_prob: "", full_prob: "", p_model: "", pick_prob: "",
+      fair_prob: "", edge_pp: "", ev_per_dollar: "",
+      tier: "PENDING", signals: "",
+      why_skipped: "Awaiting pitcher confirmation; will be graded by next workflow auto-run (11/14/17/21 UTC)",
+      odds_status: "pending",
+      _synthetic: true,
+    });
+  }
+  if (additions.length) {
+    console.log("[slate] added " + additions.length + " pending rows for games not in CSV:",
+                additions.map(r => r.matchup));
+  }
+  return [...(rows || []), ...additions];
+}
+
 async function loadSlate(date, { bust = false } = {}) {
   const status = document.getElementById("status");
   status.textContent = bust ? "Refreshing (bypassing cache)…" : "Loading…";
@@ -2330,8 +2378,10 @@ async function loadSlate(date, { bust = false } = {}) {
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
-    const rows = csvR.status === "fulfilled" ? parseCSV(csvR.value) : [];
+    const rawRows = csvR.status === "fulfilled" ? parseCSV(csvR.value) : [];
     const results = resR.status === "fulfilled" ? resR.value : {};
+    // Augment with synthetic pending rows for any MLB games missing from the CSV
+    const rows = _addPendingGames(rawRows, results);
 
     // Stash for the query interface
     window.__slate = {

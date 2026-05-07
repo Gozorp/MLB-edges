@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Add HR-hit-vs-predicted-prob section to past-game preview (atomic, validated before write)"
+    git commit -m "Render all MLB games on dashboard: synthetic Pending rows for games missing from picks CSV"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
