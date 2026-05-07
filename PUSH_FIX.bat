@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Restore docs/index.html (was truncated mid-stream) + Stage1/2 + negative-edge A-tier caps"
+    git commit -m "Add HR-hit-vs-predicted-prob section to past-game preview (atomic, validated before write)"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

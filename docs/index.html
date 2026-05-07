@@ -1250,6 +1250,84 @@ function _hrProbability(batter, opposingSP, expectedPAs) {
   return 1 - Math.pow(1 - Math.max(0, Math.min(0.5, r)), N);
 }
 
+
+async function _fetchHomeRunsHit(gamePk) {
+  if (!gamePk) return [];
+  try {
+    const r = await fetch(`https://statsapi.mlb.com/api/v1/game/${gamePk}/playByPlay`, { cache: "no-store" });
+    if (!r.ok) return [];
+    const j = await r.json();
+    const out = [];
+    for (const play of j.allPlays || []) {
+      const result = play.result || {};
+      if (result.eventType !== "home_run" && result.event !== "Home Run") continue;
+      const m = play.matchup || {};
+      const batter = m.batter || {};
+      const pitcher = m.pitcher || {};
+      const about = play.about || {};
+      out.push({
+        batterId: batter.id,
+        batterName: batter.fullName || ("Player " + batter.id),
+        pitcherName: pitcher.fullName || "",
+        inning: about.inning,
+        halfInning: about.halfInning,
+        rbi: result.rbi || 1,
+      });
+    }
+    return out;
+  } catch (e) {
+    console.warn("HR fetch failed:", e);
+    return [];
+  }
+}
+
+function _hrProbFromSeasonStats(playerId, players, opposingSP) {
+  if (!players) return null;
+  const p = players["ID" + playerId];
+  if (!p) return null;
+  const ss = (p.seasonStats && p.seasonStats.batting) || {};
+  const hr = parseInt(ss.homeRuns || 0);
+  const pa = parseInt(ss.plateAppearances || 0);
+  if (pa < 30) return null;
+  const rate = hr / pa;
+  let pf = 1.0;
+  if (opposingSP && opposingSP.hr9 != null) {
+    const phr9 = parseFloat(opposingSP.hr9);
+    if (!isNaN(phr9) && phr9 > 0) pf = Math.max(0.5, Math.min(2.0, phr9 / 1.2));
+  }
+  const r = Math.max(0, Math.min(0.5, rate * pf));
+  return 1 - Math.pow(1 - r, 4.3);
+}
+
+function _renderHomeRunsHit(homeRuns, awayPlayers, homePlayers, awaySP, homeSP) {
+  if (!homeRuns || !homeRuns.length) {
+    return `<div class="preview-card" style="margin-top:0.6rem;">
+      <h5>Home runs hit</h5>
+      <p class="muted" style="font-size:0.88rem;margin:0.3rem 0;">No home runs in this game.</p>
+    </div>`;
+  }
+  let rows = "";
+  for (const hr of homeRuns) {
+    const hitInTopOfInning = hr.halfInning === "top";
+    const opposingSP = hitInTopOfInning ? homeSP : awaySP;
+    const players    = hitInTopOfInning ? awayPlayers : homePlayers;
+    const prob = _hrProbFromSeasonStats(hr.batterId, players, opposingSP);
+    const probStr = prob != null
+      ? `<span style="color:var(--accent);font-weight:600;">${(prob*100).toFixed(1)}%</span>`
+      : `<span class="muted">n/a</span>`;
+    const inningTag = hr.halfInning === "top" ? `T${hr.inning}` : `B${hr.inning}`;
+    rows += `<li><strong>${hr.batterName}</strong> <span class="muted">(${inningTag} vs ${hr.pitcherName || "RP"})</span> &mdash; pre-game HR prob: ${probStr} <span class="muted" style="font-size:0.82rem;">&middot; ${hr.rbi} RBI</span></li>`;
+  }
+  return `<div class="preview-card" style="margin-top:0.6rem;">
+    <h5>Home runs hit &mdash; actual vs season-rate prediction</h5>
+    <ul style="margin:0.3rem 0 0 1.2rem;padding:0;">${rows}</ul>
+    <p class="muted" style="font-size:0.78rem;margin-top:0.5rem;">
+      Pre-game HR prob = 1 - (1 - season HR/PA)^4.3, weighted by opposing SP HR/9 vs league avg (1.2).
+      High actual / low predicted = surprise; low actual / high predicted = the hitter delivered as expected.
+    </p>
+  </div>`;
+}
+
 function _formatGamePreviewFinal(preview) {
   const fmtSP = (sp, teamName) => {
     if (!sp) return `<li class="muted">${teamName} starting pitcher not in boxscore.</li>`;
@@ -1289,6 +1367,7 @@ function _formatGamePreviewFinal(preview) {
         <ul>${preview.homeLineupActual.map(fmtBatter).join("")}</ul>
       </div>
     </div>
+    <div data-hr-section></div>
   `;
 }
 
@@ -1946,6 +2025,23 @@ async function toggleNarrative(i) {
     const preview = await fetchGamePreview(result);
     placeholder.innerHTML = formatGamePreview(preview);
     placeholder.dataset.loaded = "1";
+
+    // For final games: lazy-fetch HRs + render with each batter's season-rate
+    // HR probability for accountability.  Falls back silently on any error.
+    const hrSlot = placeholder.querySelector("[data-hr-section]");
+    if (hrSlot && result && result.isFinal && result.gamePk) {
+      hrSlot.innerHTML = `<p class="muted preview-loading">Loading home runs…</p>`;
+      try {
+        const hrs = await _fetchHomeRunsHit(result.gamePk);
+        const box = await _fetchBoxscore(result.gamePk);
+        const aPlayers = (box && box.teams && box.teams.away && box.teams.away.players) || {};
+        const hPlayers = (box && box.teams && box.teams.home && box.teams.home.players) || {};
+        hrSlot.innerHTML = _renderHomeRunsHit(hrs, aPlayers, hPlayers, preview.awayActualSP, preview.homeActualSP);
+      } catch (hre) {
+        console.warn("HR section fetch failed:", hre);
+        hrSlot.innerHTML = "";
+      }
+    }
   } catch (e) {
     placeholder.innerHTML = `<p class="muted preview-loading">Preview fetch failed: ${e}</p>`;
   }
