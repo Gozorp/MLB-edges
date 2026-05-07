@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Stress-test / anomaly audit: codify edge-noise + blowout-vulnerability checks; add stress_warnings + confidence_downgrade columns to diag CSV (observability v1, no tier change)"
+    git commit -m "daily-slate: 4 cron runs per day (11/14/17/21 UTC) so slate self-heals + visit counter cache fix"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

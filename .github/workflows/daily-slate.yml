@@ -19,7 +19,13 @@ name: Daily slate run
 
 on:
   schedule:
-    - cron: "0 11 * * *"     # daily at 11:00 UTC
+    # Multiple runs per day so the slate self-heals when MLB confirms games
+    # / pitchers / lineups after the morning run.  Each run regenerates
+    # picks_*.csv and parlay_*.txt; the bake step commits only if changed.
+    - cron: "0 11 * * *"     # 7am ET  — catches overnight schedule + SP firming
+    - cron: "0 14 * * *"     # 10am ET — late-add games and SP swaps
+    - cron: "0 17 * * *"     # 1pm ET  — pre-afternoon-game lineup cards
+    - cron: "0 21 * * *"     # 5pm ET  — pre-evening-game lineup cards + odds refresh
   workflow_dispatch:
     inputs:
       slate_date:
