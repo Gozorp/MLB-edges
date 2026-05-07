@@ -1946,6 +1946,23 @@ async function toggleNarrative(i) {
     const preview = await fetchGamePreview(result);
     placeholder.innerHTML = formatGamePreview(preview);
     placeholder.dataset.loaded = "1";
+
+    // For final games: lazy-fetch HRs hit and render with each batter's
+    // season-rate HR probability for accountability.
+    const hrSlot = placeholder.querySelector("[data-hr-section]");
+    if (hrSlot && result && result.isFinal && result.gamePk) {
+      hrSlot.innerHTML = `<p class="muted preview-loading">Loading home runs…</p>`;
+      try {
+        const hrs = await _fetchHomeRunsHit(result.gamePk);
+        const box = await _fetchBoxscore(result.gamePk);
+        const aPlayers = (box && box.teams && box.teams.away && box.teams.away.players) || {};
+        const hPlayers = (box && box.teams && box.teams.home && box.teams.home.players) || {};
+        hrSlot.innerHTML = _renderHomeRunsHit(hrs, aPlayers, hPlayers, preview.awayActualSP, preview.homeActualSP);
+      } catch (hre) {
+        console.warn("HR section fetch failed:", hre);
+        hrSlot.innerHTML = "";
+      }
+    }
   } catch (e) {
     placeholder.innerHTML = `<p class="muted preview-loading">Preview fetch failed: ${e}</p>`;
   }
@@ -2358,104 +2375,4 @@ function answerQuery(q, slate) {
       return `<p>${hits.length} contrarian pick(s) (model picks the market underdog):</p>`
              + hits.map(formatGame).join("");
     }
-    return `<div class="empty">No contrarian picks on ${slate.date} (no fair_prob data).</div>`;
-  }
-
-  // 6. "show <grade>" → all games with that grade
-  const gradeQ = norm.match(/(?:show|list)?\s*([abcd][-+]?)\s*grade/);
-  if (gradeQ) {
-    const target = gradeQ[1].toUpperCase().replace("PLUS", "+").replace("MINUS", "-");
-    const hits = slate.rows.filter(r => {
-      const g = (slate.gradeMap[(r.matchup||"").trim()] || {}).grade;
-      return g === target;
-    });
-    if (hits.length) {
-      return `<p>${hits.length} game(s) graded ${target}:</p>` + hits.map(formatGame).join("");
-    }
-    return `<div class="empty">No ${target}-graded games on ${slate.date}.</div>`;
-  }
-
-  // 7. Fallback: search matchup strings substring-wise
-  const free = slate.rows.filter(r => (r.matchup||"").toLowerCase().includes(norm)
-                                    || (r.pick||"").toLowerCase().includes(norm));
-  if (free.length) return free.map(formatGame).join("");
-
-  return `<div class="empty">
-    Didn't understand "${q}". Try a matchup (<code>ATL vs SEA</code>),
-    a team (<code>NYY</code>), or a category (<code>best pick</code>,
-    <code>parlay legs</code>, <code>contrarian</code>, <code>A grade</code>).
-  </div>`;
-}
-
-function todayISO() {
-  const d = new Date();
-  return d.toISOString().split("T")[0];
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const picker = document.getElementById("datePicker");
-
-  document.getElementById("loadBtn").addEventListener("click", () => {
-    loadSlate(picker.value);
-  });
-
-  // Prev/next arrow buttons jump to adjacent available dates from the manifest
-  document.getElementById("prevBtn").addEventListener("click", () => {
-    const dates = (window.__manifest && window.__manifest.dates) || [];
-    const target = _findPrevAvailable(picker.value, dates);
-    if (target) jumpToDate(target);
-  });
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    const dates = (window.__manifest && window.__manifest.dates) || [];
-    const target = _findNextAvailable(picker.value, dates);
-    if (target) jumpToDate(target);
-  });
-  document.getElementById("refreshBtn").addEventListener("click", () => {
-    loadSlate(picker.value, { bust: true });
-  });
-  picker.addEventListener("change", () => loadSlate(picker.value));
-
-  const ask = () => {
-    const q = document.getElementById("queryInput").value;
-    document.getElementById("queryResult").innerHTML = answerQuery(q, window.__slate);
-  };
-  document.getElementById("askBtn").addEventListener("click", ask);
-  document.getElementById("queryInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") ask();
-  });
-
-  // 1. Load the manifest of available slate dates first
-  const dates = await loadManifest();
-
-  // 2. Pick the best initial date: today if available, else most recent
-  const today = todayISO();
-  let initial = today;
-  if (dates.length && !dates.includes(today)) {
-    initial = dates.find(d => d <= today) || dates[0];
-  }
-  picker.value = initial;
-
-  // 3. Render the date strip
-  renderDateStrip(dates, initial);
-
-  // 4. Load the chosen slate (kicks off polling if it's today)
-  loadSlate(initial);
-
-  // 5. Re-load the manifest periodically so newly-added dates appear
-  setInterval(async () => {
-    const fresh = await loadManifest();
-    renderDateStrip(fresh, document.getElementById("datePicker").value);
-  }, 5 * 60 * 1000);  // every 5 minutes
-
-  // 6. When the page becomes visible again, do a one-shot refresh
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && picker.value === todayISO()) {
-      silentRefresh(picker.value);
-    }
-  });
-});
-</script>
-
-</body>
-</html>
-
+    return `<div
