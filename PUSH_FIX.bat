@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Render all MLB games on dashboard: synthetic Pending rows for games missing from picks CSV"
+    git commit -m "Render all MLB games + workflow validation: synthetic Pending rows for missing games; fail daily-slate workflow loudly if fair_prob/edge_pp blank on >=50%% of rows"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 

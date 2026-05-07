@@ -77,6 +77,30 @@ jobs:
             python predict.py "$DATE_ARG" --skip-weights
           fi
 
+      - name: Validate fair_prob / edge_pp populated in slate CSV
+        run: |
+          python3 - <<'PY'
+          import glob, csv, sys
+          # Find newest picks_*_diag.csv
+          diags = sorted(glob.glob("picks_*_diag.csv"))
+          if not diags:
+              print("::warning::no diag CSV produced (slate empty?)"); sys.exit(0)
+          path = diags[-1]
+          with open(path) as f:
+              rows = list(csv.DictReader(f))
+          if not rows:
+              print(f"::warning::{path} has 0 rows"); sys.exit(0)
+          blanks = [r for r in rows if not (r.get("fair_prob") or "").strip() or not (r.get("edge_pp") or "").strip()]
+          # Tolerate a small fraction (TBD pitchers, bad data) — alarm only if MOST rows are blank
+          if len(blanks) >= max(2, int(len(rows) * 0.5)):
+              print(f"::error::fair_prob/edge_pp blank on {len(blanks)}/{len(rows)} rows in {path}.")
+              print(f"::error::This usually means ODDS_API_KEY is missing or odds-API failed. Re-run after checking secret.")
+              for r in blanks[:3]:
+                  print(f"  blank row: {r.get('matchup')} fair={r.get('fair_prob')!r} edge={r.get('edge_pp')!r} odds_status={r.get('odds_status')!r}")
+              sys.exit(1)
+          print(f"OK: {len(rows)-len(blanks)}/{len(rows)} rows have fair_prob+edge_pp populated")
+          PY
+
       - name: Bake new slate files into docs/data/
         run: |
           mkdir -p docs/data
