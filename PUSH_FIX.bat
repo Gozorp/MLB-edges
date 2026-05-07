@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Two new A-tier caps: Stage 1/2 disagreement >= 0.18 caps at A-, negative edge_pp caps at A-"
+    git commit -m "Restore docs/index.html (was truncated mid-stream) + Stage1/2 + negative-edge A-tier caps"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
