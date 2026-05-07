@@ -106,6 +106,34 @@
   .narrative .flag-red { color: var(--red); }
   .narrative .flag-green { color: var(--green); }
 
+  /* ----- Stress-test / anomaly audit warning ----- */
+  .stress-warning {
+    margin: 0.6rem 0 0.8rem 0; padding: 0.75rem 1rem;
+    background: rgba(248, 81, 73, 0.10);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+  }
+  .stress-warning .stress-headline {
+    font-weight: 700; color: var(--red); letter-spacing: 0.02em;
+  }
+  .stress-warning code {
+    background: rgba(248, 81, 73, 0.18);
+    padding: 0.1rem 0.35rem; border-radius: 3px;
+    font-size: 0.85rem; color: var(--red);
+  }
+  .stress-pass {
+    margin: 0.6rem 0 0.8rem 0; padding: 0.5rem 1rem;
+    background: rgba(63, 185, 80, 0.08);
+    border-left: 3px solid var(--green);
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+  .stress-pass code {
+    background: rgba(63, 185, 80, 0.15);
+    padding: 0.1rem 0.35rem; border-radius: 3px;
+    font-size: 0.8rem; color: var(--green);
+  }
+
   /* ----- Post-game result indicators ----- */
   .result-chip {
     display: inline-block; padding: 0.15rem 0.5rem;
@@ -1695,6 +1723,59 @@ function formatNarrative(r, gradeInfo, result) {
             + `treated cautiously.`;
     }
     html += `</p>`;
+  }
+
+  // ----- 5b. Stress test / anomaly audit (edge-noise + blowout-vulnerability) -----
+  // Two-step audit per pick: (1) edge inside [-3.5, 3.5]pp noise band → thin-edge
+  // flag, (2) blowout-vulnerability dimensions: acute_roster, bullpen_fatigue,
+  // short_term_skill, external_modifiers. If either fires, surface a prominent
+  // warning so the user can downgrade confidence accordingly.
+  const stressWarnings = (r.stress_warnings || "").trim();
+  const confDowngrade  = (String(r.confidence_downgrade || "").toLowerCase() === "true");
+  const thinEdge       = !isNaN(edge) && Math.abs(edge) < 3.5;
+  if (stressWarnings || confDowngrade || thinEdge) {
+    const dimLabels = {
+      acute_roster:        "Acute roster changes (≥3 IL hits or late SP scratch)",
+      bullpen_fatigue:     "Bullpen fatigue (depleted high-leverage RPs)",
+      short_term_skill:    "Short-term skill gap (last-14d xwOBA divergence)",
+      external_modifiers:  "External modifiers (extreme weather or umpire bias)",
+    };
+    const dims = stressWarnings.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+    html += `<h4>Stress test &amp; anomaly audit</h4>`;
+    html += `<div class="stress-warning">`;
+    html += `<p class="stress-headline">⚠ WARNING: High Variance / Process Blindspot Detected</p>`;
+    if (thinEdge) {
+      html += `<p><strong>Step 1 (edge variance):</strong> edge of `
+            + `${edge.toFixed(2)}pp falls inside the ±3.5pp statistical-noise band — `
+            + `the model's directional confidence is not separable from baseline `
+            + `variance at this magnitude.</p>`;
+    }
+    if (dims.length) {
+      html += `<p><strong>Step 2 (blowout vulnerability):</strong> `
+            + `${dims.length} of 4 dimensions flagged:</p>`;
+      html += `<ul>`;
+      for (const d of dims) {
+        const label = dimLabels[d] || d;
+        html += `<li><code>${d}</code> — ${label}</li>`;
+      }
+      html += `</ul>`;
+    }
+    if (confDowngrade) {
+      html += `<p><strong>Recommendation:</strong> downgrade confidence to `
+            + `<span class="flag-red">Low / No Play</span>. A thin edge does not `
+            + `survive a 5+ run blowout; one or more structural variables look `
+            + `un-priced.</p>`;
+    }
+    html += `</div>`;
+  } else if (r.stress_warnings !== undefined) {
+    // Stress-test ran and explicitly cleared (no warnings + edge outside band).
+    html += `<h4>Stress test &amp; anomaly audit</h4>`;
+    html += `<div class="stress-pass">`;
+    html += `<p>✓ Edge clears the ±3.5pp noise band and all 4 vulnerability `
+          + `dimensions (<code>acute_roster</code>, <code>bullpen_fatigue</code>, `
+          + `<code>short_term_skill</code>, <code>external_modifiers</code>) `
+          + `pass.</p>`;
+    html += `</div>`;
   }
 
   // ----- 6. Tier interpretation -----
