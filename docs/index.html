@@ -342,6 +342,90 @@
     margin-top: 0.4rem; line-height: 1.5;
   }
 
+  /* ----- Live tracker (in-game probability tracker, 2026-05-07) ----- */
+  .live-tracker {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.85rem 1.05rem; margin: 0 0 0.9rem 0;
+  }
+  .live-tracker.is-live {
+    border-color: rgba(63, 185, 80, 0.5);
+    box-shadow: 0 0 0 1px rgba(63, 185, 80, 0.18) inset;
+  }
+  .live-tracker.is-final { border-color: rgba(88, 166, 255, 0.4); }
+  .live-tracker.is-postponed { border-color: rgba(210, 153, 34, 0.5); }
+  .live-tracker h4 {
+    margin: 0 0 0.55rem 0; font-size: 0.82rem;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .live-tracker .live-pulse {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 6px rgba(63, 185, 80, 0.7);
+    animation: live-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes live-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .live-tracker .lt-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    align-items: start;
+  }
+  .live-tracker .lt-col-label {
+    font-size: 0.72rem; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.04em; margin-bottom: 0.25rem;
+  }
+  .live-tracker .lt-prob-big {
+    font-size: 1.4rem; font-weight: 600; color: var(--text);
+    line-height: 1.1;
+  }
+  .live-tracker .lt-prob-meta {
+    font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem;
+  }
+  .live-tracker .lt-shift-up { color: var(--green); }
+  .live-tracker .lt-shift-down { color: var(--red, #f85149); }
+  .live-tracker .lt-shift-neutral { color: var(--muted); }
+  .live-tracker .lt-state-line {
+    font-size: 0.95rem; color: var(--text); margin-top: 0.15rem;
+    display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;
+  }
+  .live-tracker .lt-spark {
+    margin-top: 0.6rem; height: 36px; width: 100%;
+    display: block;
+  }
+  .live-tracker .lt-comp-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem;
+    margin-top: 0.4rem;
+  }
+  .live-tracker .lt-verdict {
+    margin-top: 0.6rem; padding: 0.5rem 0.7rem;
+    background: rgba(88, 166, 255, 0.06);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 0.88rem; line-height: 1.45;
+  }
+  .live-tracker .lt-verdict.confirmed {
+    background: rgba(63, 185, 80, 0.07);
+    border-left-color: var(--green);
+  }
+  .live-tracker .lt-verdict.contradicted {
+    background: rgba(248, 81, 73, 0.06);
+    border-left-color: var(--red, #f85149);
+  }
+  .live-tracker .lt-badge {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .live-tracker .lt-badge.live  { background: rgba(63, 185, 80, 0.16); color: var(--green); }
+  .live-tracker .lt-badge.final { background: rgba(88, 166, 255, 0.16); color: var(--accent); }
+  .live-tracker .lt-badge.postpone { background: rgba(210, 153, 34, 0.16); color: var(--gold, #d29922); }
+  .live-tracker .lt-badge.pending { background: rgba(139,148,158,0.18); color: var(--muted); }
+  .live-tracker .lt-error {
+    color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem;
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -1226,6 +1310,514 @@ async function _ensureWinProbChart(rowIndex, r, result) {
   el.dataset.rendered = "1";
 }
 
+// =============================================================================
+// Live in-game tracker (2026-05-07)
+// -----------------------------------------------------------------------------
+// Per-game live probability tracker that runs on top of the static pre-game
+// model output. Three states:
+//
+//   pre      -> show pre-game prob + first-pitch countdown, no polling
+//   live     -> show pre-game prob next to live-adjusted prob, poll every
+//               45s (with backoff on errors), keep pre-game value immutable
+//   final    -> show pre-game prob, live trajectory summary, actual result,
+//               and a verdict line (CONFIRMED if live trajectory stayed on
+//               picked side, CONTRADICTED if it flipped)
+//
+// Data sources (all CORS-enabled MLB Stats API):
+//   /api/v1.1/game/{pk}/feed/live?fields=gameData.status,liveData.linescore
+//   /api/v1/game/{pk}/winProbability
+//
+// Pollers are per-gamePk, started on row expansion via _startLiveTrackerForRow,
+// stopped on collapse / date change / page hide. Cached snapshots in
+// localStorage (key: live_<date>_<gamePk>) survive page refresh.
+// =============================================================================
+window.__livePollers = window.__livePollers || {};
+const _LT_BASE_INTERVAL_MS = 45 * 1000;     // base poll cadence
+const _LT_MAX_BACKOFF_MS   = 60 * 1000;     // cap on error backoff
+const _LT_LS_TTL_MS        = 60 * 60 * 1000; // 1h cache TTL on cached snapshots
+
+function _ltClassifyStatus(detailedState) {
+  const s = (detailedState || "").toLowerCase();
+  if (!s) return "unknown";
+  if (/postpon/.test(s)) return "postponed";
+  if (/suspend/.test(s)) return "suspended";
+  if (/cancel/.test(s)) return "cancelled";
+  if (/final|game over|completed early/.test(s)) return "final";
+  if (/pre-game|warmup|delayed start|scheduled/.test(s)) return "pre";
+  if (/in progress|manager challenge|delayed|review|umpire|replay/.test(s)) return "live";
+  return "unknown";
+}
+
+function _ltPickedSide(r, result) {
+  // "home" | "away" — same logic as _pickedSideFor but tolerant of missing inputs
+  if (!r || !result) return "home";
+  return _pickedSideFor(r, result);
+}
+
+function _ltCacheKey(date, gamePk) { return `live_${date}_${gamePk}`; }
+function _ltCacheGet(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const j = JSON.parse(raw);
+    if (!j || !j.t || (Date.now() - j.t) > _LT_LS_TTL_MS) return null;
+    return j.v;
+  } catch (_) { return null; }
+}
+function _ltCacheSet(key, value) {
+  try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value })); }
+  catch (_) { /* localStorage may be full or disabled */ }
+}
+
+async function _ltFetchLiveFeed(gamePk) {
+  // Slim feed-live response (status + linescore only)
+  const url = `https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live?fields=gameData,gameData.status,liveData,liveData.linescore`;
+  const r = await fetch(url, { cache: "no-store" });
+  if (!r.ok) throw new Error(`feed/live HTTP ${r.status}`);
+  return r.json();
+}
+
+async function _ltFetchWinProbability(gamePk) {
+  const r = await fetch(`https://statsapi.mlb.com/api/v1/game/${gamePk}/winProbability`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`winProb HTTP ${r.status}`);
+  const j = await r.json();
+  if (Array.isArray(j)) return j;
+  if (j && Array.isArray(j.winProbability)) return j.winProbability;
+  return [];
+}
+
+function _ltExtractLatestProb(wpArr, pickedSide) {
+  if (!wpArr || !wpArr.length) return null;
+  const last = wpArr[wpArr.length - 1];
+  const homeP = last && last.homeTeamWinProbability;
+  if (typeof homeP !== "number") return null;
+  return pickedSide === "home" ? homeP / 100 : 1 - homeP / 100;
+}
+
+function _ltExtractTrajectory(wpArr, pickedSide) {
+  // Returns array of {inning, halfInning, prob} for sparkline. Each entry
+  // is one play; we downsample to one point per half-inning by taking the
+  // last play of each half.
+  if (!wpArr || !wpArr.length) return [];
+  const seen = new Map();
+  for (const e of wpArr) {
+    const ab = e.about || {};
+    const key = `${ab.inning || 0}-${ab.halfInning || ""}`;
+    const homeP = e.homeTeamWinProbability;
+    if (typeof homeP !== "number") continue;
+    const pickP = pickedSide === "home" ? homeP / 100 : 1 - homeP / 100;
+    seen.set(key, { inning: ab.inning || 0, halfInning: ab.halfInning || "", prob: pickP });
+  }
+  return Array.from(seen.values()).sort((a, b) => {
+    if (a.inning !== b.inning) return a.inning - b.inning;
+    return (a.halfInning === "top" ? 0 : 1) - (b.halfInning === "top" ? 0 : 1);
+  });
+}
+
+function _ltSparklineSVG(trajectory, opts) {
+  if (!trajectory || trajectory.length < 1) return "";
+  const W = 360, H = 36, PAD = 2;
+  const n = trajectory.length;
+  const xFor = (i) => PAD + (i / Math.max(n - 1, 1)) * (W - 2 * PAD);
+  const yFor = (p) => PAD + (1 - Math.max(0, Math.min(1, p))) * (H - 2 * PAD);
+  let d = "";
+  for (let i = 0; i < n; i++) {
+    d += (i === 0 ? "M" : "L") + xFor(i).toFixed(1) + "," + yFor(trajectory[i].prob).toFixed(1) + " ";
+  }
+  const last = trajectory[n - 1];
+  const pickedColor = (last.prob >= 0.5) ? "#3fb950" : "#f85149";
+  const midY = yFor(0.5).toFixed(1);
+  return `<svg class="lt-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+    <line x1="0" y1="${midY}" x2="${W}" y2="${midY}" stroke="rgba(139,148,158,0.35)" stroke-width="1" stroke-dasharray="3 3"/>
+    <path d="${d.trim()}" fill="none" stroke="${pickedColor}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${xFor(n-1).toFixed(1)}" cy="${yFor(last.prob).toFixed(1)}" r="2.4" fill="${pickedColor}"/>
+  </svg>`;
+}
+
+function _ltFmtInning(linescore) {
+  if (!linescore) return "—";
+  const inn = linescore.currentInningOrdinal || (linescore.currentInning ? linescore.currentInning + "" : "");
+  const half = (linescore.inningHalf || linescore.inningState || "").slice(0, 3);
+  if (!inn) return "—";
+  const tag = half === "Top" ? "T" : half === "Bot" ? "B" : (half ? half[0] : "");
+  return `${tag}${linescore.currentInning || inn}`.replace(/^[^0-9TB]/, "T");
+}
+
+function _ltFmtScore(awayAbbr, homeAbbr, linescore) {
+  if (!linescore || !linescore.teams) return "";
+  const a = (linescore.teams.away && linescore.teams.away.runs) || 0;
+  const h = (linescore.teams.home && linescore.teams.home.runs) || 0;
+  return `${awayAbbr} ${a} - ${homeAbbr} ${h}`;
+}
+
+function _ltFmtFirstPitch(result) {
+  // Best-effort: we have result.statusText but not always a parseable time.
+  // The schedule hydrate in fetchMLBResults doesn't expose gameDate at the
+  // moment, so we just return the status text. Future: thread gameDate
+  // through fetchMLBResults so we can render a relative countdown.
+  if (result && result.statusText) return result.statusText;
+  return "Pre-game";
+}
+
+function _ltVerdict(pickedSide, trajectory, result, preGameProb) {
+  // Returns {kind: "confirmed"|"contradicted"|"unclear", text: string, peak: number}
+  if (!trajectory || trajectory.length < 1) return { kind: "unclear", text: "Live trajectory unavailable.", peak: null };
+  let peak = 0, peakIdx = -1, maxBelow = 0;
+  let crossedAbove = false, lastBelow = -1;
+  for (let i = 0; i < trajectory.length; i++) {
+    const p = trajectory[i].prob;
+    if (p > peak) { peak = p; peakIdx = i; }
+    if (p < 0.5) { lastBelow = i; maxBelow = Math.max(maxBelow, 0.5 - p); }
+    else { crossedAbove = true; }
+  }
+  const final = trajectory[trajectory.length - 1].prob;
+  // CONFIRMED: pick won AND trajectory stayed mostly on pick side after early innings
+  // CONTRADICTED: pick lost AND trajectory fell below 0.5 and never recovered
+  if (!result || !result.isFinal) return { kind: "unclear", text: "Game not final yet.", peak };
+  const won = (pickedSide === "home" && result.winner === result.homeAbbr)
+           || (pickedSide === "away" && result.winner === result.awayAbbr);
+  const peakInn = peakIdx >= 0 ? trajectory[peakIdx] : null;
+  const peakLabel = peakInn ? `${peakInn.halfInning === "top" ? "T" : "B"}${peakInn.inning}` : "—";
+  if (won) {
+    // Heuristic: if trajectory crossed >0.5 by inning 5 and stayed, call it confirmed
+    const earlyAbove = trajectory.slice(0, Math.min(trajectory.length, 6))
+                         .some(t => t.prob >= 0.5);
+    if (earlyAbove) {
+      return {
+        kind: "confirmed", peak,
+        text: `Live tracking validated the pre-game model (peaked at ${(peak*100).toFixed(1)}% at ${peakLabel}, trajectory stayed >50% from inning ${trajectory.findIndex(t => t.prob >= 0.5) + 1} onward).`,
+      };
+    }
+    // Won but trajectory was rocky early — still confirmed but qualified
+    return {
+      kind: "confirmed", peak,
+      text: `Pick won despite a shaky live trajectory — model's pre-game read of ${(preGameProb*100).toFixed(1)}% held up under in-game variance (peaked at ${(peak*100).toFixed(1)}% at ${peakLabel}).`,
+    };
+  } else {
+    if (lastBelow >= 0) {
+      const lastBelowInn = trajectory[lastBelow];
+      const innLabel = `${lastBelowInn.halfInning === "top" ? "T" : "B"}${lastBelowInn.inning}`;
+      return {
+        kind: "contradicted", peak,
+        text: `Live prob fell below 50% by ${innLabel} and never recovered — pick CONTRADICTED. Pre-game model overweighted ${(preGameProb*100).toFixed(1)}% on a side the in-game state was already pricing under.`,
+      };
+    }
+    return {
+      kind: "contradicted", peak,
+      text: `Pick lost despite live trajectory peaking at ${(peak*100).toFixed(1)}% — late-game collapse against the pre-game read.`,
+    };
+  }
+}
+
+function _ltRowKey(rowIndex) { return "live-tracker-" + rowIndex; }
+
+function _ltRenderBlockHTML(rowIndex, r, result) {
+  // Initial render. Returns HTML for the live tracker block. The block's
+  // internal state (status, prob, score, etc.) is updated in-place by the
+  // poller's _ltUpdateBlockState function below.
+  const pick = (r.pick || "—").trim();
+  const fullProb = parseFloat(r.full_prob || r.p_model);
+  const tier = (r.tier || "").trim();
+  const preGameStr = isNaN(fullProb) ? "—" : `${(fullProb*100).toFixed(1)}% ${pick}`;
+  const tierStr = tier ? ` (${tier})` : "";
+
+  // Three early-exit cases for which there's no live data to show:
+  //   1. Pending row (no gamePk in result)
+  //   2. Postponed/Suspended/Cancelled
+  //   3. Result missing entirely
+  if (!result) {
+    return `<div class="live-tracker is-pending" data-live-row="${rowIndex}">
+      <h4><span class="lt-badge pending">Pre-game</span> Live tracker</h4>
+      <div class="muted" style="font-size:0.86rem;">No matching MLB game record — live tracker unavailable.</div>
+    </div>`;
+  }
+  if (!result.gamePk) {
+    return `<div class="live-tracker is-pending" data-live-row="${rowIndex}">
+      <h4><span class="lt-badge pending">Pending</span> Live tracker</h4>
+      <div class="muted" style="font-size:0.86rem;">Awaiting pitcher confirmation — no gamePk to track yet.</div>
+    </div>`;
+  }
+  const status = _ltClassifyStatus(result.statusText);
+  if (status === "postponed" || status === "suspended" || status === "cancelled") {
+    const label = status.toUpperCase();
+    return `<div class="live-tracker is-postponed" data-live-row="${rowIndex}" data-game-pk="${result.gamePk}">
+      <h4><span class="lt-badge postpone">${label}</span> Live tracker</h4>
+      <div class="muted" style="font-size:0.86rem;">${result.statusText} — game not played, no live state to track.</div>
+    </div>`;
+  }
+
+  // Initial scaffolding — poller fills in the live data.
+  return `<div class="live-tracker"
+              data-live-row="${rowIndex}"
+              data-game-pk="${result.gamePk}"
+              data-pick-side="${_ltPickedSide(r, result)}"
+              data-pick-team="${pickedTeam(r) || ''}"
+              data-pre-game-prob="${isNaN(fullProb) ? '' : fullProb}"
+              data-status="${status}">
+    <h4><span class="lt-badge pre" data-lt-statusbadge>Pre-game</span><span data-lt-statushdr>Live tracker</span></h4>
+    <div class="lt-grid">
+      <div>
+        <div class="lt-col-label">Pre-game model (immutable)</div>
+        <div class="lt-prob-big" data-lt-pregame>${preGameStr}</div>
+        <div class="lt-prob-meta">${tierStr ? "Tier" + tierStr : "&nbsp;"}</div>
+      </div>
+      <div data-lt-livecol>
+        <div class="lt-col-label">Live</div>
+        <div class="lt-state-line muted" data-lt-stateline>Loading live state…</div>
+      </div>
+    </div>
+    <div data-lt-spark></div>
+    <div data-lt-comparison></div>
+    <div class="lt-error" data-lt-error style="display:none;"></div>
+  </div>`;
+}
+
+function _ltUpdateBlockDOM(rowIndex, snapshot) {
+  // Update the live block in-place. snapshot = {status, gameData, linescore, wpArr, pickedSide, preGameProb, pickTeam, awayAbbr, homeAbbr, error?}
+  const root = document.querySelector(`.live-tracker[data-live-row="${rowIndex}"]`);
+  if (!root) return;
+  const errEl = root.querySelector("[data-lt-error]");
+  const stateLine = root.querySelector("[data-lt-stateline]");
+  const sparkSlot = root.querySelector("[data-lt-spark]");
+  const compSlot = root.querySelector("[data-lt-comparison]");
+  const badge = root.querySelector("[data-lt-statusbadge]");
+  if (!stateLine) return;
+
+  if (snapshot.error) {
+    if (errEl) {
+      errEl.style.display = "";
+      errEl.textContent = `Live fetch failed: ${snapshot.error}. Will retry.`;
+    }
+    return;
+  } else if (errEl) {
+    errEl.style.display = "none";
+    errEl.textContent = "";
+  }
+
+  const status = snapshot.status || "unknown";
+  root.dataset.status = status;
+  root.classList.toggle("is-live", status === "live");
+  root.classList.toggle("is-final", status === "final");
+  root.classList.toggle("is-postponed", status === "postponed" || status === "suspended");
+
+  // Update the badge + header label
+  if (badge) {
+    const map = { pre: ["Pre-game", "pending"], live: ["⚾ Live", "live"],
+                  final: ["Final", "final"], postponed: ["Postponed", "postpone"],
+                  suspended: ["Suspended", "postpone"], cancelled: ["Cancelled", "postpone"],
+                  unknown: ["—", "pending"] };
+    const [label, cls] = map[status] || map.unknown;
+    badge.textContent = label;
+    badge.className = "lt-badge " + cls;
+    if (status === "live") badge.innerHTML = `<span class="live-pulse"></span> ${label}`;
+  }
+
+  const livePickProb = _ltExtractLatestProb(snapshot.wpArr || [], snapshot.pickedSide);
+  const trajectory = _ltExtractTrajectory(snapshot.wpArr || [], snapshot.pickedSide);
+
+  // Sparkline (live + final states only)
+  if (sparkSlot) {
+    if ((status === "live" || status === "final") && trajectory.length >= 1) {
+      sparkSlot.innerHTML = _ltSparklineSVG(trajectory);
+    } else {
+      sparkSlot.innerHTML = "";
+    }
+  }
+
+  if (status === "live") {
+    const ls = snapshot.linescore;
+    const innStr = _ltFmtInning(ls);
+    const score = _ltFmtScore(snapshot.awayAbbr, snapshot.homeAbbr, ls);
+    const probStr = (livePickProb != null) ? `${(livePickProb*100).toFixed(1)}%` : "—";
+    let shiftStr = "";
+    if (livePickProb != null && snapshot.preGameProb != null) {
+      const dpp = (livePickProb - snapshot.preGameProb) * 100;
+      const arrow = dpp > 0.5 ? "↑" : dpp < -0.5 ? "↓" : "→";
+      const cls = dpp > 0.5 ? "lt-shift-up" : dpp < -0.5 ? "lt-shift-down" : "lt-shift-neutral";
+      shiftStr = `<div class="lt-prob-meta ${cls}">${dpp >= 0 ? "+" : ""}${dpp.toFixed(1)}pp ${arrow} from pre-game</div>`;
+    }
+    stateLine.classList.remove("muted");
+    stateLine.innerHTML = `
+      <div>
+        <div class="lt-prob-big">${probStr} ${snapshot.pickTeam || ""}</div>
+        <div class="lt-prob-meta">${score} · ${innStr}</div>
+        ${shiftStr}
+      </div>`;
+    if (compSlot) compSlot.innerHTML = "";
+  } else if (status === "final") {
+    const ls = snapshot.linescore || {};
+    const score = _ltFmtScore(snapshot.awayAbbr, snapshot.homeAbbr, ls);
+    const finalProb = livePickProb != null ? livePickProb
+                    : (trajectory.length ? trajectory[trajectory.length-1].prob : null);
+    const verdict = _ltVerdict(snapshot.pickedSide, trajectory, snapshot.result, snapshot.preGameProb);
+    const peakStr = verdict.peak != null ? `${(verdict.peak*100).toFixed(1)}%` : "—";
+    const finalStr = finalProb != null ? `${(finalProb*100).toFixed(0)}%` : "—";
+    const won = snapshot.result && snapshot.result.winner;
+    const wonByPick = won && (
+      (snapshot.pickedSide === "home" && snapshot.result.winner === snapshot.result.homeAbbr) ||
+      (snapshot.pickedSide === "away" && snapshot.result.winner === snapshot.result.awayAbbr)
+    );
+    const verdictWord = wonByPick ? "CONFIRMED" : "CONTRADICTED";
+    stateLine.classList.remove("muted");
+    stateLine.innerHTML = `
+      <div>
+        <div class="lt-prob-big">${score}</div>
+        <div class="lt-prob-meta">${won ? `${snapshot.result.winner} won` : "—"}</div>
+      </div>`;
+    if (compSlot) {
+      compSlot.innerHTML = `
+        <div class="lt-comp-row">
+          <div>
+            <div class="lt-col-label">Pre-game</div>
+            <div class="lt-prob-meta">${snapshot.preGameProb != null ? (snapshot.preGameProb*100).toFixed(1) + "%" : "—"} ${snapshot.pickTeam || ""}</div>
+          </div>
+          <div>
+            <div class="lt-col-label">Live trajectory</div>
+            <div class="lt-prob-meta">peaked ${peakStr}, ended ${finalStr}</div>
+          </div>
+          <div>
+            <div class="lt-col-label">Verdict</div>
+            <div class="lt-prob-meta"><strong>${verdictWord}</strong></div>
+          </div>
+        </div>
+        <div class="lt-verdict ${verdict.kind}">${verdict.text}</div>`;
+    }
+  } else if (status === "pre") {
+    stateLine.classList.add("muted");
+    stateLine.innerHTML = `<div>${_ltFmtFirstPitch(snapshot.result)} — model is locked at <strong>${snapshot.preGameProb != null ? (snapshot.preGameProb*100).toFixed(1) + "%" : "—"}</strong>. Live tracker activates at first pitch.</div>`;
+    if (compSlot) compSlot.innerHTML = "";
+  }
+}
+
+async function _ltOnePollCycle(rowIndex, gamePk, r, result, opts) {
+  // Single fetch+update cycle. Returns updated status string so the poller
+  // loop can decide whether to keep polling (live) or stop (final / error-cap).
+  let snapshot = { gamePk, pickedSide: _ltPickedSide(r, result),
+                   pickTeam: pickedTeam(r) || "",
+                   awayAbbr: result.awayAbbr, homeAbbr: result.homeAbbr,
+                   preGameProb: parseFloat(r.full_prob || r.p_model),
+                   result };
+  if (isNaN(snapshot.preGameProb)) snapshot.preGameProb = null;
+  try {
+    const [feed, wpArr] = await Promise.all([
+      _ltFetchLiveFeed(gamePk),
+      _ltFetchWinProbability(gamePk).catch(() => []),
+    ]);
+    const status = _ltClassifyStatus((feed.gameData && feed.gameData.status && feed.gameData.status.detailedState) || result.statusText);
+    snapshot.status = status;
+    snapshot.linescore = (feed.liveData && feed.liveData.linescore) || null;
+    snapshot.wpArr = wpArr;
+    // If status flipped to final, hydrate result.winner from the score
+    if (status === "final" && snapshot.linescore && snapshot.linescore.teams) {
+      const aS = (snapshot.linescore.teams.away || {}).runs;
+      const hS = (snapshot.linescore.teams.home || {}).runs;
+      if (typeof aS === "number" && typeof hS === "number" && aS !== hS) {
+        snapshot.result = Object.assign({}, result, {
+          isFinal: true, awayScore: aS, homeScore: hS,
+          winner: aS > hS ? result.awayAbbr : result.homeAbbr,
+        });
+      } else {
+        snapshot.result = Object.assign({}, result, { isFinal: true });
+      }
+    }
+    _ltCacheSet(_ltCacheKey(opts.date, gamePk), snapshot);
+  } catch (e) {
+    snapshot.error = e.message || String(e);
+    // Try to fall back to cached snapshot if we have one
+    const cached = _ltCacheGet(_ltCacheKey(opts.date, gamePk));
+    if (cached) Object.assign(snapshot, cached, { error: snapshot.error });
+  }
+  _ltUpdateBlockDOM(rowIndex, snapshot);
+  return snapshot.status || "unknown";
+}
+
+function _ltStopPoller(rowIndex) {
+  const key = _ltRowKey(rowIndex);
+  const p = window.__livePollers[key];
+  if (!p) return;
+  if (p.timer) clearTimeout(p.timer);
+  if (p.abort) try { p.abort.abort(); } catch (_) {}
+  delete window.__livePollers[key];
+}
+
+function _ltStopAllPollers() {
+  for (const k of Object.keys(window.__livePollers)) {
+    const p = window.__livePollers[k];
+    if (p && p.timer) clearTimeout(p.timer);
+  }
+  window.__livePollers = {};
+}
+
+async function _startLiveTrackerForRow(rowIndex, r, result) {
+  if (!result || !result.gamePk) return;  // pending or no match
+  const status = _ltClassifyStatus(result.statusText);
+  if (status === "postponed" || status === "suspended" || status === "cancelled") {
+    // Static — already rendered by _ltRenderBlockHTML, no poller needed
+    return;
+  }
+  const date = (window.__slate && window.__slate.date) || todayISO();
+  const key = _ltRowKey(rowIndex);
+  // Avoid double-starting
+  if (window.__livePollers[key]) return;
+
+  // Render cached snapshot immediately if available
+  const cached = _ltCacheGet(_ltCacheKey(date, result.gamePk));
+  if (cached) _ltUpdateBlockDOM(rowIndex, cached);
+
+  // Even pre-game gets one fetch (so we can show the actual status text and
+  // first-pitch context); post that we only start a poll loop if the game is
+  // actually live or final.
+  const opts = { date, baseInterval: _LT_BASE_INTERVAL_MS, errors: 0 };
+  window.__livePollers[key] = { rowIndex, gamePk: result.gamePk, opts, timer: null };
+
+  const tick = async () => {
+    if (!window.__livePollers[key]) return;  // cancelled
+    if (document.hidden) {
+      // Pause when tab is hidden; visibilitychange handler will wake us
+      window.__livePollers[key].timer = null;
+      return;
+    }
+    let curStatus;
+    try {
+      curStatus = await _ltOnePollCycle(rowIndex, result.gamePk, r, result, opts);
+      opts.errors = 0;
+    } catch (e) {
+      opts.errors += 1;
+    }
+    // Stop conditions
+    if (!window.__livePollers[key]) return;
+    if (curStatus === "final") return;  // we got the final state — done polling
+    if (curStatus === "postponed" || curStatus === "suspended" || curStatus === "cancelled") return;
+    if (opts.errors >= 5) {
+      // 5 consecutive failures — give up but leave the cached snapshot visible
+      window.__livePollers[key].timer = null;
+      return;
+    }
+    // Schedule next tick: base interval if OK, exponential backoff if errored
+    const nextMs = opts.errors === 0
+      ? _LT_BASE_INTERVAL_MS
+      : Math.min(_LT_MAX_BACKOFF_MS, 2000 * Math.pow(2, opts.errors - 1));
+    window.__livePollers[key].timer = setTimeout(tick, nextMs);
+  };
+  tick();
+}
+
+// Resume any paused pollers when the tab becomes visible again
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) return;
+  for (const key of Object.keys(window.__livePollers)) {
+    const p = window.__livePollers[key];
+    if (p && !p.timer) {
+      // Re-fire immediately to refresh stale data
+      const fakeRow = (window.__slate.rows || [])[p.rowIndex];
+      const fakeResult = matchResult(fakeRow, window.__slate.results || {});
+      if (fakeRow && fakeResult) {
+        _startLiveTrackerForRow(p.rowIndex, fakeRow, fakeResult);
+      }
+    }
+  }
+});
+
 // Single-game HR probability for a batter facing today's opposing SP.
 // Formula:  p = 1 - (1 - r)^N  where r = adjusted HR/PA, N = expected PAs.
 //   batter rate  = season HR / PA
@@ -1697,6 +2289,13 @@ function formatNarrative(r, gradeInfo, result) {
     html += formatFailureAnalysis(r, result, gradeInfo);
   }
 
+  // ----- 0c. Live in-game tracker (2026-05-07) -----
+  // Pre-game prob is immutable from CSV; live block tracks the in-game
+  // trajectory from MLB Stats API. The poller is started when the row is
+  // expanded (see toggleNarrative) and stopped on collapse / date change.
+  html += _ltRenderBlockHTML(window.__slate && window.__slate.rows
+                              ? window.__slate.rows.indexOf(r) : -1, r, result);
+
   // ----- 1. Headline -----
   html += `<h4>Headline</h4>`;
   html += `<p>The model picks <strong>${pick}</strong> at grade `
@@ -1997,7 +2596,12 @@ async function toggleNarrative(i) {
   chev.classList.toggle("open", open);
   chev.textContent = open ? "▾" : "▸";
 
-  if (!open) return;
+  if (!open) {
+    // Stop the live poller for this row when collapsed — saves bandwidth and
+    // request budget against the MLB Stats API.
+    try { _ltStopPoller(i); } catch (_) {}
+    return;
+  }
 
   // Assign a unique ID to the canvas in this row's expanded panel and kick off
   // chart rendering — fires in parallel with the preview fetch.
@@ -2008,6 +2612,14 @@ async function toggleNarrative(i) {
     const result = matchResult(r, window.__slate.results || {});
     _ensureWinProbChart(i, r, result).catch(e => console.warn("chart render failed:", e));
   }
+
+  // Start the live in-game tracker for this row (no-op for pending /
+  // postponed / completed games — see _startLiveTrackerForRow).
+  try {
+    const r = (window.__slate.rows || [])[i];
+    const result = matchResult(r, window.__slate.results || {});
+    if (r && result) _startLiveTrackerForRow(i, r, result);
+  } catch (e) { console.warn("live tracker start failed:", e); }
 
   // Lazy-load the game preview if we haven't already
   const placeholder = row.querySelector(".preview-placeholder");
@@ -2353,6 +2965,8 @@ function _addPendingGames(rows, results) {
 async function loadSlate(date, { bust = false } = {}) {
   const status = document.getElementById("status");
   status.textContent = bust ? "Refreshing (bypassing cache)…" : "Loading…";
+  // Tear down any live trackers from the previous slate before re-rendering
+  try { _ltStopAllPollers(); } catch (_) {}
   try {
     const q = bust ? `?v=${Date.now()}` : "";
     const fetchOpts = bust ? { cache: "no-store" } : {};
