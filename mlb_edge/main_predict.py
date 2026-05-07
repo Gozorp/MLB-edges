@@ -456,6 +456,60 @@ def run(slate_date: date,
     if diagnostic_table:
         table = build_diagnostic_table(preds, odds_long, odds_status=odds_status)
         if not table.empty:
+            # ----------------------------------------------------------
+            # Stress-test annotation (2026-05-03) — observability v1.
+            # Adds `stress_warnings` (semicolon-joined) + `confidence_downgrade`
+            # bool columns to the diag CSV per row. Production tier/stake
+            # are NOT changed by this layer.
+            # ----------------------------------------------------------
+            try:
+                from . import stress_test as _st
+                stress_cols = []
+                for _, drow in table.iterrows():
+                    matchup = drow.get("matchup", "")
+                    away_abbr, _, home_abbr = matchup.partition(" @ ")
+                    pred_row = preds[
+                        (preds["home_team"].apply(normalize_team) == home_abbr) &
+                        (preds["away_team"].apply(normalize_team) == away_abbr)
+                    ]
+                    if pred_row.empty:
+                        stress_cols.append(("", False)); continue
+                    g = pred_row.iloc[0]
+                    pick_side = "home" if g.get("model_prob", 0) >= 0.5 else "away"
+                    pick_team = home_abbr if pick_side == "home" else away_abbr
+                    opp_team = away_abbr if pick_side == "home" else home_abbr
+                    nrow = None
+                    if not news_audit.empty:
+                        m = news_audit[news_audit["matchup"] == matchup]
+                        if not m.empty:
+                            nrow = m.iloc[0].to_dict()
+                    bp_state = {
+                        "home_bullpen_n_pitches": g.get("home_bullpen_n_pitches"),
+                        "away_bullpen_n_pitches": g.get("away_bullpen_n_pitches"),
+                        "bullpen_fatigue_gap": g.get("bullpen_fatigue_gap"),
+                    }
+                    weather = {
+                        "wind_out_mph": g.get("wind_out_mph"),
+                        "park_hr_factor": g.get("park_hr_factor"),
+                    }
+                    edge_pp = drow.get("edge_pp")
+                    if edge_pp is None or pd.isna(edge_pp):
+                        stress_cols.append(("", False)); continue
+                    res = _st.audit_pick(
+                        edge_pp=float(edge_pp),
+                        tier=str(drow.get("tier", "")),
+                        pick_team=pick_team, opp_team=opp_team,
+                        pick_side=pick_side, target_date=slate_date,
+                        bp_state=bp_state, weather=weather, news_row=nrow,
+                    )
+                    stress_cols.append((";".join(res.vulnerabilities),
+                                        bool(res.confidence_downgrade)))
+                table["stress_warnings"] = [s[0] for s in stress_cols]
+                table["confidence_downgrade"] = [s[1] for s in stress_cols]
+            except Exception as e:
+                log.warning("[stress_test] annotation failed: %s "
+                            "(continuing without stress columns)", e)
+
             print("\n=== DIAGNOSTIC TABLE - every game on slate ===")
             print(table.to_string(index=False))
             if out_picks:

@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Visit counter resilience: cache last count in localStorage + fall back to /up if read endpoint fails"
+    git commit -m "Stress-test / anomaly audit: codify edge-noise + blowout-vulnerability checks; add stress_warnings + confidence_downgrade columns to diag CSV (observability v1, no tier change)"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
