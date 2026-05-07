@@ -353,6 +353,50 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
         )
         score = 4
 
+    # ----- STAGE 1/2 LARGE-DISAGREEMENT CAP -----
+    # The Stage 1/2 disagree modifier (above) only subtracts 1 or 2.  But on
+    # 2026-05-07 BOS @ DET we picked DET at PLATINUM A with disagree Δ=0.19
+    # (Stage 1 said 45.4%, Stage 2 jumped to 50%) and the pick lost.  The
+    # disagreement is a real warning that the F5/full-game models can't
+    # agree on the side, which historically correlates with picks losing
+    # to bullpen / late-leverage variance.  When disagreement is meaningful
+    # (>= 0.18), cap A grades at A- so the leg stops being a parlay anchor.
+    if pd.notna(f5) and pd.notna(full):
+        try:
+            _f5_pick = float(f5) if pick == home else 1.0 - float(f5)
+            _fl_pick = float(full) if pick == home else 1.0 - float(full)
+            _gap = abs(_fl_pick - _f5_pick)
+            if _gap >= 0.18 and score >= 5:
+                reasons.append(
+                    f"Stage 1/2 large disagreement (Δ={_gap:.2f}) caps A at A- "
+                    f"(score {score} -> 4)"
+                )
+                score = 4
+        except (TypeError, ValueError):
+            pass
+
+    # ----- NEGATIVE-EDGE A CAP -----
+    # When the model picks the side Vegas has priced HIGHER (edge_pp < 0), the
+    # public has already priced in the conviction the model is acting on.
+    # Historically these "agree-with-the-chalk" A picks are the most expensive
+    # parlay-anchor losses because variance still applies but the price isn't
+    # rewarding us.  Background: 2026-05-07 TEX @ NYY (edge=-2.8pp) and MIN @
+    # WSH (edge=-1.7pp) both graded A and both lost.  Cap A grades at A- when
+    # edge is negative beyond a small grace zone, so they no longer anchor a
+    # parlay.
+    edge_pp_raw = row.get("edge_pp")
+    if pd.notna(edge_pp_raw):
+        try:
+            _edge = float(edge_pp_raw)
+            if _edge < -1.0 and score >= 5:
+                reasons.append(
+                    f"negative edge ({_edge:+.1f}pp) caps A at A- "
+                    f"(score {score} -> 4)"
+                )
+                score = 4
+        except (TypeError, ValueError):
+            pass
+
     # ----- COMPOUND-SMALL-SAMPLE CAP -----
     # When BOTH SPs have <60 BF, the SP-edge layer is unreliable enough
     # that the model can compound several +1 modifiers into an A grade

@@ -62,7 +62,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "daily-slate: 4 cron runs per day (11/14/17/21 UTC) so slate self-heals + visit counter cache fix"
+    git commit -m "Two new A-tier caps: Stage 1/2 disagreement >= 0.18 caps at A-, negative edge_pp caps at A-"
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
