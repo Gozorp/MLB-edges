@@ -523,6 +523,40 @@
 <script>
 
 // =============================================================================
+// MLB Stats API proxy auto-routing (Cloudflare Pages Worker)
+// =============================================================================
+// When the dashboard is served from a host that has the Cloudflare Pages
+// /api/mlb/* Worker (i.e. the production custom domain), every fetch() call
+// to statsapi.mlb.com is rewritten to the proxy so requests get edge-cached
+// (30s for live, 5min for schedule, 1hr for rosters) and CORS is moot.  On
+// github.io (where the Worker isn't deployed) this is a no-op and calls go
+// direct to MLB.  Detection: the GH Pages host is hard-coded; every other
+// host is assumed to have the proxy.
+// =============================================================================
+(function _installMlbProxyRouter() {
+  if (location.hostname === "gozorp.github.io") return; // GH Pages — direct fetch
+  const PROXY_PREFIX = "/api/mlb/";
+  const UPSTREAM_PREFIX = "https://statsapi.mlb.com/api/";
+  const origFetch = window.fetch.bind(window);
+  function rewrite(u) {
+    if (typeof u === "string" && u.startsWith(UPSTREAM_PREFIX)) {
+      return PROXY_PREFIX + u.slice(UPSTREAM_PREFIX.length);
+    }
+    return u;
+  }
+  window.fetch = function patchedFetch(input, init) {
+    if (typeof input === "string") {
+      input = rewrite(input);
+    } else if (input instanceof Request) {
+      const newUrl = rewrite(input.url);
+      if (newUrl !== input.url) input = new Request(newUrl, input);
+    }
+    return origFetch(input, init);
+  };
+  window.__mlbProxyEnabled = true;
+})();
+
+// =============================================================================
 // Unique visit counter (client-side gated by localStorage)
 // =============================================================================
 // Uses counterapi.dev — a free no-signup counter service.  Each browser

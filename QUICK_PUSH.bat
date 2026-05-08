@@ -22,18 +22,19 @@ set "LOG=%~dp0quick_push.log"
     echo --- git reset --mixed origin/main ---
     git reset --mixed origin/main
 
-    echo --- staging the four target files ---
+    echo --- staging target files ---
     git add docs/index.html
     git add .github/workflows/daily-slate.yml
     git add .github/workflows/savant-harvest.yml
     git add PUSH_FIX.bat
     git add QUICK_PUSH.bat
+    git add functions/
 
     echo --- staged ---
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Dashboard: predicted final score column + narrative section. Workflow: 06:00 UTC night-owl cron bakes tomorrow's slate; new savant-harvest.yml at 00:00 UTC pulls 42 Statcast leaderboards every midnight. Live tracker: drop broken ?fields=... query that returned empty status. PUSH_FIX: selective conflict resolver."
+    git commit -m "Cloudflare Pages Workers: /api/health, /api/today (latest slate as JSON), /api/mlb/* (edge-cached statsapi proxy with per-endpoint TTLs). Dashboard: monkey-patch fetch to auto-route MLB API calls through proxy when not on github.io."
     echo commit exit: !errorlevel!
 
     echo --- push ---
