@@ -2,13 +2,13 @@
 savant_scraper.py
 -----------------
 Comprehensive Baseball Savant Statcast leaderboard scraper.  Pulls all
-34 active leaderboards directly from the public ``?csv=true`` endpoints
+42 active leaderboards directly from the public ``?csv=true`` endpoints
 that Savant honors — no headless browser needed.
 
-ENDPOINT INVENTORY (34 leaderboards across 7 categories)
+ENDPOINT INVENTORY (42 leaderboards across 8 categories)
 ========================================================
 Source: https://baseballsavant.mlb.com/leaderboard/statcast (enumerated
-from the navigation tree on 2026-04-29 via Claude-in-Chrome).
+from the navigation tree on 2026-05-07 via web crawl).
 
 Every endpoint is verified to return CSV when ``csv=true`` is appended.
 A minority occasionally serve HTML instead (Savant intermittently
@@ -396,6 +396,16 @@ SUPPLEMENTARY: List[EndpointSpec] = [
         out_filename="savant_abs-challenges_{ymd}.csv",
         min_bytes=1_500,
     ),
+
+    # ===== CUSTOM LEADERBOARD =====
+    EndpointSpec(
+        name="custom",
+        url=("https://baseballsavant.mlb.com/leaderboard/custom?"
+             "year={year}&csv=true"),
+        out_dir=Path("data/savant_extra"),
+        out_filename="savant_custom_{ymd}.csv",
+        min_bytes=1_500,
+    ),
 ]
 
 
@@ -512,7 +522,7 @@ def main(argv: Optional[List[str]] = None) -> None:
     p = argparse.ArgumentParser(description="Savant Statcast leaderboard scraper")
     p.add_argument("--year", type=int, default=date.today().year)
     p.add_argument("--no-supplementary", action="store_true",
-                   help="Only pull load-critical endpoints (5 instead of 39).")
+                   help="Only pull load-critical endpoints (5 instead of 42).")
     p.add_argument("--overwrite", action="store_true",
                    help="Re-download even if a cached file exists for today.")
     p.add_argument("--endpoint", help="Run a single endpoint by name.")
