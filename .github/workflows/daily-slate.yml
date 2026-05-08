@@ -22,6 +22,12 @@ on:
     # Multiple runs per day so the slate self-heals when MLB confirms games
     # / pitchers / lineups after the morning run.  Each run regenerates
     # picks_*.csv and parlay_*.txt; the bake step commits only if changed.
+    # NIGHT-OWL early-bake of TOMORROW's slate.  At 06:00 UTC (10pm PT prev day,
+    # 1am PT new day, 2am ET new day) we explicitly run with TOMORROW's UTC date
+    # so a user checking late at night already sees the upcoming day's slate.
+    # Without this, there's a 14-hour gap between the 21:00 UTC run (5pm ET) and
+    # the 11:00 UTC run (7am ET) where no slate exists for the upcoming UTC day.
+    - cron: "0 6 * * *"      # 1am PT  — bakes TOMORROW's slate (next UTC day)
     - cron: "0 11 * * *"     # 7am ET  — catches overnight schedule + SP firming
     - cron: "0 14 * * *"     # 10am ET — late-add games and SP swaps
     - cron: "0 17 * * *"     # 1pm ET  — pre-afternoon-game lineup cards
@@ -69,8 +75,18 @@ jobs:
           echo "ODDS_API_KEY=${{ secrets.ODDS_API_KEY }}" > .env
 
       - name: Run predict.py
+        # Three sources can supply the date, in priority order:
+        #   1. workflow_dispatch input (manual override)
+        #   2. The 06:00 UTC cron is special — it bakes TOMORROW's slate, so a
+        #      user checking late at night the previous day already sees it.
+        #   3. Otherwise predict.py picks its own UTC default.
         run: |
           DATE_ARG="${{ inputs.slate_date }}"
+          SCHED="${{ github.event.schedule }}"
+          if [ -z "$DATE_ARG" ] && [ "$SCHED" = "0 6 * * *" ]; then
+            DATE_ARG=$(date -u -d "tomorrow" +%Y-%m-%d)
+            echo "::notice::Night-owl 06:00 UTC cron detected — explicitly baking tomorrow's slate ($DATE_ARG)"
+          fi
           if [ -z "$DATE_ARG" ]; then
             python predict.py --skip-weights
           else

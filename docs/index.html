@@ -76,6 +76,7 @@
   .signals { font-size: 0.8rem; color: var(--muted); }
   .why { font-size: 0.8rem; color: var(--muted); font-style: italic; }
   .row-clickable { cursor: pointer; }
+  .pred-score { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--text); }
   .row-clickable:hover { background: rgba(88, 166, 255, 0.08); }
   .chev { display: inline-block; width: 1em; color: var(--muted); transition: transform 0.15s; }
   .chev.open { transform: rotate(90deg); color: var(--accent); }
@@ -1371,7 +1372,7 @@ function _ltCacheSet(key, value) {
 
 async function _ltFetchLiveFeed(gamePk) {
   // Slim feed-live response (status + linescore only)
-  const url = `https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live?fields=gameData,gameData.status,liveData,liveData.linescore`;
+  const url = `https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`;
   const r = await fetch(url, { cache: "no-store" });
   if (!r.ok) throw new Error(`feed/live HTTP ${r.status}`);
   return r.json();
@@ -1507,6 +1508,47 @@ function _ltVerdict(pickedSide, trajectory, result, preGameProb) {
       text: `Pick lost despite live trajectory peaking at ${(peak*100).toFixed(1)}% — late-game collapse against the pre-game read.`,
     };
   }
+}
+
+// Predict per-team final scores from the model's win probability + a small
+// adjustment based on F5-vs-Full divergence (which signals SP-vs-bullpen
+// dominance and shifts the expected total).
+//   total      = league avg 8.7 R/G, nudged ±0.6 by SP-edge magnitude
+//   allocation = Pythagenpat-ish square-root weighting from win prob
+// Inputs are STRINGS from the CSV; returns {away, home, total} with rounded values.
+function _predictScore(fullProbRaw, f5ProbRaw) {
+  const p = parseFloat(fullProbRaw);
+  if (isNaN(p) || p <= 0 || p >= 1) return null;
+  let total = 8.7;  // 2024 MLB league-avg R/G (both teams combined)
+  const f5 = parseFloat(f5ProbRaw);
+  if (!isNaN(f5) && f5 > 0 && f5 < 1) {
+    // Stronger F5 signal (further from 0.5) → SP edge → lower expected total.
+    // Weaker F5 signal AND large full-game lean → bullpen dominance → mild bump.
+    const f5Strength = Math.abs(f5 - 0.5);     // 0.0 to 0.5
+    const fullStrength = Math.abs(p - 0.5);
+    total -= f5Strength * 1.2;                  // up to -0.6
+    if (fullStrength > f5Strength + 0.05) total += 0.3;  // late-game tilt → slight bump
+  }
+  total = Math.max(6.5, Math.min(11.5, total));
+  // Allocate via square-root weighting: home_runs = T * sqrt(p) / (sqrt(p) + sqrt(1-p))
+  const a = Math.sqrt(1 - p);
+  const b = Math.sqrt(p);
+  const home = total * b / (a + b);
+  const away = total - home;
+  return { away: away, home: home, total: total };
+}
+
+function _formatPredScore(row) {
+  const s = _predictScore(row.full_prob || row.p_model, row.f5_prob);
+  if (!s) return "—";
+  const pickedHome = row && row.matchup && row.pick && row.matchup.indexOf("@ " + row.pick) > -1;
+  const aRound = s.away.toFixed(1);
+  const hRound = s.home.toFixed(1);
+  // Bold the side the model picked
+  const picked = pickedHome ? "home" : "away";
+  return picked === "home"
+    ? `${aRound}-<strong>${hRound}</strong>`
+    : `<strong>${aRound}</strong>-${hRound}`;
 }
 
 function _ltRowKey(rowIndex) { return "live-tracker-" + rowIndex; }
@@ -1685,6 +1727,13 @@ function _ltUpdateBlockDOM(rowIndex, snapshot) {
   } else if (status === "pre") {
     stateLine.classList.add("muted");
     stateLine.innerHTML = `<div>${_ltFmtFirstPitch(snapshot.result)} — model is locked at <strong>${snapshot.preGameProb != null ? (snapshot.preGameProb*100).toFixed(1) + "%" : "—"}</strong>. Live tracker activates at first pitch.</div>`;
+    if (compSlot) compSlot.innerHTML = "";
+  } else {
+    // Fallback: status is "unknown" / "postponed" / "suspended" / "cancelled".
+    // Replace the stale "Loading…" text so the user sees something concrete.
+    stateLine.classList.add("muted");
+    const fallbackLabel = (snapshot.result && snapshot.result.statusText) ? snapshot.result.statusText : "Status unavailable";
+    stateLine.innerHTML = `<div>${fallbackLabel}</div>`;
     if (compSlot) compSlot.innerHTML = "";
   }
 }
@@ -2360,6 +2409,18 @@ function formatNarrative(r, gradeInfo, result) {
     html += `<p class="muted">Stage 2 probability not available.</p>`;
   }
 
+  // ----- 3b. Predicted final score -----
+  const _ps = _predictScore(r.full_prob || r.p_model, r.f5_prob);
+  if (_ps) {
+    const aS = _ps.away.toFixed(1);
+    const hS = _ps.home.toFixed(1);
+    const tS = _ps.total.toFixed(1);
+    html += `<h4>Predicted final score</h4>
+      <p>Model projects roughly <strong>${aS} &ndash; ${hS}</strong> (combined total ~ ${tS}). `
+      + `<span class="muted">Score allocated from win probability via Pythagorean weighting; `
+      + `total is league baseline 8.7 R/G adjusted by F5-vs-Full signal (stronger SP edge &rArr; lower total).</span></p>`;
+  }
+
   // ----- 4. Market positioning -----
   html += `<h4>Market positioning</h4>`;
   if (noMarket) {
@@ -2535,7 +2596,7 @@ function renderSlate(rows, gradeMap, results) {
       <thead><tr>
         <th></th>
         <th>Matchup</th><th>Pick</th><th>F5</th><th>Full</th>
-        <th>Fair</th><th>Edge</th><th>Tier</th><th>Grade</th>
+        <th>Fair</th><th>Edge</th><th>Pred</th><th>Tier</th><th>Grade</th>
         ${haveAnyResult ? "<th>Result</th>" : ""}
         <th>Reasons</th>
       </tr></thead><tbody>`;
@@ -2563,7 +2624,7 @@ function renderSlate(rows, gradeMap, results) {
       }
     }
     const narrative = formatNarrative(r, fromParlay, result);
-    const colspan = haveAnyResult ? 11 : 10;
+    const colspan = haveAnyResult ? 12 : 11;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
@@ -2572,6 +2633,7 @@ function renderSlate(rows, gradeMap, results) {
       <td>${pct(r.full_prob || r.p_model)}</td>
       <td>${fairFmt}</td>
       <td>${edgeFmt}</td>
+      <td class="pred-score">${_formatPredScore(r)}</td>
       <td>${r.tier || "—"}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
       ${resultCell}

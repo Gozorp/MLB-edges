@@ -35,12 +35,14 @@ set "LOG=%~dp0push.log"
     echo abort sequence complete [errors above are fine — means nothing to abort]
     echo.
 
-    echo --- resolving any UU [unmerged] files by explicitly taking origin/main's version ---
-    REM During a rebase, "--theirs" means the local commit being replayed; during a merge it means upstream.
-    REM To avoid that inversion entirely, we fetch origin and check out origin/main's version directly.
-    REM This guarantees we keep the auto-run's fresh data instead of clobbering it with stale local copies.
+    echo --- resolving any UU [unmerged] files (selective: data=origin, source=local) ---
+    REM Two classes of files need different conflict resolution:
+    REM   1. Auto-generated data (docs/data/picks_*.csv, parlay_*.txt, manifest.json) - always take origin's
+    REM      version to avoid clobbering the freshest auto-run output with stale local copies.
+    REM   2. Source code (docs/index.html, mlb_edge/*.py, .github/*, *.bat, *.md, etc.) - keep LOCAL,
+    REM      because that's what the user is intentionally pushing as a fix.
     git fetch origin main 2>&1
-    python -c "import subprocess as s; out = s.check_output(['git','status','--porcelain'], text=True); files = [l[3:].strip() for l in out.splitlines() if l.startswith('UU')]; [s.run(['git','checkout','origin/main','--',f]) or s.run(['git','add',f]) for f in files]; print('resolved', len(files), 'unmerged files (using origin/main):', files)" 2>&1
+    python -c "import subprocess as s; out = s.check_output(['git','status','--porcelain'], text=True); files = [l[3:].strip() for l in out.splitlines() if l.startswith('UU')]; data = [f for f in files if (f.startswith('docs/data/') or f.startswith('picks_') or f.startswith('parlay_'))]; src = [f for f in files if f not in data]; [s.run(['git','checkout','origin/main','--',f]) or s.run(['git','add',f]) for f in data]; [s.run(['git','checkout','--ours','--',f]) or s.run(['git','add',f]) for f in src]; print('resolved', len(data), 'data files (using origin/main):', data); print('resolved', len(src), 'source files (using local):', src)" 2>&1
     echo unmerged-resolution sequence complete
     echo.
 
@@ -62,7 +64,7 @@ set "LOG=%~dp0push.log"
     echo.
 
     echo --- committing ---
-    git commit -m "Render all MLB games + workflow validation: synthetic Pending rows for missing games; fail daily-slate workflow loudly if fair_prob/edge_pp blank on >=50%% of rows"
+    git commit -m "Dashboard: predicted final score (Pythagorean from win prob + F5/Full-aware total) as new Pred column + narrative section. Workflow: night-owl cron at 06:00 UTC bakes tomorrow's slate; new savant-harvest.yml at 00:00 UTC pulls all 42 Statcast leaderboards every midnight. Live tracker: drop broken ?fields=... query that returned empty status. PUSH_FIX: selective conflict resolver (data=origin, source=local)."
     echo commit exit code: !errorlevel! [non-zero is fine if nothing new to commit]
     echo.
 
