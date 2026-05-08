@@ -29,12 +29,14 @@ set "LOG=%~dp0quick_push.log"
     git add PUSH_FIX.bat
     git add QUICK_PUSH.bat
     git add functions/
+    git add src/
+    git add wrangler.toml
 
     echo --- staged ---
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Cloudflare Pages Workers: /api/health, /api/today (latest slate as JSON), /api/mlb/* (edge-cached statsapi proxy with per-endpoint TTLs). Dashboard: monkey-patch fetch to auto-route MLB API calls through proxy when not on github.io."
+    git commit -m "Cloudflare Workers: add wrangler.toml + src/index.js for unified Workers-with-static-assets deploy (functions/ folder wasn't picked up because project was created as a Worker, not Pages). Routes: /api/health, /api/today, /api/mlb/* with per-endpoint edge TTLs."
     echo commit exit: !errorlevel!
 
     echo --- push ---

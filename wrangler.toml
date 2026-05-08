@@ -1,0 +1,22 @@
+# =============================================================================
+# wrangler.toml — Cloudflare Workers project config
+# =============================================================================
+# This repo is deployed to Cloudflare as a "Worker with static assets":
+#   - Static dashboard files live in docs/ and are served directly from edge.
+#   - API routes (/api/*) are handled by the worker in src/index.js.
+#
+# Cloudflare's git integration auto-detects this file on every push and
+# rebuilds the worker.  No CI step needed — Cloudflare runs wrangler.
+# =============================================================================
+name = "mlb-edges"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+# Static assets binding: serve docs/ directly for any path that maps to a real
+# file on disk.  The worker (src/index.js) handles the rest — specifically the
+# /api/* routes.  Cloudflare tries assets first; if a path doesn't match a file,
+# it invokes the worker.  That's exactly what we want.
+[assets]
+directory = "./docs"
+binding = "ASSETS"
+not_found_handling = "none"
