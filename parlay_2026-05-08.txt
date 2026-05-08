@@ -2,54 +2,55 @@
   PARLAY BUILDER — 2026-05-08
 ==============================================================================
   Slate size:  14 games
-  Grade map:   A=1  A-=2  B+=1  B=1  B-=1  C=2  D=6
+  Grade map:   A=1  A-=3  B+=1  B=0  B-=3  C=0  D=6
 
 GRADE A   (anchor — include in every ticket)
-  CHC @ TEX       CHC  p=59.8%  GOLD      filtered
-      reasons: F-signal fires (+1) | SP edge 2.05 xERA agrees with pick (+2) | PQI confirms pick (Δ=-29.3) (+1) | team_quality modifier (+1) | Stage 1/2 agree (Δ=0.03) (+1)
+  CHC @ TEX       CHC  p=57.5%  GOLD      filtered
+      reasons: F-signal fires (+1) | SP edge 2.06 xERA agrees with pick (+2) | PQI confirms pick (Δ=-29.4) (+1) | team_quality modifier (+1) | Stage 1/2 agree (Δ=0.00) (+1)
 
 GRADE A-  (parlay-worthy)
   TB @ BOS        TB   p=54.9%  GOLD      filtered
-      reasons: F-signal fires (+1) | SP edge 1.22 xERA agrees with pick (+1) [small-sample SP, min_pa=94] | PQI confirms pick (Δ=-12.1) (+1) | team_quality modifier (+1)
+      reasons: F-signal fires (+1) | SP edge 1.23 xERA agrees with pick (+1) [small-sample SP, min_pa=94] | PQI confirms pick (Δ=-12.3) (+1) | team_quality modifier (+1)
+  MIN @ CLE       CLE  p=58.8%  SKIP      filtered
+      reasons: SP edge 0.61 xERA agrees with pick (+1) [small-sample SP, min_pa=56] | PQI confirms pick (Δ=+16.3) (+1) | team_quality modifier (+1) | Stage 1/2 agree (Δ=0.09) (+1)
   NYY @ MIL       NYY  p=53.7%  GOLD      filtered
-      reasons: F-signal fires (+1) | SP edge 0.57 xERA agrees with pick (+2) | PQI confirms pick (Δ=-6.6) (+1) | team_quality modifier (+1) | negative edge (-3.3pp) caps A at A- (score 5 -> 4)
+      reasons: F-signal fires (+1) | SP edge 0.58 xERA agrees with pick (+2) | PQI confirms pick (Δ=-6.7) (+1) | team_quality modifier (+1) | negative edge (-2.0pp) caps A at A- (score 5 -> 4)
 
 GRADE B+  (stretch — max 1 per ticket)
-  COL @ PHI       PHI  p=51.5%  GOLD      filtered
-      reasons: F-signal fires (+1) | team_quality modifier (+1) | Stage 1/2 agree (Δ=0.00) (+1)
+  COL @ PHI       PHI  p=50.4%  GOLD      filtered
+      reasons: F-signal fires (+1) | team_quality modifier (+1) | Stage 1/2 agree (Δ=0.01) (+1)
 
 EDGE-BAND FILTER  (1 games excluded; band = [-5, +15]pp)
-  COL @ PHI       PHI  p=51.5%  edge=-17.6pp  grade=B+
+  COL @ PHI       PHI  p=50.4%  edge=-18.6pp  grade=B+
 
-DO NOT PARLAY  (10 games)
-  HOU @ CIN       HOU  p=72.0%  grade=D  
-  OAK @ BAL       BAL  p=63.5%  grade=D  
-  LAA @ TOR       TOR  p=66.8%  grade=C  
-  WSH @ MIA       MIA  p=61.8%  grade=C  
-  MIN @ CLE       CLE  p=67.4%  grade=B  
-  DET @ KC        KC   p=55.1%  grade=D  
-  SEA @ CHW       CHW  p=76.4%  grade=D  
+DO NOT PARLAY  (9 games)
+  HOU @ CIN       HOU  p=74.4%  grade=D  
+  OAK @ BAL       BAL  p=57.5%  grade=D  
+  LAA @ TOR       TOR  p=64.0%  grade=B- 
+  WSH @ MIA       MIA  p=58.6%  grade=B- 
+  DET @ KC        KC   p=50.9%  grade=D  
+  SEA @ CHW       CHW  p=81.0%  grade=D  
   NYM @ ARI       ARI  p=68.0%  grade=D  
-  STL @ SD        STL  p=54.3%  grade=B- 
-  ATL @ LAD       LAD  p=61.9%  grade=D  
+  STL @ SD        SD   p=50.8%  grade=B- 
+  ATL @ LAD       LAD  p=62.0%  grade=D  
 
 ==============================================================================
   RECOMMENDED PARLAYS
 ==============================================================================
 
-  2-LEG  (2 anchors at A/A- grade (diversity: {'chalk': 1, 'contrarian': 1}))  joint p ≈ 32.8%
-    CHC @ TEX       CHC  p=59.8%  grade=A
+  2-LEG  (2 anchors at A/A- grade (diversity: {'chalk': 2}))  joint p ≈ 33.8%
+    CHC @ TEX       CHC  p=57.5%  grade=A
+    MIN @ CLE       CLE  p=58.8%  grade=A-
+
+  3-LEG  (3 anchors at A/A- grade (diversity: {'chalk': 2, 'contrarian': 1}))  joint p ≈ 18.6%
+    CHC @ TEX       CHC  p=57.5%  grade=A
+    MIN @ CLE       CLE  p=58.8%  grade=A-
     TB @ BOS        TB   p=54.9%  grade=A-
 
-  3-LEG  (3 anchors at A/A- grade (diversity: {'chalk': 2, 'contrarian': 1}))  joint p ≈ 17.6%
-    CHC @ TEX       CHC  p=59.8%  grade=A
+  4-LEG  (only 3 parlay-worthy pick(s) survive diversity cap; can't reach 4 legs (max 2/profile))  joint p ≈ 18.6%
+    CHC @ TEX       CHC  p=57.5%  grade=A
+    MIN @ CLE       CLE  p=58.8%  grade=A-
     TB @ BOS        TB   p=54.9%  grade=A-
-    NYY @ MIL       NYY  p=53.7%  grade=A-
-
-  4-LEG  (only 3 parlay-worthy pick(s) survive diversity cap; can't reach 4 legs (max 2/profile))  joint p ≈ 17.6%
-    CHC @ TEX       CHC  p=59.8%  grade=A
-    TB @ BOS        TB   p=54.9%  grade=A-
-    NYY @ MIL       NYY  p=53.7%  grade=A-
 
 ==============================================================================
   GUIDANCE
