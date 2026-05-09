@@ -1,194 +1,193 @@
 {
   "date": "2026-05-09",
-  "fit_at": "2026-05-09T10:15:00Z",
-  "model_version": "claude-brain-v2",
+  "fit_at": "2026-05-09T09:30:00Z",
+  "model_version": "claude-brain-v1",
   "n_games": 15,
   "patterns_recognized": [
-    "Same-series doubling: 4 of 6 GOLD picks (TB@BOS, COL@PHI, DET@KC, NYY@MIL) are exact repeats of yesterday's GOLD losses — model doesn't adjust for within-series momentum after a single game.",
-    "Small-sample SP asterisk recurs: F1_xera_gap* appears again on NYY@MIL and CHC@TEX; yesterday NYY@MIL's asterisked F1 preceded a GOLD loss to a small-sample MIL starter.",
-    "Negative-edge GOLD slippage: COL@PHI carries edge -9.52pp (below -8pp DOWNGRADE threshold) yet remains GOLD-tiered — the -8pp cap is blocking stake but not tier assignment.",
-    "Home-favorite overconfidence: SEA@CHW (74% yesterday, lost 12-8) and NYM@ARI (68% yesterday, lost) are today's clearest recurrence risk; both matchups repeat with model still on the previously-wrong side."
+    "Home-favorite overconfidence: yesterday's worst losses (SEA@CHW 74%, NYM@ARI 68%) were both high-model-confidence home favorites Vegas wasn't backing — model confidence >65% with market divergence is a persistent red flag.",
+    "Rookie/limited-start SP blindspot confirmed: NYY@MIL GOLD loss to Misiorowski (small-sample starter) exactly matches heuristic #3; today Payton Tolle (BOS, only 3 GS, 2.04 ERA) is the equivalent risk in TB@BOS.",
+    "Stage 1 / Stage 2 bullpen-carry pattern: PIT@SF shows a 26.9pp F5/full gap (SF F5=57.8% but SF full only 30.9%) — the 69.1% model confidence entirely depends on a late-inning PIT bullpen thesis that cannot be verified without rest data."
   ],
   "by_matchup": {
     "LAA @ TOR": {
       "model_pick": "TOR",
       "model_prob": 0.6743,
       "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_grade": "C+",
       "claude_decision": "CONFIRM",
       "claude_pick": "TOR",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.57,
-      "reasoning": "Edge +2.77pp falls below the 4pp minimum — correct SKIP. More concerning: TOR's Stage 1 (F5) win probability is only 40.47% while Stage 2 reads 67.43%, a 27pp gap indicating the pick is entirely a bullpen/late-inning thesis. Calibrated probability ~57% from 67.43% raw (0.6-0.7 bin). Yesterday TOR won cleanly behind Cease; today's F5 weakness and low edge give no actionable lift. Confidence_downgrade already flagged.",
-      "lessons_applied": ["stage1_stage2_disagreement_>0.15", "low_edge_skip_correct"]
+      "claude_confidence": 0.60,
+      "reasoning": "SKIP correctly applied: edge +19.3pp exceeds the 15pp upper band. TOR at 67.4% raw; calibrated ~57% per the [0.6,0.7] bucket. Cease pitched yesterday (TOR 2-0 win), so today's SP matchup changes with Yesavage — a newer arm with limited MLB data. No structural edge overrides the band filter today.",
+      "lessons_applied": ["edge_above_15pp_skip_band"]
     },
     "OAK @ BAL": {
       "model_pick": "OAK",
       "model_prob": 0.5703,
       "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_grade": "C-",
       "claude_decision": "CONFIRM",
       "claude_pick": "OAK",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "OAK picked at 57.03% while Vegas prices BAL at 53.58% (fair 46.42%). Edge +10.61pp is in the valid band but grader assigned SKIP. Stage 1/2 discordance: OAK wins only 44.44% of F5s yet leads in the full game — partial bullpen thesis. Yesterday the model picked BAL in this series and lost 4-3 to OAK, suggesting OAK quality is real, but insufficient positive-tier signals to elevate from SKIP.",
-      "lessons_applied": ["stage1_stage2_moderate_divergence", "prior_series_context"]
+      "reasoning": "SKIP correctly applied: edge -26.1pp is deeply negative and far outside any actionable band. Yesterday BAL was picked and lost 4-3 to OAK. Today model flips to OAK at 57% but with no positive signals and a Vegas consensus shortfall of 26pp, this is noise. Civale vs Baz is a balanced SP matchup.",
+      "lessons_applied": ["negative_edge_contrarian_loss_yesterday"]
     },
     "HOU @ CIN": {
       "model_pick": "HOU",
       "model_prob": 0.5253,
       "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "HOU",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "HOU won 10-0 yesterday; today the model again likes HOU (52.53% full game) with a massive F5 advantage (85.3%). But fair_prob=38.5% means Vegas strongly favors CIN, likely reflecting the acute_roster stress flag (possible CIN lineup/SP adjustment). Stage 1/2 gap of 0.33 means this is purely an early-innings HOU advantage — full-game conviction is thin. Fair_prob threshold filter correctly triggers SKIP.",
-      "lessons_applied": ["fair_prob_below_threshold", "stage1_stage2_disagreement_>0.15", "acute_roster_flag"]
-    },
-    "TB @ BOS": {
-      "model_pick": "TB",
-      "model_prob": 0.5493,
-      "model_tier": "GOLD",
-      "model_grade": "A-",
-      "claude_decision": "DOWNGRADE",
-      "claude_pick": "TB",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.51,
-      "reasoning": "Yesterday's exact matchup: GOLD-tier TB pick, F3_swing_take_gap=762, lost 0-2 to BOS. Today: same setup, F3=911.8 (stronger signal, same failure pattern). Calibrated TB probability ~52% from 54.93% raw. BOS SP held TB scoreless yesterday; today's starter is different but BOS pitching depth remains. No new information breaks the same-series-loss pattern. F3 is a real signal but it lost in this exact context 24 hours ago.",
-      "lessons_applied": ["same_series_prior_gold_loss", "calibration_shrinks_edge", "f3_signal_insufficient_against_quality_SP"]
+      "reasoning": "SKIP correctly applied: no fair_prob returned (fetched_capped) so edge is unverifiable and stake_mult=0. CIN F5 dominance is very high (f5_prob=0.853 for CIN home), meaning HOU's 52.5% full-game pick is a pure bullpen-carry thesis. Arrighetti vs Burns today; Chase Burns has been dominant. Yesterday HOU won 10-0 but under different SP conditions.",
+      "lessons_applied": ["no_fair_prob_unverifiable_edge"]
     },
     "WSH @ MIA": {
-      "model_pick": "WSH",
-      "model_prob": 0.52,
+      "model_pick": "MIA",
+      "model_prob": 0.5501,
       "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_grade": "C-",
       "claude_decision": "CONFIRM",
-      "claude_pick": "WSH",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "WSH picked at 52% vs Vegas pricing MIA at ~61% (fair 39.02%). Model flipped from MIA (yesterday's pick, lost 2-3) to WSH today. Stage 1/2: WSH F5=60.4% vs full=52.0% — F5 conviction doesn't carry to the full game. Fair_prob threshold (39.02% < 42%) correctly triggers SKIP. Cannot verify SP change that might justify the direction flip without live data.",
-      "lessons_applied": ["fair_prob_below_threshold", "direction_flip_after_loss_unverified"]
-    },
-    "COL @ PHI": {
-      "model_pick": "PHI",
-      "model_prob": 0.55,
-      "model_tier": "GOLD",
-      "model_grade": "C+",
-      "claude_decision": "DOWNGRADE",
-      "claude_pick": "PHI",
+      "claude_pick": "MIA",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "Yesterday COL beat PHI 9-7 in this same matchup — GOLD PHI pick lost. Today model again picks PHI at 55% with edge -9.52pp, breaching the -8pp DOWNGRADE threshold (Heuristic #2). Vegas prices PHI at 64.52%; the model is contrarian against a strong market favorite. PHI bullpen flagged for fatigue (stress_warnings=bullpen_fatigue). Confidence_downgrade=True. Three simultaneous red flags: negative edge beyond the cap, fatigue, direct series loss.",
-      "lessons_applied": ["negative_edge_downgrade_heuristic_2", "bullpen_fatigue_stress", "same_series_prior_gold_loss"]
+      "reasoning": "SKIP correctly applied: fair_prob=0.174 is far below the 0.42 floor, and edge +37.6pp is an extreme outlier. Yesterday MIA was picked and lost 2-3 in a low-conviction game. Lovelady (WSH opener) vs Junk (MIA) is a low-confidence SP matchup. The fair_prob filter is the correct gate.",
+      "lessons_applied": ["fair_prob_below_threshold_0.42"]
+    },
+    "COL @ PHI": {
+      "model_pick": "COL",
+      "model_prob": 0.5088,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "COL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.46,
+      "reasoning": "Downgrading GOLD→SKIP. Edge +15.92pp clips the 15pp upper band limit, fair_prob=0.350 is below the 0.42 floor (Vegas has PHI at 65%), and confidence_downgrade=True is pipeline-flagged. Aaron Nola (PHI) is a far tougher matchup than Luzardo was yesterday when COL won 9-7. Kyle Freeland struggles away from Coors. COL's model prob is barely 50.9% with three band/floor filters tripped.",
+      "lessons_applied": ["edge_above_15pp_skip_band", "fair_prob_below_threshold_0.42", "confidence_downgrade_pipeline_flag"]
     },
     "MIN @ CLE": {
       "model_pick": "CLE",
-      "model_prob": 0.5889,
+      "model_prob": 0.5719,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "CLE picked at 58.89% with near-perfect Stage 1/2 agreement (F5: 59.07%, full: 58.89%). Edge +6.49pp valid, but grader assigned SKIP. Yesterday CLE won 6-4 in this same series; however, bullpen_fatigue stress warning flags that CLE's relievers who carried yesterday may be overextended. Confidence_downgrade=True. SKIP is appropriate; direction is plausible but carry risk is real.",
-      "lessons_applied": ["bullpen_fatigue_after_prior_win", "same_series_context"]
+      "reasoning": "SKIP correctly applied: bullpen_fatigue=True and confidence_downgrade=True. CLE's F5 probability is only 40.9% (f5_prob=0.4093) while CLE full-game reads 57.2% — a 16.3pp Stage 1/2 gap. The pick depends on CLE's taxed bullpen producing a late comeback against Ryan (MIN). Ryan vs Bibee is a solid SP matchup where early innings likely favor MIN.",
+      "lessons_applied": ["stage1_stage2_gap_16pp_bullpen_carry", "bullpen_fatigue_carry_over"]
     },
     "CHC @ TEX": {
       "model_pick": "CHC",
-      "model_prob": 0.5313,
+      "model_prob": 0.509,
       "model_tier": "GOLD",
-      "model_grade": "B-",
+      "model_grade": "B",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHC",
       "claude_tier": "GOLD",
       "claude_confidence": 0.52,
-      "reasoning": "CHC beat TEX 7-1 yesterday with nearly identical signals (F2=0.023 yesterday vs 0.025 today, F1 also present). The direction is supported by independent F2 lineup evidence. F1_xera_gap=0.80* carries the asterisk (small-sample SP) — a concern mitigated by F2 firing independently. Edge -3.16pp keeps stake_mult=0, so no staking recommended. Confirming direction and GOLD tier; conviction limited by negative edge and confidence_downgrade=True.",
-      "lessons_applied": ["f2_lineup_signal_confirmed", "f1_asterisk_risk_acknowledged", "prior_series_win_same_signals"]
+      "reasoning": "Confirming GOLD. Jack Leiter (TEX) is 5.40 ERA, 1.36 WHIP, 7 HR in 38.1 IP this season — legitimately exploitable. Edward Cabrera (CHC) provides a real xERA advantage (F1_xera_gap=0.80) and F2_xwoba_gap=0.025 fires independently. Vegas backs CHC at 55.3% implied, so we go WITH the market direction. Stage 1/2 gap=0.9pp, minimal. Stake_mult=0 per band rule on -4.41pp edge stands; direction is sound.",
+      "lessons_applied": ["Leiter_ERA_5.40_exploitable", "Vegas_agrees_CHC_direction", "dual_F_signals_independent"]
     },
     "DET @ KC": {
       "model_pick": "DET",
       "model_prob": 0.5133,
       "model_tier": "GOLD",
-      "model_grade": "B+",
+      "model_grade": "B-",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "DET",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.51,
-      "reasoning": "Yesterday DET @ KC was a GOLD LOSS (DET 51.3%, F2=0.021, lost 3-4 in a one-run game). Today: same matchup, same F2_xwoba_gap=0.021, same DET probability 51.33%. Acute_roster stress warning raises concern about DET's lineup today. DET's F5 probability (40.87%) indicates KC is superior in the early innings — the full-game DET pick lives entirely in the late innings. Repeating the same signal on the same matchup after a direct series loss warrants DOWNGRADE.",
-      "lessons_applied": ["same_series_prior_gold_loss", "f2_modest_0.021_insufficient", "stage1_discordance_40pct_f5", "acute_roster_flag"]
+      "claude_confidence": 0.49,
+      "reasoning": "Downgrading GOLD→SKIP. acute_roster=True flags a live DET lineup concern that would erase the modest F2_xwoba_gap=0.021 edge. confidence_downgrade=True already pipeline-flagged. Yesterday DET was GOLD-picked in this same series and lost 3-4. Wacha (KC) is a durable veteran. A coin-flip model prob (51.3%) with acute roster risk and a fresh series loss is not actionable.",
+      "lessons_applied": ["acute_roster_lineup_flag", "same_series_prior_gold_loss", "coin_flip_edge_insufficient"]
     },
-    "SEA @ CHW": {
-      "model_pick": "CHW",
-      "model_prob": 0.5489,
+    "SEA @ CWS": {
+      "model_pick": "CWS",
+      "model_prob": 0.5684,
       "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "CHW",
+      "claude_pick": "CWS",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "Yesterday the model's worst loss: CHW picked at 74%, SEA won 12-8. Today CHW again at 54.89% (calibrated ~52%). The model retains a CHW home-field preference after yesterday's blowout. SEA's 12-run output indicates real offensive strength. Already SKIP (tier assignment). Confirming SKIP is correct; if this were actionable the SEA direction would have stronger recent backing, but a SKIP-vs-SKIP distinction is non-actionable.",
-      "lessons_applied": ["home_favorite_overconfidence_pattern", "prior_game_blowout_ignored_by_model"]
+      "claude_confidence": 0.51,
+      "reasoning": "SKIP correctly applied. Yesterday was the model's worst loss: CHW at 74% lost 12-8 to SEA. Today CHW at 56.8% — calibrated ~52%. Luis Castillo (SEA) starts today, a genuine ace, against Anthony Kay (CWS). SEA's 12-run outburst reveals real offensive strength the model under-priced. No override warranted; if anything, SEA direction has stronger recent backing.",
+      "lessons_applied": ["home_favorite_overconfidence_CHW_74pct_loss_yesterday"]
     },
     "NYY @ MIL": {
       "model_pick": "NYY",
-      "model_prob": 0.5352,
+      "model_prob": 0.542,
       "model_tier": "GOLD",
-      "model_grade": "B-",
-      "claude_decision": "DOWNGRADE",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
       "claude_pick": "NYY",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Yesterday NYY @ MIL was a GOLD LOSS — Misiorowski (small-sample) shut out NYY, exactly matching the rookie SP blindspot (Heuristic #3). Today F1_xera_gap=1.68* again carries the asterisk, indicating today's MIL starter comparison is also small-sample. NYY offense noted as cold in yesterday's postgame (3rd-straight low-run game). Bullpen_fatigue stress and negative edge -2.96pp add to concerns. Four converging risk signals on a recurring pattern.",
-      "lessons_applied": ["small_sample_sp_asterisk_heuristic_3", "nyyoffense_cold_streak", "bullpen_fatigue_stress", "same_series_prior_gold_loss"]
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.53,
+      "reasoning": "Confirming GOLD. Cam Schlittler (NYY) has been dominant: 8 GS, 1.52 ERA, 0.87 WHIP, 5-1 record. The F1_xera_gap=1.68* asterisk likely flags Kyle Harrison (MIL) on a shorter sample — Schlittler's 8-start track record is sufficient to trust. Vegas at 56.2% slightly favors NYY, aligning with the model's 54.2%. Stage 1/2 gap=13.6pp is below the 15pp threshold. bullpen_fatigue noted but Schlittler's efficiency should limit bullpen exposure.",
+      "lessons_applied": ["Schlittler_dominant_8GS_1.52ERA", "Vegas_agrees_NYY_direction"]
     },
     "NYM @ ARI": {
       "model_pick": "ARI",
       "model_prob": 0.6743,
       "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_grade": "C-",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.57,
-      "reasoning": "ARI at 67.43% while Vegas is near-coin-flip at 49.25% (fair) — edge +18.18pp exceeds the 15pp SKIP ceiling. Yesterday identical setup (ARI 68%, lost 1-3). Calibrated probability only ~57% (0.6-0.7 bin). Heuristic #1: home-favorite overconfidence at >65% with two such losses yesterday (SEA@CHW, NYM@ARI). SKIP is correctly applied; the direction may be right but the model's stated confidence is not market-supported.",
-      "lessons_applied": ["home_favorite_overconfidence_heuristic_1", "edge_above_15pp_skip_band", "prior_day_identical_loss"]
+      "reasoning": "SKIP correctly applied. Yesterday ARI was picked at 68% and lost 1-3 — this is the exact home-favorite overconfidence pattern (Heuristic #1). Edge +17.6pp is outside the band. Calibrated ARI ~57% from 67.4% raw. Today Holmes (NYM) vs Kelly (ARI). The model's repeated 67%+ ARI confidence against a near-neutral Vegas line is the key warning pattern from yesterday.",
+      "lessons_applied": ["home_favorite_overconfidence_heuristic_1", "ARI_68pct_loss_yesterday_direct_repeat"]
     },
     "STL @ SD": {
       "model_pick": "STL",
-      "model_prob": 0.5433,
+      "model_prob": 0.554,
       "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "STL picked at 54.33% full game but only 33.58% in F5 — a 20.75pp Stage 1/2 gap, the largest on today's slate. Heuristic #5: this is a pure bullpen/late-leverage pick; STL SP is likely a significant underdog. Fair_prob=42.13% confirms Vegas heavily favors SD. Yesterday the model picked SD and lost 0-6; today it flips to STL without live data confirming STL bullpen rest. Cannot verify late-game thesis without bullpen availability data.",
-      "lessons_applied": ["stage1_stage2_disagreement_>0.15_heuristic_5", "fair_prob_below_threshold", "bullpen_rest_unverifiable"]
+      "reasoning": "SKIP correctly applied: no signals firing, tier remains SKIP. Dustin May (STL) vs Randy Vasquez (SD). Yesterday SD was picked and lost; model flips to STL at 55.4% with edge +12.9pp — within band but no tier elevation granted. Without active F-signals, SKIP is correct.",
+      "lessons_applied": []
     },
     "PIT @ SF": {
       "model_pick": "PIT",
-      "model_prob": 0.5999,
+      "model_prob": 0.6908,
       "model_tier": "GOLD",
-      "model_grade": "B+",
-      "claude_decision": "CONFIRM",
+      "model_grade": "B-",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "PIT",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.54,
-      "reasoning": "Cleanest GOLD pick on today's slate: Stage 1 (PIT F5=57.81%) and Stage 2 (full=59.99%) agree within 2.18pp — no bullpen-carry concern. Edge +8.79pp in the valid [4,15]pp band. F2_xwoba_gap=0.031 is the strongest F2 signal among today's GOLD picks. Shadow model (56.7%) confirms direction. No stress warnings, confidence_downgrade=False. Not a series repeat from yesterday. Calibrated ~52% from 60% raw, but signal convergence and clean edge justify maintaining GOLD.",
-      "lessons_applied": ["stage1_stage2_agreement", "valid_edge_range", "shadow_model_confirms", "no_stress_flags"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Downgrading GOLD→SKIP. Stage 1/2 gap is 26.9pp: SF wins F5 at 57.8% (f5_prob=0.5781) but SF wins full game at only 30.9% — PIT's 69.1% model confidence entirely depends on a late-inning bullpen-carry thesis. Vegas prices this near 50/50 (fair_prob=0.503), creating a 19pp model-market gap that echoes yesterday's overconfidence pattern. Both starters are solid (Ashcraft 3.02 ERA, Roupp 3.18 ERA). Cannot confirm PIT bullpen rest.",
+      "lessons_applied": ["stage1_stage2_gap_26.9pp_heuristic_5", "model_market_divergence_19pp", "bullpen_rest_unverifiable"]
     },
     "ATL @ LAD": {
       "model_pick": "LAD",
-      "model_prob": 0.5292,
+      "model_prob": 0.5506,
       "model_tier": "SKIP",
-      "model_grade": "D",
+      "model_grade": "D+",
       "claude_decision": "CONFIRM",
       "claude_pick": "LAD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "sp_savant_gate=HARD_VETO signals an unreliable SP comparison today, despite yesterday's clean LAD win 3-1. Edge -11.63pp: model gives LAD only 52.92% vs Vegas's 64.55% — model significantly underrates LAD relative to the market. Bullpen_fatigue stress. The HARD_VETO plus negative edge plus fatigue are three independent reasons to SKIP. The model's own reduced confidence (52.92% vs yesterday's 64%) reflects the unstable SP situation.",
-      "lessons_applied": ["sp_savant_gate_hard_veto", "negative_edge_outside_band", "bullpen_fatigue_stress"]
+      "claude_confidence": 0.55,
+      "reasoning": "SKIP correctly applied with maximum confidence: sp_savant_gate=HARD_VETO is the strongest pipeline filter, edge -9.49pp breaches the -8pp threshold (Heuristic #2), and bullpen_fatigue=True. Blake Snell (LAD) injury history makes SP comparisons unreliable. Yesterday LAD won 3-1 behind Sheehan; today's Snell matchup is a different risk profile. Hard veto stands unconditionally.",
+      "lessons_applied": ["sp_savant_gate_HARD_VETO_non_negotiable", "negative_edge_below_neg8pp"]
+    },
+    "TB @ BOS": {
+      "model_pick": "TB",
+      "model_prob": 0.5351,
+      "model_tier": "GOLD",
+      "model_grade": "B",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Downgrading GOLD→SKIP. Payton Tolle (BOS) has only 3 MLB starts in 2026 (17.2 IP), triggering the <6-start SP-edge unreliability heuristic (#3). Critically, Tolle has been excellent (2.04 ERA, 0.74 WHIP, 11.7 K/9) — model likely underrates him, inflating TB's lineup edge. Yesterday TB lost 0-2 to BOS in the identical setup (underdog with lineup quality vs quality SP). No odds data (no_match) prevents edge verification. F3=911.8 is real but insufficient given compounding uncertainties.",
+      "lessons_applied": ["rookie_SP_heuristic_3_Tolle_3GS", "Tolle_ERA_2.04_underrated_by_model", "same_series_TB_loss_yesterday"]
     }
   }
 }
