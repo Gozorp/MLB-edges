@@ -26,6 +26,7 @@ set "LOG=%~dp0quick_push.log"
     git add docs/index.html
     git add .github/workflows/daily-slate.yml
     git add .github/workflows/savant-harvest.yml
+    git add .github/workflows/refit-calibrator.yml
     git add PUSH_FIX.bat
     git add QUICK_PUSH.bat
     git add functions/
@@ -34,12 +35,13 @@ set "LOG=%~dp0quick_push.log"
     git add mlb_edge/post_calibrator.py
     git add mlb_edge/parlay_builder.py
     git add models/calibration_v1.json
+    git add tools/refit_post_calibrator.py
 
     echo --- staged ---
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Model fixes from 144-pick historical eval: (1) post_calibrator.py applies binned-isotonic remap to f5_prob/full_prob (Brier 0.2562 -> 0.2439, -4.8%); fitted on 126 (prob,outcome) pairs Apr27-May7. (2) team_quality_modifier disabled (PLATINUM picks it pushed went 3-4 = 43% hit rate). (3) Large-negative-edge cap: edge_pp < -8pp forces grade<=C (Vegas-disagrees-strongly counter-vote)."
+    git commit -m "Auto-refit calibrator: tools/refit_post_calibrator.py walks docs/data/picks_*.csv, pairs each model_prob with the actual game outcome (via MLB statsapi), and re-fits the binned-isotonic table with Beta(8) prior shrinkage + weighted PAV monotonicity. New refit-calibrator.yml workflow runs Sundays at 04:00 UTC, commits the updated models/calibration_v1.json if changed. Pure stdlib + urllib — no extra deps."
     echo commit exit: !errorlevel!
 
     echo --- push ---

@@ -1,0 +1,71 @@
+# =============================================================================
+# refit-calibrator.yml
+# -----------------------------------------------------------------------------
+# Weekly refit of models/calibration_v1.json — the post-bake probability
+# calibrator that shrinks over-confident model outputs back toward empirical
+# hit rate.
+#
+# Why weekly: each new completed slate adds 8-15 (prob, outcome) pairs.  At
+# this rate it takes ~1 week to meaningfully tighten the calibration buckets.
+# Refitting more often risks chasing noise; less often misses real drift.
+#
+# Trigger:
+#   - Sundays 04:00 UTC (after Saturday's full slate has all final scores).
+#   - Manual via "Run workflow" any time.
+# =============================================================================
+name: Refit post-calibrator
+
+on:
+  schedule:
+    - cron: "0 4 * * 0"   # Sunday 04:00 UTC = 8 PM PT Saturday / midnight ET Sunday
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run refit (no extra deps — pure stdlib + urllib)
+        run: |
+          python tools/refit_post_calibrator.py
+
+      - name: Show table summary
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("models/calibration_v1.json")
+          if not p.exists():
+              print("::error::calibration JSON not written"); exit(1)
+          d = json.loads(p.read_text())
+          print(f"Refit done — n_samples={d['n_samples']}, "
+                f"Brier {d['brier_before']:.4f} -> {d['brier_after']:.4f}")
+          for r in d["table"]:
+              n = r["n"]
+              if n == 0: continue
+              print(f"  {r['bin_lo']:.2f}-{r['bin_hi']:.2f}  n={n:>3}  "
+                    f"raw={r['raw_rate']:.3f}  cal={r['calibrated_rate']:.3f}")
+          PY
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add models/calibration_v1.json
+          if git diff --cached --quiet; then
+            echo "calibration table unchanged — nothing to commit"
+          else
+            git commit -m "refit-calibrator: weekly refit ($(date -u +%Y-%m-%d))"
+            git push
+          fi
