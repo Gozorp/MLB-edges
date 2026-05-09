@@ -1,0 +1,123 @@
+{
+  "date": "2026-05-08",
+  "model": "claude-opus-4-6 (via Claude Code, offline)",
+  "fit_at": "2026-05-09T08:30:00Z",
+  "n_analyzed": 14,
+  "summary": {
+    "graded_picks": 14,
+    "wins": 5,
+    "losses": 9,
+    "hit_rate": 0.357,
+    "graded_tier_picks": 5,
+    "graded_tier_wins": 1,
+    "graded_tier_hit_rate": 0.20,
+    "headline": "Bad day. 5-9 overall, 1-4 on graded GOLD picks. Common thread: 4 of 9 losses came on picked underdogs where Vegas had the opposite side priced as a real favorite — the model overrode the market and lost."
+  },
+  "by_matchup": {
+    "HOU @ CIN": {
+      "verdict": "WIN",
+      "headline": "Model nailed HOU as live underdog; HOU romped 10-0.",
+      "hypothesis": "The model picked HOU at calibrated 53% despite Vegas pricing them as the dog (fair_prob 45.3% — and that was after the [0.10, 0.90] cap kicked in to reject an upstream parser glitch). HOU scored 10 unanswered, suggesting the F-signal layer correctly identified a quality mismatch on Lodolo or the CIN bullpen that Vegas didn't price. Worth re-running this row's feature trace to see which signals fired hardest — they earned credit today.",
+      "signals_to_recheck": ["full_prob", "fair_prob", "edge_pp"]
+    },
+    "COL @ PHI": {
+      "verdict": "LOSS",
+      "headline": "GOLD-tier PHI pick loses to COL 9-7 in a slug-fest.",
+      "hypothesis": "Model had PHI at 51.8% with edge -18pp (Vegas had PHI heavily favored at ~70%). The model was already disagreeing with the market here, then COL exploded for 9 runs against Luzardo. The F3_swing_take_gap signal fired weakly (261) but didn't anticipate the offensive eruption. Two failure modes likely: (1) Dollander's recent K-rate may have been understated in the SP feature, (2) PHI bullpen took a beating. The new -8pp negative-edge cap that we just shipped would have lowered this from B+ to C — directionally right.",
+      "signals_to_recheck": ["edge_pp", "F3_swing_take_gap", "bullpen_fatigue"]
+    },
+    "OAK @ BAL": {
+      "verdict": "LOSS",
+      "headline": "BAL pick loses 4-3 in a one-run game; ATH bullpen held up.",
+      "hypothesis": "Model picked BAL at 63% with a +6.5pp edge — middling conviction. ATH (Athletics) won the close one, suggesting the team_quality_modifier (which we just disabled) was likely pushing BAL because of name brand. Bradish vs Lopez was closer than the pitcher-quality features suggested — Lopez has been running better xFIP than ERA. Result is consistent with market uncertainty (close game, low edge) more than a specific feature failure.",
+      "signals_to_recheck": ["team_quality_mod", "SP_xera_gap"]
+    },
+    "LAA @ TOR": {
+      "verdict": "WIN",
+      "headline": "TOR shut out LAA 2-0 behind Cease; model was right.",
+      "hypothesis": "Model had TOR at 67% with edge +7.7pp — high model confidence. Cease threw quality and LAA's offense produced nothing. The SP_xera_gap signal correctly identified Cease's edge over Detmers. Standard win pattern: Stage 1 (SP) signal aligned with Stage 2 (full game), market agreed.",
+      "signals_to_recheck": []
+    },
+    "TB @ BOS": {
+      "verdict": "LOSS",
+      "headline": "GOLD-tier TB pick loses 0-2 — F-signal fired but ran into BOS pitching wall.",
+      "hypothesis": "Model picked TB at 45% with +10.9pp edge (Vegas had BOS heavily favored). F3_swing_take_gap=762 is a real lineup signal, but Connelly Early threw an effective 5+ scoreless. TB's offense got nothing going. This is the classic 'underdog with lineup quality vs hot SP' loss — the SP pre-game forecast didn't account for Early's recent form. Worth checking if Early had been excluded from FanGraphs scrape due to limited starts.",
+      "signals_to_recheck": ["SP_xera_gap", "F3_swing_take_gap", "small_sample_SP"]
+    },
+    "WSH @ MIA": {
+      "verdict": "LOSS",
+      "headline": "MIA pick loses 2-3 in a tight one — small edge wasn't real.",
+      "hypothesis": "Model had MIA at 59.8% with only +2.7pp edge — below the typical conviction threshold. Snelling vs Griffin was close on paper; WSH made one more clutch swing. Low-edge pick going wrong is statistically expected and not actionable. The market was nearly neutral and the game played that way.",
+      "signals_to_recheck": []
+    },
+    "MIN @ CLE": {
+      "verdict": "WIN",
+      "headline": "CLE held off MIN 6-4; model picked CLE at 56%.",
+      "hypothesis": "Edge was -2.5pp (Vegas had CLE slightly more favored than the model did) and the model still picked the same side as Vegas. Neither side had a strong directional read. Result suggests CLE bullpen depth carried it — a feature the bp_min metric should reflect.",
+      "signals_to_recheck": []
+    },
+    "DET @ KC": {
+      "verdict": "LOSS",
+      "headline": "GOLD-tier DET pick loses 3-4 in a one-run game.",
+      "hypothesis": "Model had DET as a slight road favorite (51.3% picked-side prob, +9.8pp edge) with F2_xwoba_gap=0.021 firing. Bubic threw a competent line; DET bullpen gave up the deciding run late. The xwoba gap was modest (0.021 is a small lineup edge) yet the grader assigned GOLD — possibly the team_quality_modifier was inflating DET's grade pre-disable. With the new disabled state, this would likely have been B+ or B.",
+      "signals_to_recheck": ["team_quality_mod", "F2_xwoba_gap", "bp_min"]
+    },
+    "SEA @ CHW": {
+      "verdict": "LOSS",
+      "headline": "CHW pick blown up: SEA 12-8 — model had CHW at 74%, way wrong.",
+      "hypothesis": "Model's 74% confidence on CHW with edge +31.2pp is exactly the over-confidence pattern the calibrator was built to fix. After calibration this would be ~71%, still too high. The Burke vs Hancock SP edge was probably overstated; Hancock had a decent line, Burke got hit. CHW bullpen also gave up runs late. This is the worst kind of loss: high stated confidence, extreme edge, total miss. Most useful signal to investigate: what drove model_prob this high. If F1_xera_gap or PQI was outsized, that's where the leak is.",
+      "signals_to_recheck": ["full_prob", "PQI", "F1_xera_gap", "calibration_bucket_>0.70"]
+    },
+    "NYY @ MIL": {
+      "verdict": "LOSS",
+      "headline": "GOLD-tier NYY shut out 0-6 by Misiorowski.",
+      "hypothesis": "Model picked NYY at 47% with edge -1.9pp — barely negative. F1_xera_gap=1.25* indicates Fried was supposed to dominate, but Misiorowski was electric (rookie hype, strong velocity). The * on F1 means it was flagged as small-sample — Misiorowski had limited prior data, so the SP comparison was partial. Rookies are a known model blindspot. Plus NYY's offense had been cold (3rd straight low-run game). The team_quality_modifier was probably pushing NYY here too.",
+      "signals_to_recheck": ["F1_xera_gap", "small_sample_SP", "team_quality_mod", "rookie_pitcher_flag"]
+    },
+    "CHC @ TEX": {
+      "verdict": "WIN",
+      "headline": "GOLD-tier CHC delivered 7-1; model called it.",
+      "hypothesis": "Model picked CHC at 47% with edge -2pp — a contrarian-to-market call. CHC lit up Rocker for 7 and Brown threw quality. F2_xwoba_gap=0.023 was the lineup signal that fired. This is the kind of win the model is built for: small market edge plus a structural lineup advantage that Vegas underweights. Calibrator and current rules both correctly let this through.",
+      "signals_to_recheck": []
+    },
+    "NYM @ ARI": {
+      "verdict": "LOSS",
+      "headline": "ARI pick loses 1-3 — model had ARI at 68% with +23pp edge.",
+      "hypothesis": "Another high-confidence loss. Model loved ARI (68%) when Vegas was nearly neutral. McLean threw quality, Nelson got hit. The +23pp edge is suspicious enough that it should have triggered a sanity check before the [4, 15]pp band filter SKIPped it for parlay purposes. The calibrator brings this down to ~63%, but that's still too high. Pattern matches SEA @ CHW: high model confidence on a home favorite that the market wasn't backing — model may be over-rewarding home-field advantage on certain matchups.",
+      "signals_to_recheck": ["full_prob", "edge_pp", "home_field_advantage", "calibration"]
+    },
+    "STL @ SD": {
+      "verdict": "LOSS",
+      "headline": "SD shut out 0-6 — model was 50/50, Vegas had SD at 59%.",
+      "hypothesis": "Model effectively flipped a coin (50.2%) but picked SD. Edge -8.5pp meant Vegas favored SD more than the model did. Canning was poor against STL's lineup (McGreevy went 6+ scoreless). The new -8pp cap we just shipped would have correctly downgraded this from a graded pick. Low-conviction pick that lost cleanly — par for the course.",
+      "signals_to_recheck": ["edge_pp"]
+    },
+    "ATL @ LAD": {
+      "verdict": "WIN",
+      "headline": "LAD beat ATL 3-1 behind Sheehan; model picked LAD at 64%.",
+      "hypothesis": "Model had LAD at 64% with +11.4pp edge — solid conviction. Sheehan outpitched Sale (who's been on a long career arc); LAD bullpen held. F-signal layer correctly identified the mismatch. Standard win — model and result align cleanly.",
+      "signals_to_recheck": []
+    }
+  },
+  "patterns_observed": {
+    "high_confidence_losses": [
+      "SEA @ CHW (74%, lost)",
+      "NYM @ ARI (68%, lost)",
+      "DET @ KC (51% but graded GOLD, lost)"
+    ],
+    "common_failure_modes": [
+      "Home-favorite overconfidence: 2 of the 3 worst losses were on home favorites the model rated >65% but Vegas didn't agree",
+      "Rookie/small-sample SP blind spot: NYY @ MIL loss to rookie Misiorowski",
+      "team_quality_modifier was likely inflating chalk picks (now disabled in latest commit)"
+    ],
+    "what_worked": [
+      "Contrarian-to-market wins on CHC @ TEX (-2pp edge, won) and HOU @ CIN (+34pp edge, won)",
+      "F-signal layer fired correctly on the wins; absent on the losses"
+    ],
+    "suggested_next_steps": [
+      "Verify the calibrator is shrinking the SEA @ CHW / NYM @ ARI 70%+ confidence picks down to 60% or below",
+      "Add a rookie-SP guard: when SP has fewer than 30 IP this season, halve the SP edge contribution",
+      "Track home_field_advantage contribution separately so we can see if it's getting double-counted"
+    ]
+  }
+}
