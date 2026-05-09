@@ -115,5 +115,5 @@ jobs:
             echo "no claude_picks changes to commit"
           else
             git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${{ steps.date.outputs.slate_date }} slate"
-            git push
+            git -c http.https://github.com/.extraheader="AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}" push origin HEAD:main
           fi
