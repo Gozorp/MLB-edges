@@ -77,6 +77,8 @@ from datetime import date
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from . import post_calibrator as _post_cal
+
 import pandas as pd
 
 log = logging.getLogger(__name__)
@@ -209,6 +211,23 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
     why = row.get("why_skipped", "")
     if pd.isna(why): why = ""
     why = str(why)
+    # Apply post-bake probability calibration to f5_prob / full_prob.
+    # Fitted offline on historical (model_prob, won) pairs to shrink
+    # over-confident model outputs back toward empirical hit rate.
+    # Pass-through if models/calibration_v1.json is missing (fail-open).
+    _cal = _post_cal.get_default()
+    if _cal.is_loaded:
+        for _col in ("f5_prob", "full_prob", "p_model", "pick_prob"):
+            _v = row.get(_col)
+            if pd.notna(_v):
+                try:
+                    _new = _cal.calibrate(float(_v))
+                    if _new != float(_v):
+                        row = row.copy()
+                        row[_col] = _new
+                except (TypeError, ValueError):
+                    pass
+
     tier = row.get("tier", "")
     signals_str = row.get("signals", "")
     if pd.isna(signals_str): signals_str = ""
@@ -315,10 +334,28 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
     # Capped at +/-1, same as PQI.  Reads team_quality_diff from the
     # row when set by an upstream pipeline step; otherwise computes
     # in-line via the team_quality module.
+    # team_quality_modifier DISABLED 2026-05-08 — historical eval showed
+    # the picks it pushed into PLATINUM/A grade went 3-4 (43%), below coinflip.
+    # Logging the magnitude for visibility but not contributing to score.
     tq_diff_value = row.get("team_quality_mod")
     if pd.notna(tq_diff_value) and tq_diff_value != 0:
-        score += int(tq_diff_value)
-        reasons.append(f"team_quality modifier ({int(tq_diff_value):+d})")
+        reasons.append(f"team_quality modifier ({int(tq_diff_value):+d}; DISABLED, score+=0)")
+
+    # ----- LARGE-NEGATIVE-EDGE CAP (2026-05-08) -----
+    # Backtested on 144 historical picks: graded picks with edge_pp < -3pp
+    # went 5-4 (55%) — slight positive value, so don't cap that lightly.
+    # But Vegas-implied disagreement of 8+pp is a much stronger signal
+    # and indicates the model may be missing a real factor.  Only cap
+    # when edge_pp < -8 (extreme market disagreement).
+    edge_pp_for_cap = row.get("edge_pp")
+    if pd.notna(edge_pp_for_cap):
+        try:
+            _e = float(edge_pp_for_cap)
+            if _e < -8.0 and score >= 3:
+                reasons.append(f"large negative edge ({_e:+.1f}pp) caps grade at C (score {score} -> 2)")
+                score = 2
+        except (TypeError, ValueError):
+            pass
 
     # Stage 1/2 agreement on picked side
     f5 = row.get("f5_prob")

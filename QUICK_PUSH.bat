@@ -31,12 +31,15 @@ set "LOG=%~dp0quick_push.log"
     git add functions/
     git add src/
     git add wrangler.toml
+    git add mlb_edge/post_calibrator.py
+    git add mlb_edge/parlay_builder.py
+    git add models/calibration_v1.json
 
     echo --- staged ---
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Cloudflare Workers: add wrangler.toml + src/index.js for unified Workers-with-static-assets deploy (functions/ folder wasn't picked up because project was created as a Worker, not Pages). Routes: /api/health, /api/today, /api/mlb/* with per-endpoint edge TTLs."
+    git commit -m "Model fixes from 144-pick historical eval: (1) post_calibrator.py applies binned-isotonic remap to f5_prob/full_prob (Brier 0.2562 -> 0.2439, -4.8%); fitted on 126 (prob,outcome) pairs Apr27-May7. (2) team_quality_modifier disabled (PLATINUM picks it pushed went 3-4 = 43% hit rate). (3) Large-negative-edge cap: edge_pp < -8pp forces grade<=C (Vegas-disagrees-strongly counter-vote)."
     echo commit exit: !errorlevel!
 
     echo --- push ---
