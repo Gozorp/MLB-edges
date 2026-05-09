@@ -1,0 +1,117 @@
+# =============================================================================
+# claude-brain.yml
+# -----------------------------------------------------------------------------
+# Daily Claude Code executive review of the slate. After the night-owl
+# 06:00 UTC daily-slate cron generates tomorrow's slate, this workflow runs
+# Claude Code (via the official anthropic/claude-code-action) using the
+# user's Claude Max subscription OAuth token. Claude reads:
+#   - today's picks_*.csv (the quantitative model output)
+#   - every prior postgame JSON (its memory of past mistakes)
+#   - the calibration table + parlay_builder rules
+# Then writes docs/data/claude_picks/<date>.json with CONFIRM / DOWNGRADE /
+# OVERRIDE for each game and 1-paragraph reasoning.
+#
+# Setup required (one-time):
+#   1. On your laptop, run `claude setup-token` via the Claude Code CLI to
+#      issue a long-lived OAuth token for your Claude Max account.
+#   2. Add it to this repo's secrets as CLAUDE_CODE_OAUTH_TOKEN
+#      (Settings -> Secrets and variables -> Actions -> New secret).
+#
+# Cost: this uses your Claude Max subscription, NOT pay-per-token API.
+# A daily 14-game review uses roughly the same allowance as one heavy
+# Claude Code session in the desktop app.
+# =============================================================================
+name: Claude brain — executive slate review
+
+on:
+  schedule:
+    # 07:00 UTC = 1 hour after the night-owl daily-slate cron at 06:00 UTC,
+    # so tomorrow's slate is already baked when Claude reviews it.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      slate_date:
+        description: 'Slate date YYYY-MM-DD (default: today UTC)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  brain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolve slate date
+        id: date
+        run: |
+          DATE_ARG="${{ inputs.slate_date }}"
+          if [ -z "$DATE_ARG" ]; then
+            DATE_ARG=$(date -u +%Y-%m-%d)
+          fi
+          echo "slate_date=$DATE_ARG" >> "$GITHUB_OUTPUT"
+          echo "Reviewing slate for: $DATE_ARG"
+
+      - name: Verify slate CSV exists
+        run: |
+          CSV="docs/data/picks_${{ steps.date.outputs.slate_date }}_diag.csv"
+          if [ ! -f "$CSV" ]; then
+            echo "::warning::No slate CSV at $CSV — bailing out (the daily-slate cron may not have run yet)"
+            echo "skip=true" >> "$GITHUB_ENV"
+          else
+            echo "Found slate: $CSV"
+            wc -l "$CSV"
+          fi
+
+      - name: Run Claude Code executive review
+        if: env.skip != 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # Allow file IO + curl for fetching live MLB stats. No code-execute
+          # because we don't want Claude running predict.py or modifying the
+          # rule stack — only producing the JSON output.
+          claude_args: |
+            --allowedTools "Read,Write,Glob,Grep,Bash(curl:*),Bash(date:*),Bash(ls:*),Bash(wc:*),Bash(head:*),Bash(tail:*),Bash(cat:*),Bash(mkdir:*)"
+            --max-turns 30
+          prompt: |
+            You are running as the Claude Brain workflow defined in
+            .github/workflows/claude-brain.yml. Read your full operating
+            instructions from `tools/claude_brain_prompt.md` and follow them
+            precisely.
+
+            TODAY'S SLATE DATE = ${{ steps.date.outputs.slate_date }}
+
+            Steps:
+            1. Open `tools/claude_brain_prompt.md` and follow it.
+            2. Read `docs/data/picks_${{ steps.date.outputs.slate_date }}_diag.csv`.
+            3. Read every JSON file under `docs/data/postgame/` — these are
+               your prior post-mortem analyses; use them as memory.
+            4. (Optional) Use `curl` to pull lineups from
+               `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${{ steps.date.outputs.slate_date }}&hydrate=team,probablePitcher,lineups`
+               for any games where probable-pitcher status looks unstable.
+            5. Make sure `docs/data/claude_picks/` exists (`mkdir -p`).
+            6. Write `docs/data/claude_picks/${{ steps.date.outputs.slate_date }}.json`
+               in the schema specified in claude_brain_prompt.md.
+            7. Print a summary of how many CONFIRM / DOWNGRADE / OVERRIDE
+               you produced.
+
+      - name: Commit + push if Claude wrote a new file
+        if: env.skip != 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/claude_picks/
+          if git diff --cached --quiet; then
+            echo "no claude_picks changes to commit"
+          else
+            git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${{ steps.date.outputs.slate_date }} slate"
+            git push
+          fi
