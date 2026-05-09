@@ -27,6 +27,8 @@ set "LOG=%~dp0quick_push.log"
     git add .github/workflows/daily-slate.yml
     git add .github/workflows/savant-harvest.yml
     git add .github/workflows/refit-calibrator.yml
+    git add .github/workflows/claude-postgame.yml
+    git add .github/workflows/claude-weekly.yml
     git add PUSH_FIX.bat
     git add QUICK_PUSH.bat
     git add functions/
@@ -35,14 +37,17 @@ set "LOG=%~dp0quick_push.log"
     git add mlb_edge/post_calibrator.py
     git add mlb_edge/parlay_builder.py
     git add mlb_edge/main_predict.py
+    git add mlb_edge/claude_analyzer.py
     git add models/calibration_v1.json
     git add tools/refit_post_calibrator.py
+    git add tools/run_claude_postgame.py
+    git add tools/run_claude_weekly.py
 
     echo --- staged ---
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Odds sanity cap: Shin-devigged fair_prob outside [0.10, 0.90] is treated as missing — caught 6 absurd values across May 6/7/9 slates (e.g. HOU @ CIN reporting 99.6 percent fair_prob for HOU). Tagged as odds_status=fetched_capped so the parser bug rate can be monitored, and downstream falls back to no-market path instead of baking impossible Vegas implieds into the slate."
+    git commit -m "Claude integration (Opus 4.6) - 4 features: (1) nightly post-mortem cron at 03:30 UTC sends each completed game's pick + outcome to Claude, writes per-game verdict/headline/hypothesis to docs/data/postgame/<date>.json, dashboard surfaces in expanded panel; (2) Ask Claude Q&A widget on the dashboard, hits Worker /api/claude/ask which forwards to Anthropic with the loaded slate as context; (3) /api/claude/commentary endpoint for in-game live commentary; (4) Sunday weekly memo cron generates Markdown review of last 7 days. Plus: odds sanity cap (fair_prob outside [0.10, 0.90] treated as missing) catches the parser bug seen May 6/7/9. Setup: ANTHROPIC_API_KEY needed as GitHub secret + Cloudflare Worker secret."
     echo commit exit: !errorlevel!
 
     echo --- push ---

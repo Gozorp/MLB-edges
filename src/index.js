@@ -146,6 +146,147 @@ async function handleMlbProxy(request, env, ctx) {
   return out;
 }
 
+// ---------- /api/claude/ask --------------------------------------------------
+// Free-form Q&A over the loaded slate.  Browser POSTs JSON
+// {date: "YYYY-MM-DD", question: "..."} and gets back Claude's answer.
+//
+// Why server-side: keeps ANTHROPIC_API_KEY off the client.  The key is
+// configured as a Cloudflare Worker secret (npx wrangler secret put
+// ANTHROPIC_API_KEY).  If unset, returns 503 — the dashboard hides the
+// Q&A widget gracefully when /api/claude/health returns disabled.
+
+const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
+const ANTHROPIC_VERSION = "2023-06-01";
+const DEFAULT_CLAUDE_MODEL = "claude-opus-4-6";
+
+async function callClaude(env, system, user, opts = {}) {
+  const key = env.ANTHROPIC_API_KEY;
+  if (!key) {
+    return { ok: false, error: "ANTHROPIC_API_KEY not configured" };
+  }
+  const body = {
+    model: opts.model || DEFAULT_CLAUDE_MODEL,
+    max_tokens: opts.max_tokens || 800,
+    system,
+    messages: [{ role: "user", content: user }],
+  };
+  let resp;
+  try {
+    resp = await fetch(ANTHROPIC_URL, {
+      method: "POST",
+      headers: {
+        "x-api-key": key,
+        "anthropic-version": ANTHROPIC_VERSION,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch (e) {
+    return { ok: false, error: "fetch failed: " + String(e) };
+  }
+  if (!resp.ok) {
+    const err = await resp.text().catch(() => `HTTP ${resp.status}`);
+    return { ok: false, error: `HTTP ${resp.status}: ${err.slice(0, 300)}` };
+  }
+  const data = await resp.json();
+  const text = (data.content || [])
+    .filter(b => b.type === "text")
+    .map(b => b.text)
+    .join("");
+  return {
+    ok: true,
+    text: text.trim(),
+    model: data.model,
+    input_tokens: data.usage?.input_tokens || 0,
+    output_tokens: data.usage?.output_tokens || 0,
+  };
+}
+
+async function handleClaudeAsk(request, env) {
+  if (request.method !== "POST") {
+    return jsonResponse({ error: "POST required" }, { status: 405 });
+  }
+  let body;
+  try { body = await request.json(); } catch { return jsonResponse({ error: "bad JSON" }, { status: 400 }); }
+  const date = body.date;
+  const question = (body.question || "").trim();
+  if (!question) return jsonResponse({ error: "missing question" }, { status: 400 });
+  if (question.length > 500) return jsonResponse({ error: "question too long (>500 chars)" }, { status: 400 });
+
+  // Pull the slate JSON we already serve at /api/today as Claude's context.
+  const slateUrl = date
+    ? new URL(`/api/today?date=${date}`, request.url).toString()
+    : new URL("/api/today", request.url).toString();
+  const slateResp = await fetch(slateUrl);
+  let slate = null;
+  try { slate = await slateResp.json(); } catch { slate = null; }
+  if (!slate || !slate.rows) {
+    return jsonResponse({ error: "could not load slate context" }, { status: 502 });
+  }
+
+  const system =
+    "You are an MLB betting model analyst answering questions about a " +
+    "loaded slate. Be concise (under 150 words unless the user asks for " +
+    "detail). Cite specific matchups and numbers from the data. Never " +
+    "give a recommendation to bet — analyze and explain only.";
+  const user =
+    `Slate context (date ${slate.date}, ${slate.rows.length} games):\n` +
+    "```json\n" + JSON.stringify(slate, null, 2).slice(0, 30000) + "\n```\n\n" +
+    `Question: ${question}`;
+
+  const r = await callClaude(env, system, user, { max_tokens: 600 });
+  if (!r.ok) return jsonResponse({ error: r.error }, { status: 502 });
+
+  return jsonResponse({
+    answer: r.text,
+    model: r.model,
+    tokens: { input: r.input_tokens, output: r.output_tokens },
+    slate_date: slate.date,
+  }, { cache: "no-store" });
+}
+
+// ---------- /api/claude/commentary ------------------------------------------
+// In-game live commentary.  Browser POSTs JSON {gamePk, slate_row, live_state}
+// and gets back a 2-3-sentence Claude commentary on whether the pre-game pick
+// still looks right vs the live state.
+async function handleClaudeCommentary(request, env) {
+  if (request.method !== "POST") {
+    return jsonResponse({ error: "POST required" }, { status: 405 });
+  }
+  let body;
+  try { body = await request.json(); } catch { return jsonResponse({ error: "bad JSON" }, { status: 400 }); }
+  const slateRow = body.slate_row || {};
+  const liveState = body.live_state || {};
+  if (!slateRow.matchup) return jsonResponse({ error: "missing slate_row.matchup" }, { status: 400 });
+
+  const system =
+    "You are a live MLB game commentator with access to a betting model's " +
+    "pre-game read. Given the model's pick + the current game state, write " +
+    "2-3 sentences on whether the model's read still looks right. No " +
+    "betting advice. Plain text only.";
+  const user = JSON.stringify({ pre_game_pick: slateRow, live_state: liveState }, null, 2);
+
+  const r = await callClaude(env, system, user, { max_tokens: 250 });
+  if (!r.ok) return jsonResponse({ error: r.error }, { status: 502 });
+
+  return jsonResponse({
+    commentary: r.text,
+    model: r.model,
+    tokens: { input: r.input_tokens, output: r.output_tokens },
+  }, { cache: "public, max-age=60, s-maxage=60" });
+}
+
+// ---------- /api/claude/health ----------------------------------------------
+// Lightweight check the dashboard can hit on load to decide whether to
+// render the Q&A widget.  Returns {enabled: bool, model: ...} without
+// calling the API itself (so we don't burn tokens on a probe).
+async function handleClaudeHealth(request, env) {
+  return jsonResponse({
+    enabled: !!env.ANTHROPIC_API_KEY,
+    model: DEFAULT_CLAUDE_MODEL,
+  });
+}
+
 // ---------- main fetch handler -----------------------------------------------
 export default {
   async fetch(request, env, ctx) {
@@ -156,10 +297,13 @@ export default {
     if (path === "/api/today")  return handleToday(request, env);
     if (path.startsWith("/api/mlb/")) return handleMlbProxy(request, env, ctx);
 
+    if (path === "/api/claude/health")     return handleClaudeHealth(request, env);
+    if (path === "/api/claude/ask")        return handleClaudeAsk(request, env);
+    if (path === "/api/claude/commentary") return handleClaudeCommentary(request, env);
+
     // Fall through: ask the static-asset binding to serve whatever's at this
     // path.  In practice this only fires when run_worker_first is true, since
-    // by default Cloudflare serves assets before invoking the worker.  Kept
-    // here as a safety net / for clarity.
+    // by default Cloudflare serves assets before invoking the worker.
     if (env.ASSETS) {
       return env.ASSETS.fetch(request);
     }

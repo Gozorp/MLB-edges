@@ -2501,6 +2501,20 @@ function formatNarrative(r, gradeInfo, result) {
       + `total is league baseline 8.7 R/G adjusted by F5-vs-Full signal (stronger SP edge &rArr; lower total).</span></p>`;
   }
 
+  // ----- 3c. Claude post-mortem (if available for this date+matchup) -----
+  const _pg2 = (window.__postgame && window.__postgame.by_matchup)
+    ? window.__postgame.by_matchup[r.matchup] : null;
+  if (_pg2) {
+    const v = (_pg2.verdict || "").toUpperCase();
+    const vClass = v === "WIN" ? "flag-green" : v === "LOSS" ? "flag-red" : "flag";
+    const sigs = (_pg2.signals_to_recheck || []).slice(0, 5)
+                  .map(s => `<code>${s}</code>`).join(", ");
+    html += `<h4>Claude post-mortem <span class="muted" style="font-size:0.8rem;font-weight:normal;">(${(window.__postgame.model || "claude")})</span></h4>`;
+    html += `<p><span class="${vClass}">[${v || "—"}]</span> <strong>${_pg2.headline || ""}</strong></p>`;
+    if (_pg2.hypothesis) html += `<p>${_pg2.hypothesis}</p>`;
+    if (sigs) html += `<p class="muted">Signals to re-check: ${sigs}</p>`;
+  }
+
   // ----- 4. Market positioning -----
   html += `<h4>Market positioning</h4>`;
   if (noMarket) {
@@ -2677,6 +2691,14 @@ function renderSlate(rows, gradeMap, results) {
   const haveAnyResult = results && Object.keys(results).length > 0;
 
   let html = `<div class="card">
+    <div id="ask-claude-card" class="card" style="display:none;margin-bottom:0.8rem;">
+      <h2>Ask Claude <span class="muted" style="font-size:0.8rem;font-weight:normal;">— deep analysis on the loaded slate (Opus 4.6)</span></h2>
+      <div style="display:flex;gap:0.5rem;align-items:flex-start;">
+        <textarea id="ask-claude-input" rows="2" style="flex:1;padding:0.5rem;font-family:inherit;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:4px;color:var(--text);" placeholder="e.g. Why does the model think TOR will beat LAA tonight?"></textarea>
+        <button id="ask-claude-btn" style="padding:0.5rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;">Ask</button>
+      </div>
+      <div id="ask-claude-out" class="muted" style="margin-top:0.6rem;font-size:0.92rem;line-height:1.5;"></div>
+    </div>
     <h2>Slate (${rows.length} games) <span class="muted" style="font-size:0.8rem;font-weight:normal;">— click any row for in-depth reasoning</span></h2>
     <table>
       <thead><tr>
@@ -3049,6 +3071,14 @@ async function silentRefresh(date) {
     const results = await fetchMLBResults(date);
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
 
+    // Load Claude post-mortem sidecar for this date if it exists.  Failure is
+    // silent — the dashboard renders normally without it.
+    try {
+      const _pg = await fetch(`./data/postgame/${date}.json`, {cache: "no-store"});
+      window.__postgame = _pg.ok ? await _pg.json() : null;
+    } catch (_) { window.__postgame = null; }
+
+
     const slateEl = document.getElementById("slate");
     slateEl.innerHTML = renderSlate(rows, gradeMap, results);
     slateEl.classList.add("change-flash");
@@ -3362,6 +3392,59 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 });
+
+// =============================================================================
+// Ask Claude — POST /api/claude/ask, render answer
+// =============================================================================
+async function _initAskClaude() {
+  const card = document.getElementById("ask-claude-card");
+  const input = document.getElementById("ask-claude-input");
+  const btn = document.getElementById("ask-claude-btn");
+  const out = document.getElementById("ask-claude-out");
+  if (!card || !btn || !input || !out) return;
+  // Probe /api/claude/health to decide whether to show the widget
+  try {
+    const r = await fetch("/api/claude/health");
+    if (!r.ok) return;
+    const j = await r.json();
+    if (!j.enabled) return;
+    card.style.display = "";
+  } catch (_) {
+    return;  // probably on github.io fallback — no Worker available
+  }
+  async function doAsk() {
+    const q = (input.value || "").trim();
+    if (!q) return;
+    btn.disabled = true;
+    out.textContent = "Asking Claude…";
+    const date = (window.__slate && window.__slate.date) || null;
+    try {
+      const r = await fetch("/api/claude/ask", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify({date, question: q}),
+      });
+      const j = await r.json();
+      if (j.error) {
+        out.innerHTML = `<span class="flag-red">Error: ${j.error}</span>`;
+      } else {
+        out.innerHTML = (j.answer || "")
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/\n/g, "<br>");
+      }
+    } catch (e) {
+      out.innerHTML = `<span class="flag-red">Network error: ${e.message}</span>`;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  btn.addEventListener("click", doAsk);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); doAsk(); }
+  });
+}
+document.addEventListener("DOMContentLoaded", _initAskClaude);
+
 </script>
 
 </body>

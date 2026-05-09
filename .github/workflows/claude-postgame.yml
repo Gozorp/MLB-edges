@@ -1,0 +1,69 @@
+# =============================================================================
+# claude-postgame.yml
+# -----------------------------------------------------------------------------
+# Nightly Claude post-mortem analysis on yesterday's slate.  For each
+# completed game, sends the model's pick + signals + actual outcome to
+# Claude (Opus by default) and writes the per-pick analysis to
+# docs/data/postgame/<date>.json so the dashboard can surface it.
+#
+# Trigger:
+#   - 03:30 UTC daily (= 11:30 PM ET / 8:30 PM PT prior night) — late enough
+#     that all West Coast games have wrapped and final scores are settled
+#     in the MLB API.
+#   - Manual via "Run workflow" with optional date override.
+#
+# Secret required: ANTHROPIC_API_KEY (Repo settings -> Secrets -> Actions).
+# If unset, the script logs a structured error and exits 0 (no commit) —
+# the cron stays green even if the API key is missing.
+# =============================================================================
+name: Claude post-game analysis
+
+on:
+  schedule:
+    - cron: "30 3 * * *"   # 03:30 UTC = 11:30 PM ET / 8:30 PM PT (prev day)
+  workflow_dispatch:
+    inputs:
+      slate_date:
+        description: 'Slate date YYYY-MM-DD (default: yesterday UTC)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run post-mortem analysis
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: claude-opus-4-6
+        run: |
+          DATE_ARG="${{ inputs.slate_date }}"
+          if [ -n "$DATE_ARG" ]; then
+            python tools/run_claude_postgame.py --date "$DATE_ARG"
+          else
+            python tools/run_claude_postgame.py
+          fi
+
+      - name: Commit + push if any new analyses
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/postgame/
+          if git diff --cached --quiet; then
+            echo "no new postgame analyses to commit"
+          else
+            git commit -m "claude-postgame: $(date -u +%Y-%m-%d) post-mortem analysis"
+            git push
+          fi
