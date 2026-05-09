@@ -1,69 +1,127 @@
 # =============================================================================
 # claude-postgame.yml
 # -----------------------------------------------------------------------------
-# Nightly Claude post-mortem analysis on yesterday's slate.  For each
-# completed game, sends the model's pick + signals + actual outcome to
-# Claude (Opus by default) and writes the per-pick analysis to
-# docs/data/postgame/<date>.json so the dashboard can surface it.
+# Daily Claude Code post-mortem of the previous day's slate. Reads picks +
+# claude_picks for <yesterday>, fetches actual game results from MLB
+# statsapi, writes docs/data/postgame/<yesterday>.json with WIN/LOSS verdicts
+# and patterns_observed. Next morning's claude-brain run reads this file
+# as memory, so the system learns over time without retraining the model.
 #
-# Trigger:
-#   - 03:30 UTC daily (= 11:30 PM ET / 8:30 PM PT prior night) — late enough
-#     that all West Coast games have wrapped and final scores are settled
-#     in the MLB API.
-#   - Manual via "Run workflow" with optional date override.
+# Cron: 12:00 UTC = ~07:00 ET, well after every East-Coast night game ends
+# (4 AM UTC) and well before that day's 07:00 UTC claude-brain run wakes up.
+# Wait — claude-brain runs at 07:00 UTC and we run at 12:00 UTC, so the
+# postgame for slate N is available in time for the brain run on slate N+2.
+# That's fine: yesterday's lesson informs day-after-tomorrow's prediction.
 #
-# Secret required: ANTHROPIC_API_KEY (Repo settings -> Secrets -> Actions).
-# If unset, the script logs a structured error and exits 0 (no commit) —
-# the cron stays green even if the API key is missing.
+# Setup: same as claude-brain — uses CLAUDE_CODE_OAUTH_TOKEN secret and
+# the Claude GitHub App installed on this repo.
 # =============================================================================
 name: Claude post-game analysis
 
 on:
   schedule:
-    - cron: "30 3 * * *"   # 03:30 UTC = 11:30 PM ET / 8:30 PM PT (prev day)
+    - cron: "0 12 * * *"  # 12:00 UTC daily — Claude analyzes yesterday's slate
   workflow_dispatch:
     inputs:
       slate_date:
-        description: 'Slate date YYYY-MM-DD (default: yesterday UTC)'
+        description: 'Slate date YYYY-MM-DD to post-mortem (default: yesterday UTC)'
         required: false
         default: ''
 
 permissions:
   contents: write
+  pull-requests: read
+  id-token: write
+  actions: read
 
 jobs:
-  analyze:
+  postgame:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          fetch-depth: 1
 
-      - name: Run post-mortem analysis
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL: claude-opus-4-6
+      - name: Resolve postgame date
+        id: date
         run: |
           DATE_ARG="${{ inputs.slate_date }}"
-          if [ -n "$DATE_ARG" ]; then
-            python tools/run_claude_postgame.py --date "$DATE_ARG"
+          if [ -z "$DATE_ARG" ]; then
+            DATE_ARG=$(date -u -d "yesterday" +%Y-%m-%d)
+          fi
+          echo "slate_date=$DATE_ARG" >> "$GITHUB_OUTPUT"
+          echo "Post-morteming slate for: $DATE_ARG"
+
+      - name: Verify slate CSV exists
+        run: |
+          CSV="docs/data/picks_${{ steps.date.outputs.slate_date }}_diag.csv"
+          if [ ! -f "$CSV" ]; then
+            echo "::warning::No slate CSV at $CSV — bailing out"
+            echo "skip=true" >> "$GITHUB_ENV"
           else
-            python tools/run_claude_postgame.py
+            echo "Found slate: $CSV"
+            wc -l "$CSV"
           fi
 
-      - name: Commit + push if any new analyses
+      - name: Run Claude Code post-game analysis
+        if: env.skip != 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --allowedTools "Read,Write,Glob,Grep,Bash(curl:*),Bash(date:*),Bash(ls:*),Bash(wc:*),Bash(head:*),Bash(tail:*),Bash(cat:*),Bash(mkdir:*),Bash(jq:*)"
+            --max-turns 30
+          prompt: |
+            You are running as the Claude Postgame workflow defined in
+            .github/workflows/claude-postgame.yml. Read your full operating
+            instructions from `tools/claude_postgame_prompt.md` and follow
+            them precisely.
+
+            POST-MORTEM SLATE DATE = ${{ steps.date.outputs.slate_date }}
+
+            Steps:
+            1. Open `tools/claude_postgame_prompt.md` and follow it.
+            2. Read `docs/data/picks_${{ steps.date.outputs.slate_date }}_diag.csv`.
+            3. Read `docs/data/claude_picks/${{ steps.date.outputs.slate_date }}.json`
+               if it exists. If not, proceed without it (set claude_decision
+               to NO_DECISION per the prompt's edge-case section).
+            4. Read every prior file under `docs/data/postgame/` so you
+               carry forward existing patterns and don't double-count them.
+            5. Use `curl` to fetch actual game results:
+               `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${{ steps.date.outputs.slate_date }}&hydrate=team,linescore,decisions`
+            6. Make sure `docs/data/postgame/` exists (`mkdir -p`).
+            7. Write `docs/data/postgame/${{ steps.date.outputs.slate_date }}.json`
+               in the schema specified in claude_postgame_prompt.md.
+            8. Print a summary of W/L counts and the patterns_observed list.
+
+      - name: Commit + push postgame JSON via fresh clone
+        if: env.skip != 'true'
+        env:
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -e
+          SLATE="${{ steps.date.outputs.slate_date }}"
+          SRC="docs/data/postgame/${SLATE}.json"
+          if [ ! -f "$SRC" ]; then
+            echo "no postgame file written by Claude — nothing to push"
+            exit 0
+          fi
+          # Claude Code Action invalidates the workflow checkout's credential
+          # helper, so do a fresh clone with URL-embedded token and push from
+          # there.
+          REMOTE="https://x-access-token:${GH_PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth=1 "$REMOTE" /tmp/refresh-clone
+          mkdir -p "/tmp/refresh-clone/$(dirname $SRC)"
+          cp "$SRC" "/tmp/refresh-clone/$SRC"
+          cd /tmp/refresh-clone
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/postgame/
+          git add "$SRC"
           if git diff --cached --quiet; then
-            echo "no new postgame analyses to commit"
+            echo "no postgame changes to commit"
           else
-            git commit -m "claude-postgame: $(date -u +%Y-%m-%d) post-mortem analysis"
-            git push
+            git commit -m "claude-postgame: $(date -u +%Y-%m-%d) post-mortem for ${SLATE} slate"
+            git push origin HEAD:main
           fi

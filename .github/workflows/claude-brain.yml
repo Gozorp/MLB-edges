@@ -25,9 +25,17 @@ name: Claude brain — executive slate review
 
 on:
   schedule:
-    # 07:00 UTC = 1 hour after the night-owl daily-slate cron at 06:00 UTC,
-    # so tomorrow's slate is already baked when Claude reviews it.
+    # Three runs per day, each writing the same docs/data/claude_picks/<date>.json
+    # (later runs overwrite earlier ones with fresher info):
+    #   07:00 UTC — morning preview (right after daily-slate cron at 06:00 UTC).
+    #               Conservative read with no lineups yet; first picks of the day.
+    #   18:00 UTC — afternoon refresh (~14:00 ET, ~3-5 hours before first pitch).
+    #               Lineups are out, weather is clearer, mid-day market signal.
+    #   22:30 UTC — final-pitch refresh (~18:30 ET, ~30 min before East Coast
+    #               first pitch). Catches scratched starters and final line moves.
     - cron: "0 7 * * *"
+    - cron: "0 18 * * *"
+    - cron: "30 22 * * *"
   workflow_dispatch:
     inputs:
       slate_date:
@@ -105,15 +113,33 @@ jobs:
             7. Print a summary of how many CONFIRM / DOWNGRADE / OVERRIDE
                you produced.
 
-      - name: Commit + push if Claude wrote a new file
+      - name: Commit + push via fresh clone
         if: env.skip != 'true'
+        env:
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -e
+          SLATE="${{ steps.date.outputs.slate_date }}"
+          SRC="docs/data/claude_picks/${SLATE}.json"
+          if [ ! -f "$SRC" ]; then
+            echo "no picks file written by Claude — nothing to push"
+            exit 0
+          fi
+          # Claude Code Action invalidates the workflow checkout's credential
+          # helper, so do a fresh clone with URL-embedded token and push from
+          # there. This avoids any leftover broken extraheader / credential
+          # helper in the original checkout.
+          REMOTE="https://x-access-token:${GH_PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth=1 "$REMOTE" /tmp/refresh-clone
+          mkdir -p "/tmp/refresh-clone/$(dirname $SRC)"
+          cp "$SRC" "/tmp/refresh-clone/$SRC"
+          cd /tmp/refresh-clone
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data/claude_picks/
+          git add "$SRC"
           if git diff --cached --quiet; then
             echo "no claude_picks changes to commit"
           else
-            git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${{ steps.date.outputs.slate_date }} slate"
-            git -c http.https://github.com/.extraheader="AUTHORIZATION: bearer ${{ secrets.GITHUB_TOKEN }}" push origin HEAD:main
+            git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${SLATE} slate"
+            git push origin HEAD:main
           fi
