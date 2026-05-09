@@ -1,44 +1,56 @@
 ==============================================================================
   PARLAY BUILDER — 2026-05-09
 ==============================================================================
-  Slate size:  14 games
-  Grade map:   A=1  A-=0  B+=1  B=4  B-=1  C=1  D=6
+  Slate size:  15 games
+  Grade map:   A=0  A-=3  B+=2  B=2  B-=1  C=2  D=5
 
-GRADE A   (anchor — include in every ticket)
-  NYY @ MIL       NYY  p=53.7%  GOLD      filtered
-      reasons: F-signal fires (+1) | SP edge 0.66 xERA agrees with pick (+2) | PQI confirms pick (Δ=-11.2) (+1) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.02) (+1)
+GRADE A-  (parlay-worthy)
+  CHC @ TEX       CHC  p=52.9%  GOLD      filtered
+      reasons: F-signal fires (+1) | SP edge 0.67 xERA agrees with pick (+2) | PQI confirms pick (Δ=-8.8) (+1) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.00) (+1) | negative edge (-4.8pp) caps A at A- (score 5 -> 4)
+  DET @ KC        DET  p=51.3%  GOLD      filtered
+      reasons: F-signal fires (+1) | SP edge 1.26 xERA agrees with pick (+1) [small-sample SP, min_pa=72] | PQI confirms pick (Δ=-24.7) (+1) | team_quality modifier (-1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.03) (+1)
+  NYY @ MIL       NYY  p=52.7%  GOLD      filtered
+      reasons: F-signal fires (+1) | SP edge 0.66 xERA agrees with pick (+2) | PQI confirms pick (Δ=-11.7) (+1) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.02) (+1) | negative edge (-5.8pp) caps A at A- (score 5 -> 4)
 
 GRADE B+  (stretch — max 1 per ticket)
-  CHC @ TEX       CHC  p=53.1%  GOLD      filtered
-      reasons: F-signal fires (+1) | SP edge 0.67 xERA agrees with pick (+2) | PQI confirms pick (Δ=-10.8) (+1) | team_quality modifier (+1; DISABLED, score+=0) | large negative edge (-12.3pp) caps grade at C (score 4 -> 2) | Stage 1/2 agree (Δ=0.00) (+1)
+  OAK @ BAL       OAK  p=63.4%  SKIP      filtered
+      reasons: SP edge 0.48 xERA agrees with pick (+2) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.07) (+1)
+  STL @ SD        STL  p=54.3%  SKIP      filtered
+      reasons: SP edge 0.35 xERA agrees with pick (+2) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.08) (+1)
 
 EDGE-BAND FILTER  (2 games excluded; band = [-5, +15]pp)
-  CHC @ TEX       CHC  p=53.1%  edge=-12.3pp  grade=B+
-  NYY @ MIL       NYY  p=53.7%  edge=+49.6pp  grade=A
+  OAK @ BAL       OAK  p=63.4%  edge=+18.6pp  grade=B+
+  NYY @ MIL       NYY  p=52.7%  edge=-5.8pp  grade=A-
 
-DO NOT PARLAY  (12 games)
+DO NOT PARLAY  (10 games)
   LAA @ TOR       TOR  p=67.4%  grade=B  
-  OAK @ BAL       BAL  p=63.2%  grade=D  
   HOU @ CIN       HOU  p=53.1%  grade=D  
   TB @ BOS        TB   p=54.9%  grade=C  
   WSH @ MIA       WSH  p=51.8%  grade=D  
-  COL @ PHI       COL  p=54.3%  grade=B- 
-  MIN @ CLE       CLE  p=52.4%  grade=D  
-  DET @ KC        DET  p=51.3%  grade=B  
-  SEA @ CHW       CHW  p=74.2%  grade=D  
-  NYM @ ARI       ARI  p=85.8%  grade=D  
-  STL @ SD        STL  p=54.3%  grade=B  
-  ATL @ LAD       LAD  p=63.0%  grade=B  
+  COL @ PHI       COL  p=54.3%  grade=B  
+  MIN @ CLE       CLE  p=51.1%  grade=D  
+  SEA @ CHW       CHW  p=59.0%  grade=D  
+  NYM @ ARI       ARI  p=63.6%  grade=D  
+  PIT @ SF        PIT  p=84.3%  grade=C  
+  ATL @ LAD       LAD  p=58.3%  grade=B- 
 
 ==============================================================================
   RECOMMENDED PARLAYS
 ==============================================================================
 
-  2-LEG: skipped — no parlay-worthy picks tonight
+  2-LEG  (2 anchors at A/A- grade (diversity: {'chalk': 1, 'contrarian': 1}))  joint p ≈ 27.1%
+    CHC @ TEX       CHC  p=52.9%  grade=A-
+    DET @ KC        DET  p=51.3%  grade=A-
 
-  3-LEG: skipped — no parlay-worthy picks tonight
+  3-LEG  (2 anchor(s) + 1 stretch leg(s); diversity-balanced)  joint p ≈ 14.7%
+    CHC @ TEX       CHC  p=52.9%  grade=A-
+    DET @ KC        DET  p=51.3%  grade=A-
+    STL @ SD        STL  p=54.3%  grade=B+
 
-  4-LEG: skipped — no parlay-worthy picks tonight
+  4-LEG  (only 3 parlay-worthy pick(s) survive diversity cap; can't reach 4 legs (max 2/profile))  joint p ≈ 14.7%
+    CHC @ TEX       CHC  p=52.9%  grade=A-
+    DET @ KC        DET  p=51.3%  grade=A-
+    STL @ SD        STL  p=54.3%  grade=B+
 
 ==============================================================================
   GUIDANCE
