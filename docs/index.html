@@ -66,6 +66,24 @@
   .grade-Bm  { background: rgba(139, 148, 158, 0.2); color: var(--muted); }
   .grade-C   { background: rgba(219, 109, 40, 0.2); color: var(--orange); }
   .grade-D   { background: rgba(248, 81, 73, 0.2); color: var(--red); }
+  /* Honest tier rendering — tiers are assigned BEFORE the market gate, so a
+     game can be tier=GOLD yet have stake_mult=0 (silently filtered). The
+     skipped-was variant strikes through the original tier so it doesn't read
+     as a recommendation. */
+  .tier-pill {
+    display: inline-block; padding: 0.15rem 0.4rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.85rem; white-space: nowrap;
+  }
+  .tier-pill.platinum { background: rgba(176, 154, 216, 0.2); color: #c4b3e0; }
+  .tier-pill.gold     { background: rgba(210, 153, 34, 0.22); color: var(--yellow); }
+  .tier-pill.silver   { background: rgba(139, 148, 158, 0.22); color: var(--muted); }
+  .tier-pill.bronze   { background: rgba(219, 109, 40, 0.22); color: var(--orange); }
+  .tier-pill.skip     { background: rgba(139, 148, 158, 0.15); color: var(--muted); }
+  .tier-pill.skipped-was {
+    background: rgba(139, 148, 158, 0.1); color: var(--muted);
+    opacity: 0.75; cursor: help;
+  }
+  .tier-pill.skipped-was s { opacity: 0.7; font-weight: 500; }
   pre {
     background: var(--bg); border: 1px solid var(--border);
     padding: 1rem; border-radius: 4px; overflow-x: auto;
@@ -678,6 +696,34 @@ function parseCSV(text) {
 function pct(v) {
   const f = parseFloat(v);
   return isNaN(f) ? "—" : (f * 100).toFixed(1) + "%";
+}
+
+// Returns true when the gate filter zeroed the stake on this row (so the
+// tier shown in CSV is "internal" only and shouldn't read as a recommendation).
+function _isStakeKilled(r) {
+  const why = (r && r.why_skipped || "").trim();
+  if (!why) return false;
+  return /stake_mult\s*=\s*0/i.test(why);
+}
+
+// Render the tier as a colored pill. When the gate filter killed the stake,
+// strike-through the original tier and label the row "SKIP (was X)" — so the
+// dashboard never shows "GOLD" on a row the system already silently rejected.
+function tierBadge(r) {
+  const tier = (r && r.tier || "").trim();
+  if (!tier) return "—";
+  const u = tier.toUpperCase();
+  const cls = u === "PLATINUM" ? "platinum"
+            : u === "GOLD"     ? "gold"
+            : u === "SILVER"   ? "silver"
+            : u === "BRONZE"   ? "bronze"
+            : u === "SKIP"     ? "skip"
+            : "";
+  if (_isStakeKilled(r) && u !== "SKIP") {
+    const why = (r.why_skipped || "").trim().replace(/"/g, "&quot;");
+    return `<span class="tier-pill skipped-was" title="Filtered by gate: ${why}">SKIP <s>(was ${tier})</s></span>`;
+  }
+  return `<span class="tier-pill ${cls}">${tier}</span>`;
 }
 
 // Parse the parlay_*.txt report to extract grade + reasons per matchup.
@@ -2296,7 +2342,7 @@ function formatFailureAnalysis(r, result, gradeInfo) {
       <h5>What the model expected</h5>
       <p><strong>${pickedAbbr}</strong> wins at ${isNaN(full) ? "—" : (full*100).toFixed(1) + "%"} `
         + `full-game probability${!isNaN(fair) ? `, vs ${(fair*100).toFixed(1)}% Vegas-implied` : ""}.</p>
-      <p class="muted">Edge: ${isNaN(edge) ? "—" : edge.toFixed(1) + "pp"} · Tier: ${r.tier || "—"} · `
+      <p class="muted">Edge: ${isNaN(edge) ? "—" : edge.toFixed(1) + "pp"} · Tier: ${tierBadge(r)} · `
         + `Grade: ${(gradeInfo && gradeInfo.grade) || "—"}</p>
       ${reasons ? `<p class="muted" style="font-style:italic;font-size:0.85rem;">${reasons.replace(/\|/g, " · ")}</p>` : ""}
     </div>`;
@@ -2561,8 +2607,14 @@ function formatNarrative(r, gradeInfo, result) {
     };
     const tierU = tier.toUpperCase();
     const meaning = tierMeans[tierU] || "internal tier";
+    const killed = _isStakeKilled(r);
     html += `<h4>Internal tier</h4>`;
-    html += `<p><code>${tier}</code> — ${meaning}.</p>`;
+    if (killed && tierU !== "SKIP") {
+      // Make it loud that the tier label is misleading on this row.
+      html += `<p>${tierBadge(r)} &mdash; the tier label is from the model's internal grader, but this row was <strong>filtered out by the post-tier gate</strong> (negative edge, edge outside [4,15]pp, model_prob outside [0.48,0.72], or fair_prob below 0.42). Effective stake is zero. Original meaning: <em>${meaning}</em>.</p>`;
+    } else {
+      html += `<p>${tierBadge(r)} &mdash; ${meaning}.</p>`;
+    }
   }
 
   // ----- 7. Grade-modifier breakdown -----
@@ -2668,7 +2720,7 @@ function renderSlate(rows, gradeMap, results) {
       <td>${fairFmt}</td>
       <td>${edgeFmt}</td>
       <td class="pred-score">${_formatPredScore(r)}</td>
-      <td>${r.tier || "—"}</td>
+      <td>${tierBadge(r)}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
       ${resultCell}
       <td class="why">${reasons || "<span class='muted'>—</span>"}</td>
