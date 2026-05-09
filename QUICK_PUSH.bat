@@ -34,6 +34,7 @@ set "LOG=%~dp0quick_push.log"
     git add wrangler.toml
     git add mlb_edge/post_calibrator.py
     git add mlb_edge/parlay_builder.py
+    git add mlb_edge/main_predict.py
     git add models/calibration_v1.json
     git add tools/refit_post_calibrator.py
 
@@ -41,7 +42,7 @@ set "LOG=%~dp0quick_push.log"
     git diff --cached --name-only
 
     echo --- commit ---
-    git commit -m "Auto-refit calibrator: tools/refit_post_calibrator.py walks docs/data/picks_*.csv, pairs each model_prob with the actual game outcome (via MLB statsapi), and re-fits the binned-isotonic table with Beta(8) prior shrinkage + weighted PAV monotonicity. New refit-calibrator.yml workflow runs Sundays at 04:00 UTC, commits the updated models/calibration_v1.json if changed. Pure stdlib + urllib — no extra deps."
+    git commit -m "Odds sanity cap: Shin-devigged fair_prob outside [0.10, 0.90] is treated as missing — caught 6 absurd values across May 6/7/9 slates (e.g. HOU @ CIN reporting 99.6 percent fair_prob for HOU). Tagged as odds_status=fetched_capped so the parser bug rate can be monitored, and downstream falls back to no-market path instead of baking impossible Vegas implieds into the slate."
     echo commit exit: !errorlevel!
 
     echo --- push ---
