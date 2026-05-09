@@ -3184,6 +3184,13 @@ async function loadSlate(date, { bust = false } = {}) {
       parlayText: txtR.status === "fulfilled" ? txtR.value : ""
     };
 
+    // Load Claude post-mortem sidecar for this date if it exists.
+    try {
+      const _pg = await fetch(`./data/postgame/${date}.json`, {cache: "no-store"});
+      window.__postgame = _pg.ok ? await _pg.json() : null;
+    } catch (_) { window.__postgame = null; }
+
+
     const slateHtml = rows.length
       ? renderSlate(rows, gradeMap, results)
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
@@ -3283,170 +3290,4 @@ function answerQuery(q, slate) {
     if (hits.length) {
       return `<p>${hits.length} parlay-eligible pick(s) (A, A-, B+):</p>` + hits.map(formatGame).join("");
     }
-    return `<div class="empty">No parlay-eligible picks on ${slate.date}.</div>`;
-  }
-
-  // 5. "contrarian" → picks where market disagrees (fair_prob < 0.50)
-  if (/contrarian|underdog|fade/i.test(norm)) {
-    const hits = slate.rows.filter(r => {
-      const fp = parseFloat(r.fair_prob);
-      return !isNaN(fp) && fp < 0.50;
-    });
-    if (hits.length) {
-      return `<p>${hits.length} contrarian pick(s) (model picks the market underdog):</p>`
-             + hits.map(formatGame).join("");
-    }
-    return `<div class="empty">No contrarian picks on ${slate.date} (no fair_prob data).</div>`;
-  }
-
-  // 6. "show <grade>" → all games with that grade
-  const gradeQ = norm.match(/(?:show|list)?\s*([abcd][-+]?)\s*grade/);
-  if (gradeQ) {
-    const target = gradeQ[1].toUpperCase().replace("PLUS", "+").replace("MINUS", "-");
-    const hits = slate.rows.filter(r => {
-      const g = (slate.gradeMap[(r.matchup||"").trim()] || {}).grade;
-      return g === target;
-    });
-    if (hits.length) {
-      return `<p>${hits.length} game(s) graded ${target}:</p>` + hits.map(formatGame).join("");
-    }
-    return `<div class="empty">No ${target}-graded games on ${slate.date}.</div>`;
-  }
-
-  // 7. Fallback: search matchup strings substring-wise
-  const free = slate.rows.filter(r => (r.matchup||"").toLowerCase().includes(norm)
-                                    || (r.pick||"").toLowerCase().includes(norm));
-  if (free.length) return free.map(formatGame).join("");
-
-  return `<div class="empty">
-    Didn't understand "${q}". Try a matchup (<code>ATL vs SEA</code>),
-    a team (<code>NYY</code>), or a category (<code>best pick</code>,
-    <code>parlay legs</code>, <code>contrarian</code>, <code>A grade</code>).
-  </div>`;
-}
-
-function todayISO() {
-  const d = new Date();
-  return d.toISOString().split("T")[0];
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const picker = document.getElementById("datePicker");
-
-  document.getElementById("loadBtn").addEventListener("click", () => {
-    loadSlate(picker.value);
-  });
-
-  // Prev/next arrow buttons jump to adjacent available dates from the manifest
-  document.getElementById("prevBtn").addEventListener("click", () => {
-    const dates = (window.__manifest && window.__manifest.dates) || [];
-    const target = _findPrevAvailable(picker.value, dates);
-    if (target) jumpToDate(target);
-  });
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    const dates = (window.__manifest && window.__manifest.dates) || [];
-    const target = _findNextAvailable(picker.value, dates);
-    if (target) jumpToDate(target);
-  });
-  document.getElementById("refreshBtn").addEventListener("click", () => {
-    loadSlate(picker.value, { bust: true });
-  });
-  picker.addEventListener("change", () => loadSlate(picker.value));
-
-  const ask = () => {
-    const q = document.getElementById("queryInput").value;
-    document.getElementById("queryResult").innerHTML = answerQuery(q, window.__slate);
-  };
-  document.getElementById("askBtn").addEventListener("click", ask);
-  document.getElementById("queryInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") ask();
-  });
-
-  // 1. Load the manifest of available slate dates first
-  const dates = await loadManifest();
-
-  // 2. Pick the best initial date: today if available, else most recent
-  const today = todayISO();
-  let initial = today;
-  if (dates.length && !dates.includes(today)) {
-    initial = dates.find(d => d <= today) || dates[0];
-  }
-  picker.value = initial;
-
-  // 3. Render the date strip
-  renderDateStrip(dates, initial);
-
-  // 4. Load the chosen slate (kicks off polling if it's today)
-  loadSlate(initial);
-
-  // 5. Re-load the manifest periodically so newly-added dates appear
-  setInterval(async () => {
-    const fresh = await loadManifest();
-    renderDateStrip(fresh, document.getElementById("datePicker").value);
-  }, 5 * 60 * 1000);  // every 5 minutes
-
-  // 6. When the page becomes visible again, do a one-shot refresh
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && picker.value === todayISO()) {
-      silentRefresh(picker.value);
-    }
-  });
-});
-
-// =============================================================================
-// Ask Claude — POST /api/claude/ask, render answer
-// =============================================================================
-async function _initAskClaude() {
-  const card = document.getElementById("ask-claude-card");
-  const input = document.getElementById("ask-claude-input");
-  const btn = document.getElementById("ask-claude-btn");
-  const out = document.getElementById("ask-claude-out");
-  if (!card || !btn || !input || !out) return;
-  // Probe /api/claude/health to decide whether to show the widget
-  try {
-    const r = await fetch("/api/claude/health");
-    if (!r.ok) return;
-    const j = await r.json();
-    if (!j.enabled) return;
-    card.style.display = "";
-  } catch (_) {
-    return;  // probably on github.io fallback — no Worker available
-  }
-  async function doAsk() {
-    const q = (input.value || "").trim();
-    if (!q) return;
-    btn.disabled = true;
-    out.textContent = "Asking Claude…";
-    const date = (window.__slate && window.__slate.date) || null;
-    try {
-      const r = await fetch("/api/claude/ask", {
-        method: "POST",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify({date, question: q}),
-      });
-      const j = await r.json();
-      if (j.error) {
-        out.innerHTML = `<span class="flag-red">Error: ${j.error}</span>`;
-      } else {
-        out.innerHTML = (j.answer || "")
-          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-          .replace(/\n/g, "<br>");
-      }
-    } catch (e) {
-      out.innerHTML = `<span class="flag-red">Network error: ${e.message}</span>`;
-    } finally {
-      btn.disabled = false;
-    }
-  }
-  btn.addEventListener("click", doAsk);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); doAsk(); }
-  });
-}
-document.addEventListener("DOMContentLoaded", _initAskClaude);
-
-</script>
-
-</body>
-</html>
-
+    return `<div cl
