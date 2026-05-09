@@ -230,6 +230,14 @@ def build_historical_frame(season: int,
 
     log.info("Statcast pitches loaded: %d", len(sc))
 
+    # Bug-fix 2026-05-08: Statcast emits team codes (CWS, AZ, ATH) that do NOT
+    # match the schedule/normalized codes (CHW, ARI, OAK) downstream filters
+    # use in team_batting_as_of() / bullpen_as_of(). Without this, those teams
+    # get zero rows -> all team/bullpen/lineup features go NaN -> XGBoost
+    # defaults to the other side. Normalize once, here, before any filtering.
+    sc["home_team"] = sc["home_team"].map(lambda t: TEAM_ALIASES.get(t, t))
+    sc["away_team"] = sc["away_team"].map(lambda t: TEAM_ALIASES.get(t, t))
+
     # 1b. Multi-year Statcast for pitcher-only stats (v10). pitcher_as_of's
     # prior-year shrinkage prior needs the previous calendar year's pitches.
     # Loading prior season is fast — disk cache hit when the build_features
@@ -242,6 +250,10 @@ def build_historical_frame(season: int,
         if not sc_prior.empty:
             sc_prior["game_date"] = pd.to_datetime(sc_prior["game_date"])
             sc_prior = sc_prior[sc_prior["game_date"].dt.year == (season - 1)]
+            # Same alias normalization as the current-season frame so prior-
+            # year team filters (bullpen prior-year aggregates) match too.
+            sc_prior["home_team"] = sc_prior["home_team"].map(lambda t: TEAM_ALIASES.get(t, t))
+            sc_prior["away_team"] = sc_prior["away_team"].map(lambda t: TEAM_ALIASES.get(t, t))
             sc_pitcher = pd.concat([sc_prior, sc], ignore_index=True)
             log.info("Multi-year SP frame: %d pitches (current=%d, prior=%d)",
                      len(sc_pitcher), len(sc), len(sc_prior))
@@ -369,6 +381,13 @@ def build_slate_frame(day: date,
         log.error("No Statcast data available for YTD stats")
         return pd.DataFrame()
     sc["game_date"] = pd.to_datetime(sc["game_date"])
+    # Bug-fix 2026-05-08: Statcast emits team codes (CWS, AZ, ATH) that do NOT
+    # match the schedule/normalized codes (CHW, ARI, OAK) downstream filters
+    # use in team_batting_as_of() / bullpen_as_of(). Without this, those teams
+    # get zero rows -> all team/bullpen/lineup features go NaN -> XGBoost
+    # defaults to the other side. Normalize once, here, before any filtering.
+    sc["home_team"] = sc["home_team"].map(lambda t: TEAM_ALIASES.get(t, t))
+    sc["away_team"] = sc["away_team"].map(lambda t: TEAM_ALIASES.get(t, t))
 
     # Multi-year SP frame (v10). Prior calendar year + current YTD so
     # pitcher_as_of's small-sample shrinkage anchors against the pitcher's
@@ -379,6 +398,10 @@ def build_slate_frame(day: date,
         if not sc_prior.empty:
             sc_prior["game_date"] = pd.to_datetime(sc_prior["game_date"])
             sc_prior = sc_prior[sc_prior["game_date"].dt.year == (day.year - 1)]
+            # Same alias normalization as the current-season frame so prior-
+            # year team filters (bullpen prior-year aggregates) match too.
+            sc_prior["home_team"] = sc_prior["home_team"].map(lambda t: TEAM_ALIASES.get(t, t))
+            sc_prior["away_team"] = sc_prior["away_team"].map(lambda t: TEAM_ALIASES.get(t, t))
             sc_pitcher = pd.concat([sc_prior, sc], ignore_index=True)
             log.info("Multi-year SP frame for predict: %d pitches "
                      "(current=%d, prior=%d)",

@@ -19,6 +19,11 @@ SP_MIN_PITCHES_F1 = 600
 SP_MIN_PITCHES_F4 = 800
 NAN_FRACTION_LIMIT = 0.05
 RELIABILITY_FLOOR_PLAT = 0.50
+# Bug-fix 2026-05-08: HARD_VETO threshold for catastrophically thin SP samples.
+# Hunter Greene returned from IL with 10 Statcast pitches YTD on 5/8; that
+# produces all NaN sp_*_gap features and the model defaults to the home side.
+# Any SP under this threshold makes the entire game's SP signal untrustworthy.
+SP_THIN_SAMPLE_THRESHOLD = 100
 
 
 def _nan_fraction(s: pd.Series) -> float:
@@ -62,6 +67,15 @@ def gate_sp_features(
         a_n = row.get("away_sp_n_pitches", np.nan)
         if pd.isna(h_n) or pd.isna(a_n):
             flags.append(f"NaN n_pitches (h={h_n}, a={a_n}) -> HARD_VETO")
+        elif min(h_n, a_n) < SP_THIN_SAMPLE_THRESHOLD:
+            # Bug-fix 2026-05-08: thin-sample veto. An SP with <100 Statcast
+            # pitches (e.g. just off the IL) is indistinguishable from no
+            # signal at all — sp_*_gap features go NaN and the model defaults
+            # to the other side. Veto outright. See HOU @ CIN 5/8 (Greene 10p).
+            flags.append(
+                f"sp_savant_gate=THIN_SAMPLE "
+                f"(h={int(h_n)}, a={int(a_n)} < {SP_THIN_SAMPLE_THRESHOLD}) -> HARD_VETO"
+            )
         elif min(h_n, a_n) < SP_MIN_PITCHES_F1:
             flags.append(
                 f"n_pitches<{SP_MIN_PITCHES_F1} "

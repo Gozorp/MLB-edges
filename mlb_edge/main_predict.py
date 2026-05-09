@@ -180,6 +180,23 @@ def build_diagnostic_table(games: pd.DataFrame,
             p_h_raw = 1.0 / home_dec
             p_a_raw = 1.0 / away_dec
             fair_h, fair_a = shin(p_h_raw, p_a_raw)
+            # SANITY CAP (2026-05-09): real MLB games never have devigged
+            # Vegas-implied prob outside ~[0.20, 0.80].  Anything outside
+            # [0.10, 0.90] indicates stale/mis-parsed odds (e.g. doubleheader
+            # collision in the median aggregation, futures market leaking in,
+            # or a single-book outlier).  Treat as missing so downstream falls
+            # back to the no-market-data path rather than baking an absurd
+            # 99% fair_prob into the slate.  Tracked via odds_status.
+            if (pd.notna(fair_h) and (fair_h < 0.10 or fair_h > 0.90)) or \
+               (pd.notna(fair_a) and (fair_a < 0.10 or fair_a > 0.90)):
+                log.warning("Suspicious devigged fair prob for %s @ %s: "
+                            "fair_h=%.3f fair_a=%.3f (home_dec=%.3f away_dec=%.3f) "
+                            "— treating as missing odds",
+                            away_abbr, home_abbr,
+                            fair_h if pd.notna(fair_h) else float("nan"),
+                            fair_a if pd.notna(fair_a) else float("nan"),
+                            home_dec, away_dec)
+                fair_h, fair_a = float("nan"), float("nan")
         else:
             fair_h, fair_a = float("nan"), float("nan")
 
@@ -222,6 +239,11 @@ def build_diagnostic_table(games: pd.DataFrame,
             row_odds_status = odds_status if odds_status != "unknown" else "unavailable"
         elif pd.isna(home_dec) or pd.isna(away_dec):
             row_odds_status = "no_match"
+        elif pd.isna(fair_h) or pd.isna(fair_a):
+            # Odds matched but Shin devig produced an absurd value (caught by
+            # the [0.10, 0.90] sanity cap above).  Tag distinctly so we can
+            # monitor how often this fires.
+            row_odds_status = "fetched_capped"
         else:
             row_odds_status = "fetched"
 
@@ -492,9 +514,20 @@ def run(slate_date: date,
                         "wind_out_mph": g.get("wind_out_mph"),
                         "park_hr_factor": g.get("park_hr_factor"),
                     }
+                    # Bug-fix 2026-05-08: surface thin_sp_sample as a stress
+                    # warning whenever the SP-Savant gate fired THIN_SAMPLE
+                    # for this row (signals column will contain that token).
+                    # We compute this independently of audit_pick so it
+                    # surfaces even when fair_prob/edge_pp is NaN (no odds).
+                    extra_warnings: list[str] = []
+                    sigs = str(drow.get("signals") or "")
+                    if "sp_savant_gate=THIN_SAMPLE" in sigs:
+                        extra_warnings.append("thin_sp_sample")
                     edge_pp = drow.get("edge_pp")
                     if edge_pp is None or pd.isna(edge_pp):
-                        stress_cols.append(("", False)); continue
+                        warn_str = ";".join(extra_warnings)
+                        downgrade = bool(extra_warnings)
+                        stress_cols.append((warn_str, downgrade)); continue
                     res = _st.audit_pick(
                         edge_pp=float(edge_pp),
                         tier=str(drow.get("tier", "")),
@@ -502,8 +535,9 @@ def run(slate_date: date,
                         pick_side=pick_side, target_date=slate_date,
                         bp_state=bp_state, weather=weather, news_row=nrow,
                     )
-                    stress_cols.append((";".join(res.vulnerabilities),
-                                        bool(res.confidence_downgrade)))
+                    merged_warnings = list(res.vulnerabilities) + extra_warnings
+                    stress_cols.append((";".join(merged_warnings),
+                                        bool(res.confidence_downgrade) or bool(extra_warnings)))
                 table["stress_warnings"] = [s[0] for s in stress_cols]
                 table["confidence_downgrade"] = [s[1] for s in stress_cols]
             except Exception as e:

@@ -134,6 +134,25 @@ def score_conviction(row: pd.Series) -> ConvictionResult:
     signals: List[str] = []
     notes: List[str] = []
 
+    # Bug-fix 2026-05-08: HARD_VETO short-circuit for thin-sample SPs.
+    # `sp_savant_gate.gate_sp_features()` (called upstream in main_predict)
+    # annotates rows whose SPs have <SP_THIN_SAMPLE_THRESHOLD Statcast pitches
+    # with sp_savant_status="HARD_VETO" and reason mentioning THIN_SAMPLE.
+    # Reaching score_conviction with that flag means the SP signals are
+    # untrustworthy; emit a loud signal+note and SKIP outright so the diag
+    # row clearly shows why and stake_mult drops to zero.
+    savant_status = row.get("sp_savant_status")
+    savant_reason = str(row.get("sp_savant_reason") or "")
+    if savant_status == "HARD_VETO":
+        if "THIN_SAMPLE" in savant_reason:
+            signals.append("sp_savant_gate=THIN_SAMPLE")
+            notes.append(f"sp_savant_gate HARD_VETO: {savant_reason}")
+        else:
+            signals.append("sp_savant_gate=HARD_VETO")
+            notes.append(f"sp_savant_gate HARD_VETO: {savant_reason}")
+        return ConvictionResult(tier="SKIP", primary_score=0,
+                                signals_fired=signals, notes=notes)
+
     # F1 - SP xERA gap
     # Sample-size gate (added after the 2026-04-25 BOS@BAL miss). xERA on a
     # 4-start sample (~100 pitches) doesn't reflect true talent — Crochet's

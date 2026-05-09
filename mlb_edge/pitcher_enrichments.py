@@ -267,10 +267,18 @@ def build_pitcher_enrichments(statcast: pd.DataFrame,
     # Rest days -----------------------------------------------------------
     home_rest = compute_rest_days(statcast, home_sp_id, game_date)
     away_rest = compute_rest_days(statcast, away_sp_id, game_date)
-    sp_rest_gap = (
+    # Bug-fix 2026-05-08: clip rest_gap to [-20, 20]. A pitcher returning from
+    # the IL after 30-40 days produces an unbounded rest_gap that dominates
+    # the model. The sign still carries, but the magnitude is capped to a
+    # range observed in normal rotation use.
+    raw_rest_gap = (
         (home_rest - away_rest)
         if home_rest is not None and away_rest is not None
         else np.nan
+    )
+    sp_rest_gap = (
+        float(np.clip(raw_rest_gap, -20.0, 20.0))
+        if pd.notna(raw_rest_gap) else np.nan
     )
 
     # Velocity drop -------------------------------------------------------
