@@ -3184,6 +3184,12 @@ async function loadSlate(date, { bust = false } = {}) {
       parlayText: txtR.status === "fulfilled" ? txtR.value : ""
     };
 
+    // Load Claude post-mortem sidecar for this date if it exists.
+    try {
+      const _pg = await fetch(`./data/postgame/${date}.json`, {cache: "no-store"});
+      window.__postgame = _pg.ok ? await _pg.json() : null;
+    } catch (_) { window.__postgame = null; }
+
     const slateHtml = rows.length
       ? renderSlate(rows, gradeMap, results)
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
