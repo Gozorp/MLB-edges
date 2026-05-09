@@ -38,6 +38,8 @@ on:
 permissions:
   contents: write
   pull-requests: read
+  id-token: write
+  actions: read
 
 jobs:
   brain:
