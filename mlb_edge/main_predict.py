@@ -48,7 +48,7 @@ from .config import (
 from .live_lineups import fetch_slate_meta
 from .live_weather import fetch_slate_weather
 from .market_analysis import shin
-from .sp_savant_gate import gate_sp_features
+from .sp_savant_gate import gate_sp_features, SP_THIN_SAMPLE_THRESHOLD
 from .stadiums import normalize_team
 
 logging.basicConfig(
@@ -105,6 +105,82 @@ def overlay_live_features(games: pd.DataFrame, ctx: dict) -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------------
+# PENDING_SP_DATA placeholder
+# ---------------------------------------------------------------------------
+# A row in this state means the model could not produce a real prediction
+# because one or both starters lack the Statcast sample needed to populate
+# SP features (rookies, openers, just-off-IL, or probable pitcher not yet
+# announced when the workflow ran). Surfacing these as their own tier keeps
+# the dashboard at the full slate count instead of silently dropping the
+# matchup, and the validate step in daily-slate.yml excludes this tier from
+# its blank-row denominator since the blanks here are expected.
+def _pending_sp_data_row(*, away_abbr: str, home_abbr: str,
+                         why_skipped: str) -> dict:
+    return {
+        "matchup":              f"{away_abbr} @ {home_abbr}",
+        "pick":                 "TBD",
+        "f5_prob":              None,
+        "full_prob":            None,
+        "p_model":              None,
+        "pick_prob":            None,
+        "p_model_shadow_phase4": None,
+        "bp_min":               None,
+        "fair_prob":            None,
+        "edge_pp":              None,
+        "ev_per_dollar":        None,
+        "tier":                 "PENDING_SP_DATA",
+        "signals":              "thin_sp_data",
+        "why_skipped":          why_skipped,
+        "odds_status":          "pending_sp_data",
+    }
+
+
+def append_unannounced_sp_pending_rows(table: pd.DataFrame,
+                                       schedule: list,
+                                       slate_date: date) -> pd.DataFrame:
+    """Add PENDING_SP_DATA rows for scheduled games that didn't make it
+    into `table` because their probable pitcher wasn't announced yet (and
+    so build_slate_frame skipped them).
+    """
+    if not schedule:
+        return table
+    have_matchups = set(table["matchup"].tolist()) if not table.empty and "matchup" in table.columns else set()
+    additions = []
+    for g in schedule:
+        if g.get("home_sp_id") and g.get("away_sp_id"):
+            continue
+        home_abbr = normalize_team(g.get("home_team") or "")
+        away_abbr = normalize_team(g.get("away_team") or "")
+        if not home_abbr or not away_abbr:
+            continue
+        matchup = f"{away_abbr} @ {home_abbr}"
+        if matchup in have_matchups:
+            continue
+        missing_sides = []
+        if not g.get("home_sp_id"):
+            missing_sides.append(f"{home_abbr} (home)")
+        if not g.get("away_sp_id"):
+            missing_sides.append(f"{away_abbr} (away)")
+        why = (
+            f"Probable SP not yet announced for "
+            f"{', '.join(missing_sides)}; will fill in next workflow run "
+            f"(needs 100+ Statcast pitches once announced to score)"
+        )
+        additions.append(_pending_sp_data_row(
+            away_abbr=away_abbr, home_abbr=home_abbr, why_skipped=why,
+        ))
+        have_matchups.add(matchup)
+    if not additions:
+        return table
+    log.info("Appended %d PENDING_SP_DATA rows for unannounced-SP games",
+             len(additions))
+    add_df = pd.DataFrame(additions)
+    if table is None or table.empty:
+        return add_df
+    return pd.concat([table, add_df], ignore_index=True, sort=False)
+
+
+# ---------------------------------------------------------------------------
 # Diagnostic per-game table (bypasses zero-bet filter)
 # ---------------------------------------------------------------------------
 def build_diagnostic_table(games: pd.DataFrame,
@@ -150,6 +226,44 @@ def build_diagnostic_table(games: pd.DataFrame,
     for _, r in games.iterrows():
         home_abbr = normalize_team(r["home_team"])
         away_abbr = normalize_team(r["away_team"])
+
+        # 2026-05-10 fix: emit PENDING_SP_DATA rows for games where one or
+        # both starters have catastrophically thin Statcast samples (rookies,
+        # openers, just-off-IL). Prior to this fix the row still landed in the
+        # CSV but with normal pick/tier/edge values that downstream consumers
+        # treated as a real recommendation; the SP-savant gate flagged it via
+        # signals="sp_savant_gate=THIN_SAMPLE" but the dashboard didn't
+        # surface that distinction. Now we route those rows through a
+        # dedicated PENDING_SP_DATA tier with the SP name + pitch count in
+        # `why_skipped` so users see "model has insufficient data" instead of
+        # a misleadingly confident pick.
+        h_n = r.get("home_sp_n_pitches", float("nan"))
+        a_n = r.get("away_sp_n_pitches", float("nan"))
+        h_name = (r.get("home_sp_name") or "").strip()
+        a_name = (r.get("away_sp_name") or "").strip()
+        thin_sides: list[str] = []
+        if pd.isna(h_n) or float(h_n) < SP_THIN_SAMPLE_THRESHOLD:
+            label = h_name or f"{home_abbr} SP"
+            n_disp = "0" if pd.isna(h_n) else str(int(h_n))
+            thin_sides.append(
+                f"{label} has only {n_disp} Statcast pitches season-to-date; "
+                f"need {SP_THIN_SAMPLE_THRESHOLD}+ to score"
+            )
+        if pd.isna(a_n) or float(a_n) < SP_THIN_SAMPLE_THRESHOLD:
+            label = a_name or f"{away_abbr} SP"
+            n_disp = "0" if pd.isna(a_n) else str(int(a_n))
+            thin_sides.append(
+                f"{label} has only {n_disp} Statcast pitches season-to-date; "
+                f"need {SP_THIN_SAMPLE_THRESHOLD}+ to score"
+            )
+        if thin_sides:
+            rows.append(_pending_sp_data_row(
+                away_abbr=away_abbr,
+                home_abbr=home_abbr,
+                why_skipped=" | ".join(thin_sides),
+            ))
+            continue
+
         # Stage 1's F5 probability is exposed by model.predict() as `f5_prob`
         # (see mlb_edge.model.predict line ~557). Earlier drafts of this
         # diagnostic table read `f5_model_prob`, which never existed — every
@@ -328,9 +442,27 @@ def run(slate_date: date,
 
     log.info("[step 3/5] build slate + score")
     stage1, stage2 = md.load(model_path)
+    # Pull the raw schedule up front so we can reconcile against the scored
+    # slate later. Games whose probable SP isn't announced yet are dropped by
+    # build_slate_frame (no features to compute), but we still want them on
+    # the dashboard as PENDING_SP_DATA placeholders rather than disappearing
+    # entirely. See append_unannounced_sp_pending_rows below.
+    raw_schedule = di.fetch_schedule_mlb_api(slate_date)
     games = bp.build_slate_frame(slate_date)
     if games.empty:
         log.error("Slate frame empty for %s", slate_date)
+        # Even when no game has scoreable SP data, surface every scheduled
+        # matchup as PENDING_SP_DATA so the dashboard / validate step still
+        # see the full slate count instead of an empty CSV.
+        if raw_schedule and out_picks and diagnostic_table:
+            empty_table = append_unannounced_sp_pending_rows(
+                pd.DataFrame(), raw_schedule, slate_date,
+            )
+            if not empty_table.empty:
+                Path(out_picks).parent.mkdir(parents=True, exist_ok=True)
+                empty_table.to_csv(out_picks, index=False)
+                log.info("Wrote PENDING-only diagnostic table to %s "
+                         "(%d games)", out_picks, len(empty_table))
         return
 
     games = overlay_live_features(games, ctx)
@@ -477,6 +609,12 @@ def run(slate_date: date,
     log.info("[step 4/5] edge calculation")
     if diagnostic_table:
         table = build_diagnostic_table(preds, odds_long, odds_status=odds_status)
+        # Reconcile against the original schedule. Games whose probable SP
+        # wasn't announced when the workflow fired were never in `preds`, so
+        # they're missing from `table`. Add a PENDING_SP_DATA row per missing
+        # matchup so the dashboard sees one row per scheduled game and the
+        # validate step in daily-slate.yml can excuse expected blanks.
+        table = append_unannounced_sp_pending_rows(table, raw_schedule, slate_date)
         if not table.empty:
             # ----------------------------------------------------------
             # Stress-test annotation (2026-05-03) — observability v1.

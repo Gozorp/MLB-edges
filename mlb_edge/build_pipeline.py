@@ -416,7 +416,11 @@ def build_slate_frame(day: date,
 
     rows = []
     for g in schedule:
-        # Skip games without probable pitchers announced yet
+        # Skip games without probable pitchers announced yet. Caller
+        # (main_predict.run) reconciles `schedule` vs `games["game_id"]`
+        # post-hoc and emits PENDING_SP_DATA placeholders for the gap, so
+        # the diag CSV ends up with one row per scheduled game even when MLB
+        # hasn't published probable pitchers before the workflow fires.
         if not g.get("home_sp_id") or not g.get("away_sp_id"):
             log.warning("Skipping game %s: probable pitcher not announced", g.get("game_pk"))
             continue
@@ -437,6 +441,11 @@ def build_slate_frame(day: date,
             include_weather=include_weather,
             game_time_utc=pd.to_datetime(g.get("game_date")),
         )
+        # Stash SP names so build_diagnostic_table can quote them in the
+        # PENDING_SP_DATA why_skipped reason (when one side is on a thin
+        # Statcast sample) without re-fetching the schedule.
+        row["home_sp_name"] = g.get("home_sp_name") or ""
+        row["away_sp_name"] = g.get("away_sp_name") or ""
         rows.append(row)
 
     return pd.DataFrame(rows) if rows else pd.DataFrame()
