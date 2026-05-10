@@ -1,39 +1,39 @@
 {
   "date": "2026-05-10",
-  "fit_at": "2026-05-10T16:15:00Z",
+  "fit_at": "2026-05-10T17:00:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 15,
   "patterns_recognized": [
-    "Extreme positive edge (>20pp) = model overconfidence, not real edge: May 8 SEA@CHW (+31pp edge, SEA won 12-8) and NYM@ARI (+23pp, lost 1-3); today SEA@CHW again at +24.65pp with model at 68% vs market 43% — identical failure signature.",
-    "Negative-edge GOLD picks must be downgraded: 05-09 validated — CHC@TEX (-4.41pp, lost 0-6) and NYY@MIL (-2.00pp, lost 3-4) both GOLD-confirmed at negative edge, both lost. Today TB@BOS is GOLD with edge -0.75pp.",
-    "PLATINUM tier historically ~43% hit rate (heuristic 4); COL@PHI appears PLATINUM for a third consecutive slate day without fair_prob, with base p_model only 52.1% — same recurring structural concern.",
-    "Stage 1/2 gap >20pp without F2_xwoba >= 0.025 signals unreliable bullpen-carry thesis; CHC@TEX has 22.9pp gap (f5=0.698 vs full=0.469) with F2=0.023 just below the exception threshold, plus confidence_downgrade=True.",
-    "Stacked pipeline flags (confidence_downgrade=True + bullpen_fatigue=True) on GOLD picks reliably signal DOWNGRADE; pattern validated on 05-09 (DET@KC, COL@PHI both correct downgrades with stacked flags)."
+    "Negative-edge GOLD picks failed 0-for-2 on 05-09 (CHC@TEX -4.41pp lost 0-6; NYY@MIL -2.00pp lost 3-4); market holds SP-day information the model doesn't — downgrade any GOLD pick where edge_pp is negative or unverified.",
+    "PLATINUM tier historical hit rate ~43%; COL@PHI recurring on slate three consecutive days at PLATINUM with no fair_prob and p_model only 52% — same structural fragility each time.",
+    "Stage 1/2 gap >20pp without F2_xwoba >= 0.025 signals an unreliable bullpen-carry thesis; today CHC@TEX shows TEX winning F5 at 70% while CHC picks up full-game win at 53%, a 23pp gap with F2=0.023 just below the exception threshold.",
+    "Stacked pipeline flags (confidence_downgrade=True + bullpen_fatigue=True) on GOLD picks reliably signal DOWNGRADE; validated on 05-09 with DET@KC and COL@PHI both correct downgrades using stacked-flag protocol.",
+    "PIT@SF Stage 1/2 gap with F2_xwoba >= 0.025 must NOT be downgraded; 05-09 lesson confirmed blowout wins are possible when the lineup signal is independently strong enough to force an early lead and make the bullpen carry thesis moot."
   ],
   "by_matchup": {
     "WSH @ MIA": {
       "model_pick": "MIA",
-      "model_prob": 0.5097,
+      "model_prob": 0.5118,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "MIA",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "Edge -5.95pp outside [4,15] band; SKIP tier applied. Calibrated rate for the 0.5-0.6 bin is 47.8% — directional picks here win slightly less than half the time. No signals fire, no stress warnings. fair_prob=0.5693 confirms MIA is a genuine market favorite. Calibrator and model agree on direction; no basis to override the SKIP classification.",
-      "lessons_applied": []
+      "reasoning": "SKIP tier; no fair_prob and odds_status=no_match mean edge is unverifiable. MIA f5_prob=0.577 and full_prob=0.512 show modest home advantage. Calibrated 51.18% sits in the 0.5-0.6 bin at 47.8% real win rate — below 50%. On 05-08 MIA lost a small-edge pick; on 05-09 won narrowly in a high-scoring game. No signals fire. No basis to escalate beyond SKIP.",
+      "lessons_applied": ["no_fair_prob_skip_confirmed", "calibrated_below_50pct_0.5-0.6_bin"]
     },
     "OAK @ BAL": {
       "model_pick": "OAK",
-      "model_prob": 0.5627,
+      "model_prob": 0.5643,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "OAK",
       "claude_tier": "SKIP",
       "claude_confidence": 0.49,
-      "reasoning": "SKIP tier; edge +6.27pp within band but grader pre-assigned SKIP. Both f5_prob=0.480 and full_prob=0.437 for OAK are below 50%, yet p_model=0.563 — stage outputs and blended model internally disagree. Market is 50/50 (fair_prob=0.50). On 05-09 OAK won 6-2 at SKIP; today's structure is similar with no escalating flags.",
-      "lessons_applied": []
+      "reasoning": "SKIP tier; no fair_prob, odds_status=no_match. BAL (home) wins F5 at 48% and full at 44%, yet OAK is model pick at 56% — the model and stage outputs disagree with BAL winning either stage. On 05-09 OAK won 6-2 at SKIP; today's structure is similar with no escalating flags. Low conviction coin-flip SKIP.",
+      "lessons_applied": ["no_fair_prob_skip_confirmed"]
     },
     "TB @ BOS": {
       "model_pick": "TB",
@@ -44,19 +44,19 @@
       "claude_pick": "TB",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "GOLD with edge -0.75pp (negative). Per 05-09 validated pattern: negative-edge GOLD picks failed 0-for-2 (CHC@TEX -4.41pp lost 0-6; NYY@MIL -2.00pp lost 3-4). Market prices BOS slightly above the model (fair_prob=0.5508 vs model 0.5433) — market holds SP-day information the model doesn't. confidence_downgrade=True internally set. DOWNGRADE to SKIP.",
-      "lessons_applied": ["negative_edge_GOLD_0-2_on_05-09", "market_holds_info_on_negative_edge", "confidence_downgrade_flag"]
+      "reasoning": "GOLD with no verified edge (odds_status=no_match). Per 05-09 validated pattern: negative-edge GOLD picks failed 0-for-2 — and without fair_prob we cannot confirm the edge is positive. Stage gap is minimal (TB wins F5 55%, full 54.3% — only 0.67pp). F3_swing_take_gap=910.5 is real but on 05-08 the same signal fired for TB and lost (BOS SP dominated). DOWNGRADE to SKIP.",
+      "lessons_applied": ["negative_edge_GOLD_pattern_05-09", "tb_bos_f3_signal_failed_05-08", "no_fair_prob_unverifiable_edge"]
     },
     "COL @ PHI": {
       "model_pick": "PHI",
-      "model_prob": 0.5213,
+      "model_prob": 0.5081,
       "model_tier": "PLATINUM",
       "model_grade": "A",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "PHI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.49,
-      "reasoning": "PLATINUM historically hits ~43% (heuristic 4). No fair_prob available (fetched_capped) makes edge unverifiable. Base p_model=52.1% is coin-flip territory despite PLATINUM classification. F1_xera_gap=3.99 and F3=772.9 fire but without a market edge anchor the signals cannot be trusted. Third consecutive slate appearance of this matchup at PLATINUM with no fair_prob. DOWNGRADE to SKIP.",
+      "reasoning": "PLATINUM historically hits ~43% (heuristic 4). No fair_prob (odds_status=no_match) makes edge unverifiable. Base pick_prob=50.81% is barely above a coin flip despite PLATINUM classification. F1_xera_gap=3.99 and F3=772.9 fire, but without market anchor these signals cannot be trusted alone. Third consecutive slate appearance of COL@PHI at PLATINUM with no fair_prob. DOWNGRADE to SKIP.",
       "lessons_applied": ["platinum_43pct_heuristic_4", "no_fair_prob_unverifiable_edge", "col_phi_recurring_three_days"]
     },
     "LAA @ TOR": {
@@ -68,32 +68,32 @@
       "claude_pick": "TOR",
       "claude_tier": "SKIP",
       "claude_confidence": 0.55,
-      "reasoning": "SKIP tier pre-assigned despite edge +10.94pp being within band. Calibrated 0.6743 → ~57.97% (0.6-0.7 bin); market fair_prob=0.5649 is already close to calibrated real rate, so edge is thinner than raw model suggests. On 05-09 TOR demolished LAA 14-1 at SKIP — direction correct, staking correctly excluded. No new information to escalate beyond SKIP.",
-      "lessons_applied": ["edge_band_filter_correct", "calibrated_rate_narrows_edge"]
+      "reasoning": "SKIP tier pre-assigned; edge outside [4,15] band. Calibrated 67.43% → ~57.97% (0.6-0.7 bin). On 05-09 TOR demolished LAA 14-1 at SKIP — direction has been correct two consecutive days. Edge band filter correctly prevents staking. No new information to escalate beyond SKIP.",
+      "lessons_applied": ["edge_band_filter_correct", "tor_laa_two_consecutive_directional_wins"]
     },
     "HOU @ CIN": {
       "model_pick": "HOU",
-      "model_prob": 0.5378,
+      "model_prob": 0.5125,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "HOU",
       "claude_tier": "SKIP",
       "claude_confidence": 0.47,
-      "reasoning": "SKIP with acute_roster warning and confidence_downgrade=True. Stage 1/2 gap: f5_prob=0.350 (CIN dominates F5) vs p_model=0.538 — an 18.8pp gap exceeding heuristic 5 threshold, meaning HOU's full-game thesis requires a bullpen reversal of CIN's starter dominance. On 05-09 that reversal failed (CIN won 3-1). Calibrated to below 50%. SKIP confirmed.",
-      "lessons_applied": ["stage1_stage2_gap_heuristic_5", "acute_roster_flag", "hou_cin_bullpen_carry_failed_05-09"]
+      "reasoning": "SKIP with Stage 1/2 gap concern: CIN (home) wins F5 at only 35%, but HOU full pick_prob = 51.25% — requires HOU's bullpen to convert an early lead. On 05-09 this bullpen-carry thesis failed (CIN won 3-1). Calibrated to below 50%. No fair_prob. SKIP confirmed; very low conviction.",
+      "lessons_applied": ["stage1_stage2_gap_heuristic_5", "hou_cin_bullpen_carry_failed_05-09"]
     },
     "MIN @ CLE": {
       "model_pick": "CLE",
-      "model_prob": 0.6539,
+      "model_prob": 0.6593,
       "model_tier": "GOLD",
       "model_grade": "B+",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "CLE",
       "claude_tier": "SKIP",
       "claude_confidence": 0.53,
-      "reasoning": "GOLD with four concurrent risk factors: (1) F3_swing_take_gap=16.1 is an extremely weak signal (vs. ATL@LAD's 1774.2); (2) bullpen_fatigue=True yet the full-game thesis depends on a 10.7pp Stage 1/2 gap (f5=0.547 vs full=0.654); (3) confidence_downgrade=True internally; (4) heuristic 1: home favorite at 65.4%, above 65% threshold. Edge barely in-band at +4.08pp. DOWNGRADE to SKIP.",
-      "lessons_applied": ["weak_F3_signal", "bullpen_fatigue_plus_stage12_gap", "home_favorite_heuristic_1", "stacked_pipeline_flags"]
+      "reasoning": "GOLD with four concurrent risk factors: (1) F3_swing_take_gap=16.1 is an extremely weak signal compared to this slate's 1774.2 and 910.5; (2) Stage 1/2 gap of 10.7pp (CLE wins F5 at 54.7% but full at 65.9%) with bullpen_fatigue=True; (3) confidence_downgrade=True pipeline flag; (4) home favorite at 65.9% exceeds heuristic-1 threshold. Stacked flags validate DOWNGRADE.",
+      "lessons_applied": ["weak_F3_signal", "bullpen_fatigue_plus_stage12_gap_05-09", "home_favorite_heuristic_1", "stacked_pipeline_flags_validated_05-09"]
     },
     "SEA @ CHW": {
       "model_pick": "CHW",
@@ -104,8 +104,8 @@
       "claude_pick": "CHW",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "Edge +24.65pp is catastrophically outside [4,15] band, matching the May 8 failure pattern exactly (CHW +31pp edge, model 74% vs market 45% — SEA won 12-8). Today: model 68.03% vs fair_prob 43.38% for CHW — a 24.65pp model-market gap. Cannot verify SP matchup to build a directional OVERRIDE thesis; DOWNGRADE to SKIP while preserving directional agnosticism. Staking already zero by band filter.",
-      "lessons_applied": ["extreme_edge_05-08_catastrophe_pattern", "model_vs_market_24pp_gap", "edge_band_exclusion_already_applied"]
+      "reasoning": "CHW at 68.03% triggers heuristic 1 (home favorite >65%) with no fair_prob to confirm the edge. May 8 disaster: CHW at 74% with large model-market gap — SEA won 12-8. Today's no_match odds_status means we cannot verify whether market supports CHW's 68% or is fading it. Without market confirmation, heuristic-1 DOWNGRADE stands. F3=239.7 is a moderate signal but not enough to override the unverifiable overconfidence concern.",
+      "lessons_applied": ["home_favorite_heuristic_1_65pct", "chw_sea_05-08_disaster_pattern", "no_fair_prob_unverifiable_edge"]
     },
     "NYY @ MIL": {
       "model_pick": null,
@@ -116,8 +116,8 @@
       "claude_pick": null,
       "claude_tier": "PENDING_SP_DATA",
       "claude_confidence": null,
-      "reasoning": "Carlos Rodón has 0 Statcast pitches season-to-date — SP-edge score impossible. NYY has lost two consecutive games in this series (05-08: 0-6 to rookie Misiorowski; 05-09: 3-4 in close game) while Vegas slightly favored MIL both days. Without Rodón's SP-quality score, any NYY directional call is unanchored. PENDING is correct; no pick is the right call.",
-      "lessons_applied": ["sp_zero_statcast_data", "nyy_mil_two_consecutive_losses_pattern", "rodon_absence_unscored"]
+      "reasoning": "Carlos Rodón has 0 Statcast pitches season-to-date — SP-edge score impossible. NYY has lost two consecutive games in this series (05-08: 0-6 to Misiorowski; 05-09: 3-4 in close game) while Vegas slightly favored MIL both days. Without Rodón's SP-quality score any NYY directional call is unanchored. PENDING is correct; no pick is the right call.",
+      "lessons_applied": ["sp_zero_statcast_data", "nyy_mil_two_consecutive_losses_series_pattern"]
     },
     "CHC @ TEX": {
       "model_pick": "CHC",
@@ -128,32 +128,32 @@
       "claude_pick": "CHC",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "GOLD with 22.9pp Stage 1/2 gap (f5=0.698 vs full=0.469 for CHC): Stage 1 strongly favors CHC in F5, but Stage 2 says TEX wins the full game at 53.1%. p_model=53.1% calibrates to 47.8% (0.5-0.6 bin) — below 50%. F2_xwoba=0.023 misses the 0.025 exception threshold by 0.002. confidence_downgrade=True also fired. DOWNGRADE to SKIP.",
-      "lessons_applied": ["stage1_stage2_gap_heuristic_5", "F2_below_025_exception_threshold", "calibrated_below_50pct", "confidence_downgrade_flag"]
+      "reasoning": "GOLD with 22.9pp Stage 1/2 gap: TEX (home) wins F5 at 70%, but CHC wins the full game at 53% — CHC's bullpen must overcome an early TEX advantage. F2_xwoba=0.023 misses the 0.025 exception threshold, so the 05-09 'no auto-downgrade' exception does NOT apply. p_model=53.13% calibrates to 47.8% (0.5-0.6 bin). On 05-09 CHC GOLD confirm with negative edge lost 0-6 — same structure. DOWNGRADE to SKIP.",
+      "lessons_applied": ["stage1_stage2_gap_heuristic_5_F2_below_025", "calibrated_below_50pct", "chc_tex_gold_confirm_failed_05-09"]
     },
     "PIT @ SF": {
       "model_pick": "PIT",
-      "model_prob": 0.5727,
+      "model_prob": 0.601,
       "model_tier": "GOLD",
       "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "PIT",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.53,
-      "reasoning": "Stage 1/2 gap is 24.1pp (f5=0.668 vs full=0.427 for PIT), but F2_xwoba=0.032 exceeds 0.025 threshold — exactly when the 05-09 exception applies: 'when gap >20pp AND F2 >= 0.025, lineup may dominate early.' SF is 15-24 (worst record on slate). No bullpen_fatigue or confidence_downgrade flags. On 05-09 PIT dominated SF 13-3 with same structure. GOLD confirmed.",
-      "lessons_applied": ["stage12_gap_F2_025_exception_05-09", "sf_weak_record_15-24", "no_stacked_flags", "pit_sf_blowout_05-09_validated"]
+      "claude_confidence": 0.54,
+      "reasoning": "Stage 1/2 gap is 26.9pp (SF wins F5 at 66.8%, PIT wins full at 60.1%), but F2_xwoba=0.032 exceeds the 0.025 threshold — exactly the 05-09 exception: 'lineup may dominate early and make the bullpen carry thesis moot.' edge=8.47pp (positive, within band), fair_prob=0.5163 (above 0.42 floor), no stacked flags. On 05-09 PIT dominated SF 13-3 with the same structure. Only verified-edge GOLD on the slate.",
+      "lessons_applied": ["stage12_gap_F2_025_exception_05-09_validated", "positive_edge_verified_fair_prob", "pit_sf_blowout_05-09"]
     },
     "NYM @ ARI": {
       "model_pick": "ARI",
-      "model_prob": 0.5432,
+      "model_prob": 0.5466,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "Edge +2.91pp barely in-band but SKIP. Calibrated rate for 0.5-0.6 bin is 47.8% — below 50% directional expectation. bullpen_fatigue=True and confidence_downgrade=True both flagged. On 05-08 ARI lost at 68% raw; on 05-09 ARI won narrowly 2-1 — alternating with no reliable trend. SKIP is the correct designation.",
-      "lessons_applied": ["calibrated_below_50pct", "stacked_stress_flags", "nym_ari_alternating_results"]
+      "reasoning": "SKIP; edge barely in-band but capped (fetched_capped). Stage 1/2 gap: ARI wins F5 at 76% but full at only 54.7% — a 21.3pp gap suggesting bullpen-carry thesis. Calibrated 54.66% → 47.8% (0.5-0.6 bin). On 05-08 ARI lost at 68%; on 05-09 ARI won narrowly 2-1 with SKIP correctly applied both days. SKIP is appropriate.",
+      "lessons_applied": ["calibrated_below_50pct", "stage12_gap_ari_bullpen_carry_concern"]
     },
     "STL @ SD": {
       "model_pick": "STL",
@@ -163,9 +163,9 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "Largest Stage 1/2 gap on the slate: f5=0.776 vs full=0.442 for STL (gap=0.334). STL's full-game thesis requires a complete bullpen collapse by SD — no F-signals fire to support this. Calibrated 0.5583 → 47.8% in the 0.5-0.6 bin. On 05-09 STL lost 2-4. This matchup has no reliable directional signal; SKIP prevents exposure.",
-      "lessons_applied": ["largest_stage12_gap_on_slate", "no_F_signals_low_conviction", "stl_sd_systematic_mispick"]
+      "claude_confidence": 0.46,
+      "reasoning": "Largest Stage 1/2 gap on the slate: SD (home) wins F5 at 77.6%, STL wins full at 55.8% — a 33.4pp gap requiring STL's bullpen to completely overcome SD's starter. fair_prob=0.8423 means Vegas prices SD at ~84% — model at 56% STL is a 28.4pp disagreement. No F-signals fire. On 05-09 STL lost 2-4. SKIP is correct; this matchup has no reliable directional signal.",
+      "lessons_applied": ["largest_stage12_gap_on_slate", "no_F_signals_deep_negative_edge", "stl_sd_model_vs_market_structural_disagreement"]
     },
     "ATL @ LAD": {
       "model_pick": "LAD",
@@ -176,8 +176,8 @@
       "claude_pick": "LAD",
       "claude_tier": "GOLD",
       "claude_confidence": 0.56,
-      "reasoning": "F3_swing_take_gap=1774.2 is the strongest SP-independent lineup signal on the slate; Stage 1/2 gap is minimal (5.8pp). Calibrated 65.03% → ~57.97%; fair_prob=0.5606 leaves ~2pp real edge — thin but positive. bullpen_fatigue and confidence_downgrade fire (one stacked flag, not two); heuristic 1 exception applies ('strong supporting signal' in F3). On 05-08 same matchup LAD won 3-1. GOLD confirmed.",
-      "lessons_applied": ["F3_lineup_primary_signal_SP_independent", "stage12_gap_minimal_058pp", "heuristic_1_exception_strong_signal", "atl_lad_win_05-08"]
+      "reasoning": "F3_swing_take_gap=1774.2 is the strongest SP-independent lineup signal on the slate; Stage 1/2 gap minimal at 5.8pp (no bullpen-carry concern). edge=6.93pp within band (verified via fetched_capped). Calibrated 65.03% → ~57.97%. Heuristic-1 (home favorite >65%) triggered but the very strong F3 signal qualifies as the 'strong supporting signal' exception. On 05-08 LAD won 3-1 with the same structure.",
+      "lessons_applied": ["F3_1774_strongest_signal_on_slate", "heuristic_1_exception_strong_F3_signal", "minimal_stage12_gap_no_bullpen_concern", "atl_lad_win_05-08"]
     },
     "DET @ KC": {
       "model_pick": null,
@@ -188,8 +188,8 @@
       "claude_pick": null,
       "claude_tier": "PENDING_SP_DATA",
       "claude_confidence": null,
-      "reasoning": "Brenan Hanifee has 0 Statcast pitches season-to-date — SP-edge score impossible. Both starters appear to be limited-data arms, making the SP differential feature unreliable in both directions. No reliable pick can be generated; PENDING designation is correct.",
-      "lessons_applied": ["sp_zero_statcast_data_both_arms"]
+      "reasoning": "Brenan Hanifee has 0 Statcast pitches season-to-date — SP-edge score impossible. With no SP quality differential, the model has insufficient information to generate a reliable directional pick. PENDING designation is correct; no pick warranted.",
+      "lessons_applied": ["sp_zero_statcast_data"]
     }
   },
   "decision_summary": {
