@@ -80,8 +80,10 @@ jobs:
             wc -l "$CSV"
           fi
 
-      - name: Run Claude Code executive review
+      - name: Run Claude Code executive review (attempt 1)
+        id: claude1
         if: env.skip != 'true'
+        continue-on-error: true
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -113,7 +115,48 @@ jobs:
             7. Print a summary of how many CONFIRM / DOWNGRADE / OVERRIDE
                you produced.
 
-      - name: Commit + push via fresh clone
+      # The Claude Code Action occasionally fails on transient OAuth/install
+      # token-exchange races (observed runs 25599421391, 25599079225 on
+      # 2026-05-09 — "Claude Code is not installed on this repository" /
+      # "Could not fetch an OIDC token"). Both cleared on retry. We sleep ~15s
+      # then re-run only if attempt 1 didn't already write today's JSON, so
+      # a successful first attempt costs nothing extra.
+      - name: Wait before retry (only if attempt 1 failed)
+        if: env.skip != 'true' && steps.claude1.outcome == 'failure'
+        run: |
+          echo "claude1 outcome=${{ steps.claude1.outcome }} — sleeping 15s before retry"
+          sleep 15
+
+      - name: Run Claude Code executive review (attempt 2 — retry)
+        id: claude2
+        if: env.skip != 'true' && steps.claude1.outcome == 'failure'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --allowedTools "Read,Write,Glob,Grep,Bash(curl:*),Bash(date:*),Bash(ls:*),Bash(wc:*),Bash(head:*),Bash(tail:*),Bash(cat:*),Bash(mkdir:*)"
+            --max-turns 30
+          prompt: |
+            (Retry attempt — first call hit a transient OAuth/install token
+            exchange error.)
+
+            You are running as the Claude Brain workflow defined in
+            .github/workflows/claude-brain.yml. Read your full operating
+            instructions from `tools/claude_brain_prompt.md` and follow them
+            precisely.
+
+            TODAY'S SLATE DATE = ${{ steps.date.outputs.slate_date }}
+
+            Steps:
+            1. Open `tools/claude_brain_prompt.md` and follow it.
+            2. Read `docs/data/picks_${{ steps.date.outputs.slate_date }}_diag.csv`.
+            3. Read every JSON file under `docs/data/postgame/`.
+            4. Make sure `docs/data/claude_picks/` exists (`mkdir -p`).
+            5. Write `docs/data/claude_picks/${{ steps.date.outputs.slate_date }}.json`
+               in the schema specified in claude_brain_prompt.md.
+            6. Print a summary of CONFIRM / DOWNGRADE / OVERRIDE counts.
+
+      - name: Commit + push via fresh clone (retry-safe)
         if: env.skip != 'true'
         env:
           GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -129,8 +172,14 @@ jobs:
           # helper, so do a fresh clone with URL-embedded token and push from
           # there. This avoids any leftover broken extraheader / credential
           # helper in the original checkout.
+          #
+          # 3x/day cron + workflow_dispatch + concurrent dispatch can race on
+          # main — when two pushes overlap, the second hits non-fast-forward.
+          # Retry with fetch+rebase up to 3 times (root cause of failures
+          # 25599972131, 25599507528 on 2026-05-09). Backoff: 2s, 5s, 12s.
           REMOTE="https://x-access-token:${GH_PUSH_TOKEN}@github.com/${{ github.repository }}.git"
-          git clone --depth=1 "$REMOTE" /tmp/refresh-clone
+          rm -rf /tmp/refresh-clone
+          git clone --depth=10 "$REMOTE" /tmp/refresh-clone
           mkdir -p "/tmp/refresh-clone/$(dirname $SRC)"
           cp "$SRC" "/tmp/refresh-clone/$SRC"
           cd /tmp/refresh-clone
@@ -139,7 +188,30 @@ jobs:
           git add "$SRC"
           if git diff --cached --quiet; then
             echo "no claude_picks changes to commit"
-          else
-            git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${SLATE} slate"
-            git push origin HEAD:main
+            exit 0
           fi
+          git commit -m "claude-brain: $(date -u +%Y-%m-%d) executive review for ${SLATE} slate"
+
+          for attempt in 1 2 3; do
+            echo "push attempt #$attempt"
+            if git push origin HEAD:main; then
+              echo "push succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "push failed on attempt $attempt — fetching, rebasing, and retrying"
+            git fetch origin main
+            # Rebase our single commit on top of any commits that landed
+            # between our clone and now. Abort cleanly on conflict (the JSON
+            # is a write-fresh-each-day file so conflicts are unexpected, but
+            # if they happen we want the next cron run to take over rather
+            # than spin retries).
+            if ! git rebase origin/main; then
+              echo "::error::rebase conflict on push retry — leaving for next run"
+              git rebase --abort || true
+              exit 1
+            fi
+            # exponential-ish backoff: 2s, 5s, 12s
+            sleep $(( attempt * attempt + 1 ))
+          done
+          echo "::error::push failed after 3 retries"
+          exit 1
