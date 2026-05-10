@@ -1,147 +1,248 @@
 {
   "date": "2026-05-10",
-  "fit_at": "2026-05-10T12:05:00Z",
+  "fit_at": "2026-05-10T13:45:00Z",
   "model_version": "claude-brain-v1",
-  "n_games": 11,
+  "n_games": 15,
   "patterns_recognized": [
-    "Home-favorite overconfidence persists: SEA@CHW (74%, May 8 loss) and NYM@ARI (68%, May 8 loss) confirm the model over-rates home favorites when market strongly disagrees; today's OAK@BAL (77.7%) and SEA@CHW (67.5%) repeat this setup.",
-    "Negative-edge PLATINUM/GOLD picks fail repeatedly: COL@PHI lost May 8 (edge -18pp, PHI GOLD); today COL@PHI repeats as PLATINUM with edge -15.4pp — same model, same direction, same warning.",
-    "Stage 1/Stage 2 >15pp gap signals bullpen-carry risk: OAK@BAL shows 36.2pp F5/full gap (OAK F5=41.5% vs full=77.7%), the most extreme on the slate; yesterday PIT@SF was downgraded for the same reason at 26.9pp.",
-    "Contrarian GOLD picks with F2_xwoba_gap have validated: CHC@TEX won May 8 (7-1) and was confirmed GOLD May 9 using the same signal; today the same setup fires a third consecutive day.",
-    "ATL@LAD edge collapses on calibration: model 65.6% drops to ~58% after calibration, which is below Vegas fair_prob of 62.4%; real edge is effectively zero or slightly negative."
+    "Extreme positive edge (+20pp) picks correlate with model over-confidence not real edge: SEA@CHW (+31pp, lost 12-8) and NYM@ARI (+23pp, lost 1-3) on 05-08; OAK@BAL (+22.5pp) today matches the same signature.",
+    "Small-sample SP running hot = model blindspot: Misiorowski (NYY@MIL, 05-08 loss); Payton Tolle (3 GS, 2.04 ERA) is today analog for TB@BOS; model systematically underrates hot SPs with limited data.",
+    "COL@PHI recurring failure: same matchup was a LOSS on 05-08 (COL 9-7, PHI picked with -18pp edge); today re-appears as PLATINUM with -21.33pp edge and three distinct risk flags.",
+    "Stage 1/2 divergence >0.15 on CHC@TEX (f5=70.6% vs full=46.9%, gap=0.237) signals bullpen dependency; CHC advantage evaporates in the full game making bullpen status the critical unverifiable variable.",
+    "PLATINUM tier ~43% historical hit rate and home-favorite over-confidence at >65% raw probability (calibration shows real rate ~58%) continue to require extra scrutiny."
   ],
   "by_matchup": {
     "WSH @ MIA": {
-      "model_pick": "WSH",
-      "model_prob": 0.5129,
+      "model_pick": "MIA",
+      "model_prob": 0.5125,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "WSH",
+      "claude_pick": "MIA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.48,
-      "reasoning": "fair_prob=39.0% is well below the 0.42 floor — Vegas prices MIA (Sandy Alcantara) at ~61%. WSH's +12.26pp model edge is outside the actionable band, and the large market lean against WSH is credible given Alcantara's quality. Stage 1/2 gap is 5.3pp (fine). Yesterday model picked MIA (flipped); today picks WSH but fair_prob still disqualifies. SKIP stands.",
-      "lessons_applied": ["fair_prob_below_0.42_threshold", "market_lean_credible_ace_pitcher"]
+      "claude_confidence": 0.51,
+      "reasoning": "Edge -5.19pp outside [4,15] band; tier already SKIP. Cade Cavalli vs Sandy Alcantara with no anomalous signals. fair_prob=0.5643 confirms MIA is a real market favorite; model agrees but lacks conviction to play. No postgame pattern suggests override.",
+      "lessons_applied": []
     },
     "OAK @ BAL": {
       "model_pick": "OAK",
-      "model_prob": 0.7767,
+      "model_prob": 0.725,
       "model_tier": "GOLD",
       "model_grade": "B+",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "OAK",
       "claude_tier": "SKIP",
+      "claude_confidence": 0.61,
+      "reasoning": "Raw model 0.725 calibrates to ~0.611 (70-80% bin: 5/10 actual hits, 50% real rate). Edge +22.5pp is well outside [4,15] band — exact signature of 05-08 losses: SEA@CHW (+31pp) and NYM@ARI (+23pp). F1_xera_gap=1.29 asterisk-flagged (small sample). Stake_mult already zero; DOWNGRADE aligns claude_tier with staking reality.",
+      "lessons_applied": [
+        "extreme_edge_overconfidence_05-08",
+        "calibration_70-80pct_50pct_real_rate",
+        "F1_small_sample_flag"
+      ]
+    },
+    "TB @ BOS": {
+      "model_pick": "TB",
+      "model_prob": 0.5433,
+      "model_tier": "GOLD",
+      "model_grade": "B+",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "Stage 1/2 gap of 36.2pp (OAK F5=41.5% vs full=77.7%) is the largest on the slate — pick entirely depends on a late-innings bullpen thesis that cannot be verified. Model's 77.7% calibrates to ~61% per the [0.7,0.8] bucket, while Vegas has BAL at 55.2% (fair_prob=44.8% for OAK); real edge is modest. F1_xera_gap=1.29* is asterisk-flagged. Model probability jumped from 57% yesterday to 77.7% today — a 20pp swing in one day is suspicious. Matches SEA@CHW May 8 pattern (extreme edge, high confidence, bullpen-carry, lost).",
-      "lessons_applied": ["stage1_stage2_gap_36pp_heuristic_5", "high_confidence_calibration_shrinkage_to_61pct", "SEA@CHW_may8_extreme_edge_loss_pattern", "model_prob_large_single_day_swing"]
+      "reasoning": "Payton Tolle (BOS SP) has only 3 GS in 2026 at 2.04 ERA over 17.2 IP — small-sample SP running hot, matching the Misiorowski pattern that burned NYY@MIL on 05-08. Per heuristic 3, SP-edge is unreliable below 6 starts; TB pick depends on Tolle being weak when his early results say otherwise. Yesterday TB@BOS loss (ran into BOS pitching wall) directly reinforces caution.",
+      "lessons_applied": [
+        "small_sample_SP_heuristic_3",
+        "misiorowski_pattern_05-08",
+        "tb_bos_pitching_wall_05-08"
+      ]
     },
     "COL @ PHI": {
       "model_pick": "PHI",
-      "model_prob": 0.5086,
+      "model_prob": 0.5536,
       "model_tier": "PLATINUM",
       "model_grade": "A",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "PHI",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.44,
-      "reasoning": "Heuristic #2 and #4 both trigger: PLATINUM tier with edge -15.4pp is an automatic downgrade. Vegas has PHI at 66.3% — model at 50.9% is deeply contrarian to a strong market favorite. Identical to COL@PHI on May 8: GOLD pick PHI, edge -18pp, COL exploded for 9 runs and won 9-7. Yesterday Claude also downgraded COL@PHI GOLD→SKIP (Kyle Freeland struggles away from Coors). Signals F1_xera_gap=3.99 and F3_swing_take_gap=261 appear already priced by Vegas. PLATINUM ~43% historical hit rate makes this doubly suspect.",
-      "lessons_applied": ["negative_edge_below_neg8pp_heuristic_2", "PLATINUM_43pct_historical_hit_rate_heuristic_4", "COL@PHI_may8_exact_same_loss_pattern", "COL@PHI_may9_also_downgraded"]
+      "claude_confidence": 0.54,
+      "reasoning": "Four independent failure signals: (1) edge -21.33pp triggers heuristic 2; (2) PLATINUM ~43% hit rate per heuristic 4; (3) this exact matchup was a LOSS on 05-08 (COL 9-7 despite PHI heavily favored); (4) bullpen_fatigue + confidence_downgrade=True internally flagged. Vegas prices PHI at 76.7% while model sees only 55.4% — 21pp market disagreement.",
+      "lessons_applied": [
+        "negative_edge_heuristic_2",
+        "platinum_43pct_heuristic_4",
+        "col_phi_loss_05-08",
+        "bullpen_fatigue_warning"
+      ]
     },
     "LAA @ TOR": {
       "model_pick": "TOR",
       "model_prob": 0.6743,
       "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "TOR",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.57,
-      "reasoning": "SKIP correctly applied: edge +3.14pp is below the 4pp floor and confidence_downgrade=True was pipeline-set. TOR at 67.4% raw calibrates to ~58%; fair_prob=64.3% (Vegas agrees on TOR direction). Stage 1/2 gap 12.2pp is within bounds. LAA@TOR confirmed SKIP on May 9 and May 10 by the model. No override rationale.",
-      "lessons_applied": ["edge_below_4pp_floor", "confidence_downgrade_pipeline_flag"]
+      "claude_confidence": 0.67,
+      "reasoning": "Edge +19.41pp outside [4,15] band; already SKIP. Spencer Miles (TOR SP) has 0 GS in 2026 — 18 IP entirely as a reliever — making this a bullpen day with no SP-quality anchor. TOR at 67.4% raw calibrates to ~58%; fair_prob=0.4802 means Vegas is nearly 50/50 while model overstates TOR. SKIP appropriate.",
+      "lessons_applied": [
+        "extreme_edge_outside_band",
+        "sp_zero_starts_reliever_only"
+      ]
+    },
+    "HOU @ CIN": {
+      "model_pick": "HOU",
+      "model_prob": 0.5602,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.56,
+      "reasoning": "Tier SKIP with acute_roster stress warning on HOU. Kai-Wei Teng (HOU SP, 1 GS in 2026, 23 IP mostly as reliever) is a thin SP profile. HOU won this same matchup 10-0 on 05-08 but today acute_roster flag introduces uncertainty the model cannot fully price. SKIP confirmed.",
+      "lessons_applied": [
+        "acute_roster_flag",
+        "sp_limited_starts"
+      ]
     },
     "MIN @ CLE": {
       "model_pick": "CLE",
-      "model_prob": 0.6582,
+      "model_prob": 0.6593,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.57,
-      "reasoning": "Grader assigned SKIP via tier logic; edge +13.69pp is within the [4,15]pp band but other grader rules capped the tier. Model 65.8% calibrates to ~58% per [0.6,0.7] bucket; fair_prob=52.1% implies ~6pp real edge. Stage 1/2 gap 10.2pp is clean. No negative postgame signals for this matchup. Pick direction looks reasonable but grader SKIP is appropriate without a GOLD elevation trigger.",
-      "lessons_applied": ["tier_grader_deference", "calibration_shrinks_to_58pct"]
+      "claude_confidence": 0.66,
+      "reasoning": "bullpen_fatigue warning flags CLE bullpen risk. CLE at 65.93% raw is in the home-favorite over-confidence zone (>65%), calibrating to ~58%. Andrew Morris (MIN SP, 0 GS in 2026 — pure reliever making a spot start) adds uncertainty both ways. SKIP appropriate.",
+      "lessons_applied": [
+        "bullpen_fatigue_warning",
+        "home_favorite_overconfidence_heuristic_1"
+      ]
     },
     "SEA @ CHW": {
       "model_pick": "CHW",
-      "model_prob": 0.6746,
+      "model_prob": 0.6296,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHW",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.49,
-      "reasoning": "SKIP already applied for extreme edge (+24.94pp). Critical context: SEA@CHW was the worst loss on May 8 — model had CHW at 74%, edge +31.2pp, SEA won 12-8. Yesterday CHW confirmed SKIP at 56.8%. Today's setup echoes May 8: model 67.5% vs fair_prob=42.5% (Vegas strongly backs SEA). The model may systematically over-rate CHW against SEA. SKIP stands; do not act against Vegas on this game.",
-      "lessons_applied": ["SEA@CHW_may8_catastrophic_loss_exact_repeat", "extreme_edge_outside_band", "market_vs_model_large_disagreement_25pp"]
+      "claude_confidence": 0.63,
+      "reasoning": "Edge +17.9pp outside [4,15] band; already SKIP. Same matchup produced the worst loss on 05-08: CHW picked at +31pp edge, lost 12-8 to SEA. Model again rates CHW above a market that has SEA near 50/50 (fair_prob=0.4506 for CHW). Recurring CHW over-confidence vs SEA is a documented red flag.",
+      "lessons_applied": [
+        "sea_chw_catastrophic_loss_05-08",
+        "extreme_edge_outside_band"
+      ]
     },
     "NYY @ MIL": {
-      "model_pick": "MIL",
-      "model_prob": 0.5027,
-      "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_pick": null,
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
       "claude_decision": "CONFIRM",
-      "claude_pick": "MIL",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "sp_savant_gate=HARD_VETO is the strongest pipeline filter and is non-negotiable. Model's 50.3% and fair_prob=41.6% diverge (model slightly favors MIL, Vegas slightly favors NYY). May 8: NYY@MIL GOLD loss to Misiorowski (rookie SP heuristic). Yesterday Claude confirmed NYY GOLD based on Schlittler dominance (8 GS, 1.52 ERA). Today the model flips pick to MIL; with HARD_VETO active, the flip is irrelevant. SKIP stands unconditionally.",
-      "lessons_applied": ["sp_savant_gate_HARD_VETO_non_negotiable", "MIL_sp_small_sample_may8_lesson"]
+      "claude_pick": null,
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Carlos Rodon has 0 Statcast pitches season-to-date — SP-edge score impossible. Logan Henderson (MIL SP, 2 GS, 8 IP, 4.50 ERA) also very limited data. This exact matchup on 05-08 was a LOSS when model underestimated MIL rookie SP Misiorowski. PENDING status is correct; no pick should be forced.",
+      "lessons_applied": [
+        "sp_zero_statcast_data",
+        "nyy_mil_rookie_sp_loss_05-08"
+      ]
     },
     "CHC @ TEX": {
       "model_pick": "CHC",
       "model_prob": 0.5313,
       "model_tier": "GOLD",
       "model_grade": "B+",
-      "claude_decision": "CONFIRM",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "CHC",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.53,
-      "reasoning": "F2_xwoba_gap=0.023 is the same lineup-quality signal that fired correctly on CHC@TEX May 8 (won 7-1) and was confirmed again May 9 (GOLD confirmed, CHC direction with Jack Leiter struggling). Three-day consistent signal. Edge -4.52pp is above the -8pp trigger. Stage 1/2 gap is 17.5pp (F5=70.6%, full=53.1%) — CHC's late-game hold depends on bullpen; monitor bullpen health but the F5 dominance is strong enough to carry GOLD. Market has TEX at 57.7% (contrarian pick).",
-      "lessons_applied": ["F2_xwoba_gap_signal_three_consecutive_days", "contrarian_market_picks_validated_may8", "stage1_stage2_17pp_bullpen_caveat"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Stage 1/2 disagreement is extreme: f5=0.706 vs full=0.469, gap=0.237 (well above 0.15 threshold). CHC edge depends on bullpen late leverage that cannot be verified as rested. Jacob deGrom (TEX SP, id=594798) is an elite arm the Stage 1 model likely underrates. external_modifiers stress warning and confidence_downgrade=True both flagged internally.",
+      "lessons_applied": [
+        "stage1_stage2_divergence_heuristic_5",
+        "external_modifiers_stress_warning",
+        "confidence_downgrade_internal_flag"
+      ]
     },
     "PIT @ SF": {
       "model_pick": "PIT",
-      "model_prob": 0.6931,
+      "model_prob": 0.5313,
       "model_tier": "GOLD",
       "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "PIT",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.57,
-      "reasoning": "Yesterday PIT@SF was downgraded to SKIP on a 26.9pp Stage 1/2 gap. Today the gap is only 3.4pp (PIT F5=65.9%, full=69.3%) — the bullpen-carry concern from yesterday is resolved. F2_xwoba_gap=0.032 (PIT lineup edge) is the primary signal. Model 69.3% calibrates to ~58% per [0.6,0.7] bucket; fair_prob=52.1% yields ~6pp real edge. SP info unverified — flag if PIT SP has fewer than 6 starts this season before acting.",
-      "lessons_applied": ["stage1_stage2_gap_resolved_3pp_today", "F2_xwoba_gap_signal", "calibration_58pct_above_fair_52pct"]
+      "claude_confidence": 0.53,
+      "reasoning": "Stage 1/2 disagreement of 0.199 is above 0.15 threshold but no stress warnings or confidence_downgrade flag. Bubba Chandler (PIT SP, 7 GS in 2026, 4.76 ERA) exceeds the 6-start minimum for reliable SP-edge data. F2_xwoba_gap=0.031 is a real lineup signal. Edge 4.99pp at minimum qualifying threshold with no other red flags stacking. Low-conviction CONFIRM.",
+      "lessons_applied": [
+        "stage1_stage2_divergence_noted_not_decisive",
+        "sp_7_starts_sufficient"
+      ]
+    },
+    "NYM @ ARI": {
+      "model_pick": "ARI",
+      "model_prob": 0.5115,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Near-zero edge (+1.15pp); already SKIP. bullpen_fatigue stress warning flags ARI bullpen risk. This same matchup on 05-08 was a LOSS for ARI when model had 68% confidence (+23pp). Today model has dramatically lower conviction (51.15%), which is appropriate. SKIP confirmed.",
+      "lessons_applied": [
+        "bullpen_fatigue_warning",
+        "nym_ari_loss_05-08_same_matchup"
+      ]
     },
     "STL @ SD": {
       "model_pick": "STL",
-      "model_prob": 0.5433,
+      "model_prob": 0.5583,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.49,
-      "reasoning": "SKIP correctly applied: fair_prob=41.8% below the 0.42 floor. Stage 1/2 gap is 25pp (STL F5=79.3%, full=54.3%) — strong F5 edge evaporates in the full game, suggesting SD bullpen neutralizes STL late. May 8: STL@SD model was near 50/50, lost with SD. May 9: STL confirmed SKIP. Today model picks STL but fair_prob still disqualifies. Large Stage 1/2 gap adds further caution.",
-      "lessons_applied": ["fair_prob_below_0.42_threshold", "stage1_stage2_gap_25pp_full_game_uncertainty"]
+      "claude_confidence": 0.56,
+      "reasoning": "Tier SKIP despite edge 12.28pp technically in-band — grader quality filters correctly excluded this. Kyle Leahy (STL SP) is a limited-data arm; Walker Buehler (SD) has been inconsistent. On 05-08 STL won this matchup 6-0 with McGreevy dominant, but today has different pitchers. SKIP is prudent.",
+      "lessons_applied": [
+        "tier_grader_deference",
+        "sp_limited_data"
+      ]
     },
     "ATL @ LAD": {
       "model_pick": "LAD",
-      "model_prob": 0.6563,
+      "model_prob": 0.6503,
       "model_tier": "GOLD",
       "model_grade": "B+",
-      "claude_decision": "DOWNGRADE",
+      "claude_decision": "CONFIRM",
       "claude_pick": "LAD",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.56,
-      "reasoning": "Calibration is the decisive factor: LAD 65.6% falls into the [0.6,0.7] bucket which calibrates to ~58% — below Vegas fair_prob of 62.4%. Real model edge is effectively zero or slightly negative. Edge +3.23pp is already below the 4pp floor, and confidence_downgrade=True was pipeline-set. F3_swing_take_gap=1646.6 is a strong signal but Vegas appears to already price it given LAD's 62.4% implied. May 8 LAD win was at +11.4pp edge — fundamentally different conviction.",
-      "lessons_applied": ["calibration_erases_edge_below_fair_prob", "confidence_downgrade_pipeline_flag", "edge_below_4pp_floor", "home_favorite_overconfidence_heuristic_1"]
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.59,
+      "reasoning": "F3_swing_take_gap=1851.7 is a large lineup-quality signal independent of SP quality. Stage 1/2 gap is small (f5=0.709 vs full=0.650, gap=0.058). Edge +9.81pp within band. Raw 0.6503 calibrates to ~0.58 (60-70% bucket: 56.9% actual rate); calibrated probability still exceeds fair_prob 0.5522, preserving ~3pp real edge. This exact matchup was a WIN on 05-08 (LAD 3-1). Justin Wrobleski (LAD SP, 5 GS, 1.25 ERA) has <6 starts but F3 is the primary driver, not SP edge.",
+      "lessons_applied": [
+        "f3_lineup_signal_primary_driver",
+        "atl_lad_win_05-08",
+        "calibrated_edge_positive_vs_fair_prob"
+      ]
+    },
+    "DET @ KC": {
+      "model_pick": null,
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": null,
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Brenan Hanifee (DET SP) has 0 Statcast pitches season-to-date — SP-edge score impossible. Noah Cameron (KC SP) also has very limited 2026 data. Both SPs are thin-data arms; no reliable pick can be generated. PENDING status is correct.",
+      "lessons_applied": [
+        "sp_zero_statcast_data"
+      ]
     }
+  },
+  "decision_summary": {
+    "CONFIRM": 11,
+    "DOWNGRADE": 4,
+    "OVERRIDE": 0,
+    "pct_non_confirm": 0.267
   }
 }
