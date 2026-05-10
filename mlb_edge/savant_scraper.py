@@ -99,8 +99,15 @@ LOAD_CRITICAL: List[EndpointSpec] = [
     ),
     EndpointSpec(
         name="fielding-run-value",
+        # Savant changed this endpoint's canonical params on 2026-05-09:
+        # `?year=Y&csv=true` now 301-redirects to
+        # `?type=fielder&seasonStart=Y&seasonEnd=Y` and Cloudflare drops the
+        # `csv=true` query during the redirect, so the response comes back as
+        # HTML and the CSV-header validator rejects it (run 25617120817).
+        # Pin the new param shape directly so we never depend on the redirect
+        # preserving query strings.
         url=("https://baseballsavant.mlb.com/leaderboard/fielding-run-value?"
-             "year={year}&csv=true"),
+             "type=fielder&seasonStart={year}&seasonEnd={year}&csv=true"),
         out_dir=Path("data/savant/fielding-run-value"),
         out_filename="fielding-run-value_{ymd}.csv",
     ),
@@ -434,25 +441,48 @@ def _validate_csv(path: Path, min_bytes: int) -> Tuple[bool, str]:
 # ---------------------------------------------------------------------------
 # Single-endpoint download
 # ---------------------------------------------------------------------------
-def _atomic_write(url: str, out_path: Path, timeout: int) -> bool:
+def _atomic_write(url: str, out_path: Path, timeout: int,
+                  max_attempts: int = 3) -> bool:
+    """Stream `url` to `out_path` atomically, with retry/backoff on transient
+    network/server errors. Each retry sleeps `2 ** (attempt-1)` seconds, so
+    1s, 2s, 4s. Fail-stops on 4xx (treated as a permanent endpoint problem,
+    not a hiccup) so we don't spin on Cloudflare blocks."""
     out_path.parent.mkdir(parents=True, exist_ok=True)
     tmp = out_path.with_suffix(out_path.suffix + ".tmp")
     headers = {"User-Agent": USER_AGENT, "Accept": "text/csv,*/*"}
-    try:
-        with requests.get(url, headers=headers, stream=True,
-                          timeout=timeout, allow_redirects=True) as r:
-            r.raise_for_status()
-            with tmp.open("wb") as f:
-                for chunk in r.iter_content(chunk_size=64 * 1024):
-                    if chunk:
-                        f.write(chunk)
-    except Exception as e:
-        log.warning("[%s] download failed: %s", url[:80], e)
-        if tmp.exists():
-            tmp.unlink(missing_ok=True)
-        return False
-    tmp.replace(out_path)
-    return True
+
+    last_err: Optional[str] = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            with requests.get(url, headers=headers, stream=True,
+                              timeout=timeout, allow_redirects=True) as r:
+                # Permanent client errors aren't worth retrying.
+                if 400 <= r.status_code < 500 and r.status_code != 429:
+                    log.warning("[%s] download failed: %s (no retry on 4xx)",
+                                url[:80], r.status_code)
+                    return False
+                r.raise_for_status()
+                with tmp.open("wb") as f:
+                    for chunk in r.iter_content(chunk_size=64 * 1024):
+                        if chunk:
+                            f.write(chunk)
+            tmp.replace(out_path)
+            return True
+        except Exception as e:
+            last_err = str(e)
+            if tmp.exists():
+                tmp.unlink(missing_ok=True)
+            if attempt < max_attempts:
+                backoff = 2 ** (attempt - 1)
+                log.info("[%s] transient download error (attempt %d/%d): %s "
+                         "— retrying in %ds", url[:80], attempt, max_attempts,
+                         last_err, backoff)
+                time.sleep(backoff)
+                continue
+            log.warning("[%s] download failed after %d attempts: %s",
+                        url[:80], max_attempts, last_err)
+            return False
+    return False
 
 
 def fetch_endpoint(spec: EndpointSpec, year: int,

@@ -48,21 +48,30 @@ jobs:
 
       - name: Verify at least the 5 LOAD_CRITICAL endpoints landed
         run: |
-          STAMP=$(date -u +%Y%m%d)
-          REQUIRED=(
-            "data/savant_bat_tracking/bat_tracking_*_${STAMP}.csv"
-            "data/savant_extra/savant_expected-stats-batter_${STAMP}.csv"
-            "data/savant_extra/savant_expected-stats-pitcher_${STAMP}.csv"
-            "data/savant/outs-above-average/outs-above-average_${STAMP}.csv"
-            "data/savant/fielding-run-value/fielding-run-value_${STAMP}.csv"
+          # Cron runs at 00:00 UTC. Some Savant endpoints don't refresh until
+          # 02:00–04:00 UTC the next day, so accept the prior day's stamp as
+          # a proven-fresh harvest. We only fail if neither today's nor
+          # yesterday's CSV is on disk for a given endpoint.
+          STAMP_TODAY=$(date -u +%Y%m%d)
+          STAMP_YEST=$(date -u -d 'yesterday' +%Y%m%d)
+          REQUIRED_NAMES=(
+            "savant_bat_tracking/bat_tracking_*"
+            "savant_extra/savant_expected-stats-batter"
+            "savant_extra/savant_expected-stats-pitcher"
+            "savant/outs-above-average/outs-above-average"
+            "savant/fielding-run-value/fielding-run-value"
           )
           missing=0
-          for pat in "${REQUIRED[@]}"; do
-            if ! ls $pat >/dev/null 2>&1; then
-              echo "::error::missing required Savant CSV: $pat"
-              missing=$((missing+1))
+          for base in "${REQUIRED_NAMES[@]}"; do
+            today_pat="data/${base}_${STAMP_TODAY}.csv"
+            yest_pat="data/${base}_${STAMP_YEST}.csv"
+            if ls $today_pat >/dev/null 2>&1; then
+              echo "OK (today):     $today_pat"
+            elif ls $yest_pat >/dev/null 2>&1; then
+              echo "OK (yesterday): $yest_pat (today's stamp not yet available)"
             else
-              echo "OK: found $pat"
+              echo "::error::missing required Savant CSV: neither $today_pat nor $yest_pat"
+              missing=$((missing+1))
             fi
           done
           if [ "$missing" -gt 0 ]; then
