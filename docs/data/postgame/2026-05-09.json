@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-09",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-10T00:10:00Z",
+  "n_analyzed": 14,
+  "summary": "The model went 6-8 on direction (42.9% hit rate) across 14 graded matchups; TB@BOS was postponed by rain. Both Claude-confirmed GOLD picks lost badly (CHC@TEX 0-6, NYY@MIL 3-4), making GOLD model direction 1/5 on the day. Two of three Claude-downgraded GOLD picks correctly avoided losses (COL@PHI 3-9, DET@KC 1-5), but the third missed a dominant PIT@SF win (13-3). Key finding: negative-edge GOLD picks in the -5pp to 0pp range failed 0/2; the stage 1/2 gap heuristic overcalled the PIT@SF downgrade when strong offensive lineup signals were present.",
+  "by_matchup": {
+    "LAA @ TOR": {
+      "verdict": "WIN",
+      "model_pick": "TOR ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-14",
+      "headline": "TOR demolished LAA 14-1; model direction correct, SKIP tier and edge band correctly applied.",
+      "hypothesis": "TOR's 67.4% raw model confidence sat above the 15pp edge band and was correctly tiered SKIP. The 14-1 blowout validates the directional read, but the band filter was right to prevent staking — a calibrated ~57% pick winning by 13 runs is favorable variance, not a process vindication. No model or Claude decision errors here.",
+      "signals_to_recheck": "Edge +19.3pp correctly excluded by band filter; Yesavage's limited MLB data was not a factor in the outcome. No recalibration needed."
+    },
+    "OAK @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "OAK ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-2",
+      "headline": "OAK won 6-2; model correctly picked OAK despite a deeply negative -26pp edge.",
+      "hypothesis": "Model picked OAK at 57% with edge -26.1pp — a case where model and market diverged sharply and the model was right. OAK's pitching held and BAL's offense couldn't convert. This is a directional win but not a vindication of the -26pp contrarian thesis; deep-negative edge picks cannot be systematically trusted. Today was variance in model's favor.",
+      "signals_to_recheck": "Negative edge -26pp remains a structural warning; one correct result doesn't validate the contrarian read. Track BAL vs OAK series-level model accuracy before updating any feature weights."
+    },
+    "HOU @ CIN": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-3",
+      "headline": "CIN won 3-1; model's bullpen-carry thesis for HOU failed against CIN's SP dominance.",
+      "hypothesis": "Model picked HOU at 52.5% despite CIN's overwhelming F5 dominance (f5_prob=0.853 for CIN in first five), meaning HOU's full-game edge required CIN's bullpen to collapse in late innings. It didn't. CIN's starter held and HOU couldn't break through. The fetched_capped odds status (no fair_prob) made the edge unverifiable from the start. Process-sound SKIP; directional miss attributable to the bullpen-carry thesis not materializing.",
+      "signals_to_recheck": "When the opponent's F5 probability exceeds 0.80 and the pick depends on a late-inning reversal, the full-game pick direction deserves skepticism even at SKIP tier; consider flagging these as directional weak picks."
+    },
+    "WSH @ MIA": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-8",
+      "headline": "MIA survived 8-7 in a shootout; model direction correct despite severe data quality warnings.",
+      "hypothesis": "Model picked MIA at 55% with fair_prob=0.174 (far below the 0.42 floor) and edge +37.6pp — both anomalous. SKIP was correctly applied. MIA won by one run in a high-scoring game consistent with market near-neutrality. Claude's 50% confidence was appropriate given the data issues. The result is favorable variance; the fair_prob anomaly (suggesting a pipeline upstream issue on WSH/MIA pricing) still warrants investigation.",
+      "signals_to_recheck": "fair_prob=0.174 is implausibly low for a competitive MLB game; verify whether the WSH or MIA market odds feed is parsing correctly — this level of outlier warrants a pipeline sanity check."
+    },
+    "COL @ PHI": {
+      "verdict": "LOSS",
+      "model_pick": "COL ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-9",
+      "headline": "PHI crushed COL 9-3; Claude's DOWNGRADE correctly avoided a GOLD-tier loss on a triple-filter failure.",
+      "hypothesis": "Model picked COL at GOLD with three simultaneous filter failures: edge clipping the upper band (+15.92pp), fair_prob below floor (0.350 vs 0.42 minimum), and confidence_downgrade=True pipeline flag. PHI's 9-3 blowout validates the downgrade — COL was facing Aaron Nola, a far tougher matchup than the prior day's pitcher. Process win: the triple-filter stack reliably identified a weak GOLD pick.",
+      "signals_to_recheck": "Any two of {edge outside band, fair_prob < 0.42, confidence_downgrade=True} stacking on a GOLD pick should be sufficient to DOWNGRADE — today confirmed all three fired correctly."
+    },
+    "MIN @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "MIN edged CLE 2-1; Stage 1/2 gap and bullpen fatigue flags predicted this scenario.",
+      "hypothesis": "Model picked CLE at 57.2% but CLE's F5 probability was only 40.9% — a 16.3pp Stage 1/2 gap requiring CLE's taxed bullpen to carry a late comeback. MIN held on 2-1, exactly the outcome the fatigue flags warned about. Both bullpen_fatigue=True and confidence_downgrade=True were correctly signaling the risk. SKIP tier was appropriate; directional miss was partly foreseeable from the gap. Process-sound loss.",
+      "signals_to_recheck": "Stage 1/2 gap of 16.3pp combined with bullpen_fatigue=True is a reliable contra-indicator for the pick direction; consider flagging this combination as a soft DOWNGRADE signal even on SKIP-tier picks."
+    },
+    "CHC @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-6",
+      "headline": "CHC shut out 0-6; Claude's GOLD CONFIRM on a negative-edge pick was a process failure.",
+      "hypothesis": "Model graded CHC as GOLD (50.9%, edge -4.41pp) and Claude confirmed the direction based on Jack Leiter's 5.40 ERA and dual F-signals. TEX won 6-0. Edge at -4.41pp means the market priced TEX as the slight favorite — and the market was right. Leiter's ERA may reflect a few blowup starts rather than persistent exploitability; xFIP would be a better gate than ERA alone. Confirming GOLD when edge is negative means going against the market without sufficient justification. Process failure.",
+      "signals_to_recheck": "F1_xera_gap and F2_xwoba_gap firing together on a negative-edge pick is insufficient grounds for GOLD CONFIRM; edge must be positive (> 0pp) to sustain GOLD direction against market consensus. Also re-examine whether ERA vs xFIP is the right SP quality gate for identifying exploitable starters."
+    },
+    "DET @ KC": {
+      "verdict": "LOSS",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-5",
+      "headline": "KC routed DET 5-1; Claude's DOWNGRADE on stacked acute_roster + confidence_downgrade flags was correct.",
+      "hypothesis": "Model graded DET as GOLD (51.3%) with acute_roster=True flagging a live lineup concern and confidence_downgrade=True from pipeline. DET lost by four runs — not a one-run variance loss but a clear team-quality gap. Wacha kept DET's depleted lineup in check. Process win: the stacked-flags DOWNGRADE protocol was validated again.",
+      "signals_to_recheck": "acute_roster=True + confidence_downgrade=True on a coin-flip probability (51.3%) = reliable automatic DOWNGRADE; this combination has now been validated on consecutive days."
+    },
+    "SEA @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-6",
+      "headline": "CWS won 6-1; model direction correct after yesterday's 12-8 loss reversed emphatically.",
+      "hypothesis": "Yesterday CWS lost 12-8 to SEA; today CWS won 6-1. Claude correctly noted the SP matchup had changed (Castillo for SEA is an ace, yet CWS still won). The directional read on CWS held. Despite Castillo's reputation, CWS's home performance was dominant today. Process-sound CONFIRM; the momentum warning about SEA's 12-run game was appropriate caution but the outcome still went CWS's way.",
+      "signals_to_recheck": "No specific feature needs rechecking; yesterday's momentum factor did not persist. SP-day factors dominate over short team-level momentum in these matchups."
+    },
+    "NYY @ MIL": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "MIL edged NYY 4-3; second consecutive GOLD NYY series loss confirmed a systematic overrating of NYY vs MIL.",
+      "hypothesis": "Model picked NYY at GOLD (54.2%, edge -2.00pp) and Claude confirmed based on Schlittler's 8-GS/1.52 ERA track record. NYY lost 4-3 in a close game — the second consecutive loss in this series (5/8: NYY shut out 0-6 by Misiorowski; 5/9: NYY loses 3-4). Edge at -2.00pp means Vegas slightly favored MIL both days. Process failure: GOLD CONFIRM on a negative-edge pick with a fresh series loss the prior day should have been DOWNGRADED. The F1_xera_gap asterisk (*) on MIL's SP may be consistently underrating MIL starters on short samples.",
+      "signals_to_recheck": "F1_xera_gap with an asterisk (*) marking small-sample SP data is unreliable as a directional basis for GOLD CONFIRM; additionally, confirm GOLD direction only when edge >= 0pp. Track NYY vs MIL series model accuracy — two consecutive losses at GOLD suggests a systematic team matchup bias."
+    },
+    "NYM @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "ARI won 2-1; SKIP tier correctly applied, direction right but yesterday's loss still warrants calibration check.",
+      "hypothesis": "Yesterday ARI lost at 68% raw confidence; today same structure (67.4%), ARI won narrowly. One win does not reverse the home-favorite overconfidence pattern from 5/8. SKIP was correctly applied both days due to edge outside band. Today's narrow 2-1 win is consistent with the ~57% calibrated probability (50% on adjacent days = reasonable). No pattern change warranted from this single reversal.",
+      "signals_to_recheck": "ARI consistently modeled at 67-68% deserves a calibration check — the true win rate across a larger sample should be measured to verify whether calibrated ~57% is correct or still too high."
+    },
+    "STL @ SD": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-4",
+      "headline": "SD won 4-2; model picked STL wrong with no active F-signals and a low-conviction SKIP.",
+      "hypothesis": "Model picked STL at 55.4% with no F-signals firing and edge +12.9pp (within band but no tier elevation). Vasquez outpitched or outlucked Dustin May; SD's lineup converted. No active signals firing means this was a raw model output based on team quality — losing here is expected variance in a low-conviction pick. Yesterday SD was picked and lost; today STL was picked and lost. This matchup is a coin flip the model keeps mispicking.",
+      "signals_to_recheck": "Without active F-signals on a 55% pick, directional accuracy is near random; no specific feature to flag. Consider whether STL/SD series picks without active signals should default to NO_PICK rather than a directional call."
+    },
+    "PIT @ SF": {
+      "verdict": "WIN",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "13-3",
+      "headline": "PIT dominated 13-3; Claude's DOWNGRADE based on Stage 1/2 gap missed a blowout win.",
+      "hypothesis": "Model picked PIT at GOLD (69.1%) with a 26.9pp Stage 1/2 gap (SF wins F5, PIT wins full game). Claude downgraded to SKIP, assuming the thesis depended on PIT's bullpen carrying late innings. PIT won 13-3 in a runaway — not a bullpen battle, but early offensive dominance that made the gap irrelevant. PIT's F2_xwoba_gap=0.031 lineup signal was strong and should have partially offset the Stage 1/2 concern. Process failure on the DOWNGRADE: the lineup signal was real, and the 26.9pp gap did not predict directional failure when the offense was capable of forcing an early lead.",
+      "signals_to_recheck": "When the picked team has Stage 1/2 gap >20pp AND strong F2_xwoba offensive signal (>= 0.025), do not auto-downgrade solely on gap size — the lineup may dominate early and make the bullpen carry thesis moot. Reassess this heuristic with accumulated data."
+    },
+    "ATL @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-2",
+      "headline": "ATL crushed LAD 7-2; HARD_VETO and negative edge correctly signaled to stay out.",
+      "hypothesis": "Model picked LAD at 55% with sp_savant_gate=HARD_VETO and edge -9.49pp. Claude confirmed SKIP unconditionally. ATL's 7-2 blowout validates both signals — Blake Snell's matchup risk materialized and LAD's offense underperformed. The model's LAD direction was wrong, but the HARD_VETO prevented any stake exposure. Process win: HARD_VETO reliably identifies high-risk SP situations. No model feature update needed.",
+      "signals_to_recheck": "HARD_VETO performed as designed; no recalibration needed. Continue tracking Snell's 2026 starts to determine whether HARD_VETO can eventually be relaxed as his sample grows."
+    },
+    "TB @ BOS": {
+      "verdict": "NO_PICK",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": null,
+      "headline": "TB @ BOS postponed by rain — no result.",
+      "hypothesis": "MLB API confirmed the game was Postponed-Rain with null scores. The odds_status 'no_match' in the pipeline may have been an early indicator of scheduling uncertainty. Claude's DOWNGRADE to SKIP (based on Payton Tolle's 3-GS small sample and same-series prior loss) cannot be evaluated, but the reasoning remains sound.",
+      "signals_to_recheck": "odds_status=no_match appears to correlate with scheduling instability; consider flagging no_match games for extra verification rather than treating them as standard picks on the day's slate."
+    }
+  },
+  "patterns_observed": [
+    "Negative-edge GOLD picks (edge in -5pp to 0pp range) failed 0/2 today: CHC@TEX (-4.41pp, lost 0-6) and NYY@MIL (-2.00pp, lost 3-4) were both CONFIRMED at GOLD direction. Rule going forward: edge must be positive (> 0pp) to sustain GOLD direction even without staking; when the model grades GOLD but edge is negative, the market holds information (SP-day form, lineup adjustments) that the model doesn't — DOWNGRADE to SKIP regardless of F-signal count.",
+    "Stage 1/2 gap >20pp over-predicted PIT@SF failure: PIT won 13-3 in a blowout, not the late-inning bullpen battle the 26.9pp gap implied. When the picked team has both a large Stage 1/2 gap AND a strong F2_xwoba offensive signal (>= 0.025), the lineup may dominate early and make the bullpen carry thesis irrelevant. Do not auto-downgrade GOLD picks solely on Stage 1/2 gap >20pp when the offensive lineup signal independently justifies the pick direction.",
+    "Claude's downgrade protocol on stacked pipeline flags remained reliable: COL@PHI (fair_prob < 0.42 + edge outside band + confidence_downgrade=True) and DET@KC (acute_roster=True + confidence_downgrade=True) both would have lost at GOLD tier, validating the stacked-flag rule. When two or more of {confidence_downgrade=True, acute_roster=True, fair_prob < 0.42, edge outside band} fire simultaneously on a GOLD pick, DOWNGRADE is the correct call.",
+    "NYY@MIL directional picks have now lost two consecutive series games (5/8 Misiorowski blowout, 5/9 close 4-3) while Vegas slightly favored MIL both days (edge -1.9pp and -2.00pp). Pattern: if the model has graded a team GOLD in a series and the prior-game edge was negative with a loss, reduce confidence by one tier for the next game in that same series — same-series consecutive loss + negative edge is a systematic misread indicator, not variance."
+  ]
+}
