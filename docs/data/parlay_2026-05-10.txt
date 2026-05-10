@@ -2,38 +2,37 @@
   PARLAY BUILDER — 2026-05-10
 ==============================================================================
   Slate size:  15 games
-  Grade map:   A=1  A-=1  B+=3  B=1  B-=0  C=3  D=6
+  Grade map:   A=1  A-=2  B+=2  B=1  B-=0  C=3  D=6
 
 GRADE A   (anchor — include in every ticket)
-  OAK @ BAL       OAK  p=72.5%  GOLD      filtered
+  OAK @ BAL       OAK  p=56.4%  GOLD      filtered
       reasons: F-signal fires (+1) | SP edge 1.05 xERA agrees with pick (+2) | PQI confirms pick (Δ=-10.3) (+1) | team_quality modifier (+1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.00) (+1)
 
 GRADE A-  (parlay-worthy)
-  WSH @ MIA       MIA  p=51.2%  SKIP      filtered
-      reasons: SP edge 0.34 xERA agrees with pick (+2) | PQI confirms pick (Δ=+5.4) (+1) | team_quality modifier (-1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.02) (+1)
+  WSH @ MIA       MIA  p=51.0%  SKIP      filtered
+      reasons: SP edge 0.34 xERA agrees with pick (+2) | PQI confirms pick (Δ=+5.4) (+1) | team_quality modifier (-1; DISABLED, score+=0) | Stage 1/2 agree (Δ=0.03) (+1)
+  SEA @ CHW       CHW  p=68.0%  GOLD      filtered
+      reasons: F-signal fires (+1) | SP edge 0.58 xERA agrees with pick (+2) | Stage 1/2 agree (Δ=0.03) (+1)
 
 GRADE B+  (stretch — max 1 per ticket)
-  COL @ PHI       PHI  p=55.4%  PLATINUM  filtered
-      reasons: F-signal fires (+1) | SP edge 3.11 xERA agrees with pick (+2) | PQI confirms pick (Δ=+45.5) (+1) | team_quality modifier (+1; DISABLED, score+=0) | large negative edge (-21.3pp) caps grade at C (score 4 -> 2) | Stage 1/2 agree (Δ=0.01) (+1)
-  HOU @ CIN       HOU  p=56.0%  SKIP      filtered
+  COL @ PHI       PHI  p=52.3%  PLATINUM  filtered
+      reasons: F-signal fires (+1) | SP edge 3.10 xERA agrees with pick (+2) | PQI confirms pick (Δ=+45.5) (+1) | team_quality modifier (+1; DISABLED, score+=0) | large negative edge (-24.6pp) caps grade at C (score 4 -> 2) | Stage 1/2 agree (Δ=0.00) (+1)
+  HOU @ CIN       HOU  p=54.5%  SKIP      filtered
       reasons: SP edge 2.07 xERA agrees with pick (+1) [small-sample SP, min_pa=89] | PQI confirms pick (Δ=-29.0) (+1) | Stage 1/2 agree (Δ=0.00) (+1)
-  SEA @ CHW       CHW  p=63.0%  SKIP      filtered
-      reasons: SP edge 0.58 xERA agrees with pick (+2) | Stage 1/2 agree (Δ=0.00) (+1)
 
-EDGE-BAND FILTER  (4 games excluded; band = [-5, +15]pp)
-  WSH @ MIA       MIA  p=51.2%  edge=-5.2pp  grade=A-
-  OAK @ BAL       OAK  p=72.5%  edge=+22.5pp  grade=A
-  COL @ PHI       PHI  p=55.4%  edge=-21.3pp  grade=B+
-  SEA @ CHW       CHW  p=63.0%  edge=+17.9pp  grade=B+
+EDGE-BAND FILTER  (3 games excluded; band = [-5, +15]pp)
+  WSH @ MIA       MIA  p=51.0%  edge=-5.4pp  grade=A-
+  COL @ PHI       PHI  p=52.3%  edge=-24.6pp  grade=B+
+  SEA @ CHW       CHW  p=68.0%  edge=+23.1pp  grade=A-
 
 DO NOT PARLAY  (10 games)
   TB @ BOS        TB   p=54.3%  grade=C  
   LAA @ TOR       TOR  p=67.4%  grade=B  
-  MIN @ CLE       CLE  p=65.9%  grade=D  
+  MIN @ CLE       CLE  p=65.0%  grade=D  
   NYY @ MIL       TBD  p= nan%  grade=C  
   CHC @ TEX       CHC  p=53.1%  grade=D  
-  PIT @ SF        PIT  p=53.1%  grade=D  
-  NYM @ ARI       ARI  p=51.1%  grade=D  
+  PIT @ SF        PIT  p=66.5%  grade=D  
+  NYM @ ARI       ARI  p=54.2%  grade=D  
   STL @ SD        STL  p=55.8%  grade=D  
   ATL @ LAD       LAD  p=65.0%  grade=D  
   DET @ KC        TBD  p= nan%  grade=C  
@@ -42,14 +41,17 @@ DO NOT PARLAY  (10 games)
   RECOMMENDED PARLAYS
 ==============================================================================
 
-  2-LEG  (only 1 parlay-worthy pick(s) survive diversity cap; can't reach 2 legs (max 2/profile))  joint p ≈ 56.0%
-    HOU @ CIN       HOU  p=56.0%  grade=B+
+  2-LEG  (1 anchor(s) + 1 stretch leg(s); diversity-balanced)  joint p ≈ 30.7%
+    OAK @ BAL       OAK  p=56.4%  grade=A
+    HOU @ CIN       HOU  p=54.5%  grade=B+
 
-  3-LEG  (only 1 parlay-worthy pick(s) survive diversity cap; can't reach 3 legs (max 2/profile))  joint p ≈ 56.0%
-    HOU @ CIN       HOU  p=56.0%  grade=B+
+  3-LEG  (only 2 parlay-worthy pick(s) survive diversity cap; can't reach 3 legs (max 2/profile))  joint p ≈ 30.7%
+    OAK @ BAL       OAK  p=56.4%  grade=A
+    HOU @ CIN       HOU  p=54.5%  grade=B+
 
-  4-LEG  (only 1 parlay-worthy pick(s) survive diversity cap; can't reach 4 legs (max 2/profile))  joint p ≈ 56.0%
-    HOU @ CIN       HOU  p=56.0%  grade=B+
+  4-LEG  (only 2 parlay-worthy pick(s) survive diversity cap; can't reach 4 legs (max 2/profile))  joint p ≈ 30.7%
+    OAK @ BAL       OAK  p=56.4%  grade=A
+    HOU @ CIN       HOU  p=54.5%  grade=B+
 
 ==============================================================================
   GUIDANCE
