@@ -1,0 +1,92 @@
+# =============================================================================
+# umpire-refresh.yml
+# -----------------------------------------------------------------------------
+# Weekly rebuild of the home-plate-umpire effects database used by the v13
+# model. Closes the staleness gap that was 14 days at audit time (last
+# rebuild 2026-04-26, season in mid-May 2026).
+#
+# Cron: every Monday at 04:00 UTC.  Picks a time that doesn't collide with
+# daily-slate (06:00 UTC), savant-harvest (every 2h), or claude-brain
+# (07:00 / 18:00 / 22:30 UTC). Mondays because most teams have Monday off,
+# so the Statcast cache is the most-stable snapshot of the prior week.
+#
+# What it produces:
+#   data/umpire_assignments.parquet  (game_pk -> ump_id, ump_name)
+#   data/umpire_effects.parquet      (ump_id -> k%/bb%/cs% deltas)
+#
+# The refreshed deltas are picked up automatically by build_pipeline.py
+# via pit.umpire_effects_for_game() on the next daily-slate run.
+# =============================================================================
+name: Umpire DB refresh
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"   # Monday 04:00 UTC
+  workflow_dispatch:
+    inputs:
+      rebuild:
+        description: 'Force full rebuild (wipes existing parquet files)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: write
+  id-token: write
+  actions: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run umpire DB build
+        run: |
+          if [ "${{ inputs.rebuild }}" = "true" ]; then
+            python scripts/build_umpire_db.py --rebuild
+          else
+            python scripts/build_umpire_db.py
+          fi
+
+      - name: Commit + push refreshed parquet files via fresh clone
+        env:
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          # Same fresh-clone pattern as claude-brain / claude-postgame:
+          # the runner's working checkout may have credential-helper issues
+          # so we clone fresh with a URL-embedded token, copy the new
+          # artifacts in, and push from there.
+          REMOTE="https://x-access-token:${GH_PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth=1 "$REMOTE" /tmp/refresh-clone
+          mkdir -p /tmp/refresh-clone/data
+          cp data/umpire_assignments.parquet /tmp/refresh-clone/data/ 2>/dev/null || true
+          cp data/umpire_effects.parquet     /tmp/refresh-clone/data/ 2>/dev/null || true
+          cd /tmp/refresh-clone
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/umpire_assignments.parquet data/umpire_effects.parquet
+          if git diff --cached --quiet; then
+            echo "umpire DB unchanged since last run — nothing to commit"
+          else
+            git commit -m "umpire-refresh: $(date -u +%Y-%m-%d) weekly rebuild of umpire effects DB"
+            git push origin HEAD:main
+          fi
