@@ -334,7 +334,28 @@ def build_diagnostic_table(games: pd.DataFrame,
 
         conv = score_conviction(r if side == "home" else _flip_perspective(r))
         edge = (p_model - fair) if (pd.notna(p_model) and pd.notna(fair)) else float("nan")
-        ev = expected_value(p_model, home_dec if side == "home" else away_dec)
+        picked_dec = home_dec if side == "home" else away_dec
+        ev = expected_value(p_model, picked_dec)
+
+        # Kelly sizing recommendations (bankroll fractions).
+        # Full Kelly assumes perfect calibration — even a 2pp miscalibration
+        # in p_model blows the bankroll up over a long enough sequence. We
+        # always cap raw Kelly at 0.25 (i.e. never recommend betting more
+        # than 25% of bankroll on a single game even if the math says so).
+        # Quarter Kelly (the existing KELLY_FRACTION=0.25 default) is the
+        # standard for live betting; eighth Kelly is the conservative
+        # variant we recommend for any tier where the model hasn't yet
+        # accumulated enough postgame outcomes to validate calibration.
+        if (pd.notna(p_model) and pd.notna(picked_dec)
+                and picked_dec > 1.0 and 0.0 < p_model < 1.0):
+            _b = picked_dec - 1.0
+            _kelly_raw = (_b * p_model - (1.0 - p_model)) / _b
+            _kelly_raw = max(0.0, _kelly_raw)  # negative = no edge -> no bet
+            kelly_full = min(_kelly_raw, 0.25)
+            kelly_quarter = 0.25 * _kelly_raw
+            kelly_eighth = 0.125 * _kelly_raw
+        else:
+            kelly_full = kelly_quarter = kelly_eighth = 0.0
 
         why_skipped = []
         if pd.isna(p_model) or not (MIN_MODEL_PROB <= p_model <= MAX_MODEL_PROB):
@@ -392,6 +413,12 @@ def build_diagnostic_table(games: pd.DataFrame,
             "fair_prob": round(fair, 4) if pd.notna(fair) else None,
             "edge_pp": round(edge * 100, 2) if pd.notna(edge) else None,
             "ev_per_dollar": round(ev, 4) if pd.notna(ev) else None,
+            # Kelly sizing as bankroll fractions. Multiply by your actual
+            # bankroll to get the recommended stake dollar amount.
+            # Convention: zero when there is no positive edge.
+            "kelly_full": round(kelly_full, 4),
+            "kelly_quarter": round(kelly_quarter, 4),
+            "kelly_eighth": round(kelly_eighth, 4),
             "tier": conv.tier,
             "signals": ", ".join(conv.signals_fired),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",
