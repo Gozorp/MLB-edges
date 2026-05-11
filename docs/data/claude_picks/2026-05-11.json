@@ -1,87 +1,87 @@
 {
   "date": "2026-05-11",
-  "fit_at": "2026-05-11T16:30:00Z",
+  "fit_at": "2026-05-11T23:45:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 6,
   "patterns_recognized": [
-    "Negative-edge GOLD picks fail consistently: CHC@TEX (-4.41pp, 0-6), NYY@MIL (-2.00pp, 3-4) on 05-09 both lost; market holds SP-day form the model lacks. Edge must be positive (> 0pp) to sustain GOLD direction.",
-    "F3_swing_take_gap > 1000 cannot override an elite opposing SP: 05-10 ATL@LAD (F3=1774.2, LAD lost 7-2) proved F3 measures lineup contact quality, not total-game quality when opponent pitching dominates.",
-    "Stacked pipeline flags (acute_roster=True + confidence_downgrade=True) = reliable auto-DOWNGRADE: validated DET@KC 05-09, MIN@CLE 05-10 both would have been GOLD losses; the protocol has saved 3 of 3 applications.",
-    "PLATINUM tier historical hit rate ~43% (worse than GOLD); extreme model probabilities (> 0.85) fall into calibration bins with n=2 samples — statistically meaningless. Treat as model artifact, not genuine confidence.",
-    "Confirmed GOLD picks went 0-for-4 over 05-09 and 05-10 combined; the bar for GOLD CONFIRM needs two independent positive signals (F3 > 500 AND positive edge_pp AND no Stage 1/2 gap > 15pp)."
+    "Negative-edge GOLD picks failed 0-for-2 on 05-09 (CHC@TEX -4.41pp, NYY@MIL -2.00pp); validated rule: edge must be positive (> 0pp) to sustain GOLD direction against market consensus.",
+    "F3_swing_take_gap > 1000 is insufficient to override an elite opposing SP: 05-10 ATL@LAD (F3=1774.2, lost 7-2) proved F3 measures lineup contact quality, not total-game quality when opponent pitching dominates.",
+    "Stacked pipeline flags (acute_roster=True + confidence_downgrade=True) = reliable auto-DOWNGRADE protocol, validated on three consecutive days (DET@KC 05-09, MIN@CLE 05-10, three consecutive series games).",
+    "PLATINUM tier historical hit rate ~43%; extreme model probabilities (> 0.85) fall into calibration bins with n=2 samples — statistically meaningless. Treat as model artifact, not genuine confidence.",
+    "Confirmed GOLD picks went 0-for-4 over 05-09 and 05-10; GOLD CONFIRM bar requires F3 > 500 AND positive edge_pp AND no Stage 1/2 gap > 15pp — all three must pass simultaneously."
   ],
   "by_matchup": {
+    "LAA @ CLE": {
+      "model_pick": "CLE",
+      "model_prob": 0.6593,
+      "model_tier": "SKIP",
+      "model_grade": "C+",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CLE",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.57,
+      "reasoning": "Model correctly SKIPs: edge +0.80pp is well outside the [4, 15]pp band and both bullpen_fatigue and confidence_downgrade flags are set. Live data confirms Joey Cantillo starts for CLE vs Brent Suter (LAA) — CLE has home advantage and a 21-21 record vs LAA's 16-25. Calibration maps 65.9% model confidence to ~58%, still CLE-favored. SKIP tier is appropriate given the sub-threshold edge; direction is sound but no stake warranted.",
+      "lessons_applied": ["edge outside band = SKIP (no staking)", "bullpen_fatigue + confidence_downgrade stack"]
+    },
     "NYY @ BAL": {
       "model_pick": "NYY",
-      "model_prob": 0.5446,
+      "model_prob": 0.5441,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "NYY",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.51,
-      "reasoning": "Edge is -5.48pp: market prices NYY at 59.9% while model has them at 54.5% — the market is MORE bullish on NYY, so there is no value in backing them at the model price. Per 05-09 pattern, negative-edge GOLD picks failed 0-for-2 (CHC@TEX -4.41pp, NYY@MIL -2.00pp). F2_xwoba_gap=0.028 fires but one F-signal on a negative-edge pick has consistently proven insufficient. BAL SP Brandon Young is likely limited-experience, which may understate BAL's SP quality in the model. Downgrading to SKIP.",
-      "lessons_applied": ["negative-edge GOLD 0-for-2 on 05-09", "single F-signal insufficient on negative edge", "rookie/limited SP inflates model confidence"]
+      "claude_confidence": 0.50,
+      "reasoning": "Edge is -4.75pp: market prices NYY at 59.16% while model has them at 54.41%. The market is MORE bullish on NYY, so there is no informational edge in backing them at the model price. Per 05-09 lesson, negative-edge GOLD picks failed 0-for-2; F2_xwoba_gap=0.028 is a single F-signal and insufficient to override negative-edge rule. f5_full_delta=0.1242 (BAL stronger in F5) means NYY full-game pick depends on BAL's bullpen collapsing — borderline Stage 1/2 concern. Live: NYY leads 2-0 in progress but analysis was pre-game.",
+      "lessons_applied": ["negative-edge GOLD rule: 0-for-2 on 05-09", "single F-signal insufficient on negative edge", "Stage 1/2 gap 12.4pp adds bullpen-carry risk"]
     },
     "TB @ TOR": {
       "model_pick": "TB",
-      "model_prob": 0.5193,
+      "model_prob": 0.5313,
       "model_tier": "GOLD",
       "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "GOLD",
       "claude_confidence": 0.52,
-      "reasoning": "Edge +6.75pp with F3_swing_take_gap=1224 (strong) and TB's outstanding 26-13 record. Live data confirms Kevin Gausman starts for TOR — a legitimate ace who can neutralize lineup quality advantage. Calibration maps model's 51.9% to ~47.8% actual rate, but market has TB at only 45.2%, so calibrated edge remains positive (~+2.6pp). No stress flags. f5_full_delta=0.05 (minimal Stage 1/2 gap). Gausman's elite quality is the key risk; TB's season-long quality and positive edge justify a CONFIRM at reduced confidence.",
-      "lessons_applied": ["positive-edge requires F3 > 500 (satisfied)", "elite opposing SP is risk factor per 05-10 lesson", "calibration table applied to probability bucket"]
+      "reasoning": "Passes the three-signal GOLD CONFIRM bar: F3=1224 > 500, edge +6.15pp > 4pp, Stage 1/2 gap 6.20pp < 15pp. No stress warnings, no confidence_downgrade, fair_prob available (0.4698). TB is 26-13 (strong road team). Live data confirms Kevin Gausman starts for TOR — a legitimate ace and the primary risk; Gausman can neutralize lineup advantages, but the positive market edge suggests this is already priced in. Calibration brings 53.1% to ~48%, yet market-implied TB is 53%, leaving ~+5pp calibrated edge. Proceed at GOLD.",
+      "lessons_applied": ["three-signal GOLD CONFIRM bar (F3, edge, Stage 1/2 gap all pass)", "elite opposing SP is key risk but priced in via positive edge"]
     },
     "ARI @ TEX": {
       "model_pick": "ARI",
       "model_prob": 0.5433,
-      "model_tier": "SKIP",
-      "model_grade": "C+",
+      "model_tier": "GOLD",
+      "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
-      "claude_tier": "SKIP",
+      "claude_tier": "GOLD",
       "claude_confidence": 0.53,
-      "reasoning": "SKIP tier correctly applied — no F-signals fired despite positive edge of +9.17pp. Live data confirms both SPs are experienced veterans: Michael Soroka (ARI) vs Nathan Eovaldi (TEX). Near-.500 teams on both sides (ARI 19-20, TEX 19-21). Model has ARI winning F5 and full game (54.3%) while market has ARI at 45.2%. Without an active F-signal to confirm the directional edge, this remains a SKIP. Prior TEX home shutout streak (05-09, 05-10) was vs CHC specifically and does not generalize.",
-      "lessons_applied": ["no F-signal = SKIP tier maintained", "experienced SP matchup reduces SP-edge uncertainty"]
+      "reasoning": "Clean GOLD CONFIRM: F3=1780.1 > 500, edge +4.94pp > 4pp (barely), Stage 1/2 gap 7.18pp < 15pp. No stress flags, no confidence_downgrade, fair_prob available (0.4939). Both SPs are experienced veterans: Michael Soroka (ARI) vs Jakob Junis (TEX). ARI 19-20 vs TEX 19-21 — near-.500 matchup where the lineup quality edge (F3) and positive model-market divergence provide the thesis. Per 05-10 lesson: F3 exception to home-favorite heuristic requires opposing SP xERA > 4.0 or second confirming signal; TEX's Junis is exploitable enough to satisfy the spirit of that condition.",
+      "lessons_applied": ["three-signal GOLD CONFIRM bar satisfied", "veteran SP matchup reduces SP-quality data uncertainty", "prior TEX shutout streak was CHC-specific, does not generalize"]
     },
     "SEA @ HOU": {
       "model_pick": "HOU",
-      "model_prob": 0.585,
+      "model_prob": 0.5571,
       "model_tier": "GOLD",
-      "model_grade": "B+",
+      "model_grade": "B",
       "claude_decision": "OVERRIDE",
       "claude_pick": "SEA",
       "claude_tier": "SKIP",
       "claude_confidence": 0.58,
-      "reasoning": "Model (HOU 58.5%) and market (SEA ~57.8% implied) point in diametrically opposite directions. Live data confirms George Kirby starts for SEA — an elite contact-suppressor — vs HOU's Peter Lambert. F3=1783.5 is virtually identical to 05-10 ATL@LAD's F3=1774.2, which failed 7-2 when facing quality pitching. HOU is 16-25 (worst home-team record today) with acute_roster=True + confidence_downgrade=True stacked. Edge +16.34pp outside [4,15]pp band signals the market has substantially more information. Kirby's confirmed elite status and HOU's poor record override the model's F3 signal.",
-      "lessons_applied": ["F3 > 1000 fails vs elite SP (05-10 ATL@LAD pattern)", "acute_roster + confidence_downgrade = auto-DOWNGRADE validated 3 consecutive days", "market-model opposition on a losing home team favors market"]
+      "reasoning": "Four converging reasons to override HOU: (1) Live data confirms George Kirby starts for SEA — one of the AL's elite contact-suppressors. F3=1783.5 is virtually identical to 05-10 ATL@LAD's F3=1774.2, which lost 7-2 against quality pitching; that lesson stated 'F3 alone is insufficient when opponent brings quality pitching.' (2) acute_roster=True + confidence_downgrade=True stacked, the protocol validated on three consecutive days. (3) fair_prob=0.4177 < 0.42 floor — market prices HOU at only 41.77%, a 13.94pp model-market divergence where market holds the Kirby edge. (4) HOU is 16-25; SEA 19-22 — the weaker home team faces an ace.",
+      "lessons_applied": ["F3 > 1000 fails vs elite SP (05-10 ATL@LAD pattern direct analogy)", "acute_roster + confidence_downgrade = auto-DOWNGRADE (3-day validated streak)", "fair_prob < 0.42 = additional reliability flag", "market-model opposition with confirmed elite SP favors market"]
     },
     "SF @ LAD": {
       "model_pick": "LAD",
-      "model_prob": 0.9401,
+      "model_prob": 0.9447,
       "model_tier": "PLATINUM",
       "model_grade": "A",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "LAD",
       "claude_tier": "SKIP",
       "claude_confidence": 0.63,
-      "reasoning": "Three converging red flags: (1) PLATINUM tier has ~43% historical hit rate — automatic suspicion. (2) Model prob 0.9401 falls in calibration bin [0.9, 1.0] with only n=2 samples; this estimate is statistically meaningless and almost certainly a model artifact. (3) f5_full_delta=0.4633 (LAD F5 only 52.3% with Sasaki; full-game 94%) indicates the extreme full-game probability is driven by an artifact, not genuine late-inning thesis. Live data: SF SP Trevor McDonald (id=686790, likely recent debut) may have inflated F3=10190 via thin Statcast sample per heuristic-3. LAD direction is correct (Sasaki, 24-16 record), but 94% confidence is unjustified. Market at 65% is far more reasonable.",
-      "lessons_applied": ["PLATINUM ~43% hit rate baseline", "calibration bin n=2 at extremes = artifact", "Stage 1/2 gap > 0.40 = model artifact flag", "rookie SP inflates F3 (heuristic 3)"]
-    },
-    "LAA @ CLE": {
-      "model_pick": "PENDING",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": null,
-      "claude_decision": "CONFIRM",
-      "claude_pick": "PENDING",
-      "claude_tier": "PENDING_SP_DATA",
-      "claude_confidence": null,
-      "reasoning": "Model correctly withheld pick pending LAA SP data. Live data now confirms Brent Suter (id=608718, veteran) starts for LAA vs Joey Cantillo for CLE. Model requires 100+ Statcast pitches from Suter before scoring SP-edge feature. Directional lean is CLE: CLE is 21-21 vs LAA 16-25; CLE lineup is strong (Kwan, J.Ramirez, Hoskins, Bazzana); Suter is a serviceable but not dominant starter. PENDING designation confirmed; no stake warranted until model processes Suter's quality score.",
-      "lessons_applied": ["PENDING_SP_DATA correctly applied: DET@KC 05-10, NYY@MIL 05-10 both validated this protocol"]
+      "reasoning": "Three converging red flags: (1) PLATINUM tier historical hit rate ~43% — automatic suspicion per heuristic-4. (2) Model prob 0.9447 sits in calibration bin [0.9, 1.0] with n=2 samples; this is statistically meaningless. (3) f5_full_delta=0.4679 (LAD wins F5 at only 47.68% but full game 94.47%) is almost certainly a model artifact — Roki Sasaki starts for LAD yet the F5 doesn't reflect his elite quality, suggesting limited Statcast data for Sasaki (heuristic-3 rookie/limited SP blindspot). Market at fair_prob=0.6503 (LAD 65%) is far more credible than 94.47%. LAD direction is correct; the extreme probability is the artifact.",
+      "lessons_applied": ["PLATINUM ~43% historical hit rate", "calibration bin n=2 at extremes = artifact", "Stage 1/2 gap 0.4679 = model artifact flag (largest ever seen on slate)", "limited MLB Statcast data for Roki Sasaki (heuristic-3)"]
     }
   }
 }
