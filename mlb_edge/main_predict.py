@@ -419,6 +419,19 @@ def build_diagnostic_table(games: pd.DataFrame,
             "kelly_full": round(kelly_full, 4),
             "kelly_quarter": round(kelly_quarter, 4),
             "kelly_eighth": round(kelly_eighth, 4),
+            # Umpire effects (v13 features, also fed into the model itself).
+            # These come from data/umpire_effects.parquet (rebuilt weekly by
+            # the umpire-refresh workflow). Positive ump_k_pct_delta means
+            # the plate umpire's strike-zone bias inflates strikeout rate
+            # vs. league average; positive ump_bb_pct_delta means the umpire
+            # inflates walks (tight zone). Both teams face the same umpire
+            # so these are ambient features — surface them here so the
+            # dashboard and Claude executive layer can see WHICH umpire is
+            # behind a tight/loose pitcher projection.
+            "ump_k_pct_delta": (round(float(r.get("ump_k_pct_delta")), 4)
+                                if pd.notna(r.get("ump_k_pct_delta")) else None),
+            "ump_bb_pct_delta": (round(float(r.get("ump_bb_pct_delta")), 4)
+                                 if pd.notna(r.get("ump_bb_pct_delta")) else None),
             "tier": conv.tier,
             "signals": ", ".join(conv.signals_fired),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",
