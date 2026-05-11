@@ -1,0 +1,87 @@
+# =============================================================================
+# weekly-backtest.yml
+# -----------------------------------------------------------------------------
+# Re-runs tools/run_backtest.py every Sunday at 05:00 UTC against the
+# bt_YYYY.csv historical pick archive + any newly-recorded postgame data.
+#
+# The job runs python the script, commits the regenerated reports under
+# docs/data/backtest/, and pushes via the same fresh-clone pattern as the
+# other workflows.
+#
+# Cron rationale: Sunday 05:00 UTC sits before the Sunday 04:00 (-1h)
+# refit-calibrator cron and the 06:00 daily-slate cron. The backtest
+# report informs which Kelly fraction to recommend on the dashboard.
+# =============================================================================
+name: Weekly PnL backtest
+
+on:
+  schedule:
+    - cron: "0 5 * * 0"   # Sunday 05:00 UTC
+  workflow_dispatch:
+    inputs:
+      start_bankroll:
+        description: 'Starting bankroll (default 1000)'
+        required: false
+        default: '1000'
+      season:
+        description: 'Restrict to a single season (e.g. 2024). Leave blank for all.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  id-token: write
+  actions: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies (minimal — pandas + numpy)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy
+
+      - name: Run backtest
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.start_bankroll }}" ]; then
+            ARGS="--start-bankroll ${{ inputs.start_bankroll }}"
+          fi
+          if [ -n "${{ inputs.season }}" ]; then
+            ARGS="$ARGS --season ${{ inputs.season }}"
+          fi
+          python tools/run_backtest.py $ARGS
+
+      - name: Commit + push backtest artifacts via fresh clone
+        env:
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          REMOTE="https://x-access-token:${GH_PUSH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth=1 "$REMOTE" /tmp/refresh-clone
+          mkdir -p /tmp/refresh-clone/docs/data/backtest
+          cp docs/data/backtest/*.md   /tmp/refresh-clone/docs/data/backtest/ 2>/dev/null || true
+          cp docs/data/backtest/*.csv  /tmp/refresh-clone/docs/data/backtest/ 2>/dev/null || true
+          cp docs/data/backtest/*.json /tmp/refresh-clone/docs/data/backtest/ 2>/dev/null || true
+          cd /tmp/refresh-clone
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/backtest/
+          if git diff --cached --quiet; then
+            echo "no backtest artifacts changed"
+          else
+            git commit -m "weekly-backtest: $(date -u +%Y-%m-%d) refresh of historical PnL report"
+            git push origin HEAD:main
+          fi
