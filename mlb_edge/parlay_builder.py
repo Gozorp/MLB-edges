@@ -358,6 +358,16 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
             pass
 
     # Stage 1/2 agreement on picked side
+    #
+    # 2026-05-10 update: penalty threshold tightened from 0.15 to 0.12 after
+    # 5/9 postgame review (postgame/2026-05-09.json) showed NYY @ MIL graded
+    # GOLD with delta=0.1290 and lost — the existing 0.15 cutoff let this
+    # leg into a parlay anchor. 5/9 also flagged MIN @ CLE (delta=0.1796)
+    # which DID trip the old 0.15 rule but the -1 nudge wasn't enough to
+    # demote from GOLD; that case is now handled by the existing 0.18 A-cap
+    # rule and the broader 0.12 penalty here.  Lowering the threshold
+    # converts the new "moderate disagreement" band (0.12–0.15) from no-op
+    # to -1, which would have demoted NYY @ MIL from a GOLD parlay leg.
     f5 = row.get("f5_prob")
     full = row.get("full_prob")
     if pd.notna(f5) and pd.notna(full):
@@ -372,7 +382,7 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
         elif disagree >= 0.30:
             score -= 2
             reasons.append(f"Stage 1/2 MAJOR disagree (Δ={disagree:.2f}) (-2)")
-        elif disagree >= 0.15:
+        elif disagree >= 0.12:
             score -= 1
             reasons.append(f"Stage 1/2 disagree (Δ={disagree:.2f}) (-1)")
 

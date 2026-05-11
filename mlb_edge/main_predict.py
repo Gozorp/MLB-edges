@@ -366,6 +366,16 @@ def build_diagnostic_table(games: pd.DataFrame,
             "pick": picked,
             "f5_prob": round(f5_p, 4) if pd.notna(f5_p) else None,
             "full_prob": round(full_p, 4) if pd.notna(full_p) else None,
+            # f5_full_delta: absolute gap between Stage 1 (F5) and Stage 2 (FULL)
+            # win probabilities.  Perspective-independent (|p_home_f5 - p_home_full|
+            # equals |p_away_f5 - p_away_full|).  Large delta = the two stages
+            # disagree about who wins, which historically signals bullpen
+            # volatility (F5>FULL: dominant SP, shaky bullpen; F5<FULL: weak SP
+            # carried by strong relief).  Surfaced here so the dashboard, the
+            # Claude executive layer, and downstream calibration scripts can
+            # all read it as a first-class signal rather than re-deriving it.
+            "f5_full_delta": (round(abs(f5_p - full_p), 4)
+                              if pd.notna(f5_p) and pd.notna(full_p) else None),
             "p_model": round(p_model, 4) if pd.notna(p_model) else None,
             # `pick_prob` is an explicit alias of `p_model` (pick-perspective).
             # Added 2026-05-02 after eval scripts confused this column for
