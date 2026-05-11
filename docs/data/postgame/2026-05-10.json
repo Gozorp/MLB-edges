@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-10",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-11T00:00:00Z",
+  "n_analyzed": 13,
+  "summary": "The model went 4-9 on direction (30.8% hit rate) across 13 resolved games; two PENDING picks (NYY@MIL, DET@KC) were correctly withheld. Both Claude-confirmed GOLD picks lost: PIT fell 6-7 to SF in a one-run game and LAD was crushed 7-2 by ATL despite F3_swing_take_gap=1774.2 — the largest signal on the slate. Claude's downgrades of MIN@CLE and COL@PHI avoided two losses, but downgrading TB@BOS and SEA@CHW missed two correct GOLD calls. Key lessons: F3 alone cannot override an elite opposing SP, the F2_xwoba exception from 05-09 failed in its second application to PIT@SF, and confirmed GOLD picks are now 0-for-4 across 05-09 and 05-10.",
+  "by_matchup": {
+    "WSH @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-5",
+      "headline": "MIA won 5-2; CSV model picked WSH but claude_picks json identified MIA as the model pick — MIA won.",
+      "hypothesis": "The CSV 'pick' column shows WSH (away), but the claude_picks json listed MIA as the model pick with prob=0.5118. MIA won 5-2. This is one of five games on the slate where the CSV pick column and claude_picks json disagree on which team the model favored. The discrepancy matters: if the model truly liked MIA (home), Claude's CONFIRM was directionally correct. If the model truly liked WSH (per CSV), this is a directional LOSS. Given the ambiguity in the CSV pick column (may represent F5 stage winner rather than full-game pick), the reliable signal is that WSH was not the right choice.",
+      "signals_to_recheck": "CSV 'pick' column interpretation: verify whether this field represents the F5 stage pick or the full-game model recommendation, as five games showed discrepancies between the CSV and claude_picks json on pick direction."
+    },
+    "OAK @ BAL": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "BAL won 2-1 in a one-run game; model and Claude both picked OAK and lost.",
+      "hypothesis": "Model picked OAK (away) at SKIP with no fair_prob and no active F-signals. BAL won by one run. This is a low-conviction coin-flip at SKIP — directional loss is expected variance on a 54% pick. On 05-09 OAK had won 6-2 at SKIP, so this reversal within the same series is consistent with coin-flip uncertainty. No process failure identifiable; variance loss.",
+      "signals_to_recheck": "No specific signal to flag; SKIP-tier losses without active signals are expected variance."
+    },
+    "TB @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "4-1",
+      "headline": "TB won 4-1; model was correct at GOLD, Claude's downgrade to SKIP missed the win.",
+      "hypothesis": "Model graded TB as GOLD with F3_swing_take_gap=910.5. Claude downgraded to SKIP citing no fair_prob and a prior 05-08 loss with the same F3 signal. TB won convincingly 4-1 — BOS pitching did not repeat its 05-08 performance. The F3=910.5 signal was directionally correct, and Claude's skepticism about the no-fair_prob situation led to a missed GOLD win. This is the second GOLD downgrade on this slate that would have been a winner (also SEA@CHW). The 'no fair_prob = always downgrade GOLD' rule may be overcorrecting.",
+      "signals_to_recheck": "Revisit the no-fair_prob blanket downgrade policy: two of three downgraded GOLD picks today (TB, CHW) won. Consider a middle path — reduce stake to 0.5x rather than full SKIP when fair_prob is missing but F3 > 500."
+    },
+    "COL @ PHI": {
+      "verdict": "LOSS",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "0-6",
+      "headline": "PHI crushed COL 6-0; Claude's downgrade avoided what would have been a directional loss.",
+      "hypothesis": "CSV shows model pick=COL (away) at SKIP, but the claude_picks json identified model_pick=PHI at PLATINUM. PHI won 6-0. Regardless of which direction the model favored, the game went to PHI decisively. Claude's DOWNGRADE (targeting the PHI-PLATINUM interpretation) was correct in outcome — PHI was the right side and a PLATINUM-tier confirmation would have been appropriate since PHI won. But since Claude downgraded to SKIP citing the historical PLATINUM ~43% hit rate and no fair_prob, no stake was placed either way. The pick column discrepancy (CSV=COL, claude_picks=PHI) may indicate the CSV was showing the F5 stage favorite (COL SP advantage) while PHI had the full-game edge.",
+      "signals_to_recheck": "COL@PHI CSV pick=COL with PHI winning the full game by 6 runs is a data point that the 'pick' column may reflect the F5 stage advantage (COL SP) not the full-game model recommendation."
+    },
+    "LAA @ TOR": {
+      "verdict": "LOSS",
+      "model_pick": "TOR ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-1",
+      "headline": "LAA won 6-1 in a blowout despite TOR crushing LAA 14-1 the prior day.",
+      "hypothesis": "TOR was the SKIP pick based on historical 60% F5 and 61% full probability. TOR had won 14-1 the prior day. LAA reversed the series momentum completely (6-1 win). The model and Claude expected TOR to continue dominating, but the SP matchup changed dramatically on this day — TOR's momentum from the prior blowout did not carry over at all. Series momentum is not a reliable predictor: two consecutive blowouts in opposite directions over this series (5/9: TOR 14-1, 5/10: LAA 6-1). Process-sound loss; variance or SP-day change drove the reversal.",
+      "signals_to_recheck": "Multi-day momentum should not be used as a directional signal for TOR@LAA or similar series — the 14-1 blowout the prior day did not predict direction today."
+    },
+    "HOU @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-5",
+      "headline": "CIN dominated HOU 5-0; CSV model picked CIN which won, but claude_picks json had HOU as the model pick.",
+      "hypothesis": "CSV pick=CIN (home), CIN won 5-0. This is a WIN for the CSV model direction. However, the claude_picks json listed model_pick=HOU and claude_pick=HOU, meaning Claude effectively confirmed the wrong direction. CIN's dominance (HOU shut out 0-5) suggests CIN's SP had a big day. This is another game in the five-discrepancy set where the CSV pick and claude_picks json disagree. If the CSV is authoritative, Claude's CONFIRM of the wrong team means Claude's confirmed direction was a LOSS in practice.",
+      "signals_to_recheck": "This is the clearest case of the CSV vs. claude_picks discrepancy having real consequences: Claude picked HOU (wrong), CSV said CIN (right), CIN won by 5 runs. If the CSV pick column is authoritative, Claude made a directional error on this game."
+    },
+    "MIN @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-4",
+      "headline": "MIN edged CLE 5-4; Claude's DOWNGRADE of CLE GOLD correctly avoided a staked loss.",
+      "hypothesis": "Model graded CLE as GOLD with F3_swing_take_gap=16.1 (extremely weak F3 signal — the smallest on the slate). Claude downgraded citing: (1) very weak F3 barely above noise, (2) Stage 1/2 gap with bullpen_fatigue=True, (3) confidence_downgrade=True. MIN won by one run, validating all three concerns. The weak F3 correctly signaled a borderline model grade; CLE's bullpen fatigue prevented the late comeback. This is the third consecutive day (05-08, 05-09, 05-10) Claude's stacked-flags downgrade protocol avoided a real loss.",
+      "signals_to_recheck": "F3_swing_take_gap=16.1 is too close to noise to justify GOLD tier; consider adding an absolute floor (e.g., F3 must exceed 50 to count as the sole signal basis for GOLD tier)."
+    },
+    "SEA @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-2",
+      "headline": "CHW won 2-1; Claude's DOWNGRADE missed a correct GOLD win, creating tension with the no-fair_prob policy.",
+      "hypothesis": "Model graded CHW as GOLD with F3_swing_take_gap=239.7. Claude downgraded citing no fair_prob and heuristic-1 (CHW at 68% is a home favorite concern). CHW won 2-1 in a one-run game — the model's direction was right. This was a close game that could have gone either way, so the downgrade decision was process-sound given the available information (no market anchor). But combined with TB@BOS also being a correct GOLD pick that was downgraded, the slate saw two missed GOLD winners. The no-fair_prob downgrade rule is overly conservative when F3 > 200.",
+      "signals_to_recheck": "F3=239.7 with no fair_prob: consider a tiered response (reduce to SKIP but flag as marginal) rather than treating all no-fair_prob GOLD picks as equivalent regardless of signal strength."
+    },
+    "NYY @ MIL": {
+      "verdict": "NO_PICK",
+      "model_pick": "PENDING ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "MIL edged NYY 4-3; no pick was made due to Carlos Rodón's 0 Statcast pitches.",
+      "hypothesis": "PENDING was correct — without Rodón's SP quality score there was no reliable directional basis. MIL won 4-3, their third consecutive series win over NYY (0-6 on 05-08, 4-3 on 05-09, 4-3 on 05-10). The NYY vs MIL series pattern (three losses at GOLD direction on prior days) continues to validate that the model has a systematic overrating of NYY in this matchup. Even without a PENDING pick today, if the model returns a NYY pick in any future NYY@MIL series game, apply extra skepticism given this three-game losing streak.",
+      "signals_to_recheck": "NYY vs MIL series now shows three consecutive NYY directional failures. The model may structurally overrate NYY against MIL starters with limited Statcast data."
+    },
+    "CHC @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "0-3",
+      "headline": "TEX shut out CHC 3-0; CSV model picked TEX (SKIP) which won, but claude_picks saw CHC as the GOLD model pick.",
+      "hypothesis": "CSV pick=TEX at SKIP, TEX won 3-0. If the CSV is authoritative, model direction was right and this is a WIN. The claude_picks json listed model_pick=CHC at GOLD and claude DOWNGRADED CHC to SKIP — so Claude's downgrade targeted the wrong team but the end result was no stake on the wrong direction anyway. TEX dominated with CHC shut out. On 05-09 CHC had lost 0-6 as well (prior GOLD confirm loss). This continues the CHC@TEX pattern where the game strongly favors TEX at home regardless of the SP matchup signal.",
+      "signals_to_recheck": "TEX has now won at home against CHC by shutout margins two consecutive days (05-09: 6-0, 05-10: 3-0). TEX home advantage may be systematically underweighted in the CHC@TEX model output."
+    },
+    "PIT @ SF": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-7",
+      "headline": "SF edged PIT 7-6 in a one-run game; Claude's GOLD CONFIRM on the F2_xwoba exception failed.",
+      "hypothesis": "Claude confirmed PIT at GOLD citing F2_xwoba=0.032 (exceeding the 0.025 threshold — the exception rule from 05-09 that says a strong lineup signal can override Stage 1/2 gap concern). PIT lost 7-6 in a one-run game. The 05-09 exception was drawn from a single 13-3 blowout; today's narrow one-run loss shows the exception is not robust. The Stage 1/2 gap (SF wins F5, PIT wins full) remained real — SF's starting pitcher was effective enough that PIT's lineup did not overwhelm early, and the bullpen-carry thesis then failed. Process failure: confirming GOLD based on a single-game-derived exception rule was premature. Could be variance (one-run game) but the underlying thesis was fragile.",
+      "signals_to_recheck": "F2_xwoba >= 0.025 exception: two-game sample on PIT@SF is 1-1 (WIN 13-3 then LOSS 6-7). Do not treat this as a deterministic rule; treat it as a severity reducer (SKIP instead of DOWNGRADE) not a blanket override of Stage 1/2 gap concern."
+    },
+    "NYM @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-5",
+      "headline": "AZ won 5-1; CSV model picked NYM (away) but claude_picks identified ARI as the model pick.",
+      "hypothesis": "CSV pick=NYM (away) at SKIP, AZ won 5-1. From the CSV perspective, NYM direction was wrong → LOSS. However, the claude_picks json identified model_pick=ARI and Claude confirmed ARI at SKIP, which was directionally correct (ARI won). Like HOU@CIN and WSH@MIA, this is one of five games where the CSV pick column and claude_picks json disagree on direction. AZ's 5-1 margin suggests this wasn't a coin flip — one side was clearly better, and ARI was it. The CSV 'pick' column showing NYM when the model probability data apparently pointed to ARI is a reliability concern.",
+      "signals_to_recheck": "NYM@ARI: CSV pick=NYM despite ARI winning 5-1, another data point that the CSV 'pick' column may not reliably represent the full-game model direction."
+    },
+    "STL @ SD": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "SD won 3-2 in a one-run game; model and Claude picked STL with no active F-signals.",
+      "hypothesis": "Model picked STL at SKIP with no active F-signals and the largest Stage 1/2 gap on the prior-day CSV (SD wins F5, STL wins full requiring a late comeback). SD won 3-2, again beating the model's STL direction. Over this series: 05-09 STL lost 2-4, 05-10 STL lost 2-3. The model has now missed STL@SD direction two consecutive games. Without active F-signals, the directional call is near random, and the SD home advantage may be structurally underweighted. Variance loss, but the pattern of picking STL without signal support is a recurring process exposure.",
+      "signals_to_recheck": "Two consecutive STL@SD directional losses without F-signals; consider defaulting to NO_PICK when no F-signals fire on a SKIP-tier matchup rather than defaulting to model direction."
+    },
+    "ATL @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-2",
+      "headline": "ATL crushed LAD 7-2; Claude's biggest GOLD confirm was the day's biggest loss.",
+      "hypothesis": "LAD was GOLD with F3_swing_take_gap=1774.2 — the strongest signal on the slate by a wide margin. Claude confirmed at GOLD, treating F3=1774.2 as sufficient to override heuristic-1 (home favorite >65%). ATL won by five runs. The F3 signal measures LAD's lineup contact quality relative to the opposing SP, but it did not account for the ability of ATL's own pitching to neutralize LAD's lineup advantages. ATL's SP was evidently effective enough to render the F3 edge irrelevant. This is a process failure: F3 is a lineup-quality signal, not a total-game-quality signal, and it cannot override the possibility that the opposing starter simply dominates. The 'strong F3 exceptions heuristic-1' rule is now disproven on its first real test.",
+      "signals_to_recheck": "F3_swing_take_gap > 1000 is not sufficient to override heuristic-1 (home favorite >65%) when the opponent brings quality pitching. Require a second independent positive signal (verified positive edge_pp AND opposing SP xERA > 4.0) before applying F3 as an exception to heuristic-1."
+    },
+    "DET @ KC": {
+      "verdict": "NO_PICK",
+      "model_pick": "PENDING ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-3",
+      "headline": "DET won 6-3; PENDING designation was correct given Brenan Hanifee's 0 Statcast pitches.",
+      "hypothesis": "PENDING was correct — without Hanifee's SP quality score there was no reliable directional basis. DET won 6-3. DET's offense scored 6 runs against a zero-data pitcher, which is consistent with the model's concern that Hanifee's quality was unquantifiable. Had the model forced a pick, DET's offense clearly had a productive day. No process evaluation possible given the correct PENDING designation.",
+      "signals_to_recheck": "Rookies and pitchers with 0 Statcast data continue to correctly warrant PENDING; the DET 6-3 win shows the model would have needed to guess on DET direction without the SP quality anchor."
+    }
+  },
+  "patterns_observed": [
+    "ATL@LAD: F3_swing_take_gap=1774.2 (largest on slate) confirmed at GOLD via the heuristic-1 exception, yet LAD lost 7-2 to ATL. F3 measures LAD's lineup contact quality relative to the opposing SP but does not measure whether the opposing team's pitching can independently neutralize that advantage. Rule update: F3 exception to heuristic-1 (home favorite >65%) requires a second confirming signal — either verified positive edge_pp > 4pp OR opposing SP xERA > 4.00 — before overriding the home-favorite concern; F3 alone is insufficient when opponent pitching is unknown-quality.",
+    "PIT@SF F2_xwoba >= 0.025 exception produced a 1-1 split across two direct applications (WIN 13-3 on 05-09, LOSS 6-7 on 05-10 in the same matchup). The 05-09 exception rule was drawn from a single blowout; today's narrow one-run loss shows it is not robust. Going forward, treat F2_xwoba >= 0.025 as a severity reducer only — it changes the DOWNGRADE response from SKIP to cautious-SKIP (no stake) but does NOT override Stage 1/2 gap concern enough to sustain GOLD tier. Two-game sample on PIT@SF now 1-1.",
+    "Confirmed GOLD picks are 0-for-4 across 05-09 and 05-10 (CHC@TEX 0-6, NYY@MIL 3-4, PIT@SF 6-7, ATL@LAD 7-2). Meanwhile, three GOLD downgrades on 05-10 split 2 wins (TB 4-1, CHW 2-1) and 1 avoided loss (CLE 5-4), and three of five confirmed SKIP picks were directional losses. The GOLD CONFIRM bar needs to be raised: require at minimum two independent confirming signals (strong F3 > 500 AND verified positive edge_pp > 4pp AND no Stage 1/2 gap > 15pp) before sustaining GOLD tier; single-signal GOLD confirms at no-fair_prob have failed consistently.",
+    "The CSV 'pick' column and the claude_picks json disagreed on the model's recommended team in five of fifteen games (WSH@MIA, COL@PHI, HOU@CIN, CHC@TEX, NYM@ARI). In three of these five cases the claude_picks direction was correct while the CSV pick was wrong (MIA won, PHI won, ARI won). This pattern suggests the CSV 'pick' column may represent the first-five-inning stage favorite (the team with better starting pitcher) rather than the full-game model recommendation. Claude Brain must verify which CSV column represents the final full-game pick direction before building its decisions — using the F5 stage pick as the betting direction is a systematic process risk."
+  ]
+}
