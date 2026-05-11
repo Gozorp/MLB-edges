@@ -1,16 +1,16 @@
-matchup,pick,f5_prob,full_prob,p_model,pick_prob,p_model_shadow_phase4,bp_min,fair_prob,edge_pp,ev_per_dollar,tier,signals,why_skipped,odds_status,stress_warnings,confidence_downgrade
-WSH @ MIA,MIA,0.5766,0.5118,0.5118,0.5118,0.4961,2422.0,,,,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
-OAK @ BAL,OAK,0.4797,0.4357,0.5643,0.5643,0.5313,2707.0,,,,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
-TB @ BOS,TB,0.451,0.4567,0.5433,0.5433,0.5271,1834.0,,,,GOLD,F3_swing_take_gap=910.5,tier GOLD -> stake_mult=0,no_match,,False
-COL @ PHI,PHI,0.5028,0.5081,0.5081,0.5081,0.5146,2056.0,,,,PLATINUM,"F1_xera_gap=3.99, F3_swing_take_gap=772.9",,no_match,,False
-LAA @ TOR,TOR,0.6009,0.6743,0.6743,0.6743,0.6079,2153.0,,,,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
-HOU @ CIN,HOU,0.3501,0.4875,0.5125,0.5125,0.503,2147.0,,,,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
-MIN @ CLE,CLE,0.5468,0.6593,0.6593,0.6593,0.6065,2641.0,,,,GOLD,F3_swing_take_gap=16.1,tier GOLD -> stake_mult=0,no_match,,False
-SEA @ CHW,CHW,0.626,0.6803,0.6803,0.6803,0.6488,1936.0,,,,GOLD,F3_swing_take_gap=239.7,tier GOLD -> stake_mult=0,no_match,,False
-NYY @ MIL,TBD,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Carlos Rodón has only 0 Statcast pitches season-to-date; need 100+ to score,pending_sp_data,,False
-CHC @ TEX,CHC,0.6977,0.4687,0.5313,0.5313,0.5313,1950.0,,,,GOLD,F2_xwoba_gap=0.023,tier GOLD -> stake_mult=0,no_match,,False
-PIT @ SF,PIT,0.6679,0.399,0.601,0.601,0.5837,2405.0,0.5163,8.47,0.102,GOLD,F2_xwoba_gap=0.032,tier GOLD -> stake_mult=0,fetched,,False
-NYM @ ARI,ARI,0.7604,0.5466,0.5466,0.5466,0.5013,2192.0,,,-0.4479,SKIP,,tier SKIP -> stake_mult=0,fetched_capped,,False
-STL @ SD,STL,0.7755,0.4417,0.5583,0.5583,0.5313,2268.0,0.8423,-28.4,-0.3342,SKIP,,"edge -28.40pp outside [4,15]pp | tier SKIP -> stake_mult=0",fetched,,False
-ATL @ LAD,LAD,0.7086,0.6503,0.6503,0.6503,0.6563,1955.0,,,6.9341,GOLD,F3_swing_take_gap=1774.2,tier GOLD -> stake_mult=0,fetched_capped,,False
-DET @ KC,TBD,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Brenan Hanifee has only 0 Statcast pitches season-to-date; need 100+ to score,pending_sp_data,,False
+matchup,pick,f5_prob,full_prob,f5_full_delta,p_model,pick_prob,p_model_shadow_phase4,bp_min,fair_prob,edge_pp,ev_per_dollar,kelly_full,kelly_quarter,kelly_eighth,ump_k_pct_delta,ump_bb_pct_delta,tier,signals,why_skipped,odds_status,stress_warnings,confidence_downgrade
+WSH @ MIA,WSH,0.5766,0.4807,0.0959,0.5193,0.5193,0.5313,2422.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+OAK @ BAL,OAK,0.4797,0.4623,0.0174,0.5377,0.5377,0.5149,2707.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+TB @ BOS,TB,0.451,0.4642,0.0132,0.5358,0.5358,0.5076,1834.0,,,,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=910.5,tier GOLD -> stake_mult=0,no_match,,False
+COL @ PHI,COL,0.5028,0.4881,0.0147,0.5119,0.5119,0.5032,2056.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+LAA @ TOR,TOR,0.6009,0.6069,0.006,0.6069,0.6069,0.5161,2153.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+HOU @ CIN,CIN,0.3501,0.5993,0.2492,0.5993,0.5993,0.6259,2147.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+MIN @ CLE,CLE,0.5468,0.5737,0.0269,0.5737,0.5737,0.5111,2641.0,,,,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=16.1,tier GOLD -> stake_mult=0,no_match,,False
+SEA @ CHW,CHW,0.626,0.5772,0.0488,0.5772,0.5772,0.5252,1936.0,,,,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=239.7,tier GOLD -> stake_mult=0,no_match,,False
+NYY @ MIL,TBD,,,,,,,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Carlos Rodón has only 0 Statcast pitches season-to-date; need 100+ to score,pending_sp_data,,False
+CHC @ TEX,TEX,0.6977,0.558,0.1397,0.558,0.558,0.5572,1950.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+PIT @ SF,PIT,0.6679,0.4687,0.1993,0.5313,0.5313,0.5313,2405.0,,,,0.0,0.0,0.0,0.0,0.0,GOLD,F2_xwoba_gap=0.032,tier GOLD -> stake_mult=0,no_match,,False
+NYM @ ARI,NYM,0.7604,0.4931,0.2673,0.5069,0.5069,0.5313,2192.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+STL @ SD,STL,0.7755,0.4685,0.3071,0.5315,0.5315,0.5283,2268.0,,,,0.0,0.0,0.0,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,no_match,,False
+ATL @ LAD,LAD,0.7086,0.6315,0.0771,0.6315,0.6315,0.6563,1955.0,,,,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=1774.2,tier GOLD -> stake_mult=0,no_match,,False
+DET @ KC,TBD,,,,,,,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Brenan Hanifee has only 0 Statcast pitches season-to-date; need 100+ to score,pending_sp_data,,False
