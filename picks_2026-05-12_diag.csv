@@ -1,16 +1,16 @@
 matchup,pick,f5_prob,full_prob,f5_full_delta,p_model,pick_prob,p_model_shadow_phase4,bp_min,fair_prob,edge_pp,ev_per_dollar,kelly_full,kelly_quarter,kelly_eighth,ump_k_pct_delta,ump_bb_pct_delta,tier,signals,why_skipped,odds_status,stress_warnings,confidence_downgrade
-LAA @ CLE,CLE,0.5558,0.5683,0.0125,0.5683,0.5683,0.4939,2794.0,0.5698,-0.15,-0.0198,0.0,0.0,0.0,0.0,0.0,SKIP,,"edge -0.15pp outside [4,15]pp | tier SKIP -> stake_mult=0",fetched,bullpen_fatigue,True
-WSH @ CIN,WSH,0.566,0.475,0.0909,0.525,0.525,0.4961,2556.0,0.4178,10.72,0.168,0.1372,0.0343,0.0171,0.0,0.0,GOLD,F3_swing_take_gap=1046.4,fair_prob 0.418 < 0.42 | tier GOLD -> stake_mult=0,fetched,,False
-COL @ PIT,COL,0.6941,0.4845,0.2097,0.5155,0.5155,0.4678,2106.0,0.2112,30.44,0.9307,0.25,0.0848,0.0424,0.0,0.0,SKIP,,"fair_prob 0.211 < 0.42 | edge +30.44pp outside [4,15]pp | tier SKIP -> stake_mult=0",fetched,,False
-TB @ TOR,TB,0.519,0.4723,0.0467,0.5277,0.5277,0.5313,1886.0,0.5562,-2.85,-0.0738,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=1045.8,"edge -2.85pp outside [4,15]pp | tier GOLD -> stake_mult=0",fetched,,True
-DET @ NYM,DET,0.8091,0.4807,0.3285,0.5193,0.5193,0.5313,2211.0,0.4046,11.47,0.1866,0.1452,0.0363,0.0182,0.0,0.0,SKIP,,fair_prob 0.405 < 0.42 | tier SKIP -> stake_mult=0,fetched,acute_roster;bullpen_fatigue,True
-CHC @ ATL,ATL,0.6783,0.6466,0.0317,0.6466,0.6466,0.6371,1989.0,0.5278,11.88,0.1854,0.2225,0.0556,0.0278,0.0,0.0,GOLD,F3_swing_take_gap=780.7,tier GOLD -> stake_mult=0,fetched,,False
+LAA @ CLE,CLE,0.5558,0.5795,0.0237,0.5795,0.5795,0.4988,2794.0,0.5698,0.97,-0.0005,0.0,0.0,0.0,0.0,0.0,SKIP,,"edge +0.97pp outside [4,15]pp | tier SKIP -> stake_mult=0",fetched,bullpen_fatigue,True
+WSH @ CIN,WSH,0.566,0.475,0.0909,0.525,0.525,0.4961,2556.0,0.4206,10.44,0.1602,0.1324,0.0331,0.0165,0.0,0.0,GOLD,F3_swing_take_gap=1046.4,tier GOLD -> stake_mult=0,fetched,,False
+COL @ PIT,PIT,0.6941,0.5407,0.1534,0.5407,0.5407,0.6124,2106.0,0.787,-24.62,-0.2954,0.0,0.0,0.0,0.0,0.0,PLATINUM,"F1_xera_gap=5.38, F3_swing_take_gap=3598.9","edge -24.62pp outside [4,15]pp",fetched,bullpen_fatigue,True
+TB @ TOR,TB,0.519,0.4696,0.0494,0.5304,0.5304,0.5313,1886.0,0.5153,1.52,-0.0083,0.0,0.0,0.0,0.0,0.0,GOLD,F3_swing_take_gap=1045.8,"edge +1.52pp outside [4,15]pp | tier GOLD -> stake_mult=0",fetched,,True
+DET @ NYM,DET,0.8091,0.4807,0.3285,0.5193,0.5193,0.5313,2211.0,0.4134,10.59,0.1658,0.1332,0.0333,0.0167,0.0,0.0,SKIP,,fair_prob 0.413 < 0.42 | tier SKIP -> stake_mult=0,fetched,acute_roster;bullpen_fatigue,True
+CHC @ ATL,ATL,0.6783,0.6364,0.0419,0.6364,0.6364,0.6267,1989.0,0.5282,10.82,0.1712,0.2037,0.0509,0.0255,0.0,0.0,GOLD,F3_swing_take_gap=780.7,tier GOLD -> stake_mult=0,fetched,,False
 KC @ CHW,TBD,,,,,,,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Stephen Kolek has only 0 Statcast pitches season-to-date; need 100+ to score,pending_sp_data,,False
-MIA @ MIN,MIA,0.6474,0.4357,0.2118,0.5643,0.5643,0.5313,2466.0,0.4866,7.77,0.1097,0.1135,0.0284,0.0142,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,,False
-SD @ MIL,MIL,0.6234,0.6326,0.0092,0.6326,0.6326,0.6202,1678.0,0.5489,8.36,0.1269,0.1624,0.0406,0.0203,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,bullpen_fatigue,True
-ARI @ TEX,ARI,0.6411,0.4567,0.1844,0.5433,0.5433,0.5313,2182.0,0.4446,9.87,0.1572,0.1392,0.0348,0.0174,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,,False
-SEA @ HOU,HOU,0.71,0.6503,0.0597,0.6503,0.6503,0.6563,2202.0,0.4066,24.37,0.486,0.25,0.0946,0.0473,0.0,0.0,GOLD,F3_swing_take_gap=1796.0,"fair_prob 0.407 < 0.42 | edge +24.37pp outside [4,15]pp | tier GOLD -> stake_mult=0",fetched,acute_roster,True
-STL @ OAK,STL,0.6746,0.4937,0.1809,0.5063,0.5063,0.5313,2785.0,0.403,10.33,0.162,0.1251,0.0313,0.0156,0.0,0.0,SKIP,,fair_prob 0.403 < 0.42 | tier SKIP -> stake_mult=0,fetched,,False
-SF @ LAD,LAD,0.6471,0.8663,0.2192,0.8663,0.8663,0.6808,2319.0,0.7684,9.79,0.1504,0.25,0.1146,0.0573,0.0,0.0,PLATINUM,"F1_xera_gap=1.52*, F2_xwoba_gap=0.050, F3_swing_take_gap=9589.3","model_prob 0.866 outside [0.48,0.72]",fetched,,False
+MIA @ MIN,MIA,0.6474,0.4357,0.2118,0.5643,0.5643,0.5313,2466.0,0.4873,7.7,0.107,0.1112,0.0278,0.0139,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,,False
+SD @ MIL,MIL,0.6234,0.6138,0.0096,0.6138,0.6138,0.6014,1678.0,0.5489,6.49,0.0935,0.1196,0.0299,0.015,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,bullpen_fatigue,True
+ARI @ TEX,ARI,0.6411,0.4567,0.1844,0.5433,0.5433,0.5313,2182.0,0.4516,9.17,0.1382,0.1262,0.0316,0.0158,0.0,0.0,SKIP,,tier SKIP -> stake_mult=0,fetched,,False
+SEA @ HOU,HOU,0.71,0.6503,0.0597,0.6503,0.6503,0.6563,2202.0,0.376,27.44,0.5706,0.25,0.1008,0.0504,0.0,0.0,GOLD,F3_swing_take_gap=1796.0,"fair_prob 0.376 < 0.42 | edge +27.44pp outside [4,15]pp | tier GOLD -> stake_mult=0",fetched,acute_roster,True
+STL @ OAK,STL,0.6746,0.4952,0.1794,0.5048,0.5048,0.5313,2785.0,0.403,10.18,0.1585,0.1224,0.0306,0.0153,0.0,0.0,SKIP,,fair_prob 0.403 < 0.42 | tier SKIP -> stake_mult=0,fetched,,False
+SF @ LAD,LAD,0.6471,0.843,0.1959,0.843,0.843,0.6563,2319.0,0.7684,7.46,0.1194,0.25,0.091,0.0455,0.0,0.0,PLATINUM,"F1_xera_gap=1.52*, F2_xwoba_gap=0.050, F3_swing_take_gap=9589.3","model_prob 0.843 outside [0.48,0.72]",fetched,,False
 NYY @ BAL,TBD,,,,,,,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Probable SP not yet announced for BAL (home); will fill in next workflow run (needs 100+ Statcast pitches once announced to score),pending_sp_data,,False
 PHI @ BOS,TBD,,,,,,,,,,,,,,,,PENDING_SP_DATA,thin_sp_data,Probable SP not yet announced for BOS (home); will fill in next workflow run (needs 100+ Statcast pitches once announced to score),pending_sp_data,,False
