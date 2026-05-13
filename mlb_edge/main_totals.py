@@ -342,4 +342,33 @@ def _parse_args(argv):
     p.add_argument("--through", type=lambda s: datetime.strptime(s, "%Y-%m-%d").date())
     p.add_argument("--bankroll", type=float, default=100.0)
     p.add_argument("--seasons", type=lambda s: [int(x) for x in s.split(",")],
-                   help="Comma-separated, e.g. 2023,2024,2
+                   help="Comma-separated, e.g. 2023,2024,2025")
+    p.add_argument("--save", default="models/totals_latest.pkl")
+    p.add_argument("--date", type=lambda s: datetime.strptime(s, "%Y-%m-%d").date(),
+                   help="Target date (YYYY-MM-DD) for predict mode")
+    p.add_argument("--model_path", default="models/totals_latest.pkl")
+    p.add_argument("--out")
+    return p.parse_args(argv)
+
+
+def main(argv=None):
+    args = _parse_args(argv or sys.argv[1:])
+    if args.mode == "backtest":
+        if args.season is None:
+            print("--season is required for backtest mode")
+            sys.exit(1)
+        run_backtest(args.season, args.through, args.out, args.bankroll)
+    elif args.mode == "train":
+        if not args.seasons:
+            print("--seasons is required for train mode (e.g. 2023,2024,2025)")
+            sys.exit(1)
+        run_train(args.seasons, args.save, args.through)
+    elif args.mode == "predict":
+        if args.date is None:
+            print("--date is required for predict mode (e.g. 2026-04-22)")
+            sys.exit(1)
+        run_predict(args.date, args.model_path, args.bankroll, args.out)
+
+
+if __name__ == "__main__":
+    main()
