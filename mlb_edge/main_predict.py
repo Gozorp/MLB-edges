@@ -831,6 +831,16 @@ def run(slate_date: date,
                 parlay_path = Path(f"parlay_{slate_date.isoformat()}.txt")
                 parlay_builder.write_parlay_report(graded, slate_date, parlay_path)
                 log.info("Wrote parlay report to %s", parlay_path)
+                # Persist the graded columns (grade, pre_cap_score,
+                # pre_cap_grade, grade_reasons) BACK to the diag CSV.
+                # Without this re-write, the diag CSV only has the
+                # pre-grading table from line 800 and the weekly cap
+                # audit finds zero cap-era files.
+                if out_picks:
+                    graded.to_csv(out_picks, index=False)
+                    log.info(
+                        "Re-wrote diagnostic table with grade columns "
+                        "to %s", out_picks)
             except Exception as e:
                 log.warning("parlay builder failed (continuing): %s", e)
         return
