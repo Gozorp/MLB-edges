@@ -64,6 +64,16 @@ jobs:
           fi
           python tools/run_backtest.py $ARGS
 
+      - name: Run shadow-Kelly cap audit
+        # Generates docs/data/backtest/cap_audit_latest.md by comparing
+        # production grade vs pre_cap_grade across cap-era diag CSVs.
+        # Emits [WARN] flags when any of the five hard caps drops below
+        # its pre-committed precision target — surfaces over-restriction
+        # automatically without a human having to eyeball the numbers.
+        # No-op on weeks where no cap-era files exist yet.
+        run: |
+          python tools/run_backtest.py --cap-audit || echo "cap audit non-fatal failure (likely no cap-era data yet)"
+
       - name: Commit + push backtest artifacts via fresh clone
         env:
           GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

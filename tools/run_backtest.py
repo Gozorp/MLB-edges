@@ -370,6 +370,214 @@ def build_report(picks: pd.DataFrame, start_bankroll: float,
     return "\n".join(parts), eqs, summaries, season_stats
 
 
+# ---------------------------------------------------------------------------
+# Shadow-Kelly cap audit (2026-05-13)
+# ---------------------------------------------------------------------------
+# Runs TWO Kelly simulations in parallel over the cap-era diag CSVs:
+#   * actual: uses production `grade` (post-cap)
+#   * shadow: uses `pre_cap_grade` (what grade would have been without caps)
+# The divergence is the lift (or drag) the five hard caps delivered.  We
+# emit both an Option-A (path-dependent compounding bankroll trajectory)
+# and an Option-B (per-cap attribution at fixed $1000 nominal) view so
+# the audit captures both operational reality and isolated algorithmic
+# efficacy.  See user discussion 2026-05-13 for the architectural rationale.
+
+# Pre-committed precision targets per cap (loss-averted / total fires).
+# When the realized precision drops below the target, the audit emits a
+# [WARN] flag in the markdown so a Sunday-morning skim instantly surfaces
+# any cap that has become a drag on PnL.
+CAP_PRECISION_TARGETS = {
+    "[HARD CAP 1]": 1.00,   # negative-edge GOLD — 3-for-3 in archive
+    "[HARD CAP 2]": 0.60,   # F3 + non-elite opp SP — smaller sample
+    "[HARD CAP 3]": 1.00,   # PLATINUM calibration artifact — 2-for-2
+    "[HARD CAP 4]": 0.75,   # Stage 1/2 + confidence_downgrade — 3 cases
+    "[HARD CAP 5]": 0.65,   # F1* quarantine — asterisk is a soft signal
+}
+
+CAP_LABELS = {
+    "[HARD CAP 1]": "Negative-edge GOLD prevention",
+    "[HARD CAP 2]": "F3 + non-elite opposing SP",
+    "[HARD CAP 3]": "PLATINUM calibration artifact",
+    "[HARD CAP 4]": "Stage 1/2 + confidence_downgrade",
+    "[HARD CAP 5]": "F1* small-sample SP quarantine",
+}
+
+def _stake_mult_from_grade(grade):
+    """Parlay-eligible grades have stake_mult=1.0; others bet zero.
+    Mirrors the production parlay grader's tier-to-stake mapping."""
+    g = (grade or "").strip().upper()
+    return 1.0 if g in ("A", "A-", "B+") else 0.0
+
+def _which_cap_fired(grade_reasons):
+    """Parse the cap identifier from grade_reasons.  Returns the first
+    [HARD CAP N] marker found, or None when no cap fired.  Multiple caps
+    can fire on one row; we attribute to the first since each subsequent
+    cap is operating on an already-demoted score."""
+    if not isinstance(grade_reasons, str):
+        return None
+    import re as _re_cap
+    m = _re_cap.search(r"\[HARD CAP \d\]", grade_reasons)
+    return m.group(0) if m else None
+
+def cap_audit(start_bankroll=1000.0):
+    """Run the parallel actual + shadow Kelly simulation across all
+    cap-era diag CSVs, attribute per-cap PnL, and return a markdown
+    audit report plus a machine-readable summary dict.
+
+    Cap-era diag CSVs are identified by the presence of the
+    `pre_cap_grade` column.  Pre-cap-era files (everything before the
+    2026-05-13 push) are skipped automatically — they have no shadow
+    data to compare against.
+    """
+    import glob, json, re as _re
+    diag_files = sorted(glob.glob(str(ROOT / "docs/data/picks_*_diag.csv")))
+    pg_files = sorted(glob.glob(str(ROOT / "docs/data/postgame/*.json")))
+    pg_by_date = {}
+    for pf in pg_files:
+        m = _re.search(r"(\d{4}-\d{2}-\d{2})", pf)
+        if not m: continue
+        try:
+            with open(pf, encoding="utf-8") as fp:
+                pg_by_date[m.group(1)] = json.load(fp)
+        except Exception:
+            pass
+
+    actual_bk = shadow_bk = float(start_bankroll)
+    attribution = {cap: {"fires": 0, "loss_averted": 0, "win_missed": 0,
+                         "d_unit_dollars": 0.0} for cap in CAP_PRECISION_TARGETS}
+    ledger = []
+    n_dates_scanned = 0
+    n_cap_fires_total = 0
+
+    for diag_f in diag_files:
+        m = _re.search(r"(\d{4}-\d{2}-\d{2})", diag_f)
+        if not m: continue
+        date = m.group(1)
+        df = pd.read_csv(diag_f)
+        if "pre_cap_grade" not in df.columns:
+            continue  # pre-cap-era file
+        n_dates_scanned += 1
+        pg = (pg_by_date.get(date, {}) or {}).get("by_matchup", {})
+
+        for _, r in df.iterrows():
+            grade = r.get("grade"); pre_g = r.get("pre_cap_grade")
+            if pd.isna(grade) or pd.isna(pre_g): continue
+            am = _stake_mult_from_grade(grade)
+            sm = _stake_mult_from_grade(pre_g)
+            if am == sm: continue  # cap had no effect on stake_mult
+            p = r.get("p_model"); ev = r.get("ev_per_dollar")
+            if pd.isna(p) or pd.isna(ev) or p <= 0: continue
+            decimal = (float(ev) + 1.0) / float(p)
+            if decimal <= 1.0: continue
+            verdict = (pg.get(r["matchup"], {}) or {}).get("verdict", "")
+            if verdict.upper() not in ("WIN", "LOSS"): continue
+            won = verdict.upper() == "WIN"
+
+            # kelly_curve returns (full_capped, quarter, eighth) fractions;
+            # we use the quarter-Kelly variant (index 1) for both legs and
+            # multiply by the tier-derived stake_mult.
+            _kc = kelly_curve(float(p), decimal)
+            f_actual = am * _kc[1]
+            f_shadow = sm * _kc[1]
+
+            payout = (decimal - 1.0) if won else -1.0
+            pnl_actual = actual_bk * f_actual * payout
+            pnl_shadow = shadow_bk * f_shadow * payout
+            actual_bk += pnl_actual
+            shadow_bk += pnl_shadow
+
+            d_unit = (f_shadow - f_actual) * 1000.0 * payout
+            n_cap_fires_total += 1
+            cap = _which_cap_fired(r.get("grade_reasons", ""))
+            if cap in attribution:
+                attribution[cap]["fires"] += 1
+                attribution[cap]["d_unit_dollars"] += d_unit
+                if won:
+                    attribution[cap]["win_missed"] += 1  # cap demoted a winner
+                else:
+                    attribution[cap]["loss_averted"] += 1  # cap demoted a loser
+
+            ledger.append({
+                "date": date, "matchup": r["matchup"],
+                "cap": cap or "UNKNOWN",
+                "pre_cap_grade": pre_g, "grade": grade,
+                "verdict": verdict.upper(),
+                "delta_unit_$": round(d_unit, 2),
+                "pct_of_actual_bk": round(100 * d_unit / actual_bk, 3) if actual_bk > 0 else 0,
+            })
+
+    # ---- Build markdown report ----
+    ts = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")
+    md = [f"# Cap Audit — Shadow-Kelly Analysis",
+          f"_Generated {ts} UTC_",
+          f"Scanned {n_dates_scanned} cap-era slates; observed {n_cap_fires_total} cap firings.",
+          ""]
+    md.append("## Headline (Option A — path-dependent compounding bankrolls)")
+    md.append(f"- Actual bankroll (with caps):   ${actual_bk:,.2f}")
+    md.append(f"- Shadow bankroll (no caps):    ${shadow_bk:,.2f}")
+    if shadow_bk > 0:
+        lift_pct = 100 * (actual_bk - shadow_bk) / shadow_bk
+        md.append(f"- **Cap lift: {lift_pct:+.2f}%** ({'caps helping' if lift_pct > 0 else 'caps dragging' if lift_pct < 0 else 'neutral'})")
+    md.append("")
+
+    md.append("## Per-cap attribution (Option B — fixed $1000 nominal, isolated EV)")
+    md.append("")
+    md.append("| Cap | Fires | Loss averted | Win missed | Precision | Target | $ delta | Status |")
+    md.append("|---|---:|---:|---:|---:|---:|---:|---|")
+    warnings = []
+    for cap, target in CAP_PRECISION_TARGETS.items():
+        a = attribution[cap]
+        n = a["fires"]
+        if n == 0:
+            md.append(f"| {cap} {CAP_LABELS[cap][:30]} | 0 | 0 | 0 | n/a | {target:.0%} | $0.00 | no fires yet |")
+            continue
+        prec = a["loss_averted"] / n
+        status = "OK"
+        if prec < target:
+            status = f"**[WARN: {prec:.0%} < target {target:.0%} — RECOMMEND RELAXATION]**"
+            warnings.append(f"{cap}: precision {prec:.0%} below target {target:.0%}")
+        md.append(f"| {cap} | {n} | {a['loss_averted']} | {a['win_missed']} | "
+                  f"{prec:.0%} | {target:.0%} | ${a['d_unit_dollars']:+,.2f} | {status} |")
+    md.append("")
+
+    if warnings:
+        md.append("## ⚠ Action items (precision below target)")
+        for w in warnings:
+            md.append(f"- {w}")
+        md.append("")
+        md.append("Relaxation is a one-line change per cap in `mlb_edge/parlay_builder.py`. "
+                  "Tighten only after enough samples accumulate (suggest n >= 10 fires before acting).")
+        md.append("")
+    else:
+        md.append("## ✓ All caps within precision targets")
+        md.append("")
+
+    # Per-game ledger
+    md.append("## Per-game ledger (all cap firings)")
+    md.append("")
+    md.append("| Date | Matchup | Cap | Pre→Post | Verdict | Δ$ (unit) | % of actual bk |")
+    md.append("|---|---|---|---|---|---:|---:|")
+    for row in ledger[-50:]:  # last 50 to keep markdown manageable
+        md.append(f"| {row['date']} | {row['matchup']} | {row['cap']} | "
+                  f"{row['pre_cap_grade']}→{row['grade']} | {row['verdict']} | "
+                  f"${row['delta_unit_$']:+,.2f} | {row['pct_of_actual_bk']:+.2f}% |")
+
+    summary = {
+        "generated_at": ts,
+        "n_dates_scanned": n_dates_scanned,
+        "n_cap_fires_total": n_cap_fires_total,
+        "actual_bankroll": round(actual_bk, 2),
+        "shadow_bankroll": round(shadow_bk, 2),
+        "cap_lift_pct": round(100 * (actual_bk - shadow_bk) / shadow_bk, 2) if shadow_bk > 0 else None,
+        "attribution": {cap: {**a, "precision": round(a["loss_averted"] / a["fires"], 3) if a["fires"] > 0 else None,
+                              "target": target}
+                        for cap, target in CAP_PRECISION_TARGETS.items()
+                        for a in [attribution[cap]]},
+        "warnings": warnings,
+    }
+    return "\n".join(md), summary, ledger
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", default=None,
@@ -377,7 +585,31 @@ def main(argv=None):
     ap.add_argument("--start-bankroll", type=float, default=1000.0)
     ap.add_argument("--files", nargs="+", default=None,
                     help="Override default bt_*.csv list.")
+    ap.add_argument("--cap-audit", action="store_true",
+                    help="Run the shadow-Kelly cap audit instead of the "
+                         "historical backtest. Reads cap-era diag CSVs "
+                         "(those with a pre_cap_grade column) and writes "
+                         "docs/data/backtest/cap_audit_<ts>.md.")
     args = ap.parse_args(argv)
+
+    if args.cap_audit:
+        log.info("running shadow-Kelly cap audit")
+        md, summary, ledger = cap_audit(start_bankroll=args.start_bankroll)
+        ts = summary["generated_at"]
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        (OUT_DIR / f"cap_audit_{ts}.md").write_text(md, encoding="utf-8")
+        (OUT_DIR / "cap_audit_latest.md").write_text(md, encoding="utf-8")
+        import json as _j
+        (OUT_DIR / "cap_audit_latest.json").write_text(
+            _j.dumps(summary, indent=2, default=str), encoding="utf-8")
+        if ledger:
+            pd.DataFrame(ledger).to_csv(OUT_DIR / "cap_audit_ledger.csv", index=False)
+        log.info("wrote cap audit (%d fires across %d slates, %d warnings)",
+                 summary["n_cap_fires_total"], summary["n_dates_scanned"],
+                 len(summary["warnings"]))
+        print(md)
+        return 0
+
 
     if args.files:
         files = [ROOT / f for f in args.files]
