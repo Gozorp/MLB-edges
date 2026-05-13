@@ -23,7 +23,15 @@ Given a slate date `<DATE>`:
 3. `curl` the MLB statsapi for actual final scores:
    `https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=<DATE>&hydrate=team,linescore,decisions`
 4. For each matchup in the picks CSV, compute:
-   - The model's pick (which side, what tier, what score).
+   - The model's pick (which side, what tier, what score). **CRITICAL:**
+     read the `pick` column directly from the CSV — do NOT derive the model
+     pick from `f5_prob`, `full_prob`, `p_model`, or `tier`. On games where
+     Stage 1 and Stage 2 disagree about which side wins (one ≥ 0.5, the
+     other < 0.5), inferring from `f5_prob` will give you the WRONG team.
+     The `model_pick` field you write must reference the team in the CSV's
+     `pick` column exactly. Example: if CSV says `pick: WSH`, write
+     `"model_pick": "WSH ML <tier>"` — never `MIA ML` even if MIA is the
+     home team and other columns might look like they favor MIA.
    - Your Claude Brain decision for that game (CONFIRM / DOWNGRADE / OVERRIDE).
    - Whether the pick won, lost, or pushed against the actual final.
    - Whether your Claude decision improved on the model (CONFIRM-and-won,

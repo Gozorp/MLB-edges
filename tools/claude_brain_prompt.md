@@ -16,6 +16,24 @@ You have read access to the full repo. The files that matter today:
   (Stage 2 full-game), `fair_prob` (Vegas-implied via Shin devig), `edge_pp`,
   `tier` (PLATINUM / GOLD / SKIP), `signals`, `why_skipped`, etc.
 
+> **CRITICAL — reading the model's pick.**
+> The **`pick`** column is the authoritative answer to "which team did the
+> quantitative model pick." Read it directly. **Do NOT derive the pick from
+> `f5_prob`, `full_prob`, `p_model`, `tier`, or any other column.**
+>
+> Specifically: `f5_prob` and `full_prob` are both **home-side probabilities**
+> (probability the HOME team wins). On games where Stage 1 and Stage 2
+> disagree about which side wins (one is `>= 0.5`, the other is `< 0.5`),
+> using `f5_prob` to infer the pick will give you the WRONG team. The actual
+> pick is determined by `full_prob` only: `full_prob >= 0.5` → pick is home,
+> else pick is away. But you don't need to compute this yourself — the
+> `pick` column has already done it.
+>
+> When you write `model_pick` in your `claude_picks/<date>.json` output, the
+> value must match the CSV `pick` column exactly. If the CSV says
+> `pick: WSH`, write `"model_pick": "WSH ML <tier>"` — never `MIA ML` even
+> if MIA is the home team and `f5_prob` looked like it favored them.
+
 - **`docs/data/postgame/*.json`** — every prior day's post-mortem. Read at
   least the last 14 days. Each file has `by_matchup` keyed by matchup string
   with `verdict` (WIN/LOSS), `headline`, `hypothesis`, and
