@@ -472,6 +472,155 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
             )
             score = min(score, 3)
 
+    # ========================================================================
+    # 2026-05-13: FIVE HARD-CAP RULES validated by docs/data/postgame/*.json
+    # ========================================================================
+    # Each rule corresponds to a recurring failure mode observed across the
+    # 5/8 - 5/11 postgame archive.  All five act as POST-SCORING caps: they
+    # fire after the multi-signal scoring above has run and apply a hard
+    # tier reduction.  The pre-cap score is snapshotted so grade_picks can
+    # write both `grade_score` (post-cap, used by parlay grader) and
+    # `pre_cap_score` (post-scoring, pre-hard-cap; used by the weekly
+    # backtest to monitor whether the caps have become so restrictive that
+    # they are choking out genuine +EV plays).
+    pre_cap_score = score
+
+    import re as _re_caps
+
+    # Rule 1 — NEGATIVE-EDGE GOLD HARD CAP
+    # Validation: 3-for-3 losses across the postgame archive.
+    #   2026-05-09 CHC @ TEX (edge -4.41pp, GOLD CONFIRM, lost 0-6)
+    #   2026-05-09 NYY @ MIL (edge -2.00pp, GOLD CONFIRM, lost 3-4)
+    #   2026-05-11 NYY @ BAL (edge -4.75pp, GOLD pre-DOWNGRADE, lost 2-3)
+    # Distinct from the existing -8pp cap (which only fires at deep negative
+    # edges).  ANY negative edge on a GOLD pick (score >= 3 == B+ or higher)
+    # collapses to score=1 (B-, DO NOT PARLAY).
+    _epp = row.get("edge_pp")
+    if pd.notna(_epp):
+        try:
+            _epp_f = float(_epp)
+            if _epp_f < 0 and score >= 3:
+                reasons.append(
+                    f"[HARD CAP 1] negative-edge GOLD ({_epp_f:+.1f}pp < 0) "
+                    f"prevents GOLD confirmation (score {score} -> 1)"
+                )
+                score = 1
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 3 — PLATINUM CALIBRATION ARTIFACT HARD CAP
+    # Validation: 2-for-2 losses.
+    #   2026-05-10 ATL @ LAD (p_model=0.9447, delta=0.4679, lost 2-7)
+    #   2026-05-11 SF  @ LAD (p_model=0.9447, delta=0.4679, lost 3-9)
+    # Pattern: when model_prob > 0.85 AND Stage 1/2 delta > 0.20, the booster
+    # has been pushed past the calibrator's reliable range — almost always a
+    # data artifact (often limited Statcast for the picked side's SP).
+    # Hard SKIP (score = 0).
+    if pd.notna(p_model) and p_model > 0.85 and pd.notna(f5) and pd.notna(full):
+        try:
+            _p5 = float(f5) if pick == home else 1.0 - float(f5)
+            _pf = float(full) if pick == home else 1.0 - float(full)
+            _delta = abs(_pf - _p5)
+            if _delta > 0.20:
+                reasons.append(
+                    f"[HARD CAP 3] PLATINUM calibration artifact: p_model {p_model:.3f}>0.85 "
+                    f"AND Stage 1/2 delta {_delta:.2f}>0.20 (score {score} -> 0)"
+                )
+                score = 0
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 4 — STAGE 1/2 GAP + CONFIDENCE_DOWNGRADE HARD CONTRA-INDICATOR
+    # Validation: 3 supporting cases in the archive.
+    #   2026-05-09 MIN @ CLE (delta=0.179, conf_dn=True, lost)
+    #   2026-05-10 MIN @ CLE (similar pattern, lost)
+    #   2026-05-10 PIT @ SF  (F2 exception failed, conf_dn=True, lost)
+    # When the two stages disagree AND the pipeline already flagged
+    # confidence_downgrade, the bullpen-carry thesis is structurally fragile.
+    # Cap at score=1 (B-, DO NOT PARLAY) regardless of F-signal stack.
+    _conf_dn_raw = row.get("confidence_downgrade")
+    _conf_dn = (str(_conf_dn_raw).strip().lower() in ("true", "1"))
+    if _conf_dn and pd.notna(f5) and pd.notna(full):
+        try:
+            _p5 = float(f5) if pick == home else 1.0 - float(f5)
+            _pf = float(full) if pick == home else 1.0 - float(full)
+            _delta = abs(_pf - _p5)
+            if _delta >= 0.12 and score >= 3:
+                reasons.append(
+                    f"[HARD CAP 4] Stage 1/2 delta {_delta:.2f} + confidence_downgrade=True "
+                    f"(score {score} -> 1)"
+                )
+                score = 1
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 5 — F1* SMALL-SAMPLE SP QUARANTINE
+    # Validation: rookie/early-career SP blowups.
+    #   2026-05-08 NYY @ MIL (Misiorowski rookie, F1*, lost 0-6)
+    #   2026-05-09 NYY @ MIL (Schlittler small sample, F1*, lost 3-4)
+    #   2026-05-09 CHC @ TEX (Leiter early career, F1*, lost 0-6)
+    # When F1_xera_gap is asterisked (indicating thin Statcast sample),
+    # it cannot be the sole F-signal supporting a GOLD pick.  Either another
+    # lineup signal (F2 / F3) or PQI confirmation must also fire to sustain
+    # the tier.  Otherwise cap at B (score=2).
+    _f1_star = bool(_re_caps.search(r"F1_xera_gap\*", signals_str))
+    if _f1_star and score >= 3:
+        _has_other_signal = (
+            ("F2_xwoba_gap=" in signals_str) or
+            ("F3_swing_take_gap=" in signals_str) or
+            any("PQI confirms" in r for r in reasons)
+        )
+        if not _has_other_signal:
+            reasons.append(
+                f"[HARD CAP 5] F1* small-sample SP without other lineup/PQI "
+                f"support cannot sustain GOLD (score {score} -> 2)"
+            )
+            score = 2
+
+    # Rule 2 — F3 > 1000 + HOME-FAV > 65% REQUIRES ELITE OPPOSING SP
+    # Validation: 2 cases — one failure that motivated the rule, one
+    # OVERRIDE that confirmed Claude's executive layer applied it correctly.
+    #   2026-05-10 ATL @ LAD (F3=1774, p_model=0.65+, opp SP not elite, lost 2-7)
+    #   2026-05-11 SEA @ HOU (F3=1783, similar pattern, Claude correctly OVERRODE)
+    # F3 measures lineup contact quality, not total-game quality — when the
+    # opposing SP is genuinely elite (season xERA < 4.0), F3 magnitude alone
+    # cannot override the home-favorite heuristic.  Cap at score=3 (B+).
+    _m_f3 = _re_caps.search(r"F3_swing_take_gap=([0-9.]+)", signals_str)
+    if _m_f3 and pd.notna(p_model) and float(p_model) > 0.65 and score >= 5:
+        try:
+            _f3_val = float(_m_f3.group(1))
+            if _f3_val > 1000:
+                opp_sp = home_sp if pick != home else away_sp
+                opp_xera = None
+                if opp_sp is not None:
+                    for key in ("xera", "xERA", "season_xera"):
+                        v = opp_sp.get(key)
+                        if v is not None:
+                            try:
+                                opp_xera = float(v)
+                                break
+                            except (TypeError, ValueError):
+                                pass
+                # Cap fires unless we can verify the opposing SP is elite
+                # (xERA strictly under 4.0).  Missing data conservatively
+                # treats the SP as non-elite — better to leave money on
+                # the table than chase variance.
+                if opp_xera is None or opp_xera >= 4.0:
+                    reasons.append(
+                        f"[HARD CAP 2] F3={_f3_val:.0f}>1000 + p_model>{0.65:.2f} "
+                        f"without elite opposing SP (xERA={opp_xera}) "
+                        f"(score {score} -> 3)"
+                    )
+                    score = 3
+        except (TypeError, ValueError):
+            pass
+
+    # Surface pre_cap_score so grade_picks can write it as a separate column.
+    # Encoded as a structured tag at the END of reasons so we can parse it
+    # back out without changing the function signature.
+    if pre_cap_score != score:
+        reasons.append(f"[PRE_CAP_SCORE={pre_cap_score}]")
+
     return score, reasons
 
 
@@ -555,6 +704,13 @@ def grade_picks(diag_df: pd.DataFrame,
     out["grade"] = ""
     out["grade_score"] = 0
     out["grade_reasons"] = ""
+    # Pre-cap snapshot: what grade_score WOULD have been before the five
+    # 2026-05-13 hard caps fired.  Equal to grade_score when no cap fired.
+    # Surfaced in the diag CSV so the weekly backtest can monitor whether
+    # the caps are over-restricting (lots of pre_cap_grade == A but
+    # grade == D rows that ended up winning).
+    out["pre_cap_score"] = 0
+    out["pre_cap_grade"] = ""
 
     # Build matchup -> SP names map from anchor (anchor keys are str(game_pk))
     # We need to also infer game_pk from matchup if not present in diag_df.
@@ -635,8 +791,26 @@ def grade_picks(diag_df: pd.DataFrame,
                                "(cap at C; market validation required)")
                 score = min(score, 0)
 
+        # Extract the pre-cap score tag (added by _score_pick when any of the
+        # five hard caps fired).  This lets the weekly backtest compare what
+        # the score WOULD have been without the new caps — the cheapest way
+        # to detect over-restriction (caps choking out genuine +EV plays).
+        # If no cap fired, pre_cap_score == score.
+        import re as _re_gp
+        _pre_cap = score
+        for _r in reasons:
+            _m = _re_gp.match(r"\[PRE_CAP_SCORE=(-?\d+)\]", _r)
+            if _m:
+                try:
+                    _pre_cap = int(_m.group(1))
+                except (TypeError, ValueError):
+                    pass
+                break
+
         out.at[idx, "grade_score"] = score
+        out.at[idx, "pre_cap_score"] = _pre_cap
         out.at[idx, "grade"] = _score_to_grade(score)
+        out.at[idx, "pre_cap_grade"] = _score_to_grade(_pre_cap)
         out.at[idx, "grade_reasons"] = " | ".join(reasons)
     return out
 

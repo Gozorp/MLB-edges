@@ -124,6 +124,21 @@ vocabulary as of 2026-05-12:
   meaningful threshold).
 - **Sample-size flags**: `acute_roster_True`, `small_sample_SP_True`,
   `confidence_downgrade_True`.
+- **Hard caps (2026-05-13)**: when a pick was demoted by one of the five
+  hard caps in `parlay_builder.py`, cite the cap by canonical name in
+  `signals_to_recheck`:
+  - `[HARD CAP 1] negative_edge_GOLD` — any negative edge on a GOLD-or-higher
+    pick.
+  - `[HARD CAP 2] F3_with_non_elite_opposing_SP` — F3>1000 + home_fav>65%
+    without opposing SP xERA<4.0.
+  - `[HARD CAP 3] PLATINUM_calibration_artifact` — p_model>0.85 + Stage 1/2
+    delta>0.20.
+  - `[HARD CAP 4] Stage_1_2_disagree_with_confidence_downgrade`.
+  - `[HARD CAP 5] F1_star_no_secondary_signal` — F1\* without F2/F3/PQI.
+  - Use the canonical name (left of the dash) so the brain prompt can
+    grep-match cap firings across the postgame archive.  These cap names
+    will be useful in `patterns_observed` if a particular cap is
+    over-firing (catching wins) or under-firing (missing losses).
 
 Use these exact strings (or close variants) in `signals_to_recheck` so
 the brain prompt's heuristics can grep-match them across the postgame

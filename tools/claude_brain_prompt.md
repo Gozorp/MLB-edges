@@ -94,15 +94,45 @@ Per matchup, your `claude_decision` must be one of:
   sparingly — only for a clear thesis backed by recent data the model
   doesn't see (rookie SP, late lineup change, injured cleanup hitter, etc.).
 
+## Hard caps already enforced by `parlay_builder.py` (do NOT re-derive)
+
+The rule layer applies **five validated hard caps** before you see the slate.
+A pick that arrives at your input as `tier: SKIP` or `grade: D` after one of
+these caps fires has *already been correctly demoted* — don't re-litigate it.
+You can verify which cap fired by reading the `grade_reasons` column for
+entries prefixed `[HARD CAP N]`. The five caps and their validation:
+
+- **[HARD CAP 1] Negative-edge GOLD prevention** — any `edge_pp < 0` on a
+  GOLD-or-higher pick collapses to score=1 (B-). Validated 3-for-3 across
+  5/9 CHC@TEX, 5/9 NYY@MIL, 5/11 NYY@BAL.
+- **[HARD CAP 2] F3 > 1000 + home-favorite > 65% without elite opposing SP**
+  caps at score=3 (B+). Opposing SP must have season xERA < 4.0 to override.
+- **[HARD CAP 3] PLATINUM calibration artifact** — `p_model > 0.85` AND
+  Stage 1/2 delta > 0.20 forces score=0 (SKIP). Validated 2-for-2 across
+  5/10 ATL@LAD and 5/11 SF@LAD.
+- **[HARD CAP 4] Stage 1/2 disagree + `confidence_downgrade=True`** —
+  Stage 1/2 delta ≥ 0.12 combined with the pipeline flag forces score=1.
+- **[HARD CAP 5] F1\* small-sample SP quarantine** — `F1_xera_gap*` (the
+  asterisk version) cannot be the sole F-signal supporting GOLD unless
+  F2/F3/PQI also fires. Caps at score=2 (B) otherwise.
+
+Your job on a row where a hard cap already fired is to either CONFIRM the
+cap (most common) or, in genuinely exceptional cases, OVERRIDE upward with
+explicit reasoning (e.g. live news the cap couldn't see). **Do not waste
+budget re-deriving the math** — the cap already used the same data you
+have. Treat the cap output as authoritative on the math; your value-add
+is qualitative context (recent injuries, weather, late lineup changes).
+
 ## Decision Heuristics (use these as priors)
 
 1. **Home-favorite over-confidence** — historical postgames show the model
    over-rates home favorites it rates >65%. Default to DOWNGRADE on such
    picks unless there's a strong supporting signal.
 
-2. **Negative-edge contrarian picks** — when `edge_pp < -8`, the rule grader
-   already caps grade at C, but if you see one in the GOLD/PLATINUM tier
-   that slipped through, DOWNGRADE it.
+2. **Negative-edge contrarian picks** — now subsumed by HARD CAP 1 above.
+   Any negative-edge pick that reaches you as GOLD-or-higher means the cap
+   was bypassed (likely a code path issue) — DOWNGRADE and flag in
+   `reasoning`.
 
 3. **Rookie SP blindspot** — if either probable pitcher has fewer than 6
    prior MLB starts (verify via statsapi `people/{id}/stats`), the SP-edge
