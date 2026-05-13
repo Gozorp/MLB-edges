@@ -89,6 +89,40 @@ Write `docs/data/postgame/<DATE>.json` with exactly this structure:
   the home-favorite over-confidence pattern and the rookie-SP blindspot
   pattern, and those should already be familiar to you from prior runs.
 
+## Signal vocabulary (for `signals_to_recheck`)
+
+When citing which feature deserves scrutiny after a loss, prefer the
+canonical column names from the diag CSV so the next morning's brain
+run can search-match them as patterns. The following list is the active
+vocabulary as of 2026-05-12:
+
+- **F-series (lineup conviction)**: `F1_xera_gap`, `F2_xwoba_gap`,
+  `F3_swing_take_gap`, `F4_our_sp_unlucky` — set with a `*` suffix
+  (e.g. `F1_xera_gap*`) when the SP sample is below the 60-BF threshold.
+- **Stage-1/Stage-2 disagreement**: `f5_full_delta` — already a
+  first-class rule trigger at `>= 0.12`.
+- **Edge sign**: `negative_edge_GOLD` for tier-vs-edge slippage cases.
+- **Umpire context**: `ump_k_pct_delta`, `ump_bb_pct_delta`.
+- **Lineup shape (2026-05-12)**: `lineup_concentration_idx` (top-heavy
+  ratio; > 1.5 = vulnerable to relief that navigates the top of order),
+  `lineup_top_bot_dropoff` (absolute xwOBA dropoff top-3 minus bottom-3).
+- **Bullpen-strain interaction (2026-05-12)**: `pen_strain_pick_side`
+  (opposing hl-bullpen xwoba × our top-lineup xwoba; > 0.115 = HIGH
+  collision risk). Cite this when a loss happened because the opposing
+  bullpen out-performed its xwOBA in late leverage against our top of
+  order, OR vice-versa when our pen got punished.
+- **Comparative bullpen quality (2026-05-12)**: `hl_bullpen_xwoba_gap`
+  (negative = our relief is better than theirs; |gap| > 0.040 is the
+  meaningful threshold).
+- **Sample-size flags**: `acute_roster_True`, `small_sample_SP_True`,
+  `confidence_downgrade_True`.
+
+Use these exact strings (or close variants) in `signals_to_recheck` so
+the brain prompt's heuristics can grep-match them across the postgame
+archive over time. Don't invent new signal names unless you're observing
+a genuinely new pattern — and if you do, write a one-line rationale in
+`hypothesis` so it's reproducible.
+
 ## Edge cases
 
 - If `docs/data/claude_picks/<DATE>.json` does not exist, set

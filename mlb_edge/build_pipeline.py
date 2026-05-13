@@ -662,6 +662,12 @@ def _build_game_row(*, sc: pd.DataFrame, game_pk: int,
         "hl_bullpen_xwoba_gap":  inv(home_hl, away_hl, "hl_bullpen_xwoba"),
         "home_hl_bullpen_n_pitches": float(home_hl.get("hl_bullpen_n_pitches") or 0.0),
         "away_hl_bullpen_n_pitches": float(away_hl.get("hl_bullpen_n_pitches") or 0.0),
+        # Surface per-side high-leverage bullpen xwOBA so the bullpen-strain
+        # interaction (computed downstream in main_predict at diag-row time)
+        # can multiply opposing-pen xwoba by our top-lineup xwoba.  These
+        # also feed Claude directly without re-derivation.
+        "home_hl_bullpen_xwoba":  home_hl.get("hl_bullpen_xwoba"),
+        "away_hl_bullpen_xwoba":  away_hl.get("hl_bullpen_xwoba"),
         "park_runs_factor":      park_runs,
         "park_hr_factor":        park_hr_adj,
         # -----------------------------------------------------------------

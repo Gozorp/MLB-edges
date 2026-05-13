@@ -337,6 +337,31 @@ def build_diagnostic_table(games: pd.DataFrame,
         picked_dec = home_dec if side == "home" else away_dec
         ev = expected_value(p_model, picked_dec)
 
+        # Bullpen-strain interaction (the "WHIP-to-OPS collision" the user
+        # named).  We can't access per-closer WHIP from this pipeline, so we
+        # use opposing high-leverage bullpen xwOBA × our top-lineup xwoba as
+        # the multiplicative interaction term.  Higher = greater collision
+        # risk (opposing pen bleeds against our top hitters).  Pick-side
+        # perspective: if we pick home, our hitters face away_hl_pen; if we
+        # pick away, our hitters face home_hl_pen.  See lineup_shape.py for
+        # threshold guidance (>0.115 = HIGH collision risk).
+        try:
+            from .lineup_shape import bullpen_strain_score as _strain
+        except ImportError:
+            from lineup_shape import bullpen_strain_score as _strain
+        if side == "home":
+            _opp_pen = r.get("away_hl_bullpen_xwoba")
+            _our_top = r.get("home_lineup_xwoba")
+        else:
+            _opp_pen = r.get("home_hl_bullpen_xwoba")
+            _our_top = r.get("away_lineup_xwoba")
+        pen_strain_pick_side = _strain(_opp_pen, _our_top)
+        # Re-bind on r so the diag row's r.get("pen_strain_pick_side") finds it
+        try:
+            r["pen_strain_pick_side"] = pen_strain_pick_side
+        except Exception:
+            pass
+
         # Kelly sizing recommendations (bankroll fractions).
         # Full Kelly assumes perfect calibration — even a 2pp miscalibration
         # in p_model blows the bankroll up over a long enough sequence. We
@@ -432,6 +457,42 @@ def build_diagnostic_table(games: pd.DataFrame,
                                 if pd.notna(r.get("ump_k_pct_delta")) else None),
             "ump_bb_pct_delta": (round(float(r.get("ump_bb_pct_delta")), 4)
                                  if pd.notna(r.get("ump_bb_pct_delta")) else None),
+            # ---- Lineup-shape signals (built 2026-05-12) ----
+            # Concentration index = top-3 / bottom-3 mean xwOBA from the
+            # per-batter list (see mlb_edge/lineup_shape.py).  Captures
+            # top-heavy vs balanced lineup composition that aggregated
+            # lineup_xwoba erases.  1.0 = balanced, 1.5+ = top-heavy,
+            # 2.0+ = severe star-anchored shape vulnerable to bottom-of-
+            # order dead zones.  Both perspectives surfaced so the
+            # downstream consumer can pick the relevant side based on
+            # the pick.  Currently only HOME perspective is reliably
+            # computed in build_pipeline (the model is home-side); away
+            # is best-effort via 1-x where the diag has the data.
+            "home_lineup_concentration": (
+                round(float(r.get("home_lineup_concentration_idx")), 3)
+                if pd.notna(r.get("home_lineup_concentration_idx")) else None),
+            "away_lineup_concentration": (
+                round(float(r.get("away_lineup_concentration_idx")), 3)
+                if pd.notna(r.get("away_lineup_concentration_idx")) else None),
+            # ---- High-leverage bullpen quality (comparative) ----
+            # Already a model feature via hl_bullpen_xwoba_gap; surfaced
+            # here so Claude/dashboard can read it directly without
+            # recomputing.  Lower (negative) = our bullpen is meaningfully
+            # better than theirs; positive = theirs is better.  Range in
+            # practice roughly [-0.060, +0.060] xwOBA units.
+            "hl_bullpen_xwoba_gap": (
+                round(float(r.get("hl_bullpen_xwoba_gap")), 4)
+                if pd.notna(r.get("hl_bullpen_xwoba_gap")) else None),
+            # ---- Bullpen-strain interaction (the "collision" signal) ----
+            # opposing_hl_pen_xwoba × our_top_lineup_xwoba.  Multiplicative
+            # interaction term replacing the literal "high-WHIP closer ×
+            # high-OPS top-4" framing — we don't expose per-closer WHIP
+            # in the diag pipeline so xwOBA stands in.  Higher = greater
+            # collision risk (opposing pen bleeds against our top hitters).
+            # See lineup_shape.bullpen_strain_score for thresholds.
+            "pen_strain_pick_side": (
+                round(float(r.get("pen_strain_pick_side")), 4)
+                if pd.notna(r.get("pen_strain_pick_side")) else None),
             "tier": conv.tier,
             "signals": ", ".join(conv.signals_fired),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",

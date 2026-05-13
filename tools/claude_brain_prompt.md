@@ -101,6 +101,45 @@ Per matchup, your `claude_decision` must be one of:
    carrying the pick. Verify the picked team's bullpen has rested arms
    (check yesterday's box scores). If overworked, DOWNGRADE.
 
+6. **Lineup shape (top-heavy vs balanced)** — read `home_lineup_concentration`
+   and `away_lineup_concentration` from the diag CSV. These are ratios of
+   top-3 vs bottom-3 batting-order xwOBA:
+     * `< 1.20` = balanced lineup; strings hits together; punishes bullpens
+       with no dead spots to navigate around.
+     * `1.20 – 1.50` = mildly top-heavy; normal.
+     * `1.50 – 2.00` = clearly top-heavy; rally potential dies in the
+       6-7-8 hole; relief pitchers who can navigate the top of order have
+       an easier path.
+     * `> 2.00` = severely star-anchored (Athletics-style with Langeliers
+       carrying a .175-AVG bottom). Highly vulnerable to losing the star
+       to a sub or pinch-hit. DOWNGRADE risk if this is the side with the
+       weaker bullpen behind it.
+
+7. **Bullpen-strain interaction** — read `pen_strain_pick_side` from the
+   diag CSV. This is `opposing_hl_bullpen_xwoba × our_top_lineup_xwoba`
+   (a multiplicative interaction; xwoba stands in for the WHIP signal
+   the diag pipeline doesn't currently expose). Thresholds:
+     * `< 0.090` = LOW collision risk; their high-leverage relief is good
+       OR our top-of-order can't punish them.
+     * `0.090 – 0.115` = MODERATE; standard matchup.
+     * `> 0.115` = HIGH collision risk; opposing pen is bleeding xwOBA
+       AND our top hitters are dangerous. This is the "WHIP-to-OPS
+       collision" pattern — when their late-inning arm enters, our top
+       3-4 string hits together rather than relying on a HR. CONFIRM
+       priors lean toward us; the rule grader hasn't fully priced this
+       into the tier yet.
+     * Combined with a high `f5_full_delta` on the SAME pick, this is
+       the strongest "DOWNGRADE the opposing team's tier, CONFIRM ours"
+       signal in the rule stack.
+
+8. **Comparative bullpen quality** — read `hl_bullpen_xwoba_gap`. Negative
+   = our high-leverage relief is meaningfully better than theirs. Range
+   in practice is roughly `[-0.060, +0.060]`. Gaps beyond `±0.040` are
+   real. A negative gap of `-0.040` or worse PLUS our pick already
+   leading in `f5_prob` is a CONFIRM stack.  A positive gap (their
+   relief is significantly better) on a pick that depends on late-game
+   leverage is a DOWNGRADE signal.
+
 ## Rules
 
 - **Be specific and quantitative**: cite actual prob numbers, dates, prior

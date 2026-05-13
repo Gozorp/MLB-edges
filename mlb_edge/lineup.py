@@ -362,6 +362,18 @@ def lineup_aggregate(statcast_df: pd.DataFrame,
             return np.nan
         return float((arr[valid] * w_arr[valid]).sum() / w_arr[valid].sum())
 
+    # ---- Lineup shape (top-3 vs bottom-3 concentration) ----
+    # Captures whether the lineup is top-heavy (star-anchored, dies in the
+    # 6-7-8 hole) or balanced (strings hits together).  Computed from the
+    # per-batter xwOBA list BEFORE PA-weighted aggregation collapses it.
+    # See mlb_edge/lineup_shape.py for full docstring + interpretation
+    # guidance.  Returns NaN if fewer than 6 valid slots — defensive.
+    try:
+        from .lineup_shape import concentration_index, top_bottom_dropoff
+    except ImportError:  # pragma: no cover — fallback for direct-script tests
+        from lineup_shape import concentration_index, top_bottom_dropoff
+    lineup_conc_idx = concentration_index(agg_xwoba)
+    lineup_dropoff  = top_bottom_dropoff(agg_xwoba)
     return {
         "lineup_xwoba":       _wavg(agg_xwoba),
         "lineup_wrc_plus":    _wavg(agg_wrcplus),
@@ -374,6 +386,8 @@ def lineup_aggregate(statcast_df: pd.DataFrame,
         "lineup_n_team_prior": n_team_prior,
         "lineup_n_slots":     len(weights),
         "lineup_total_w":     total_w,
+        "lineup_concentration_idx": lineup_conc_idx,
+        "lineup_top_bot_dropoff":   lineup_dropoff,
     }
 
 
@@ -390,6 +404,8 @@ def _nan_lineup_dict() -> Dict[str, float]:
         "lineup_n_team_prior": 0,
         "lineup_n_slots":     0,
         "lineup_total_w":     0.0,
+        "lineup_concentration_idx": np.nan,
+        "lineup_top_bot_dropoff":   np.nan,
     }
 
 
@@ -494,4 +510,12 @@ def build_lineup_features(statcast_df: pd.DataFrame,
         "away_lineup_n_vs_hand": away_agg["lineup_n_vs_hand"],
         "home_lineup_n_slots":   home_agg["lineup_n_slots"],
         "away_lineup_n_slots":   away_agg["lineup_n_slots"],
+        # ---- Lineup-shape features (2026-05-12) ----
+        # See mlb_edge/lineup_shape.py for thresholds.  Top-heavy lineups
+        # (concentration > 1.5) are vulnerable to relief pitching that
+        # can navigate the top 3 — bottom of the order becomes dead-zone.
+        "home_lineup_concentration_idx": home_agg.get("lineup_concentration_idx", np.nan),
+        "away_lineup_concentration_idx": away_agg.get("lineup_concentration_idx", np.nan),
+        "home_lineup_top_bot_dropoff":   home_agg.get("lineup_top_bot_dropoff",   np.nan),
+        "away_lineup_top_bot_dropoff":   away_agg.get("lineup_top_bot_dropoff",   np.nan),
     }
