@@ -21,10 +21,39 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 import sys
 from datetime import date, datetime
 from pathlib import Path
 from typing import List, Optional
+
+
+def _load_dotenv() -> None:
+    """Tiny zero-dependency .env loader. Pushes KEY=VALUE lines from the
+    repo-root ``.env`` into os.environ unless already set in the real shell.
+
+    Mirrors predict.py's loader so that ``python -m mlb_edge.main_totals``
+    sees ODDS_API_KEY when the CI workflow writes it to .env. Without this
+    the totals predict step silently returns no odds and produces no CSV.
+    """
+    # main_totals.py lives at <repo>/mlb_edge/main_totals.py — repo root is parents[1]
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if not env_path.exists():
+        return
+    for raw in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+# Load .env at import time so any code path through main_totals (predict,
+# backtest, train) that needs ODDS_API_KEY finds it.
+_load_dotenv()
 
 import numpy as np
 import pandas as pd
@@ -313,33 +342,4 @@ def _parse_args(argv):
     p.add_argument("--through", type=lambda s: datetime.strptime(s, "%Y-%m-%d").date())
     p.add_argument("--bankroll", type=float, default=100.0)
     p.add_argument("--seasons", type=lambda s: [int(x) for x in s.split(",")],
-                   help="Comma-separated, e.g. 2023,2024,2025")
-    p.add_argument("--save", default="models/totals_latest.pkl")
-    p.add_argument("--date", type=lambda s: datetime.strptime(s, "%Y-%m-%d").date(),
-                   help="Target date (YYYY-MM-DD) for predict mode")
-    p.add_argument("--model_path", default="models/totals_latest.pkl")
-    p.add_argument("--out")
-    return p.parse_args(argv)
-
-
-def main(argv=None):
-    args = _parse_args(argv or sys.argv[1:])
-    if args.mode == "backtest":
-        if args.season is None:
-            print("--season is required for backtest mode")
-            sys.exit(1)
-        run_backtest(args.season, args.through, args.out, args.bankroll)
-    elif args.mode == "train":
-        if not args.seasons:
-            print("--seasons is required for train mode (e.g. 2023,2024,2025)")
-            sys.exit(1)
-        run_train(args.seasons, args.save, args.through)
-    elif args.mode == "predict":
-        if args.date is None:
-            print("--date is required for predict mode (e.g. 2026-04-22)")
-            sys.exit(1)
-        run_predict(args.date, args.model_path, args.bankroll, args.out)
-
-
-if __name__ == "__main__":
-    main()
+                   help="Comma-separated, e.g. 2023,2024,2
