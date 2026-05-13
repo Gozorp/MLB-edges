@@ -915,21 +915,99 @@ async function fetchMLBResults(date) {
 window.__previewCache = window.__previewCache || {};
 
 function _extractPitcherStats(p) {
-  const s = { id: p.id, name: p.fullName || "", hand: (p.pitchHand || {}).code || "?" };
+  // Pulls BOTH season and career stats when hydrate=stats(group=[pitching],
+  // type=[season,career]) is used.  Each sg under p.stats has type.displayName
+  // = "statsSingleSeason" (the season row) or "career" (lifetime row).
+  // Falls back gracefully if only season data is present (legacy hydrate).
+  const s = {
+    id: p.id, name: p.fullName || "",
+    hand: (p.pitchHand || {}).code || "?",
+    season: null, career: null,
+  };
   for (const sg of p.stats || []) {
     if ((sg.group || {}).displayName !== "pitching") continue;
+    const groupType = (sg.type || {}).displayName || "statsSingleSeason";
     for (const split of sg.splits || []) {
       const st = split.stat || {};
-      s.era = st.era; s.whip = st.whip; s.ip = st.inningsPitched;
-      s.k9 = st.strikeoutsPer9Inn; s.bb9 = st.walksPer9Inn;
-      s.hr9 = st.homeRunsPer9; s.gs = st.gamesStarted;
-      s.w = st.wins; s.l = st.losses; s.sv = st.saves;
-      s.avg = st.avg;
+      // Compute K/BB ratio safely. statsapi gives strikeouts + baseOnBalls as
+      // integers; ratio is a more interpretable signal than K/9 alone.
+      const kk = parseFloat(st.strikeOuts || 0);
+      const bb = parseFloat(st.baseOnBalls || 0);
+      const kbb = (bb > 0) ? (kk / bb) : (kk > 0 ? Infinity : null);
+      const row = {
+        era: st.era, whip: st.whip, ip: st.inningsPitched,
+        k9: st.strikeoutsPer9Inn, bb9: st.walksPer9Inn,
+        hr9: st.homeRunsPer9, gs: st.gamesStarted,
+        w: st.wins, l: st.losses, sv: st.saves,
+        avg: st.avg,                       // opponent batting average
+        obp: st.obp, slg: st.slg, ops: st.ops,
+        k: kk, bb: bb, k_bb: kbb,
+        h9: st.hitsPer9Inn,
+        gamesPlayed: st.gamesPlayed,
+      };
+      if (groupType === "career" || groupType === "yearByYear") {
+        s.career = s.career || row;
+      } else {
+        s.season = s.season || row;
+      }
       break;
     }
-    break;
   }
+  // Backward-compatibility: keep top-level fields so existing call sites
+  // ({p.era, p.whip, p.k9, p.ip}) keep working without changes.
+  const flat = s.season || s.career || {};
+  s.era = flat.era; s.whip = flat.whip; s.ip = flat.ip;
+  s.k9 = flat.k9; s.bb9 = flat.bb9; s.hr9 = flat.hr9; s.gs = flat.gs;
+  s.w = flat.w; s.l = flat.l; s.sv = flat.sv; s.avg = flat.avg;
   return s;
+}
+
+// Pull a pitcher's last N starts as a list of {date, opp, ip, er, k, dec}
+// objects, newest first.  Uses the gameLog endpoint which lists each
+// appearance individually so we can detect recent-form trends without
+// hitting the full season summary.  Cached for 6 hours per pitcher in
+// localStorage to keep network noise down on row toggles.
+async function _fetchPitcherRecentStarts(pitcherId, season, limit) {
+  if (!pitcherId) return [];
+  limit = limit || 3;
+  season = season || new Date().getUTCFullYear();
+  const cacheKey = `mlbedge_recent_starts_${pitcherId}_${season}`;
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    if (cached && cached.ts && (Date.now() - cached.ts) < 6 * 3600 * 1000) {
+      return cached.starts.slice(0, limit);
+    }
+  } catch (_) {}
+  try {
+    const url = `https://statsapi.mlb.com/api/v1/people/${pitcherId}`
+              + `/stats?stats=gameLog&group=pitching&season=${season}`;
+    const r = await fetch(url, { cache: "no-store" });
+    if (!r.ok) return [];
+    const j = await r.json();
+    const splits = (((j.stats || [])[0] || {}).splits || []);
+    // Keep only games started, sorted newest first
+    const starts = splits
+      .filter(s => parseInt((s.stat || {}).gamesStarted || 0) > 0)
+      .map(s => ({
+        date: s.date,
+        opp: ((s.opponent || {}).abbreviation || (s.opponent || {}).name || "?"),
+        ip: (s.stat || {}).inningsPitched || "0",
+        er: parseInt((s.stat || {}).earnedRuns || 0),
+        h:  parseInt((s.stat || {}).hits || 0),
+        k:  parseInt((s.stat || {}).strikeOuts || 0),
+        bb: parseInt((s.stat || {}).baseOnBalls || 0),
+        hr: parseInt((s.stat || {}).homeRuns || 0),
+        dec: (s.stat || {}).note || "",
+      }))
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), starts }));
+    } catch (_) {}
+    return starts.slice(0, limit);
+  } catch (e) {
+    console.warn("recent-starts fetch failed for pitcher", pitcherId, e);
+    return [];
+  }
 }
 
 async function _fetchTeamRoster(teamId) {
@@ -1145,11 +1223,15 @@ async function fetchGamePreview(result) {
   }
 
 
-  // 1. Batched pitcher stats
+  // 1. Batched pitcher stats — pulls BOTH season and career rows in one call
+  //    (hydrate type=[season,career]) so the SP narrative can compare current
+  //    form to lifetime baseline.  Then fires a parallel gameLog fetch per
+  //    pitcher to surface last-3-start trend.  All cached per-game in
+  //    window.__previewCache so row toggles re-render instantly.
   const pids = [result.awayPitcherId, result.homePitcherId].filter(Boolean);
   if (pids.length) {
     try {
-      const url = `https://statsapi.mlb.com/api/v1/people?personIds=${pids.join(",")}&hydrate=stats(group=[pitching],type=[season])`;
+      const url = `https://statsapi.mlb.com/api/v1/people?personIds=${pids.join(",")}&hydrate=stats(group=[pitching],type=[season,career])`;
       const r = await fetch(url, { cache: "no-store" });
       if (r.ok) {
         const j = await r.json();
@@ -1160,6 +1242,20 @@ async function fetchGamePreview(result) {
         }
       }
     } catch (e) { console.warn("pitcher stat fetch failed:", e); }
+    // Parallel recent-starts fetches.  Failure is silent — the narrative just
+    // omits the "recent form" line if the gameLog endpoint hiccups.  Mapped
+    // back to away/home by pid index so a single-pitcher slate (one TBD)
+    // still resolves the known side correctly.
+    try {
+      const recentResults = await Promise.all(
+        pids.map(pid => _fetchPitcherRecentStarts(pid, null, 3))
+      );
+      recentResults.forEach((starts, idx) => {
+        const pid = pids[idx];
+        if (pid === result.awayPitcherId && out.awayPitcher) out.awayPitcher.recent = starts || [];
+        if (pid === result.homePitcherId && out.homePitcher) out.homePitcher.recent = starts || [];
+      });
+    } catch (_) { /* silent — recent form is a nice-to-have */ }
   }
 
   // 2. Parallel team rosters
@@ -1226,18 +1322,100 @@ async function fetchGamePreview(result) {
 
 function _pitcherImpact(p, oppName) {
   if (!p) return "TBD pitcher — impact unknown until announced.";
-  const era = parseFloat(p.era != null ? p.era : 99);
-  const whip = parseFloat(p.whip != null ? p.whip : 99);
-  const k9 = parseFloat(p.k9 != null ? p.k9 : 0);
-  const ip = parseFloat((p.ip || "0").toString().replace(" ", ""));
-  const sizeNote = ip < 15 ? " <em>Sample is thin (under 15 IP) — projection has wider error bars.</em>" : "";
-  if (era < 2.50 && whip < 1.10)
-    return `<strong>Elite form</strong> — every inning he completes lowers his team's run-allowed expectation by ~0.5 vs an average arm. Lengthening this start past the 6th makes it harder for ${oppName} to scratch back.${sizeNote}`;
-  if (era < 3.50)
-    return `<strong>Above-average</strong> — keeps his side in every inning he pitches. Real weapon if his K/9 (${k9}) holds, since strikeouts neutralize ${oppName}'s contact threats.${sizeNote}`;
-  if (era < 4.50)
-    return `<strong>League-average</strong> — neither shifts the line meaningfully. Run prevention will depend on traffic-management when ${oppName} starts threatening.${sizeNote}`;
-  return `<strong>Below-average</strong> — his team is asking the offense to outscore traffic. ${oppName} should feast on barrel-prone counts; bullpen exposure will arrive early.${sizeNote}`;
+  // Pull season row first; fall back to flat fields for legacy callers.
+  const ss = p.season || {};
+  const cc = p.career || null;
+  const era  = parseFloat((ss.era ?? p.era) ?? 99);
+  const whip = parseFloat((ss.whip ?? p.whip) ?? 99);
+  const k9   = parseFloat((ss.k9 ?? p.k9) ?? 0);
+  const bb9  = parseFloat((ss.bb9 ?? p.bb9) ?? 0);
+  const hr9  = parseFloat((ss.hr9 ?? p.hr9) ?? 0);
+  const k_bb = ss.k_bb ?? null;
+  const oppAvg = parseFloat(ss.avg ?? p.avg ?? 0);
+  const oppOps = parseFloat(ss.ops ?? 0);
+  const ip   = parseFloat((ss.ip ?? p.ip ?? "0").toString().replace(" ", ""));
+  const sizeNote = ip < 15
+    ? `<div class="muted" style="font-size:0.85em;margin-top:0.25em;"><em>Sample is thin (under 15 IP) — projection has wider error bars.</em></div>`
+    : "";
+
+  // ---- Tier verdict (season) ----
+  let tier, tierColor;
+  if (era < 2.50 && whip < 1.10) { tier = "Elite form"; tierColor = "var(--green)"; }
+  else if (era < 3.50)           { tier = "Above-average"; tierColor = "var(--green)"; }
+  else if (era < 4.50)           { tier = "League-average"; tierColor = "var(--muted)"; }
+  else                           { tier = "Below-average"; tierColor = "var(--red)"; }
+
+  // ---- Verdict-specific opening sentence ----
+  let lead;
+  if (tier === "Elite form")
+    lead = `every inning lowers run-allowed expectation by ~0.5 R vs an average arm; lengthening past the 6th makes it hard for ${oppName} to scratch back.`;
+  else if (tier === "Above-average")
+    lead = `keeps his side in every inning he pitches; strikeouts (${k9.toFixed(1)} K/9) neutralize ${oppName}'s contact threats.`;
+  else if (tier === "League-average")
+    lead = `neither shifts the line meaningfully; run prevention will depend on traffic-management when ${oppName} starts threatening.`;
+  else
+    lead = `his team is asking the offense to outscore traffic; ${oppName} should feast on barrel-prone counts and bullpen exposure arrives early.`;
+
+  // ---- Strengths / weaknesses flags from finer signals ----
+  const flags = [];
+  if (isFinite(k9) && k9 >= 9.5) flags.push(`<strong>punch-out arm</strong> — ${k9.toFixed(1)} K/9 ranks well above the ~8.5 league norm`);
+  else if (isFinite(k9) && k9 < 6.5) flags.push(`<strong>contact-prone</strong> — only ${k9.toFixed(1)} K/9, well below ~8.5 league norm`);
+  if (isFinite(bb9) && bb9 <= 2.0) flags.push(`<strong>command</strong> — ${bb9.toFixed(1)} BB/9 is among the league's best (free passes are the cheap way ${oppName} flips innings)`);
+  else if (isFinite(bb9) && bb9 >= 4.0) flags.push(`<strong>control wobble</strong> — ${bb9.toFixed(1)} BB/9 hands ${oppName} extra base-runners before the ball is in play`);
+  if (isFinite(k_bb) && k_bb !== Infinity && k_bb >= 4.0) flags.push(`K/BB ratio ${k_bb.toFixed(1)} — elite-tier; the underlying skill matches the surface ERA`);
+  else if (isFinite(k_bb) && k_bb !== Infinity && k_bb <= 1.8) flags.push(`K/BB ratio ${k_bb.toFixed(1)} — soft underneath the ERA; one walk away from a crooked inning`);
+  if (isFinite(hr9) && hr9 >= 1.5) flags.push(`<strong>HR-prone</strong> — ${hr9.toFixed(2)} HR/9 means a single mistake can swing the run line`);
+  if (isFinite(oppAvg) && oppAvg > 0 && oppAvg <= 0.220) flags.push(`opp BAA ${oppAvg.toFixed(3)} — hitters aren't squaring him up`);
+  else if (isFinite(oppAvg) && oppAvg >= 0.280) flags.push(`opp BAA ${oppAvg.toFixed(3)} — getting hit hard; not missing bats consistently`);
+
+  // ---- Career baseline ----
+  let careerLine = "";
+  if (cc) {
+    const cEra = parseFloat(cc.era ?? 99);
+    const cIp  = parseFloat((cc.ip ?? "0").toString().replace(" ", ""));
+    const cGs  = parseInt(cc.gs || 0);
+    if (isFinite(cEra) && cIp > 0) {
+      let trend;
+      const delta = era - cEra;
+      if (delta < -0.40) trend = `<span style="color:var(--green)">↑ trending better than career (${delta.toFixed(2)} ERA improvement)</span>`;
+      else if (delta > 0.40) trend = `<span style="color:var(--red)">↓ underperforming career baseline by ${delta.toFixed(2)} ERA</span>`;
+      else trend = `flat relative to career baseline (within ±0.40 ERA)`;
+      careerLine = `<div style="margin-top:0.35em;font-size:0.9em;">`
+                 + `<strong>Career:</strong> ${cEra.toFixed(2)} ERA over ${cIp.toFixed(1)} IP across ${cGs} GS — ${trend}.`
+                 + `</div>`;
+    }
+  }
+
+  // ---- Recent form (last 3 starts) ----
+  let recentLine = "";
+  if (Array.isArray(p.recent) && p.recent.length > 0) {
+    const r3 = p.recent.slice(0, 3);
+    let ipSum = 0, erSum = 0, kSum = 0;
+    const rows = r3.map(g => {
+      const gIp = parseFloat((g.ip || "0").toString().replace(" ", ""));
+      ipSum += isFinite(gIp) ? gIp : 0;
+      erSum += g.er || 0;
+      kSum  += g.k  || 0;
+      return `<li>${g.date || "?"} vs ${g.opp || "?"} — ${g.ip || 0} IP, ${g.er || 0} ER, ${g.k || 0} K</li>`;
+    }).join("");
+    const avgEra = (ipSum > 0) ? (erSum * 9 / ipSum) : null;
+    let trendNote = "";
+    if (avgEra !== null) {
+      if (avgEra <= 2.0) trendNote = ` <span style="color:var(--green)">— hot streak (${avgEra.toFixed(2)} ERA over last 3 starts)</span>`;
+      else if (avgEra >= 5.5) trendNote = ` <span style="color:var(--red)">— rough patch (${avgEra.toFixed(2)} ERA over last 3 starts)</span>`;
+      else trendNote = ` (${avgEra.toFixed(2)} ERA over last 3 starts, near season baseline)`;
+    }
+    recentLine = `<div style="margin-top:0.35em;font-size:0.9em;">`
+               + `<strong>Recent form:</strong>${trendNote}`
+               + `<ul style="margin:0.2em 0 0 1.2em;padding:0;font-size:0.88em;">${rows}</ul>`
+               + `</div>`;
+  }
+
+  // ---- Compose ----
+  const flagBlock = flags.length
+    ? `<div style="margin-top:0.35em;font-size:0.9em;"><strong>Notes:</strong> ${flags.join("; ")}.</div>`
+    : "";
+  return `<span style="color:${tierColor};font-weight:600;">${tier}</span> — ${lead}${flagBlock}${careerLine}${recentLine}${sizeNote}`;
 }
 
 function _batImpact(ops_f) {
@@ -2170,12 +2348,12 @@ function _formatGamePreviewUpcoming(preview) {
           ${fmtPitcher(preview.awayPitcher, preview.awayAbbr || "Away")}
           ${fmtPitcher(preview.homePitcher, preview.homeAbbr || "Home")}
         </ul>
-        <p class="preview-impact">
-          ${preview.awayPitcher ? `<strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}` : ""}
-        </p>
-        <p class="preview-impact">
-          ${preview.homePitcher ? `<strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}` : ""}
-        </p>
+        <div class="preview-impact" style="margin-bottom:0.9em;">
+          ${preview.awayPitcher ? `<div><strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}</div>` : ""}
+        </div>
+        <div class="preview-impact">
+          ${preview.homePitcher ? `<div><strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}</div>` : ""}
+        </div>
       </div>
       <div class="preview-card">
         <h5>${preview.awayName} bullpen — three highest-leverage arms</h5>
