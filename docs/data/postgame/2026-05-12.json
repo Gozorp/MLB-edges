@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-12",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-13T06:00:00Z",
+  "n_analyzed": 15,
+  "summary": "The model went 7-7 on direction (50.0% hit rate) across 14 resolved matchups, with 1 NO_PICK (KC@CHW PENDING). Claude's 3 OVERRIDEs all won — COL@PIT, DET@NYM, and SEA@HOU all produced emphatic correct results — but 3 GOLD DOWNGRADE calls (NYY, TB, ATL) missed legitimate winners. The headline lesson: the OVERRIDE methodology is well-validated and should be maintained, but stacked-flags-only DOWNGRADE of positive-edge GOLD picks may be over-firing without additional confirming signals. PLATINUM calibration artifact rule validated for the third time (SF@LAD, 0-for-3 in archive). Overall model direction accuracy is adequate; Claude's downgrade decisions in aggregate were net-negative today (3 missed winners vs 2 saved losses on GOLD/PLATINUM tier).",
+  "by_matchup": {
+    "LAA @ CLE": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "CLE edged LAA 3-2; direction correct and SKIP tier appropriately excluded staking.",
+      "hypothesis": "CLE held LAA to 2 runs for a narrow home win. With bullpen_fatigue and confidence_downgrade flags active, the SKIP tier correctly excluded staking — this was a directionally correct but low-conviction outcome. The narrow margin is consistent with the model's modest 58.4% probability. Variance-neutral result; no process signal either way.",
+      "signals_to_recheck": "bullpen_fatigue + confidence_downgrade correctly excluded staking on a direction-correct SKIP-tier pick; no recalibration needed."
+    },
+    "NYY @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-2",
+      "headline": "NYY blew out BAL 6-2; DOWNGRADE missed a GOLD winner, but negative-edge EV logic remains technically sound.",
+      "hypothesis": "NYY scored 6 runs for a convincing win — the model direction was fully correct. Claude's DOWNGRADE was based on the negative-edge rule (edge=-4.85pp, meaning staking at market odds would be negative-EV relative to model's 52.5% probability). A direction win does not invalidate the EV logic, but this is the first instance in the archive where a negative-edge GOLD downgrade missed a winner. Worth noting that model and market agreed on the NYY direction (market had NYY at ~57.4%); the negative edge here reflects a gap in conviction level, not a market-vs-model directional disagreement. Possible variance win rather than process failure.",
+      "signals_to_recheck": "negative_edge_GOLD; first instance where negative-edge GOLD downgrade missed a direction-correct winner — monitor whether this rule is too aggressive when model and market agree on direction but disagree on probability magnitude."
+    },
+    "WSH @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-4",
+      "headline": "WSH demolished CIN 10-4; GOLD CONFIRM via three-signal bar validated decisively.",
+      "hypothesis": "WSH's lineup advantage (F3=1046.4) and tight Stage 1/2 alignment (f5_full_delta=0.0881) produced a dominant win across all innings. This is a clean process win: positive edge (+10.51pp within band), three-signal bar met (F3 > 500, edge > 4pp, gap < 15pp), no stacked flags. The 10-4 margin reflects a genuine quality edge rather than lucky variance. Three-signal GOLD CONFIRM is now 3-for-3 in the postgame archive.",
+      "signals_to_recheck": "Three-signal GOLD bar (F3 > 500 + edge > 4pp + f5_full_delta < 0.15 + no flags) is 3-for-3 in the archive; no adjustments needed."
+    },
+    "COL @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "1-3",
+      "headline": "PIT beat COL 3-1 behind Paul Skenes; Claude's OVERRIDE was correct and the Stage 1/2 gap was a reliable signal.",
+      "hypothesis": "COL managed just 1 run against Skenes, exactly the outcome expected with an elite SP starting at home. The model's f5_full_delta=0.2195 (PIT dominates F5 at 69.4% via Skenes) was a clear calibration artifact — the full-game COL pick defied the game's starting context. The OVERRIDE to PIT was correct process: confirmed elite SP + large Stage 1/2 gap + market pricing COL at only 24% (fair_prob=0.241).",
+      "signals_to_recheck": "Stage_1_2_disagree_with_confidence_downgrade; f5_full_delta=0.2195 with confirmed elite SP correctly mandated OVERRIDE — this is the clearest category of model artifact in the current architecture."
+    },
+    "PHI @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "PHI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "PHI squeezed past BOS 2-1; direction correct despite negative edge, SKIP tier appropriate.",
+      "hypothesis": "PHI won a tight road game despite the market pricing BOS as a slight favorite (edge=-2.19pp, market had BOS at ~57.7%). This appears to be a favorable variance outcome — the market may have held more information about BOS's pitching edge, and PHI won anyway in a one-run game. confidence_downgrade=True was correct to exclude staking. No process lesson here beyond confirmation that negative-edge SKIP excludes staking even when the direction proves right.",
+      "signals_to_recheck": "negative edge at SKIP tier correctly excluded staking; confidence_downgrade=True was an appropriate caution flag on a direction-correct but edge-negative pick."
+    },
+    "TB @ TOR": {
+      "verdict": "WIN",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "7-6",
+      "headline": "TB edged TOR 7-6; DOWNGRADE missed a GOLD winner by applying the edge-minimum floor too strictly.",
+      "hypothesis": "TB won a high-scoring contest 7-6 in a game where the lineup quality signal (F3=1045.8) correctly predicted the directional outcome. The DOWNGRADE was based on edge=+0.22pp being below the 4pp band minimum — technically correct per protocol, but the direction was right. This is a tension point: the edge floor prevents low-value stakes but here it filtered a genuinely correct directional pick. Unlike the NYY case (negative edge), TB had a positive edge but below threshold. The question for calibration is whether 0-4pp positive edge picks with strong F3 should be staked at reduced size.",
+      "signals_to_recheck": "F3_swing_take_gap=1045.8 correctly predicted direction but edge=+0.22pp was below the 4pp band minimum; consider whether a tiered exception (F3 > 800 + edge > 1pp + no flags) warrants a reduced GOLD stake rather than full SKIP."
+    },
+    "DET @ NYM": {
+      "verdict": "LOSS",
+      "model_pick": "DET ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "2-10",
+      "headline": "NYM demolished DET 10-2; OVERRIDE to NYM was emphatic and validated the extreme Stage 1/2 gap rule.",
+      "hypothesis": "NYM scored 10 runs with the largest winning margin on the slate. Freddy Peralta's F5 dominance (f5_full_delta=0.3285, the slate's largest gap) continued through the full game, exactly as predicted. The three-condition OVERRIDE trigger was fully justified: extreme Stage 1/2 gap + three stacked pipeline flags (acute_roster + bullpen_fatigue + confidence_downgrade) + market pricing DET as only 40.7% favorites vs model's DET pick at 51.9%. Process win; emphatically correct call.",
+      "signals_to_recheck": "f5_full_delta=0.3285 with three stacked pipeline flags is the highest-confidence OVERRIDE signal in the current architecture; maintain the trigger without modification."
+    },
+    "CHC @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-5",
+      "headline": "ATL beat CHC 5-2; DOWNGRADE missed a valid GOLD winner — stacked-flags rule may be over-firing without secondary confirmation.",
+      "hypothesis": "ATL won comfortably and the model's GOLD pick was correct. The DOWNGRADE was based solely on acute_roster=True + confidence_downgrade=True, but without the additional confirming signals that justified downgrades on other games: f5_full_delta was only 0.0369 (well below 0.15), fair_prob=0.5308 was above the 0.42 floor, and market disagreement was modest. This appears to be a process error: stacked flags alone, without a Stage 1/2 gap or fair_prob alarm, may not warrant downgrading a clearly positive-edge GOLD pick (edge=+11.06pp within band, F3=780.7). Compare to CHC@ATL vs the SEA@HOU downgrade which had four converging signals — ATL had none beyond the flags.",
+      "signals_to_recheck": "acute_roster_True + confidence_downgrade_True applied without secondary confirming signals (no large f5_full_delta, no fair_prob below floor, no large market disagreement); review stacked-flags-only DOWNGRADE threshold for GOLD picks with clearly positive edge."
+    },
+    "KC @ CWS": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD PENDING",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "CWS beat KC 6-5; PENDING designation correctly withheld pick on Kolek's 0-Statcast-pitch start.",
+      "hypothesis": "The PENDING_SP_DATA designation on Stephen Kolek (0 Statcast pitches season-to-date) correctly withheld any directional pick. The game was decided by one run (CWS 6-5) — precisely the kind of uncertain outcome where SP quality data absence matters most. PENDING protocol is validated.",
+      "signals_to_recheck": "small_sample_SP_True; PENDING designation for zero-Statcast-pitch SP remains appropriate — the close game outcome would not have been reliably predictable without SP quality data."
+    },
+    "MIA @ MIN": {
+      "verdict": "LOSS",
+      "model_pick": "MIA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-3",
+      "headline": "MIN shutout MIA 3-0; Stage 1/2 gap (0.2118) correctly predicted MIN dominance despite model's MIA pick.",
+      "hypothesis": "Bailey Ober shut out MIA completely, confirming the Stage 1/2 gap warning: MIN wins F5 at 64.7% via Ober and the full game played the same way. The model's MIA comeback thesis never materialized — MIA didn't score a single run. The SKIP tier correctly excluded staking, but Claude's CONFIRM on the model direction was insufficiently cautious given the large Stage 1/2 gap. Possible process failure: when f5_full_delta > 0.20 on a SKIP pick, consider an explicit direction note rather than neutral CONFIRM.",
+      "signals_to_recheck": "f5_full_delta=0.2118 > 0.15 threshold correctly flagged SP dominance risk; directional CONFIRM on SKIP-tier picks with Stage 1/2 gap > 0.15 should carry explicit low-conviction notation rather than neutral confirmation."
+    },
+    "SD @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-6",
+      "headline": "MIL held off SD 6-4; direction correct at SKIP tier with appropriate exclusion of staking.",
+      "hypothesis": "MIL won by 2 runs in a moderate-scoring game. bullpen_fatigue and confidence_downgrade were both present, correctly excluding staking via the SKIP tier. The direction was right, and no process lesson emerges beyond confirmation that the flags correctly calibrated stake exclusion without affecting directional accuracy. Variance-neutral outcome.",
+      "signals_to_recheck": "bullpen_fatigue + confidence_downgrade correctly excluded staking at edge=+0.57pp (below band minimum); SKIP tier appropriate for this edge and flag profile."
+    },
+    "ARI @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-7",
+      "headline": "TEX beat ARI 7-4; Stage 1/2 gap (0.1831) was a warning signal that justified directional caution.",
+      "hypothesis": "TEX won by 3 runs, consistent with MacKenzie Gore's F5 edge (TEX wins F5 at 64.1%). ARI's comeback thesis (late-inning bullpen advantage post-Gallen) did not materialize — TEX extended the lead. The Stage 1/2 gap exceeded the 0.15 threshold, noted in Claude's prior reasoning. The SKIP tier correctly excluded staking. Directional confirm may have been slightly overconfident given the size of the gap; no staking harm done but worth noting the Stage 1/2 gap was a real warning.",
+      "signals_to_recheck": "f5_full_delta=0.1831 > 0.15 threshold was a directional warning that proved accurate; when Stage 1/2 gap is in the 0.15-0.20 range on a SKIP pick, the direction is genuinely uncertain and confirms should be explicit about low conviction."
+    },
+    "SEA @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "OVERRIDE",
+      "final_score": "10-2",
+      "headline": "SEA blew out HOU 10-2 for the second consecutive game; OVERRIDE to SEA was emphatic and correct.",
+      "hypothesis": "Bryan Woo held HOU to just 2 runs while SEA's lineup scored 10 — a more dominant margin than the 05-11 Kirby game (3-1). All four OVERRIDE conditions were met: F3=1796 analogy to prior failures, stacked pipeline flags, fair_prob=0.340 well below the 0.42 floor, and confirmed quality opposing SP. The OVERRIDE is now 2-for-2 in consecutive games in this same series, and 3-for-3 on the slate. The structural HOU model overconfidence is persistent — fair_prob=0.340 (market had HOU at only 34%) against a sub-0.42 floor is the clearest red flag in the current architecture.",
+      "signals_to_recheck": "pen_strain_pick_side; SEA@HOU OVERRIDE pattern is 2-for-2 in this series — the combination of fair_prob < 0.35 + stacked flags + quality opposing SP continues to produce affirmative OVERRIDE results, not just SKIP downgrades."
+    },
+    "STL @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-4",
+      "headline": "STL beat OAK 6-4; DOWNGRADE on negative edge correctly avoided a GOLD stake loss.",
+      "hypothesis": "OAK lost despite the GOLD designation. The negative edge (-6.15pp) correctly indicated market skepticism about OAK at the offered odds — the market had OAK at 59.5% fair_prob while the model's 53.4% implied negative EV. F1_xera_gap=1.38* had the asterisk (small sample flag), making the SP quality comparison unreliable. The downgrade was process-correct: negative edge combined with a small-sample SP flag is now 4-for-4 in the postgame archive as a reliable loss predictor.",
+      "signals_to_recheck": "negative_edge_GOLD + F1_xera_gap* (small sample); negative edge combined with small-sample SP asterisk is now 4-for-4 at predicting staking losses — the combination is a reliable hard downgrade trigger."
+    },
+    "SF @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-2",
+      "headline": "SF beat LAD 6-2 for the second consecutive day; PLATINUM calibration artifact rule validated a third time.",
+      "hypothesis": "SF won convincingly (6-2) the day after beating LAD 9-3 — the PLATINUM model confidence on LAD has been wrong in every instance where all three artifact conditions are met. F3=9589.3 was flagged as a pipeline artifact (no genuine baseball context produces a value 5× above prior extremes of ~1800), and the actual game score confirms the model had no legitimate basis for 86% LAD confidence. Claude's DOWNGRADE correctly avoided what would have been a consecutive-day PLATINUM staked loss. The structural LAD misread in this specific SF@LAD matchup context is now too consistent to be variance.",
+      "signals_to_recheck": "[HARD CAP 3] PLATINUM_calibration_artifact; SF@LAD is 0-for-3 in the archive when PLATINUM + model_prob > 0.85 + f5_full_delta > 0.20 — consider flagging this specific matchup context as a recurring model structural misread, not just a calibration artifact."
+    }
+  },
+  "patterns_observed": [
+    "Claude OVERRIDE went 3-for-3 on the slate (COL@PIT via Skenes 3-1, DET@NYM 10-2, SEA@HOU 10-2) — all with emphatic margins. All three triggered on f5_full_delta > 0.20 with confirmed quality opposing SP. The OVERRIDE methodology is now validated across 6+ applications in the full postgame archive; maintain the four-condition trigger (large Stage 1/2 gap + confirmed elite opposing SP + stacked pipeline flags + fair_prob warning) without modification.",
+    "Stacked-flags-only DOWNGRADE (acute_roster + confidence_downgrade without secondary confirming signals) over-fired on CHC@ATL: GOLD pick with edge=+11.06pp and f5_full_delta=0.0369 was downgraded and ATL won 5-2. Going forward, before downgrading a positive-edge GOLD pick on stacked flags alone, require at least one additional signal: f5_full_delta > 0.15, fair_prob vs model disagreement > 12pp, OR fair_prob below 0.42 floor. Absent a secondary signal, stacked flags at GOLD tier should reduce confidence but not mandate DOWNGRADE.",
+    "[HARD CAP 3] PLATINUM_calibration_artifact has now failed 3/3 times in the postgame archive (SF@LAD 05-12, 05-11, ATL@LAD 05-10 adjacent). The rule is well-established and requires no further validation — maintain as an automatic SKIP for any PLATINUM pick where model_prob > 0.85 and f5_full_delta > 0.20, regardless of F-signal strength.",
+    "Two consecutive GOLD-tier winners were missed by edge-floor filtering: TB@TOR (edge=+0.22pp, TB won 7-6, F3=1045.8) today and analogous cases prior. Consider a tiered exception for the GOLD CONFIRM rule: when F3 > 800 AND 0 < edge < 4pp AND f5_full_delta < 0.12 AND no flags present, treat as a reduced-conviction GOLD CONFIRM rather than automatic SKIP — the lineup quality signal is genuine even when the market has mostly priced the advantage."
+  ]
+}
