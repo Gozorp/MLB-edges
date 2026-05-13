@@ -714,6 +714,34 @@ function pct(v) {
   return isNaN(f) ? "—" : (f * 100).toFixed(1) + "%";
 }
 
+// Format "<TEAM> NN.N%" from a matchup string + home-side probability.
+// The home-side prob is what f5_prob / full_prob carry in the CSV; this
+// helper resolves it to the team that the probability favors and prints
+// that team's win prob (= max(p, 1-p)).  Makes Stage 1/2 disagreements
+// visible at a glance: F5 might read "MIA 55.1%" while FULL reads
+// "WSH 51.9%" on the same row when the two stages favor opposite sides.
+function favTeamProb(matchup, homeSideProb) {
+  if (!matchup) return "—";
+  const f = parseFloat(homeSideProb);
+  if (isNaN(f)) return "—";
+  const parts = matchup.split(" @ ");
+  if (parts.length !== 2) return (f * 100).toFixed(1) + "%";
+  const away = parts[0].trim(), home = parts[1].trim();
+  const favTeam = f >= 0.5 ? home : away;
+  const favProb = f >= 0.5 ? f : (1 - f);
+  return `<strong>${favTeam}</strong> ${(favProb * 100).toFixed(1)}%`;
+}
+
+// Format "<PICK> NN.N%" from the pick string and the pick-side probability
+// (p_model or pick_prob — both pick-perspective by construction).
+// Used in the PICK column to show not just which team but its win prob.
+function pickWithProb(pickTeam, pickSideProb) {
+  if (!pickTeam) return "—";
+  const f = parseFloat(pickSideProb);
+  if (isNaN(f)) return `<strong>${pickTeam}</strong>`;
+  return `<strong>${pickTeam}</strong> ${(f * 100).toFixed(1)}%`;
+}
+
 // Returns true when the gate filter zeroed the stake on this row (so the
 // tier shown in CSV is "internal" only and shouldn't read as a recommendation).
 function _isStakeKilled(r) {
@@ -2973,9 +3001,9 @@ function renderSlate(rows, gradeMap, results) {
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
-      <td>${r.pick || "—"}</td>
-      <td>${pct(r.f5_prob)}</td>
-      <td>${pct(r.full_prob || r.p_model)}</td>
+      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
+      <td>${favTeamProb(matchupKey, r.f5_prob)}</td>
+      <td>${favTeamProb(matchupKey, r.full_prob)}</td>
       <td>${fairFmt}</td>
       <td>${edgeFmt}</td>
       <td class="pred-score">${_formatPredScore(r)}</td>
