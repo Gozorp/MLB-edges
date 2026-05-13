@@ -92,6 +92,14 @@
   .claude-pill.claude-downgrade { background: rgba(210, 153, 34, 0.18); color: var(--yellow); }
   .claude-pill.claude-override  { background: rgba(248, 81, 73, 0.18);  color: var(--red); }
   .claude-pill.claude-other     { background: rgba(139, 148, 158, 0.18); color: var(--muted); }
+  /* Over/Under (totals) pill — shows OVER/UNDER side, Vegas line, and runs-edge */
+  .ou-pill {
+    display: inline-block; padding: 0.15em 0.5em; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+  }
+  .ou-pill.ou-over   { background: rgba(63, 185, 80, 0.15);  color: var(--green); }
+  .ou-pill.ou-under  { background: rgba(248, 81, 73, 0.15);  color: var(--red); }
+  .ou-pill.ou-flat   { background: rgba(139, 148, 158, 0.18); color: var(--muted); }
   pre {
     background: var(--bg); border: 1px solid var(--border);
     padding: 1rem; border-radius: 4px; overflow-x: auto;
@@ -2720,7 +2728,9 @@ function renderSlate(rows, gradeMap, results) {
       <thead><tr>
         <th></th>
         <th>Matchup</th><th>Pick</th><th>F5</th><th>Full</th>
-        <th>Fair</th><th>Edge</th><th>Pred</th><th>Tier</th><th>Grade</th>
+        <th>Fair</th><th>Edge</th><th>Pred</th>
+        <th title="Over/Under prediction: side · Vegas total · edge in runs. From picks_totals_<date>.csv">O/U</th>
+        <th>Tier</th><th>Grade</th>
         <th title="Claude Brain (executive review): CONFIRM / DOWNGRADE / OVERRIDE">Claude</th>
         ${haveAnyResult ? "<th>Result</th>" : ""}
         <th>Reasons</th>
@@ -2764,7 +2774,24 @@ function renderSlate(rows, gradeMap, results) {
       const label = dec === "CONFIRM" ? "✓" : dec === "DOWNGRADE" ? "↓" : dec === "OVERRIDE" ? "⇄" : dec;
       claudeCell = `<td><span class="claude-pill ${cls}" title="${tooltip}">${label} ${dec}</span></td>`;
     }
-    const colspan = haveAnyResult ? 13 : 12;
+    // Over/Under (totals) cell — sourced from docs/data/picks_totals_<date>.csv
+    // which is keyed by AWAY @ HOME matchup. Render side, Vegas line, edge in
+    // runs as a compact color-coded pill (green=OVER, red=UNDER, gray=no signal).
+    const tot = (window.__totalsByMatchup) ? window.__totalsByMatchup[matchupKey] : null;
+    let ouCell = "<td><span class='muted'>—</span></td>";
+    if (tot && tot.side) {
+      const side = String(tot.side || "").toUpperCase();
+      const line = parseFloat(tot.total_line);
+      const edge = parseFloat(tot.edge_runs);
+      const cls = side === "OVER" ? "ou-over" : side === "UNDER" ? "ou-under" : "ou-flat";
+      const arrow = side === "OVER" ? "↑" : side === "UNDER" ? "↓" : "·";
+      const initial = side === "OVER" ? "O" : side === "UNDER" ? "U" : side;
+      const lineStr = isFinite(line) ? line.toFixed(1) : "?";
+      const edgeStr = isFinite(edge) ? ` ${edge >= 0 ? "+" : ""}${edge.toFixed(1)}r` : "";
+      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u`;
+      ouCell = `<td><span class="ou-pill ${cls}" title="${tooltip}">${arrow} ${initial} ${lineStr}${edgeStr}</span></td>`;
+    }
+    const colspan = haveAnyResult ? 14 : 13;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
@@ -2774,6 +2801,7 @@ function renderSlate(rows, gradeMap, results) {
       <td>${fairFmt}</td>
       <td>${edgeFmt}</td>
       <td class="pred-score">${_formatPredScore(r)}</td>
+      ${ouCell}
       <td>${tierBadge(r)}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
       ${claudeCell}
@@ -3227,6 +3255,25 @@ async function loadSlate(date, { bust = false } = {}) {
       const _cb = await fetch(`./data/claude_picks/${date}.json`, {cache: "no-store"});
       window.__claudePicks = _cb.ok ? await _cb.json() : null;
     } catch (_) { window.__claudePicks = null; }
+    // Load totals (over/under) sidecar for this date.  picks_totals_<date>.csv
+    // is keyed by (home_team, away_team) — we reshape it into a {matchup: row}
+    // map so renderSlate can look up O/U by the same matchup key the diag CSV
+    // uses.  Failure is silent — dashboard renders the rest of the slate
+    // normally without it.
+    try {
+      const _tot = await fetch(`./data/picks_totals_${date}.csv`, {cache: "no-store"});
+      if (_tot.ok) {
+        const totRows = parseCSV(await _tot.text());
+        const byMatchup = {};
+        for (const tr of totRows) {
+          const key = `${tr.away_team} @ ${tr.home_team}`;
+          byMatchup[key] = tr;
+        }
+        window.__totalsByMatchup = byMatchup;
+      } else {
+        window.__totalsByMatchup = null;
+      }
+    } catch (_) { window.__totalsByMatchup = null; }
 
     const slateHtml = rows.length
       ? renderSlate(rows, gradeMap, results)

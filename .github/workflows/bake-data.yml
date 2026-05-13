@@ -23,6 +23,7 @@ on:
       - "picks_*_diag.csv"
       - "picks_*_news_overrides.csv"
       - "parlay_*.txt"
+      - "picks_totals_*.csv"
   workflow_dispatch:
 
 permissions:
@@ -40,6 +41,7 @@ jobs:
           mkdir -p docs/data
           cp -v picks_*_diag.csv          docs/data/ 2>/dev/null || echo "no diag CSVs"
           cp -v picks_*_news_overrides.csv docs/data/ 2>/dev/null || echo "no news CSVs"
+          cp -v picks_totals_*.csv         docs/data/ 2>/dev/null || echo "no totals CSVs"
           cp -v parlay_*.txt              docs/data/ 2>/dev/null || echo "no parlay TXTs"
 
       - name: Build manifest of available dates

@@ -93,6 +93,40 @@ jobs:
             python predict.py "$DATE_ARG" --skip-weights
           fi
 
+      - name: Run totals (over/under) predict
+        # Companion totals model — picks_totals_<date>.csv has the same matchups
+        # as the diag CSV with total_line, pred_runs, edge_runs, side (over/under),
+        # decimal odds, our_prob, and Kelly stake_units. The dashboard reads this
+        # file alongside picks_*_diag.csv to render the O/U column. Failure here
+        # should NOT kill the moneyline slate — if totals_latest.pkl is missing
+        # or the totals API call fails, we log and continue so picks_*_diag.csv
+        # still ships. Most days totals is a "nice-to-have" overlay on the
+        # primary moneyline slate.
+        continue-on-error: true
+        run: |
+          DATE_ARG="${{ inputs.slate_date }}"
+          SCHED="${{ github.event.schedule }}"
+          if [ -z "$DATE_ARG" ] && [ "$SCHED" = "0 6 * * *" ]; then
+            DATE_ARG=$(date -u -d "tomorrow" +%Y-%m-%d)
+          fi
+          if [ -z "$DATE_ARG" ]; then
+            DATE_ARG=$(date -u +%Y-%m-%d)
+          fi
+          OUT_FILE="picks_totals_${DATE_ARG}.csv"
+          echo "Running totals predict for $DATE_ARG -> $OUT_FILE"
+          if [ ! -f "models/totals_latest.pkl" ]; then
+            echo "::warning::models/totals_latest.pkl missing — skipping totals predict"
+            exit 0
+          fi
+          python -m mlb_edge.main_totals --mode predict \
+            --date "$DATE_ARG" --out "$OUT_FILE" || \
+            echo "::warning::totals predict failed; continuing without it"
+          if [ -f "$OUT_FILE" ]; then
+            echo "totals predict succeeded:"
+            wc -l "$OUT_FILE"
+            head -2 "$OUT_FILE"
+          fi
+
       - name: Validate fair_prob / edge_pp populated in slate CSV
         run: |
           python3 - <<'PY'
@@ -129,6 +163,7 @@ jobs:
           mkdir -p docs/data
           cp -v picks_*_diag.csv          docs/data/ 2>/dev/null || echo "no diag CSVs to bake"
           cp -v picks_*_news_overrides.csv docs/data/ 2>/dev/null || echo "no news CSVs to bake"
+          cp -v picks_totals_*.csv         docs/data/ 2>/dev/null || echo "no totals CSVs to bake"
           cp -v parlay_*.txt              docs/data/ 2>/dev/null || echo "no parlay TXTs to bake"
 
       - name: Rebuild manifest.json of available dates
