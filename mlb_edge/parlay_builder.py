@@ -370,6 +370,12 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
     # to -1, which would have demoted NYY @ MIL from a GOLD parlay leg.
     f5 = row.get("f5_prob")
     full = row.get("full_prob")
+    # 2026-05-13: extract p_model as a local so the hard-cap rules below
+    # (CAP 2, CAP 3) can reference it without raising NameError.  Earlier
+    # caps push committed those references but never pulled the value
+    # out of row, which crashed grade_picks and silently suppressed the
+    # entire diag CSV rewrite (cap audit found no cap-era data).
+    p_model = row.get("p_model")
     if pd.notna(f5) and pd.notna(full):
         f5 = float(f5); full = float(full)
         # Convert both to picked-side prob
