@@ -408,6 +408,13 @@ CAP_LABELS = {
     "[HARD CAP 4]": "Stage 1/2 + confidence_downgrade",
     "[HARD CAP 5]": "F1* small-sample SP quarantine",
     "[HARD CAP 6]": "Extreme positive edge (>+25pp) hallucination",
+    # SOFT CAP 6.5 (2026-05-14) — half-Kelly damping in the [+18, +25]pp
+    # calibration-suspect band.  Tracked separately because it doesn't
+    # change grade/tier (no parlay-eligibility transition); instead it
+    # surfaces as a "calibration_caution_18_25pp" stress_warning and
+    # halves kelly_quarter/full/eighth.  Hit-rate audit framework to
+    # extend in a follow-up once 30 picks accumulate in this band.
+    "[SOFT CAP 6.5]": "Calibration-suspect [+18, +25]pp half-Kelly damping",
 }
 
 def _stake_mult_from_grade(grade):

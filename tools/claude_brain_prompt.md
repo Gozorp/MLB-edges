@@ -127,6 +127,18 @@ entries prefixed `[HARD CAP N]`. The six caps and their validation:
   markets — this is the calibrator hallucinating, not finding value.
   Validated 3-for-3 across 5/8 SEA@CHW (+31.2pp), 5/8 NYM@ARI (+23pp),
   5/13 PHI@BOS (+31.0pp).
+- **[SOFT CAP 6.5] Calibration-suspect band** (2026-05-14) — `edge_pp` in
+  the `(+18, +25]pp` range gets a half-Kelly damping (not a SKIP). The
+  band immediately below HARD CAP 6's threshold is the most likely place
+  the calibration breakdown extends downward, but the sample is too thin
+  (n=3 confirmed losses) to justify a hard cap. Stake is halved across
+  kelly_full / kelly_quarter / kelly_eighth, and the row gains a
+  `calibration_caution_18_25pp` entry in `stress_warnings`. Grade and
+  parlay-eligibility are unchanged. The cap audit tracks hit rate of
+  this band separately so we can either relax (≥50% hit rate) or promote
+  to HARD CAP 7 (≤30%) after 30 picks accumulate. When you see this
+  flag, treat the pick as conviction-supported but exposure-capped —
+  CONFIRM is acceptable; OVERRIDE only with strong qualitative reason.
 
 Your job on a row where a hard cap already fired is to either CONFIRM the
 cap (most common) or, in genuinely exceptional cases, OVERRIDE upward with

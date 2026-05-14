@@ -140,6 +140,12 @@ vocabulary as of 2026-05-12:
   - `[HARD CAP 6] extreme_positive_edge_hallucination` — edge_pp > +25pp
     forces SKIP. The calibrator's upper bucket is sparse; claimed +25pp
     edges are mathematically implausible in MLB closing-line markets.
+  - `[SOFT CAP 6.5] calibration_caution_18_25pp` — picks with edge_pp
+    in (+18, +25]pp get a half-Kelly damping (not a SKIP). Stress flag
+    is `calibration_caution_18_25pp`. Cite this when grading a loss in
+    that band; the half-Kelly damping limits exposure but we still want
+    the win/loss tracked so we can decide whether to relax or tighten
+    after 30 picks accumulate.
   - Use the canonical name (left of the dash) so the brain prompt can
     grep-match cap firings across the postgame archive.  These cap names
     will be useful in `patterns_observed` if a particular cap is

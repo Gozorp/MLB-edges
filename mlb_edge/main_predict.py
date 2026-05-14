@@ -793,6 +793,53 @@ def run(slate_date: date,
                 log.warning("[stress_test] annotation failed: %s "
                             "(continuing without stress columns)", e)
 
+            # ----------------------------------------------------------
+            # SOFT CAP 6.5 — calibration-suspect edge band [+18, +25]pp
+            # (2026-05-14).  HARD CAP 6 fires at edge > +25pp on the
+            # premise that the isotonic calibrator hallucinates in the
+            # upper-tail bucket.  The +18 to +24pp band is the most
+            # likely place the calibration breakdown extends downward
+            # — too few losses (n=3) to justify a hard SKIP, but enough
+            # asymmetric-downside risk to warrant a half-Kelly damping.
+            # Surface as a stress_warnings flag so the human dashboard
+            # sees the caution, and halve all three Kelly fractions so
+            # standalone-bet exposure is cut even though the grade and
+            # parlay-eligibility filters are unchanged (parlays already
+            # exclude edge > +15pp anyway).  Cap audit can track hit
+            # rate of this band separately over the next 30 picks; if
+            # the band hits >=50%, the soft damping is too cautious
+            # and can be relaxed.
+            try:
+                if "edge_pp" in table.columns:
+                    for idx, _r in table.iterrows():
+                        ep = _r.get("edge_pp")
+                        if ep is None or pd.isna(ep):
+                            continue
+                        try:
+                            ep_f = float(ep)
+                        except (TypeError, ValueError):
+                            continue
+                        if 18.0 < ep_f <= 25.0:
+                            for _col in ("kelly_full", "kelly_quarter",
+                                          "kelly_eighth"):
+                                if _col in table.columns:
+                                    _v = table.at[idx, _col]
+                                    if pd.notna(_v):
+                                        try:
+                                            table.at[idx, _col] = float(_v) * 0.5
+                                        except (TypeError, ValueError):
+                                            pass
+                            _sw = table.at[idx, "stress_warnings"] \
+                                if "stress_warnings" in table.columns else ""
+                            _sw = str(_sw) if pd.notna(_sw) else ""
+                            _flag = "calibration_caution_18_25pp"
+                            table.at[idx, "stress_warnings"] = (
+                                f"{_sw};{_flag}" if _sw else _flag
+                            )
+            except Exception as e:
+                log.warning("[soft_cap_6.5] damping failed: %s "
+                            "(continuing without flag)", e)
+
             print("\n=== DIAGNOSTIC TABLE - every game on slate ===")
             print(table.to_string(index=False))
             if out_picks:
