@@ -1,0 +1,147 @@
+{
+  "date": "2026-05-14",
+  "fit_at": "2026-05-14T12:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 11,
+  "patterns_recognized": [
+    "HARD CAP 1 bypass on COL@PIT: edge=-7.22pp on PLATINUM tier should collapse grade to B- (score=1) per the rule, but grade=B (score=2) with no [HARD CAP 1] entry in grade_reasons — flagged as a code path issue requiring investigation.",
+    "F3 pipeline extreme on COL@PIT: F3=4130.9 is 2.3x above the historical maximum validated F3 (~1800, seen 05-11 SEA@HOU). Treat with same skepticism as the 9589 artifact on 05-12 SF@LAD — not a genuine signal at that magnitude.",
+    "DET@NYM repeat OVERRIDE: identical structural setup as 05-12 (grade D, f5_full_delta=0.269>0.20, fair_prob=0.365<0.42 floor, SP and PQI both AGAINST pick) where NYM won 10-2 emphatically. Consistent model misread on this specific matchup.",
+    "SEA@HOU third-game model overconfidence: HOU is 0-2 in archive vs SEA in consecutive games (05-11 Kirby 3-1, 05-12 Woo 10-2); today Luis Castillo (elite ace) confirmed via live API opposite Mike Burrows — three stacked flags and series history mandate DOWNGRADE despite F1_xera_gap=2.50 agreeing with HOU.",
+    "Three-signal GOLD bar (F3>500, edge>4pp, f5_full_delta<0.15, no flags) validated again on CHC@ATL: F3=1260.3, edge=+11.59pp, delta=0.019, no flags — archive is 3-for-3 on this configuration."
+  ],
+  "by_matchup": {
+    "COL @ PIT": {
+      "model_pick": "PIT ML PLATINUM",
+      "model_prob": 0.5663,
+      "model_tier": "PLATINUM",
+      "model_grade": "B",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "PIT",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 bypass: edge=-7.22pp on a PLATINUM pick should collapse grade to B- (score=1) but grade=B (score=2) with no [HARD CAP 1] in grade_reasons — probable code path bug; flag for investigation. F3=4130.9 is 2.3x above historical max (~1800) and likely a pipeline artifact, not genuine signal. PLATINUM tier 43% historical hit rate. Negative edge means market already prices PIT much more favorably — no extractable value. DOWNGRADE to SKIP.",
+      "lessons_applied": ["HARD_CAP_1_bypass_flag", "PLATINUM_43pct_hit_rate", "F3_extreme_value_artifact_risk", "negative_edge_no_value"]
+    },
+    "WSH @ CIN": {
+      "model_pick": "CIN ML GOLD",
+      "model_prob": 0.6217,
+      "model_tier": "GOLD",
+      "model_grade": "A",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CIN",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "CIN direction credible: Chase Burns confirmed via live API, F1_xera_gap=1.40 favors CIN, PQI delta=+16.9 confirms, grade A at 5 signals. However edge=+1.03pp sits outside the [4,15]pp staking band and confidence_downgrade=True both exclude any stake. F1* asterisk (small-sample Burns) is a residual concern. Direction is sound at moderate conviction but not actionable for staking.",
+      "lessons_applied": ["edge_outside_band_no_stake", "confidence_downgrade_reduces_conviction", "F1_asterisk_small_sample_residual"]
+    },
+    "DET @ NYM": {
+      "model_pick": "DET ML GOLD",
+      "model_prob": 0.515,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "NYM",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.62,
+      "reasoning": "OVERRIDE to NYM. Identical structural setup as 05-12 DET@NYM (NYM won 10-2): grade D (-3), f5_full_delta=0.269 (NYM wins F5 at 75.4% via Nolan McLean), fair_prob=0.365 well below 0.42 floor, SP edge 0.99 xERA AGAINST DET, PQI AGAINST DET (delta=+17.1), acute_roster=True + confidence_downgrade=True stacked. Market prices DET at only 36.5%. The model's full-game DET thesis requires a complete comeback after an SP-dominated first five. OVERRIDE to NYM.",
+      "lessons_applied": ["same_matchup_05-12_OVERRIDE_vindicated", "f5_full_delta_0.20_threshold", "fair_prob_floor_breach", "grade_D_SP_PQI_both_against", "acute_roster_confidence_downgrade_stack"]
+    },
+    "SD @ MIL": {
+      "model_pick": "MIL ML SKIP",
+      "model_prob": 0.5033,
+      "model_tier": "SKIP",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Edge=-8.3pp already outside staking band. bullpen_fatigue + confidence_downgrade=True both present. No active F-signals. MIL at 50.3% is essentially a coin flip; market has SD at 58.6% (fair_prob=0.5863), meaning market is more bullish on SD. Negative edge with no F-signals provides no directional conviction. CONFIRM SKIP.",
+      "lessons_applied": ["negative_edge_no_value", "bullpen_fatigue_confidence_downgrade_SKIP_correct", "no_active_F_signals"]
+    },
+    "SEA @ HOU": {
+      "model_pick": "HOU ML PLATINUM",
+      "model_prob": 0.6197,
+      "model_tier": "PLATINUM",
+      "model_grade": "A",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.47,
+      "reasoning": "DOWNGRADE despite grade A. Luis Castillo (SEA, elite ace) confirmed via live API opposite Mike Burrows (HOU). F1_xera_gap=2.50 agrees with HOU per model xERA, but HOU is 0-2 in archive this series (05-11 Kirby 3-1, 05-12 Woo 10-2, both OVERRIDE wins). Three stacked flags: acute_roster + bullpen_fatigue + confidence_downgrade. PLATINUM tier 43% hit rate. Edge already outside band. fair_prob=0.451 stays above 0.42 floor, preventing full OVERRIDE — DOWNGRADE to SKIP is the correct calibration.",
+      "lessons_applied": ["PLATINUM_43pct_hit_rate", "SEA_HOU_0-2_series_context", "three_stacked_flags_DOWNGRADE", "elite_opposing_SP_Castillo", "edge_outside_band"]
+    },
+    "STL @ OAK": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5217,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "Grade D (-2): SP edge 1.72 xERA AGAINST STL (Jacob Lopez, OAK, confirmed via live API; better xERA than Michael McGreevy). PQI strongly AGAINST STL (delta=+23.3 late-game-degradation). Edge=+3.71pp outside [4,15]pp band. All quality signals favor OAK; direction uncertain. CONFIRM SKIP.",
+      "lessons_applied": ["grade_D_SP_PQI_against", "edge_outside_band_no_stake"]
+    },
+    "PHI @ BOS": {
+      "model_pick": "PHI ML GOLD",
+      "model_prob": 0.5553,
+      "model_tier": "GOLD",
+      "model_grade": "B+",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PHI",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.56,
+      "reasoning": "Jesús Luzardo (PHI) vs Ranger Suarez (BOS) confirmed via live API. Three confirming signals: F1_xera_gap=0.93* (Luzardo better xERA), PQI confirms (delta=-7.9), Stage 1/2 agree (delta=0.12). Edge=+4.14pp barely in [4,15]pp band, generating positive Kelly fractions. No pipeline flags (confidence_downgrade=False). HARD CAP 5 not triggered because PQI also confirms alongside F1*. CONFIRM GOLD at reduced conviction given thin edge margin.",
+      "lessons_applied": ["three_signal_GOLD_bar_F1_PQI_S12", "HARD_CAP_5_not_triggered_PQI_present", "edge_barely_in_band_reduced_conviction"]
+    },
+    "CHC @ ATL": {
+      "model_pick": "CHC ML GOLD",
+      "model_prob": 0.5029,
+      "model_tier": "GOLD",
+      "model_grade": "A-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHC",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.60,
+      "reasoning": "Ben Brown (CHC) vs Chris Sale (ATL) confirmed via live API. Three-signal bar cleanly met: F3=1260.3 > 500, edge=+11.59pp in [4,15]pp band, f5_full_delta=0.019 < 0.15, no stacked flags. SP edge 0.49 xERA agrees with CHC (Brown better than Sale this season). Single concern: fair_prob=0.387 < 0.42 floor. Per 05-12 lesson, one flag without a secondary signal (no f5_full_delta alarm, no confidence_downgrade) is insufficient to downgrade a three-signal GOLD pick. Archive 3-for-3 on this bar.",
+      "lessons_applied": ["three_signal_GOLD_bar_validated_3for3", "single_flag_insufficient_DOWNGRADE_05-12", "SP_edge_agrees_CHC_over_Sale"]
+    },
+    "KC @ CHW": {
+      "model_pick": "CHW ML SKIP",
+      "model_prob": 0.5206,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHW",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.46,
+      "reasoning": "Grade D (-2) with extreme f5_full_delta=0.273: KC wins F5 at 75.2% via Kris Bubic (confirmed vs Anthony Kay, CHW). SP edge 2.70 xERA AGAINST CHW (Bubic substantially better). PQI strongly AGAINST CHW (delta=-28.6 late-game-degradation). The model's CHW thesis requires a full late-inning comeback. Directional conviction very low. OVERRIDE conditions not met (fair_prob=0.438 > 0.42, confidence_downgrade=False). CONFIRM SKIP.",
+      "lessons_applied": ["grade_D_SP_PQI_against", "extreme_f5_full_delta_direction_concern", "OVERRIDE_criteria_unmet_fair_prob"]
+    },
+    "SF @ LAD": {
+      "model_pick": "LAD ML SKIP",
+      "model_prob": 0.8406,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.65,
+      "reasoning": "HARD CAP 3 correctly fired: model_prob 0.855 > 0.85 AND f5_full_delta=0.384 > 0.20 → score forced to 0 (SKIP). Landen Roupp (SF) vs Emmet Sheehan (LAD) confirmed. SF@LAD with these three conditions is 0-for-3 in the postgame archive (05-10, 05-11, 05-12 all SF wins). Market has LAD at 62.9% (fair_prob) — reasonable; model's 84% is the calibration artifact. CONFIRM cap without modification.",
+      "lessons_applied": ["HARD_CAP_3_PLATINUM_calibration_artifact", "SF_LAD_0for3_structural_misread", "market_63pct_LAD_is_real"]
+    },
+    "MIA @ MIN": {
+      "model_pick": "TBD ML PENDING",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "MIA away SP not yet announced per CSV; confirmed TBD via live API (Zebby Matthews confirmed for MIN home). Cannot score MIA SP quality below 100-pitch Statcast threshold. PENDING is correct; will fill on next workflow run once MIA starter is announced.",
+      "lessons_applied": ["small_sample_SP_quarantine_PENDING", "PENDING_SP_zero_statcast"]
+    }
+  }
+}
