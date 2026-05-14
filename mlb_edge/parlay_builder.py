@@ -1077,6 +1077,13 @@ def write_parlay_report(graded_df: pd.DataFrame, slate_date: date,
                  "B+":"GRADE B+  (stretch — max 1 per ticket)"}[grade]
         lines.append(label)
         for _, r in rows.iterrows():
+            # Belt-and-suspenders against None p_model — A/A-/B+ rows
+            # *shouldn't* reach here without it after the grade_picks fix,
+            # but a single crash here would kill the whole report and
+            # therefore the diag CSV rewrite, so be defensive.
+            _pm = r.get("p_model")
+            if _pm is None or pd.isna(_pm):
+                continue
             tier = r.get("tier","")
             sigs_raw = r.get("signals","")
             sigs = (str(sigs_raw).strip() if pd.notna(sigs_raw) else "") or "(no F-signals)"
@@ -1084,7 +1091,7 @@ def write_parlay_report(graded_df: pd.DataFrame, slate_date: date,
             why  = (str(why_raw).strip() if pd.notna(why_raw) else "")
             status = "BET-ELIGIBLE" if not why else "filtered"
             lines.append(f"  {r['matchup']:<14}  {r['pick']:<3}  "
-                         f"p={float(r['p_model'])*100:4.1f}%  "
+                         f"p={float(_pm)*100:4.1f}%  "
                          f"{tier:<8}  {status}")
             lines.append(f"      reasons: {r['grade_reasons']}")
         lines.append("")
@@ -1101,9 +1108,17 @@ def write_parlay_report(graded_df: pd.DataFrame, slate_date: date,
                          f"excluded; band = [{MIN_PARLAY_EDGE_PP:+.0f}, "
                          f"{MAX_PARLAY_EDGE_PP:+.0f}]pp)")
             for _, r in graded_df[edge_excluded].iterrows():
+                _pm = r.get("p_model"); _ep = r.get("edge_pp")
+                if _pm is None or pd.isna(_pm) or _ep is None or pd.isna(_ep):
+                    continue
+                try:
+                    p_str = f"{float(_pm)*100:4.1f}%"
+                    e_str = f"{float(_ep):+.1f}pp"
+                except (TypeError, ValueError):
+                    continue
                 lines.append(f"  {r['matchup']:<14}  {r['pick']:<3}  "
-                             f"p={float(r['p_model'])*100:4.1f}%  "
-                             f"edge={float(r['edge_pp']):+.1f}pp  "
+                             f"p={p_str}  "
+                             f"edge={e_str}  "
                              f"grade={r['grade']}")
             lines.append("")
 
@@ -1111,8 +1126,19 @@ def write_parlay_report(graded_df: pd.DataFrame, slate_date: date,
     if not avoid.empty:
         lines.append(f"DO NOT PARLAY  ({len(avoid)} games)")
         for _, r in avoid.iterrows():
+            # 2026-05-14: PENDING_SP_DATA rows have p_model=None.  Use a
+            # safe formatter so this listing doesn't crash the whole
+            # report (which is what was killing the diag CSV rewrite).
+            _pm = r.get("p_model")
+            if _pm is None or pd.isna(_pm):
+                p_str = "  n/a"
+            else:
+                try:
+                    p_str = f"{float(_pm)*100:4.1f}%"
+                except (TypeError, ValueError):
+                    p_str = "  n/a"
             lines.append(f"  {r['matchup']:<14}  {r['pick']:<3}  "
-                         f"p={float(r['p_model'])*100:4.1f}%  "
+                         f"p={p_str}  "
                          f"grade={r['grade']:<3}")
         lines.append("")
 
