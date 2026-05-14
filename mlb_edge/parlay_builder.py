@@ -783,20 +783,48 @@ def grade_picks(diag_df: pd.DataFrame,
         a = _lookup_sp(away_sp_name, sp_df) if away_sp_name else None
         h = _lookup_sp(home_sp_name, sp_df) if home_sp_name else None
 
+        # ---- PENDING_SP_DATA short-circuit at the grade_picks loop level
+        # (2026-05-14, second pass).  The _score_pick guard alone wasn't
+        # sufficient: _compute_pqi_for_matchup runs BEFORE _score_pick is
+        # called and calls float() on the SP xERA values, which are None
+        # for rows where the probable starter hasn't been announced yet.
+        # Skip every per-row computation when pick is TBD or p_model
+        # is missing, and emit a clean ungraded row.
+        _pick_str = str(row.get("pick", "")).strip()
+        _p_model_val = row.get("p_model")
+        if _pick_str == "TBD" or _p_model_val is None or pd.isna(_p_model_val):
+            out.at[idx, "grade_score"] = 0
+            out.at[idx, "grade"] = _score_to_grade(0)
+            out.at[idx, "pre_cap_score"] = 0
+            out.at[idx, "pre_cap_grade"] = _score_to_grade(0)
+            out.at[idx, "grade_reasons"] = (
+                "pending_sp_data — ungraded (probable SP not yet announced)"
+            )
+            continue
+
         # Inject pqi_diff into the row before scoring, when slate_date is
         # available.  Skipped silently when the row already has a value
         # (e.g. set by an upstream pipeline step), or when bullpen roster
         # data is unreachable.
+        # 2026-05-14 wrapped in try/except after _compute_pqi_for_matchup
+        # was observed to raise float(None) on rows where both SP xERAs
+        # were missing (PENDING_SP_DATA edge case beyond what the
+        # top-of-loop short-circuit already filters).  Belt + suspenders:
+        # never let a single row break the whole iteration.
         if slate_date is not None and "pqi_diff" not in out.columns:
             out["pqi_diff"] = pd.NA
         if slate_date is not None and pd.isna(out.at[idx, "pqi_diff"]):
-            a_xera = a.get("xera") if a else None
-            h_xera = h.get("xera") if h else None
-            pqi_value = _compute_pqi_for_matchup(
-                str(row.get("matchup", "")), a_xera, h_xera, slate_date,
-            )
-            if pqi_value is not None:
-                out.at[idx, "pqi_diff"] = pqi_value
+            try:
+                a_xera = a.get("xera") if a else None
+                h_xera = h.get("xera") if h else None
+                pqi_value = _compute_pqi_for_matchup(
+                    str(row.get("matchup", "")), a_xera, h_xera, slate_date,
+                )
+                if pqi_value is not None:
+                    out.at[idx, "pqi_diff"] = pqi_value
+            except Exception as e:
+                log.debug("[pqi] inject failed for %s: %s",
+                          row.get("matchup", ""), e)
 
         # Inject team_quality_mod into the row before scoring.  Pulls
         # team season W-L + offensive RPG + last-10 form from MLB Stats
