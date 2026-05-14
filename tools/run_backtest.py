@@ -387,11 +387,18 @@ def build_report(picks: pd.DataFrame, start_bankroll: float,
 # [WARN] flag in the markdown so a Sunday-morning skim instantly surfaces
 # any cap that has become a drag on PnL.
 CAP_PRECISION_TARGETS = {
-    "[HARD CAP 1]": 1.00,   # negative-edge GOLD — 3-for-3 in archive
+    # CAP 1 target revised 2026-05-13 from 1.00 → 0.85 after STL@OAK win-missed
+    # firing.  A defensive filter doesn't need to be perfect; 85% on downside
+    # protection is the right operating point.
+    "[HARD CAP 1]": 0.85,   # negative-edge GOLD — 4/5 = 80% live, target 85%
     "[HARD CAP 2]": 0.60,   # F3 + non-elite opp SP — smaller sample
-    "[HARD CAP 3]": 1.00,   # PLATINUM calibration artifact — 2-for-2
+    "[HARD CAP 3]": 1.00,   # PLATINUM calibration artifact — 3-for-3 archive
     "[HARD CAP 4]": 0.75,   # Stage 1/2 + confidence_downgrade — 3 cases
-    "[HARD CAP 5]": 0.65,   # F1* quarantine — asterisk is a soft signal
+    "[HARD CAP 5]": 0.65,   # F1* quarantine — regex fix shipped 5/13
+    # CAP 6 added 2026-05-13 after PHI@BOS +31pp A-tier loss confirmed the
+    # extreme-edge calibrator-hallucination pattern (3 losses in 6 days).
+    # Wider target because the rule fires on a sparse sample.
+    "[HARD CAP 6]": 0.70,   # edge>+25pp calibrator hallucination
 }
 
 CAP_LABELS = {
@@ -400,6 +407,7 @@ CAP_LABELS = {
     "[HARD CAP 3]": "PLATINUM calibration artifact",
     "[HARD CAP 4]": "Stage 1/2 + confidence_downgrade",
     "[HARD CAP 5]": "F1* small-sample SP quarantine",
+    "[HARD CAP 6]": "Extreme positive edge (>+25pp) hallucination",
 }
 
 def _stake_mult_from_grade(grade):

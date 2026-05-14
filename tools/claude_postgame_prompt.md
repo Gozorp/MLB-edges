@@ -124,7 +124,7 @@ vocabulary as of 2026-05-12:
   meaningful threshold).
 - **Sample-size flags**: `acute_roster_True`, `small_sample_SP_True`,
   `confidence_downgrade_True`.
-- **Hard caps (2026-05-13)**: when a pick was demoted by one of the five
+- **Hard caps (2026-05-13)**: when a pick was demoted by one of the six
   hard caps in `parlay_builder.py`, cite the cap by canonical name in
   `signals_to_recheck`:
   - `[HARD CAP 1] negative_edge_GOLD` — any negative edge on a GOLD-or-higher
@@ -135,6 +135,11 @@ vocabulary as of 2026-05-12:
     delta>0.20.
   - `[HARD CAP 4] Stage_1_2_disagree_with_confidence_downgrade`.
   - `[HARD CAP 5] F1_star_no_secondary_signal` — F1\* without F2/F3/PQI.
+    Regex fix shipped 2026-05-13; prior to that the cap never fired on
+    live diag CSVs due to a pattern mismatch.
+  - `[HARD CAP 6] extreme_positive_edge_hallucination` — edge_pp > +25pp
+    forces SKIP. The calibrator's upper bucket is sparse; claimed +25pp
+    edges are mathematically implausible in MLB closing-line markets.
   - Use the canonical name (left of the dash) so the brain prompt can
     grep-match cap firings across the postgame archive.  These cap names
     will be useful in `patterns_observed` if a particular cap is

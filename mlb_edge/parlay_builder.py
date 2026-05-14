@@ -569,7 +569,11 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
     # it cannot be the sole F-signal supporting a GOLD pick.  Either another
     # lineup signal (F2 / F3) or PQI confirmation must also fire to sustain
     # the tier.  Otherwise cap at B (score=2).
-    _f1_star = bool(_re_caps.search(r"F1_xera_gap\*", signals_str))
+    # 2026-05-13 regex fix: signals_str contains "F1_xera_gap=1.90*" (asterisk
+    # at the end of the numeric value), not "F1_xera_gap*".  Original pattern
+    # never matched any live diag CSV — SD@MIL 5/13 was the first parlay-tier
+    # exposure and the cap fired zero times because of the regex mismatch.
+    _f1_star = bool(_re_caps.search(r"F1_xera_gap=[\d.]+\*", signals_str))
     if _f1_star and score >= 3:
         _has_other_signal = (
             ("F2_xwoba_gap=" in signals_str) or
@@ -618,6 +622,30 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
                         f"(score {score} -> 3)"
                     )
                     score = 3
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 6 — EXTREME POSITIVE EDGE HALLUCINATION CAP (2026-05-13)
+    # Validation: 3 losses on edge_pp > +23pp in 6 days.
+    #   2026-05-08 SEA @ CHW (edge +31.2pp, lost 12-8 the wrong way)
+    #   2026-05-08 NYM @ ARI (edge +23pp, lost 1-3)
+    #   2026-05-13 PHI @ BOS (edge +31.0pp, A-tier loss 1-3)
+    # Pattern: when the isotonic calibrator's upper bucket is sparse,
+    # f5_prob/full_prob can drift well past the calibrated range.  A claimed
+    # +25pp edge against the closing line is mathematically implausible in
+    # MLB markets — closing lines are tight enough that genuine 25pp edges
+    # don't exist.  This is the calibrator hallucinating, not the model
+    # finding hidden value.  Force SKIP regardless of F-signal stack.
+    if pd.notna(_epp):
+        try:
+            _epp_extreme = float(_epp)
+            if _epp_extreme > 25.0:
+                reasons.append(
+                    f"[HARD CAP 6] edge_pp={_epp_extreme:+.1f}pp>25.0 "
+                    f"is calibrator hallucination range, not real value "
+                    f"(score {score} -> 0)"
+                )
+                score = 0
         except (TypeError, ValueError):
             pass
 

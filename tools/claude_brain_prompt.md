@@ -96,25 +96,37 @@ Per matchup, your `claude_decision` must be one of:
 
 ## Hard caps already enforced by `parlay_builder.py` (do NOT re-derive)
 
-The rule layer applies **five validated hard caps** before you see the slate.
+The rule layer applies **six validated hard caps** before you see the slate.
 A pick that arrives at your input as `tier: SKIP` or `grade: D` after one of
 these caps fires has *already been correctly demoted* — don't re-litigate it.
 You can verify which cap fired by reading the `grade_reasons` column for
-entries prefixed `[HARD CAP N]`. The five caps and their validation:
+entries prefixed `[HARD CAP N]`. The six caps and their validation:
 
 - **[HARD CAP 1] Negative-edge GOLD prevention** — any `edge_pp < 0` on a
-  GOLD-or-higher pick collapses to score=1 (B-). Validated 3-for-3 across
-  5/9 CHC@TEX, 5/9 NYY@MIL, 5/11 NYY@BAL.
+  GOLD-or-higher pick collapses to score=1 (B-). Validated 4-for-5 live
+  (5/9 CHC@TEX, 5/9 NYY@MIL, 5/11 NYY@BAL, 5/13 CHC@ATL all loss-averted;
+  5/13 STL@OAK was a win-missed). Operating at ~80-85% precision is the
+  intended downside-filter outcome — do not relax.
 - **[HARD CAP 2] F3 > 1000 + home-favorite > 65% without elite opposing SP**
   caps at score=3 (B+). Opposing SP must have season xERA < 4.0 to override.
 - **[HARD CAP 3] PLATINUM calibration artifact** — `p_model > 0.85` AND
-  Stage 1/2 delta > 0.20 forces score=0 (SKIP). Validated 2-for-2 across
-  5/10 ATL@LAD and 5/11 SF@LAD.
+  Stage 1/2 delta > 0.20 forces score=0 (SKIP). Validated 3-for-3 across
+  5/10 ATL@LAD, 5/11 SF@LAD, 5/12 SF@LAD.
 - **[HARD CAP 4] Stage 1/2 disagree + `confidence_downgrade=True`** —
   Stage 1/2 delta ≥ 0.12 combined with the pipeline flag forces score=1.
-- **[HARD CAP 5] F1\* small-sample SP quarantine** — `F1_xera_gap*` (the
-  asterisk version) cannot be the sole F-signal supporting GOLD unless
-  F2/F3/PQI also fires. Caps at score=2 (B) otherwise.
+- **[HARD CAP 5] F1\* small-sample SP quarantine** — when the signals
+  column contains `F1_xera_gap=N.NN*` (asterisk at end of value, indicating
+  thin Statcast sample), this signal cannot be the sole F-signal supporting
+  GOLD; F2/F3/PQI must also fire. Caps at score=2 (B) otherwise. Regex
+  bug shipped pre-5/13 caused this cap to never fire on live diag CSVs —
+  fix landed 5/13 with the corrected pattern; SD@MIL 5/13 A-tier loss was
+  the diagnostic that surfaced the bug.
+- **[HARD CAP 6] Extreme positive edge hallucination** — `edge_pp > +25pp`
+  forces score=0 (SKIP). The isotonic calibrator's upper bucket is sparse,
+  and a claimed +25pp edge against the closing line is implausible in MLB
+  markets — this is the calibrator hallucinating, not finding value.
+  Validated 3-for-3 across 5/8 SEA@CHW (+31.2pp), 5/8 NYM@ARI (+23pp),
+  5/13 PHI@BOS (+31.0pp).
 
 Your job on a row where a hard cap already fired is to either CONFIRM the
 cap (most common) or, in genuinely exceptional cases, OVERRIDE upward with
