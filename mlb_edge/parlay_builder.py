@@ -208,6 +208,20 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
     away, home = (matchup.split(" @ ") + ["", ""])[:2]
     away = away.strip(); home = home.strip()
 
+    # ---- PENDING_SP_DATA short-circuit (2026-05-14) ----
+    # When a probable starter hasn't been announced yet (MLB hadn't published
+    # the SP at scrape time), the upstream pipeline emits a row with
+    # pick="TBD" and every probability/edge column set to None.  Every cap
+    # rule below assumes those columns are numeric; calling float(None)
+    # raised TypeError that was caught by main_predict's outer try/except,
+    # which silently aborted the entire diag CSV rewrite — losing the grade
+    # columns for *every other* row on the slate as collateral damage.
+    # Detect the missing-data state up front and return a safe (0, reason)
+    # tuple so the rest of the pipeline can finish without an exception.
+    _pm = row.get("p_model")
+    if str(pick).strip() == "TBD" or _pm is None or pd.isna(_pm):
+        return 0, ["pending_sp_data — ungraded (probable SP not yet announced)"]
+
     why = row.get("why_skipped", "")
     if pd.isna(why): why = ""
     why = str(why)
