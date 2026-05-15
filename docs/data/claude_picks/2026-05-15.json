@@ -1,42 +1,42 @@
 {
   "date": "2026-05-15",
-  "fit_at": "2026-05-15T17:30:00Z",
+  "fit_at": "2026-05-15T23:05:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 15,
   "patterns_recognized": [
-    "HARD CAP 1 (negative-edge GOLD) validated 6+ consecutive times with zero exceptions: PHI@PIT (-5.52pp), TOR@DET (-1.72pp), NYY@NYM (-7.46pp), SD@SEA (-3.23pp) all correctly zero-stake today — even large F-signals (F1*=2.38 for NYY, F3=4874 for TOR) don't override when edge is negative.",
-    "PLATINUM tier is 0-for-4 in directional accuracy across full postgame archive (SF@LAD x2, KC@CHW, SEA@HOU all wrong); both today's PLATINUM picks (BOS@ATL, SF@OAK) carry SP-unconfirmed or bullpen-fatigue concerns warranting one-tier reduction — neither meets HARD CAP 3 thresholds but PLATINUM scrutiny mandates extra review.",
-    "Three-signal GOLD bar (F-signals + positive edge + f5_full_delta < 0.15 + no stacked hard-cap flags) is 4-for-4 in archive; CIN@CLE today is the only game meeting all criteria — confidence_downgrade+bullpen_fatigue flags present but no secondary downgrade signal (delta=0.04, fair_prob=0.57), confirming 05-12 rule that flags alone don't mandate DOWNGRADE on positive-edge picks.",
-    "Coors Field produces legitimate extreme Stage 1/2 gaps driven by park effects, not model artifacts: ARI@COL f5_full_delta=0.3958 (Freeland dominant in F5, Coors bullpen vulnerable in innings 6-9) with market giving ARI 53.58% — market agrees with ARI direction, distinguishing park-effect from calibration artifact requiring OVERRIDE.",
-    "F3_swing_take_gap values 3x+ above typical slate maxima (~1800) on both PLATINUM picks today (BOS@ATL: 5596, SF@OAK: 6350) — while not definitively artifacts (ATL's lineup vs weak BOS SP is plausible), combined with SP-unconfirmed and PLATINUM history, these reinforce the DOWNGRADE-to-GOLD decision."
+    "HARD CAP 1 (negative-edge GOLD) validated 5+ consecutive times without exception — PHI@PIT (-4.78pp), TOR@DET (-1.72pp), NYY@NYM (-5.63pp), SD@SEA (-2.52pp) all correctly zero-stake today; even large F-signals (F3=4875 for TOR, F1*+F2 for NYY) cannot override when edge is negative. Market consistently holds superior same-day SP information.",
+    "Three-signal GOLD bar (F-signal fire + positive edge > 4pp + f5_full_delta < 0.15 + no stacked flags) is 4-for-4 in the postgame archive; CIN@CLE (Bibee vs Abbott, F1*+F5 backup, edge=+7.1pp, delta=0.04) is today's only game clearing all four conditions — confidence_downgrade+bullpen_fatigue present but per 05-12 rule, stacked flags alone without secondary signal (delta<0.15, fair_prob>0.42, gap<12pp) do NOT mandate DOWNGRADE.",
+    "Stacked-flags DOWNGRADE requires secondary signal before applying to positive-edge GOLD picks; 05-12 CHC@ATL lesson confirmed — flags alone at GOLD tier reduce confidence but do not mandate DOWNGRADE absent f5_full_delta > 0.15, fair_prob < 0.42, or market disagreement > 12pp.",
+    "PLATINUM scrutiny: both PLATINUM picks today (BOS@ATL, SF@OAK) warrant review. BOS@ATL: f5_full_delta=0.1831 exceeds the 0.15 Heuristic 5 threshold (ATL wins F5 only 48.23%, Strider's 2026 Statcast data thin per 'SP edge unconfirmed' grade note), making ATL's thesis bullpen-dependent — DOWNGRADE to GOLD. SF@OAK: f5_full_delta=0.0985 well below 0.15, p_model=0.6353 not in artifact range, game very consistent — CONFIRM at PLATINUM.",
+    "OVERRIDE four-condition trigger (f5_full_delta > 0.20 + stacked flags + fair_prob < 0.42 + confirmed quality opposing SP) validated 6+ times; no today's game fully meets all four conditions — KC@STL has f5_full_delta=0.2416 and SP/PQI against STL but lacks stacked flags and fair_prob above 0.42, preventing OVERRIDE to KC."
   ],
   "by_matchup": {
     "PHI @ PIT": {
-      "model_pick": "PIT ML GOLD",
-      "model_prob": 0.508,
+      "model_pick": "PIT",
+      "model_prob": 0.5146,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "PIT",
       "claude_tier": "SKIP",
       "claude_confidence": 0.51,
-      "reasoning": "HARD CAP 1 correctly fires: edge=-5.52pp collapses GOLD to B- (score 4→1), zeroing stake. Pre-cap A- driven by F1_xera_gap=2.20* (Ashcraft thin Statcast sample) and strong PQI=+22.5 confirming PIT. Aaron Nola (PHI) is a top-tier ace — the market has correctly priced his quality edge, producing the negative edge. F1 asterisk marks the SP comparison as unreliable. HARD CAP 1 is validated 6+ times; PIT direction credible but not stakeable against Nola.",
-      "lessons_applied": ["HARD_CAP_1_negative_edge_validated_6plus_times", "F1_asterisk_thin_SP_sample_unreliable", "Nola_ace_premium_priced_by_market"]
+      "reasoning": "HARD CAP 1 correctly fires (edge=-4.78pp → score 4→1, zero stake). Aaron Nola (PHI) is an elite SP; market prices PIT at 56.24% vs model's 51.46% — market knows Nola's quality. F1_xera_gap=2.20* (Braxton Ashcraft thin Statcast sample) and F3=2474 + PQI=+22.5 support PIT direction, but negative edge overrides. PHI's Schwarber/Harper lineup is strong vs RHP. PIT direction credible; no stake warranted against Nola.",
+      "lessons_applied": ["HARD_CAP_1_negative_edge_validated_5plus_times", "Nola_ace_quality_priced_by_market", "F1_asterisk_thin_SP_sample"]
     },
     "BAL @ WSH": {
-      "model_pick": "WSH ML GOLD",
-      "model_prob": 0.5488,
+      "model_pick": "WSH",
+      "model_prob": 0.5473,
       "model_tier": "GOLD",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "WSH",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Grade D (score=-1): SP edge 3.00 xERA AGAINST WSH (Shane Baz rated substantially better than Zack Littell) and PQI AGAINST pick (Δ=-26.4). Only F3=2637.6 supports WSH direction. Market gives WSH only 42.77% (fair_prob=0.4277) — market shares SP skepticism about WSH. Both quantitative quality signals (SP, PQI) disagree with the full-prob pick. D grade and no stake correctly applied.",
-      "lessons_applied": ["grade_D_SP_PQI_both_against_auto_SKIP", "market_agrees_with_quality_signal_skepticism", "F3_alone_insufficient_to_overcome_SP_PQI_against"]
+      "claude_confidence": 0.49,
+      "reasoning": "D grade (score=-1) correctly assigned: Shane Baz (BAL) rated 3.0 xERA better than Zack Littell (WSH), which is the SP edge AGAINST the WSH pick. PQI also against WSH (Δ=-26.4). Only F3=2637.6 supports WSH direction. Market prices WSH at only 43.2% (fair_prob) vs model's 54.73% — market agrees SP is the story. Both quality signals run against WSH; SKIP with no stake is correct.",
+      "lessons_applied": ["grade_D_SP_PQI_both_against_auto_SKIP", "market_encodes_Baz_advantage_over_Littell", "F3_alone_insufficient_vs_SP_PQI_headwinds"]
     },
     "TOR @ DET": {
-      "model_pick": "TOR ML GOLD",
+      "model_pick": "TOR",
       "model_prob": 0.5223,
       "model_tier": "GOLD",
       "model_grade": "B-",
@@ -44,35 +44,47 @@
       "claude_pick": "TOR",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "HARD CAP 1 fires: edge=-1.72pp collapses GOLD to B- (score 3→1), zeroing stake. TOR wins F5 at 69.15% (Yesavage dominates early vs Hanifee) but f5_full_delta=0.1692 means the late-game thesis relies on TOR's bullpen — and bullpen_fatigue=True with confidence_downgrade=True stacks the concern. Per 05-09 postgame, Stage 1/2 gap 16.3pp + bullpen_fatigue is a reliable contra-indicator for the pick direction. Negative edge confirms market holds better information. No stake.",
-      "lessons_applied": ["HARD_CAP_1_negative_edge", "f5_full_delta_16pp_plus_bullpen_fatigue_contra_indicator_05-09", "confidence_downgrade_stacked_risk"]
+      "reasoning": "HARD CAP 1 fires (edge=-1.72pp → score 3→1, zero stake). Trey Yesavage (TOR) dominates F5 at 69.15% vs Brenan Hanifee (DET), but f5_full_delta=0.1692 > 0.15 triggers Heuristic 5: TOR's full-game thesis requires bullpen carry. bullpen_fatigue=True + confidence_downgrade=True stack this concern. Per 05-09, Stage 1/2 gap 16pp+ combined with bullpen_fatigue is a reliable contra-indicator. TOR direction credible; no stake.",
+      "lessons_applied": ["HARD_CAP_1_negative_edge", "f5_full_delta_16pp_plus_bullpen_fatigue_heuristic5_contra_05-09", "confidence_downgrade_stacked_flag"]
     },
     "CIN @ CLE": {
-      "model_pick": "CLE ML GOLD",
-      "model_prob": 0.6391,
+      "model_pick": "CLE",
+      "model_prob": 0.642,
       "model_tier": "GOLD",
       "model_grade": "A",
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.60,
-      "reasoning": "CONFIRM GOLD — three-signal bar cleanly met (4-for-4 in archive). Tanner Bibee (CLE) vs Andrew Abbott (CIN): SP edge +0.93 xERA confirms CLE. F1_xera_gap=1.30* backed by F5_bullpen_gap=+0.84 satisfies HARD CAP 5 (secondary signal prevents sole-F1* demotion). Edge=+7.0pp in [4,15]pp band. f5_full_delta=0.0409 well below 15pp threshold. PQI confirms (+14.9). confidence_downgrade+bullpen_fatigue present but no secondary downgrade signal (delta=0.04, fair_prob=0.569) — per 05-12 rule, stacked flags alone don't mandate DOWNGRADE on positive-edge GOLD.",
-      "lessons_applied": ["three_signal_GOLD_bar_4for4_archive", "HARD_CAP_5_F1_asterisk_with_F5_secondary_OK", "stacked_flags_no_secondary_signal_05-12_rule_CONFIRM"]
+      "claude_confidence": 0.62,
+      "reasoning": "CONFIRM GOLD — three-signal bar cleanly met (4-for-4 in archive). Tanner Bibee (CLE) vs Andrew Abbott (CIN): F1_xera_gap=1.30* backed by F5_bullpen_gap=+0.84 satisfies HARD CAP 5 (secondary signal prevents sole-F1* demotion). Edge=+7.06pp in [4,15]pp band. f5_full_delta=0.038 well below 0.15 threshold. PQI confirms (+14.9). pen_strain_pick_side=0.1139 (HIGH): CIN's bullpen will be tested by CLE's lineup. Stacked flags present but no secondary downgrade signal per 05-12 rule.",
+      "lessons_applied": ["three_signal_GOLD_bar_4for4_archive", "HARD_CAP_5_F1_asterisk_F5_secondary_satisfies", "stacked_flags_no_secondary_signal_CONFIRM_per_05-12"]
     },
     "MIA @ TB": {
-      "model_pick": "TB ML SKIP",
-      "model_prob": 0.5339,
+      "model_pick": "TB",
+      "model_prob": 0.5682,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "SKIP correctly applied: edge=+0.67pp outside [4,15]pp band. Grade D (score=-2): SP edge 0.39 xERA AGAINST TB (Junk rated above Scholtens), PQI AGAINST pick (Δ=-9.4). confidence_downgrade+bullpen_fatigue both stacked. TB is 28-14 (strong team) but today's matchup signals all run against the direction. Grade D with no F-signals firing and both quality signals negative. CONFIRM SKIP.",
-      "lessons_applied": ["edge_outside_band_SKIP", "grade_D_SP_PQI_against_pick", "team_quality_record_irrelevant_when_matchup_signals_negative"]
+      "reasoning": "SKIP correctly applied (edge=+3.59pp outside [4,15]pp band). D grade (score=-1): Janson Junk (MIA) rated 0.60 xERA better than Ian Seymour (TB) in the model's scoring, PQI against TB (Δ=-12.1). f5_full_delta=0.2255 is large — MIA wins F5 at 65.74%, TB's full-game thesis entirely bullpen-dependent. bullpen_fatigue + confidence_downgrade stacked. OVERRIDE to MIA considered but fair_prob=0.5323 (above 0.42 floor) and no stacked pipeline flags prevent full OVERRIDE trigger.",
+      "lessons_applied": ["edge_outside_band_SKIP", "grade_D_SP_PQI_against_pick", "OVERRIDE_four_conditions_incomplete_fair_prob_above_floor"]
+    },
+    "MIL @ MIN": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "SKIP",
+      "claude_confidence": null,
+      "reasoning": "Coleman Crow (MIL) confirmed starting per MLB API but has 0 Statcast pitches season-to-date; the SP quality score cannot be computed without 100+ pitch threshold. Joe Ryan (MIN) is confirmed. PENDING designation is correct per validated protocol (5+ archive confirmations including 05-14 where MIN won 9-1 with same Crow designation). MIL 24-17 vs MIN 20-24; directional lean to MIL qualitatively but no formalizable pick.",
+      "lessons_applied": ["PENDING_SP_zero_Statcast_protocol_validated_5plus_times", "Coleman_Crow_0_pitches_SP_quality_uncomputable"]
     },
     "BOS @ ATL": {
-      "model_pick": "ATL ML PLATINUM",
+      "model_pick": "ATL",
       "model_prob": 0.6653,
       "model_tier": "PLATINUM",
       "model_grade": "A",
@@ -80,11 +92,11 @@
       "claude_pick": "ATL",
       "claude_tier": "GOLD",
       "claude_confidence": 0.61,
-      "reasoning": "DOWNGRADE PLATINUM→GOLD. Spencer Strider confirmed starting (live API) but has 0 Statcast pitches — SP edge unconfirmed, F1 signal cannot fire, producing f5_full_delta=0.1831 above 15pp concern threshold (ATL wins F5 only 48.23%). ATL's full-game thesis requires bullpen carry — no bullpen_fatigue flag mitigates this. ATL 30-14 vs BOS 18-25, F2/F3=5596.0, and PQI (+10.0) support ATL direction strongly at GOLD. PLATINUM is unjustified without verified Strider Statcast data; PLATINUM is 0-for-4 in archive direction accuracy.",
-      "lessons_applied": ["Strider_zero_Statcast_SP_edge_unconfirmed", "f5_full_delta_above_15pp_stage_1_2_concern", "PLATINUM_0for4_direction_archive_extra_scrutiny", "ATL_30-14_quality_supports_GOLD_direction"]
+      "reasoning": "DOWNGRADE PLATINUM→GOLD. Spencer Strider (ATL) vs Connelly Early (BOS): grade_reasons show 'SP edge unconfirmed' — Strider has thin 2026 Statcast data (returning from injury), preventing F1 from firing. f5_full_delta=0.1831 exceeds Heuristic 5 threshold (0.15): ATL wins F5 only 48.23%, full-game thesis requires bullpen carry. BOS HL bullpen marginally better (gap=+0.0118). ATL 30-14 vs BOS 18-25, F2=0.029 and F3=5596 support ATL at GOLD. PLATINUM without confirmed SP edge is unjustified.",
+      "lessons_applied": ["Strider_SP_edge_unconfirmed_thin_2026_Statcast", "f5_full_delta_above_15pp_heuristic5_PLATINUM_concern", "PLATINUM_historical_43pct_hit_rate_extra_scrutiny", "ATL_30-14_quality_supports_GOLD_direction"]
     },
     "NYY @ NYM": {
-      "model_pick": "NYY ML GOLD",
+      "model_pick": "NYY",
       "model_prob": 0.5253,
       "model_tier": "GOLD",
       "model_grade": "B-",
@@ -92,104 +104,92 @@
       "claude_pick": "NYY",
       "claude_tier": "SKIP",
       "claude_confidence": 0.53,
-      "reasoning": "HARD CAP 1 fires: edge=-7.46pp collapses GOLD to B- (score 4→1), zeroing stake. Pre-cap A- with F1_xera_gap=2.38* (Schlittler thin sample) + F2_xwoba_gap=0.027. f5_full_delta=0.1376 with confidence_downgrade=True — HARD CAP 4 threshold 0.12 met but cap needs BOTH conditions (delta here is 0.1376 vs confidence_downgrade=True would trigger if combined correctly, but HARD CAP 1 already fired first). NYY is 27-17, real quality advantage, but Clay Holmes (NYM converted reliever-starter) creates genuine matchup uncertainty market has priced. No stake.",
-      "lessons_applied": ["HARD_CAP_1_negative_edge", "F1_asterisk_thin_SP_sample", "market_prices_Holmes_matchup_uncertainty"]
+      "reasoning": "HARD CAP 1 fires (edge=-5.63pp → score 4→1, zero stake). Cam Schlittler (NYY) vs Clay Holmes (NYM): F1_xera_gap=2.38* (Schlittler thin sample) + F2=0.027 and PQI=-18.4 support NYY direction. Market gives NYY 58.16% vs model's 52.53% — market significantly more bullish on NYY. f5_full_delta=0.1376 (NYM/Holmes wins F5) adds late-game uncertainty. NYY 27-17 vs NYM 18-25 supports directional call. No stake per HARD CAP 1.",
+      "lessons_applied": ["HARD_CAP_1_negative_edge", "F1_asterisk_Schlittler_thin_sample", "market_encodes_Holmes_SP_quality_edge"]
     },
     "CHC @ CHW": {
-      "model_pick": "CHW ML SKIP",
-      "model_prob": 0.5536,
+      "model_pick": "CHW",
+      "model_prob": 0.5181,
       "model_tier": "SKIP",
       "model_grade": "A-",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHW",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "SKIP correctly applied despite A- grade (score=4). fair_prob=0.4359 is BELOW the 0.42 floor — market prices CHW at only 43.59% vs model's 55.36% (+11.77pp edge). Per 05-12 rule, stacked flags (confidence_downgrade+bullpen_fatigue) require secondary signal to mandate DOWNGRADE; fair_prob < 0.42 IS that secondary signal. Market strongly prefers CHC (28-16) over CHW (22-21). Edward Cabrera vs Sean Burke: market disagrees with the model's SP edge read. CONFIRM SKIP; SKIP tier pipeline decision is well-supported.",
-      "lessons_applied": ["fair_prob_below_0.42_floor_secondary_downgrade_signal", "stacked_flags_plus_secondary_signal_justifies_SKIP_05-12", "market_strongly_disagrees_with_CHW_direction"]
+      "reasoning": "SKIP correctly applied: no F-signal (F1/F2/F3/F4/F5) fires — SP edge and PQI drive the A- grade but without an F-signal the tier stays SKIP. Sean Burke (CHW) vs Edward Cabrera (CHC): model sees 0.53 xERA edge for Burke. fair_prob=0.4466 below the 0.42 floor by standard metrics; market prices CHC (28-16) as stronger than CHW (22-21). CHC lineup (Bregman, Happ, Suzuki) shows clearly stronger batter splits vs RHP than CHW's lineup. Confidence_downgrade + bullpen_fatigue confirm SKIP posture.",
+      "lessons_applied": ["no_F_signal_SKIP_tier_mandatory", "CHC_lineup_stronger_splits_vs_RHP", "fair_prob_market_disagrees_with_CHW_direction"]
     },
     "TEX @ HOU": {
-      "model_pick": "HOU ML GOLD",
-      "model_prob": 0.5557,
+      "model_pick": "HOU",
+      "model_prob": 0.5517,
       "model_tier": "GOLD",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "HOU",
       "claude_tier": "SKIP",
       "claude_confidence": 0.49,
-      "reasoning": "Grade D (score=-1): SP edge 0.79 xERA AGAINST HOU (Jack Leiter rated better than Spencer Arrighetti), PQI AGAINST pick (Δ=-10.1). acute_roster=True flags a live lineup concern for HOU. confidence_downgrade=True. Edge=+6.03pp but grade D means staking is inappropriate. HOU is 17-28 (worst record on slate). Leiter has been a quality TEX SP per prior postgame. All structural signals favor TEX; HOU direction at 55.57% with SP and PQI running counter is a low-conviction D-grade SKIP.",
-      "lessons_applied": ["grade_D_SP_PQI_against_pick", "acute_roster_confidence_downgrade_stacked_05-09_pattern", "HOU_17-28_team_quality_concerns"]
+      "reasoning": "D grade (score=-1) correctly assigned: Jack Leiter (TEX) rated 0.79 xERA better than Spencer Arrighetti (HOU) — SP edge AGAINST HOU pick. PQI against HOU (Δ=-10.1). acute_roster flag signals HOU lineup disruption. confidence_downgrade=True. HOU is 17-28 (poorest record on slate). Despite F3=3594.8 firing and positive edge=+6.3pp, SP and PQI structural signals dominate. SKIP with no stake is correct.",
+      "lessons_applied": ["grade_D_SP_PQI_against_pick", "acute_roster_confidence_downgrade_stacked_05-09_pattern", "HOU_17-28_team_record_consistent_with_D_grade"]
     },
     "KC @ STL": {
-      "model_pick": "STL ML SKIP",
-      "model_prob": 0.6438,
+      "model_pick": "STL",
+      "model_prob": 0.6452,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "Grade D (score=-3), lowest on slate. SP edge 0.99 xERA AGAINST STL (Michael Wacha rated substantially above Dustin May) and PQI AGAINST pick (Δ=-17.9). f5_full_delta=0.2403 is large — KC wins F5 at 59.65% (Wacha dominant), STL needs full-game reversal. Market is nearly neutral (fair_prob=0.5093) despite model's STL at 64.38%. OVERRIDE to KC considered but no stacked pipeline flags (confidence_downgrade=False, no acute_roster) — four-condition OVERRIDE trigger incomplete. CONFIRM SKIP/D.",
-      "lessons_applied": ["grade_D_score_minus3_SP_PQI_against", "f5_full_delta_0.24_KC_F5_dominant", "OVERRIDE_four_condition_trigger_incomplete_no_stacked_flags"]
+      "reasoning": "D grade (score=-3), worst on slate. Michael Wacha (KC) rated 0.99 xERA better than Dustin May (STL) — strong SP edge AGAINST STL. PQI against STL (Δ=-17.9). f5_full_delta=0.2416 is extreme: KC wins F5 at 59.65% (Wacha dominant), STL's full-game thesis requires a major late reversal. Market prices as coin flip (50.14%) vs model's 64.52% for STL — massive gap. OVERRIDE to KC considered but no stacked pipeline flags (confidence_downgrade=False, no acute_roster) — four-condition trigger incomplete.",
+      "lessons_applied": ["grade_D_score_minus3_SP_PQI_against", "f5_full_delta_0.24_Wacha_KC_F5_dominant", "OVERRIDE_four_condition_trigger_incomplete_no_stacked_flags"]
     },
     "ARI @ COL": {
-      "model_pick": "ARI ML GOLD",
-      "model_prob": 0.5037,
+      "model_pick": "ARI",
+      "model_prob": 0.5026,
       "model_tier": "GOLD",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "CONFIRM SKIP/D — Coors Field park effect, not model artifact. Kyle Freeland at Coors vs Merrill Kelly: COL wins F5 at 89.21% (Freeland historically dominant at altitude), producing f5_full_delta=0.3958. But market gives ARI 53.58% (fair_prob=0.5358) — market agrees with ARI full-game direction because Coors bullpen collapses in innings 6-9 are systematic. Both model and market point to ARI; this is NOT a calibration artifact requiring OVERRIDE to COL. D grade (score=-4) correctly reflects structural uncertainty. CONFIRM no-stake.",
-      "lessons_applied": ["Coors_park_effect_legitimate_large_f5_full_delta", "market_agrees_ARI_direction_53.58pct", "OVERRIDE_to_COL_rejected_market_prices_Coors_late_game", "grade_D_correctly_captures_uncertainty"]
+      "reasoning": "CONFIRM SKIP/D — Coors Field park effect, not model artifact. Kyle Freeland (COL) vs Merrill Kelly (ARI): Freeland rated 4.74 xERA better than Kelly at Coors, driving COL to win F5 at 89.21%. f5_full_delta=0.3947 is extreme but market gives ARI 53.12% (fair_prob) — market agrees with ARI full-game direction because Coors bullpen collapses in innings 6-9 are systematic. Both model and market point to ARI for the full game. D grade (score=-4) correctly reflects structural uncertainty. CONFIRM no-stake.",
+      "lessons_applied": ["Coors_park_effect_legitimate_extreme_f5_full_delta", "market_agrees_ARI_53pct_full_game_direction", "OVERRIDE_to_COL_rejected_market_prices_Coors_late_game", "grade_D_correctly_captures_structural_uncertainty"]
     },
     "LAD @ LAA": {
-      "model_pick": "TBD ML PENDING_SP_DATA",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": "C",
+      "model_pick": "LAD",
+      "model_prob": 0.8133,
+      "model_tier": "GOLD",
+      "model_grade": "B",
       "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
+      "claude_pick": "LAD",
       "claude_tier": "SKIP",
-      "claude_confidence": null,
-      "reasoning": "Blake Snell confirmed as LAD starter (live MLB API: Jack Kochanowicz for LAA). However Snell has 0 Statcast pitches season-to-date — 100+ pitch threshold for SP quality scoring unmet. PENDING designation correct; F1 SP edge cannot be computed without Statcast data. LAD is 26-18 vs LAA 16-28, directional lean to LAD qualitatively, but no formalizable pick without Snell quality score. PENDING protocol validated across 5+ prior archive instances.",
-      "lessons_applied": ["PENDING_SP_zero_Statcast_validated_5plus_times", "Snell_0_Statcast_pitches_SP_edge_uncomputable"]
+      "claude_confidence": 0.65,
+      "reasoning": "Two SKIP triggers fire: model_prob=0.8133 outside [0.48,0.72] range AND edge=+15.57pp just above 15pp band ceiling. Will Klein (LAD) vs Jack Kochanowicz (LAA): SP edge=2.15 xERA for LAD (small-sample at 70 PAs, +1 not +2). F2=0.035 fires. LAD's lineup (Ohtani, Betts, Tucker) is elite. f5_full_delta=0.2192 (LAD improves from F5 to full game). PQI confirms strongly (Δ=-33.4). SKIP correctly applied due to extreme model_prob and edge ceiling breach despite genuine LAD quality edge.",
+      "lessons_applied": ["model_prob_outside_0.48_0.72_range_SKIP", "edge_15.57pp_above_15pp_band_ceiling_SKIP", "LAD_lineup_elite_direction_credible_but_SKIP"]
     },
     "SD @ SEA": {
-      "model_pick": "SEA ML GOLD",
-      "model_prob": 0.5247,
+      "model_pick": "SEA",
+      "model_prob": 0.5318,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "SEA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "HARD CAP 1 fires: edge=-3.23pp collapses GOLD to B- (score 4→1), zeroing stake. Pre-cap A- with F1_xera_gap=0.85* (Emerson Hancock thin sample) + F3=2929.6 and PQI=+8.4 confirming SEA. hl_bullpen_xwoba_gap=-0.0196 (SEA HL relief meaningfully better than SD — slight positive signal for SEA direction). Randy Vásquez (SD) has a quality edge that the market has priced. team_quality_mod=-1 disabled but would have penalized SEA. SEA direction directionally credible but HARD CAP 1 correctly zeros stake.",
-      "lessons_applied": ["HARD_CAP_1_negative_edge", "F1_asterisk_thin_Hancock_sample", "market_encodes_Vasquez_SP_quality_edge"]
+      "claude_confidence": 0.53,
+      "reasoning": "HARD CAP 1 fires (edge=-2.52pp → score 4→1, zero stake). Emerson Hancock (SEA) vs Randy Vásquez (SD): F1_xera_gap=0.85* (thin Hancock Statcast sample) + F3=2929.6, PQI=+8.4 confirm SEA. hl_bullpen_xwoba_gap=-0.0196 (SEA HL bullpen meaningfully better than SD's — mild CONFIRM signal). f5_full_delta=0.0062 (perfectly tight, game consistent across phases). Market gives SEA 55.70% vs model's 53.18% — market more bullish on SEA. Direction credible; no stake.",
+      "lessons_applied": ["HARD_CAP_1_negative_edge", "F1_asterisk_Hancock_thin_sample", "hl_bullpen_xwoba_gap_SEA_slightly_favorable", "market_encodes_Vasquez_quality_edge"]
     },
     "SF @ OAK": {
-      "model_pick": "OAK ML PLATINUM",
+      "model_pick": "OAK",
       "model_prob": 0.6353,
       "model_tier": "PLATINUM",
       "model_grade": "A",
-      "claude_decision": "DOWNGRADE",
-      "claude_pick": "OAK",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.60,
-      "reasoning": "DOWNGRADE PLATINUM→GOLD. Score=7 (slate's highest) with F2_xwoba_gap=0.033 + F3=6350.2, edge=+8.44pp, PQI=+6.2, f5_full_delta=0.0985 (OAK improves in full game vs F5). However: PLATINUM is 0-for-4 in archive direction accuracy; 'SP edge unconfirmed' per grade_reasons (Aaron Civale vs Tyler Mahle — Civale quality not fully Statcast-verified); confidence_downgrade+bullpen_fatigue on OAK's side. F3=6350.2 is 3.5× prior slate maxima (~1800) — elevated size adds uncertainty. Per 05-12: stacked flags alone don't mandate GOLD DOWNGRADE, but PLATINUM warrants extra scrutiny; one-tier reduction appropriate. OAK direction well-supported at GOLD.",
-      "lessons_applied": ["PLATINUM_0for4_direction_archive_extra_scrutiny", "SP_edge_unconfirmed_PLATINUM_concern", "F3_6350_3x_above_typical_max_elevated_uncertainty", "stacked_flags_PLATINUM_one_tier_reduction"]
-    },
-    "MIL @ MIN": {
-      "model_pick": "TBD ML PENDING_SP_DATA",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
-      "claude_tier": "SKIP",
-      "claude_confidence": null,
-      "reasoning": "MIL probable pitcher absent from live MLB API (no probablePitcher returned for MIL away team). MIN has Joe Ryan confirmed as starter. Without MIL's SP quality score, SP edge comparison cannot be computed and F1 signal cannot fire. PENDING designation is correct per validated protocol. MIN is 20-24 vs MIL 24-17 — directional lean to MIL qualitatively, but no formalizable pick without SP data.",
-      "lessons_applied": ["PENDING_SP_TBD_validated_protocol", "MIL_SP_absent_from_MLB_API"]
+      "claude_pick": "OAK",
+      "claude_tier": "PLATINUM",
+      "claude_confidence": 0.62,
+      "reasoning": "CONFIRM PLATINUM. Aaron Civale (OAK) vs Tyler Mahle (SF): F2=0.033 and F3=6350.2 both fire, edge=+8.69pp in band, f5_full_delta=0.0985 (very tight, OAK consistent across all phases). PQI confirms (+7.9). p_model=0.6353 is NOT in artifact range (< 0.85) and f5_full_delta=0.0985 is well below 0.20 — HARD CAP 3 does not apply. pen_strain_pick_side=0.1126 (HIGH): SF's bullpen will be stressed by OAK's top order (Kurtz at 1.116 OPS vs RHP). Stacked flags present but no secondary downgrade signal per 05-12 rule (delta < 0.15, fair_prob > 0.42, gap < 12pp).",
+      "lessons_applied": ["PLATINUM_HARD_CAP_3_not_applicable_p_model_below_0.85", "three_signal_PLATINUM_bar_all_conditions_clear", "f5_full_delta_0.0985_tight_no_heuristic5_trigger", "stacked_flags_no_secondary_signal_CONFIRM_per_05-12"]
     }
   }
 }
