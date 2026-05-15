@@ -140,6 +140,61 @@ entries prefixed `[HARD CAP N]`. The six caps and their validation:
   flag, treat the pick as conviction-supported but exposure-capped —
   CONFIRM is acceptable; OVERRIDE only with strong qualitative reason.
 
+## Per-player top-5 batter context (2026-05-14 platoon-brain MVP)
+
+Every diag CSV row now carries two JSON-encoded columns:
+
+- `away_top_5_batters_json`
+- `home_top_5_batters_json`
+
+Each is a list of up to 5 batter records:
+
+```json
+{
+  "order": 1,
+  "name": "Aaron Judge",
+  "bat_side": "R",
+  "vs_LHP_OPS_career": 1.062,
+  "vs_LHP_PA_career": 1299,
+  "vs_RHP_OPS_career": 1.017,
+  "vs_RHP_PA_career": 3897,
+  "vs_today_SP_OPS": 1.017,
+  "vs_today_SP_PA": 3897,
+  "sample_flag": "OK"
+}
+```
+
+How to use this context when evaluating a pick:
+
+1. **Parse the JSON** for the team you're evaluating.  `away_top_5_batters_json`
+   is the away team's top of order; `home_top_5_batters_json` is the home team's.
+2. **Cross-reference `vs_today_SP_OPS`** — this field has already been
+   resolved against the opposing SP's handedness, including switch-hitter
+   logic.  No need to compute "which side is this batter facing today" — just
+   read the number.  A `vs_today_SP_OPS` of 0.700 means the matchup is hard
+   for this batter; 0.900 means it's favorable.
+3. **Discount LOW_SAMPLE rows.**  When `sample_flag == "LOW_SAMPLE"` (career
+   PA < 100 vs one side), the split is noise wearing a number — don't
+   weight it as deterministic.  `SUB_STABLE` (100-149 PA) is medium-weight;
+   `OK` (≥150 PA) is reliable.
+4. **Look at the top-3 collectively, not single batters.**  A single weak
+   matchup doesn't decide a game; a structurally disadvantaged top-3 (3 of 3
+   batters with `vs_today_SP_OPS` < .700) is a real signal.
+5. **Most pre-game lineup structure is NOT a deciding factor.**  Only flag
+   it when the top-3 shows a clear collective pattern.  If two of three
+   batters are flat or favorable, the lineup isn't the story.
+
+**Default disposition: this context informs CONFIRM/DOWNGRADE/OVERRIDE
+weights but should rarely flip a decision on its own.**  The platoon-brain
+adds nuance to existing reasoning — it doesn't override the rule layer or
+the hard caps.  Treat it the same way you'd treat live news: useful color,
+not a controlling input.
+
+**False-positive resistance is the priority.**  If the splits don't
+clearly justify a different decision, defer to the existing call.  A
+single BIG_SPLIT batter at the bottom of the top-5 isn't enough to flip
+a GOLD tier.
+
 Your job on a row where a hard cap already fired is to either CONFIRM the
 cap (most common) or, in genuinely exceptional cases, OVERRIDE upward with
 explicit reasoning (e.g. live news the cap couldn't see). **Do not waste

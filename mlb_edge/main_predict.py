@@ -888,6 +888,39 @@ def run(slate_date: date,
                     log.info(
                         "Re-wrote diagnostic table with grade columns "
                         "to %s", out_picks)
+
+                # ---- Platoon-brain MVP: attach top-5 batter JSON (2026-05-14)
+                try:
+                    from . import platoon_splits as _ps
+                    matchup_to_pk = {}
+                    matchup_to_sp_hand = {}
+                    if "game_id" in preds.columns:
+                        from .stadiums import normalize_team as _nt2
+                        for _, gr in preds.iterrows():
+                            try:
+                                gpk = int(gr["game_id"])
+                            except Exception:
+                                continue
+                            ah = gr.get("home_team", "")
+                            aa = gr.get("away_team", "")
+                            mk = f"{_nt2(aa)} @ {_nt2(ah)}"
+                            matchup_to_pk[mk] = gpk
+                            sp_a = gr.get("away_sp_throws") or gr.get("away_sp_hand")
+                            sp_h = gr.get("home_sp_throws") or gr.get("home_sp_hand")
+                            if sp_a or sp_h:
+                                matchup_to_sp_hand[mk] = {
+                                    "away_sp_hand": sp_a,
+                                    "home_sp_hand": sp_h,
+                                }
+                    if matchup_to_pk:
+                        _ps.attach_top_5_to_diag(
+                            graded, matchup_to_pk, matchup_to_sp_hand)
+                        if out_picks:
+                            graded.to_csv(out_picks, index=False)
+                            log.info("Attached top-5 batter JSON columns")
+                except Exception as e:
+                    log.warning("platoon_splits attach failed "
+                                "(continuing without top-5 JSON): %s", e)
             except Exception as e:
                 log.warning("parlay builder failed (continuing): %s", e)
         return
