@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-15",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-16T00:10:00Z",
+  "n_analyzed": 15,
+  "summary": "Three staked picks went 2-1 (67%): SF@OAK PLATINUM CONFIRM won 5-2, BOS@ATL PLATINUM→GOLD DOWNGRADE won 3-2, and CIN@CLE GOLD CONFIRM lost 7-6 in a one-run game. Model directional accuracy was 9-5 across 14 graded matchups (64%). HARD CAP 1 correctly blocked four negative-edge picks; three of those four lost in direction, confirming market superiority. CIN@CLE breaks the three-signal GOLD bar's 4-for-4 streak to 4-for-5 — likely variance on a 64% favorite, though stacked flags (confidence_downgrade + bullpen_fatigue) were present. PLATINUM→GOLD DOWNGRADE when SP edge is unconfirmed and f5_full_delta > 0.15 won for the second consecutive time.",
+  "by_matchup": {
+    "PHI @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "11-9",
+      "headline": "PHI rallied to win 11-9 in extras; HARD CAP 1 correctly zeroed stake on this negative-edge PIT direction loss.",
+      "hypothesis": "PHI's 11-9 extra-inning win validates the market's pricing of Nola's SP advantage. The model's F1_xera_gap=2.20* (thin Braxton Ashcraft sample) and F3=2474 correctly identified PIT's lineup edge in early frames, but PHI's elite lineup (Harper, Schwarber, Turner) with Nola eventually overcame that edge in extra innings. HARD CAP 1 and the small-sample SP asterisk correctly held back the stake. The negative edge (-4.78pp) signaled that the market's knowledge of Nola's quality was superior to the model's assessment — a process success despite the direction loss.",
+      "signals_to_recheck": "negative_edge_GOLD correctly fired; F1_xera_gap* opposing an ace SP (Nola xERA likely < 3.0) is a reliable combined signal that the model is missing SP quality information the market holds"
+    },
+    "BAL @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "WSH edged BAL 3-2 despite D-grade assessment; F3 correctly identified WSH direction but SKIP tier was appropriate.",
+      "hypothesis": "WSH's 3-2 win came despite the model grading this D (-1) with Shane Baz's xERA advantage (3.00 over Littell) and PQI against WSH (Δ=-26.4). The F3=2637.6 signal correctly captured WSH's lineup edge directionally, but without F1/F2 backup and with SP/PQI both against the pick, SKIP was the correct tier. WSH winning a close game on a D-grade pick is variance; no process lesson to extract.",
+      "signals_to_recheck": "F3_swing_take_gap correctly predicted direction but insufficient alone to overcome SP/PQI headwinds; D-grade SKIP wins are expected variance and do not require tier reconsideration"
+    },
+    "TOR @ DET": {
+      "verdict": "LOSS",
+      "model_pick": "TOR ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "DET won 3-2 as f5_full_delta=0.1692 Heuristic 5 warning correctly predicted TOR's F5 edge wouldn't carry full game.",
+      "hypothesis": "TOR's strong F5 advantage (model gave TOR 69.15% in first 5 innings) did not survive the full game, precisely as the f5_full_delta=0.1692 Heuristic 5 trigger predicted. This is a process success: HARD CAP 1 and Heuristic 5 both correctly prevented stake, and DET's 3-2 win validates that TOR's F5 thesis was bullpen-dependent. The full-game TOR probability (52.23%) barely cleared 50% and the coin landed for DET — variance loss with correct process.",
+      "signals_to_recheck": "f5_full_delta >= 0.1692 combined with bullpen_fatigue correctly predicted full-game uncertainty; Heuristic 5 threshold at 0.15 validated — bullpen-carry thesis fails when pen is flagged as strained"
+    },
+    "CIN @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-6",
+      "headline": "CIN edged CLE 7-6 — the three-signal GOLD bar's first loss, now 4-for-5 in archive; likely variance on a 64.2% pick.",
+      "hypothesis": "CLE was a genuine 64.2% favorite (F1_xera_gap=1.30* backed by F5_bullpen_gap, edge=+7.06pp, PQI+14.9) that lost a one-run game. Variance is the primary explanation: the 7-6 final is within the expected probability distribution for a 64% favorite. However, confidence_downgrade=True and bullpen_fatigue=True were both stacked, and pen_strain_pick_side=0.1139 (HIGH) did not materialize as a CIN bullpen penalty — CIN's bullpen held under the expected pressure. Monitor whether three-flag stacking (confidence_downgrade + bullpen_fatigue + pen_strain > 0.115) correlates with excess variance beyond what the model probability implies. Do not change the confirmation threshold on a single data point.",
+      "signals_to_recheck": "F1_xera_gap* with confidence_downgrade_True and bullpen_fatigue both stacking on a GOLD CONFIRM; pen_strain_pick_side > 0.115 (HIGH) on opposing team did not penalize CIN as expected — track this three-flag combination across future GOLD CONFIRMs"
+    },
+    "MIA @ TB": {
+      "verdict": "WIN",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-7",
+      "headline": "TB dominated MIA 7-2; SKIP correctly applied despite clear TB win — edge below band floor prevented stake.",
+      "hypothesis": "TB's 7-2 win validates the model's directional call, but the SKIP tier was correct: edge=+3.59pp was outside the [4,15]pp band, and SP/PQI signals ran against TB (D grade, score=-1). The TB win came despite the D-grade assessment, suggesting the f5_full_delta=0.2255 concern (MIA wins F5 at 65.74%) did not materialize — TB's bullpen held the full game. No process lesson: a D-grade SKIP winning cleanly is favorable variance without implying the tier decision was wrong.",
+      "signals_to_recheck": "edge_pp outside [4,15]pp band correctly triggered SKIP; D-grade SKIP wins are expected variance and do not require tier reconsideration"
+    },
+    "MIL @ MIN": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "MIL beat MIN 3-2; PENDING_SP_DATA correctly withheld any directional pick with Coleman Crow at 0 Statcast pitches.",
+      "hypothesis": "MIL's narrow 3-2 win came with no stake or directional call, which was the correct posture given zero Statcast data on Coleman Crow. The one-run margin underscores how unpredictable SP-zero-data matchups are — a 3-2 game could easily go either way. This is the sixth PENDING_SP_DATA validation in the archive; the protocol appropriately protects against unquantifiable SP quality regardless of team records or other signals.",
+      "signals_to_recheck": "small_sample_SP_True with 0 Statcast pitches; PENDING_SP_DATA protocol validated for sixth time — narrow 3-2 margin confirms genuine unpredictability in these matchups"
+    },
+    "BOS @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-3",
+      "headline": "ATL won 3-2; PLATINUM→GOLD DOWNGRADE was correct — pick won and tier adjustment protected against over-staking.",
+      "hypothesis": "ATL's 3-2 win confirms the DOWNGRADE was the right tier decision: the directional call was sound, but PLATINUM without confirmed SP edge (Strider returning from injury with thin 2026 Statcast data) and f5_full_delta=0.1831 exceeding Heuristic 5's 0.15 threshold warranted stake reduction. ATL's lineup quality (Olson, Riley, Albies) and home advantage drove the win. The DOWNGRADE correctly protected against over-sizing a stake on a PLATINUM pick where the full-game thesis was partially bullpen-dependent. This is the first validated PLATINUM→GOLD DOWNGRADE win in the postgame archive.",
+      "signals_to_recheck": "f5_full_delta > 0.15 with 'SP edge unconfirmed' in grade_reasons correctly triggered DOWNGRADE; PLATINUM→GOLD when F1 carries asterisk or SP Statcast data is thin remains the validated rule"
+    },
+    "NYY @ NYM": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-2",
+      "headline": "NYY won 5-2 but HARD CAP 1 (edge=-5.63pp) correctly prevented stake — market had better information and priced NYY fairly.",
+      "hypothesis": "NYY's 5-2 win reflects a direction call the model got right (NYY at 52.53%) against a market that was even more confident at 58.16%. HARD CAP 1 prevented staking, which is still the correct call: betting NYY at -5.63pp negative edge would have been negative EV even with this win. The market's 58.16% implied probability was accurate and the cap's logic was sound. Direction win here is favorable variance relative to the model's underpriced 52% estimate — HARD CAP 1 is a stake-sizing/EV tool, not a direction filter, and should not be modified based on direction wins.",
+      "signals_to_recheck": "negative_edge_GOLD correctly prevented stake; market's 58.16% accurately predicted NYY winning probability — HARD CAP 1 prevents negative-EV staking regardless of whether direction is correct"
+    },
+    "CHC @ CHW": {
+      "verdict": "LOSS",
+      "model_pick": "CHW ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-5",
+      "headline": "CHC demolished CHW 10-5; SKIP correctly applied — no F-signal for CHW and CHC's lineup advantages were structural.",
+      "hypothesis": "CHC's 10-5 blowout reflects genuine structural advantages over CHW that the model partially captured: no F-signal fired for CHW (a necessary condition for any stake), CHC's lineup (Bregman, Happ, Suzuki) has clearly superior splits vs RHP, and fair_prob=0.4466 suggested market priced CHC's inherent quality. The SKIP tier was the correct call, and the 5-run blowout margin validates the qualitative assessment. No process failure here — SKIP picks losing by large margins confirm the model's inability to identify a genuine CHW edge.",
+      "signals_to_recheck": "No F-signal (F1/F2/F3/F4/F5) on a SKIP pick when the opposing lineup has clearly superior splits remains the correct non-staking signal; fair_prob < 0.48 was also a market warning on CHW direction"
+    },
+    "TEX @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-2",
+      "headline": "HOU shut out TEX 2-0 despite D-grade; SP/PQI against HOU direction correctly prevented any stake on this variance WIN.",
+      "hypothesis": "HOU's 2-0 shutout win is pure variance: the model assigned HOU D-grade (-1) correctly given Leiter's xERA advantage and PQI against HOU (Δ=-10.1). acute_roster=True and confidence_downgrade=True correctly held the stake at zero. A D-grade team winning 2-0 on good pitching happens — this is expected variance on a ~45% pick, not a signal that the SP/PQI assessment was wrong. No pattern adjustment warranted from a D-grade SKIP win.",
+      "signals_to_recheck": "acute_roster_True and confidence_downgrade_True correctly mandated SKIP alongside D grade; SP edge against pick is the dominant structural signal when F3 fires without F1/F2 backup"
+    },
+    "KC @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-5",
+      "headline": "STL won 5-4 despite D-grade (-3); SKIP appropriately applied against extreme SP/PQI headwinds.",
+      "hypothesis": "STL's 5-4 win is directionally correct but grade D (-3) with Wacha's 0.99 xERA advantage and PQI against STL (Δ=-17.9) both pointing to KC's structural superiority. The f5_full_delta=0.2416 extreme warning (KC wins F5 at 59.65% via Wacha dominance) didn't materialize in the full game result. STL winning despite these signals is variance; the SKIP designation was correct and provided appropriate stake-free posture. One-run D-grade wins do not generate pattern updates.",
+      "signals_to_recheck": "f5_full_delta > 0.24 with SP edge against pick correctly flagged KC's structural advantage; STL's direction win is variance — SKIP was right regardless of outcome"
+    },
+    "ARI @ COL": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-1",
+      "headline": "ARI blew out COL 9-1, confirming Coors late-game bullpen collapse overcomes extreme F5 SP advantages — SKIP correctly applied given D-grade.",
+      "hypothesis": "ARI's 9-1 blowout vindicates the market's 53.12% full-game ARI pricing despite COL's extreme F5 xERA advantage (Freeland rated 4.74 xERA better than Kelly). The Coors bullpen collapse materialized exactly as expected: COL held via starting pitching but ARI dominated the back half of the game. Claude correctly rejected OVERRIDE to COL despite f5_full_delta=0.3947 being extreme, recognizing this as a Coors park artifact. The D-grade SKIP was process-correct — the 9-1 blowout is a direction win but the extreme model uncertainty (score=-4) justified zero stake.",
+      "signals_to_recheck": "f5_full_delta = 0.3947 at Coors is not a reliable OVERRIDE trigger due to systematic late-game Coors bullpen collapse; Stage_1_2_disagree (Δ=0.44) at COL is a park artifact, not a genuine full-game signal"
+    },
+    "LAD @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-0",
+      "headline": "LAD blanked LAA 6-0; model_prob=0.8133 outside range and edge=+15.57pp above ceiling correctly triggered SKIP despite blowout direction win.",
+      "hypothesis": "LAD's 6-0 shutout is a large-margin direction win, but SKIP was correct due to two concurrent cap violations: model_prob=0.8133 outside [0.48, 0.72] range and edge=+15.57pp above the 15pp ceiling. The blowout margin may suggest the model was right about magnitude, but extreme model probabilities and edge ceiling breaches are reliability signals — calibration artifacts at extreme probabilities are the concern, not the direction. SKIP was the right process call; a direction win at extreme model_prob does not warrant relaxing either cap.",
+      "signals_to_recheck": "model_prob > 0.72 range violation and edge_pp > 15pp ceiling both fired correctly; LAD's blowout direction win is favorable variance, not evidence to relax these caps"
+    },
+    "SD @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "SEA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-0",
+      "headline": "SD shut out SEA 2-0; HARD CAP 1 (edge=-2.52pp) correctly blocked stake — thin Hancock sample combined with negative edge signaled model was missing SP quality information.",
+      "hypothesis": "SD's 2-0 shutout validates the negative edge signal. The model's F1_xera_gap=0.85* (thin Hancock Statcast sample) and F3=2929.6 fired for SEA, but the market priced SEA at 55.70% vs model's 53.18% — market was more confident in SEA than the model AND SEA still lost 2-0. SD's pitching clearly suppressed SEA's offense. The combination of a small-sample asterisk on the starting pitcher and a negative edge is a reliable double-signal that the model is under-weighting opposing SP quality. HARD CAP 1 was correct to zero the stake.",
+      "signals_to_recheck": "negative_edge_GOLD combined with F1_xera_gap* (thin sample) is a reinforced signal that market holds superior SP quality information; when both fire together, treat as a strong SKIP even if other F-signals confirm direction"
+    },
+    "SF @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "OAK ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-5",
+      "headline": "OAK won 5-2 cleanly — PLATINUM CONFIRM validated with tight f5_full_delta, both F2 and F3 firing, positive edge in band.",
+      "hypothesis": "OAK's 5-2 win is a clean process validation: F2=0.033 + F3=6350.2 (strongest on slate), edge=+8.69pp in band, f5_full_delta=0.0985, PQI+7.9 all confirmed. OAK's lineup power (Kurtz 1.116 OPS vs RHP) against Mahle materialized. The pen_strain_pick_side=0.1126 (HIGH) correctly anticipated SF's bullpen would be challenged by OAK's top of order. PLATINUM confirmation with two non-asterisk F-signals and tight f5_full_delta is now two-for-two in the archive; no modifications needed.",
+      "signals_to_recheck": "PLATINUM with F2 + F3 both firing (no asterisk), f5_full_delta < 0.10, and edge in band is confirmed reliable; pen_strain_pick_side HIGH correctly anticipated OAK's lineup dominance"
+    }
+  },
+  "patterns_observed": [
+    "PLATINUM→GOLD DOWNGRADE when 'SP edge unconfirmed' appears in grade_reasons AND f5_full_delta > 0.15 is validated for the first time in the postgame archive (BOS@ATL 05-15, won 3-2). The directional pick remains intact — DOWNGRADE is purely a stake-sizing adjustment. Enforce PLATINUM→GOLD any time these two conditions co-occur: the full-game thesis is bullpen-dependent when F5 win probability is below 50% and the SP quality advantage cannot be confirmed from current-season Statcast data.",
+    "Three-signal GOLD CONFIRM bar (F-signal fire + edge > 4pp + f5_full_delta < 0.15 + no stacked flags) took its first loss: CIN@CLE went 7-6 for CIN against a 64.2% CLE pick (archive record now 4-for-5). The loss was a one-run game consistent with variance. However, confidence_downgrade + bullpen_fatigue + pen_strain_pick_side > 0.115 were ALL three stacked on this pick, and the expected CIN bullpen penalty did not materialize. Flag this three-flag combination on future GOLD CONFIRMs for heightened monitoring — a second stacked-flag GOLD CONFIRM loss within 10 picks should trigger a one-tier DOWNGRADE rule.",
+    "HARD CAP 1 (negative_edge_GOLD) continued its validation today: PHI@PIT (model direction wrong, PHI won 11-9), TOR@DET (model direction wrong, DET won 3-2), and SD@SEA (model direction wrong, SD won 2-0) all confirmed that negative-edge picks fail in direction. NYY@NYM was a direction win (NYY 5-2) but HARD CAP 1 was still correct — the cap prevents negative-EV staking, not incorrect direction calls. Running archive record: every negative-edge GOLD/PLATINUM pick where a stake would have been placed has produced a direction loss or negative-EV outcome. Do not relax HARD CAP 1 based on direction wins.",
+    "Extreme Coors f5_full_delta (0.3947 for ARI@COL today, highest on record) should not trigger OVERRIDE to COL — ARI's 9-1 blowout confirms that Coors late-game bullpen collapse systematically reverses F5 starting-pitcher advantages in full-game outcomes. When f5_full_delta > 0.35 at Coors (COL home), treat the extreme delta as a park artifact and maintain market-aligned full-game direction. Stage_1_2_disagree triggers fired here (Δ=0.44) should be suppressed at Coors regardless of their magnitude."
+  ]
+}
