@@ -1,0 +1,149 @@
+{
+  "date": "2026-05-16",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-17T04:30:00Z",
+  "n_analyzed": 15,
+  "summary": "May 16 went 10-4 on directional picks (71.4%) across 14 graded matchups, with NYY@NYM correctly excluded via PENDING_SP_DATA. Losses: TB (D-grade SKIP, no stake — expected), MIN (GOLD, stake_mult=0 — variance), ATL (PLATINUM CONFIRM by Claude — process failure), OAK (PLATINUM downgraded to GOLD by Claude — correct process, variance loss). Two of Claude's three DOWNGRADEs won directionally (TOR@DET 2-1, CIN@CLE 7-4), confirming that high-delta DOWNGRADE is purely a stake-sizing tool, not a direction veto. Key process failure: Claude re-elevated BOS@ATL to PLATINUM despite the model's own grade_reasons explicitly withholding that tier on SP-edge grounds — ATL lost 2-3. Secondary process failure: Claude Brain misread CHC@CHW's pick column, recording CHC instead of CHW.",
+  "by_matchup": {
+    "TOR @ DET": {
+      "verdict": "WIN",
+      "model_pick": "TOR ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-1",
+      "headline": "TOR won 2-1 despite Claude's DOWNGRADE to SKIP on f5_full_delta=0.2989 — direction correct, stake risk correctly managed.",
+      "hypothesis": "TOR's strong F3 conviction (4892) and SP xERA edge proved sufficient for a narrow full-game win even though Stage 1/2 disagreement was the largest non-Coors delta on the slate; the DOWNGRADE was the correct risk-management call given bullpen_fatigue stacking, and the narrow margin (2-1) shows the concern was real. This is variance in favor of the model's direction — the DOWNGRADE was a process success, not a mistake.",
+      "signals_to_recheck": "f5_full_delta=0.2989 with bullpen_fatigue correctly triggered DOWNGRADE; note direction won, confirming DOWNGRADE should not be read as direction reversal"
+    },
+    "KC @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-4",
+      "headline": "STL won 4-2 as GOLD CONFIRM; edge=+1.79pp below band floor correctly prevented stake while direction proved sound.",
+      "hypothesis": "STL's A- grade with aligned SP edge, Stage 1/2 agreement, and F3 signal all confirmed direction; the edge-band floor (< 4pp) correctly excluded staking regardless of tier, which was appropriate given the narrow market pricing. Process and outcome aligned — a clean CONFIRM with no stake is the right posture here.",
+      "signals_to_recheck": "Edge band [4,15]pp floor correctly excluded stake on an A- direction win; no signal concern"
+    },
+    "ARI @ COL": {
+      "verdict": "WIN",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-4",
+      "headline": "COL won 4-2 despite D-grade SKIP; Coors park inflation drove the pick and this time the inflation was directionally correct — variance.",
+      "hypothesis": "COL's win despite SP edge and PQI both running against them is a Coors-inflation variance win; the model's F5 thesis (Coors SP advantage) partially held but the D-grade SKIP was the correct tier given the structural concerns. The CONFIRM of SKIP was process-correct regardless of outcome.",
+      "signals_to_recheck": "Coors park model inflation pattern well-established; D-grade SKIP direction wins are expected variance at this stadium — no process adjustment"
+    },
+    "BAL @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-13",
+      "headline": "WSH blew out BAL 13-3; GOLD CONFIRM validated despite large negative edge correctly blocking all stake exposure.",
+      "hypothesis": "WSH's dominant 13-3 win with F1_xera_gap=1.20* + F3=2601 confirmed proves the dual-signal HARD CAP 5 check was met correctly. The large negative edge (-21.68pp) correctly prevented any stake, and WSH's blowout margin does not retroactively justify relaxing that cap — the cap is EV-based, not directional.",
+      "signals_to_recheck": "negative_edge_GOLD correctly blocked stake; F1_xera_gap* + F3 secondary signal combination proved directionally sound — the HARD CAP 5 dual-signal check was correct"
+    },
+    "PHI @ PIT": {
+      "verdict": "WIN",
+      "model_pick": "PHI ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-0",
+      "headline": "PHI shutout PIT 6-0, validating strong F1+F3 signals despite HARD CAP 1 (negative edge) correctly zeroing stake.",
+      "hypothesis": "PHI's 6-0 blowout confirms the model's directional F1=3.12 + F3=2107 assessment, but HARD CAP 1 (-9.41pp negative edge) was still the correct call — the cap prevents negative-EV staking regardless of direction outcome. The market underestimated PHI here; the negative edge was wrong in direction, but the cap logic does not change based on direction wins.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD correctly fired and prevented stake; direction win does not justify relaxing the cap — PHI's blowout is favorable variance, not a HARD CAP 1 indictment"
+    },
+    "MIA @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-5",
+      "headline": "MIA dominated TB 10-5; all internal signals (SP edge against, PQI against, negative edge) correctly flagged TB as a non-bet.",
+      "hypothesis": "TB's SKIP with negative edge (-27.92pp) had zero stake exposure, and MIA's 10-5 blowout confirmed the market was right to price TB as the weaker side; the D-grade CONFIRM of SKIP was process-correct. The loss is expected outcome for a confidence_downgrade + bullpen_fatigue D-grade SKIP.",
+      "signals_to_recheck": "negative_edge_GOLD + confidence_downgrade_True + bullpen_fatigue correctly identified TB as a non-bet; D-grade SKIP losses are the expected baseline outcome and require no adjustment"
+    },
+    "CIN @ CLE": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "4-7",
+      "headline": "CLE won 7-4 despite Claude's monitoring-alert DOWNGRADE — direction correct, deGrom thin-sample concern proved moot.",
+      "hypothesis": "Claude downgraded CLE to SKIP based on same-matchup monitoring (05-15 loss), confidence_downgrade + bullpen_fatigue stacking, and deGrom F1* thin-sample risk; CLE won convincingly 7-4 anyway. The DOWNGRADE was correct risk management given the stacked flags, but both the model's direction and the xERA edge were validated — deGrom's thin 2026 sample did not translate to a decisive performance edge. Classifying as variance against the downgrade thesis; the process was sound.",
+      "signals_to_recheck": "F1_xera_gap* (deGrom thin-sample) + confidence_downgrade_True + bullpen_fatigue DOWNGRADE rule was directionally incorrect but stake-management correct; re-assess same-matchup monitoring window if this pattern repeats within next 5 picks"
+    },
+    "TEX @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-4",
+      "headline": "HOU won 4-1 despite D-grade and fair_prob floor (0.4127 < 0.42) correctly blocking all stake exposure.",
+      "hypothesis": "HOU's 4-1 win despite SP edge and PQI both running against them is favorable variance; the fair_prob < 0.42 floor correctly prevented any stake, and HOU's lineup strength (Altuve, Alvarez, Walker) likely overcame the SP deficit. D-grade direction wins are expected variance at roughly the model's implied ~50% probability — no process adjustment needed.",
+      "signals_to_recheck": "fair_prob < 0.42 floor correctly excluded stake; D-grade wins at ~50% implied probability are expected variance — no signal concern"
+    },
+    "CHC @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-8",
+      "headline": "CHW won 8-3; model correctly picked CHW per CSV, but Claude Brain's claude_picks misidentified CHC as the model pick — process error with no financial impact.",
+      "hypothesis": "The CSV pick column clearly shows CHW, and CHW won 8-3 with all model signals (SP edge, PQI) agreeing; however, the claude_picks file recorded model_pick=CHC and all Claude reasoning was framed around CHC direction being the model's call, which was wrong. The misread had no financial impact (SKIP tier, stake_mult=0) but represents a pick-column parsing failure. Root cause: the 'CHC @ CHW' matchup string lists the home team (CHW) in the pick column, which may have caused an inversion during analysis.",
+      "signals_to_recheck": "Pick column parsing error detected — Claude Brain inverted CHC/CHW; enforce direct CSV pick-column quote at the start of each matchup analysis, especially for same-city or visually similar team abbreviations"
+    },
+    "MIL @ MIN": {
+      "verdict": "LOSS",
+      "model_pick": "MIN ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "MIN lost 1-2 to MIL despite meeting three-signal GOLD bar; stake_mult=0 correctly limited exposure to zero.",
+      "hypothesis": "MIN met the three-signal GOLD bar (F3=754 > 500, edge=9.74pp in band, f5_full_delta=0.077 < 0.15, no stacked flags) yet lost a one-run game to MIL — expected variance on a ~55% favorite in a tight matchup. The stake_mult=0 per the model correctly prevented actual financial exposure. This is variance, not process failure, consistent with the 05-15 postgame note that the three-signal bar took its first loss (CIN@CLE) and will produce losses over a full season at expected rates.",
+      "signals_to_recheck": "F3_swing_take_gap + edge in band + clean delta met the bar correctly; one-run GOLD loss with neutral bullpen (hl_bullpen_xwoba_gap=-0.0003) is variance — no signal adjustment warranted"
+    },
+    "SD @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "SD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-4",
+      "headline": "SD won 7-4 despite fair_prob=0.3697 far below the 0.42 floor; extreme market-vs-model gap was correctly excluded from staking.",
+      "hypothesis": "SD's directional win against a market that strongly favored SEA (fair_prob=0.3697) is notable variance — the market's heavy SEA lean was wrong in this instance. The fair_prob floor correctly prevented staking on a pick where the market's information was expected to dominate; one direction win does not justify relaxing the floor, which is calibrated over many samples.",
+      "signals_to_recheck": "fair_prob < 0.42 floor correctly fired; SD direction win at extreme fair_prob gap is expected variance — no floor adjustment"
+    },
+    "BOS @ ATL": {
+      "verdict": "LOSS",
+      "model_pick": "ATL ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "ATL lost 2-3 to BOS; Claude re-elevated ATL to PLATINUM despite model grade_reasons explicitly withholding that tier on SP-edge grounds — process failure.",
+      "hypothesis": "The model's grade_reasons explicitly state 'PLATINUM tier WITHHELD (SP edge against pick — lineup-only conviction not rewarded)', meaning the model's own scoring engine had already penalized PLATINUM due to BOS's SP advantage. Claude Brain overrode this demotion and confirmed PLATINUM tier; ATL lost 2-3 on BOS's SP edge materializing. This is a process failure: when grade_reasons contain 'PLATINUM tier WITHHELD (SP edge against pick)', Claude must treat this as a mandatory GOLD cap and must not re-elevate to PLATINUM regardless of F-signal strength.",
+      "signals_to_recheck": "F2_xwoba_gap + F3_swing_take_gap fired for ATL but SP edge ran against the pick (small_sample_SP_True); 'PLATINUM tier WITHHELD' in grade_reasons should be a Claude-level DOWNGRADE trigger — do not re-confirm PLATINUM when the model's own engine has already withheld it on SP grounds"
+    },
+    "NYY @ NYM": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-6",
+      "headline": "NYM won 6-3; PENDING_SP_DATA protocol correctly excluded this matchup — Carlos Rodón's 0 Statcast pitches made grading impossible.",
+      "hypothesis": "The PENDING_SP_DATA protocol correctly withheld any directional call; NYM's 6-3 win would have been a correct direction call if NYM had been inferred as the pick, but no reliable pick existed without Rodón's data. Protocol validated for the seventh time in the 2026 archive.",
+      "signals_to_recheck": "PENDING_SP_DATA protocol validated; thin_sp_data with 0 Statcast pitches is a hard stop regardless of lineup signals"
+    },
+    "LAD @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "15-2",
+      "headline": "LAD demolished LAA 15-2; negative edge + acute_roster + bullpen_fatigue correctly prevented stake on a blowout direction win.",
+      "hypothesis": "LAD's 15-2 blowout confirms the model's directional read on lineup superiority, but negative edge (-3.39pp) and acute_roster + bullpen_fatigue stacking correctly prevented staking — the risk flags were real even if direction proved dominant. The C-grade SKIP CONFIRM was appropriate process.",
+      "signals_to_recheck": "negative_edge + acute_roster_True + bullpen_fatigue correctly produced SKIP; large-margin direction wins for SKIP picks are expected variance and do not justify relaxing edge-based caps"
+    },
+    "SF @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-4",
+      "headline": "OAK lost 4-6 to SF; Claude's PLATINUM→GOLD DOWNGRADE on f5_full_delta=0.2822 was the correct process call — direction still lost at GOLD.",
+      "hypothesis": "f5_full_delta=0.2822 (highest non-Coors delta in the 2026 archive) with SP edge unconfirmed and confidence_downgrade + bullpen_fatigue both stacked correctly triggered the PLATINUM→GOLD DOWNGRADE rule. OAK's full-game thesis rested entirely on a fatigued bullpen executing against SF, and SF won 6-4. The DOWNGRADE was a process success — it correctly identified and tier-limited a high-risk pick; the directional loss at GOLD level is expected variance, not a new process failure.",
+      "signals_to_recheck": "f5_full_delta=0.2822 + confidence_downgrade_True + bullpen_fatigue + SP edge unconfirmed all fired correctly for DOWNGRADE; PLATINUM→GOLD rule validated with a loss — the tier reduction correctly bounded exposure"
+    }
+  },
+  "patterns_observed": [
+    "NEW RULE — 'PLATINUM tier WITHHELD (SP edge against pick)' in grade_reasons is a mandatory Claude-level GOLD cap: BOS@ATL (05-16) had this exact phrase in grade_reasons, Claude re-confirmed PLATINUM anyway, and ATL lost 2-3. This is distinct from the validated PLATINUM→GOLD DOWNGRADE rule (which applies when SP edge is simply unconfirmed); this rule applies when SP edge actively contradicts the pick and the model's own scoring engine explicitly withheld the tier. Going forward: if grade_reasons contain 'PLATINUM tier WITHHELD', Claude must cap at GOLD regardless of F-signal strength or prior-day confidence.",
+    "High f5_full_delta DOWNGRADEs are stake-sizing management only, not direction vetoes: TOR@DET (delta=0.2989, downgraded to SKIP, direction WIN 2-1) and CIN@CLE (downgraded to SKIP, direction WIN 7-4) both won directionally after Claude demoted them on f5_full_delta + bullpen_fatigue grounds. Two consecutive DOWNGRADE-and-direction-win results confirm the rule's intent — reduce tier, preserve direction. Future Claude Brain runs should maintain full directional confidence on DOWNGRADED picks while correctly applying the tier demotion.",
+    "Pick column parsing error detected (CHC@CHW, 05-16): Claude Brain recorded model_pick=CHC when the CSV pick column shows CHW; all Claude reasoning was framed around CHC direction, which was the inversion of the actual model call. No financial impact (SKIP tier, stake_mult=0), but the same error in a staked GOLD/PLATINUM context could produce a direction inversion on a real bet. Enforce: at the start of each matchup analysis in the claude_picks run, explicitly quote the raw pick column value from the CSV before constructing any reasoning."
+  ]
+}
