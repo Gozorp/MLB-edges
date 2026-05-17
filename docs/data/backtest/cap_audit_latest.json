@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-05-13_09-54-16",
-  "n_dates_scanned": 1,
-  "n_cap_fires_total": 0,
+  "generated_at": "2026-05-17_07-31-47",
+  "n_dates_scanned": 6,
+  "n_cap_fires_total": 6,
   "actual_bankroll": 1000.0,
-  "shadow_bankroll": 1000.0,
-  "cap_lift_pct": 0.0,
+  "shadow_bankroll": 864.08,
+  "cap_lift_pct": 15.73,
   "attribution": {
     "[HARD CAP 1]": {
-      "fires": 0,
-      "loss_averted": 0,
-      "win_missed": 0,
+      "fires": 5,
+      "loss_averted": 4,
+      "win_missed": 1,
       "d_unit_dollars": 0.0,
-      "precision": null,
-      "target": 1.0
+      "precision": 0.8,
+      "target": 0.85
     },
     "[HARD CAP 2]": {
       "fires": 0,
@@ -45,7 +45,17 @@
       "d_unit_dollars": 0.0,
       "precision": null,
       "target": 0.65
+    },
+    "[HARD CAP 6]": {
+      "fires": 1,
+      "loss_averted": 1,
+      "win_missed": 0,
+      "d_unit_dollars": -135.92373546784177,
+      "precision": 1.0,
+      "target": 0.7
     }
   },
-  "warnings": []
+  "warnings": [
+    "[HARD CAP 1]: precision 80% below target 85%"
+  ]
 }
