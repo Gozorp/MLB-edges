@@ -1,0 +1,182 @@
+{
+  "date": "2026-05-18",
+  "fit_at": "2026-05-18T12:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 14,
+  "patterns_recognized": [
+    "Full-slate PENDING_SP_DATA: all 14 games lacked scored SPs at pipeline run time — protocol validated 7+ times in archive. No directional picks issued without quantitative model scores.",
+    "'PLATINUM tier WITHHELD (SP edge against pick)' in grade_reasons is a mandatory GOLD cap per 05-16 BOS@ATL process failure — do not re-confirm PLATINUM when model engine explicitly withheld it.",
+    "Pick-column parsing risk on same-city abbreviations (CHC vs CHW, 05-16 error): always quote the raw CSV pick column value directly before constructing any reasoning.",
+    "Live API confirms all 14 SPs are now announced; JR Ritchie (ATL) and Tatsuya Imai (HOU) flagged as probable thin-Statcast arms likely to remain PENDING_SP_DATA on next pipeline re-run."
+  ],
+  "by_matchup": {
+    "CLE @ DET": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Slade Cecconi (CLE away) vs Framber Valdez (DET home). Valdez is an established arm with deep Statcast history; Cecconi has MLB tenure. Both should cross the 100-pitch Statcast threshold on pipeline re-run. CLE is 26-22, DET is 20-27. No directional claim without quantitative model output — PENDING confirmed.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "BAL @ TB": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Trevor Rogers (BAL away) vs Shane McClanahan (TB home). McClanahan is elite with deep Statcast history; Rogers has MLB tenure. TB is 30-15 — strong home record. When model scores, expect McClanahan's SP edge to be a significant F1 input. No directional pick without quantitative grades.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "CIN @ PHI": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Nick Lodolo (CIN away) vs Andrew Painter (PHI home). Both teams are 24-23. Lodolo is established; Painter is a developing PHI arm whose Statcast sample may be adequate. Should score on re-run. No directional call without model output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "ATL @ MIA": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows JR Ritchie (ATL away) vs Max Meyer (MIA home). Ritchie appears to be a recently-promoted arm — flag as thin-Statcast risk; may remain PENDING on re-run (Heuristic 3: rookie SP blindspot). ATL is 32-15 with a potent lineup. Meyer is more established. Caution warranted on Ritchie sample adequacy when model re-runs.",
+      "lessons_applied": ["PENDING_SP_DATA protocol", "Rookie SP blindspot (Heuristic 3)"]
+    },
+    "NYM @ WSH": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Christian Scott (NYM away) vs Jake Irvin (WSH home). WSH is 23-24; NYM is 20-26. Irvin has MLB tenure; Scott is a younger NYM arm. Both should have scoreable Statcast data on re-run. No directional pick without quantitative model output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "TOR @ NYY": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Patrick Corbin (TOR away) vs Ryan Weathers (NYY home). Corbin is a veteran with ample Statcast history; Weathers is younger but should have adequate data. NYY is 28-19. Should be scoreable on re-run. No directional call without model grades.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "BOS @ KC": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Sonny Gray (BOS away) vs Seth Lugo (KC home). Both proven veterans with established Statcast profiles — should score cleanly. BOS is 19-27, KC is 20-27; two sub-.500 teams where SP quality differential will be the key edge input. No directional pick without model output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "HOU @ MIN": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Tatsuya Imai (HOU away) vs Kendry Rojas (MIN home). Imai appears to be a Japanese import likely in his first MLB season — high thin-Statcast risk, may remain PENDING on re-run per HARD CAP 5 small-sample quarantine. HOU is 19-29, struggling significantly. Flag for likely continued PENDING due to Imai's probable limited MLB Statcast sample.",
+      "lessons_applied": ["PENDING_SP_DATA protocol", "Rookie SP blindspot (Heuristic 3)", "Small-sample SP quarantine (HARD CAP 5)"]
+    },
+    "MIL @ CHC": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Brandon Sproat (MIL away) vs Shota Imanaga (CHC home). Imanaga is elite with strong Statcast data; Sproat is a newer arm with uncertain sample size. CHC is 29-18, MIL is 26-18 — top NL Central teams. Imanaga's SP edge will be a key F1 input when model scores. No directional call without quantitative output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "TEX @ COL": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows MacKenzie Gore (TEX away) vs Jose Quintana (COL home). Coors Field game — per 05-15 archive, extreme f5_full_delta > 0.35 at Coors is a park artifact and must not trigger OVERRIDE. Both SPs are experienced with substantial Statcast data. Park inflation must be applied when model scores. No directional pick without output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol", "Coors park f5_full_delta inflation suppression (05-15 archive)"]
+    },
+    "OAK @ LAA": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows J.T. Ginn (ATH/OAK away) vs Walbert Ureña (LAA home). Ureña is a less-established arm with likely thin Statcast sample; Ginn has some MLB tenure. LAA is 16-31, structurally weak. Ureña's Statcast adequacy is uncertain — possible continued PENDING on re-run. No directional call without model grades.",
+      "lessons_applied": ["PENDING_SP_DATA protocol", "Rookie SP blindspot (Heuristic 3)"]
+    },
+    "LAD @ SD": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Yoshinobu Yamamoto (LAD away) vs Michael King (SD home). Elite pitching matchup — both arms have deep Statcast profiles. LAD is 29-18, SD is 28-18; two strong NL West clubs. This should produce a high-quality, potentially high-conviction matchup when model scores. No directional pick without quantitative output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "SF @ ARI": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Robbie Ray (SF away) vs Zac Gallen (ARI home). Both experienced veterans with substantial Statcast histories. ARI is 22-23, SF is 20-27. Gallen has been a reliable F1 signal source. Should score cleanly on pipeline re-run. No directional call without model output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol (7+ archive validations)"]
+    },
+    "CHW @ SEA": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": null,
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Live API shows Noah Schultz (CWS away) vs Bryan Woo (SEA home). Woo has been solid with growing Statcast data; Schultz is younger. CWS is 24-22, SEA is 22-26. Pick-column parse note: CSV matchup key is 'CHW @ SEA' with CHW as the away team — apply 05-16 CHC@CHW parse-error lesson and verify pick column directly on re-run. No directional pick without model output.",
+      "lessons_applied": ["PENDING_SP_DATA protocol", "Pick-column parsing error prevention (05-16 CHC@CHW lesson)"]
+    }
+  }
+}
