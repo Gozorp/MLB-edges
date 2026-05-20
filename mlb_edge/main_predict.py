@@ -648,44 +648,69 @@ def run(slate_date: date,
                   "be written WITHOUT fair_prob / edge_pp / EV.", e)
 
     # ------------------------------------------------------------------
-    # [step 3.1/5] ESPN odds fallback
+    # [step 3.1/5] Odds fallback chain: Kalshi -> ESPN
     # ------------------------------------------------------------------
-    # When the primary Odds API returned empty / failed / no key, try
-    # the free ESPN public odds page (https://www.espn.com/mlb/lines)
-    # as a backstop.  Same long-format schema as OddsClient output, so
-    # downstream `recommend_slate` doesn't care which source we used.
-    # Without this, slates like 5/1 ship with blank fair_prob and the
-    # parlay grader has no edge-vs-market check (which is how 5/1's
-    # 4-9 record happened with multiple overconfident A-/B+ picks).
-    if odds_status != "fetched" or odds_long.empty:
+    # When the primary Odds API returned empty / failed / no key, fall
+    # through to public-data sources in order:
+    #   1. Kalshi (mlb_edge/kalshi_odds.py) — CFTC-regulated US
+    #      prediction market.  No-vig binary contracts; two YES probs
+    #      sum to ~1.00 structurally.  Throttled at 1s/req to stay
+    #      under the unauthenticated rate limit (~15s per 15-game
+    #      slate).  Cleaner than ESPN scraping.
+    #   2. ESPN (mlb_edge/odds_fallback.py) — last-resort HTML scrape;
+    #      fragile to layout changes but the historical incumbent.
+    # Without ANY of these, slates ship with blank fair_prob (the 5/1
+    # failure mode that produced the 4-9 record).
+    # Per Architecture-Session Pre-Flight Prompt v1.0 Rule 6 — every
+    # fallback is best-effort with logged exceptions.
+    def _try_fallback(label, fetch_fn):
         try:
+            df = fetch_fn(slate_date)
+            if df is not None and not df.empty:
+                df["outcome"] = df["outcome"].apply(normalize_team)
+                log.info("[odds] %s fallback populated %d odds rows for "
+                         "%d games", label, len(df), len(df) // 2)
+                return df
+            log.info("[odds] %s fallback returned empty", label)
+        except Exception as e:
+            log.warning("[odds] %s fallback raised: %s", label, e)
+        return None
+
+    def _try_backfill(label, backfill_fn, current):
+        try:
+            before = len(current)
+            updated = backfill_fn(current, slate_date)
+            if "outcome" in updated.columns:
+                updated["outcome"] = updated["outcome"].apply(normalize_team)
+            added = len(updated) - before
+            if added > 0:
+                log.info("[odds] %s backfilled %d additional odds rows on "
+                         "top of primary", label, added)
+            return updated
+        except Exception as e:
+            log.warning("[odds] %s backfill raised: %s", label, e)
+            return current
+
+    if odds_status != "fetched" or odds_long.empty:
+        from . import kalshi_odds as _ko
+        kal_df = _try_fallback("Kalshi", _ko.fetch_kalshi_mlb_odds)
+        if kal_df is not None:
+            odds_long = kal_df
+            odds_status = f"{odds_status}+kalshi_fallback"
+        else:
             from . import odds_fallback as _of
-            espn_df = _of.fetch_espn_mlb_odds(slate_date)
-            if not espn_df.empty:
-                espn_df["outcome"] = espn_df["outcome"].apply(normalize_team)
+            espn_df = _try_fallback("ESPN", _of.fetch_espn_mlb_odds)
+            if espn_df is not None:
                 odds_long = espn_df
                 odds_status = f"{odds_status}+espn_fallback"
-                log.info("[odds] ESPN fallback populated %d odds rows for %d "
-                         "games", len(espn_df), len(espn_df) // 2)
             else:
-                log.warning("[odds] ESPN fallback also returned empty")
-        except Exception as e:
-            log.warning("[odds] ESPN fallback raised: %s", e)
-    elif not odds_long.empty:
-        # Primary succeeded — still try to backfill any games the primary
-        # missed (rare, but possible when bookmaker coverage is patchy).
-        try:
-            from . import odds_fallback as _of
-            before = len(odds_long)
-            odds_long = _of.backfill_missing_odds(odds_long, slate_date)
-            if "outcome" in odds_long.columns:
-                odds_long["outcome"] = odds_long["outcome"].apply(normalize_team)
-            added = len(odds_long) - before
-            if added > 0:
-                log.info("[odds] ESPN fallback backfilled %d additional odds "
-                         "rows on top of primary", added)
-        except Exception as e:
-            log.warning("[odds] ESPN backfill raised: %s", e)
+                log.warning("[odds] all fallbacks (Kalshi, ESPN) returned "
+                            "empty - slate ships without fair_prob")
+    else:
+        from . import kalshi_odds as _ko
+        from . import odds_fallback as _of
+        odds_long = _try_backfill("Kalshi", _ko.backfill_missing_odds, odds_long)
+        odds_long = _try_backfill("ESPN", _of.backfill_missing_odds, odds_long)
 
         # ------------------------------------------------------------------
     # [step 3.5/5] Live-news enrichment layer (Tier 0 + Tier 1)
