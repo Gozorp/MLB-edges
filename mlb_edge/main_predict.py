@@ -915,10 +915,13 @@ def run(slate_date: date,
                         "to %s", out_picks)
 
                 # ---- Platoon-brain MVP: attach top-5 batter JSON (2026-05-14)
+                # Also collects matchup -> game_pk + SP-ID lookup tables that
+                # the BvP-brain attach below reuses.
+                matchup_to_pk = {}
+                matchup_to_sp_hand = {}
+                matchup_to_sp_ids = {}
                 try:
                     from . import platoon_splits as _ps
-                    matchup_to_pk = {}
-                    matchup_to_sp_hand = {}
                     if "game_id" in preds.columns:
                         from .stadiums import normalize_team as _nt2
                         for _, gr in preds.iterrows():
@@ -937,6 +940,17 @@ def run(slate_date: date,
                                     "away_sp_hand": sp_a,
                                     "home_sp_hand": sp_h,
                                 }
+                            # SP IDs for BvP-brain (Rule 6 — best-effort,
+                            # missing IDs just yield empty BvP payloads).
+                            sp_a_id = gr.get("away_sp_id")
+                            sp_h_id = gr.get("home_sp_id")
+                            if sp_a_id or sp_h_id:
+                                matchup_to_sp_ids[mk] = {
+                                    "away_sp_id": (int(sp_a_id) if sp_a_id
+                                                   else None),
+                                    "home_sp_id": (int(sp_h_id) if sp_h_id
+                                                   else None),
+                                }
                     if matchup_to_pk:
                         _ps.attach_top_5_to_diag(
                             graded, matchup_to_pk, matchup_to_sp_hand)
@@ -946,6 +960,29 @@ def run(slate_date: date,
                 except Exception as e:
                     log.warning("platoon_splits attach failed "
                                 "(continuing without top-5 JSON): %s", e)
+
+                # ---- BvP-brain MVP: attach top-5 batter BvP JSON (2026-05-19)
+                # Per-batter career history vs today's opposing SP, packaged
+                # as JSON-string columns for the Claude Brain layer.  Same
+                # architecture as platoon-brain: keep XGBoost on aggregates,
+                # let the LLM reason about per-player BvP samples.
+                # Best-effort per Rule 6 — any failure here keeps the diag
+                # CSV graded-and-baked, just without the BvP columns.
+                try:
+                    from . import bvp_brain as _bvp
+                    if matchup_to_pk and matchup_to_sp_ids:
+                        _bvp.attach_bvp_to_diag(
+                            graded, matchup_to_pk, matchup_to_sp_ids)
+                        if out_picks:
+                            graded.to_csv(out_picks, index=False)
+                            log.info("Attached top-5 batter BvP JSON columns")
+                    else:
+                        log.info("bvp_brain skipped: no SP IDs available "
+                                 "in preds (%d matchups, %d with SP IDs)",
+                                 len(matchup_to_pk), len(matchup_to_sp_ids))
+                except Exception as e:
+                    log.warning("bvp_brain attach failed "
+                                "(continuing without BvP JSON): %s", e)
             except Exception as e:
                 log.warning("parlay builder failed (continuing): %s", e)
         return

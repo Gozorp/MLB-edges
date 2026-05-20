@@ -190,6 +190,65 @@ adds nuance to existing reasoning — it doesn't override the rule layer or
 the hard caps.  Treat it the same way you'd treat live news: useful color,
 not a controlling input.
 
+## Per-batter BvP context (2026-05-19 bvp-brain MVP)
+
+Every diag CSV row also carries two BvP (batter-vs-pitcher) JSON columns:
+
+- `away_bvp_top5_json`
+- `home_bvp_top5_json`
+
+Each is a list of up to 5 batter records — same top-5 batting order as the
+platoon columns above, but with career history against TODAY'S OPPOSING SP:
+
+```json
+{
+  "order": 1,
+  "name": "Aaron Judge",
+  "vs_today_SP_PA": 25,
+  "vs_today_SP_HR": 2,
+  "vs_today_SP_OPS": 0.735,
+  "vs_today_SP_HR_per_PA": 0.080,
+  "shrunk_OPS": 0.727,
+  "sample_flag": "MEANINGFUL"
+}
+```
+
+`shrunk_OPS` is the observed OPS Bayesian-shrunk toward the .720 prior
+(weighted by 30-PA equivalent), so it's already noise-dampened.
+
+`sample_flag` values:
+
+- `NO_DATA` — batter has never faced this SP.  Ignore the rate.
+- `SMALL_SAMPLE` — 1≤PA<10.  Too few PAs to trust the rate; treat the
+  batter as average against this SP.
+- `MEANINGFUL` — 10≤PA<30.  Soft signal worth noting but not deciding.
+- `LOTS_OF_HISTORY` — PA≥30.  Trust the rate more.
+- `OWNER` — PA≥10 AND OPS≥0.900.  This batter has historically punished
+  this pitcher.  Soft positive for that side.
+- `WEAK_VS` — PA≥10 AND OPS≤0.500.  This batter has historically been
+  helpless vs this pitcher.  Soft negative for that side.
+
+How to use BvP when evaluating a pick:
+
+1. **Look at the top-3 collectively, not single batters.**  Same rule as
+   platoon-brain: one OWNER doesn't win a game; three OWNERS in a row
+   against a thin-margin SP is real signal.
+2. **Use `shrunk_OPS` over raw `vs_today_SP_OPS` for small samples.**
+   The shrinkage is doing your noise-dampening for you.
+3. **OWNER vs WEAK_VS asymmetry is the key tell.**  Count owners and
+   weak-vs entries on each side.  If side A has 2 owners + 0 weak,
+   side B has 0 owners + 2 weak, that's a genuine BvP-favoured side.
+4. **HR-prop heuristic.**  When a batter has `vs_today_SP_HR_per_PA` >
+   ~0.05 with PA≥20, that's elevated HR risk on this matchup.  Useful
+   for run-totals reasoning; not a moneyline driver on its own.
+
+**Default disposition: BvP is noise wearing a number for most samples.**
+Most batters have <10 PA vs most pitchers (rookies, recent trades, league
+churn).  Lean heavily on `shrunk_OPS` and the size-band flags; never let
+a single OWNER or WEAK_VS reading flip a pick that other signals confirm.
+Treat BvP the same way as live news and platoon-brain: useful color,
+not a controlling input.
+
 **False-positive resistance is the priority.**  If the splits don't
 clearly justify a different decision, defer to the existing call.  A
 single BIG_SPLIT batter at the bottom of the top-5 isn't enough to flip
