@@ -1600,7 +1600,8 @@ async function _ensureWinProbChart(rowIndex, r, result) {
   const el = document.getElementById(placeholderId);
   if (!el || el.dataset.rendered === "1") return;
   const f5 = parseFloat(r.f5_prob);
-  const full = parseFloat(r.full_prob || r.p_model);
+  // full = picked-team's full-game prob (not r.full_prob which is HOME prob — bug fix 2026-05-19)
+  const full = parseFloat(r.pick_prob || r.p_model);
   const fair = parseFloat(r.fair_prob);
   const modelCurve = _modelForecastCurve(f5, full, fair);
   const picked = pickedTeam(r) || "pick";
@@ -1860,7 +1861,8 @@ function _ltRenderBlockHTML(rowIndex, r, result) {
   // internal state (status, prob, score, etc.) is updated in-place by the
   // poller's _ltUpdateBlockState function below.
   const pick = (r.pick || "—").trim();
-  const fullProb = parseFloat(r.full_prob || r.p_model);
+  // Picked-team full-game prob — r.full_prob is HOME prob, not pick prob (bug fix 2026-05-19)
+  const fullProb = parseFloat(r.pick_prob || r.p_model);
   const tier = (r.tier || "").trim();
   const preGameStr = isNaN(fullProb) ? "—" : `${(fullProb*100).toFixed(1)}% ${pick}`;
   const tierStr = tier ? ` (${tier})` : "";
@@ -2594,7 +2596,8 @@ function formatNarrative(r, gradeInfo, result) {
   const tier      = (r.tier    || "").trim();
   const signals   = (r.signals || "").trim();
   const f5        = parseFloat(r.f5_prob);
-  const full      = parseFloat(r.full_prob || r.p_model);
+  // Pick-side full-game prob — r.full_prob is HOME prob (bug fix 2026-05-19)
+  const full      = parseFloat(r.pick_prob || r.p_model);
   const fair      = parseFloat(r.fair_prob);
   const edge      = parseFloat(r.edge_pp);
   const grade     = (gradeInfo && gradeInfo.grade) || (r.grade || "").trim() || "—";
@@ -3528,7 +3531,10 @@ function answerQuery(q, slate) {
     const grade = gradeInfo.grade || "—";
     const pickStr = r.pick || "—";
     const result = matchResult(r, slate.results || {});
-    return `<div class="card" style="margin-top:0.75rem;">
+    // Thread the row's index in slate.rows so the post-render hook can
+    // bind the win-probability chart for canvases in this search result.
+    const rowIndex = slate.rows.indexOf(r);
+    return `<div class="card" data-search-row-index="${rowIndex}" style="margin-top:0.75rem;">
       <div style="display:flex;align-items:baseline;gap:0.6rem;margin-bottom:0.6rem;">
         <strong style="font-size:1.05rem;">${matchup}</strong>
         <span class="muted">— pick</span>
@@ -3652,7 +3658,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const ask = () => {
     const q = document.getElementById("queryInput").value;
-    document.getElementById("queryResult").innerHTML = answerQuery(q, window.__slate);
+    const out = document.getElementById("queryResult");
+    out.innerHTML = answerQuery(q, window.__slate);
+    // Post-render: bind the win-probability chart for any search-result
+    // cards that contain a canvas placeholder.  Direct row-click path
+    // does this in toggleDetail(); search-result path needs its own hook
+    // (bug fix 2026-05-19).
+    try {
+      const slate = window.__slate || {};
+      const results = (slate && slate.results) || {};
+      out.querySelectorAll("[data-search-row-index]").forEach((card) => {
+        const idx = parseInt(card.dataset.searchRowIndex, 10);
+        if (isNaN(idx) || idx < 0) return;
+        const r = (slate.rows || [])[idx];
+        if (!r) return;
+        const canvas = card.querySelector("[data-winprob-canvas]");
+        if (!canvas || canvas.id) return;
+        canvas.id = "winprob-canvas-search-" + idx;
+        const result = matchResult(r, results);
+        // _ensureWinProbChart looks up by id "winprob-canvas-" + rowIndex,
+        // so pass "search-" + idx as the rowIndex argument.
+        _ensureWinProbChart("search-" + idx, r, result)
+          .catch((e) => console.warn("search-result chart bind failed:", e));
+      });
+    } catch (e) { console.warn("search-result chart hook failed:", e); }
   };
   document.getElementById("askBtn").addEventListener("click", ask);
   document.getElementById("queryInput").addEventListener("keydown", (e) => {
