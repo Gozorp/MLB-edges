@@ -1358,7 +1358,9 @@ function _pitcherImpact(p, oppName) {
   const k9   = parseFloat((ss.k9 ?? p.k9) ?? 0);
   const bb9  = parseFloat((ss.bb9 ?? p.bb9) ?? 0);
   const hr9  = parseFloat((ss.hr9 ?? p.hr9) ?? 0);
-  const k_bb = ss.k_bb ?? null;
+  // Use parseFloat (not nullish coalesce) so missing/null becomes NaN — otherwise
+  // null gets coerced by isFinite to 0 below and we'd try to call .toFixed() on null.
+  const k_bb = parseFloat(ss.k_bb);
   const oppAvg = parseFloat(ss.avg ?? p.avg ?? 0);
   const oppOps = parseFloat(ss.ops ?? 0);
   const ip   = parseFloat((ss.ip ?? p.ip ?? "0").toString().replace(" ", ""));
@@ -1599,8 +1601,9 @@ async function _ensureWinProbChart(rowIndex, r, result) {
   const placeholderId = "winprob-canvas-" + rowIndex;
   const el = document.getElementById(placeholderId);
   if (!el || el.dataset.rendered === "1") return;
-  const f5 = parseFloat(r.f5_prob);
-  // full = picked-team's full-game prob (not r.full_prob which is HOME prob — bug fix 2026-05-19)
+  // Both f5 and full need to be the PICK's probability so the chart curve
+  // represents the picked team's win-prob trajectory across innings.
+  const f5 = _pickSideF5Prob(r);
   const full = parseFloat(r.pick_prob || r.p_model);
   const fair = parseFloat(r.fair_prob);
   const modelCurve = _modelForecastCurve(f5, full, fair);
@@ -2424,6 +2427,23 @@ function pickedTeam(r) {
   return m ? m[0] : pick.toUpperCase();
 }
 
+// Returns the picked team's F5 probability.  The CSV's r.f5_prob is the
+// HOME team's F5 win prob; for HOME picks it's already the pick's prob,
+// for AWAY picks we flip (1 - raw).  Mirrors the favTeamProb / pickWithProb
+// orientation logic.  Without this, narrative says "F5 leans against pick"
+// for any away pick whose home opponent has < 50% F5 prob — even though
+// the pick is favored.  (bug fix follow-up 2026-05-19)
+function _pickSideF5Prob(r) {
+  const raw = parseFloat(r && r.f5_prob);
+  if (isNaN(raw)) return NaN;
+  const matchup = (r && r.matchup || "").trim();
+  const parts = matchup.split(" @ ");
+  if (parts.length !== 2) return raw;
+  const homeAbbr = parts[1].trim();
+  const pickAbbr = pickedTeam(r);
+  return pickAbbr === homeAbbr ? raw : (1 - raw);
+}
+
 function matchResult(r, results) {
   if (!results) return null;
   const matchup = (r.matchup || "").trim();
@@ -2595,8 +2615,9 @@ function formatNarrative(r, gradeInfo, result) {
   const matchup   = (r.matchup || "").trim();
   const tier      = (r.tier    || "").trim();
   const signals   = (r.signals || "").trim();
-  const f5        = parseFloat(r.f5_prob);
-  // Pick-side full-game prob — r.full_prob is HOME prob (bug fix 2026-05-19)
+  // Both f5 and full are pick-oriented so "leans toward / against the pick"
+  // and Stage 1/2 coherence checks are correct for away picks too.
+  const f5        = _pickSideF5Prob(r);
   const full      = parseFloat(r.pick_prob || r.p_model);
   const fair      = parseFloat(r.fair_prob);
   const edge      = parseFloat(r.edge_pp);
