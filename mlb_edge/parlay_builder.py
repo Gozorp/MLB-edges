@@ -663,6 +663,33 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
         except (TypeError, ValueError):
             pass
 
+    # Rule 7 — PICK-SIDE BULLPEN DISADVANTAGE HARD CAP (2026-05-20)
+    # Validation: backtest of 9 days postgame archive (5/8-5/18) found that
+    # bet-tier CONFIRMs where the pick had a bullpen-quality disadvantage
+    # (hl_bullpen_xwoba_gap >= 0) went 0-for-7.  Of those 7 historical
+    # losses, 4 were already caught by HARD CAP 1 (negative edge) or HARD
+    # CAP 6 (extreme edge); 3 are NEW captures that no existing cap caught:
+    #   2026-05-10 PIT @ SF (GOLD, hl_bp_gap=+0.0065, lost 6-7)
+    #   2026-05-15 CIN @ CLE (GOLD, hl_bp_gap=+0.0177, lost 6-7)
+    #   2026-05-16 BOS @ ATL (PLATINUM, hl_bp_gap=+0.0115, lost 2-3)
+    # Threshold 0.0 is the natural sign change of pick-vs-opp bullpen
+    # advantage.  Sample n=7 is small ([H] per Rule 9); 0-for-7 implies
+    # p=0.78% under a coin-flip null.  Importantly, zero historical WINS
+    # would have been capped (Rule 11 reverse-direction sanity).
+    _bp_gap = row.get("hl_bullpen_xwoba_gap")
+    if pd.notna(_bp_gap):
+        try:
+            _bp_gap_f = float(_bp_gap)
+            if _bp_gap_f >= 0 and score >= 3:
+                reasons.append(
+                    f"[HARD CAP 7] pick-side bullpen disadvantage "
+                    f"(hl_bullpen_xwoba_gap={_bp_gap_f:+.4f} >= 0) "
+                    f"on tier-elevated pick (score {score} -> 1)"
+                )
+                score = 1
+        except (TypeError, ValueError):
+            pass
+
     # Surface pre_cap_score so grade_picks can write it as a separate column.
     # Encoded as a structured tag at the END of reasons so we can parse it
     # back out without changing the function signature.

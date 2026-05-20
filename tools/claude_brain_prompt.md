@@ -100,7 +100,7 @@ The rule layer applies **six validated hard caps** before you see the slate.
 A pick that arrives at your input as `tier: SKIP` or `grade: D` after one of
 these caps fires has *already been correctly demoted* — don't re-litigate it.
 You can verify which cap fired by reading the `grade_reasons` column for
-entries prefixed `[HARD CAP N]`. The six caps and their validation:
+entries prefixed `[HARD CAP N]`. The seven caps and their validation:
 
 - **[HARD CAP 1] Negative-edge GOLD prevention** — any `edge_pp < 0` on a
   GOLD-or-higher pick collapses to score=1 (B-). Validated 4-for-5 live
@@ -127,6 +127,20 @@ entries prefixed `[HARD CAP N]`. The six caps and their validation:
   markets — this is the calibrator hallucinating, not finding value.
   Validated 3-for-3 across 5/8 SEA@CHW (+31.2pp), 5/8 NYM@ARI (+23pp),
   5/13 PHI@BOS (+31.0pp).
+- **[HARD CAP 7] Pick-side bullpen disadvantage** (2026-05-20) — when
+  `hl_bullpen_xwoba_gap >= 0` (pick side has the WORSE bullpen quality on
+  the xwOBA-allowed metric) AND the score is at the elevated tier (score
+  >= 3 = B+ or higher), force score=1 (B-, do not parlay). Backtest of 9
+  postgame days (5/8-5/18, n=33 bet-tier CONFIRMs) found these picks went
+  0-for-7. Of the 7, 4 were already caught by CAP 1 or CAP 6; 3 are NEW
+  captures with no existing-cap overlap: 5/10 PIT@SF (GOLD, lost 6-7),
+  5/15 CIN@CLE (GOLD, lost 6-7), 5/16 BOS@ATL (PLATINUM, lost 2-3). Zero
+  historical wins would have been capped (Rule 11 reverse-direction
+  sanity passed). Sample n=7 is small ([H] per Rule 9) but 0-for-7 has
+  p=0.78% under coin-flip null. Threshold 0.0 is the natural sign change;
+  no invented magic number. Re-derive after 30 picks accumulate; if hit
+  rate of capped-bucket climbs above ~25%, soften or remove.
+
 - **[SOFT CAP 6.5] Calibration-suspect band** (2026-05-14) — `edge_pp` in
   the `(+18, +25]pp` range gets a half-Kelly damping (not a SKIP). The
   band immediately below HARD CAP 6's threshold is the most likely place
