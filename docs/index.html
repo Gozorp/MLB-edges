@@ -3108,22 +3108,103 @@ function _narrateKProp(item) {
   return s;
 }
 
+// Global registry of prop payloads keyed by their probeId.  Lets onclick
+// handlers (which only see strings) recover the structured payload they
+// need to send to /api/claude/ask.
+window.__propPayloads = window.__propPayloads || {};
+
+// Format the structured Claude prompt for a given prop card.
+function _propBuildClaudePrompt(propType, payload) {
+  if (propType === "ml") {
+    return `Deep analysis on the model's game-pick recommendation: ${payload.pick} ML over ${payload.matchup}. ` +
+           `Model probability ${(payload.prob*100).toFixed(1)}%, edge_pp ${payload.edge_pp.toFixed(1)}pp vs market, final grade ${payload.grade}. ` +
+           `Active signals: ${payload.signals || "(none)"}. ` +
+           `Analyze: starting pitcher matchup, lineup quality, bullpen depth, recent form, ` +
+           `umpire/park context, and any structural risks the model may be underweighting. ` +
+           `Provide a clear CONFIRM / DOWNGRADE / OVERRIDE verdict with concise reasoning. ` +
+           `Cite specific data from the loaded slate where possible.`;
+  }
+  if (propType === "ou") {
+    const edgeStr = isFinite(payload.edge_pp) ? `, edge ${payload.edge_pp >= 0 ? "+" : ""}${payload.edge_pp.toFixed(1)}pp vs book-fair` : "";
+    return `Deep analysis on the model's totals recommendation: ${payload.side} ${payload.line.toFixed(1)} on ${payload.matchup}. ` +
+           `Model probability ${(payload.prob*100).toFixed(1)}%${edgeStr}. ` +
+           `Model projects ${isFinite(payload.pred_runs) ? payload.pred_runs.toFixed(1) : "—"} total runs vs the line of ${payload.line.toFixed(1)}. ` +
+           `Analyze: starting pitcher quality on both sides, lineup-vs-SP matchup strength, ` +
+           `bullpen workload + late-game leverage state, park run factor, weather (wind, temp), ` +
+           `umpire K/BB tendency, and any structural anchors that could push runs toward the line. ` +
+           `Provide a confidence assessment and flag any major contradicting signals.`;
+  }
+  if (propType === "k") {
+    return `Deep analysis on the pitcher strikeout prop for ${payload.name} in ${payload.matchup}. ` +
+           `Model projects ${payload.expected_K.toFixed(1)} expected K at a ${payload.k_pct.toFixed(1)}% K rate over ~26 BF in 6 IP. ` +
+           `Probabilities: P(K≥5)=${(payload.p_over_5*100).toFixed(0)}%, P(K≥6)=${(payload.p_over_6*100).toFixed(0)}%, P(K≥7)=${(payload.p_over_7*100).toFixed(0)}%. ` +
+           `Analyze: pitcher's recent K-rate trend, opposing lineup's contact quality + chase rate, ` +
+           `umpire strike-zone bias, weather (cold suppresses K, hot increases swing-and-miss), ` +
+           `and expected pitch count / leash length. ` +
+           `Recommend over/under threshold and confidence level.`;
+  }
+  return `Deep analysis on this prop: ${JSON.stringify(payload)}.`;
+}
+
+// Per-prop "Deep analysis" button handler.  Calls /api/claude/ask with a
+// structured prompt formatted for the prop type.  Caches the response per
+// probeId so re-clicks just toggle visibility.
+async function _propDeepAnalysisOnClick(probeId) {
+  const container = document.getElementById(probeId);
+  if (!container) return;
+  // Toggle visibility first
+  const isHidden = container.style.display === "none" || container.style.display === "";
+  container.style.display = isHidden ? "block" : "none";
+  if (!isHidden) return;
+  // Already loaded? Just show.
+  if (container.dataset.loaded === "1") return;
+  const meta = window.__propPayloads[probeId];
+  if (!meta) {
+    container.innerHTML = `<span class="muted">Payload not registered.</span>`;
+    return;
+  }
+  container.dataset.loaded = "1";
+  container.innerHTML = `<span class="muted">Asking Claude for deep analysis…</span>`;
+  const prompt = _propBuildClaudePrompt(meta.propType, meta.payload);
+  const date = (window.__slate && window.__slate.date) || null;
+  try {
+    const r = await fetch("/api/claude/ask", {
+      method: "POST",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify({date, question: prompt}),
+    });
+    const j = await r.json();
+    if (j.error) {
+      container.innerHTML = `<span class="flag-red">Claude error: ${j.error}</span>`;
+      container.dataset.loaded = "0";  // allow retry on next click
+    } else {
+      const safe = (j.answer || "")
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+        .replace(/\n/g, "<br>");
+      container.innerHTML = safe;
+    }
+  } catch (e) {
+    container.innerHTML = `<span class="flag-red">Network error: ${e.message}</span>`;
+    container.dataset.loaded = "0";  // allow retry
+  }
+}
+
 function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload) {
   const probeId = `prop-deep-${propType}-${idx}`;
-  const stub = `<div id="${probeId}" class="muted" style="margin-top:0.4rem;font-size:0.86rem;display:none;">` +
-               `Deep analysis (Claude expand) — coming in Phase 4. ` +
-               `For now, see the slate row detail panel for in-depth model reasoning.` +
-               `</div>`;
+  // Stash payload for the click handler to recover.
+  window.__propPayloads[probeId] = {propType, payload};
+  const deepContainer = `<div id="${probeId}" style="margin-top:0.4rem;font-size:0.86rem;display:none;` +
+                        `padding:0.5rem;border-left:2px solid var(--accent);background:rgba(255,255,255,0.02);">` +
+                        `</div>`;
   return `<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">` +
          `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;">` +
          `<div><strong style="color:var(--accent);">#${idx + 1}</strong> ${title}</div>` +
          `<button class="lt-btn" style="font-size:0.78rem;padding:0.2rem 0.5rem;" ` +
-         `onclick="document.getElementById('${probeId}').style.display = ` +
-         `document.getElementById('${probeId}').style.display === 'none' ? 'block' : 'none';">` +
+         `onclick="_propDeepAnalysisOnClick('${probeId}')">` +
          `Deep analysis ▼</button>` +
          `</div>` +
          `<div style="font-size:0.88rem;color:var(--muted);margin-top:0.25rem;">${narrativeHTML}</div>` +
-         stub +
+         deepContainer +
          `</div>`;
 }
 
