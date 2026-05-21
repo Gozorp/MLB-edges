@@ -36,10 +36,26 @@ def fetch_live_f5_odds() -> pd.DataFrame:
 
     Team names are normalized to our 3-letter abbreviations.
     Returns empty DataFrame on any failure — caller should handle gracefully.
+
+    NOTE (2026-05-21): the Odds API subscription was cancelled by the user.
+    Kalshi (the new moneyline primary; see mlb_edge/kalshi_odds.py) does
+    NOT offer MLB first-5-innings contracts — its KXMLBGAME series is
+    full-game binary only.  When ODDS_API_KEY is unset, this function
+    returns an empty DataFrame and emits a loud ODDS_API_KEY_MISSING log
+    line so the F5 cron's dead-state is legible.  A follow-up change to
+    main_f5.py will convert the existing early-exit into a graceful-
+    degrade path that still emits f5_runs_pred in the picks_f5 CSV
+    (with blank fair_prob / edge_pp / EV columns).  Until that lands,
+    an empty result here causes main_f5 to skip writing the CSV for
+    that slate.
     """
     api_key = os.environ.get("ODDS_API_KEY")
     if not api_key:
-        log.error("ODDS_API_KEY not set")
+        log.error("[live_f5] ODDS_API_KEY_MISSING — F5 pipeline cannot "
+                  "fetch first-5-innings lines.  Kalshi (the new moneyline "
+                  "primary) does NOT carry F5 contracts; main_f5 will skip "
+                  "writing today's picks_f5 CSV.  See file header for the "
+                  "planned graceful-degrade follow-up.")
         return pd.DataFrame()
 
     url = f"{DATA.odds_api_base}/sports/{DATA.odds_sport}/odds"

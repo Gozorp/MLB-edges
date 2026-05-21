@@ -37,10 +37,26 @@ def fetch_live_totals_odds() -> pd.DataFrame:
       game_id, commence_time, home_team, away_team, book, outcome,
       price, point, decimal, commence_date,
       home_team_abbr, away_team_abbr
+
+    NOTE (2026-05-21): the Odds API subscription was cancelled by the user.
+    Kalshi (the new moneyline primary; see mlb_edge/kalshi_odds.py) does
+    NOT offer MLB totals contracts — its KXMLBGAME series is binary
+    game-winner only.  When ODDS_API_KEY is unset, this function returns
+    an empty DataFrame and emits a loud ODDS_API_KEY_MISSING log line so
+    the totals cron's dead-state is legible.  A follow-up change to
+    main_totals.py will convert the existing `if raw.empty: return`
+    early-exit into a graceful-degrade path that still emits pred_runs
+    in the picks_totals CSV (with blank fair_prob / edge_pp / EV columns).
+    Until that lands, an empty result here causes main_totals to skip
+    writing the CSV for that slate.
     """
     api_key = os.environ.get("ODDS_API_KEY")
     if not api_key:
-        log.error("ODDS_API_KEY not set")
+        log.error("[live_totals] ODDS_API_KEY_MISSING — totals pipeline "
+                  "cannot fetch O/U lines.  Kalshi (the new moneyline "
+                  "primary) does NOT carry totals; main_totals will skip "
+                  "writing today's picks_totals CSV.  See file header for "
+                  "the planned graceful-degrade follow-up.")
         return pd.DataFrame()
 
     url = f"{DATA.odds_api_base}/sports/{DATA.odds_sport}/odds"

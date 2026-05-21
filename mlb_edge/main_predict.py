@@ -626,67 +626,49 @@ def run(slate_date: date,
         log.warning("[shadow] Phase 4 shadow prediction failed: %s "
                     "(continuing without shadow column)", e)
 
-    # Track odds-fetch outcome explicitly so the diagnostic table can record
-    # WHY fair_prob may be missing. Three failure modes we now log loudly:
-    #   - no API key configured                (status = "no_api_key")
-    #   - API returned empty payload           (status = "empty_payload")
-    #   - exception during call                (status = "exception")
-    # Bug 2 fix (2026-05-02): previously the empty-payload case silently
-    # produced a diag with NaN fair_prob and no signal in the run output,
-    # which is how 2026-04-30 and 2026-05-01 shipped without odds.
-    odds_long = pd.DataFrame()
-    odds_status = "fetched"
-    try:
-        client = di.OddsClient()
-        if not client.api_key:
-            odds_status = "no_api_key"
-            log.error("[odds] ODDS_API_KEY not set — diag will write NaN "
-                      "fair_prob / edge_pp / EV. Set the env var to enable "
-                      "market features.")
-        else:
-            odds_long = client.current_lines()
-            if odds_long.empty:
-                odds_status = "empty_payload"
-                log.error("[odds] OddsClient.current_lines() returned an empty "
-                          "DataFrame. The slate diag will be written WITHOUT "
-                          "fair_prob / edge_pp / EV — this is a silent failure "
-                          "mode (rate limit / API outage / quota exhausted). "
-                          "Inspect the previous Odds API log line for the "
-                          "remaining-quota header.")
-            else:
-                odds_long["outcome"] = odds_long["outcome"].apply(normalize_team)
-    except Exception as e:
-        odds_status = "exception"
-        log.error("[odds] Odds API call raised an exception: %s. Diag will "
-                  "be written WITHOUT fair_prob / edge_pp / EV.", e)
-
     # ------------------------------------------------------------------
-    # [step 3.1/5] Odds fallback chain: Kalshi -> ESPN
+    # [step 3/5] Odds chain — Kalshi PRIMARY (2026-05-21)
     # ------------------------------------------------------------------
-    # When the primary Odds API returned empty / failed / no key, fall
-    # through to public-data sources in order:
-    #   1. Kalshi (mlb_edge/kalshi_odds.py) — CFTC-regulated US
-    #      prediction market.  No-vig binary contracts; two YES probs
-    #      sum to ~1.00 structurally.  Throttled at 1s/req to stay
-    #      under the unauthenticated rate limit (~15s per 15-game
-    #      slate).  Cleaner than ESPN scraping.
-    #   2. ESPN (mlb_edge/odds_fallback.py) — last-resort HTML scrape;
-    #      fragile to layout changes but the historical incumbent.
-    # Without ANY of these, slates ship with blank fair_prob (the 5/1
-    # failure mode that produced the 4-9 record).
+    # User directive on 2026-05-21: the Odds API subscription is cancelled.
+    # Promote Kalshi (CFTC-regulated US prediction market, no-vig binary
+    # contracts where two YES probs sum to ~1.00 structurally) from
+    # fallback to primary for moneyline (h2h).  Keep the Odds API and ESPN
+    # as fallbacks in case the Kalshi feed degrades or the Odds API
+    # subscription is reactivated.
+    #
+    # Order: Kalshi (primary) -> Odds API (fallback if key set) -> ESPN
+    #        (last-resort HTML scrape) -> empty.
+    #
+    # IMPORTANT scope note: Kalshi only carries moneyline contracts.
+    # Totals (O/U) and F5 markets still depend on the Odds API via
+    # main_totals.py / main_f5.py.  When the Odds API key is unavailable,
+    # those pipelines surface clear ODDS_API_KEY_MISSING log lines (see
+    # live_totals.py + live_f5.py header notes); a follow-up commit will
+    # convert them to emit pred_runs/pred_f5 without market columns.
+    #
+    # odds_status values (kept stable for downstream consumers):
+    #   "fetched"          — Kalshi primary returned rows
+    #   "fetched_capped"   — set in build_diagnostic_table when a row had
+    #                        Kalshi coverage but the cap fired
+    #   "kalshi_empty"     — Kalshi primary empty; one of the fallbacks
+    #                        populated odds_long (suffix appended)
+    #   "all_empty"        — every source returned empty; diag ships with
+    #                        NaN fair_prob / edge_pp / EV
+    # Suffixes "+oddsapi_fallback" / "+espn_fallback" record which fallback
+    # rescued the slate.
     # Per Architecture-Session Pre-Flight Prompt v1.0 Rule 6 — every
-    # fallback is best-effort with logged exceptions.
+    # source call is best-effort with logged exceptions.
     def _try_fallback(label, fetch_fn):
         try:
             df = fetch_fn(slate_date)
             if df is not None and not df.empty:
                 df["outcome"] = df["outcome"].apply(normalize_team)
-                log.info("[odds] %s fallback populated %d odds rows for "
-                         "%d games", label, len(df), len(df) // 2)
+                log.info("[odds] %s populated %d odds rows for %d games",
+                         label, len(df), len(df) // 2)
                 return df
-            log.info("[odds] %s fallback returned empty", label)
+            log.info("[odds] %s returned empty", label)
         except Exception as e:
-            log.warning("[odds] %s fallback raised: %s", label, e)
+            log.warning("[odds] %s raised: %s", label, e)
         return None
 
     def _try_backfill(label, backfill_fn, current):
@@ -697,33 +679,75 @@ def run(slate_date: date,
                 updated["outcome"] = updated["outcome"].apply(normalize_team)
             added = len(updated) - before
             if added > 0:
-                log.info("[odds] %s backfilled %d additional odds rows on "
-                         "top of primary", label, added)
+                log.info("[odds] %s backfilled %d additional rows on top "
+                         "of primary", label, added)
             return updated
         except Exception as e:
             log.warning("[odds] %s backfill raised: %s", label, e)
             return current
 
-    if odds_status != "fetched" or odds_long.empty:
-        from . import kalshi_odds as _ko
-        kal_df = _try_fallback("Kalshi", _ko.fetch_kalshi_mlb_odds)
-        if kal_df is not None:
-            odds_long = kal_df
-            odds_status = f"{odds_status}+kalshi_fallback"
-        else:
-            from . import odds_fallback as _of
-            espn_df = _try_fallback("ESPN", _of.fetch_espn_mlb_odds)
-            if espn_df is not None:
-                odds_long = espn_df
-                odds_status = f"{odds_status}+espn_fallback"
-            else:
-                log.warning("[odds] all fallbacks (Kalshi, ESPN) returned "
-                            "empty - slate ships without fair_prob")
+    def _try_oddsapi():
+        """Best-effort Odds API fetch; returns DataFrame or None.
+        Wraps the previous primary-path logic into the same shape as the
+        other source fetchers so the chain stays uniform."""
+        try:
+            client = di.OddsClient()
+            if not client.api_key:
+                log.warning("[odds] OddsAPI fallback unavailable: "
+                            "ODDS_API_KEY not set (subscription cancelled)")
+                return None
+            df = client.current_lines()
+            if df is None or df.empty:
+                log.info("[odds] OddsAPI fallback returned empty "
+                         "(rate-limit / quota exhausted / API outage)")
+                return None
+            df["outcome"] = df["outcome"].apply(normalize_team)
+            log.info("[odds] OddsAPI fallback populated %d odds rows for "
+                     "%d games", len(df), len(df) // 2)
+            return df
+        except Exception as e:
+            log.warning("[odds] OddsAPI fallback raised: %s", e)
+            return None
+
+    odds_long = pd.DataFrame()
+    odds_status = "fetched"
+
+    # Primary: Kalshi.
+    from . import kalshi_odds as _ko
+    from . import odds_fallback as _of
+    kal_df = _try_fallback("Kalshi primary", _ko.fetch_kalshi_mlb_odds)
+    if kal_df is not None:
+        odds_long = kal_df
     else:
-        from . import kalshi_odds as _ko
-        from . import odds_fallback as _of
-        odds_long = _try_backfill("Kalshi", _ko.backfill_missing_odds, odds_long)
-        odds_long = _try_backfill("ESPN", _of.backfill_missing_odds, odds_long)
+        odds_status = "kalshi_empty"
+
+    # Fallback 1: Odds API (only fires if Kalshi primary was empty).
+    if odds_long.empty:
+        api_df = _try_oddsapi()
+        if api_df is not None:
+            odds_long = api_df
+            odds_status = f"{odds_status}+oddsapi_fallback"
+
+    # Fallback 2: ESPN scraping (only fires if both above were empty).
+    if odds_long.empty:
+        espn_df = _try_fallback("ESPN fallback", _of.fetch_espn_mlb_odds)
+        if espn_df is not None:
+            odds_long = espn_df
+            odds_status = f"{odds_status}+espn_fallback"
+
+    # Backfill: when primary (Kalshi) succeeded but didn't cover the full
+    # slate, fill missing games from the other two sources.
+    if not odds_long.empty and odds_status == "fetched":
+        # Odds API backfill — skipped silently when ODDS_API_KEY is unset
+        # (the backfill_missing_odds helper in odds_fallback handles ESPN;
+        # for OddsAPI we'd need a separate helper, deferred for now).
+        odds_long = _try_backfill("ESPN", _of.backfill_missing_odds,
+                                  odds_long)
+
+    if odds_long.empty:
+        odds_status = "all_empty"
+        log.error("[odds] all sources (Kalshi, OddsAPI, ESPN) returned "
+                  "empty - slate ships without fair_prob / edge_pp / EV")
 
         # ------------------------------------------------------------------
     # [step 3.5/5] Live-news enrichment layer (Tier 0 + Tier 1)
