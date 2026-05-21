@@ -690,6 +690,90 @@ def _score_pick(row: pd.Series, away_sp: Optional[dict],
         except (TypeError, ValueError):
             pass
 
+    # Rule 8 — BOTTOM-BUCKET MARGINAL-FAVORITE HARD CAP (2026-05-20, re-ship 2026-05-21)
+    # Grid-derived from 9-day archive (5/8-5/18, n=113 graded picks).
+    # 57% of slate lives in pick_prob (0.50, 0.55] and that bucket hits
+    # 40.6% actual vs 52.4% predicted (-11.8pp overconfidence).  The
+    # narrowest sub-band (0.50, 0.52] with edge_pp <= +12pp is the
+    # highest-leak archetype: 19 captures, 6W/13L = 31.6%, LODO stable
+    # in 7/8 folds.  Threshold accepts the OVERFITTING RISK documented
+    # in commit b60da3a (the .bat-only version that never landed).
+    # Postgame cron monitors prospective fires; if 30+ live captures
+    # regress above 50% hit rate, this cap should be removed.
+    _pp_b8 = row.get("pick_prob")
+    _epp_b8 = row.get("edge_pp")
+    if pd.notna(_pp_b8) and pd.notna(_epp_b8):
+        try:
+            _pp_b8f = float(_pp_b8)
+            _epp_b8f = float(_epp_b8)
+            if 0.50 < _pp_b8f <= 0.52 and _epp_b8f <= 12.0 and score >= 3:
+                reasons.append(
+                    f"[HARD CAP 8] bottom-bucket marginal-favorite "
+                    f"(pick_prob={_pp_b8f:.3f} in (0.50, 0.52], "
+                    f"edge_pp={_epp_b8f:+.1f}pp <= +12) "
+                    f"on tier-elevated pick (score {score} -> 1)"
+                )
+                score = 1
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 9 — TOP-BUCKET CALIBRATOR-HALLUCINATION HARD CAP (2026-05-21)
+    # User directive: force any pick_prob > 0.80 to SKIP until the
+    # isotonic calibrator is retrained.  Postgame audit:
+    #   (0.80, 1.00] bucket: n=3, 1W/2L = 33.3% actual vs 87.3% predicted
+    #   (-53.9pp catastrophic miscalibration).
+    # HARD CAP 6 catches the >25pp edge subset; CAP 9 catches everything
+    # else in the top probability bucket.  These are the calibrator's
+    # most confident outputs, and they are the most wrong.  Cheap
+    # insurance until weekly retraining lands.
+    _pp_b9 = row.get("pick_prob")
+    if pd.notna(_pp_b9):
+        try:
+            _pp_b9f = float(_pp_b9)
+            if _pp_b9f > 0.80 and score >= 0:
+                reasons.append(
+                    f"[HARD CAP 9] top-bucket calibrator hallucination "
+                    f"(pick_prob={_pp_b9f:.3f} > 0.80; "
+                    f"archive {{0.80,1.00}} hits 33.3% actual vs 87.3% predicted) "
+                    f"(score {score} -> 0)"
+                )
+                score = 0
+        except (TypeError, ValueError):
+            pass
+
+    # Rule 10 — BOTTOM-BUCKET (0.50, 0.55] SKIP-UNLESS-CONFIRM HARD CAP (2026-05-21)
+    # User directive.  Probe finding (n=59 joined picks 2026-05-08 -> 2026-05-18):
+    #   ALL          (0.50, 0.55]:                  25W/33L = 43.1%
+    #   CONFIRM only (0.50, 0.55]:                  20W/22L = 47.6% (+16pp vs non-CONFIRM)
+    #   non-CONFIRM  (0.50, 0.55]:                  5W/11L  = 31.2%
+    # CONFIRM-rescued picks in this band hit 47.6% — meaningful lift
+    # over non-CONFIRM, still below 50% breakeven; the rule preserves
+    # CONFIRM picks for the upside while killing the structural-loss
+    # non-CONFIRM slice.  The optional tightening to universal SKIP
+    # across the bucket is noted in the commit body for future review.
+    #
+    # Detection of Claude CONFIRM: claude_decision arrives via row as
+    # a free-text column.  Fall back to "no decision recorded" -> not
+    # CONFIRM -> SKIP (conservative).
+    _pp_b10 = row.get("pick_prob")
+    _decision_b10 = (row.get("claude_decision") or "")
+    if pd.notna(_pp_b10):
+        try:
+            _pp_b10f = float(_pp_b10)
+            _is_confirm = "CONFIRM" in str(_decision_b10).upper()
+            if 0.50 < _pp_b10f <= 0.55 and not _is_confirm and score >= 0:
+                reasons.append(
+                    f"[HARD CAP 10] bottom-bucket marginal-favorite "
+                    f"without Claude CONFIRM "
+                    f"(pick_prob={_pp_b10f:.3f} in (0.50, 0.55], "
+                    f"decision={_decision_b10 or 'none'!r}; "
+                    f"archive non-CONFIRM hit rate 31.2%) "
+                    f"(score {score} -> 0)"
+                )
+                score = 0
+        except (TypeError, ValueError):
+            pass
+
     # Surface pre_cap_score so grade_picks can write it as a separate column.
     # Encoded as a structured tag at the END of reasons so we can parse it
     # back out without changing the function signature.
