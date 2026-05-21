@@ -394,6 +394,13 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
             "away_bvp_n_pa":          float(r.get("away_bvp_n_pa", 0)),
             "home_bvp_ops_shrunk":    round(float(r.get("home_bvp_ops_shrunk", 0.72)), 4),
             "away_bvp_ops_shrunk":    round(float(r.get("away_bvp_ops_shrunk", 0.72)), 4),
+            # Game-level BvP reliability proxy per Phase-1 docstring:
+            #   bvp_signal_strength = total_PA / 9 (PA per lineup spot).
+            # Used by postgame backtest to filter out low-evidence rows when
+            # the BvP-adjusted RMSE vs raw is benchmarked.
+            "bvp_signal_strength":    round(
+                (float(r.get("home_bvp_n_pa", 0)) +
+                 float(r.get("away_bvp_n_pa", 0))) / 9.0, 3),
         })
 
     if not picks:
