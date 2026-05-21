@@ -125,3 +125,33 @@ jobs:
             git commit -m "claude-postgame: $(date -u +%Y-%m-%d) post-mortem for ${SLATE} slate"
             git push origin HEAD:main
           fi
+
+      - name: Run OVERRIDE regression backtest (out-of-sample sweep)
+        if: env.skip != 'true'
+        env:
+          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          # Operate inside the fresh clone (which now has the just-pushed
+          # postgame JSON) so we read every postgame day including today's.
+          # The harness writes:
+          #   docs/data/backtest/override_status.json
+          #   docs/data/backtest/override_ledger.csv
+          #   PUSH_OVERRIDE_DEMOTE.bat  (only if verdict == demote)
+          cd /tmp/refresh-clone
+          python3 tools/backtest_override.py --verbose
+          STATUS_FILE="docs/data/backtest/override_status.json"
+          LEDGER_FILE="docs/data/backtest/override_ledger.csv"
+          DEMOTE_BAT="PUSH_OVERRIDE_DEMOTE.bat"
+          git add "$STATUS_FILE" "$LEDGER_FILE" 2>/dev/null || true
+          # Only stage the demote .bat if the harness wrote one.
+          if [ -f "$DEMOTE_BAT" ]; then
+            git add "$DEMOTE_BAT"
+            echo "::warning ::OVERRIDE backtest verdict reached DEMOTE — $DEMOTE_BAT staged for user review"
+          fi
+          if git diff --cached --quiet; then
+            echo "no override-backtest changes to commit"
+          else
+            git commit -m "override-backtest: $(date -u +%Y-%m-%d) auto-run after ${SLATE} postgame"
+            git push origin HEAD:main
+          fi

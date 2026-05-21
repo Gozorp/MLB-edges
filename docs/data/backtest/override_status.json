@@ -1,0 +1,76 @@
+{
+  "generated_at": "2026-05-21T22:44:55.313738Z",
+  "verdict": {
+    "state": "inconclusive",
+    "reason": "out-of-sample n=0 below floor 10; keep current OVERRIDE behavior, re-run when more postgame data accumulates",
+    "n_out_of_sample": 0,
+    "n_in_sample": 6,
+    "precision_pct": null,
+    "wins_flipped": null,
+    "losses_flipped": null,
+    "thresholds": {
+      "freeze_date": "2026-05-21",
+      "sample_floor": 10,
+      "precision_threshold_pct": 85.0,
+      "wins_flipped_limit": 2
+    }
+  },
+  "n_fires_total": 6,
+  "out_of_sample_fires": [],
+  "in_sample_fires": [
+    {
+      "date": "2026-05-11",
+      "matchup": "SEA @ HOU",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "3-1",
+      "model_pick": "HOU ML GOLD",
+      "in_sample": true
+    },
+    {
+      "date": "2026-05-12",
+      "matchup": "COL @ PIT",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "1-3",
+      "model_pick": "COL ML SKIP",
+      "in_sample": true
+    },
+    {
+      "date": "2026-05-12",
+      "matchup": "DET @ NYM",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "2-10",
+      "model_pick": "DET ML SKIP",
+      "in_sample": true
+    },
+    {
+      "date": "2026-05-12",
+      "matchup": "SEA @ HOU",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "10-2",
+      "model_pick": "HOU ML GOLD",
+      "in_sample": true
+    },
+    {
+      "date": "2026-05-14",
+      "matchup": "DET @ NYM",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "4-9",
+      "model_pick": "DET ML GOLD",
+      "in_sample": true
+    },
+    {
+      "date": "2026-05-18",
+      "matchup": "CHW @ SEA",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "1-6",
+      "model_pick": "CHW ML SKIP",
+      "in_sample": true
+    }
+  ]
+}
