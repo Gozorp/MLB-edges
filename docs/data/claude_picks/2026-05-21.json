@@ -1,96 +1,98 @@
 {
   "date": "2026-05-21",
-  "fit_at": "2026-05-21T12:00:00Z",
+  "fit_at": "2026-05-21T14:45:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 7,
   "patterns_recognized": [
-    "D-grade SKIP picks where BOTH SP-edge-against AND PQI-against simultaneously oppose the model pick are directionally unreliable — confirmed 05-18 (OAK@LAA lost 2-1, LAD@SD lost 1-0). Applied as DOWNGRADE on CLE@DET and directional caution on OAK@LAA today.",
-    "HARD CAP 1 (negative-edge GOLD/PLATINUM prevention) fires on three of today's seven games: ATL@MIA (−6.6pp), TOR@NYY (−10.7pp), COL@ARI (−12.6pp). F-signal strength is irrelevant when market pricing diverges this severely — caps validated 6+ times in archive.",
-    "PLATINUM tier with f5_full_delta > 0.15 and unconfirmed SP edge mandates DOWNGRADE to GOLD (05-16 rule validated twice). TOR@NYY today: PLATINUM + delta=0.1644 + neutral bullpen + HARD CAP 1 = double DOWNGRADE signal.",
-    "Same-matchup patterns carry limited forward inference: NYM@WSH lost 16-7 on 05-18 due to specific SP-edge-against + large PQI headwind (Δ=−26.6). Today's WSH has no SP-edge-against, PQI neutral (Δ=−0.23) — the 05-18 DOWNGRADE triggers are absent. Three-signal GOLD bar met; CONFIRM.",
-    "F5/full-game bullpen-carry thesis fails when hl_bullpen_xwoba_gap is near zero. CLE@DET (gap=−0.0027), OAK@LAA (gap=+0.0001), COL@ARI (gap=+0.0044) all require late-game bullpen dominance but none have a meaningful bullpen edge to support the thesis."
+    "D-grade picks where BOTH SP-edge-against AND PQI-against simultaneously oppose the model pick remain directionally unreliable — confirmed 0-for-4 on 5/20 (PIT@STL, TEX@COL, OAK@LAA, CHW@SEA) and 0-for-2 on 5/18 (OAK@LAA, LAD@SD). Applied as DOWNGRADE on CLE@DET today; directional caution noted for PIT@STL and OAK@LAA.",
+    "HARD CAP 1 (negative-edge GOLD/PLATINUM prevention) fires on ATL@MIA (−6.01pp), TOR@NYY (−3.42pp), COL@ARI (−15.89pp). All three correctly zero stake. Market pricing superiority over F-signal stacks has been validated 6+ times in archive; do not override on F-signal conviction alone.",
+    "BvP context adds nuance without flipping picks: ATL's Acuña Jr. (44 PA, OWNER vs Alcantara, shrunk 0.902) and Albies (48 PA, OWNER, shrunk 0.891) provide meaningful qualitative support for ATL direction despite no-stake ruling. WSH's Wood (16 PA, MEANINGFUL, shrunk 0.671) and Abrams (25 PA, WEAK_VS, shrunk 0.603) are mild concern vs Peterson but top-3 is not collectively below 0.700.",
+    "Same-matchup recency pattern (TOR@NYY 5/20: TOR won 2-1 with NYY PLATINUM + HARD CAP 1 identical structure) is a qualitative caution signal for TOR@NYY today, but HARD CAP 1 already manages the exposure; f5_full_delta=0.1228 is below the 0.15 mandatory DOWNGRADE threshold. CONFIRM B- stands.",
+    "NYM@WSH is the sole stakeable pick on today's slate: edge=+5.27pp in [4,15]pp band, fair_prob=0.494 (market nearly even), Stage 1/2 tightly agree (Δ=0.01). The 5/18 mandatory DOWNGRADE context (SP-edge-against + PQI Δ=−26.6) is entirely absent today. F3-alone DOWNGRADE rule requires BOTH SP-edge AND PQI headwinds simultaneously; neither present."
   ],
   "by_matchup": {
     "CLE @ DET": {
-      "model_pick": "CLE",
-      "model_prob": 0.5418,
+      "model_pick": "CLE ML GOLD",
+      "model_prob": 0.5433,
       "model_tier": "GOLD",
       "model_grade": "D",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "CLE",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "Model grades CLE D (−2) despite F3=1774.8: Casey Mize holds a 0.91 xERA advantage over Cantillo (SP-edge against CLE), and PQI strongly against (Δ=+14.3). f5_full_delta=0.1726 requires a bullpen-carry late game, but hl_bullpen_xwoba_gap=−0.0027 shows no meaningful CLE bullpen edge to execute it. confidence_downgrade=True + bullpen_fatigue compound the concern. Per 05-18 pattern: D-grade picks where both SP-edge and PQI simultaneously oppose the model pick are directionally unreliable. Demoting to SKIP.",
+      "claude_confidence": 0.46,
+      "reasoning": "D-grade (−2) GOLD with both primary signals against CLE: SP edge 0.93 xERA AGAINST CLE (Mize superior to Cantillo), PQI Δ=+14.2 AGAINST CLE late-game profile. f5_full_delta=0.1741 warns the full-game pick depends on bullpen carry, but hl_bullpen_xwoba_gap=−0.0039 is too small to support that thesis. D-grade dual-signal-against pattern (0-for-4 on 5/20, 0-for-2 on 5/18) marks this as 'expected wrong direction.' José Ramírez is an OWNER vs Cantillo (11 PA, shrunk 0.968) but MEANINGFUL-level sample is not decisive. No fair_prob (fetched_capped); stake already zeroed. Demoting to SKIP.",
       "lessons_applied": [
-        "D-grade with SP-edge + PQI both against = directionally unreliable (05-18 OAK@LAA, LAD@SD)",
-        "F3-alone without F1/F2 cannot overcome simultaneous SP-edge-against + large PQI headwind (05-18 NYM@WSH validated)",
-        "Bullpen-carry thesis requires negative hl_bullpen_xwoba_gap; neutral gap (−0.0027) provides no late-game support"
+        "D-grade with SP-edge-against + PQI-against = expected wrong direction (5/20 0-for-4, 5/18 0-for-2)",
+        "Bullpen-carry thesis (f5_full_delta=0.1741) unsupported by near-zero hl_bullpen_xwoba_gap=−0.0039",
+        "F3-alone (+1) cannot overcome combined SP-edge (−2) + PQI (−1) penalty to escape D-grade"
       ]
     },
     "PIT @ STL": {
-      "model_pick": "STL",
-      "model_prob": 0.6074,
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5351,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "SKIP tier D grade (−2): Braxton Ashcraft outpaces Dustin May by 1.57 xERA (SP-edge against STL), and PQI registers the slate's largest headwind against STL (Δ=−21.5). No F-signals fired. confidence_downgrade=True + bullpen_fatigue stacked. Edge=+13.92pp in-band, but the structural negatives are overwhelming — SP-edge and PQI both run hard against the pick. Stage 1/2 agreement partially offsets but D-grade correctly excludes staking. CONFIRM SKIP.",
+      "reasoning": "SKIP D (−2): Braxton Ashcraft holds a 1.56 xERA advantage over Dustin May (SP-edge against STL), and PQI registers the slate's largest headwind against the STL pick (Δ=−21.4). No F-signals fired. edge_pp=34.67 is above HARD CAP 6's +25pp hallucination threshold but the pre-cap score was already −2 (D), so the cap demoting to SKIP is redundant. Both primary quantitative signals oppose STL's direction; tier=SKIP correctly prevents stake regardless. STL direction should be treated as structurally suspect per dual-signal-against pattern. CONFIRM SKIP.",
       "lessons_applied": [
-        "SP-edge-against (1.57 xERA) + large PQI headwind (Δ=−21.5) on D-grade SKIP = non-stakeable",
-        "No F-signals on a D-grade SKIP confirms the posture regardless of positive edge_pp value"
+        "SP-edge-against (1.56 xERA) + PQI headwind (Δ=−21.4) on D-grade SKIP = non-stakeable and directionally suspect",
+        "edge_pp=34.67 > HARD CAP 6 (+25pp) threshold; moot since pre-cap score already −2 (D) — SKIP confirmed independently",
+        "No F-signals on D-grade SKIP locks in the non-bet decision regardless of edge_pp value"
       ]
     },
     "NYM @ WSH": {
-      "model_pick": "WSH",
-      "model_prob": 0.6174,
+      "model_pick": "WSH ML GOLD",
+      "model_prob": 0.5467,
       "model_tier": "GOLD",
       "model_grade": "B",
       "claude_decision": "CONFIRM",
       "claude_pick": "WSH",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.59,
-      "reasoning": "Clean GOLD B (score=2): F3=2812.9 (strong), edge=+13.52pp in-band, Stage 1/2 agree (delta=0.053), PQI neutral (Δ=−0.23). No stress flags; confidence_downgrade=False. Three-signal GOLD bar met: F3>500 ✓, edge>4pp ✓, delta<0.15 ✓, no flags ✓. Same matchup as 05-18 (WSH lost 16-7), but today's conditions differ completely: no SP-edge-against, no PQI headwind. The 05-18 mandatory DOWNGRADE triggers are absent. WSH HL bullpen marginally better (gap=−0.0083). CONFIRM GOLD.",
+      "claude_confidence": 0.54,
+      "reasoning": "Slate's only stakeable pick: F3_swing_take_gap=2966.5 for WSH, edge=+5.27pp in [4,15]pp band, fair_prob=0.494, Stage 1/2 tightly agree (Δ=0.01), no stress flags, confidence_downgrade=False. BvP mild concern: James Wood (16 PA, MEANINGFUL, shrunk 0.671) and CJ Abrams (25 PA, WEAK_VS, shrunk 0.603) both struggle vs David Peterson. Top-3 WSH (Wood, Mead, Chaparro) not collectively below 0.700 — threshold for structural disadvantage. Soto (6 PA vs Cavalli, shrunk 1.0) is noise. The 5/18 WSH DOWNGRADE triggers (SP-edge-against + PQI Δ=−26.6) are absent today. CONFIRM GOLD.",
       "lessons_applied": [
-        "Three-signal GOLD bar (F3>500 + edge>4pp + delta<0.15 + no flags) validated — CONFIRM",
-        "Same-matchup 05-18 DOWNGRADE was trigger-specific (SP-edge-against + PQI Δ=−26.6); those conditions absent today — no carryover",
-        "F3-alone DOWNGRADE rule requires BOTH SP-edge-against AND PQI-against simultaneously; neither present today"
+        "F3-alone DOWNGRADE rule requires BOTH SP-edge-against AND large PQI headwind; neither present today (5/18 lesson applied correctly)",
+        "Stage 1/2 tightly agree (Δ=0.01) is strong CONFIRM signal — no bullpen-carry uncertainty",
+        "BvP top-3 not collectively below 0.700 — not a structural disadvantage warranting action (per platoon-brain guidelines)"
       ]
     },
     "ATL @ MIA": {
-      "model_pick": "ATL",
-      "model_prob": 0.5133,
+      "model_pick": "ATL ML GOLD",
+      "model_prob": 0.5193,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "ATL",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.51,
-      "reasoning": "[HARD CAP 1] fires: edge=−6.61pp outside [4,15]pp band. Market prices MIA at ~57.9% (fair_prob=0.5794) vs model's 48.7% — a 9pp gap favoring MIA. Sandy Alcantara starts at home for MIA; Spencer Strider for ATL. F2=0.031 fires for ATL lineup quality, but PQI against ATL (Δ=+7.8), confidence_downgrade=True, acute_roster active. HARD CAP 1 correctly zeroes stake; market information about this SP matchup overrides the F2 lineup edge. CONFIRM cap; directional uncertainty noted.",
+      "claude_confidence": 0.52,
+      "reasoning": "edge=−6.01pp outside [4,15]pp band → HARD CAP 1 logic zeroes stake; no bet regardless. confidence_downgrade=True + acute_roster flag (likely Strider thin-2026-data) add secondary caution. F2_xwoba_gap=0.031 supports ATL lineup quality. BvP is meaningfully mixed: Acuña Jr. (44 PA, OWNER, shrunk 0.902) and Albies (48 PA, OWNER, shrunk 0.891) historically punish Alcantara; Olson (28 PA, WEAK_VS, shrunk 0.497) and Smith (23 PA, WEAK_VS, shrunk 0.615) struggle. Net BvP is neutral — no override of the negative-edge ruling. Direction may be sound; stake is correctly zeroed. CONFIRM B-.",
       "lessons_applied": [
-        "[HARD CAP 1] negative-edge GOLD prevention validated 6+ times — CONFIRM regardless of F2 signal",
-        "PQI against pick (Δ=+7.8) + confidence_downgrade + acute_roster = additional non-staking signals"
+        "Negative-edge GOLD → stake=0 regardless of F2 signal or BvP context; HARD CAP 1 logic enforced (5/20 ATL@MIA identical ruling validated)",
+        "Acuña+Albies OWNERs vs Alcantara (44+48 PA, LOTS_OF_HISTORY range) noted as qualitative directional support",
+        "acute_roster + confidence_downgrade stack confirms non-staking posture; 5/15 Strider thin-data lesson applied"
       ]
     },
     "TOR @ NYY": {
-      "model_pick": "NYY",
-      "model_prob": 0.5084,
+      "model_pick": "NYY ML PLATINUM",
+      "model_prob": 0.5499,
       "model_tier": "PLATINUM",
-      "model_grade": "B",
-      "claude_decision": "DOWNGRADE",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
       "claude_pick": "NYY",
-      "claude_tier": "GOLD",
+      "claude_tier": "PLATINUM",
       "claude_confidence": 0.52,
-      "reasoning": "[HARD CAP 1] fires (edge=−10.73pp). Additionally: PLATINUM + f5_full_delta=0.1644 > 0.15 + SP edge unconfirmed = mandatory PLATINUM→GOLD DOWNGRADE per 05-16 rule. Carlos Rodón dominates F5 (NYY at 67.3%) but full-game NYY probability is only 50.8% — pure bullpen-carry thesis. hl_bullpen_xwoba_gap=+0.0015 (neutral) provides zero bullpen-carry support. F2=0.040 + F3=8128.4 fire, but market disagrees heavily. confidence_downgrade=True + bullpen_fatigue. Demoting to GOLD; HARD CAP 1 already zeroes stake.",
+      "reasoning": "HARD CAP 1 demoted pre-cap B+ (score=3) to B- (score=1) on edge=−3.42pp; market has NYY at 58.4% fair_prob vs model's 54.99%. f5_full_delta=0.1228 is BELOW the 0.15 mandatory PLATINUM→GOLD DOWNGRADE threshold, so that rule does not trigger today. F2+F3 fired pre-cap; PQI +8.2 confirms NYY. bullpen_fatigue + confidence_downgrade add caution. hl_bullpen_xwoba_gap=+0.0012 is negligible. Same TOR@NYY matchup on 5/20: TOR won 2-1 with identical PLATINUM+HARD CAP 1 structure — qualitative caution noted but HARD CAP 1 already manages exposure. CONFIRM B-; no stake.",
       "lessons_applied": [
-        "PLATINUM + f5_full_delta > 0.15 + SP edge unconfirmed = mandatory DOWNGRADE to GOLD (05-16 rule, validated twice)",
-        "[HARD CAP 1] negative-edge PLATINUM confirmed — stake zeroed regardless of F2+F3 dual-signal",
-        "Bullpen-carry thesis requires negative hl_bullpen_xwoba_gap; neutral gap (+0.0015) undermines full-game NYY conviction"
+        "HARD CAP 1 negative-edge PLATINUM → score=1 (B-) enforced; market at 58.4% fair_prob overrides F2+F3 pre-cap conviction",
+        "PLATINUM→GOLD mandatory DOWNGRADE threshold is f5_full_delta > 0.15; today's 0.1228 is below threshold — no DOWNGRADE",
+        "Same-matchup-yesterday concern (TOR won 2-1, 5/20) noted but not a formal rule; HARD CAP 1 already zeroes stake"
       ]
     },
     "OAK @ LAA": {
-      "model_pick": "OAK",
+      "model_pick": "OAK ML SKIP",
       "model_prob": 0.5463,
       "model_tier": "SKIP",
       "model_grade": "D",
@@ -98,27 +100,27 @@
       "claude_pick": "OAK",
       "claude_tier": "SKIP",
       "claude_confidence": 0.46,
-      "reasoning": "SKIP D (−3): Soriano (LAA) outpaces Severino by 0.47 xERA (SP-edge against OAK), PQI against OAK (Δ=+8.1). No F-signals. f5_full_delta=0.1685 — LAA dominates F5, OAK needs bullpen late — but hl_bullpen_xwoba_gap=+0.0001 (neutral) undercuts that thesis entirely. Same matchup as 05-18 where LAA won 2-1 on same SP+PQI pattern. 4-condition OVERRIDE not triggered: delta<0.20, confidence_downgrade=False, no stacked flags. Per 05-18: D-grade with both SP-edge and PQI against is directionally unreliable. CONFIRM SKIP.",
+      "reasoning": "D-grade (−3) SKIP with dual opposing signals: SP edge 0.46 xERA AGAINST OAK (Soriano superior to Severino), PQI Δ=+8.0 AGAINST OAK late-game. No F-signals. f5_full_delta=0.1685 flags bullpen-carry dependence but hl_bullpen_xwoba_gap=−0.0015 (negligible) provides no substantive late-game OAK edge. No fair_prob. 4-condition OVERRIDE not triggered: f5_full_delta=0.1685 < 0.20, no stacked flags. OAK@LAA on 5/20 (OAK won 6-5 at LAA) was variance; 5/18 had same SP+PQI-against pattern with LAA winning 2-1. Per D-grade dual-signal-against pattern: OAK direction is structurally suspect. CONFIRM SKIP.",
       "lessons_applied": [
-        "D-grade with SP-edge + PQI both against = directionally unreliable (05-18 OAK@LAA identical pattern, LAA won 2-1)",
-        "4-condition OVERRIDE not triggered: f5_full_delta=0.1685 < 0.20 and no stacked flags",
-        "Neutral bullpen gap (+0.0001) eliminates the only possible late-game OAK advantage"
+        "D-grade with SP-edge-against + PQI-against = directionally unreliable; 5/18 OAK@LAA identical pattern (LAA won 2-1)",
+        "4-condition OVERRIDE not triggered: f5_full_delta=0.1685 < 0.20 and confidence_downgrade=False",
+        "Negligible hl_bullpen_xwoba_gap (−0.0015) eliminates any late-game OAK structural advantage"
       ]
     },
     "COL @ ARI": {
-      "model_pick": "ARI",
-      "model_prob": 0.5375,
+      "model_pick": "ARI ML GOLD",
+      "model_prob": 0.5291,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "GOLD",
       "claude_confidence": 0.50,
-      "reasoning": "[HARD CAP 1] fires: pre-cap B+ (score=3) demoted to B- (score=1) by −12.64pp negative edge. COL dominates F5 strongly (ARI only 42.9% F5 probability — among the most extreme reversals on today's slate), and the market prices ARI poorly. PQI mildly confirms ARI (Δ=+4.7), F3=1669.1 fires, but hl_bullpen_xwoba_gap=+0.0044 shows ARI's HL bullpen is marginally weaker — the bullpen-carry thesis is weakly supported. No stress flags. Market's strong COL lean via −12.64pp edge is the controlling signal. CONFIRM HARD CAP 1.",
+      "reasoning": "HARD CAP 1 demoted pre-cap B+ (score=3) to B- (score=1) on edge=−15.89pp, fair_prob=0.688. Market prices ARI at 68.8% vs model's 52.91% — a 16pp gap representing the largest market-model divergence on today's slate. F3=1889.2 and PQI+4.7 confirm ARI direction, but these pre-cap signals cannot override the market's superior information at this magnitude. hl_bullpen_xwoba_gap=+0.0048 (ARI pick-side bullpen negligibly worse) adds no additional concern at this gap level. Game is at Chase Field (not Coors), so park inflation irrelevant. CONFIRM HARD CAP 1; zero stake.",
       "lessons_applied": [
-        "[HARD CAP 1] negative-edge GOLD prevention: pre-cap B+ correctly demoted to B− (score 3→1)",
-        "COL F5 dominance (57.1% F5) + neutral/negative bullpen gap means ARI's full-game thesis is structurally thin",
-        "PQI confirms ARI (+4.7) and F3 fire are noted but do not override the market's information edge at −12.64pp"
+        "HARD CAP 1 demotes pre-cap B+ to B- on extreme negative edge (−15.89pp); market at 68.8% vs model's 52.9% is a 16pp information gap",
+        "F3+PQI pre-cap confirmations are noted but subordinate to market pricing at this gap magnitude (5/20 LAD@SD identical reasoning validated)",
+        "Chase Field (not Coors) — no park-inflation variance to discount the HARD CAP 1 ruling"
       ]
     }
   }
