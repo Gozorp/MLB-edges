@@ -726,6 +726,11 @@ def _build_game_row(*, sc: pd.DataFrame, game_pk: int,
         #      higher pitch count.
         "home_sp_n_pitches":     float(home_sp.get("sp_n_pitches") or 0.0),
         "away_sp_n_pitches":     float(away_sp.get("sp_n_pitches") or 0.0),
+        # Per-SP K rate (shrunk to league average for thin samples).  Surfaced
+        # to the diag CSV so the dashboard can compute pitcher-K prop
+        # probabilities client-side (Top Probable Outcomes Phase 1, 2026-05-20).
+        "home_sp_k_pct":         float(home_sp.get("sp_k_pct") or 22.0),
+        "away_sp_k_pct":         float(away_sp.get("sp_k_pct") or 22.0),
         "sp_sample_reliability": min(
             min(float(home_sp.get("sp_n_pitches") or 0.0),
                 float(away_sp.get("sp_n_pitches") or 0.0)) / 1500.0,

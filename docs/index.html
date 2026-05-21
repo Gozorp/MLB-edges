@@ -508,6 +508,7 @@
     <div id="queryResult"></div>
   </div>
 
+  <div id="top-outcomes"></div>
   <div id="slate"></div>
   <div id="parlay"></div>
 
@@ -2939,6 +2940,239 @@ function formatNarrative(r, gradeInfo, result) {
   return html;
 }
 
+// =============================================================================
+// Top Probable Outcomes section (Phase 1, 2026-05-20)
+// -----------------------------------------------------------------------------
+// Ranks high-probability outcomes across three prop categories:
+//   1. Game ML picks   — ranked by edge_pp (model - market), positive only
+//   2. O/U Totals      — ranked by absolute edge in our_prob vs book_fair
+//   3. Pitcher Ks      — ranked by expected_Ks (descending), no market line
+//
+// HR props deferred to Phase 1.5 (requires per-batter season HR/PA which
+// isn't currently in the diag CSV; on-demand statsapi fetch is too slow
+// for slate-wide render).
+//
+// All probabilities are computed CLIENT-SIDE from existing diag CSV +
+// totals CSV columns.  No new model output required.
+// =============================================================================
+
+// Normal-distribution CDF approximation (Abramowitz & Stegun 26.2.17).
+// Used to compute P(Ks >= threshold) under Normal(mu, sigma^2) ≈ Poisson(lambda).
+function _normalCDF(z) {
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const d = 0.3989423 * Math.exp(-z * z / 2);
+  const cdf = 1 - d * t * (0.3193815 + t * (-0.3565638 + t *
+    (1.781478 + t * (-1.821256 + t * 1.330274))));
+  return z >= 0 ? cdf : 1 - cdf;
+}
+
+// Probability the pitcher records >= threshold strikeouts in 6 IP.
+// Assumes ~26 batters faced for 6 IP (league average).  Returns prob in [0, 1].
+function _kPropProbability(spKPct, threshold) {
+  if (!isFinite(spKPct) || spKPct <= 0) return null;
+  const expectedBF = 26;
+  const lambda = (spKPct / 100) * expectedBF;
+  const sigma = Math.sqrt(lambda);
+  if (sigma <= 0) return null;
+  // Continuity correction: P(K >= threshold) ~ P(Z >= (threshold - 0.5 - mu)/sigma)
+  const z = (threshold - 0.5 - lambda) / sigma;
+  return 1 - _normalCDF(z);
+}
+
+// Rank game ML picks by edge_vs_market, positive edges only.
+function _topGameMLPicks(rows) {
+  return rows
+    .map(r => {
+      const edge = parseFloat(r.edge_pp);
+      const prob = parseFloat(r.pick_prob);
+      const grade = (r.grade || "").toString().trim();
+      // Filter out non-actionable rows
+      if (!isFinite(edge) || !isFinite(prob)) return null;
+      if (edge <= 0) return null;
+      if ((r.tier || "").includes("PENDING_SP_DATA")) return null;
+      return {
+        pick: r.pick,
+        matchup: r.matchup,
+        prob: prob,
+        edge_pp: edge,
+        tier: r.tier,
+        grade: grade,
+        signals: r.signals || "",
+        reasons: r.grade_reasons || "",
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.edge_pp - a.edge_pp);
+}
+
+// Rank totals (over/under) by edge vs book-fair probability.
+function _topTotals(totalsByMatchup) {
+  if (!totalsByMatchup) return [];
+  return Object.values(totalsByMatchup)
+    .map(t => {
+      const ourProb = parseFloat(t.our_prob);
+      const bookFair = parseFloat(t.book_fair);
+      if (!isFinite(ourProb)) return null;
+      const edgePp = isFinite(bookFair) ? (ourProb - bookFair) * 100 : null;
+      const total = parseFloat(t.total_line);
+      const pred = parseFloat(t.pred_runs);
+      const side = (t.side || "").toString().toUpperCase();
+      const homeTeam = (t.home_team || "").toString();
+      const awayTeam = (t.away_team || "").toString();
+      if (!side || !isFinite(total)) return null;
+      return {
+        matchup: `${awayTeam} @ ${homeTeam}`,
+        side: side,
+        line: total,
+        prob: ourProb,
+        edge_pp: edgePp,
+        pred_runs: pred,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => Math.abs(b.edge_pp || 0) - Math.abs(a.edge_pp || 0));
+}
+
+// Rank pitcher K props by expected strikeouts (descending).
+// No market line required — pure model-conviction ranking.
+function _topPitcherKs(rows) {
+  const out = [];
+  for (const r of rows) {
+    const homeK = parseFloat(r.home_sp_k_pct);
+    const awayK = parseFloat(r.away_sp_k_pct);
+    const homeName = (r.home_sp_name || "").trim();
+    const awayName = (r.away_sp_name || "").trim();
+    const matchup = r.matchup || "";
+    const isPending = (r.tier || "").includes("PENDING_SP_DATA");
+    if (isPending) continue;
+    if (isFinite(homeK) && homeName) {
+      const expK = (homeK / 100) * 26;
+      out.push({
+        name: homeName, team: "home", matchup, expected_K: expK,
+        k_pct: homeK,
+        p_over_5: _kPropProbability(homeK, 5),
+        p_over_6: _kPropProbability(homeK, 6),
+        p_over_7: _kPropProbability(homeK, 7),
+      });
+    }
+    if (isFinite(awayK) && awayName) {
+      const expK = (awayK / 100) * 26;
+      out.push({
+        name: awayName, team: "away", matchup, expected_K: expK,
+        k_pct: awayK,
+        p_over_5: _kPropProbability(awayK, 5),
+        p_over_6: _kPropProbability(awayK, 6),
+        p_over_7: _kPropProbability(awayK, 7),
+      });
+    }
+  }
+  return out.sort((a, b) => b.expected_K - a.expected_K);
+}
+
+// Template narrative for each prop type.  Pulls from existing signals + reasons.
+function _narrateGameML(item) {
+  const grade = item.grade || "—";
+  const signals = (item.signals || "").trim();
+  let s = `<strong>${item.pick}</strong> over <strong>${item.matchup}</strong> at `;
+  s += `<strong>${(item.prob*100).toFixed(1)}%</strong> model probability `;
+  s += `(<strong>+${item.edge_pp.toFixed(1)}pp</strong> edge vs market). `;
+  s += `Final grade: <strong>${grade}</strong>.  `;
+  if (signals) {
+    s += `Active signals: <span class="muted">${signals}</span>.`;
+  }
+  return s;
+}
+function _narrateTotal(item) {
+  let s = `<strong>${item.side} ${item.line.toFixed(1)}</strong> on <strong>${item.matchup}</strong> at `;
+  s += `<strong>${(item.prob*100).toFixed(1)}%</strong> model probability`;
+  if (isFinite(item.edge_pp)) {
+    const sign = item.edge_pp >= 0 ? "+" : "";
+    s += ` (<strong>${sign}${item.edge_pp.toFixed(1)}pp</strong> edge vs book-fair). `;
+  } else {
+    s += `. `;
+  }
+  if (isFinite(item.pred_runs)) {
+    s += `Model projects <strong>${item.pred_runs.toFixed(1)} total runs</strong> vs line of ${item.line.toFixed(1)}.`;
+  }
+  return s;
+}
+function _narrateKProp(item) {
+  let s = `<strong>${item.name}</strong> (${item.matchup}) projects `;
+  s += `<strong>${item.expected_K.toFixed(1)} expected K</strong> `;
+  s += `at a ${item.k_pct.toFixed(1)}% K rate over ~26 BF in 6 IP. `;
+  if (item.p_over_5 !== null) {
+    s += `<br>P(K ≥ 5) = <strong>${(item.p_over_5*100).toFixed(0)}%</strong> · `;
+    s += `P(K ≥ 6) = <strong>${(item.p_over_6*100).toFixed(0)}%</strong> · `;
+    s += `P(K ≥ 7) = <strong>${(item.p_over_7*100).toFixed(0)}%</strong>`;
+  }
+  return s;
+}
+
+function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload) {
+  const probeId = `prop-deep-${propType}-${idx}`;
+  const stub = `<div id="${probeId}" class="muted" style="margin-top:0.4rem;font-size:0.86rem;display:none;">` +
+               `Deep analysis (Claude expand) — coming in Phase 4. ` +
+               `For now, see the slate row detail panel for in-depth model reasoning.` +
+               `</div>`;
+  return `<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">` +
+         `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;">` +
+         `<div><strong style="color:var(--accent);">#${idx + 1}</strong> ${title}</div>` +
+         `<button class="lt-btn" style="font-size:0.78rem;padding:0.2rem 0.5rem;" ` +
+         `onclick="document.getElementById('${probeId}').style.display = ` +
+         `document.getElementById('${probeId}').style.display === 'none' ? 'block' : 'none';">` +
+         `Deep analysis ▼</button>` +
+         `</div>` +
+         `<div style="font-size:0.88rem;color:var(--muted);margin-top:0.25rem;">${narrativeHTML}</div>` +
+         stub +
+         `</div>`;
+}
+
+function renderTopProbableOutcomes(rows, totalsByMatchup) {
+  const gameMLs = _topGameMLPicks(rows).slice(0, 5);
+  const totals = _topTotals(totalsByMatchup).slice(0, 5);
+  const ks = _topPitcherKs(rows).slice(0, 5);
+
+  const empty = (gameMLs.length + totals.length + ks.length) === 0;
+  if (empty) {
+    return `<div class="card"><h2>Top Probable Outcomes</h2>` +
+           `<div class="muted">No actionable outcomes for this slate yet — ` +
+           `check back once lineups are confirmed.</div></div>`;
+  }
+
+  let html = `<div class="card"><h2>Top Probable Outcomes ` +
+             `<span class="muted" style="font-size:0.8rem;font-weight:normal;">— ranked by model conviction across prop categories</span></h2>`;
+
+  if (gameMLs.length) {
+    html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs market)</span></h3>`;
+    gameMLs.forEach((item, i) => {
+      const title = `${item.pick} ML over ${item.matchup}`;
+      html += _propCard(i, title, "", _narrateGameML(item), "ml", item);
+    });
+  }
+
+  if (totals.length) {
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">O/U Totals <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs book-fair)</span></h3>`;
+    totals.forEach((item, i) => {
+      const title = `${item.side} ${item.line.toFixed(1)} on ${item.matchup}`;
+      html += _propCard(i, title, "", _narrateTotal(item), "ou", item);
+    });
+  }
+
+  if (ks.length) {
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Pitcher Strikeouts <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by expected Ks; no market line)</span></h3>`;
+    ks.forEach((item, i) => {
+      const title = `${item.name} — ${item.expected_K.toFixed(1)} expected K`;
+      html += _propCard(i, title, "", _narrateKProp(item), "k", item);
+    });
+  }
+
+  html += `<div class="muted" style="font-size:0.78rem;margin-top:0.8rem;font-style:italic;">` +
+          `ⓘ HR-prop ranking coming in Phase 1.5 once per-batter season HR/PA is in the diag CSV.` +
+          `</div></div>`;
+
+  return html;
+}
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -3509,9 +3743,13 @@ async function loadSlate(date, { bust = false } = {}) {
       ? renderSlate(rows, gradeMap, results)
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
     const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
+    const topOutcomesHtml = rows.length
+      ? renderTopProbableOutcomes(rows, window.__totalsByMatchup)
+      : "";
 
     document.getElementById("slate").innerHTML = slateHtml;
     document.getElementById("parlay").innerHTML = parlayHtml;
+    document.getElementById("top-outcomes").innerHTML = topOutcomesHtml;
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"

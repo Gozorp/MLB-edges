@@ -493,6 +493,19 @@ def build_diagnostic_table(games: pd.DataFrame,
             "pen_strain_pick_side": (
                 round(float(r.get("pen_strain_pick_side")), 4)
                 if pd.notna(r.get("pen_strain_pick_side")) else None),
+            # ---- Pitcher-K-prop scaffolding (Top Probable Outcomes Phase 1) ----
+            # SP K rates (shrunk %), SP names, SP IDs — surfaced so the
+            # dashboard can compute pitcher-K prop probabilities client-side
+            # and label each prop with the pitcher's name.  K rate flows
+            # from point_in_time.pitcher_as_of via build_pipeline.
+            "home_sp_k_pct": (round(float(r.get("home_sp_k_pct")), 2)
+                              if pd.notna(r.get("home_sp_k_pct")) else None),
+            "away_sp_k_pct": (round(float(r.get("away_sp_k_pct")), 2)
+                              if pd.notna(r.get("away_sp_k_pct")) else None),
+            "home_sp_name": (str(r.get("home_sp_name")).strip()
+                             if r.get("home_sp_name") else ""),
+            "away_sp_name": (str(r.get("away_sp_name")).strip()
+                             if r.get("away_sp_name") else ""),
             "tier": conv.tier,
             "signals": ", ".join(conv.signals_fired),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",
