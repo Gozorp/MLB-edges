@@ -253,6 +253,77 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
         joined[stage2.feature_cols].values
     )
 
+    # ----------------------------------------------------------------------
+    # Roster-adjusted totals (SHADOW MODE, 2026-05-20)
+    # ----------------------------------------------------------------------
+    # Compute pred_runs_bvp_adjusted = total_runs_pred + total_runs_delta
+    # where total_runs_delta is derived from lineup-vs-SP BvP aggregates.
+    # NOT used for production O/U pick selection in this commit — emitted
+    # alongside total_runs_pred so the postgame cron can compare RMSE.
+    # Decision gate: ship as production O/U pick after 7+ days of postgame
+    # data shows materially better RMSE (>= 5%% reduction) vs baseline.
+    # Per Rule 6 best-effort: any failure logs warning + leaves the baseline
+    # prediction unchanged; the original O/U pipeline keeps running.
+    joined["pred_runs_bvp_adjusted"] = joined["total_runs_pred"]
+    joined["total_runs_delta"] = 0.0
+    joined["home_runs_delta"] = 0.0
+    joined["away_runs_delta"] = 0.0
+    joined["home_bvp_n_pa"] = 0.0
+    joined["away_bvp_n_pa"] = 0.0
+    joined["home_bvp_ops_shrunk"] = 0.720
+    joined["away_bvp_ops_shrunk"] = 0.720
+    try:
+        from .live_lineups import fetch_slate_meta
+        from .totals_roster_adjustment import compute_roster_adjustment
+        lineup_meta = fetch_slate_meta(target_date.isoformat())
+        meta_map = {}
+        for _gm in (lineup_meta or []):
+            _key = (getattr(_gm, "away_abbr", ""), getattr(_gm, "home_abbr", ""))
+            if _key[0] and _key[1]:
+                meta_map[_key] = _gm
+        log.info("[totals_roster] fetched %d lineup-meta entries",
+                 len(meta_map))
+
+        _n_adj = 0
+        for idx, _r in joined.iterrows():
+            try:
+                key = (_r["away_team"], _r["home_team"])
+                meta = meta_map.get(key)
+                if not meta:
+                    continue
+                home_lineup = [int(s.batter_id) for s in
+                               (getattr(meta, "home_lineup", []) or [])
+                               if getattr(s, "batter_id", None)]
+                away_lineup = [int(s.batter_id) for s in
+                               (getattr(meta, "away_lineup", []) or [])
+                               if getattr(s, "batter_id", None)]
+                home_sp = getattr(meta, "home_sp_id", None)
+                away_sp = getattr(meta, "away_sp_id", None)
+                if not (home_lineup or away_lineup) or not (home_sp or away_sp):
+                    continue
+                adj = compute_roster_adjustment(
+                    home_lineup_ids=home_lineup,
+                    away_lineup_ids=away_lineup,
+                    home_sp_id=home_sp,
+                    away_sp_id=away_sp,
+                )
+                joined.at[idx, "home_runs_delta"]     = adj["home_runs_delta"]
+                joined.at[idx, "away_runs_delta"]     = adj["away_runs_delta"]
+                joined.at[idx, "total_runs_delta"]    = adj["total_runs_delta"]
+                joined.at[idx, "home_bvp_n_pa"]       = adj["home_bvp_n_pa"]
+                joined.at[idx, "away_bvp_n_pa"]       = adj["away_bvp_n_pa"]
+                joined.at[idx, "home_bvp_ops_shrunk"] = adj["home_bvp_ops_shrunk"]
+                joined.at[idx, "away_bvp_ops_shrunk"] = adj["away_bvp_ops_shrunk"]
+                joined.at[idx, "pred_runs_bvp_adjusted"] = round(
+                    float(_r["total_runs_pred"]) + adj["total_runs_delta"], 3)
+                _n_adj += 1
+            except Exception as _e_inner:
+                log.warning("[totals_roster] adjustment failed for %s @ %s: %s",
+                            _r.get("away_team"), _r.get("home_team"), _e_inner)
+        log.info("[totals_roster] adjusted %d/%d games", _n_adj, len(joined))
+    except Exception as _e:
+        log.warning("[totals_roster] shadow adjustment skipped: %s", _e)
+
     # Generate picks. Slate is ≤15 games/day so iterrows is acceptable here;
     # the hot paths are all in the backtest simulator, which is vectorized.
     picks = []
@@ -312,6 +383,17 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
             "our_prob":      round(our_prob, 4),
             "book_fair":     round(book_fair, 4),
             "stake_units":   round(stake_units, 2),
+            # Roster-adjusted shadow columns (2026-05-20). Read by dashboard
+            # for display + postgame cron for RMSE comparison. NOT used to
+            # select the side/our_prob/stake_units in this commit.
+            "pred_runs_bvp_adjusted": round(float(r.get("pred_runs_bvp_adjusted", pred)), 2),
+            "total_runs_delta":       round(float(r.get("total_runs_delta", 0)), 3),
+            "home_runs_delta":        round(float(r.get("home_runs_delta", 0)), 3),
+            "away_runs_delta":        round(float(r.get("away_runs_delta", 0)), 3),
+            "home_bvp_n_pa":          float(r.get("home_bvp_n_pa", 0)),
+            "away_bvp_n_pa":          float(r.get("away_bvp_n_pa", 0)),
+            "home_bvp_ops_shrunk":    round(float(r.get("home_bvp_ops_shrunk", 0.72)), 4),
+            "away_bvp_ops_shrunk":    round(float(r.get("away_bvp_ops_shrunk", 0.72)), 4),
         })
 
     if not picks:
