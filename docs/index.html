@@ -3164,6 +3164,24 @@ async function _propDeepAnalysisOnClick(probeId) {
     return;
   }
   container.dataset.loaded = "1";
+  // Probe Claude health on first call (cache thereafter) so we don't show
+  // misleading "could not load slate context" errors when the Worker is
+  // disabled.  Matches the gracefully-hide pattern that _initAskClaude uses.
+  if (window.__claudeHealth === undefined) {
+    try {
+      const hr = await fetch("/api/claude/health");
+      window.__claudeHealth = hr.ok ? await hr.json() : {enabled: false};
+    } catch (_) {
+      window.__claudeHealth = {enabled: false};
+    }
+  }
+  if (!window.__claudeHealth || !window.__claudeHealth.enabled) {
+    container.innerHTML = `<span class="muted">Claude deep-analysis is currently disabled. ` +
+      `Click the matching row in the Slate table below for in-depth model reasoning, ` +
+      `signal breakdown, and grade derivation — all generated client-side without ` +
+      `requiring the Claude API.</span>`;
+    return;
+  }
   container.innerHTML = `<span class="muted">Asking Claude for deep analysis…</span>`;
   const prompt = _propBuildClaudePrompt(meta.propType, meta.payload);
   const date = (window.__slate && window.__slate.date) || null;
