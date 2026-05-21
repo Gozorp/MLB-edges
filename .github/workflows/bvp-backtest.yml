@@ -1,0 +1,59 @@
+# =============================================================================
+# bvp-backtest.yml
+# -----------------------------------------------------------------------------
+# Weekly postgame comparison of the BvP-adjusted totals shadow vs the
+# production pred_runs.  Implements the Rule 10 promotion gate: shadow ->
+# production O/U pick only after 7+ days of postgame data show >= 5% RMSE
+# improvement.
+#
+# Why weekly: 7 days = ~70 graded games once shadow columns are populated
+# (Task 1 surfaced them in picks_totals_*.csv on 2026-05-21).  Re-running
+# the report mid-week churns the file without changing the verdict.
+#
+# Trigger:
+#   - Mondays 05:00 UTC (after Sunday's full slate has all final scores).
+#   - Manual via "Run workflow" any time.
+#
+# Pure stdlib + urllib — no pip install step needed.
+# =============================================================================
+name: BvP totals backtest
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"   # Monday 05:00 UTC = 10 PM PT Sunday / 1 AM ET Monday
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run BvP totals backtest (pure stdlib)
+        run: |
+          REPORT_DATE=$(date -u +%Y-%m-%d)
+          OUT_PATH="experiments/bvp_backtest_${REPORT_DATE}.md"
+          mkdir -p experiments
+          python tools/backtest_bvp_totals.py --out "$OUT_PATH"
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments/bvp_backtest_*.md
+          if git diff --cached --quiet; then
+            echo "no changes — verdict and ledger unchanged from last run"
+          else
+            git commit -m "bvp-backtest: weekly comparison ($(date -u +%Y-%m-%d))"
+            git push
+          fi
