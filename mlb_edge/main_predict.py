@@ -920,6 +920,37 @@ def run(slate_date: date,
                 matchup_to_pk = {}
                 matchup_to_sp_hand = {}
                 matchup_to_sp_ids = {}
+                # Source SP IDs from lineup_meta — preds DataFrame does NOT
+                # carry away_sp_id/home_sp_id as columns (build_pipeline takes
+                # them as function parameters but doesn't emit them).
+                # Bug fix 2026-05-20: prior inline lookup silently failed.
+                # Per-matchup try/except — Rule 6 says "best-effort per row";
+                # outer-wrap would let a single int() raise abort the whole
+                # loop, losing all subsequent matchups.
+                from .stadiums import normalize_team as _nt3
+                _lineups = ctx.get("lineups") or []
+                _h, _a = "", ""  # initialise so the except-handler can log them
+                for _meta in _lineups:
+                    try:
+                        _h = _nt3(getattr(_meta, "home_abbr", "") or "")
+                        _a = _nt3(getattr(_meta, "away_abbr", "") or "")
+                        if not _h or not _a:
+                            continue
+                        _mk_sp = f"{_a} @ {_h}"
+                        _hsp = getattr(_meta, "home_sp_id", None)
+                        _asp = getattr(_meta, "away_sp_id", None)
+                        if _hsp or _asp:
+                            matchup_to_sp_ids[_mk_sp] = {
+                                "away_sp_id": (int(_asp) if _asp else None),
+                                "home_sp_id": (int(_hsp) if _hsp else None),
+                            }
+                    except Exception as _e:
+                        log.warning(
+                            "BvP SP-ID lookup failed for matchup %s @ %s: %s",
+                            _a, _h, _e)
+                log.info("BvP SP-ID lookup built from lineup_meta: %d matchups",
+                         len(matchup_to_sp_ids))
+
                 try:
                     from . import platoon_splits as _ps
                     if "game_id" in preds.columns:
@@ -939,17 +970,6 @@ def run(slate_date: date,
                                 matchup_to_sp_hand[mk] = {
                                     "away_sp_hand": sp_a,
                                     "home_sp_hand": sp_h,
-                                }
-                            # SP IDs for BvP-brain (Rule 6 — best-effort,
-                            # missing IDs just yield empty BvP payloads).
-                            sp_a_id = gr.get("away_sp_id")
-                            sp_h_id = gr.get("home_sp_id")
-                            if sp_a_id or sp_h_id:
-                                matchup_to_sp_ids[mk] = {
-                                    "away_sp_id": (int(sp_a_id) if sp_a_id
-                                                   else None),
-                                    "home_sp_id": (int(sp_h_id) if sp_h_id
-                                                   else None),
                                 }
                     if matchup_to_pk:
                         _ps.attach_top_5_to_diag(
