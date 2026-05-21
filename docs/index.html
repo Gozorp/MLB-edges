@@ -2999,6 +2999,7 @@ function _topGameMLPicks(rows) {
         grade: grade,
         signals: r.signals || "",
         reasons: r.grade_reasons || "",
+        _row: r,  // full diag row for deep-analysis lookup
       };
     })
     .filter(Boolean)
@@ -3006,7 +3007,7 @@ function _topGameMLPicks(rows) {
 }
 
 // Rank totals (over/under) by edge vs book-fair probability.
-function _topTotals(totalsByMatchup) {
+function _topTotals(totalsByMatchup, slateRows) {
   if (!totalsByMatchup) return [];
   return Object.values(totalsByMatchup)
     .map(t => {
@@ -3020,13 +3021,17 @@ function _topTotals(totalsByMatchup) {
       const homeTeam = (t.home_team || "").toString();
       const awayTeam = (t.away_team || "").toString();
       if (!side || !isFinite(total)) return null;
+      const matchupKey = `${awayTeam} @ ${homeTeam}`;
+      const diagRow = (slateRows || []).find(rr => (rr.matchup || "").trim() === matchupKey) || null;
       return {
-        matchup: `${awayTeam} @ ${homeTeam}`,
+        matchup: matchupKey,
         side: side,
         line: total,
         prob: ourProb,
         edge_pp: edgePp,
         pred_runs: pred,
+        _row: diagRow,
+        _totalsRow: t,
       };
     })
     .filter(Boolean)
@@ -3053,6 +3058,7 @@ function _topPitcherKs(rows) {
         p_over_5: _kPropProbability(homeK, 5),
         p_over_6: _kPropProbability(homeK, 6),
         p_over_7: _kPropProbability(homeK, 7),
+        _row: r,
       });
     }
     if (isFinite(awayK) && awayName) {
@@ -3063,6 +3069,7 @@ function _topPitcherKs(rows) {
         p_over_5: _kPropProbability(awayK, 5),
         p_over_6: _kPropProbability(awayK, 6),
         p_over_7: _kPropProbability(awayK, 7),
+        _row: r,
       });
     }
   }
@@ -3146,9 +3153,301 @@ function _propBuildClaudePrompt(propType, payload) {
   return `Deep analysis on this prop: ${JSON.stringify(payload)}.`;
 }
 
-// Per-prop "Deep analysis" button handler.  Calls /api/claude/ask with a
-// structured prompt formatted for the prop type.  Caches the response per
-// probeId so re-clicks just toggle visibility.
+// =============================================================================
+// Deterministic Deep Analysis — synthesizes diag-CSV signals into rich
+// multi-paragraph narratives WITHOUT requiring the Claude Worker.  Always
+// available even when /api/claude/health.enabled=false.
+// =============================================================================
+
+function _safeJsonParse(s) {
+  if (typeof s !== "string" || !s.trim() || s.trim() === "[]") return [];
+  try { return JSON.parse(s) || []; } catch (_) { return []; }
+}
+
+function _capRulesFromReasons(reasons) {
+  if (!reasons) return [];
+  const out = [];
+  const re = /\[(HARD CAP \d|SOFT CAP \d+(?:\.\d+)?|PRE_CAP_SCORE=-?\d+)\]([^\[]*)/g;
+  let m;
+  while ((m = re.exec(reasons)) !== null) {
+    out.push({tag: m[1].trim(), detail: (m[2] || "").trim()});
+  }
+  return out;
+}
+
+function _parseSignalsList(signals) {
+  if (!signals) return [];
+  return String(signals).split("·").map(s => s.trim()).filter(Boolean);
+}
+
+function _fmtPct(v, digits) {
+  const f = parseFloat(v);
+  return isFinite(f) ? (f * 100).toFixed(digits || 1) + "%" : "—";
+}
+function _fmtPp(v) {
+  const f = parseFloat(v);
+  if (!isFinite(f)) return "—";
+  return (f >= 0 ? "+" : "") + f.toFixed(1) + "pp";
+}
+function _fmtNum(v, digits) {
+  const f = parseFloat(v);
+  return isFinite(f) ? f.toFixed(digits || 2) : "—";
+}
+
+function _summarizeLineupJson(jsonStr, label) {
+  const arr = _safeJsonParse(jsonStr);
+  if (!arr.length) return "";
+  const opsVals = arr.map(x => parseFloat(x.vs_today_SP_OPS)).filter(isFinite);
+  const avgOps = opsVals.length ? opsVals.reduce((a,b)=>a+b, 0) / opsVals.length : null;
+  const top3 = arr.slice(0, 3).map(x => `${x.name} (${_fmtNum(x.vs_today_SP_OPS, 3)} vs today's SP, ${x.vs_today_SP_PA || 0} PA)`).join("; ");
+  const samp = arr.filter(x => (x.sample_flag || "") === "LOW_SAMPLE").length;
+  let s = `${label} top-3: ${top3 || "(no lineup posted)"}.`;
+  if (avgOps !== null) s += ` Average vs-SP OPS: <strong>${avgOps.toFixed(3)}</strong>.`;
+  if (samp > 0) s += ` <span class="muted">${samp} batter(s) flagged LOW_SAMPLE.</span>`;
+  return s;
+}
+
+function _summarizeBvpJson(jsonStr, label) {
+  const arr = _safeJsonParse(jsonStr);
+  if (!arr.length) return "";
+  const owners = arr.filter(x => (x.sample_flag || "") === "OWNER");
+  const weakvs = arr.filter(x => (x.sample_flag || "") === "WEAK_VS");
+  const meaningful = arr.filter(x => ["MEANINGFUL", "LOTS_OF_HISTORY"].includes(x.sample_flag || ""));
+  if (!owners.length && !weakvs.length && !meaningful.length) {
+    return `${label} BvP vs today's SP: <span class="muted">no batter has ≥10 career PA (all SMALL_SAMPLE or NO_DATA).</span>`;
+  }
+  let s = `${label} BvP vs today's SP: `;
+  const parts = [];
+  if (owners.length) parts.push(`<strong>${owners.length} OWNER(s)</strong> — ${owners.map(o => `${o.name} (${o.vs_today_SP_PA} PA, ${_fmtNum(o.vs_today_SP_OPS, 3)} OPS)`).join("; ")}`);
+  if (weakvs.length) parts.push(`<strong>${weakvs.length} WEAK_VS</strong> — ${weakvs.map(w => `${w.name} (${w.vs_today_SP_PA} PA, ${_fmtNum(w.vs_today_SP_OPS, 3)} OPS)`).join("; ")}`);
+  if (meaningful.length) parts.push(`${meaningful.length} MEANINGFUL`);
+  return s + parts.join("; ") + ".";
+}
+
+// === Game ML deep narrative ===
+function _deepNarrativeML(item) {
+  const r = item._row || {};
+  const pick = item.pick;
+  const matchup = item.matchup;
+  const prob = item.prob;
+  const edgePp = item.edge_pp;
+  const grade = item.grade || "—";
+  const f5 = parseFloat(r.f5_prob);
+  const full = parseFloat(r.full_prob);
+  const fair = parseFloat(r.fair_prob);
+  const homeSp = (r.home_sp_name || "").trim();
+  const awaySp = (r.away_sp_name || "").trim();
+  const sigList = _parseSignalsList(r.signals);
+  const reasons = _capRulesFromReasons(r.grade_reasons || "");
+  const stress = (r.stress_warnings || "").trim();
+  const hlBp = parseFloat(r.hl_bullpen_xwoba_gap);
+  const penStrain = parseFloat(r.pen_strain_pick_side);
+  const bpMin = parseFloat(r.bp_min);
+  const pqi = parseFloat(r.pqi_diff);
+  const tier = (r.tier || "").trim();
+
+  let html = "";
+  // Lead
+  html += `<p><strong>${pick} ML over ${matchup}</strong> — model says <strong>${_fmtPct(prob)}</strong>, market implies <strong>${_fmtPct(fair)}</strong>, giving an edge of <strong>${_fmtPp(edgePp)}</strong>. Final grade <strong>${grade}</strong> at internal tier <strong>${tier || "—"}</strong>.</p>`;
+
+  // Stage 1/2 + pitcher matchup
+  let stage = `<p><strong>Pitching matchup.</strong> `;
+  stage += `<span class="muted">${awaySp || "(away SP TBA)"} vs ${homeSp || "(home SP TBA)"}.</span> `;
+  if (isFinite(f5) && isFinite(full)) {
+    const f5Tilt = f5 >= 0.5 ? "favors the home side" : "favors the away side";
+    const fullTilt = full >= 0.5 ? "favors the home side" : "favors the away side";
+    const agree = (f5 >= 0.5) === (full >= 0.5);
+    stage += `Stage 1 (first-5) at ${_fmtPct(f5)} ${f5Tilt}; Stage 2 (full game) at ${_fmtPct(full)} ${fullTilt}. `;
+    stage += agree ? `<strong>Stages agree</strong> on direction.` : `<strong>Stages disagree</strong> — bullpen / late-leverage carries the deciding signal.`;
+  }
+  html += stage + `</p>`;
+
+  // Signals
+  if (sigList.length) {
+    html += `<p><strong>Active signals</strong> (${sigList.length}): ${sigList.map(s => `<code>${s.replace(/</g,'&lt;')}</code>`).join(", ")}.</p>`;
+  }
+
+  // PQI + team-quality context
+  if (isFinite(pqi)) {
+    const pqiTilt = pqi > 0 ? "with the pick" : "against the pick";
+    html += `<p><strong>PQI (pitching-quality index) Δ:</strong> ${_fmtNum(pqi, 1)} <span class="muted">(${pqiTilt})</span>. `;
+    html += `Bullpen-quality gap (pick vs opponent, xwOBA-allowed): <strong>${_fmtNum(hlBp, 4)}</strong> ` +
+            `<span class="muted">(${isFinite(hlBp) && hlBp < 0 ? "pick has better bullpen" : "pick has worse bullpen"}).</span></p>`;
+  }
+
+  // Lineup vs SP (platoon JSON)
+  const platoonAway = _summarizeLineupJson(r.away_top_5_batters_json, "Away");
+  const platoonHome = _summarizeLineupJson(r.home_top_5_batters_json, "Home");
+  if (platoonAway || platoonHome) {
+    html += `<p><strong>Lineup context (platoon splits).</strong></p><ul>`;
+    if (platoonAway) html += `<li>${platoonAway}</li>`;
+    if (platoonHome) html += `<li>${platoonHome}</li>`;
+    html += `</ul>`;
+  }
+
+  // BvP context
+  const bvpAway = _summarizeBvpJson(r.away_bvp_top5_json, "Away");
+  const bvpHome = _summarizeBvpJson(r.home_bvp_top5_json, "Home");
+  if (bvpAway || bvpHome) {
+    html += `<p><strong>BvP (career vs today's SP).</strong></p><ul>`;
+    if (bvpAway) html += `<li>${bvpAway}</li>`;
+    if (bvpHome) html += `<li>${bvpHome}</li>`;
+    html += `</ul>`;
+  }
+
+  // Cap rules + stress
+  if (reasons.length) {
+    html += `<p><strong>Rule layer firings:</strong> ${reasons.map(c => `<span style="background:rgba(255,255,255,0.06);padding:0.05rem 0.3rem;border-radius:3px;font-size:0.82rem;"><strong>${c.tag}</strong></span>`).join(" ")}</p>`;
+  }
+  if (stress) {
+    html += `<p><span class="flag">Stress warnings:</span> <span class="muted">${stress}</span></p>`;
+  }
+
+  // Verdict
+  let verdict;
+  if (["A","A-"].includes(grade)) verdict = `<span class="flag">High conviction.</span> Multiple confirming layers; treat as anchor candidate.`;
+  else if (["B","B+","B-"].includes(grade)) verdict = `<span class="flag">Moderate conviction.</span> Some signals present but not a parlay-anchor.`;
+  else if (grade === "C") verdict = `<span class="flag-red">Skip.</span> Cap layer or low conviction — do not stake.`;
+  else if (grade === "D") verdict = `<span class="flag-red">Avoid.</span> No confluence, market disagreement, or stress warnings active.`;
+  else verdict = `Tier not graded yet (PENDING_SP_DATA or equivalent).`;
+  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
+  return html;
+}
+
+// === O/U Totals deep narrative ===
+function _deepNarrativeOU(item) {
+  const r = item._row || {};
+  const t = item._totalsRow || {};
+  const matchup = item.matchup;
+  const line = item.line;
+  const side = item.side;
+  const prob = item.prob;
+  const pred = parseFloat(item.pred_runs);
+  const edge = item.edge_pp;
+  const stake = parseFloat(t.stake_units);
+  const homeSp = (r.home_sp_name || "").trim();
+  const awaySp = (r.away_sp_name || "").trim();
+  const homeK = parseFloat(r.home_sp_k_pct);
+  const awayK = parseFloat(r.away_sp_k_pct);
+  const hlBp = parseFloat(r.hl_bullpen_xwoba_gap);
+  const homeConc = parseFloat(r.home_lineup_concentration);
+  const awayConc = parseFloat(r.away_lineup_concentration);
+  const umpK = parseFloat(r.ump_k_pct_delta);
+  const umpBB = parseFloat(r.ump_bb_pct_delta);
+
+  let html = `<p><strong>${side} ${line.toFixed(1)} on ${matchup}</strong>. Model projects <strong>${_fmtNum(pred, 1)} total runs</strong> against the ${line.toFixed(1)} line — that's <strong>${_fmtNum(pred - line, 1)} runs</strong> on the ${side === "OVER" ? "over" : "under"} side. Model-implied probability <strong>${_fmtPct(prob)}</strong> against book-fair ${_fmtPct(parseFloat(t.book_fair))}, edge <strong>${_fmtPp(edge)}</strong>.${isFinite(stake) ? ` Recommended stake: <strong>${stake.toFixed(2)}u</strong> (Kelly-fraction sized).` : ""}</p>`;
+
+  // Pitching environment
+  let p = `<p><strong>Pitching environment.</strong> `;
+  if (awaySp && homeSp) p += `<span class="muted">${awaySp} vs ${homeSp}.</span> `;
+  if (isFinite(homeK) && isFinite(awayK)) {
+    const totalK = (homeK + awayK) / 2;
+    const lgAvg = 22.5;
+    const tilt = totalK > lgAvg + 1 ? "above league average (K-friendly = run-suppressing)" :
+                 totalK < lgAvg - 1 ? "below league average (lower K = more contact = more runs)" :
+                                       "near league average";
+    p += `Combined SP K%: <strong>${totalK.toFixed(1)}%</strong> (${tilt}). ${homeSp || "Home SP"} ${_fmtNum(homeK, 1)}%; ${awaySp || "Away SP"} ${_fmtNum(awayK, 1)}%.`;
+  }
+  html += p + `</p>`;
+
+  // Bullpen
+  if (isFinite(hlBp)) {
+    const sign = hlBp >= 0 ? "home worse" : "home better";
+    html += `<p><strong>Late-leverage bullpen gap</strong> (home vs away xwOBA-allowed): <strong>${_fmtNum(hlBp, 4)}</strong> <span class="muted">(${sign}).</span> ${Math.abs(hlBp) > 0.015 ? "Material gap — could push runs to one side late." : "Narrow gap — bullpens roughly comparable."}</p>`;
+  }
+
+  // Lineup quality
+  if (isFinite(homeConc) || isFinite(awayConc)) {
+    html += `<p><strong>Lineup concentration index</strong> (top-3 vs bottom-3 xwOBA ratio): home <strong>${_fmtNum(homeConc, 2)}</strong>, away <strong>${_fmtNum(awayConc, 2)}</strong>. <span class="muted">Values >1.5 = top-heavy; >2.0 = severe star-anchored shape that bullpens can navigate around late.</span></p>`;
+  }
+
+  // Umpire
+  if (isFinite(umpK) || isFinite(umpBB)) {
+    html += `<p><strong>Plate umpire effects</strong>: K-rate Δ <strong>${_fmtNum(umpK, 3)}</strong>, BB-rate Δ <strong>${_fmtNum(umpBB, 3)}</strong>. <span class="muted">Positive K Δ = pitcher-friendly zone (suppresses runs); positive BB Δ = hitter-friendly zone (boosts runs).</span></p>`;
+  }
+
+  // Lineup BvP (relevant to totals because OPS vs SP drives run expectation)
+  const bvpAway = _summarizeBvpJson(r.away_bvp_top5_json, "Away");
+  const bvpHome = _summarizeBvpJson(r.home_bvp_top5_json, "Home");
+  if (bvpAway || bvpHome) {
+    html += `<p><strong>BvP run-environment signals.</strong></p><ul>`;
+    if (bvpAway) html += `<li>${bvpAway}</li>`;
+    if (bvpHome) html += `<li>${bvpHome}</li>`;
+    html += `</ul>`;
+  }
+
+  // Verdict
+  let verdict;
+  const absEdge = Math.abs(edge || 0);
+  if (absEdge >= 5) verdict = `<span class="flag">Strong edge.</span> Model materially diverges from book-fair; ${side} side worth a look.`;
+  else if (absEdge >= 2) verdict = `<span class="flag">Moderate edge.</span> Some signal, but within typical model-to-market noise band.`;
+  else verdict = `<span class="muted">Thin edge.</span> Model and market closely aligned; little to extract.`;
+  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
+  return html;
+}
+
+// === Pitcher K deep narrative ===
+function _deepNarrativeK(item) {
+  const r = item._row || {};
+  const name = item.name;
+  const matchup = item.matchup;
+  const team = item.team;
+  const expK = item.expected_K;
+  const kPct = item.k_pct;
+  const umpK = parseFloat(r.ump_k_pct_delta);
+
+  let html = `<p><strong>${name}</strong> (${team === "home" ? "home" : "away"} starter in <strong>${matchup}</strong>) — projecting <strong>${expK.toFixed(1)} K</strong> over ~26 BF / 6 IP at a <strong>${kPct.toFixed(1)}%</strong> K rate.</p>`;
+
+  // League comparison
+  const lgAvg = 22.5;
+  if (kPct > lgAvg + 3) html += `<p><strong>Above-average K artist.</strong> ${(kPct - lgAvg).toFixed(1)}pp above the ~${lgAvg}% league average. Tends to outperform implied K props when stuff is on.</p>`;
+  else if (kPct < lgAvg - 3) html += `<p><strong>Pitch-to-contact profile.</strong> ${(lgAvg - kPct).toFixed(1)}pp below the ~${lgAvg}% league average. Expect K props to settle low even on a good night.</p>`;
+  else html += `<p><strong>Roughly league-average</strong> K rate (~${lgAvg}%). Threshold-relative props will track conditions (umpire, opposing whiff rate, lineup contact quality).</p>`;
+
+  // Threshold probabilities
+  html += `<p><strong>Threshold probabilities</strong> (normal approximation to Poisson(${expK.toFixed(1)})):</p><ul>`;
+  if (item.p_over_5 !== null) html += `<li>P(K ≥ 5) = <strong>${(item.p_over_5*100).toFixed(0)}%</strong> ${item.p_over_5 > 0.85 ? "<span class=\"muted\">— near-lock floor</span>" : ""}</li>`;
+  if (item.p_over_6 !== null) html += `<li>P(K ≥ 6) = <strong>${(item.p_over_6*100).toFixed(0)}%</strong></li>`;
+  if (item.p_over_7 !== null) html += `<li>P(K ≥ 7) = <strong>${(item.p_over_7*100).toFixed(0)}%</strong> ${item.p_over_7 > 0.50 ? "<span class=\"muted\">— ceiling pick territory</span>" : ""}</li>`;
+  html += `</ul>`;
+
+  // Umpire effect
+  if (isFinite(umpK)) {
+    const tilt = umpK > 0 ? "boosts K rate" : "suppresses K rate";
+    html += `<p><strong>Umpire K Δ</strong>: ${_fmtNum(umpK, 3)} <span class="muted">(${tilt} vs league average).</span></p>`;
+  }
+
+  // Bottom line
+  let verdict;
+  if (kPct >= 27) verdict = `<span class="flag">Plus K profile.</span> Comfortable looking at over 5.5 / 6.5; over 7.5 carries real edge.`;
+  else if (kPct >= 23) verdict = `<span class="flag">Solid K floor.</span> Over 5.5 is the safe play; 6.5 needs the ump + matchup to lean.`;
+  else verdict = `<span class="flag-red">Contact-tolerant.</span> Default lean is under unless lineup whiff rate is materially elevated.`;
+  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
+  return html;
+}
+
+function _propRenderDeepDeterministic(propType, payload) {
+  if (propType === "ml") return _deepNarrativeML(payload);
+  if (propType === "ou") return _deepNarrativeOU(payload);
+  if (propType === "k")  return _deepNarrativeK(payload);
+  return `<span class="muted">Unknown prop type: ${propType}</span>`;
+}
+
+// Per-prop "Deep analysis" button handler.
+//
+// Behavior: ALWAYS renders the deterministic client-side deep narrative
+// immediately on first reveal — synthesized from the payload row's signals,
+// stage probs, PQI, bullpen gap, platoon + BvP context, cap firings, stress
+// flags, and umpire deltas.  This is the production "functional feature"
+// path and does NOT depend on the Cloudflare Worker.
+//
+// Enhancement: if /api/claude/health reports enabled, we additionally fire
+// /api/claude/ask in the background and APPEND Claude's narrative below the
+// deterministic block.  If the Worker is disabled or fails, the user still
+// gets a full multi-paragraph deep-dive — no misleading error state.
+//
+// Caching: dataset.loaded flag prevents re-fetch on re-clicks; toggles
+// visibility only.  Failures clear the flag so retry on next click works.
 async function _propDeepAnalysisOnClick(probeId) {
   const container = document.getElementById(probeId);
   if (!container) return;
@@ -3164,9 +3463,20 @@ async function _propDeepAnalysisOnClick(probeId) {
     return;
   }
   container.dataset.loaded = "1";
-  // Probe Claude health on first call (cache thereafter) so we don't show
-  // misleading "could not load slate context" errors when the Worker is
-  // disabled.  Matches the gracefully-hide pattern that _initAskClaude uses.
+
+  // STEP 1 — render deterministic narrative immediately (always available).
+  let detHtml = "";
+  try {
+    detHtml = _propRenderDeepDeterministic(meta.propType, meta.payload);
+  } catch (e) {
+    detHtml = `<span class="flag-red">Deterministic render error: ${e.message}</span>`;
+  }
+  container.innerHTML =
+    `<div data-block="deterministic">${detHtml}</div>` +
+    `<div data-block="claude" style="margin-top:0.6rem;"></div>`;
+
+  // STEP 2 — best-effort Claude enhancement (appended, not blocking).
+  // Probe health once per page load, cache thereafter.
   if (window.__claudeHealth === undefined) {
     try {
       const hr = await fetch("/api/claude/health");
@@ -3176,13 +3486,19 @@ async function _propDeepAnalysisOnClick(probeId) {
     }
   }
   if (!window.__claudeHealth || !window.__claudeHealth.enabled) {
-    container.innerHTML = `<span class="muted">Claude deep-analysis is currently disabled. ` +
-      `Click the matching row in the Slate table below for in-depth model reasoning, ` +
-      `signal breakdown, and grade derivation — all generated client-side without ` +
-      `requiring the Claude API.</span>`;
+    // Worker disabled — deterministic narrative already covers the user.
+    // Add a small muted footer noting that AI-augmented analysis is offline.
+    const claudeSlot = container.querySelector('[data-block="claude"]');
+    if (claudeSlot) {
+      claudeSlot.innerHTML = `<span class="muted" style="font-size:0.78rem;">` +
+        `AI-augmented narrative offline — deterministic analysis shown above.</span>`;
+    }
     return;
   }
-  container.innerHTML = `<span class="muted">Asking Claude for deep analysis…</span>`;
+  const claudeSlot = container.querySelector('[data-block="claude"]');
+  if (claudeSlot) {
+    claudeSlot.innerHTML = `<span class="muted" style="font-size:0.82rem;">Asking Claude for additional context…</span>`;
+  }
   const prompt = _propBuildClaudePrompt(meta.propType, meta.payload);
   const date = (window.__slate && window.__slate.date) || null;
   try {
@@ -3192,18 +3508,24 @@ async function _propDeepAnalysisOnClick(probeId) {
       body: JSON.stringify({date, question: prompt}),
     });
     const j = await r.json();
-    if (j.error) {
-      container.innerHTML = `<span class="flag-red">Claude error: ${j.error}</span>`;
-      container.dataset.loaded = "0";  // allow retry on next click
-    } else {
-      const safe = (j.answer || "")
-        .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-        .replace(/\n/g, "<br>");
-      container.innerHTML = safe;
+    if (claudeSlot) {
+      if (j.error) {
+        claudeSlot.innerHTML = `<span class="muted" style="font-size:0.78rem;">` +
+          `AI-augmented narrative unavailable (${j.error}). Deterministic analysis above is complete.</span>`;
+      } else {
+        const safe = (j.answer || "")
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/\n/g, "<br>");
+        claudeSlot.innerHTML =
+          `<div style="margin-top:0.4rem;padding-top:0.4rem;border-top:1px dashed rgba(255,255,255,0.12);">` +
+          `<strong style="color:var(--accent);font-size:0.82rem;">Claude take:</strong><br>${safe}</div>`;
+      }
     }
   } catch (e) {
-    container.innerHTML = `<span class="flag-red">Network error: ${e.message}</span>`;
-    container.dataset.loaded = "0";  // allow retry
+    if (claudeSlot) {
+      claudeSlot.innerHTML = `<span class="muted" style="font-size:0.78rem;">` +
+        `AI-augmented narrative unreachable (${e.message}). Deterministic analysis above is complete.</span>`;
+    }
   }
 }
 
@@ -3228,7 +3550,7 @@ function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload) {
 
 function renderTopProbableOutcomes(rows, totalsByMatchup) {
   const gameMLs = _topGameMLPicks(rows).slice(0, 5);
-  const totals = _topTotals(totalsByMatchup).slice(0, 5);
+  const totals = _topTotals(totalsByMatchup, rows).slice(0, 5);
   const ks = _topPitcherKs(rows).slice(0, 5);
 
   const empty = (gameMLs.length + totals.length + ks.length) === 0;
