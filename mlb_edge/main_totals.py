@@ -216,26 +216,53 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
     log.info("Slate: %d games", len(games))
 
     raw = live_totals.fetch_live_totals_odds()
-    if raw.empty:
-        log.error("No live totals odds returned")
-        return
-    wide = live_totals.median_totals_by_game(raw)
-    if wide.empty:
-        log.error("No clean totals lines after aggregation")
-        return
-    log.info("Live totals lines available for %d games", len(wide))
+    # Graceful-degrade mode (2026-05-21): when no market totals odds are
+    # available (the-odds-api cancelled, DK scraper failed, etc.) we still
+    # emit a CSV with pred_runs populated for every slate game. Market
+    # columns (total_line, edge_runs, side, decimal, our_prob, book_fair,
+    # stake_units) get written as empty strings — NOT zeros — so the
+    # dashboard can distinguish "no market" from "market said even-money".
+    no_market = raw.empty
+    if no_market:
+        log.warning("[totals] No live totals odds available — entering "
+                    "pred_runs-only mode (market columns will be empty)")
+        wide = pd.DataFrame()
+    else:
+        wide = live_totals.median_totals_by_game(raw)
+        if wide.empty:
+            log.warning("[totals] No clean totals lines after aggregation — "
+                        "entering pred_runs-only mode")
+            no_market = True
 
     games["game_date_only"] = pd.to_datetime(games["game_date"]).dt.date
-    joined = games.merge(
-        wide,
-        left_on=["home_team", "away_team", "game_date_only"],
-        right_on=["home_team", "away_team", "commence_date"],
-        how="inner",
-    )
-    if joined.empty:
-        log.error("No games matched between slate and totals odds")
-        return
-    log.info("Matched %d slate games to totals lines", len(joined))
+    if no_market:
+        # pred_runs-only path: keep every slate game, fill market columns NaN
+        joined = games.copy()
+        joined["total_line"]    = np.nan
+        joined["over_decimal"]  = np.nan
+        joined["under_decimal"] = np.nan
+        joined["commence_date"] = joined["game_date_only"]
+        log.info("[totals] pred_runs-only: scoring %d slate games (no market)",
+                 len(joined))
+    else:
+        log.info("Live totals lines available for %d games", len(wide))
+        joined = games.merge(
+            wide,
+            left_on=["home_team", "away_team", "game_date_only"],
+            right_on=["home_team", "away_team", "commence_date"],
+            how="inner",
+        )
+        if joined.empty:
+            log.warning("[totals] No games matched between slate and totals "
+                        "odds — falling back to pred_runs-only mode")
+            joined = games.copy()
+            joined["total_line"]    = np.nan
+            joined["over_decimal"]  = np.nan
+            joined["under_decimal"] = np.nan
+            joined["commence_date"] = joined["game_date_only"]
+            no_market = True
+        else:
+            log.info("Matched %d slate games to totals lines", len(joined))
 
     # Stage 1 prediction
     s1_feats = [c for c in F5_FEATURES if c in joined.columns]
@@ -326,6 +353,13 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
 
     # Generate picks. Slate is ≤15 games/day so iterrows is acceptable here;
     # the hot paths are all in the backtest simulator, which is vectorized.
+    #
+    # Two modes:
+    #   1. Normal:  market columns populated → standard Kelly-staked O/U pick.
+    #   2. no_market: pred_runs only → row still written but market columns
+    #      are emitted as empty strings so the dashboard can fall back to a
+    #      "Model: X.X runs (no market)" render. Edge-runs/side/stake all
+    #      blank — NOT zero — to disambiguate "no signal" from "even-money".
     picks = []
     total_risk = 0.0
     for _, r in joined.iterrows():
@@ -334,9 +368,38 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
         under_dec = r["under_decimal"]
         pred = r["total_runs_pred"]
 
-        if (pd.isna(line) or pd.isna(over_dec) or pd.isna(under_dec)
-                or pd.isna(pred)):
+        if pd.isna(pred):
             continue
+
+        if no_market or pd.isna(line) or pd.isna(over_dec) or pd.isna(under_dec):
+            # pred_runs-only path: emit row with empty market columns
+            picks.append({
+                "game_date":     str(r["game_date_only"]),
+                "home_team":     r["home_team"],
+                "away_team":     r["away_team"],
+                "total_line":    "",
+                "pred_runs":     round(pred, 2),
+                "edge_runs":     "",
+                "side":          "",
+                "decimal":       "",
+                "our_prob":      "",
+                "book_fair":     "",
+                "stake_units":   "",
+                # Shadow BvP columns are model-only — populate normally.
+                "pred_runs_bvp_adjusted": round(float(r.get("pred_runs_bvp_adjusted", pred)), 2),
+                "total_runs_delta":       round(float(r.get("total_runs_delta", 0)), 3),
+                "home_runs_delta":        round(float(r.get("home_runs_delta", 0)), 3),
+                "away_runs_delta":        round(float(r.get("away_runs_delta", 0)), 3),
+                "home_bvp_n_pa":          float(r.get("home_bvp_n_pa", 0)),
+                "away_bvp_n_pa":          float(r.get("away_bvp_n_pa", 0)),
+                "home_bvp_ops_shrunk":    round(float(r.get("home_bvp_ops_shrunk", 0.72)), 4),
+                "away_bvp_ops_shrunk":    round(float(r.get("away_bvp_ops_shrunk", 0.72)), 4),
+                "bvp_signal_strength":    round(
+                    (float(r.get("home_bvp_n_pa", 0)) +
+                     float(r.get("away_bvp_n_pa", 0))) / 9.0, 3),
+            })
+            continue
+
         if (over_dec < TOTALS_MIN_DECIMAL or over_dec > TOTALS_MAX_DECIMAL
                 or under_dec < TOTALS_MIN_DECIMAL or under_dec > TOTALS_MAX_DECIMAL):
             continue
@@ -411,8 +474,15 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
     picks_df = pd.DataFrame(picks)
     print(f"\n=== TOTALS PICKS — {target_date} ===")
     print(picks_df.to_string(index=False))
-    print(f"\nTotal bets: {len(picks_df)}, Total risk: "
-          f"{picks_df['stake_units'].sum():.2f} units\n")
+    if no_market:
+        print(f"\nTotal games: {len(picks_df)} (pred_runs-only mode — "
+              f"no market odds available)\n")
+    else:
+        # stake_units may be empty strings if any rows fell through to
+        # pred_runs-only mode mid-slate; coerce safely for the summary line.
+        stakes = pd.to_numeric(picks_df["stake_units"], errors="coerce").fillna(0)
+        print(f"\nTotal bets: {len(picks_df)}, Total risk: "
+              f"{stakes.sum():.2f} units\n")
 
     if out:
         Path(out).parent.mkdir(parents=True, exist_ok=True)
