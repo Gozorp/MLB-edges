@@ -33,30 +33,46 @@ def fetch_live_totals_odds() -> pd.DataFrame:
     """
     Fetch live totals (over/under) odds for upcoming MLB games.
 
+    Source-priority chain (2026-05-21):
+        1. DraftKings public eventgroup JSON  (PRIMARY, no auth)
+        2. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
+           — will return empty unless ODDS_API_KEY is somehow re-set)
+        3. empty DataFrame → main_totals enters pred_runs-only mode.
+
+    DK returns a *wide* DataFrame (one row per game with total_line +
+    over/under decimals).  We pivot it to the long format the downstream
+    median_totals_by_game() expects so the rest of the pipeline doesn't have
+    to special-case DK vs the-odds-api.
+
     Returns long-format DataFrame with:
       game_id, commence_time, home_team, away_team, book, outcome,
       price, point, decimal, commence_date,
       home_team_abbr, away_team_abbr
-
-    NOTE (2026-05-21): the Odds API subscription was cancelled by the user.
-    Kalshi (the new moneyline primary; see mlb_edge/kalshi_odds.py) does
-    NOT offer MLB totals contracts — its KXMLBGAME series is binary
-    game-winner only.  When ODDS_API_KEY is unset, this function returns
-    an empty DataFrame and emits a loud ODDS_API_KEY_MISSING log line so
-    the totals cron's dead-state is legible.  A follow-up change to
-    main_totals.py will convert the existing `if raw.empty: return`
-    early-exit into a graceful-degrade path that still emits pred_runs
-    in the picks_totals CSV (with blank fair_prob / edge_pp / EV columns).
-    Until that lands, an empty result here causes main_totals to skip
-    writing the CSV for that slate.
     """
+    # ---- Source 1: DraftKings (primary, no auth) ---------------------------
+    try:
+        from .draftkings_totals import fetch_dk_totals
+        dk_wide = fetch_dk_totals()
+    except Exception as e:
+        log.warning("[live_totals] DraftKings fetch crashed: %s — falling "
+                    "through to the-odds-api legacy chain", e)
+        dk_wide = pd.DataFrame()
+
+    if not dk_wide.empty:
+        log.info("[live_totals] DraftKings returned %d games — using DK as "
+                 "totals source", len(dk_wide))
+        return _dk_wide_to_long(dk_wide)
+
+    # ---- Source 2: the-odds-api.com (legacy, cancelled 2026-05-21) ---------
+    # Kept in the chain for the case where the user re-enables the
+    # subscription, or some other key shows up in .env.  The empty-key path
+    # below short-circuits to `return pd.DataFrame()` with a single info log
+    # line so the daily cron stays quiet rather than spamming errors.
     api_key = os.environ.get("ODDS_API_KEY")
     if not api_key:
-        log.error("[live_totals] ODDS_API_KEY_MISSING — totals pipeline "
-                  "cannot fetch O/U lines.  Kalshi (the new moneyline "
-                  "primary) does NOT carry totals; main_totals will skip "
-                  "writing today's picks_totals CSV.  See file header for "
-                  "the planned graceful-degrade follow-up.")
+        log.info("[live_totals] DK empty AND ODDS_API_KEY unset — totals "
+                 "pipeline returns empty; main_totals will enter "
+                 "pred_runs-only mode.")
         return pd.DataFrame()
 
     url = f"{DATA.odds_api_base}/sports/{DATA.odds_sport}/odds"
@@ -87,6 +103,47 @@ def fetch_live_totals_odds() -> pd.DataFrame:
             log.warning("Live totals request failed: %s", e)
             time.sleep(2 ** attempt)
     return pd.DataFrame()
+
+
+def _dk_wide_to_long(dk_wide: pd.DataFrame) -> pd.DataFrame:
+    """Expand DK's wide (one-row-per-game) DataFrame to the long format
+    median_totals_by_game expects.
+
+    Input columns:  game_date, home_team, away_team, total_line,
+                    over_decimal, under_decimal   (team codes already normalized)
+    Output mirrors _flatten_live_totals: each game emits two rows
+    (Over + Under) under a synthetic book="draftkings".  median_totals_by_game
+    then collapses to a wide consensus frame — which for DK alone is the same
+    line/decimal pair we started with, just routed through the same merge code
+    path the-odds-api used.  Keeps downstream code single-track.
+    """
+    if dk_wide.empty:
+        return pd.DataFrame()
+    rows = []
+    for _, r in dk_wide.iterrows():
+        commence = pd.to_datetime(r["game_date"])
+        base = {
+            "game_id":       f"dk:{r['home_team']}:{r['away_team']}:{r['game_date']}",
+            "commence_time": commence.isoformat(),
+            "home_team":     r["home_team"],
+            "away_team":     r["away_team"],
+            "book":          "draftkings",
+            "point":         float(r["total_line"]),
+        }
+        # Over row.  `price` is unused downstream (median_totals_by_game keys
+        # off `decimal`); we set it to NaN to mark "DK didn't provide a fresh
+        # American number on this synthesized row".  decimal is what counts.
+        rows.append({**base, "outcome": "Over",
+                     "price": np.nan,
+                     "decimal": float(r["over_decimal"])})
+        rows.append({**base, "outcome": "Under",
+                     "price": np.nan,
+                     "decimal": float(r["under_decimal"])})
+    df = pd.DataFrame(rows)
+    df["home_team_abbr"] = df["home_team"].apply(normalize_team)
+    df["away_team_abbr"] = df["away_team"].apply(normalize_team)
+    df["commence_date"]  = pd.to_datetime(df["commence_time"]).dt.date
+    return df.dropna(subset=["decimal", "point"])
 
 
 def _flatten_live_totals(payload) -> pd.DataFrame:
@@ -182,3 +239,5 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
     })
     return out[["home_team", "away_team", "commence_date",
                 "total_line", "over_decimal", "under_decimal"]].dropna()
+
+    # t
