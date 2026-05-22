@@ -1,10 +1,20 @@
 """
 live_totals.py
 --------------
-Live totals (over/under) odds from the-odds-api /current endpoint.
+Live totals (over/under) odds for MLB.
 
-The totals market IS supported on the Starter tier current endpoint, unlike
-h2h_1st_5_innings. Each call costs 1 request.
+Source-priority chain (2026-05-22):
+    1. Pinnacle guest Arcadia JSON       (PRIMARY, no auth, CI-friendly)
+    2. DraftKings public eventgroup JSON (BACKUP -- often 403 in CI due to
+       Akamai bot detection, still works from local laptop runs)
+    3. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
+       2026-05-21; returns empty unless ODDS_API_KEY is somehow re-set)
+    4. empty DataFrame -> main_totals enters pred_runs-only mode.
+
+Pinnacle/DK return *wide* (one-row-per-game) frames; the-odds-api returns a
+*long* per-book frame.  We pivot the wide frames into long format via
+_pin_wide_to_long / _dk_wide_to_long so the downstream median_totals_by_game
+function doesn't have to special-case which book the line came from.
 """
 from __future__ import annotations
 
@@ -33,46 +43,62 @@ def fetch_live_totals_odds() -> pd.DataFrame:
     """
     Fetch live totals (over/under) odds for upcoming MLB games.
 
-    Source-priority chain (2026-05-21):
-        1. DraftKings public eventgroup JSON  (PRIMARY, no auth)
-        2. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
-           — will return empty unless ODDS_API_KEY is somehow re-set)
-        3. empty DataFrame → main_totals enters pred_runs-only mode.
+    Source-priority chain (2026-05-22):
+        1. Pinnacle guest Arcadia JSON       (PRIMARY, no auth)
+        2. DraftKings public eventgroup JSON (BACKUP -- mostly 403 in CI due
+           to Akamai bot detection, but still works from local runs)
+        3. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
+           -- will return empty unless ODDS_API_KEY is somehow re-set)
+        4. empty DataFrame -> main_totals enters pred_runs-only mode.
 
-    DK returns a *wide* DataFrame (one row per game with total_line +
-    over/under decimals).  We pivot it to the long format the downstream
-    median_totals_by_game() expects so the rest of the pipeline doesn't have
-    to special-case DK vs the-odds-api.
+    Pinnacle and DK both return *wide* DataFrames (one row per game with
+    total_line + over/under decimals).  We pivot them to the long format the
+    downstream median_totals_by_game() expects so the rest of the pipeline
+    doesn't have to special-case which book it came from.
 
     Returns long-format DataFrame with:
       game_id, commence_time, home_team, away_team, book, outcome,
       price, point, decimal, commence_date,
       home_team_abbr, away_team_abbr
     """
-    # ---- Source 1: DraftKings (primary, no auth) ---------------------------
+    # ---- Source 1: Pinnacle (primary, no auth, CI-friendly) ----------------
+    try:
+        from .pinnacle_totals import fetch_pinnacle_totals
+        pin_wide = fetch_pinnacle_totals()
+    except Exception as e:
+        log.warning("[live_totals] Pinnacle fetch crashed: %s -- falling "
+                    "through to DraftKings", e)
+        pin_wide = pd.DataFrame()
+
+    if not pin_wide.empty:
+        log.info("[live_totals] Pinnacle returned %d games -- using Pinnacle "
+                 "as totals source", len(pin_wide))
+        return _pin_wide_to_long(pin_wide)
+
+    # ---- Source 2: DraftKings (backup, often 403 in CI) --------------------
     try:
         from .draftkings_totals import fetch_dk_totals
         dk_wide = fetch_dk_totals()
     except Exception as e:
-        log.warning("[live_totals] DraftKings fetch crashed: %s — falling "
+        log.warning("[live_totals] DraftKings fetch crashed: %s -- falling "
                     "through to the-odds-api legacy chain", e)
         dk_wide = pd.DataFrame()
 
     if not dk_wide.empty:
-        log.info("[live_totals] DraftKings returned %d games — using DK as "
+        log.info("[live_totals] DraftKings returned %d games -- using DK as "
                  "totals source", len(dk_wide))
         return _dk_wide_to_long(dk_wide)
 
-    # ---- Source 2: the-odds-api.com (legacy, cancelled 2026-05-21) ---------
+    # ---- Source 3: the-odds-api.com (legacy, cancelled 2026-05-21) ---------
     # Kept in the chain for the case where the user re-enables the
     # subscription, or some other key shows up in .env.  The empty-key path
     # below short-circuits to `return pd.DataFrame()` with a single info log
     # line so the daily cron stays quiet rather than spamming errors.
     api_key = os.environ.get("ODDS_API_KEY")
     if not api_key:
-        log.info("[live_totals] DK empty AND ODDS_API_KEY unset — totals "
-                 "pipeline returns empty; main_totals will enter "
-                 "pred_runs-only mode.")
+        log.info("[live_totals] Pinnacle empty, DK empty AND ODDS_API_KEY "
+                 "unset -- totals pipeline returns empty; main_totals will "
+                 "enter pred_runs-only mode.")
         return pd.DataFrame()
 
     url = f"{DATA.odds_api_base}/sports/{DATA.odds_sport}/odds"
@@ -105,6 +131,41 @@ def fetch_live_totals_odds() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+def _pin_wide_to_long(pin_wide: pd.DataFrame) -> pd.DataFrame:
+    """Expand Pinnacle's wide (one-row-per-game) DataFrame to the long format
+    median_totals_by_game expects.  Schema-identical to _dk_wide_to_long;
+    only the synthetic book name and game_id prefix change so downstream
+    logging makes it obvious which source the line came from.
+
+    Input columns:  game_date, home_team, away_team, total_line,
+                    over_decimal, under_decimal   (team codes already normalized)
+    """
+    if pin_wide.empty:
+        return pd.DataFrame()
+    rows = []
+    for _, r in pin_wide.iterrows():
+        commence = pd.to_datetime(r["game_date"])
+        base = {
+            "game_id":       f"pin:{r['home_team']}:{r['away_team']}:{r['game_date']}",
+            "commence_time": commence.isoformat(),
+            "home_team":     r["home_team"],
+            "away_team":     r["away_team"],
+            "book":          "pinnacle",
+            "point":         float(r["total_line"]),
+        }
+        rows.append({**base, "outcome": "Over",
+                     "price": np.nan,
+                     "decimal": float(r["over_decimal"])})
+        rows.append({**base, "outcome": "Under",
+                     "price": np.nan,
+                     "decimal": float(r["under_decimal"])})
+    df = pd.DataFrame(rows)
+    df["home_team_abbr"] = df["home_team"].apply(normalize_team)
+    df["away_team_abbr"] = df["away_team"].apply(normalize_team)
+    df["commence_date"]  = pd.to_datetime(df["commence_time"]).dt.date
+    return df.dropna(subset=["decimal", "point"])
+
+
 def _dk_wide_to_long(dk_wide: pd.DataFrame) -> pd.DataFrame:
     """Expand DK's wide (one-row-per-game) DataFrame to the long format
     median_totals_by_game expects.
@@ -113,7 +174,7 @@ def _dk_wide_to_long(dk_wide: pd.DataFrame) -> pd.DataFrame:
                     over_decimal, under_decimal   (team codes already normalized)
     Output mirrors _flatten_live_totals: each game emits two rows
     (Over + Under) under a synthetic book="draftkings".  median_totals_by_game
-    then collapses to a wide consensus frame — which for DK alone is the same
+    then collapses to a wide consensus frame -- which for DK alone is the same
     line/decimal pair we started with, just routed through the same merge code
     path the-odds-api used.  Keeps downstream code single-track.
     """
@@ -177,7 +238,7 @@ def _flatten_live_totals(payload) -> pd.DataFrame:
     df["commence_date"]  = pd.to_datetime(df["commence_time"]).dt.date
     df = df[df["price"].notna() & (df["price"].abs() >= 100)].copy()
 
-    # Vectorized American → decimal. Mirrors odds_totals.build_totals_frame and
+    # Vectorized American -> decimal. Mirrors odds_totals.build_totals_frame and
     # odds_f5.build_f5_odds_frame: positive prices map to 1 + p/100, negative
     # to 1 + 100/|p|. NaN stays NaN.
     p = df["price"].to_numpy(dtype=float)
@@ -199,7 +260,7 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
       total_line, over_decimal, under_decimal
 
     Implementation mirrors `odds_totals.merge_games_and_totals`: three-merge
-    pattern (lines → over_dec → under_dec) instead of pivot_table + rename.
+    pattern (lines -> over_dec -> under_dec) instead of pivot_table + rename.
     Same algo, produces identical values, and keeps the whole codebase using
     one idiom for per-outcome decimal aggregation.
     """
@@ -208,7 +269,7 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
 
     keys = ["home_team_abbr", "away_team_abbr", "commence_date"]
 
-    # Step 1: consensus line per (matchup, date) — median across ALL book rows.
+    # Step 1: consensus line per (matchup, date) -- median across ALL book rows.
     lines = (long_odds.groupby(keys, sort=False)["point"]
                        .median().reset_index()
                        .rename(columns={"point": "total_line"}))
@@ -239,5 +300,3 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
     })
     return out[["home_team", "away_team", "commence_date",
                 "total_line", "over_decimal", "under_decimal"]].dropna()
-
-    # t
