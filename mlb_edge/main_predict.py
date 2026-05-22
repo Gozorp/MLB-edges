@@ -594,6 +594,33 @@ def run(slate_date: date,
     preds = gate_sp_features(preds)
 
     # ------------------------------------------------------------------
+    # [step 2.5/5] Bullpen meta sidecar — Phase 1 of the per-reliever
+    # projection-model sprint (memory/project_bullpen_model_sprint_plan.md).
+    # ------------------------------------------------------------------
+    # Writes docs/data/bullpen_meta_<slate_date>.json with top 8 relievers
+    # per team + rest_days + recent leverage + fatigue flag.  Best-effort:
+    # if the snapshot is empty or the writer fails, the slate keeps
+    # running and the dashboard's bullpen card degrades to "no data".
+    try:
+        teams_on_slate = sorted(set(games["home_team"].dropna().tolist()
+                                    + games["away_team"].dropna().tolist()))
+        from .bullpen_meta_writer import write_bullpen_meta
+        meta_path = write_bullpen_meta(
+            slate_date=slate_date,
+            snapshot=ctx.get("bullpen"),
+            teams_on_slate=teams_on_slate,
+            out_dir="docs/data",
+        )
+        if meta_path:
+            log.info("[bullpen_meta] sidecar written: %s "
+                     "(%d teams on slate)", meta_path, len(teams_on_slate))
+        else:
+            log.warning("[bullpen_meta] writer returned None - skipping")
+    except Exception as _e_bp_meta:
+        log.warning("[bullpen_meta] sidecar write failed (continuing): %s",
+                    _e_bp_meta)
+
+    # ------------------------------------------------------------------
     # Phase 4 — Bayesian shrinkage shadow prediction (2026-05-03)
     # ------------------------------------------------------------------
     # When USE_BAYESIAN_SHRINKAGE_SHADOW=True (default), we score a SECOND

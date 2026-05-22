@@ -509,6 +509,7 @@
   </div>
 
   <div id="top-outcomes"></div>
+  <div id="bullpen-outlook"></div>
   <div id="slate"></div>
   <div id="parlay"></div>
 
@@ -2394,6 +2395,20 @@ function _formatGamePreviewUpcoming(preview) {
         <ul>${fmtBullpen(preview.awayBullpen)}</ul>
         <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
         <ul>${fmtBullpen(preview.homeBullpen)}</ul>
+        ${(function() {
+          // Phase 1+2 sprint: per-team fatigue table from bullpen_meta sidecar
+          try {
+            const _matchup = `${preview.awayAbbr} @ ${preview.homeAbbr}`;
+            const _bp = _bullpenMetaForMatchup(_matchup);
+            if (!_bp || (!_bp.away && !_bp.home)) return "";
+            let _h = `<h5 style="margin-top:0.8rem;">Bullpen fatigue (7-day window)</h5>`;
+            _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.4rem;">${preview.awayName}</div>`;
+            _h += _bullpenFatigueTable(_bp.away, preview.awayName);
+            _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.5rem;">${preview.homeName}</div>`;
+            _h += _bullpenFatigueTable(_bp.home, preview.homeName);
+            return _h;
+          } catch (_e_bp_panel) { return ""; }
+        })()}
       </div>
       <div class="preview-card">
         <h5>${preview.awayName} top hitters (by 2026 OPS)</h5>
@@ -3303,6 +3318,19 @@ function _deepNarrativeML(item) {
     html += `<p><span class="flag">Stress warnings:</span> <span class="muted">${stress}</span></p>`;
   }
 
+  // Bullpen outlook (Phase 1+2 sprint): pulls from window.__bullpenMeta
+  // sidecar.  Falls back silently if data missing.
+  try {
+    const _bpMeta = _bullpenMetaForMatchup(item.matchup);
+    if (_bpMeta && (_bpMeta.away || _bpMeta.home)) {
+      html += `<p><strong>Bullpen outlook:</strong></p>`;
+      html += `<ul style="margin:0.3rem 0;font-size:0.88rem;">`;
+      if (_bpMeta.away) html += `<li>${_bullpenTeamNarrative(_bpMeta.away, _bpMeta.awayTeam)}</li>`;
+      if (_bpMeta.home) html += `<li>${_bullpenTeamNarrative(_bpMeta.home, _bpMeta.homeTeam)}</li>`;
+      html += `</ul>`;
+    }
+  } catch (_e_bp_narr) { /* best-effort; skip on any failure */ }
+
   // Verdict
   let verdict;
   if (["A","A-"].includes(grade)) verdict = `<span class="flag">High conviction.</span> Multiple confirming layers; treat as anchor candidate.`;
@@ -3431,6 +3459,178 @@ function _propRenderDeepDeterministic(propType, payload) {
   if (propType === "ou") return _deepNarrativeOU(payload);
   if (propType === "k")  return _deepNarrativeK(payload);
   return `<span class="muted">Unknown prop type: ${propType}</span>`;
+}
+
+// ============================================================================
+// Bullpen outlook helpers — Phase 1+2 of the per-reliever projection sprint.
+// Reads window.__bullpenMeta (loaded by loadSlate from
+// docs/data/bullpen_meta_<date>.json; see mlb_edge/bullpen_meta_writer.py).
+// ============================================================================
+
+function _bullpenMetaForMatchup(matchup) {
+  if (!window.__bullpenMeta || !window.__bullpenMeta.teams) return null;
+  if (!matchup || typeof matchup !== "string") return null;
+  const parts = matchup.split(/\s*@\s*/);
+  if (parts.length !== 2) return null;
+  const away = parts[0].trim();
+  const home = parts[1].trim();
+  const teams = window.__bullpenMeta.teams;
+  return { away: teams[away] || null, home: teams[home] || null,
+           awayTeam: away, homeTeam: home };
+}
+
+function _bullpenTierColor(tier) {
+  if (tier === "FRESH")      return "var(--good, #2ea043)";
+  if (tier === "STRAINED")   return "var(--warn, #b76b00)";
+  if (tier === "OVERWORKED") return "var(--bad, #b02a2a)";
+  return "var(--muted, #888)";
+}
+
+function _bullpenFlagBadge(flag) {
+  const colors = {
+    FRESH:      "#2ea043", NORMAL:     "#888",
+    B2B:        "#b76b00", B2B2B:      "#b02a2a",
+    OVERWORKED: "#b02a2a",
+  };
+  const c = colors[flag] || "#888";
+  return `<span style="font-size:0.72rem;padding:0.05rem 0.35rem;` +
+         `border:1px solid ${c};color:${c};border-radius:3px;` +
+         `margin-left:0.3rem;">${flag}</span>`;
+}
+
+function _bullpenTeamNarrative(teamBlock, teamLabel) {
+  if (!teamBlock) {
+    return `<span class="muted">${teamLabel}: no bullpen data available.</span>`;
+  }
+  if (teamBlock.unavailable) {
+    return `<span class="muted">${teamLabel}: ${teamBlock.reason || "no recent appearances"}.</span>`;
+  }
+  const s = teamBlock.team_summary || {};
+  const tier = s.ceiling_tier || "NORMAL";
+  const tierColor = _bullpenTierColor(tier);
+  const relievers = teamBlock.top_relievers || [];
+
+  // Compose a multi-sentence paragraph
+  let sentences = [];
+  sentences.push(
+    `<strong>${teamLabel}'s bullpen is currently <span style="color:${tierColor};">${tier}</span></strong> ` +
+    `(${s.top3_pitch_total_72h || 0} pitches across the top-3 high-leverage arms in the last 72 hours, ` +
+    `${s.n_relievers_tracked || 0} relievers tracked).`
+  );
+
+  // Fatigue alarms
+  const alarms = [];
+  if (s.n_relievers_three_consecutive > 0) {
+    alarms.push(`<span class="flag-red">${s.n_relievers_three_consecutive} reliever(s) on three consecutive days — effectively unavailable tonight</span>`);
+  }
+  if (s.n_relievers_back_to_back > 0) {
+    alarms.push(`${s.n_relievers_back_to_back} reliever(s) on back-to-back days — usable but limited`);
+  }
+  if (alarms.length) {
+    sentences.push(`<em>${alarms.join("; ")}.</em>`);
+  }
+
+  // Average rest interpretation
+  if (typeof s.avg_rest_days === "number") {
+    if (s.avg_rest_days < 1.5) {
+      sentences.push(`Average rest across the top-${s.n_relievers_tracked} sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — short. Late-leverage choices are constrained.`);
+    } else if (s.avg_rest_days >= 3.0) {
+      sentences.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — fresh. Manager has full menu of late-leverage options.`);
+    } else {
+      sentences.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — workable but not deep.`);
+    }
+  }
+
+  // Top reliever summary line
+  if (relievers.length) {
+    const top = relievers[0];
+    sentences.push(
+      `Most-used arm: pitcher #${top.pitcher_id} ` +
+      `(${top.pitches_72h}p in 72h, last LI avg ${top.avg_leverage_last_3 || 0}) ` +
+      _bullpenFlagBadge(top.fatigue_flag) + `.`
+    );
+  }
+
+  return sentences.join(" ");
+}
+
+function _bullpenFatigueTable(teamBlock, teamLabel) {
+  if (!teamBlock || teamBlock.unavailable) {
+    return `<div class="muted" style="font-size:0.82rem;">${teamLabel}: no recent bullpen activity in the lookback window.</div>`;
+  }
+  const relievers = teamBlock.top_relievers || [];
+  if (!relievers.length) {
+    return `<div class="muted" style="font-size:0.82rem;">${teamLabel}: bullpen list empty.</div>`;
+  }
+  let html = `<table style="width:100%;font-size:0.82rem;border-collapse:collapse;margin-top:0.3rem;">` +
+             `<thead><tr style="border-bottom:1px solid var(--border,#444);">` +
+             `<th style="text-align:left;padding:0.2rem 0.3rem;">Pitcher</th>` +
+             `<th style="text-align:right;padding:0.2rem 0.3rem;">Rest</th>` +
+             `<th style="text-align:right;padding:0.2rem 0.3rem;">Consec</th>` +
+             `<th style="text-align:right;padding:0.2rem 0.3rem;">P/72h</th>` +
+             `<th style="text-align:right;padding:0.2rem 0.3rem;">LI (last 3)</th>` +
+             `<th style="text-align:left;padding:0.2rem 0.3rem;">Flag</th>` +
+             `</tr></thead><tbody>`;
+  for (const r of relievers) {
+    const availStyle = r.available_today ? "" : "opacity:0.55;text-decoration:line-through;";
+    html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);${availStyle}">` +
+            `<td style="padding:0.2rem 0.3rem;">#${r.pitcher_id}</td>` +
+            `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.rest_days}d</td>` +
+            `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.consecutive_days}</td>` +
+            `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
+            `<td style="padding:0.2rem 0.3rem;text-align:right;">${(r.avg_leverage_last_3 || 0).toFixed(2)}</td>` +
+            `<td style="padding:0.2rem 0.3rem;">${_bullpenFlagBadge(r.fatigue_flag)}</td>` +
+            `</tr>`;
+  }
+  html += `</tbody></table>`;
+  if (relievers.some(r => !r.available_today)) {
+    html += `<div class="muted" style="font-size:0.72rem;margin-top:0.2rem;">` +
+            `Struck-through rows: three consecutive days, effectively unavailable tonight.</div>`;
+  }
+  return html;
+}
+
+function renderBullpenOutlook(rows, bullpenMeta) {
+  if (!bullpenMeta || !bullpenMeta.teams || Object.keys(bullpenMeta.teams).length === 0) {
+    return `<div class="card"><h2>Bullpen Outlook</h2>` +
+           `<div class="muted">Bullpen data not yet baked for this slate. ` +
+           `Check back once the predict cron writes ` +
+           `<code>bullpen_meta_${(bullpenMeta && bullpenMeta.slate_date) || "&lt;date&gt;"}.json</code>.` +
+           `</div></div>`;
+  }
+  // Build a per-game card
+  let html = `<div class="card"><h2>Bullpen Outlook ` +
+             `<span class="muted" style="font-size:0.8rem;font-weight:normal;">— per-game fatigue, rest, and strain</span></h2>`;
+  let n = 0;
+  for (const r of rows) {
+    const meta = _bullpenMetaForMatchup(r.matchup);
+    if (!meta) continue;
+    if (!meta.away && !meta.home) continue;
+    n++;
+    html += `<div style="padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">` +
+            `<div style="font-weight:bold;color:var(--accent);margin-bottom:0.3rem;">${r.matchup}</div>` +
+            `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">` +
+            `<div>` +
+              `<div style="font-size:0.85rem;margin-bottom:0.2rem;"><strong>${meta.awayTeam} (away):</strong></div>` +
+              `<div style="font-size:0.85rem;">${_bullpenTeamNarrative(meta.away, meta.awayTeam)}</div>` +
+            `</div>` +
+            `<div>` +
+              `<div style="font-size:0.85rem;margin-bottom:0.2rem;"><strong>${meta.homeTeam} (home):</strong></div>` +
+              `<div style="font-size:0.85rem;">${_bullpenTeamNarrative(meta.home, meta.homeTeam)}</div>` +
+            `</div>` +
+            `</div>` +
+            `</div>`;
+  }
+  if (n === 0) {
+    html += `<div class="muted">No bullpen data available for any matchup on this slate yet.</div>`;
+  }
+  html += `<div class="muted" style="font-size:0.72rem;margin-top:0.4rem;">` +
+          `Data: 7-day reliever appearance log from MLB Stats API, ` +
+          `aggregated by mlb_edge.bullpen_meta_writer.  ` +
+          `Phase 1 of the per-reliever projection sprint — future phases add ` +
+          `learned xwOBA projections, IP demand modeling, and leverage forecasts.</div>`;
+  html += `</div>`;
+  return html;
 }
 
 // Per-prop "Deep analysis" button handler.
@@ -4160,6 +4360,24 @@ async function loadSlate(date, { bust = false } = {}) {
       }
     } catch (_) { window.__totalsByMatchup = null; }
 
+    // Bullpen meta sidecar (Phase 1 of the per-reliever projection sprint).
+    // Schema documented in mlb_edge/bullpen_meta_writer.py.  Best-effort —
+    // dashboard falls back to "no bullpen data" if the file is missing or
+    // the schema version is unexpected.
+    try {
+      const _bp = await fetch(`./data/bullpen_meta_${date}.json`, {cache: "no-store"});
+      if (_bp.ok) {
+        const bpData = await _bp.json();
+        if (bpData && bpData.schema_version === 1) {
+          window.__bullpenMeta = bpData;
+        } else {
+          window.__bullpenMeta = null;
+        }
+      } else {
+        window.__bullpenMeta = null;
+      }
+    } catch (_) { window.__bullpenMeta = null; }
+
     const slateHtml = rows.length
       ? renderSlate(rows, gradeMap, results)
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
@@ -4167,10 +4385,14 @@ async function loadSlate(date, { bust = false } = {}) {
     const topOutcomesHtml = rows.length
       ? renderTopProbableOutcomes(rows, window.__totalsByMatchup)
       : "";
+    const bullpenOutlookHtml = rows.length
+      ? renderBullpenOutlook(rows, window.__bullpenMeta)
+      : "";
 
     document.getElementById("slate").innerHTML = slateHtml;
     document.getElementById("parlay").innerHTML = parlayHtml;
     document.getElementById("top-outcomes").innerHTML = topOutcomesHtml;
+    document.getElementById("bullpen-outlook").innerHTML = bullpenOutlookHtml;
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
