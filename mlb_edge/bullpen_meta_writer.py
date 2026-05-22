@@ -155,6 +155,37 @@ def _available_today(rest_days: int, consecutive_days: int) -> bool:
     return True
 
 
+def _normalize_ceiling_tier(top3_pitch_total_72h: int) -> str:
+    """Re-bucket the upstream betting-tier vocabulary (DIAMOND/GOLD/SKIP,
+    inherited from mlb_edge.bullpen_fatigue_blocker.compute_bullpen_workload)
+    into a fatigue-vocabulary that reads naturally in the dashboard's
+    narrative ("X's bullpen is currently STRAINED" vs "X's bullpen is
+    currently SKIP").
+
+    Boundaries chosen to mirror the upstream's WORKLOAD_PITCH_LIMIT=40
+    cliff while giving slightly finer granularity (4 buckets vs 3):
+
+      FRESH       : top3 <= 25  (clearly under the upstream DIAMOND ceiling)
+      NORMAL      : 25 < top3 <= 50  (around the upstream WORKLOAD_PITCH_LIMIT)
+      STRAINED    : 50 < top3 <= 75  (upstream GOLD-equivalent)
+      OVERWORKED  : top3 > 75  (well past upstream SKIP threshold of 60)
+
+    The field name `ceiling_tier` is preserved so the schema version
+    stays at 2 (only the value vocabulary changes; consumers tolerate
+    unknown values via fallback colors)."""
+    try:
+        p = int(top3_pitch_total_72h or 0)
+    except (TypeError, ValueError):
+        return "NORMAL"
+    if p > 75:
+        return "OVERWORKED"
+    if p > 50:
+        return "STRAINED"
+    if p > 25:
+        return "NORMAL"
+    return "FRESH"
+
+
 # --------------------------------------------------------------------------
 # Per-team aggregation
 # --------------------------------------------------------------------------
@@ -250,14 +281,18 @@ def _per_team_block(team: str,
         avg_rest = (sum(r["rest_days"] for r in relievers) / len(relievers)
                     if relievers else 0.0)
 
-        # Pull team's ceiling tier from workload_df
+        # Pull team's top-3 high-leverage workload from workload_df.
+        # NOTE: the upstream ceiling_tier field uses betting-tier vocabulary
+        # (DIAMOND/GOLD/SKIP, inherited from bullpen_fatigue_blocker), which
+        # reads awkwardly in a fatigue-narrative context ("X's bullpen is
+        # currently SKIP").  We discard the upstream value and recompute via
+        # _normalize_ceiling_tier() to get FRESH/NORMAL/STRAINED/OVERWORKED.
         wl_row = workload_df[workload_df["team"] == team]
         if not wl_row.empty:
             top3_72h = int(wl_row.iloc[0].get("top3_pitch_total_72h", 0) or 0)
-            tier = str(wl_row.iloc[0].get("ceiling_tier", "NORMAL"))
         else:
             top3_72h = 0
-            tier = "NORMAL"
+        tier = _normalize_ceiling_tier(top3_72h)
 
         return {
             "team_summary": {
