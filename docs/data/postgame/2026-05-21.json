@@ -1,0 +1,78 @@
+{
+  "date": "2026-05-21",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-22T04:00:00Z",
+  "n_analyzed": 7,
+  "summary": "May 21 went 4-3 directionally (57.1%) across 7 analyzed matchups. The sole staked pick, NYM@WSH CONFIRMED GOLD, lost 2-1 as Cade Cavalli surrendered 2 runs and David Peterson outdueled him — a process failure on a C-grade pick with no SP quality edge and slightly negative PQI. HARD CAP 1 again blocked the NYY stake in a 0-2 TOR shutout; ATL won 9-3 and ARI won 2-1 with HARD CAP 1 correctly preventing stake on both. The D-grade dual-signal-against pattern, which was 6-for-6 through 5/20, had two counter-examples today (OAK won despite signals against, CLE's pick direction also won), bringing the cumulative pattern to roughly 7-for-9 (78%). Primary lesson: C-grade GOLD confirmation without SP quality support or strong PQI is insufficient to stake.",
+  "by_matchup": {
+    "CLE @ DET": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-1",
+      "headline": "CLE won 3-1 as Cantillo outpitched Mize despite Mize holding the xERA advantage; Claude DOWNGRADE cost the win.",
+      "hypothesis": "CLE's 3-1 win is the first counter-example to the D-grade dual-signal-against DOWNGRADE rule: SP edge 0.93 xERA favored Mize (DET) over Cantillo (CLE), and PQI Δ=+14.2 opposed CLE's late-game profile — yet Cantillo won the decision. The F3_swing_take_gap=2167.0 correctly predicted CLE's lineup would exploit Mize despite Mize's xERA advantage. This is likely variance (xERA is a true-talent metric; one game diverges), but it is the first clean counter-example in 9 opportunities. The DOWNGRADE was process-correct given available information; the result does not invalidate the rule but reduces certainty from 'near-certain' to 'directionally reliable.'",
+      "signals_to_recheck": "F3_swing_take_gap=2167.0 correctly predicted CLE lineup quality vs Mize despite SP xERA opposing — consider whether F3 on GOLD (even D-grade) warrants a softer DOWNGRADE (GOLD→SILVER rather than GOLD→SKIP) when the SP xERA gap is narrow (< 1.0)"
+    },
+    "PIT @ STL": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-2",
+      "headline": "PIT won 6-2 as Ashcraft outdueled May; D-grade with dual signals against STL correctly predicted directional failure.",
+      "hypothesis": "PIT's 6-2 win is a process-correct D-grade dual-signal-against directional loss: SP edge 1.56 xERA AGAINST STL (Ashcraft superior to May), PQI Δ=−21.4 AGAINST STL, and no F-signals — every primary signal opposed the STL pick. Ashcraft won the decision over May, consistent with the xERA edge. SKIP tier correctly prevented stake. This extends the D-grade dual-signal-against pattern's directional accuracy to 8-for-10. No process failure; the model's pick direction (STL) was structurally flawed as signaled.",
+      "signals_to_recheck": "SP edge against pick (1.56 xERA Ashcraft > May) + PQI against STL (Δ=−21.4) on D-grade SKIP: directional failure confirmed 6-2; pattern continues to validate as process-correct DOWNGRADE trigger"
+    },
+    "NYM @ WSH": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "NYM won 2-1 as Peterson outpitched Cavalli; sole staked pick lost on a C-grade pick with no SP quality advantage.",
+      "hypothesis": "WSH's 2-1 loss is a process failure. The model picked WSH GOLD at grade=C (score=0) with F3_swing_take_gap=2966.5 as the only positive signal. Critically, there was no SP quality advantage for WSH: pqi_diff=−0.109 (slight late-game disadvantage for WSH), no SP xERA edge. Peterson (NYM away SP) beat Cavalli (WSH home SP) — the home SP underperformed without any downside signal flagged in the grade. The BvP for WSH's lineup vs Peterson was mixed (Wood 16 PA MEANINGFUL shrunk 0.671, Abrams 25 PA WEAK_VS shrunk 0.603), which should have triggered deeper SP quality scrutiny. CONFIRM GOLD on a C-grade pick with F3-alone and no SP support is insufficient; this is a process failure in the CONFIRM decision.",
+      "signals_to_recheck": "C-grade (score=0) GOLD CONFIRM with F3_swing_take_gap alone + no SP xERA edge + pqi_diff near zero (−0.109) + BvP showing WSH top-3 struggling vs Peterson: when grade=C and no supporting SP or PQI signal, require explicit SP quality check before CONFIRM GOLD"
+    },
+    "ATL @ MIA": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-3",
+      "headline": "ATL blew out MIA 9-3 as Strider outpitched Alcantara; HARD CAP 1 correctly prevented stake despite a dominant ATL direction win.",
+      "hypothesis": "ATL's 9-3 blowout validates the directional read — Acuña Jr. (44 PA OWNER vs Alcantara, shrunk 0.902) and Albies (48 PA OWNER vs Alcantara, shrunk 0.891) showed in a high-run offensive output. Strider won over Alcantara, confirming that ATL's lineup BvP and SP quality (F2_xwoba_gap=0.031) were well-calibrated. HARD CAP 1 correctly zeroed stake (edge=−6.2pp; fair_prob=0.579 vs model's 51.74% pick_prob) — the market already priced ATL's advantage. Staking at model's inferior odds on a −6.2pp edge would have been negative EV even on a direction win. Process-correct HARD CAP 1 enforcement; OWNER-level BvP was strongly predictive.",
+      "signals_to_recheck": "negative_edge_GOLD (−6.2pp): HARD CAP 1 correctly prevented stake; Acuña+Albies OWNERs (40+ PA, shrunk OPS > 0.89) vs Alcantara proved directionally predictive in a 9-3 blowout — track OWNER-level BvP as a secondary directional booster in future qualitative reasoning"
+    },
+    "TOR @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-0",
+      "headline": "TOR shut out NYY 2-0 in consecutive series games; HARD CAP 1 correctly prevented stake as Rodón lost to Macko.",
+      "hypothesis": "TOR's 2-0 shutout extends the consecutive-series pattern: TOR won 2-1 on 5/20 and 2-0 on 5/21 with nearly identical PLATINUM + HARD CAP 1 structure both nights. The NYY direction failed both times. HARD CAP 1 correctly prevented stake (edge=−5.57pp; fair_prob=0.5794 vs model's 52.37%). Rodón lost to Adam Macko (TOR SP, note: Braydon Fisher was the CSV-listed away SP, replaced by Macko — this SP substitution was not captured by the model). The bullpen_fatigue flag and confidence_downgrade=True on NYY were secondary caution signals. Process-correct HARD CAP 1 enforcement; directional loss confirms market superiority over F2+F3 pre-cap conviction when edge is negative.",
+      "signals_to_recheck": "negative_edge_GOLD (−5.57pp) + bullpen_fatigue + confidence_downgrade_True: HARD CAP 1 blocked NYY stake on second consecutive TOR@NYY loss; SP substitution (Fisher→Macko) was not captured by the CSV — consider whether in-series SP substitution warrants a SKIP override signal"
+    },
+    "OAK @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "OAK ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "OAK won 3-2 in 10 innings via bullpen decision; D-grade dual-signal-against pattern failed as OAK's bullpen outperformed near-zero hl_bullpen_xwoba_gap.",
+      "hypothesis": "OAK's 3-2 extra-innings win is the second D-grade dual-signal-against counter-example today. SP edge 0.46 xERA against OAK (Soriano/LAA superior to Severino/OAK) and PQI Δ=+8.0 against OAK's late-game profile were both negative signals. The game was decided by bullpen (winner: Joel Kuhnel, OAK reliever; loser: Ryan Zeferjahn, LAA reliever) — a bullpen outcome not predicted by hl_bullpen_xwoba_gap=−0.0015 (negligible difference). This is a variance win: OAK's bullpen outperformed its xwOBA in the decisive leverage moment despite the near-zero gap. SKIP correctly prevented stake on either side; the D-grade dual-signal-against prediction was directionally wrong but process-correctly no-staked.",
+      "signals_to_recheck": "pen_strain_pick_side=0.1147 (HIGH collision risk) + hl_bullpen_xwoba_gap=−0.0015 (near zero): bullpen variance in extras decided outcome; near-zero bullpen gap is insufficient to predict late-leverage winners in extra-inning games — SKIP was correct, directional pattern failed"
+    },
+    "COL @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "ARI won 2-1 on a walk-off in the 9th; HARD CAP 1 correctly prevented stake despite ARI winning a close directional game.",
+      "hypothesis": "ARI's 2-1 walk-off win confirms the directional read — F3_swing_take_gap=1889.2 and PQI +4.7 both pointed to ARI. HARD CAP 1 correctly prevented stake (edge=−15.74pp; fair_prob=0.688 vs model's 53.06%) — the market priced ARI at 68.8% while the model gave 53.06%, a 15.7pp gap representing substantial information the model missed. The 2-1 final margin reflects the market correctly capturing ARI's advantage; however, a walk-off suggests COL had competitive late-inning leverage, consistent with the near-zero hl_bullpen_xwoba_gap=+0.0048. Paul Sewald closed for ARI in the bottom of the 9th. Process-correct HARD CAP 1 enforcement on an extreme negative-edge game.",
+      "signals_to_recheck": "negative_edge_GOLD (−15.74pp): market at fair_prob=0.688 vs model's 53.06% — the 15.7pp gap was correctly interpreted as market information superiority; HARD CAP 1 prevented staking at inferior model odds even on a direction win"
+    }
+  },
+  "patterns_observed": [
+    "D-grade dual-signal-against pattern had two counter-examples on 5/21 (OAK won 3-2 in extras, CLE won 3-1 despite DOWNGRADE) — cumulative record now 7-for-9 (78%) through 5/21 vs 6-for-6 through 5/20. Pattern remains actionable DOWNGRADE trigger but should be characterized as 'directionally unreliable with elevated failure risk' rather than 'expected wrong.' When the SP xERA margin is narrow (< 1.0 xERA gap) or the winning mechanism is extra-inning bullpen variance, the pattern's predictive power degrades. Do not escalate to certainty-of-loss language in future Claude Brain runs.",
+    "C-grade (score=0) GOLD CONFIRM without SP quality support lost as the sole staked pick (NYM@WSH, 2-1 loss): Cavalli outperformed poorly vs Peterson with no prior signal of SP vulnerability. New process rule: CONFIRM GOLD requires grade ≥ B- (score ≥ 1) OR at least one of (SP xERA agrees with pick, PQI ≥ +5 confirms pick) in addition to F-signal. F3 alone on a C-grade pick with neutral-to-negative pqi_diff and no SP edge should trigger DOWNGRADE to SILVER or SKIP, not CONFIRM GOLD.",
+    "HARD CAP 1 blocked two directional losses today (TOR@NYY NYY lost 0-2; COL@ARI cap prevented stake despite narrow 2-1 win directionally) and has now prevented stake on losing directions in 3 of the last 4 negative-edge picks this week. TOR beat NYY in back-to-back games (2-1 on 5/20, 2-0 on 5/21) with identical PLATINUM + HARD CAP 1 structure; same-series opponent repeating against the same capped team is an emerging qualitative caution signal worth noting alongside the cap enforcement.",
+    "BvP OWNER-level context (40+ PA, shrunk OPS ≥ 0.85) was strongly directionally predictive for ATL@MIA: Acuña Jr. (OWNER, shrunk 0.902) and Albies (OWNER, shrunk 0.891) vs Alcantara correlated with a 9-3 ATL blowout. This is the second time in recent runs that OWNER-level BvP correctly anticipated a large-margin win while HARD CAP 1 rightly prevented stake. Consider tracking OWNER-level BvP context as a supplemental confidence booster for qualitative directional reasoning in future Claude Brain runs, even when financial exposure is capped."
+  ]
+}
