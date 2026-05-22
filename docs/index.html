@@ -3544,8 +3544,9 @@ function _bullpenTeamNarrative(teamBlock, teamLabel) {
   // Top reliever summary line
   if (relievers.length) {
     const top = relievers[0];
+    const topName = top.name || `pitcher #${top.pitcher_id}`;
     sentences.push(
-      `Most-used arm: pitcher #${top.pitcher_id} ` +
+      `Most-used arm: <strong>${topName}</strong> ` +
       `(${top.pitches_72h}p in 72h, last LI avg ${top.avg_leverage_last_3 || 0}) ` +
       _bullpenFlagBadge(top.fatigue_flag) + `.`
     );
@@ -3573,8 +3574,9 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
              `</tr></thead><tbody>`;
   for (const r of relievers) {
     const availStyle = r.available_today ? "" : "opacity:0.55;text-decoration:line-through;";
+    const displayName = r.name || `#${r.pitcher_id}`;
     html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);${availStyle}">` +
-            `<td style="padding:0.2rem 0.3rem;">#${r.pitcher_id}</td>` +
+            `<td style="padding:0.2rem 0.3rem;">${displayName}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.rest_days}d</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.consecutive_days}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
@@ -4368,7 +4370,9 @@ async function loadSlate(date, { bust = false } = {}) {
       const _bp = await fetch(`./data/bullpen_meta_${date}.json`, {cache: "no-store"});
       if (_bp.ok) {
         const bpData = await _bp.json();
-        if (bpData && bpData.schema_version === 1) {
+        // Accept schema versions 1 and 2 (v2 added pitcher `name` field).
+        // Future schema bumps must be added here explicitly.
+        if (bpData && (bpData.schema_version === 1 || bpData.schema_version === 2)) {
           window.__bullpenMeta = bpData;
         } else {
           window.__bullpenMeta = null;

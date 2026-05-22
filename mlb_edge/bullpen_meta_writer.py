@@ -70,6 +70,8 @@ from __future__ import annotations
 import json
 import logging
 import os
+import urllib.error
+import urllib.request
 from datetime import date, datetime, timezone
 from typing import Dict, List, Optional, Set
 
@@ -77,10 +79,55 @@ import pandas as pd
 
 log = logging.getLogger(__name__)
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2  # bumped from 1: added `name` field on each reliever
 DEFAULT_TOP_N_RELIEVERS = 8
 RECENT_APPEARANCES_LOOKBACK_DAYS = 7
 HIGH_LEVERAGE_THRESHOLD = 1.5  # mirrors bullpen_fatigue_blocker default
+STATSAPI_PEOPLE_URL = "https://statsapi.mlb.com/api/v1/people"
+
+
+# --------------------------------------------------------------------------
+# Pitcher name resolution — single batch fetch per slate.
+# --------------------------------------------------------------------------
+def _resolve_pitcher_names(pitcher_ids: List[int],
+                           timeout_sec: int = 15) -> Dict[int, str]:
+    """Resolve a list of pitcher IDs to full names via the MLB Stats API
+    `/people?personIds=...` batch endpoint.  One HTTP call per slate.
+
+    Best-effort: returns whatever the API returned; missing IDs stay
+    absent from the returned dict (caller falls back to `#<id>` rendering).
+    Failure (network error, timeout, HTTP error) returns an empty dict
+    rather than raising — the writer continues with name=None for every
+    reliever and the dashboard's fallback rendering kicks in.
+    """
+    out: Dict[int, str] = {}
+    if not pitcher_ids:
+        return out
+    # De-dup + sort for stable URLs
+    unique_ids = sorted(set(int(pid) for pid in pitcher_ids if pid))
+    if not unique_ids:
+        return out
+    # MLB Stats API accepts comma-separated personIds.  Their docs don't
+    # publish a hard limit but ~100 IDs per call has worked historically
+    # in this codebase (see data_sources/savant_bat_tracking.py).
+    url = f"{STATSAPI_PEOPLE_URL}?personIds=" + ",".join(str(i) for i in unique_ids)
+    try:
+        with urllib.request.urlopen(url, timeout=timeout_sec) as r:
+            payload = json.loads(r.read())
+        for p in payload.get("people", []) or []:
+            pid = p.get("id")
+            name = p.get("fullName") or p.get("lastFirstName") or None
+            if pid is not None and name:
+                out[int(pid)] = str(name)
+        log.info("[bullpen_meta] resolved %d/%d pitcher names",
+                 len(out), len(unique_ids))
+    except (urllib.error.URLError, urllib.error.HTTPError,
+            json.JSONDecodeError, ValueError, TimeoutError) as e:
+        log.warning("[bullpen_meta] name resolution failed (%d ids): %s",
+                    len(unique_ids), e)
+    except Exception as e:
+        log.warning("[bullpen_meta] name resolution unexpected error: %s", e)
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -116,7 +163,8 @@ def _per_team_block(team: str,
                     rest_df: pd.DataFrame,
                     workload_df: pd.DataFrame,
                     slate_ts: pd.Timestamp,
-                    top_n: int = DEFAULT_TOP_N_RELIEVERS) -> Dict:
+                    top_n: int = DEFAULT_TOP_N_RELIEVERS,
+                    name_map: Optional[Dict[int, str]] = None) -> Dict:
     """Build the per-team JSON block.  Returns the schema described in
     the module docstring; degrades to {unavailable: true} on data gaps."""
     try:
@@ -176,14 +224,17 @@ def _per_team_block(team: str,
         merged = (merged.sort_values("pitches_72h", ascending=False)
                   .head(top_n).reset_index(drop=True))
 
-        # Per-reliever dict
+        # Per-reliever dict (name resolved from name_map if available;
+        # falls back to None so the dashboard can render `#<id>` instead)
         relievers: List[Dict] = []
         for _, r in merged.iterrows():
             rest = int(r["rest_days"]) if pd.notna(r["rest_days"]) else 99
             consec = int(r["consecutive_days"]) if pd.notna(r["consecutive_days"]) else 1
             p72 = int(r["pitches_72h"]) if pd.notna(r["pitches_72h"]) else 0
+            pid = int(r["pitcher_id"])
             relievers.append({
-                "pitcher_id":              int(r["pitcher_id"]),
+                "pitcher_id":              pid,
+                "name":                    (name_map or {}).get(pid),
                 "rest_days":               rest,
                 "consecutive_days":        consec,
                 "pitches_72h":             p72,
@@ -284,6 +335,18 @@ def write_bullpen_meta(slate_date: date,
         if teams_on_slate is None:
             teams_on_slate = sorted(set(pitch_log["team"].dropna().unique()))
 
+        # Batch-resolve pitcher names for every reliever on the relevant
+        # teams in a single MLB Stats API call (best-effort).  Done BEFORE
+        # per-team blocks are built so names land in the JSON directly.
+        relevant_pl = pitch_log[
+            (~pitch_log["is_starter"])
+            & (pitch_log["team"].isin(teams_on_slate))
+        ]
+        unique_pids = sorted(set(
+            int(p) for p in relevant_pl["pitcher_id"].dropna().tolist() if p
+        ))
+        name_map = _resolve_pitcher_names(unique_pids)
+
         teams_block: Dict[str, Dict] = {}
         for team in teams_on_slate:
             teams_block[team] = _per_team_block(
@@ -293,6 +356,7 @@ def write_bullpen_meta(slate_date: date,
                 workload_df=workload_df if workload_df is not None else pd.DataFrame(),
                 slate_ts=slate_ts,
                 top_n=top_n_relievers,
+                name_map=name_map,
             )
 
         payload = {
