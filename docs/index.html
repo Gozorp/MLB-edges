@@ -3927,7 +3927,17 @@ function renderSlate(rows, gradeMap, results) {
       const initial = side === "OVER" ? "O" : side === "UNDER" ? "U" : side;
       const lineStr = isFinite(line) ? line.toFixed(1) : "?";
       const edgeStr = isFinite(edge) ? ` ${edge >= 0 ? "+" : ""}${edge.toFixed(1)}r` : "";
-      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}`;
+      // 2026-05-23: surface which sportsbook the line came from so the user
+      // can tell at a glance whether they're looking at the Pinnacle number
+      // (sharper) or the Bovada fill-in (broader morning coverage).
+      const _bookRaw = (tot.book || "").toString().trim().toLowerCase();
+      const _bookLabel = _bookRaw === "pinnacle" ? "Pinnacle"
+                        : _bookRaw === "bovada"  ? "Bovada"
+                        : _bookRaw === "draftkings" ? "DraftKings"
+                        : _bookRaw ? _bookRaw[0].toUpperCase() + _bookRaw.slice(1)
+                        : "";
+      const _bookSuffix = _bookLabel ? `\nSource: ${_bookLabel}` : "";
+      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}${_bookSuffix}`;
       ouCell = `<td><span class="ou-pill ${cls}" title="${tooltip}">${arrow} ${initial} ${lineStr}${edgeStr}</span></td>`;
     } else if (tot && tot.pred_runs !== undefined && tot.pred_runs !== "" && isFinite(parseFloat(tot.pred_runs))) {
       // pred_runs-only mode: market columns blank, but model output present.
