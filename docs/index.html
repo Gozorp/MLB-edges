@@ -462,6 +462,52 @@
     color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem;
   }
 
+
+/* ============================================================
+ * Togglable cards (2026-05-23)
+ * ============================================================
+ * Every `.card > h2` and `.card > h3` (top-level only) acts as a
+ * clickable accordion header.  Click toggles the visibility of every
+ * subsequent sibling element within the card.  Visual: a chevron
+ * (▾) rotates 90° when collapsed, gives the user an obvious affordance
+ * without changing the layout.  Implemented via event delegation
+ * below so it works for both static cards (parlay, about) and
+ * JS-rendered cards (slate, top-outcomes, bullpen-outlook).
+ */
+.card > h2,
+.card > h3.card-toggle {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+.card > h2:hover,
+.card > h3.card-toggle:hover {
+  opacity: 0.85;
+}
+.card > h2::before,
+.card > h3.card-toggle::before {
+  content: "▾";
+  display: inline-block;
+  font-size: 0.78em;
+  color: var(--muted, #888);
+  transition: transform 0.18s ease;
+  width: 0.9em;
+  text-align: center;
+}
+.card > h2.collapsed::before,
+.card > h3.card-toggle.collapsed::before {
+  transform: rotate(-90deg);
+}
+.card > h2.card-no-toggle,
+.card > h2.card-no-toggle::before {
+  cursor: default;
+}
+.card > h2.card-no-toggle::before {
+  content: "";
+  width: 0;
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -4916,6 +4962,41 @@ async function _initAskClaude() {
   });
 }
 document.addEventListener("DOMContentLoaded", _initAskClaude);
+
+// ============================================================
+// Togglable cards (2026-05-23) — event-delegation listener.
+// Wires every `.card > h2` (and opt-in `.card > h3.card-toggle`)
+// as a collapsible header.  Click toggles display of all
+// subsequent sibling elements within the card.  Works for
+// dynamically-rendered cards because we listen at the document
+// level via event-delegation, not by attaching handlers per
+// element at load time.
+// ============================================================
+document.addEventListener("click", function (e) {
+  // Find the nearest top-level card header that was clicked.
+  // We require the h2/h3 to be a *direct* child of .card so clicks
+  // inside nested h2s (e.g. inside the slate's row narrative) don't
+  // collapse the parent card.
+  const t = e.target.closest("h2, h3");
+  if (!t) return;
+  const parent = t.parentElement;
+  if (!parent || !parent.classList.contains("card")) return;
+  if (t.tagName === "H3" && !t.classList.contains("card-toggle")) return;
+  if (t.classList.contains("card-no-toggle")) return;
+  // Prevent text-selection-double-click from also collapsing.
+  if (e.detail && e.detail > 1 && window.getSelection &&
+      String(window.getSelection() || "").length > 0) {
+    return;
+  }
+  const willCollapse = !t.classList.contains("collapsed");
+  t.classList.toggle("collapsed", willCollapse);
+  // Toggle every sibling AFTER the header (preserve siblings BEFORE).
+  let sib = t.nextElementSibling;
+  while (sib) {
+    sib.style.display = willCollapse ? "none" : "";
+    sib = sib.nextElementSibling;
+  }
+});
 
 </script>
 
