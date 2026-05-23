@@ -883,6 +883,131 @@ def run(slate_date: date,
                             "(continuing without stress columns)", e)
 
             # ----------------------------------------------------------
+            # Monte Carlo PA simulator — SHADOW MODE (Phase 1, 2026-05-23)
+            # ----------------------------------------------------------
+            # Adds pred_winp_mc + pred_runs_mc columns to the diag CSV.
+            # XGBoost predictions (p_model, full_prob, etc.) are unchanged;
+            # this is observability only. See mlb_edge/monte_carlo.py for
+            # the simulator and mlb_edge/player_rates.py for the per-player
+            # outcome-rate derivation. Best-effort per Rule 6 — any failure
+            # leaves the columns as empty strings and the rest of the diag
+            # CSV ships normally.
+            try:
+                from . import monte_carlo as _mc
+                from .stadiums import get_stadium as _get_stadium
+                # Build matchup -> GameMeta lookup from the lineup snapshot
+                # already captured in `ctx`. Skip rows whose lineups aren't
+                # confirmed yet OR have <9 batters posted.
+                _mc_lineups = ctx.get("lineups") or []
+                _mc_meta_by_matchup = {}
+                for _m in _mc_lineups:
+                    try:
+                        _h = normalize_team(getattr(_m, "home_abbr", "") or "")
+                        _a = normalize_team(getattr(_m, "away_abbr", "") or "")
+                        if _h and _a:
+                            _mc_meta_by_matchup[f"{_a} @ {_h}"] = _m
+                    except Exception:
+                        continue
+
+                winp_mc_col = []
+                runs_mc_col = []
+                _mc_t0 = pd.Timestamp.utcnow()
+                _mc_n_ok = 0
+                _mc_n_skip = 0
+                for _, _drow in table.iterrows():
+                    _matchup = _drow.get("matchup", "") or ""
+                    _meta = _mc_meta_by_matchup.get(_matchup)
+                    if _meta is None:
+                        winp_mc_col.append(""); runs_mc_col.append("")
+                        _mc_n_skip += 1
+                        continue
+                    try:
+                        _home_pids = [int(s.batter_id) for s in
+                                      (getattr(_meta, "home_lineup", []) or [])
+                                      if getattr(s, "batter_id", None)]
+                        _away_pids = [int(s.batter_id) for s in
+                                      (getattr(_meta, "away_lineup", []) or [])
+                                      if getattr(s, "batter_id", None)]
+                        _home_sp_id = getattr(_meta, "home_sp_id", None)
+                        _away_sp_id = getattr(_meta, "away_sp_id", None)
+                        if (len(_home_pids) < 9 or len(_away_pids) < 9
+                                or not _home_sp_id or not _away_sp_id):
+                            winp_mc_col.append(""); runs_mc_col.append("")
+                            _mc_n_skip += 1
+                            continue
+                        # Park factor from stadium table (home team).
+                        _away_abbr, _, _home_abbr = _matchup.partition(" @ ")
+                        _stadium = _get_stadium(_home_abbr)
+                        _park_runs = float(_stadium.get("runs", 100))
+                        # SP rates from the preds row we already scored.
+                        _pred_row = preds[
+                            (preds["home_team"].apply(normalize_team) == _home_abbr) &
+                            (preds["away_team"].apply(normalize_team) == _away_abbr)
+                        ]
+                        _h_k = _h_bb = _h_xw = None
+                        _a_k = _a_bb = _a_xw = None
+                        if not _pred_row.empty:
+                            _g = _pred_row.iloc[0]
+                            _h_k = _g.get("home_sp_k_pct")
+                            _h_bb = _g.get("home_sp_bb_pct")
+                            _h_xw = _g.get("home_sp_xwoba_allowed")
+                            _a_k = _g.get("away_sp_k_pct")
+                            _a_bb = _g.get("away_sp_bb_pct")
+                            _a_xw = _g.get("away_sp_xwoba_allowed")
+                        _ump_k = _drow.get("ump_k_pct_delta")
+                        _ump_k_f = float(_ump_k) if pd.notna(_ump_k) else 0.0
+                        _mc_result = _mc.simulate_slate_row(
+                            date=slate_date.isoformat(),
+                            home_team=_home_abbr, away_team=_away_abbr,
+                            home_lineup_ids=_home_pids,
+                            away_lineup_ids=_away_pids,
+                            home_sp_id=int(_home_sp_id),
+                            away_sp_id=int(_away_sp_id),
+                            home_sp_k_pct=_h_k, home_sp_bb_pct=_h_bb,
+                            home_sp_xwoba=_h_xw,
+                            away_sp_k_pct=_a_k, away_sp_bb_pct=_a_bb,
+                            away_sp_xwoba=_a_xw,
+                            park_runs_factor=_park_runs,
+                            ump_k_pct_delta=_ump_k_f,
+                            n_simulations=10000,
+                            rng_seed=42,  # deterministic for daily reproducibility
+                        )
+                        if _mc_result.get("n_simulations", 0) > 0:
+                            # Convert to pick-perspective: pred_winp_mc is the
+                            # MC win-prob for the *picked* team. The diag row
+                            # already knows whether we picked home or away
+                            # (look at `pick` column == home_abbr means home).
+                            _pick = _drow.get("pick", "")
+                            _winp = (_mc_result["home_winp"] if _pick == _home_abbr
+                                     else _mc_result["away_winp"])
+                            winp_mc_col.append(round(float(_winp), 4))
+                            runs_mc_col.append(round(
+                                float(_mc_result["mean_total_runs"]), 2))
+                            _mc_n_ok += 1
+                        else:
+                            winp_mc_col.append(""); runs_mc_col.append("")
+                            _mc_n_skip += 1
+                    except Exception as _e_inner:
+                        log.warning("[mc] simulate_slate_row failed for %s: %s",
+                                    _matchup, _e_inner)
+                        winp_mc_col.append(""); runs_mc_col.append("")
+                        _mc_n_skip += 1
+                table["pred_winp_mc"] = winp_mc_col
+                table["pred_runs_mc"] = runs_mc_col
+                _mc_elapsed = (pd.Timestamp.utcnow() - _mc_t0).total_seconds()
+                log.info("[mc] shadow predictions: %d ok / %d skip in %.1fs",
+                         _mc_n_ok, _mc_n_skip, _mc_elapsed)
+            except Exception as e:
+                log.warning("[mc] shadow simulator failed: %s "
+                            "(continuing without MC columns)", e)
+                # Best-effort: still populate empty columns so the schema
+                # is stable for downstream consumers.
+                if "pred_winp_mc" not in table.columns:
+                    table["pred_winp_mc"] = ""
+                if "pred_runs_mc" not in table.columns:
+                    table["pred_runs_mc"] = ""
+
+            # ----------------------------------------------------------
             # SOFT CAP 6.5 — calibration-suspect edge band [+18, +25]pp
             # (2026-05-14).  HARD CAP 6 fires at edge > +25pp on the
             # premise that the isotonic calibrator hallucinates in the
