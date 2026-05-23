@@ -4631,6 +4631,13 @@ function _addSeriesSuffix(rows, seriesMeta) {
 // the row's matchup before splitting.  Best-effort: missing
 // results entry or unknown status returns false (assume playable).
 function _isPostponedRow(row, results) {
+  // BROADENED 2026-05-23: also returns true for games that
+  // are already Final.  The narrow postponement-only filter
+  // missed cases where the pipeline baked a pick for an
+  // already-played game (CSV references a game whose MLB
+  // status is now Final).  Either way the game isn't
+  // bettable now, so it shouldn't appear in forward-looking
+  // picks displays.  Name preserved for callsite stability.
   if (!row || !results) return false;
   const raw = (row.matchup || "").trim();
   if (!raw) return false;
@@ -4640,7 +4647,10 @@ function _isPostponedRow(row, results) {
   const [away, home] = parts.map(p => p.trim());
   const entry = results[`${away}@${home}`] || results[`${home}@${away}`];
   if (!entry) return false;
-  return /postpon|suspend|cancel/i.test(entry.statusText || "");
+  const txt = (entry.statusText || "").toLowerCase();
+  if (/postpon|suspend|cancel/.test(txt)) return true;
+  if (entry.isFinal === true) return true;
+  return false;
 }
 
 function _dedupDoubleheaders(rows) {
