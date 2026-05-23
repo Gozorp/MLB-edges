@@ -4500,7 +4500,7 @@ async function silentRefresh(date) {
     window.__poll.lastSig = sig;
 
     // Data changed — re-render and flash the slate to indicate update
-    const rows = _dedupDoubleheaders(parseCSV(csvText));
+    const rows = _dedupDoubleheaders(_addSeriesSuffix(parseCSV(csvText), window.__seriesMeta));
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
     const results = await fetchMLBResults(date);
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
@@ -4585,6 +4585,39 @@ function _addPendingGames(rows, results) {
 // suffixes — preserves the original key for the first row's
 // downstream consumers (postgame archive, claude_picks) and gives
 // the dashboard a unique label for each game.
+
+// Annotate each row's matchup with its series-game indicator
+// (e.g. "TB @ NYY (G2 of 3)") so the dashboard shows context
+// for 3-game series that span consecutive days.  Looks up the
+// matchup in window.__seriesMeta (loaded from
+// docs/data/series_meta_<date>.json by loadSlate).  Per-matchup
+// labels are indexed by occurrence so doubleheaders get correct
+// G1-of-N / G2-of-N labels.  Best-effort: missing seriesMeta or
+// missing matchup entry passes the row through unchanged.  MUST
+// be called BEFORE _dedupDoubleheaders so the suffix lands on
+// the canonical key (otherwise the 2nd game would get
+// "AWAY @ HOME (G2) (G2 of 3)" double-annotation).
+function _addSeriesSuffix(rows, seriesMeta) {
+  if (!Array.isArray(rows) || rows.length === 0) return rows;
+  if (!seriesMeta || !seriesMeta.matchups) return rows;
+  const counts = {};
+  for (const r of rows) {
+    const m = (r && r.matchup || "").trim();
+    if (!m) continue;
+    const labels = seriesMeta.matchups[m];
+    if (!Array.isArray(labels) || labels.length === 0) continue;
+    const occ = counts[m] || 0;
+    counts[m] = occ + 1;
+    const entry = labels[Math.min(occ, labels.length - 1)];
+    const lbl = entry && entry.label;
+    if (lbl && !r.matchup.includes("(G")) {
+      // Don't double-annotate if a prior pass already suffixed.
+      r.matchup = `${m} (${lbl})`;
+    }
+  }
+  return rows;
+}
+
 function _dedupDoubleheaders(rows) {
   if (!Array.isArray(rows) || rows.length === 0) return rows;
   const counts = {};
@@ -4622,15 +4655,25 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
+      fetch(`./data/series_meta_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
     ]);
+
+    // Series-meta sidecar (series-game indicator).  Schema in
+    // mlb_edge/series_meta_writer.py.  Accept v1 only.  Failure is
+    // silent: rows render without "(G2 of 3)" suffix.
+    window.__seriesMeta = (smR.status === "fulfilled" && smR.value
+                           && smR.value.schema_version === 1)
+                          ? smR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
-    const rawRows = csvR.status === "fulfilled" ? _dedupDoubleheaders(parseCSV(csvR.value)) : [];
+    const rawRows = csvR.status === "fulfilled" ? _dedupDoubleheaders(_addSeriesSuffix(parseCSV(csvR.value), window.__seriesMeta)) : [];
     const results = resR.status === "fulfilled" ? resR.value : {};
     // Augment with synthetic pending rows for any MLB games missing from the CSV
     const rows = _addPendingGames(rawRows, results);

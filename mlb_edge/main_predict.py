@@ -621,6 +621,26 @@ def run(slate_date: date,
                     _e_bp_meta)
 
     # ------------------------------------------------------------------
+    # [step 2.6/5] Series-meta sidecar — series-game indicator
+    # ------------------------------------------------------------------
+    # Writes docs/data/series_meta_<slate_date>.json with each
+    # game's "G2 of 3" label so the dashboard can show users
+    # which game of a multi-game series each row represents.
+    # Eliminates confusion when the same matchup (e.g. TB @ NYY)
+    # appears on consecutive days.  Best-effort per Rule 6.
+    try:
+        from .series_meta_writer import write_series_meta
+        sm_path = write_series_meta(slate_date=slate_date,
+                                    out_dir="docs/data")
+        if sm_path:
+            log.info("[series_meta] sidecar written: %s", sm_path)
+        else:
+            log.warning("[series_meta] writer returned None - skipping")
+    except Exception as _e_sm:
+        log.warning("[series_meta] sidecar write failed (continuing): %s",
+                    _e_sm)
+
+    # ------------------------------------------------------------------
     # Phase 4 — Bayesian shrinkage shadow prediction (2026-05-03)
     # ------------------------------------------------------------------
     # When USE_BAYESIAN_SHRINKAGE_SHADOW=True (default), we score a SECOND
