@@ -178,6 +178,7 @@
   .result-chip.win  { background: rgba(63, 185, 80, 0.18); color: var(--green); }
   .result-chip.loss { background: rgba(248, 81, 73, 0.18); color: var(--red); }
   .result-chip.tbd  { background: rgba(139, 148, 158, 0.18); color: var(--muted); }
+  .result-chip.push { background: rgba(210, 153, 34, 0.18); color: #d29922; }
   .result-banner {
     display: flex; align-items: center; gap: 0.6rem;
     padding: 0.6rem 0.9rem; margin-bottom: 0.9rem;
@@ -3731,16 +3732,17 @@ async function _propDeepAnalysisOnClick(probeId) {
   }
 }
 
-function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload) {
+function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload, resultBadge) {
   const probeId = `prop-deep-${propType}-${idx}`;
   // Stash payload for the click handler to recover.
   window.__propPayloads[probeId] = {propType, payload};
   const deepContainer = `<div id="${probeId}" style="margin-top:0.4rem;font-size:0.86rem;display:none;` +
                         `padding:0.5rem;border-left:2px solid var(--accent);background:rgba(255,255,255,0.02);">` +
                         `</div>`;
+  const badgeHtml = resultBadge ? ` ${resultBadge}` : "";
   return `<div style="padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">` +
          `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;">` +
-         `<div><strong style="color:var(--accent);">#${idx + 1}</strong> ${title}</div>` +
+         `<div><strong style="color:var(--accent);">#${idx + 1}</strong> ${title}${badgeHtml}</div>` +
          `<button class="lt-btn" style="font-size:0.78rem;padding:0.2rem 0.5rem;" ` +
          `onclick="_propDeepAnalysisOnClick('${probeId}')">` +
          `Deep analysis ▼</button>` +
@@ -3750,7 +3752,134 @@ function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload) {
          `</div>`;
 }
 
-function renderTopProbableOutcomes(rows, totalsByMatchup) {
+// ---------- HIT/MISS/PUSH badge helpers for the Top Probable Outcomes panel ----------
+function _resultChipHtml(status) {
+  if (status === "HIT")  return `<span class="result-chip win">✓ HIT</span>`;
+  if (status === "MISS") return `<span class="result-chip loss">✗ MISS</span>`;
+  if (status === "PUSH") return `<span class="result-chip push">— PUSH</span>`;
+  if (status === "TBD")  return `<span class="result-chip tbd">TBD</span>`;
+  return "";
+}
+
+// Section-level "(X HIT / Y MISS / Z TBD)" summary.  Only shown when at least
+// one game in the section is final (i.e., we have at least one non-TBD,
+// non-null status).  PUSH is counted but hidden when zero.
+function _sectionSummary(statuses) {
+  const tally = {HIT: 0, MISS: 0, PUSH: 0, TBD: 0};
+  let anyFinal = false;
+  for (const s of statuses) {
+    if (!s) continue;
+    if (s in tally) tally[s] += 1;
+    if (s === "HIT" || s === "MISS" || s === "PUSH") anyFinal = true;
+  }
+  if (!anyFinal) return "";
+  const parts = [];
+  parts.push(`<span style="color:var(--green);font-weight:600;">${tally.HIT} HIT</span>`);
+  parts.push(`<span style="color:var(--red);font-weight:600;">${tally.MISS} MISS</span>`);
+  if (tally.PUSH) parts.push(`<span style="color:#d29922;font-weight:600;">${tally.PUSH} PUSH</span>`);
+  if (tally.TBD)  parts.push(`<span class="muted">${tally.TBD} TBD</span>`);
+  return ` <span class="muted" style="font-size:0.78rem;font-weight:normal;">(${parts.join(" / ")})</span>`;
+}
+
+// Game ML: did the picked team win?  Uses the existing matchResult helper
+// for matchup-key normalization (handles abbrev aliases).
+function _gameMLStatus(item, results) {
+  const result = matchResult(item._row || {matchup: item.matchup}, results);
+  if (!result) return null;
+  if (result.isFinal === false) return "TBD";
+  if (result.winner == null) return "TBD";
+  const aliasOf = (a) => new Set([a, TEAM_ABBR_ALIASES[a]].filter(Boolean));
+  const picked = aliasOf(item.pick);
+  const winner = aliasOf(result.winner);
+  for (const p of picked) if (winner.has(p)) return "HIT";
+  return "MISS";
+}
+
+// O/U: total runs vs the line, side-aware.  Equal => PUSH.
+function _totalStatus(item, results) {
+  const result = matchResult(item._row || {matchup: item.matchup}, results);
+  if (!result) return null;
+  if (result.isFinal === false) return "TBD";
+  const aSc = result.awayScore, hSc = result.homeScore;
+  if (aSc == null || hSc == null) return "TBD";
+  const total = aSc + hSc;
+  const line = item.line;
+  if (total === line) return "PUSH";
+  if (item.side === "OVER")  return total > line ? "HIT" : "MISS";
+  if (item.side === "UNDER") return total < line ? "HIT" : "MISS";
+  return null;
+}
+
+// Pitcher K: looks up the cached actual-K count keyed by gamePk+pitcherId.
+// Returns null until the prefetch lands; the panel re-renders once it does.
+function _pitcherKStatus(item, results) {
+  const result = matchResult(item._row || {matchup: item.matchup}, results);
+  if (!result) return null;
+  if (result.isFinal === false) return "TBD";
+  const pid = item.team === "home" ? result.homePitcherId : result.awayPitcherId;
+  if (!pid || !result.gamePk) return null;
+  const cache = window.__pitcherKResults || {};
+  const key = `${result.gamePk}:${pid}`;
+  const actualK = cache[key];
+  if (actualK == null) return null;  // boxscore not fetched yet
+  const expected = item.expected_K;
+  if (actualK >= expected) return "HIT";
+  if (actualK < expected - 1.5) return "MISS";
+  return "PUSH";
+}
+
+// Prefetch boxscores in parallel for the K picks whose games are final,
+// cache each pitcher's strikeOuts under `${gamePk}:${pid}`, then re-render
+// the Top Probable Outcomes panel so the K badges appear.  Best-effort:
+// silent no-op when nothing is final / pitcher IDs missing.
+async function _prefetchPitcherKResults(ks, results) {
+  if (!ks || !ks.length || !results) return;
+  if (!window.__pitcherKResults) window.__pitcherKResults = {};
+  const gamePksSeen = new Set();
+  const jobs = [];
+  for (const item of ks) {
+    const result = matchResult(item._row || {matchup: item.matchup}, results);
+    if (!result || !result.isFinal || !result.gamePk) continue;
+    if (gamePksSeen.has(result.gamePk)) continue;
+    gamePksSeen.add(result.gamePk);
+    jobs.push(_fetchBoxscore(result.gamePk).then(box => ({gamePk: result.gamePk, box})));
+  }
+  if (!jobs.length) return;
+  const fetched = await Promise.all(jobs);
+  let anyNew = false;
+  for (const {gamePk, box} of fetched) {
+    if (!box || !box.teams) continue;
+    for (const side of ["away", "home"]) {
+      const teamBox = box.teams[side];
+      if (!teamBox) continue;
+      const players = teamBox.players || {};
+      for (const pkey of Object.keys(players)) {
+        const p = players[pkey] || {};
+        const pid = p.person && p.person.id;
+        if (!pid) continue;
+        const ks = p.stats && p.stats.pitching && p.stats.pitching.strikeOuts;
+        if (ks == null) continue;
+        const cacheKey = `${gamePk}:${pid}`;
+        if (window.__pitcherKResults[cacheKey] !== ks) {
+          window.__pitcherKResults[cacheKey] = ks;
+          anyNew = true;
+        }
+      }
+    }
+  }
+  if (anyNew) {
+    const slate = window.__slate;
+    if (slate && slate.rows && slate.rows.length) {
+      const el = document.getElementById("top-outcomes");
+      if (el) {
+        el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
+      }
+    }
+  }
+}
+
+function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
+  results = results || {};
   const gameMLs = _topGameMLPicks(rows).slice(0, 5);
   const totals = _topTotals(totalsByMatchup, rows).slice(0, 5);
   const ks = _topPitcherKs(rows).slice(0, 5);
@@ -3762,31 +3891,42 @@ function renderTopProbableOutcomes(rows, totalsByMatchup) {
            `check back once lineups are confirmed.</div></div>`;
   }
 
+  // Precompute statuses so we can render both badges and section summaries
+  // without recomputing per card.
+  const mlStatuses = gameMLs.map(it => _gameMLStatus(it, results));
+  const ouStatuses = totals.map(it => _totalStatus(it, results));
+  const kStatuses  = ks.map(it => _pitcherKStatus(it, results));
+
   let html = `<div class="card"><h2>Top Probable Outcomes ` +
              `<span class="muted" style="font-size:0.8rem;font-weight:normal;">— ranked by model conviction across prop categories</span></h2>`;
 
   if (gameMLs.length) {
-    html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs market)</span></h3>`;
+    html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs market)</span>${_sectionSummary(mlStatuses)}</h3>`;
     gameMLs.forEach((item, i) => {
       const title = `${item.pick} ML over ${item.matchup}`;
-      html += _propCard(i, title, "", _narrateGameML(item), "ml", item);
+      html += _propCard(i, title, "", _narrateGameML(item), "ml", item, _resultChipHtml(mlStatuses[i]));
     });
   }
 
   if (totals.length) {
-    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">O/U Totals <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs book-fair)</span></h3>`;
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">O/U Totals <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs book-fair)</span>${_sectionSummary(ouStatuses)}</h3>`;
     totals.forEach((item, i) => {
       const title = `${item.side} ${item.line.toFixed(1)} on ${item.matchup}`;
-      html += _propCard(i, title, "", _narrateTotal(item), "ou", item);
+      html += _propCard(i, title, "", _narrateTotal(item), "ou", item, _resultChipHtml(ouStatuses[i]));
     });
   }
 
   if (ks.length) {
-    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Pitcher Strikeouts <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by expected Ks; no market line)</span></h3>`;
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Pitcher Strikeouts <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by expected Ks; no market line)</span>${_sectionSummary(kStatuses)}</h3>`;
     ks.forEach((item, i) => {
       const title = `${item.name} — ${item.expected_K.toFixed(1)} expected K`;
-      html += _propCard(i, title, "", _narrateKProp(item), "k", item);
+      html += _propCard(i, title, "", _narrateKProp(item), "k", item, _resultChipHtml(kStatuses[i]));
     });
+    // Kick off boxscore prefetch for K hit/miss; re-renders this panel when
+    // results land.  Safe no-op when slate isn't final or pitcher IDs missing.
+    if (ks.some((_, i) => kStatuses[i] == null)) {
+      try { _prefetchPitcherKResults(ks, results); } catch (_) { /* best-effort */ }
+    }
   }
 
   html += `<div class="muted" style="font-size:0.78rem;margin-top:0.8rem;font-style:italic;">` +
@@ -4465,7 +4605,7 @@ async function loadSlate(date, { bust = false } = {}) {
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
     const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
     const topOutcomesHtml = rows.length
-      ? renderTopProbableOutcomes(rows, window.__totalsByMatchup)
+      ? renderTopProbableOutcomes(rows, window.__totalsByMatchup, results)
       : "";
     const bullpenOutlookHtml = rows.length
       ? renderBullpenOutlook(rows, window.__bullpenMeta)
