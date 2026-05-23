@@ -298,6 +298,7 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
         joined["over_decimal"]  = np.nan
         joined["under_decimal"] = np.nan
         joined["commence_date"] = joined["game_date_only"]
+        joined["book"]          = ""  # 2026-05-23: blank = no market source
         log.info("[totals] pred_runs-only: scoring %d slate games (no market)",
                  len(joined))
     else:
@@ -319,6 +320,12 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
         # references it doesn't break.
         joined["commence_date"] = joined["commence_date"].fillna(
             joined["game_date_only"])
+        # 2026-05-23: `book` comes off the wide merge for games with a line;
+        # unmatched slate rows get "" so the CSV column is always present.
+        if "book" in joined.columns:
+            joined["book"] = joined["book"].fillna("")
+        else:
+            joined["book"] = ""
         _n_market = int(joined["total_line"].notna().sum())
         _n_total = len(joined)
         log.info("Matched %d/%d slate games to totals lines "
@@ -450,6 +457,9 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
                 "our_prob":      "",
                 "book_fair":     "",
                 "stake_units":   "",
+                # 2026-05-23: which book the line came from -- empty when
+                # no market data was available (pred_runs-only fallback).
+                "book":          str(r.get("book", "") or ""),
                 # Shadow BvP columns are model-only — populate normally.
                 "pred_runs_bvp_adjusted": round(float(r.get("pred_runs_bvp_adjusted", pred)), 2),
                 "total_runs_delta":       round(float(r.get("total_runs_delta", 0)), 3),
@@ -515,6 +525,10 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
             "our_prob":      round(our_prob, 4),
             "book_fair":     round(book_fair, 4),
             "stake_units":   round(stake_units, 2),
+            # 2026-05-23: which sportsbook authored this line -- "pinnacle"
+            # or "bovada" today; "" if the row fell through to a fallback
+            # that didn't tag a book.
+            "book":          str(r.get("book", "") or ""),
             # Roster-adjusted shadow columns (2026-05-20). Read by dashboard
             # for display + postgame cron for RMSE comparison. NOT used to
             # select the side/our_prob/stake_units in this commit.

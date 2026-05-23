@@ -3,18 +3,30 @@ live_totals.py
 --------------
 Live totals (over/under) odds for MLB.
 
-Source-priority chain (2026-05-22):
-    1. Pinnacle guest Arcadia JSON       (PRIMARY, no auth, CI-friendly)
-    2. DraftKings public eventgroup JSON (BACKUP -- often 403 in CI due to
+Source-priority chain (2026-05-23):
+    1. Pinnacle guest Arcadia JSON       (PRIMARY, sharpest)
+    2. Bovada public coupon JSON         (SECONDARY, broader morning coverage)
+    3. DraftKings public eventgroup JSON (BACKUP -- often 403 in CI due to
        Akamai bot detection, still works from local laptop runs)
-    3. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
+    4. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
        2026-05-21; returns empty unless ODDS_API_KEY is somehow re-set)
-    4. empty DataFrame -> main_totals enters pred_runs-only mode.
+    5. empty DataFrame -> main_totals enters pred_runs-only mode.
 
-Pinnacle/DK return *wide* (one-row-per-game) frames; the-odds-api returns a
-*long* per-book frame.  We pivot the wide frames into long format via
-_pin_wide_to_long / _dk_wide_to_long so the downstream median_totals_by_game
-function doesn't have to special-case which book the line came from.
+Pinnacle and Bovada are UNION-MERGED rather than first-non-empty so that on
+mornings when Pinnacle has only priced part of the slate (typical -- their
+opening line trickles out per-game over 2-4 hours) the Bovada line fills
+in the gaps.  For games BOTH books have, Pinnacle wins (sharper number).
+Each row carries a `book` column so downstream code/dashboard can show
+which source the line came from.
+
+DK and the-odds-api stay in the chain as a strict fallback: they only get
+hit if BOTH Pinnacle AND Bovada return empty.
+
+Pinnacle/Bovada/DK return *wide* (one-row-per-game) frames; the-odds-api
+returns a *long* per-book frame.  We pivot the wide frames into long format
+via _pin_wide_to_long / _bov_wide_to_long / _dk_wide_to_long so the
+downstream median_totals_by_game function doesn't have to special-case
+which book the line came from.
 """
 from __future__ import annotations
 
@@ -43,39 +55,68 @@ def fetch_live_totals_odds() -> pd.DataFrame:
     """
     Fetch live totals (over/under) odds for upcoming MLB games.
 
-    Source-priority chain (2026-05-22):
-        1. Pinnacle guest Arcadia JSON       (PRIMARY, no auth)
-        2. DraftKings public eventgroup JSON (BACKUP -- mostly 403 in CI due
-           to Akamai bot detection, but still works from local runs)
-        3. the-odds-api.com /current endpoint (LEGACY, subscription cancelled
-           -- will return empty unless ODDS_API_KEY is somehow re-set)
-        4. empty DataFrame -> main_totals enters pred_runs-only mode.
+    Source-priority chain (2026-05-23):
+        1. Pinnacle guest Arcadia JSON       (PRIMARY, sharpest)
+        2. Bovada public coupon JSON         (SECONDARY, broader morning cov.)
+        3. DraftKings public eventgroup JSON (BACKUP -- 403 in CI)
+        4. the-odds-api.com /current endpoint (LEGACY, cancelled)
+        5. empty DataFrame -> main_totals enters pred_runs-only mode.
 
-    Pinnacle and DK both return *wide* DataFrames (one row per game with
-    total_line + over/under decimals).  We pivot them to the long format the
-    downstream median_totals_by_game() expects so the rest of the pipeline
-    doesn't have to special-case which book it came from.
+    Pinnacle and Bovada are union-merged via _merge_market_sources: any game
+    Pinnacle has wins (sharper line); games Pinnacle is missing fall back to
+    Bovada.  Each row carries a `book` column so downstream callers can
+    surface which book each line came from.
+
+    DK and the-odds-api stay as strict fallbacks: they only get queried if
+    BOTH Pinnacle AND Bovada return empty.  The fail-soft contract is
+    "Pinnacle U Bovada"; neither failing individually breaks the merge.
 
     Returns long-format DataFrame with:
       game_id, commence_time, home_team, away_team, book, outcome,
       price, point, decimal, commence_date,
       home_team_abbr, away_team_abbr
     """
-    # ---- Source 1: Pinnacle (primary, no auth, CI-friendly) ----------------
+    # ---- Source 1: Pinnacle (primary, sharpest) ----------------------------
     try:
         from .pinnacle_totals import fetch_pinnacle_totals
         pin_wide = fetch_pinnacle_totals()
     except Exception as e:
-        log.warning("[live_totals] Pinnacle fetch crashed: %s -- falling "
-                    "through to DraftKings", e)
+        log.warning("[live_totals] Pinnacle fetch crashed: %s -- treating as "
+                    "empty for the merge", e)
         pin_wide = pd.DataFrame()
 
-    if not pin_wide.empty:
-        log.info("[live_totals] Pinnacle returned %d games -- using Pinnacle "
-                 "as totals source", len(pin_wide))
-        return _pin_wide_to_long(pin_wide)
+    # ---- Source 2: Bovada (secondary, broader morning coverage) -----------
+    # Independent fetch -- a Bovada failure must NOT break the Pinnacle path
+    # (or vice versa).  Tag each frame with a `source` column before the
+    # union merge so we know which book each line came from.
+    try:
+        from .bovada_totals import fetch_bovada_totals
+        bov_wide = fetch_bovada_totals()
+    except Exception as e:
+        log.warning("[live_totals] Bovada fetch crashed: %s -- treating as "
+                    "empty for the merge", e)
+        bov_wide = pd.DataFrame()
 
-    # ---- Source 2: DraftKings (backup, often 403 in CI) --------------------
+    if not pin_wide.empty:
+        pin_wide = pin_wide.copy()
+        pin_wide["source"] = "pinnacle"
+    if not bov_wide.empty:
+        bov_wide = bov_wide.copy()
+        bov_wide["source"] = "bovada"
+
+    merged = _merge_market_sources(pin_wide, bov_wide)
+    if not merged.empty:
+        n_pin = int((merged["source"] == "pinnacle").sum())
+        n_bov = int((merged["source"] == "bovada").sum())
+        log.info("[live_totals] Pinnacle U Bovada merge: %d games "
+                 "(Pinnacle=%d, Bovada=%d)", len(merged), n_pin, n_bov)
+        return _wide_to_long(merged)
+
+    # Both primary sources empty -- fall through to legacy DK + odds-api path.
+    log.info("[live_totals] Pinnacle AND Bovada both empty -- falling "
+             "through to DraftKings legacy backup")
+
+    # ---- Source 3: DraftKings (backup, often 403 in CI) --------------------
     try:
         from .draftkings_totals import fetch_dk_totals
         dk_wide = fetch_dk_totals()
@@ -131,6 +172,92 @@ def fetch_live_totals_odds() -> pd.DataFrame:
     return pd.DataFrame()
 
 
+def _merge_market_sources(pin_df: pd.DataFrame,
+                          bov_df: pd.DataFrame) -> pd.DataFrame:
+    """Union-merge Pinnacle and Bovada wide-format totals frames.
+
+    Match key: (home_team, away_team, game_date).  For games BOTH books
+    have, Pinnacle wins (sharper line).  Games only Bovada has come through
+    tagged source="bovada".
+
+    Each input frame is expected to have a `source` column already set
+    ("pinnacle"/"bovada") so the resulting frame can be split downstream.
+    Empty inputs are tolerated -- empty U X == X.
+
+    Returned columns:
+        game_date, home_team, away_team, total_line,
+        over_decimal, under_decimal, source
+
+    NOTE: this is a pre-_wide_to_long merge.  The output is still in the
+    wide format _pin_wide_to_long expects as input; _wide_to_long then
+    pivots it into the long format median_totals_by_game consumes.  Doing
+    the merge in wide form keeps the source-tag preservation straightforward
+    (one row per game -> one source per game).
+    """
+    if pin_df is None or bov_df is None:
+        pin_df = pd.DataFrame() if pin_df is None else pin_df
+        bov_df = pd.DataFrame() if bov_df is None else bov_df
+    if pin_df.empty and bov_df.empty:
+        return pd.DataFrame()
+    if pin_df.empty:
+        return bov_df
+    if bov_df.empty:
+        return pin_df
+
+    keys = ["home_team", "away_team", "game_date"]
+    pin_keys = set(pin_df[keys].apply(tuple, axis=1))
+    bov_keys = bov_df[keys].apply(tuple, axis=1)
+    bov_only = bov_df.loc[~bov_keys.isin(pin_keys)].copy()
+
+    merged = pd.concat([pin_df, bov_only], ignore_index=True)
+    return merged
+
+
+def _wide_to_long(wide: pd.DataFrame) -> pd.DataFrame:
+    """Expand a per-row-source wide DataFrame (Pinnacle U Bovada) into the
+    long format median_totals_by_game expects.  Each input row becomes two
+    rows (Over + Under) under the book name implied by its `source` column.
+
+    Input columns:  game_date, home_team, away_team, total_line,
+                    over_decimal, under_decimal, source
+
+    The `book` column on the output mirrors the input `source` so downstream
+    code that keys off book (CSV `book` column, dashboard tooltip) stays in
+    sync regardless of which scraper authored the line.
+    """
+    if wide is None or wide.empty:
+        return pd.DataFrame()
+    rows = []
+    for _, r in wide.iterrows():
+        commence = pd.to_datetime(r["game_date"])
+        src = r.get("source", "pinnacle") if hasattr(r, "get") else "pinnacle"
+        if src == "pinnacle":
+            prefix = "pin"
+        elif src == "bovada":
+            prefix = "bov"
+        else:
+            prefix = str(src)[:3]
+        base = {
+            "game_id":       f"{prefix}:{r['home_team']}:{r['away_team']}:{r['game_date']}",
+            "commence_time": commence.isoformat(),
+            "home_team":     r["home_team"],
+            "away_team":     r["away_team"],
+            "book":          src,
+            "point":         float(r["total_line"]),
+        }
+        rows.append({**base, "outcome": "Over",
+                     "price": np.nan,
+                     "decimal": float(r["over_decimal"])})
+        rows.append({**base, "outcome": "Under",
+                     "price": np.nan,
+                     "decimal": float(r["under_decimal"])})
+    df = pd.DataFrame(rows)
+    df["home_team_abbr"] = df["home_team"].apply(normalize_team)
+    df["away_team_abbr"] = df["away_team"].apply(normalize_team)
+    df["commence_date"]  = pd.to_datetime(df["commence_time"]).dt.date
+    return df.dropna(subset=["decimal", "point"])
+
+
 def _pin_wide_to_long(pin_wide: pd.DataFrame) -> pd.DataFrame:
     """Expand Pinnacle's wide (one-row-per-game) DataFrame to the long format
     median_totals_by_game expects.  Schema-identical to _dk_wide_to_long;
@@ -139,6 +266,11 @@ def _pin_wide_to_long(pin_wide: pd.DataFrame) -> pd.DataFrame:
 
     Input columns:  game_date, home_team, away_team, total_line,
                     over_decimal, under_decimal   (team codes already normalized)
+
+    NOTE: as of 2026-05-23 the main pipeline routes through _wide_to_long
+    (after the Pinnacle U Bovada union-merge), not this function -- this is
+    kept for backward compatibility with any caller / test still on the old
+    single-source contract.
     """
     if pin_wide.empty:
         return pd.DataFrame()
@@ -292,6 +424,19 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
             .merge(over_dec, on=keys, how="left")
             .merge(under_dec, on=keys, how="left"))
 
+    # 2026-05-23: propagate the source book per game.  After the Pinnacle U
+    # Bovada merge in fetch_live_totals_odds there is at most one book per
+    # (matchup, date), so .first() returns the single source we expect.  For
+    # the legacy paths (single-source DK or multi-book odds-api) this still
+    # picks SOMETHING reasonable (the first book in iteration order), which
+    # is the same fallback the existing aggregation already implies.
+    if "book" in long_odds.columns:
+        book_by_game = (long_odds.groupby(keys, sort=False)["book"]
+                                  .first().reset_index())
+        wide = wide.merge(book_by_game, on=keys, how="left")
+    else:
+        wide["book"] = ""
+
     # Caller consumes team names as abbreviations via `home_team`/`away_team`;
     # rename to drop the `_abbr` suffix so the downstream merge key is short.
     out = wide.rename(columns={
@@ -299,4 +444,6 @@ def median_totals_by_game(long_odds: pd.DataFrame) -> pd.DataFrame:
         "away_team_abbr": "away_team",
     })
     return out[["home_team", "away_team", "commence_date",
-                "total_line", "over_decimal", "under_decimal"]].dropna()
+                "total_line", "over_decimal", "under_decimal",
+                "book"]].dropna(subset=["total_line", "over_decimal",
+                                         "under_decimal"])
