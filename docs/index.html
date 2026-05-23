@@ -4500,7 +4500,7 @@ async function silentRefresh(date) {
     window.__poll.lastSig = sig;
 
     // Data changed — re-render and flash the slate to indicate update
-    const rows = parseCSV(csvText);
+    const rows = _dedupDoubleheaders(parseCSV(csvText));
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
     const results = await fetchMLBResults(date);
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
@@ -4574,6 +4574,32 @@ function _addPendingGames(rows, results) {
   return [...(rows || []), ...additions];
 }
 
+// Doubleheader display fix (2026-05-23): MLB schedule occasionally
+// hosts two games between the same teams on the same date (scheduled
+// doubleheader, gamePk differs, our pipeline correctly fetches both
+// with separate SPs).  Our `matchup` field is just "AWAY @ HOME" which
+// collides for both games and confuses every downstream lookup
+// (rendering, top-outcomes ranking, tooltip dedup).  This helper
+// mutates rows in place: when N rows share the same matchup, the
+// first stays untouched and subsequent rows get " (G2)", " (G3)"
+// suffixes — preserves the original key for the first row's
+// downstream consumers (postgame archive, claude_picks) and gives
+// the dashboard a unique label for each game.
+function _dedupDoubleheaders(rows) {
+  if (!Array.isArray(rows) || rows.length === 0) return rows;
+  const counts = {};
+  for (const r of rows) {
+    const m = (r && r.matchup || "").trim();
+    if (!m) continue;
+    counts[m] = (counts[m] || 0) + 1;
+    if (counts[m] > 1) {
+      // Append " (G2)" / " (G3)" etc. so the renderer sees a unique key.
+      r.matchup = `${m} (G${counts[m]})`;
+    }
+  }
+  return rows;
+}
+
 async function loadSlate(date, { bust = false } = {}) {
   const status = document.getElementById("status");
   status.textContent = bust ? "Refreshing (bypassing cache)…" : "Loading…";
@@ -4604,7 +4630,7 @@ async function loadSlate(date, { bust = false } = {}) {
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
-    const rawRows = csvR.status === "fulfilled" ? parseCSV(csvR.value) : [];
+    const rawRows = csvR.status === "fulfilled" ? _dedupDoubleheaders(parseCSV(csvR.value)) : [];
     const results = resR.status === "fulfilled" ? resR.value : {};
     // Augment with synthetic pending rows for any MLB games missing from the CSV
     const rows = _addPendingGames(rawRows, results);
@@ -4821,8 +4847,16 @@ function answerQuery(q, slate) {
 }
 
 function todayISO() {
+  // LOCAL-date (not UTC) so the date picker defaults to the user's
+  // own "today" regardless of timezone.  Bug fix 2026-05-23: the
+  // previous toISOString().split() returned the UTC date, which for
+  // users east of UTC during late-evening hours would silently
+  // default to "yesterday" relative to their wall clock.
   const d = new Date();
-  return d.toISOString().split("T")[0];
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
