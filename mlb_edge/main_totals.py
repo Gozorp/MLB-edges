@@ -20,7 +20,9 @@ live totals odds.
 from __future__ import annotations
 
 import argparse
+import json
 import logging
+import math
 import os
 import sys
 from datetime import date, datetime
@@ -195,6 +197,60 @@ def run_train(seasons: List[int], save_path: str,
 
 
 # ===========================================================================
+# PLAYER-AWARE SIGNAL JSON (2026-05-23)
+# ===========================================================================
+def _build_player_aware_signal(row) -> str:
+    """Build a small JSON blob surfacing the player-aware features that
+    already feed pred_runs. Read by the dashboard tooltip so the user can
+    see *why* the model projected what it did. Fields are pulled directly
+    from the row — no new computation. Missing values render as JSON null
+    so the JS side can render '—' cleanly.
+
+    Kept under ~200 chars to stay tooltip-friendly on iOS Safari.
+    """
+    def _f(key):
+        v = row.get(key) if hasattr(row, "get") else row[key] if key in row else None
+        try:
+            x = float(v)
+            if math.isnan(x):
+                return None
+            return x
+        except (TypeError, ValueError):
+            return None
+
+    # Lineup-aware offense (cache v5): home/away_lineup_xwoba +
+    # home/away_lineup_wrc_plus exist on the slate frame when posted
+    # lineups are out. We surface xwOBA under the user-requested key name
+    # `lineup_OPS_h/a` since this repo doesn't track OPS — xwOBA is the
+    # closest analog and is the field the model actually uses.
+    lineup_xwoba_h = _f("home_lineup_xwoba")
+    lineup_xwoba_a = _f("away_lineup_xwoba")
+    lineup_wrc_h   = _f("home_lineup_wrc_plus")
+    lineup_wrc_a   = _f("away_lineup_wrc_plus")
+    # BvP shadow signal (Phase-1, 2026-05-20). Populated by
+    # totals_roster_adjustment.compute_roster_adjustment when lineups + SP
+    # IDs are present.
+    bvp_home_pa  = _f("home_bvp_n_pa")
+    bvp_away_pa  = _f("away_bvp_n_pa")
+    bvp_delta    = _f("total_runs_delta")
+
+    payload = {
+        # xwOBA proxy for lineup OPS — same player-quality signal, model-native.
+        "lineup_xwoba_h": round(lineup_xwoba_h, 3) if lineup_xwoba_h is not None else None,
+        "lineup_xwoba_a": round(lineup_xwoba_a, 3) if lineup_xwoba_a is not None else None,
+        "lineup_wrcplus_h": round(lineup_wrc_h, 0) if lineup_wrc_h is not None else None,
+        "lineup_wrcplus_a": round(lineup_wrc_a, 0) if lineup_wrc_a is not None else None,
+        "bvp_pa_total": (int((bvp_home_pa or 0) + (bvp_away_pa or 0))
+                         if (bvp_home_pa is not None or bvp_away_pa is not None)
+                         else None),
+        "bvp_delta_runs": round(bvp_delta, 3) if bvp_delta is not None else None,
+    }
+    # separators=(",",":") keeps it terse. Returned as a JSON string ready
+    # to be written as a CSV cell — pandas will quote it if needed.
+    return json.dumps(payload, separators=(",", ":"))
+
+
+# ===========================================================================
 # PREDICT MODE
 # ===========================================================================
 def run_predict(target_date: date, model_path: str, bankroll: float,
@@ -246,23 +302,32 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
                  len(joined))
     else:
         log.info("Live totals lines available for %d games", len(wide))
+        # 2026-05-23 change: use LEFT join (was inner) so every slate game ends
+        # up in `joined`, regardless of whether Pinnacle/etc. has a matching
+        # line. Games without a market line carry NaN in total_line/over_decimal
+        # /under_decimal and get a pred_runs-only fallback row below. Resolves
+        # the dashboard "—" cells when the market source only covers a subset
+        # of the slate.
         joined = games.merge(
             wide,
             left_on=["home_team", "away_team", "game_date_only"],
             right_on=["home_team", "away_team", "commence_date"],
-            how="inner",
+            how="left",
         )
-        if joined.empty:
+        # commence_date is from the right side and will be NaN for unmatched
+        # slate games — backfill from game_date_only so downstream code that
+        # references it doesn't break.
+        joined["commence_date"] = joined["commence_date"].fillna(
+            joined["game_date_only"])
+        _n_market = int(joined["total_line"].notna().sum())
+        _n_total = len(joined)
+        log.info("Matched %d/%d slate games to totals lines "
+                 "(unmatched -> pred_runs-only fallback rows)",
+                 _n_market, _n_total)
+        if _n_market == 0:
             log.warning("[totals] No games matched between slate and totals "
                         "odds — falling back to pred_runs-only mode")
-            joined = games.copy()
-            joined["total_line"]    = np.nan
-            joined["over_decimal"]  = np.nan
-            joined["under_decimal"] = np.nan
-            joined["commence_date"] = joined["game_date_only"]
             no_market = True
-        else:
-            log.info("Matched %d slate games to totals lines", len(joined))
 
     # Stage 1 prediction
     s1_feats = [c for c in F5_FEATURES if c in joined.columns]
@@ -397,6 +462,10 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
                 "bvp_signal_strength":    round(
                     (float(r.get("home_bvp_n_pa", 0)) +
                      float(r.get("away_bvp_n_pa", 0))) / 9.0, 3),
+                # 2026-05-23: surface player-aware features the model already
+                # uses so the dashboard tooltip can explain *why* pred_runs is
+                # what it is (lineup wRC+/xwOBA + BvP signal strength).
+                "player_aware_signal":    _build_player_aware_signal(r),
             })
             continue
 
@@ -464,6 +533,10 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
             "bvp_signal_strength":    round(
                 (float(r.get("home_bvp_n_pa", 0)) +
                  float(r.get("away_bvp_n_pa", 0))) / 9.0, 3),
+            # 2026-05-23: surface player-aware features the model already
+            # uses so the dashboard tooltip can explain *why* pred_runs is
+            # what it is (lineup wRC+/xwOBA + BvP signal strength).
+            "player_aware_signal":    _build_player_aware_signal(r),
         })
 
     if not picks:
