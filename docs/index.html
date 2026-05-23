@@ -3871,6 +3871,53 @@ function renderSlate(rows, gradeMap, results) {
     // pill in the muted/flat style — still useful information for the user.
     const tot = (window.__totalsByMatchup) ? window.__totalsByMatchup[matchupKey] : null;
     let ouCell = "<td><span class='muted'>—</span></td>";
+    // Player-aware tooltip lines (2026-05-23). Surfaces the lineup wRC+ /
+    // xwOBA gaps + BvP signal strength that already feed pred_runs, so the
+    // user can see *why* the model projected what it did. Pulled from the
+    // `player_aware_signal` JSON column written by main_totals.py. Falls
+    // back silently if the column is missing (old CSV / parse error).
+    const _ouPlayerLines = (function() {
+      if (!tot || !tot.player_aware_signal) return "";
+      let pa = null;
+      try { pa = JSON.parse(tot.player_aware_signal); } catch (_) { return ""; }
+      if (!pa) return "";
+      const out = [];
+      const wrc_h = pa.lineup_wrcplus_h, wrc_a = pa.lineup_wrcplus_a;
+      const xw_h = pa.lineup_xwoba_h, xw_a = pa.lineup_xwoba_a;
+      if (xw_h != null || wrc_h != null) {
+        const parts = [];
+        if (xw_h != null) parts.push(`xwOBA ${xw_h.toFixed(3)}`);
+        if (wrc_h != null) parts.push(`wRC+ ${Math.round(wrc_h)}`);
+        out.push(`Home lineup: ${parts.join(", ")}`);
+      }
+      if (xw_a != null || wrc_a != null) {
+        const parts = [];
+        if (xw_a != null) parts.push(`xwOBA ${xw_a.toFixed(3)}`);
+        if (wrc_a != null) parts.push(`wRC+ ${Math.round(wrc_a)}`);
+        out.push(`Away lineup: ${parts.join(", ")}`);
+      }
+      if (pa.bvp_pa_total != null && pa.bvp_pa_total > 0) {
+        const dr = pa.bvp_delta_runs;
+        const drStr = (dr != null && isFinite(dr))
+          ? ` -> ${dr >= 0 ? "+" : ""}${dr.toFixed(2)} runs adjustment`
+          : "";
+        out.push(`BvP signal: ${pa.bvp_pa_total} PAs vs SP${drStr}`);
+      }
+      return out.length ? "\n" + out.join("\n") : "";
+    })();
+    // BvP-adjusted divergence helper. When the shadow BvP-adjusted projection
+    // diverges from raw pred_runs by >= 0.5 runs we show both numbers in the
+    // pill so the user can see the player adjustment moved the model
+    // meaningfully. BvP is NOT promoted to production — pred_runs stays the
+    // canonical value, this is just visibility.
+    const _ouBvpDiverged = (function() {
+      if (!tot) return null;
+      const p  = parseFloat(tot.pred_runs);
+      const pa = parseFloat(tot.pred_runs_bvp_adjusted);
+      if (!isFinite(p) || !isFinite(pa)) return null;
+      if (Math.abs(pa - p) < 0.5) return null;
+      return { raw: p, adj: pa, sign: pa > p ? "+" : "-" };
+    })();
     if (tot && tot.side) {
       const side = String(tot.side || "").toUpperCase();
       const line = parseFloat(tot.total_line);
@@ -3880,13 +3927,24 @@ function renderSlate(rows, gradeMap, results) {
       const initial = side === "OVER" ? "O" : side === "UNDER" ? "U" : side;
       const lineStr = isFinite(line) ? line.toFixed(1) : "?";
       const edgeStr = isFinite(edge) ? ` ${edge >= 0 ? "+" : ""}${edge.toFixed(1)}r` : "";
-      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u`;
+      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}`;
       ouCell = `<td><span class="ou-pill ${cls}" title="${tooltip}">${arrow} ${initial} ${lineStr}${edgeStr}</span></td>`;
     } else if (tot && tot.pred_runs !== undefined && tot.pred_runs !== "" && isFinite(parseFloat(tot.pred_runs))) {
       // pred_runs-only mode: market columns blank, but model output present.
       const pred = parseFloat(tot.pred_runs);
-      const tooltip = `Model projection: ${pred.toFixed(2)} runs · no market odds available`;
-      ouCell = `<td><span class="ou-pill ou-flat" title="${tooltip}">Model: ${pred.toFixed(1)}r (no mkt)</span></td>`;
+      // Richer tooltip with player-aware reasoning. \n inside title= renders
+      // as a line break in every major browser's native tooltip.
+      const tooltip = `Model projection: ${pred.toFixed(1)} runs (no market)${_ouPlayerLines}`;
+      // Pill body: if BvP-adjusted shadow diverges by >=0.5r, show both so
+      // the user sees the player adjustment moved the number.
+      let pillBody;
+      if (_ouBvpDiverged) {
+        const tag = _ouBvpDiverged.sign === "+" ? "BvP+" : "BvP-";
+        pillBody = `Model: ${_ouBvpDiverged.raw.toFixed(1)}→${_ouBvpDiverged.adj.toFixed(1)}r (${tag})`;
+      } else {
+        pillBody = `Model: ${pred.toFixed(1)}r (no mkt)`;
+      }
+      ouCell = `<td><span class="ou-pill ou-flat" title="${tooltip}">${pillBody}</span></td>`;
     }
     const colspan = haveAnyResult ? 14 : 13;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
