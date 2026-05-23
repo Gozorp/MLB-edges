@@ -559,6 +559,79 @@ def run_predict(target_date: date, model_path: str, bankroll: float,
         return
 
     picks_df = pd.DataFrame(picks)
+
+    # ----------------------------------------------------------------------
+    # Monte Carlo PA simulator — SHADOW MODE (Phase 1, 2026-05-23)
+    # ----------------------------------------------------------------------
+    # Adds pred_winp_mc + pred_runs_mc columns to the totals CSV. XGBoost
+    # pred_runs stays the production projection; this is observability only.
+    # Best-effort per Rule 6 — any failure leaves empty columns.
+    try:
+        from . import monte_carlo as _mc
+        from .live_lineups import fetch_slate_meta as _fetch_meta
+        from .stadiums import get_stadium as _get_stadium, normalize_team as _nt
+        _mc_meta = _fetch_meta(target_date.isoformat())
+        _meta_map = {}
+        for _m in (_mc_meta or []):
+            _h = _nt(getattr(_m, "home_abbr", "") or "")
+            _a = _nt(getattr(_m, "away_abbr", "") or "")
+            if _h and _a:
+                _meta_map[(_a, _h)] = _m
+        winp_mc_col = []
+        runs_mc_col = []
+        _mc_n_ok = 0
+        for _, _pr in picks_df.iterrows():
+            _h = _nt(_pr.get("home_team", ""))
+            _a = _nt(_pr.get("away_team", ""))
+            _m = _meta_map.get((_a, _h))
+            if _m is None:
+                winp_mc_col.append(""); runs_mc_col.append("")
+                continue
+            try:
+                _home_pids = [int(s.batter_id) for s in
+                              (getattr(_m, "home_lineup", []) or [])
+                              if getattr(s, "batter_id", None)]
+                _away_pids = [int(s.batter_id) for s in
+                              (getattr(_m, "away_lineup", []) or [])
+                              if getattr(s, "batter_id", None)]
+                _home_sp_id = getattr(_m, "home_sp_id", None)
+                _away_sp_id = getattr(_m, "away_sp_id", None)
+                if (len(_home_pids) < 9 or len(_away_pids) < 9
+                        or not _home_sp_id or not _away_sp_id):
+                    winp_mc_col.append(""); runs_mc_col.append("")
+                    continue
+                _stadium = _get_stadium(_h)
+                _park_runs = float(_stadium.get("runs", 100))
+                _res = _mc.simulate_slate_row(
+                    date=target_date.isoformat(),
+                    home_team=_h, away_team=_a,
+                    home_lineup_ids=_home_pids,
+                    away_lineup_ids=_away_pids,
+                    home_sp_id=int(_home_sp_id),
+                    away_sp_id=int(_away_sp_id),
+                    park_runs_factor=_park_runs,
+                    n_simulations=10000, rng_seed=42,
+                )
+                if _res.get("n_simulations", 0) > 0:
+                    winp_mc_col.append(round(float(_res["home_winp"]), 4))
+                    runs_mc_col.append(round(float(_res["mean_total_runs"]), 2))
+                    _mc_n_ok += 1
+                else:
+                    winp_mc_col.append(""); runs_mc_col.append("")
+            except Exception as _e:
+                log.warning("[totals_mc] sim failed for %s @ %s: %s", _a, _h, _e)
+                winp_mc_col.append(""); runs_mc_col.append("")
+        picks_df["pred_winp_mc"] = winp_mc_col
+        picks_df["pred_runs_mc"] = runs_mc_col
+        log.info("[totals_mc] shadow predictions: %d/%d games", _mc_n_ok, len(picks_df))
+    except Exception as _e:
+        log.warning("[totals_mc] shadow simulator failed: %s "
+                    "(continuing without MC columns)", _e)
+        if "pred_winp_mc" not in picks_df.columns:
+            picks_df["pred_winp_mc"] = ""
+        if "pred_runs_mc" not in picks_df.columns:
+            picks_df["pred_runs_mc"] = ""
+
     print(f"\n=== TOTALS PICKS — {target_date} ===")
     print(picks_df.to_string(index=False))
     if no_market:
