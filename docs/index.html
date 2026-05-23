@@ -4504,6 +4504,8 @@ async function silentRefresh(date) {
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
     const results = await fetchMLBResults(date);
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
+    // Apply postponed filter (same rule as loadSlate)
+    const playableRows = rows.filter(r => !_isPostponedRow(r, results));
 
     // Load Claude post-mortem sidecar for this date if it exists.  Failure is
     // silent — the dashboard renders normally without it.
@@ -4514,13 +4516,14 @@ async function silentRefresh(date) {
 
 
     const slateEl = document.getElementById("slate");
-    slateEl.innerHTML = renderSlate(rows, gradeMap, results);
+    slateEl.innerHTML = renderSlate(playableRows, gradeMap, results);
     slateEl.classList.add("change-flash");
     setTimeout(() => slateEl.classList.remove("change-flash"), 2500);
 
     document.getElementById("parlay").innerHTML = parlayText ? renderParlay(parlayText) : "";
+    const postponedCount = rows.length - playableRows.length;
     document.getElementById("status").textContent
-      = `Auto-updated ${date} (${rows.length} games) at ${new Date().toLocaleTimeString()}`;
+      = `Auto-updated ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `) at ${new Date().toLocaleTimeString()}`;
   } catch (e) {
     console.warn("silentRefresh failed:", e);
   }
@@ -4616,6 +4619,28 @@ function _addSeriesSuffix(rows, seriesMeta) {
     }
   }
   return rows;
+}
+
+// Check whether a slate row's matchup was postponed / suspended
+// / cancelled per the live MLB schedule (fetchMLBResults).  Used
+// to drop unplayable games from the picks display: the pipeline
+// ran with the original schedule, so picks may exist for games
+// that MLB then postponed (rainouts in May are common).  Match
+// the matchup against the results map keyed by AWAY@HOME and
+// HOME@AWAY (no spaces); strip any "(G2)" series/dh suffix from
+// the row's matchup before splitting.  Best-effort: missing
+// results entry or unknown status returns false (assume playable).
+function _isPostponedRow(row, results) {
+  if (!row || !results) return false;
+  const raw = (row.matchup || "").trim();
+  if (!raw) return false;
+  const m = raw.replace(/\s*\([^)]*\)\s*$/, "");
+  const parts = m.split(/\s+@\s+/);
+  if (parts.length !== 2) return false;
+  const [away, home] = parts.map(p => p.trim());
+  const entry = results[`${away}@${home}`] || results[`${home}@${away}`];
+  if (!entry) return false;
+  return /postpon|suspend|cancel/i.test(entry.statusText || "");
 }
 
 function _dedupDoubleheaders(rows) {
@@ -4737,15 +4762,24 @@ async function loadSlate(date, { bust = false } = {}) {
       }
     } catch (_) { window.__bullpenMeta = null; }
 
-    const slateHtml = rows.length
-      ? renderSlate(rows, gradeMap, results)
+    // Filter postponed / suspended / cancelled games from the
+    // picks display.  Picks for these games came from the
+    // pipeline (which ran with the original schedule), but MLB
+    // then pulled them — they aren't actionable.  All rows are
+    // preserved on window.__slate.rows for the Ask Claude /
+    // search interface so users can still query them.
+    const playableRows = rows.filter(r => !_isPostponedRow(r, results));
+    const postponedCount = rows.length - playableRows.length;
+
+    const slateHtml = playableRows.length
+      ? renderSlate(playableRows, gradeMap, results)
       : renderEmptyState(date, (window.__manifest && window.__manifest.dates) || []);
     const parlayHtml = txtR.status === "fulfilled" ? renderParlay(txtR.value) : "";
-    const topOutcomesHtml = rows.length
-      ? renderTopProbableOutcomes(rows, window.__totalsByMatchup, results)
+    const topOutcomesHtml = playableRows.length
+      ? renderTopProbableOutcomes(playableRows, window.__totalsByMatchup, results)
       : "";
-    const bullpenOutlookHtml = rows.length
-      ? renderBullpenOutlook(rows, window.__bullpenMeta)
+    const bullpenOutlookHtml = playableRows.length
+      ? renderBullpenOutlook(playableRows, window.__bullpenMeta)
       : "";
 
     document.getElementById("slate").innerHTML = slateHtml;
@@ -4755,7 +4789,8 @@ async function loadSlate(date, { bust = false } = {}) {
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
-      ? `Loaded ${date} (${rows.length} games)` : "";
+      ? `Loaded ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `)`
+      : "";
 
     // Update state indicator + (re)start polling if this is today
     renderLiveIndicator(date, rows.length > 0);
