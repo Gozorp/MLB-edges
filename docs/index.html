@@ -743,8 +743,7 @@ function pickWithProb(pickTeam, pickSideProb, row) {
   const f = parseFloat(pickSideProb);
   if (isNaN(f)) return `<strong>${pickTeam}</strong>`;
   // Monte Carlo shadow column (Phase 1, 2026-05-23). When present, surface
-  // it as a tooltip + divergence flag. MC is pick-perspective already in
-  // the diag CSV (main_predict.py writes pred_winp_mc from the picked side).
+  // it as a tooltip + divergence flag.
   let mcTooltip = "";
   let mcFlag = "";
   if (row) {
@@ -754,7 +753,6 @@ function pickWithProb(pickTeam, pickSideProb, row) {
       const mcWp = (mcW * 100).toFixed(1);
       const mcRs = isFinite(mcR) ? `, mean ${mcR.toFixed(1)}r` : "";
       mcTooltip = ` title="Monte Carlo: ${mcWp}% (10K sims${mcRs})"`;
-      // Divergence > 10pp between MC and XGBoost on the pick side -> warning icon.
       const diff = Math.abs(mcW - f) * 100;
       if (diff > 10) {
         const xgb = (f * 100).toFixed(1);
@@ -4097,7 +4095,6 @@ function renderSlate(rows, gradeMap, results) {
                         : _bookRaw ? _bookRaw[0].toUpperCase() + _bookRaw.slice(1)
                         : "";
       const _bookSuffix = _bookLabel ? `\nSource: ${_bookLabel}` : "";
-      // Monte Carlo shadow (Phase 1) — append to tooltip when present.
       const _mcR = tot ? parseFloat(tot.pred_runs_mc) : NaN;
       const _mcSuffix = isFinite(_mcR) ? `\nMonte Carlo: ${_mcR.toFixed(1)}r (10K sims)` : "";
       const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}${_bookSuffix}${_mcSuffix}`;
@@ -4125,7 +4122,7 @@ function renderSlate(rows, gradeMap, results) {
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
-      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob, r)}</td>
+      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
       <td>${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
       <td>${fairFmt}</td>
@@ -4879,4 +4876,49 @@ async function _initAskClaude() {
   if (!card || !btn || !input || !out) return;
   // Probe /api/claude/health to decide whether to show the widget
   try {
-    const r = await fetch("/api/claude/
+    const r = await fetch("/api/claude/health");
+    if (!r.ok) return;
+    const j = await r.json();
+    if (!j.enabled) return;
+    card.style.display = "";
+  } catch (_) {
+    return;  // probably on github.io fallback — no Worker available
+  }
+  async function doAsk() {
+    const q = (input.value || "").trim();
+    if (!q) return;
+    btn.disabled = true;
+    out.textContent = "Asking Claude…";
+    const date = (window.__slate && window.__slate.date) || null;
+    try {
+      const r = await fetch("/api/claude/ask", {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify({date, question: q}),
+      });
+      const j = await r.json();
+      if (j.error) {
+        out.innerHTML = `<span class="flag-red">Error: ${j.error}</span>`;
+      } else {
+        out.innerHTML = (j.answer || "")
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/\n/g, "<br>");
+      }
+    } catch (e) {
+      out.innerHTML = `<span class="flag-red">Network error: ${e.message}</span>`;
+    } finally {
+      btn.disabled = false;
+    }
+  }
+  btn.addEventListener("click", doAsk);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); doAsk(); }
+  });
+}
+document.addEventListener("DOMContentLoaded", _initAskClaude);
+
+</script>
+
+</body>
+</html>
+
