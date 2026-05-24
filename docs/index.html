@@ -1683,10 +1683,17 @@ function _renderWinProbChart(canvasId, picked, modelCurve, actualCurve, isFinal)
   });
 }
 
-async function _ensureWinProbChart(rowIndex, r, result) {
+async function _ensureWinProbChart(rowIndex, r, result, forceRefresh) {
+  // 2026-05-24: live-chart refresh fix. Was short-circuiting on the
+  // first render so the chart never redrew during a live game; also
+  // only fetched the actual curve for FINAL games, so live games
+  // showed nothing but the static model dashed line.
+  // Now: forceRefresh=true bypasses the cache; live games fetch the
+  // actual curve each tick so the chart trails the in-game state.
   const placeholderId = "winprob-canvas-" + rowIndex;
   const el = document.getElementById(placeholderId);
-  if (!el || el.dataset.rendered === "1") return;
+  if (!el) return;
+  if (!forceRefresh && el.dataset.rendered === "1") return;
   // Both f5 and full need to be the PICK's probability so the chart curve
   // represents the picked team's win-prob trajectory across innings.
   const f5 = _pickSideF5Prob(r);
@@ -1695,9 +1702,14 @@ async function _ensureWinProbChart(rowIndex, r, result) {
   const modelCurve = _modelForecastCurve(f5, full, fair);
   const picked = pickedTeam(r) || "pick";
   let actualCurve = null;
-  if (result && result.gamePk && result.isFinal) {
-    const wp = await _fetchActualWinProb(result.gamePk);
-    if (wp) actualCurve = _actualEndOfInningProbs(wp, _pickedSideFor(r, result));
+  if (result && result.gamePk) {
+    const _liveStatus = _ltClassifyStatus(result.statusText);
+    if (result.isFinal || _liveStatus === "live") {
+      try {
+        const wp = await _fetchActualWinProb(result.gamePk);
+        if (wp) actualCurve = _actualEndOfInningProbs(wp, _pickedSideFor(r, result));
+      } catch (_e_wp) { /* silent — leave actualCurve null */ }
+    }
   }
   _renderWinProbChart(placeholderId, picked, modelCurve, actualCurve, !!(result && result.isFinal));
   el.dataset.rendered = "1";
@@ -2223,6 +2235,13 @@ async function _startLiveTrackerForRow(rowIndex, r, result) {
     try {
       curStatus = await _ltOnePollCycle(rowIndex, result.gamePk, r, result, opts);
       opts.errors = 0;
+      // 2026-05-24: refresh the per-row win-prob chart each cycle so
+      // the actual-trajectory curve trails the live game (was static
+      // model-only line during live play).
+      if (curStatus === "live" || curStatus === "final") {
+        try { await _ensureWinProbChart(rowIndex, r, result, true); }
+        catch (_e_chart) { /* silent — keep poller running */ }
+      }
     } catch (e) {
       opts.errors += 1;
     }
