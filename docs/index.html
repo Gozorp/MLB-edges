@@ -2715,11 +2715,17 @@ function matchResult(r, results) {
   if (!results) return null;
   const matchup = (r.matchup || "").trim();
   if (!matchup) return null;
-  // Doubleheader disambiguation (2026-05-23): if the matchup string has
-  // "(G1)" or "(G2)" — appended at render time via _addSeriesSuffix —
-  // look up the specific game first before falling back to bare key.
+  // Doubleheader disambiguation. Two distinct annotations can appear
+  // in the matchup string:
+  //   "(G2)"      <- _dedupDoubleheaders, true doubleheader G2/G3
+  //   "(G2 of 3)" <- _addSeriesSuffix, series-game indicator (NOT DH)
+  // Only the BARE form is the doubleheader signal. Regex must be
+  // strict to "(GN)" so a series row like "DET @ BAL (G2 of 3)"
+  // doesn't get misrouted to the doubleheader G2 key.
+  // (2026-05-24: prior regex matched both forms and routed series-G2
+  //  rows to a future/wrong gamePk.)
   let gameNumber = null;
-  const gMatch = matchup.match(/\(G([12])(?:\s+of\s+\d+)?\)/i);
+  const gMatch = matchup.match(/\(G([12])\)/);
   if (gMatch) gameNumber = parseInt(gMatch[1], 10);
   // Pull two ALL-CAPS abbrev tokens out of the matchup string
   const abbrs = matchup.match(/[A-Z]{2,4}/g);
