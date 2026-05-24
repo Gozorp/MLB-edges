@@ -1162,7 +1162,8 @@ async function _fetchTeamRoster(teamId) {
             const ops = parseFloat(st.ops || "0");
             batters.push({
               name: p.fullName, pos, ops: st.ops, ops_f: ops,
-              avg: st.avg, hr: st.homeRuns, pa, rbi: st.rbi
+              avg: st.avg, hr: st.homeRuns, pa, rbi: st.rbi,
+              so: parseInt(st.strikeOuts || 0)
             });
             break;
           }
@@ -1390,6 +1391,7 @@ async function fetchGamePreview(result) {
         hr:  m ? m.hr  : 0,
         rbi: m ? m.rbi : 0,
         pa:  m ? m.pa  : 0,
+        so:  m ? m.so  : 0,
       };
     }
     return { id, name: "Player " + id };
@@ -1410,6 +1412,7 @@ async function fetchGamePreview(result) {
       hr:  m ? m.hr  : 0,
       rbi: m ? m.rbi : 0,
       pa:  m ? m.pa  : 0,
+      so:  m ? m.so  : 0,
     };
   });
   if ((result.awayLineupIds || []).length) {
@@ -2257,6 +2260,153 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+// =====================================================================
+// Lineup edge card — composite lineup score + per-batter K-vulnerability
+// list vs the opposing SP. Renders above the "projected lineup" cards in
+// the per-game expander. Composite sourced from player_aware_signal JSON
+// (lineup_wrcplus_h/a + lineup_xwoba_h/a). K-prob uses Log5:
+//   p_K = clamp((batter_K_rate * pitcher_K_rate) / league_K_rate)
+// where batter_K_rate = SO / PA, pitcher_K_rate ≈ k9 / 38, league ≈ 0.225.
+// =====================================================================
+const _LG_K_RATE = 0.225;  // league avg K% per PA, 2024-2026 era
+const _PA_PER_9  = 38.0;   // approx PAs per 9 innings
+
+function _batterKProb(batter, opposingSP) {
+  if (!batter || !opposingSP) return null;
+  const pa = parseInt(batter.pa || 0);
+  const so = parseInt(batter.so || 0);
+  if (pa < 30) return null;
+  const bK = so / pa;
+  const k9 = parseFloat(opposingSP.k9 || 0);
+  if (!isFinite(k9) || k9 <= 0) return null;
+  const pK = k9 / _PA_PER_9;
+  if (!isFinite(pK) || pK <= 0) return null;
+  let p = (bK * pK) / _LG_K_RATE;
+  if (!isFinite(p)) return null;
+  return Math.max(0.03, Math.min(0.6, p));
+}
+
+function _lineupCompositeFromPA(pa, side) {
+  // side = "h" or "a"
+  if (!pa) return null;
+  const wrc = pa["lineup_wrcplus_" + side];
+  const xw  = pa["lineup_xwoba_" + side];
+  if (wrc == null && xw == null) return null;
+  let score = 0;
+  const parts = [];
+  if (wrc != null) {
+    score += (wrc - 100);
+    parts.push(`wRC+ ${Math.round(wrc)}`);
+  }
+  if (xw != null) {
+    score += (xw - 0.310) * 1000;
+    parts.push(`xwOBA ${xw.toFixed(3)}`);
+  }
+  return { score, parts };
+}
+
+function _lookupTotalsForPreview(preview) {
+  if (!preview || !window.__totalsByMatchup) return null;
+  const a = preview.awayAbbr || "";
+  const h = preview.homeAbbr || "";
+  if (!a || !h) return null;
+  return window.__totalsByMatchup[`${a} @ ${h}`] || null;
+}
+
+function _parsePlayerAware(totalsRow) {
+  if (!totalsRow || !totalsRow.player_aware_signal) return null;
+  try { return JSON.parse(totalsRow.player_aware_signal); } catch (_) { return null; }
+}
+
+function renderLineupEdge(preview) {
+  if (!preview) return "";
+  const totalsRow = _lookupTotalsForPreview(preview);
+  const pa = _parsePlayerAware(totalsRow);
+  const awayComp = _lineupCompositeFromPA(pa, "a");
+  const homeComp = _lineupCompositeFromPA(pa, "h");
+
+  // --- Composite winner banner ---
+  let banner = "";
+  if (awayComp && homeComp) {
+    const diff = Math.abs(awayComp.score - homeComp.score);
+    const awayWins = awayComp.score >= homeComp.score;
+    const winName = awayWins ? preview.awayName : preview.homeName;
+    const winAbbr = awayWins ? preview.awayAbbr : preview.homeAbbr;
+    const edgeWord = diff < 5 ? "marginal edge" : diff < 12 ? "edge" : "clear edge";
+    banner = `<div style="background:rgba(63,185,80,0.08);border-left:3px solid var(--green);padding:0.55rem 0.85rem;margin-bottom:0.6rem;border-radius:4px;">`
+           + `<div style="font-weight:700;color:var(--green);font-size:0.88rem;letter-spacing:0.05em;text-transform:uppercase;">`
+           +   `${winAbbr || winName} ${edgeWord} (+${diff.toFixed(0)})`
+           + `</div>`
+           + `<div style="font-size:0.78rem;color:var(--muted);margin-top:0.3rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
+           +   `${preview.awayAbbr || preview.awayName}: ${awayComp.parts.join(" · ")}<br>`
+           +   `${preview.homeAbbr || preview.homeName}: ${homeComp.parts.join(" · ")}`
+           + `</div></div>`;
+  } else if (awayComp || homeComp) {
+    const only = awayComp || homeComp;
+    const which = awayComp ? preview.awayAbbr : preview.homeAbbr;
+    banner = `<div class="muted" style="font-size:0.82rem;margin-bottom:0.5rem;">`
+           + `Partial composite (${which} only): ${only.parts.join(" · ")}`
+           + `</div>`;
+  } else {
+    banner = `<div class="muted" style="font-size:0.82rem;margin-bottom:0.5rem;">`
+           + `Composite lineup metrics not baked for this matchup (player_aware_signal missing).`
+           + `</div>`;
+  }
+
+  // --- Per-batter K-vulnerability lists ---
+  const kList = (lineup, opposingSP, teamName, teamAbbr) => {
+    if (!opposingSP) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: opposing SP not yet known.</div>`;
+    }
+    if (!lineup || !lineup.length) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: lineup card not yet posted.</div>`;
+    }
+    const rows = [];
+    for (const b of lineup) {
+      const pK = _batterKProb(b, opposingSP);
+      if (pK == null) continue;
+      rows.push({ name: b.name, pos: b.pos, pa: b.pa, prob: pK });
+    }
+    if (!rows.length) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: not enough batter PA for K-projection (need 30+ PA / hitter).</div>`;
+    }
+    rows.sort((a, b) => b.prob - a.prob);
+    const meanK = rows.reduce((s, r) => s + r.prob, 0) / rows.length;
+    const contactPct = (1 - meanK) * 100;
+    const k9Str = parseFloat(opposingSP.k9 || 0).toFixed(1);
+    let html = `<div>`
+             + `<div style="display:flex;align-items:baseline;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.25rem;">`
+             +   `<strong style="font-size:0.88rem;">${teamAbbr || teamName} lineup</strong>`
+             +   `<span class="muted" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.76rem;">`
+             +     `contact ${contactPct.toFixed(0)}% · vs ${opposingSP.name} (${k9Str} K/9)`
+             +   `</span>`
+             + `</div>`
+             + `<ol style="margin:0.2rem 0 0 1.4rem;padding:0;font-size:0.8rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`;
+    for (const r of rows) {
+      const pct = (r.prob * 100).toFixed(0);
+      const color = r.prob >= 0.32 ? "var(--red)"
+                  : r.prob >= 0.25 ? "var(--yellow)"
+                  : "var(--muted)";
+      html += `<li style="margin:0.1rem 0;">`
+            +   `<span style="display:inline-block;min-width:3.2rem;color:${color};font-weight:700;">${pct}% K</span>`
+            +   `<span class="muted"> · </span>`
+            +   `<span style="color:var(--text);">${r.name}</span>`
+            +   `<span class="muted"> (${r.pos || "-"})</span>`
+            + `</li>`;
+    }
+    html += `</ol></div>`;
+    return html;
+  };
+
+  return `<div class="preview-card" style="grid-column: 1 / -1;">`
+       + `<h5>Lineup edge <span class="muted" style="font-size:0.78rem;font-weight:normal;">— composite advantage + per-batter K vs opposing SP</span></h5>`
+       + banner
+       + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;">`
+       +   kList(preview.awayLineup, preview.homePitcher, preview.awayName, preview.awayAbbr)
+       +   kList(preview.homeLineup, preview.awayPitcher, preview.homeName, preview.homeAbbr)
+       + `</div></div>`;
+}
+
 // Single-game HR probability for a batter facing today's opposing SP.
 // Formula:  p = 1 - (1 - r)^N  where r = adjusted HR/PA, N = expected PAs.
 //   batter rate  = season HR / PA
@@ -2491,6 +2641,7 @@ function _formatGamePreviewUpcoming(preview) {
           } catch (_e_bp_panel) { return ""; }
         })()}
       </div>
+      ${renderLineupEdge(preview)}
       <div class="preview-card">
         <h5>${preview.awayName} top hitters (by 2026 OPS)</h5>
         <ul>${fmtBatters(preview.awayBatters)}</ul>
