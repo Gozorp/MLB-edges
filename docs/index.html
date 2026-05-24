@@ -4009,6 +4009,19 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   return html;
 }
 
+// Map a row's odds_status to a short human-readable reason for why
+// fair_prob / edge_pp would be blank.  Used as a hover title on the
+// dashes shown in the slate table.
+function _oddsBlankReason(status) {
+  const s = (status || "").toString().toLowerCase();
+  if (s === "fetched_capped") return "Odds devig produced fair probability outside [0.10, 0.90] — possible stale or mis-parsed odds; the sanity cap prevents baking absurd values into the slate.";
+  if (s === "pending_sp_data") return "Probable starting pitcher not yet announced.";
+  if (s === "no_match") return "Odds source did not return this matchup.";
+  if (s === "unavailable") return "Odds source was unavailable when the slate was baked.";
+  if (s) return `odds_status=${s}`;
+  return "No market data available for this game.";
+}
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -4042,8 +4055,10 @@ function renderSlate(rows, gradeMap, results) {
     const grade = (r.grade || fromParlay.grade || "").trim();
     const reasons = (r.grade_reasons || fromParlay.reasons || r.signals || "")
       .replace(/\|/g, " · ");
-    const fairFmt = have(r.fair_prob) ? pct(r.fair_prob) : "—";
-    const edgeFmt = have(r.edge_pp) ? `${parseFloat(r.edge_pp).toFixed(1)}pp` : "—";
+    const _oddsReason = _oddsBlankReason(r.odds_status);
+    const _blankCell = `<span class="muted" title="${_oddsReason.replace(/"/g, "&quot;")}" style="cursor:help;border-bottom:1px dotted var(--muted);">—</span>`;
+    const fairFmt = have(r.fair_prob) ? pct(r.fair_prob) : _blankCell;
+    const edgeFmt = have(r.edge_pp) ? `${parseFloat(r.edge_pp).toFixed(1)}pp` : _blankCell;
     const result = matchResult(r, results);
     const accuracy = result && result.isFinal ? predictionAccuracy(r, result) : null;
     let resultCell = "";
