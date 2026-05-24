@@ -170,6 +170,45 @@
     font-size: 0.8rem; color: var(--green);
   }
 
+  /* Deep-analysis collapsible sub-sections (2026-05-24) */
+  .deep-section { margin: 0.6rem 0 0.4rem 0; }
+  .deep-section > .deep-h5 {
+    cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--accent); text-transform: uppercase;
+    letter-spacing: 0.05em; margin: 0 0 0.3rem 0;
+    padding: 0.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .deep-section > .deep-h5 .chev {
+    display: inline-block; width: 0.9em; color: var(--muted);
+    transition: transform 0.15s;
+  }
+  .deep-section.open > .deep-h5 .chev { transform: rotate(90deg); color: var(--accent); }
+  .deep-section > .deep-body { display: none; font-size: 0.88rem; line-height: 1.55; }
+  .deep-section.open > .deep-body { display: block; }
+  .deep-section.subtle > .deep-h5 { color: var(--muted); }
+  .deep-section.subtle.open > .deep-h5 { color: var(--text); }
+  .deep-section .counter-flag {
+    color: var(--yellow); font-weight: 600;
+  }
+  .deep-section .pivot-flag {
+    color: var(--accent); font-weight: 600;
+  }
+  /* Stat tooltip: dotted underline + cursor:help, title attr shows source */
+  .dt {
+    border-bottom: 1px dotted var(--muted);
+    cursor: help;
+  }
+  /* Inline "Ask Claude about this" button */
+  .deep-ask-claude {
+    background: rgba(88,166,255,0.08); border: 1px solid var(--accent);
+    color: var(--accent); padding: 0.25rem 0.7rem; border-radius: 4px;
+    font-size: 0.78rem; font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    cursor: pointer; margin-top: 0.6rem;
+  }
+  .deep-ask-claude:hover { background: rgba(88,166,255,0.16); }
+
   /* ----- Post-game result indicators ----- */
   .result-chip {
     display: inline-block; padding: 0.15rem 0.5rem;
@@ -3667,6 +3706,172 @@ function _summarizeBvpJson(jsonStr, label) {
   return s + parts.join("; ") + ".";
 }
 
+// Deep-analysis section helper: renders a collapsible <section> with a
+// chevron header and a hidden-by-default body. Click toggles via the
+// event-delegation listener at the bottom of the file.
+function _deepSection(title, bodyHtml, openByDefault) {
+  if (!bodyHtml || !bodyHtml.trim()) return "";
+  const cls = openByDefault ? "deep-section open" : "deep-section";
+  return `<section class="${cls}" data-deep-section>`
+       +   `<div class="deep-h5"><span class="chev">▸</span><span>${title}</span></div>`
+       +   `<div class="deep-body">${bodyHtml}</div>`
+       + `</section>`;
+}
+
+// Stat tooltip — wraps a value with dotted underline + cursor:help and a
+// title= attribute that explains where the value came from. Hover to
+// see source attribution.
+function _dt(value, source) {
+  const safeSrc = String(source || "").replace(/"/g, "&quot;");
+  return `<span class="dt" title="${safeSrc}">${value}</span>`;
+}
+
+// Build the counter-signals section for an ML pick. Looks at the same
+// signals the lead narrative uses, but flips perspective to surface what
+// argues AGAINST the model's call. Returns "" if there is nothing
+// non-trivial to surface.
+function _deepCounterSignalsML(r, item) {
+  const out = [];
+  const f5 = parseFloat(r.f5_prob);
+  const full = parseFloat(r.full_prob);
+  if (isFinite(f5) && isFinite(full) && Math.abs(f5 - full) > 0.10) {
+    out.push(`Stages 1 and 2 disagree by <strong>${(Math.abs(f5-full)*100).toFixed(1)}pp</strong> — bullpen-driven model output is more fragile.`);
+  }
+  const fair = parseFloat(r.fair_prob);
+  if (isFinite(fair) && isFinite(item.prob) && (item.prob - fair) > 0.18) {
+    out.push(`Model-vs-market gap of <strong>${((item.prob-fair)*100).toFixed(1)}pp</strong> is in the top decile — markets rarely miss by this much; favor caution.`);
+  }
+  if (isFinite(item.prob) && item.prob > 0.80) {
+    out.push(`Model prob <strong>${(item.prob*100).toFixed(1)}%</strong> is past the 80% saturation point (HARD CAP 9 territory) — historically a regression zone.`);
+  }
+  const stress = (r.stress_warnings || "").trim();
+  if (stress) out.push(`Stress audit fired: <span class="muted">${stress}</span>.`);
+  const reasons = (r.grade_reasons || "").toLowerCase();
+  if (reasons.includes("small_sample") || reasons.includes("small sample")) {
+    out.push(`<strong>Small-sample cap fired</strong> — one or more signals based on &lt; threshold PA / IP / appearances.`);
+  }
+  if (reasons.includes("compound")) {
+    out.push(`<strong>Compound-cap fired</strong> — multiple weak signals stacked; treat as down-weighted.`);
+  }
+  if (!out.length) {
+    out.push(`<span class="muted">No material counter-signals — direction is clean across the layers.</span>`);
+  }
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+// "What would change my mind" — tripwires that, if observed, would
+// materially shift the model's call. Quantitative where possible.
+function _deepPivotPointsML(r, item) {
+  const out = [];
+  if (isFinite(item.prob) && isFinite(item.edge_pp)) {
+    const breakeven = parseFloat(r.fair_prob);
+    if (isFinite(breakeven)) {
+      const tipDelta = (item.prob - breakeven) * 100;
+      out.push(`Market moves <strong class="pivot-flag">${tipDelta.toFixed(1)}pp toward the pick</strong> — edge collapses to zero; downgrade automatically.`);
+    }
+  }
+  const hlBp = parseFloat(r.hl_bullpen_xwoba_gap);
+  if (isFinite(hlBp)) {
+    out.push(`Bullpen xwOBA gap (currently <strong>${hlBp.toFixed(4)}</strong>) flips sign — re-evaluate; bullpen edge was a contributing layer.`);
+  }
+  const pqi = parseFloat(r.pqi_diff);
+  if (isFinite(pqi)) {
+    out.push(`PQI Δ (currently <strong>${pqi.toFixed(1)}</strong>) inverts — pitching-quality contribution flips against the pick.`);
+  }
+  out.push(`Late-scratch on the pick's SP — re-grade with PENDING_SP_DATA fallback.`);
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+// Counter-signals for O/U: what argues against the OVER/UNDER side.
+function _deepCounterSignalsOU(r, item) {
+  const out = [];
+  const edge = Math.abs(item.edge_pp || 0);
+  if (edge < 2) {
+    out.push(`Edge <strong>${edge.toFixed(1)}pp</strong> sits inside typical model-to-market noise (~±2pp). Could be variance, not signal.`);
+  }
+  const homeK = parseFloat(r.home_sp_k_pct);
+  const awayK = parseFloat(r.away_sp_k_pct);
+  if (isFinite(homeK) && isFinite(awayK)) {
+    const combo = (homeK + awayK) / 2;
+    if (item.side === "OVER" && combo > 26) {
+      out.push(`OVER call but combined SP K% is <strong>${combo.toFixed(1)}%</strong> (high) — strikeouts suppress runs, fights the over.`);
+    } else if (item.side === "UNDER" && combo < 19) {
+      out.push(`UNDER call but combined SP K% is <strong>${combo.toFixed(1)}%</strong> (low) — more contact = more BIP = more runs, fights the under.`);
+    }
+  }
+  const umpK = parseFloat(r.ump_k_pct_delta);
+  if (isFinite(umpK)) {
+    if (item.side === "OVER" && umpK > 0.015) {
+      out.push(`OVER call but plate umpire is pitcher-friendly (K Δ <strong>+${umpK.toFixed(3)}</strong>).`);
+    } else if (item.side === "UNDER" && umpK < -0.015) {
+      out.push(`UNDER call but plate umpire is hitter-friendly (K Δ <strong>${umpK.toFixed(3)}</strong>).`);
+    }
+  }
+  if (!out.length) {
+    out.push(`<span class="muted">No material counter-signals on this side.</span>`);
+  }
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+function _deepPivotPointsOU(r, item) {
+  const out = [];
+  if (isFinite(item.pred_runs) && isFinite(item.line)) {
+    const diff = item.pred_runs - item.line;
+    out.push(`Market moves the line <strong class="pivot-flag">${diff.toFixed(1)} runs</strong> toward the model's number — edge collapses; no play.`);
+  }
+  out.push(`Wind / weather shifts materially (Statcast doesn't bake same-day wind) — re-check the venue before locking in.`);
+  out.push(`Late-scratch on either SP — re-evaluate; SP K% drives a meaningful chunk of the total.`);
+  out.push(`Lineup posted differs materially from projected (rest day for a 1.000-OPS bat, e.g.) — wRC+ aggregation shifts.`);
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+function _deepCounterSignalsK(r, item) {
+  const out = [];
+  const kPct = item.k_pct;
+  const expK = item.expected_K;
+  const umpK = parseFloat(r.ump_k_pct_delta);
+  if (kPct < 23 && expK > 6.0) {
+    out.push(`Low K% (<strong>${kPct.toFixed(1)}%</strong>) but expected K still <strong>${expK.toFixed(1)}</strong> — leans on PAs, not K-rate. Fragile to early hook.`);
+  }
+  if (isFinite(umpK) && umpK < -0.015) {
+    out.push(`Plate umpire suppresses K rate (Δ <strong>${umpK.toFixed(3)}</strong>) — knock <strong>${(Math.abs(umpK)*26).toFixed(1)} K</strong> off the naive projection.`);
+  }
+  if (item.p_over_7 !== null && item.p_over_7 < 0.20) {
+    out.push(`P(K ≥ 7) only <strong>${(item.p_over_7*100).toFixed(0)}%</strong> — ceiling props are out of reach unless variance breaks.`);
+  }
+  if (!out.length) {
+    out.push(`<span class="muted">No material counter-signals on this K projection.</span>`);
+  }
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+function _deepPivotPointsK(r, item) {
+  const out = [];
+  out.push(`Pitcher pulled before 5 IP (early hook on contact outing) — expected K drops to <strong>~${(item.expected_K*0.75).toFixed(1)}</strong> on a 5-inning workload.`);
+  out.push(`Opposing lineup posts an all-righties / all-lefties day that exploits the pitcher's platoon split — K% can move ±3pp.`);
+  const umpK = parseFloat(r.ump_k_pct_delta);
+  if (isFinite(umpK)) {
+    out.push(`If the announced umpire changes, swap K Δ — current <strong>${umpK.toFixed(3)}</strong>; league avg ~0.000.`);
+  }
+  return `<ul>${out.map(s => `<li>${s}</li>`).join("")}</ul>`;
+}
+
+// Inline "Ask Claude about this" button HTML. Wires the click via
+// data-deep-ask-claude attribute so the event-delegation handler can
+// pre-fill the Ask-the-Slate textarea and scroll to it.
+function _deepAskClaudeButton(propType, payload) {
+  let q = "";
+  if (propType === "ml") {
+    q = `Why does the model favor ${payload.pick} ML in ${payload.matchup}? What's the single weakest link in that thesis?`;
+  } else if (propType === "ou") {
+    q = `Why does the model lean ${payload.side} ${payload.line ? payload.line.toFixed(1) : ""} on ${payload.matchup}? Where could it be wrong?`;
+  } else if (propType === "k") {
+    q = `Why does the model project ${payload.expected_K ? payload.expected_K.toFixed(1) : "?"} K for ${payload.name} in ${payload.matchup}? Which threshold prop has the best edge?`;
+  }
+  const safe = q.replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  return `<button class="deep-ask-claude" data-deep-ask-claude data-question="${safe}">Ask Claude about this →</button>`;
+}
+
 // === Game ML deep narrative ===
 function _deepNarrativeML(item) {
   const r = item._row || {};
@@ -3684,90 +3889,108 @@ function _deepNarrativeML(item) {
   const reasons = _capRulesFromReasons(r.grade_reasons || "");
   const stress = (r.stress_warnings || "").trim();
   const hlBp = parseFloat(r.hl_bullpen_xwoba_gap);
-  const penStrain = parseFloat(r.pen_strain_pick_side);
-  const bpMin = parseFloat(r.bp_min);
   const pqi = parseFloat(r.pqi_diff);
   const tier = (r.tier || "").trim();
 
-  let html = "";
-  // Lead
-  html += `<p><strong>${pick} ML over ${matchup}</strong> — model says <strong>${_fmtPct(prob)}</strong>, market implies <strong>${_fmtPct(fair)}</strong>, giving an edge of <strong>${_fmtPp(edgePp)}</strong>. Final grade <strong>${grade}</strong> at internal tier <strong>${tier || "—"}</strong>.</p>`;
+  // --- THESIS (open by default) ---
+  const probTT  = _dt(_fmtPct(prob), "p_model from CSV pick_prob");
+  const fairTT  = _dt(_fmtPct(fair), "fair_prob from CSV (devig of opener)");
+  const edgeTT  = _dt(_fmtPp(edgePp), "edge_pp = (p_model - fair_prob) * 100");
+  const gradeTT = _dt(grade, "Rule-based grader output (8 rules)");
+  const tierTT  = _dt(tier || "—", "Tier assigned BEFORE market gate");
+  let thesis = `<p><strong>${pick} ML over ${matchup}</strong> — model says ${probTT}, market implies ${fairTT}, edge ${edgeTT}. Grade ${gradeTT} at tier ${tierTT}.</p>`;
 
-  // Stage 1/2 + pitcher matchup
-  let stage = `<p><strong>Pitching matchup.</strong> `;
-  stage += `<span class="muted">${awaySp || "(away SP TBA)"} vs ${homeSp || "(home SP TBA)"}.</span> `;
+  // --- PITCHING MATCHUP ---
+  let pitchHtml = `<p><span class="muted">${awaySp || "(away SP TBA)"} vs ${homeSp || "(home SP TBA)"}.</span></p>`;
   if (isFinite(f5) && isFinite(full)) {
-    const f5Tilt = f5 >= 0.5 ? "favors the home side" : "favors the away side";
-    const fullTilt = full >= 0.5 ? "favors the home side" : "favors the away side";
+    const f5Tilt = f5 >= 0.5 ? "favors home" : "favors away";
+    const fullTilt = full >= 0.5 ? "favors home" : "favors away";
     const agree = (f5 >= 0.5) === (full >= 0.5);
-    stage += `Stage 1 (first-5) at ${_fmtPct(f5)} ${f5Tilt}; Stage 2 (full game) at ${_fmtPct(full)} ${fullTilt}. `;
-    stage += agree ? `<strong>Stages agree</strong> on direction.` : `<strong>Stages disagree</strong> — bullpen / late-leverage carries the deciding signal.`;
+    const f5TT = _dt(_fmtPct(f5), "f5_prob from CSV (Stage 1 model output)");
+    const fullTT = _dt(_fmtPct(full), "full_prob from CSV (Stage 2 model output)");
+    pitchHtml += `<p>Stage 1 (first-5) ${f5TT} ${f5Tilt}; Stage 2 (full) ${fullTT} ${fullTilt}. ` +
+      (agree ? `<strong>Stages agree</strong> on direction.` : `<strong>Stages disagree</strong> — bullpen / late-leverage carries the deciding signal.`) + `</p>`;
   }
-  html += stage + `</p>`;
 
-  // Signals
+  // --- SIGNALS + RULE FIRINGS ---
+  let sigHtml = "";
   if (sigList.length) {
-    html += `<p><strong>Active signals</strong> (${sigList.length}): ${sigList.map(s => `<code>${s.replace(/</g,'&lt;')}</code>`).join(", ")}.</p>`;
+    sigHtml += `<p><strong>Active signals (${sigList.length}):</strong> ${sigList.map(s => `<code>${s.replace(/</g,"&lt;")}</code>`).join(", ")}.</p>`;
   }
+  if (reasons.length) {
+    sigHtml += `<p><strong>Rule layer firings:</strong> ${reasons.map(c => `<span style="background:rgba(255,255,255,0.06);padding:0.05rem 0.3rem;border-radius:3px;font-size:0.82rem;"><strong>${c.tag}</strong></span>`).join(" ")}</p>`;
+  }
+  if (stress) sigHtml += `<p><span class="flag">Stress warnings:</span> <span class="muted">${stress}</span></p>`;
 
-  // PQI + team-quality context
+  // --- PQI + BULLPEN ---
+  let pqiHtml = "";
   if (isFinite(pqi)) {
+    const pqiTT = _dt(_fmtNum(pqi, 1), "pqi_diff from CSV (PitchingQualityIndex Δ)");
+    const bpTT  = _dt(_fmtNum(hlBp, 4), "hl_bullpen_xwoba_gap from CSV (pick vs opp bullpen)");
     const pqiTilt = pqi > 0 ? "with the pick" : "against the pick";
-    html += `<p><strong>PQI (pitching-quality index) Δ:</strong> ${_fmtNum(pqi, 1)} <span class="muted">(${pqiTilt})</span>. `;
-    html += `Bullpen-quality gap (pick vs opponent, xwOBA-allowed): <strong>${_fmtNum(hlBp, 4)}</strong> ` +
-            `<span class="muted">(${isFinite(hlBp) && hlBp < 0 ? "pick has better bullpen" : "pick has worse bullpen"}).</span></p>`;
+    pqiHtml += `<p><strong>PQI Δ:</strong> ${pqiTT} <span class="muted">(${pqiTilt})</span>. Bullpen-quality gap: ${bpTT} <span class="muted">(${isFinite(hlBp) && hlBp < 0 ? "pick has better bullpen" : "pick has worse bullpen"}).</span></p>`;
   }
 
-  // Lineup vs SP (platoon JSON)
+  // --- LINEUP (platoon) ---
   const platoonAway = _summarizeLineupJson(r.away_top_5_batters_json, "Away");
   const platoonHome = _summarizeLineupJson(r.home_top_5_batters_json, "Home");
+  let lineupHtml = "";
   if (platoonAway || platoonHome) {
-    html += `<p><strong>Lineup context (platoon splits).</strong></p><ul>`;
-    if (platoonAway) html += `<li>${platoonAway}</li>`;
-    if (platoonHome) html += `<li>${platoonHome}</li>`;
-    html += `</ul>`;
+    lineupHtml += `<ul>`;
+    if (platoonAway) lineupHtml += `<li>${platoonAway}</li>`;
+    if (platoonHome) lineupHtml += `<li>${platoonHome}</li>`;
+    lineupHtml += `</ul>`;
   }
 
-  // BvP context
+  // --- BvP ---
   const bvpAway = _summarizeBvpJson(r.away_bvp_top5_json, "Away");
   const bvpHome = _summarizeBvpJson(r.home_bvp_top5_json, "Home");
+  let bvpHtml = "";
   if (bvpAway || bvpHome) {
-    html += `<p><strong>BvP (career vs today's SP).</strong></p><ul>`;
-    if (bvpAway) html += `<li>${bvpAway}</li>`;
-    if (bvpHome) html += `<li>${bvpHome}</li>`;
-    html += `</ul>`;
+    bvpHtml += `<ul>`;
+    if (bvpAway) bvpHtml += `<li>${bvpAway}</li>`;
+    if (bvpHome) bvpHtml += `<li>${bvpHome}</li>`;
+    bvpHtml += `</ul>`;
   }
 
-  // Cap rules + stress
-  if (reasons.length) {
-    html += `<p><strong>Rule layer firings:</strong> ${reasons.map(c => `<span style="background:rgba(255,255,255,0.06);padding:0.05rem 0.3rem;border-radius:3px;font-size:0.82rem;"><strong>${c.tag}</strong></span>`).join(" ")}</p>`;
-  }
-  if (stress) {
-    html += `<p><span class="flag">Stress warnings:</span> <span class="muted">${stress}</span></p>`;
-  }
-
-  // Bullpen outlook (Phase 1+2 sprint): pulls from window.__bullpenMeta
-  // sidecar.  Falls back silently if data missing.
+  // --- BULLPEN OUTLOOK (from sidecar) ---
+  let bpHtml = "";
   try {
     const _bpMeta = _bullpenMetaForMatchup(item.matchup);
     if (_bpMeta && (_bpMeta.away || _bpMeta.home)) {
-      html += `<p><strong>Bullpen outlook:</strong></p>`;
-      html += `<ul style="margin:0.3rem 0;font-size:0.88rem;">`;
-      if (_bpMeta.away) html += `<li>${_bullpenTeamNarrative(_bpMeta.away, _bpMeta.awayTeam)}</li>`;
-      if (_bpMeta.home) html += `<li>${_bullpenTeamNarrative(_bpMeta.home, _bpMeta.homeTeam)}</li>`;
-      html += `</ul>`;
+      bpHtml += `<ul style="margin:0.3rem 0;font-size:0.88rem;">`;
+      if (_bpMeta.away) bpHtml += `<li>${_bullpenTeamNarrative(_bpMeta.away, _bpMeta.awayTeam)}</li>`;
+      if (_bpMeta.home) bpHtml += `<li>${_bullpenTeamNarrative(_bpMeta.home, _bpMeta.homeTeam)}</li>`;
+      bpHtml += `</ul>`;
     }
-  } catch (_e_bp_narr) { /* best-effort; skip on any failure */ }
+  } catch (_e_bp_narr) {}
 
-  // Verdict
+  // --- COUNTER-SIGNALS (new) ---
+  const counterHtml = _deepCounterSignalsML(r, item);
+
+  // --- WHAT WOULD CHANGE MY MIND (new) ---
+  const pivotHtml = _deepPivotPointsML(r, item);
+
+  // --- BOTTOM LINE ---
   let verdict;
   if (["A","A-"].includes(grade)) verdict = `<span class="flag">High conviction.</span> Multiple confirming layers; treat as anchor candidate.`;
   else if (["B","B+","B-"].includes(grade)) verdict = `<span class="flag">Moderate conviction.</span> Some signals present but not a parlay-anchor.`;
   else if (grade === "C") verdict = `<span class="flag-red">Skip.</span> Cap layer or low conviction — do not stake.`;
   else if (grade === "D") verdict = `<span class="flag-red">Avoid.</span> No confluence, market disagreement, or stress warnings active.`;
   else verdict = `Tier not graded yet (PENDING_SP_DATA or equivalent).`;
-  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
-  return html;
+
+  // Assemble — thesis is open; everything else is collapsed by default.
+  return _deepSection("Pick thesis", thesis, true)
+       + _deepSection("Pitching matchup", pitchHtml, false)
+       + _deepSection("Signals &amp; rule firings", sigHtml, false)
+       + _deepSection("PQI &amp; bullpen gap", pqiHtml, false)
+       + _deepSection("Lineup (platoon splits)", lineupHtml, false)
+       + _deepSection("BvP (career vs SP)", bvpHtml, false)
+       + _deepSection("Bullpen outlook", bpHtml, false)
+       + _deepSection("Counter-signals", counterHtml, false)
+       + _deepSection("What would change my mind", pivotHtml, false)
+       + _deepSection("Bottom line", `<p>${verdict}</p>`, true)
+       + _deepAskClaudeButton("ml", item);
 }
 
 // === O/U Totals deep narrative ===
@@ -3791,55 +4014,66 @@ function _deepNarrativeOU(item) {
   const umpK = parseFloat(r.ump_k_pct_delta);
   const umpBB = parseFloat(r.ump_bb_pct_delta);
 
-  let html = `<p><strong>${side} ${line.toFixed(1)} on ${matchup}</strong>. Model projects <strong>${_fmtNum(pred, 1)} total runs</strong> against the ${line.toFixed(1)} line — that's <strong>${_fmtNum(pred - line, 1)} runs</strong> on the ${side === "OVER" ? "over" : "under"} side. Model-implied probability <strong>${_fmtPct(prob)}</strong> against book-fair ${_fmtPct(parseFloat(t.book_fair))}, edge <strong>${_fmtPp(edge)}</strong>.${isFinite(stake) ? ` Recommended stake: <strong>${stake.toFixed(2)}u</strong> (Kelly-fraction sized).` : ""}</p>`;
+  const predTT = _dt(_fmtNum(pred, 1), "pred_runs from picks_totals_<date>.csv (model output)");
+  const lineTT = _dt(line.toFixed(1), "total_line from picks_totals_<date>.csv (market)");
+  const edgeTT = _dt(_fmtPp(edge), "(p_model - book_fair) * 100");
+  let thesis = `<p><strong>${side} ${lineTT} on ${matchup}</strong> — projection ${predTT} runs (${_fmtNum(pred - line, 1)} runs on the ${side === "OVER" ? "over" : "under"} side). Model prob ${_dt(_fmtPct(prob), "our_prob from CSV")} vs book-fair ${_dt(_fmtPct(parseFloat(t.book_fair)), "book_fair from CSV")}, edge ${edgeTT}.${isFinite(stake) ? ` Recommended stake: <strong>${stake.toFixed(2)}u</strong> (Kelly-fractional).` : ""}</p>`;
 
-  // Pitching environment
-  let p = `<p><strong>Pitching environment.</strong> `;
-  if (awaySp && homeSp) p += `<span class="muted">${awaySp} vs ${homeSp}.</span> `;
+  let pitchHtml = `<p><span class="muted">${awaySp || "(away SP TBA)"} vs ${homeSp || "(home SP TBA)"}.</span></p>`;
   if (isFinite(homeK) && isFinite(awayK)) {
     const totalK = (homeK + awayK) / 2;
     const lgAvg = 22.5;
     const tilt = totalK > lgAvg + 1 ? "above league average (K-friendly = run-suppressing)" :
                  totalK < lgAvg - 1 ? "below league average (lower K = more contact = more runs)" :
                                        "near league average";
-    p += `Combined SP K%: <strong>${totalK.toFixed(1)}%</strong> (${tilt}). ${homeSp || "Home SP"} ${_fmtNum(homeK, 1)}%; ${awaySp || "Away SP"} ${_fmtNum(awayK, 1)}%.`;
+    pitchHtml += `<p>Combined SP K%: ${_dt(totalK.toFixed(1)+"%", "(home_sp_k_pct + away_sp_k_pct) / 2")} (${tilt}). Home ${_dt(_fmtNum(homeK,1)+"%", "home_sp_k_pct CSV")}; Away ${_dt(_fmtNum(awayK,1)+"%", "away_sp_k_pct CSV")}.</p>`;
   }
-  html += p + `</p>`;
 
-  // Bullpen
+  let bpHtml = "";
   if (isFinite(hlBp)) {
     const sign = hlBp >= 0 ? "home worse" : "home better";
-    html += `<p><strong>Late-leverage bullpen gap</strong> (home vs away xwOBA-allowed): <strong>${_fmtNum(hlBp, 4)}</strong> <span class="muted">(${sign}).</span> ${Math.abs(hlBp) > 0.015 ? "Material gap — could push runs to one side late." : "Narrow gap — bullpens roughly comparable."}</p>`;
+    bpHtml += `<p>Bullpen gap (home vs away xwOBA-allowed): ${_dt(_fmtNum(hlBp,4), "hl_bullpen_xwoba_gap CSV")} <span class="muted">(${sign}).</span> ${Math.abs(hlBp) > 0.015 ? "Material gap — could push runs to one side late." : "Narrow gap — comparable late."}</p>`;
   }
 
-  // Lineup quality
+  let lineupHtml = "";
   if (isFinite(homeConc) || isFinite(awayConc)) {
-    html += `<p><strong>Lineup concentration index</strong> (top-3 vs bottom-3 xwOBA ratio): home <strong>${_fmtNum(homeConc, 2)}</strong>, away <strong>${_fmtNum(awayConc, 2)}</strong>. <span class="muted">Values >1.5 = top-heavy; >2.0 = severe star-anchored shape that bullpens can navigate around late.</span></p>`;
+    lineupHtml += `<p>Lineup concentration (top-3 vs bottom-3 xwOBA): home ${_dt(_fmtNum(homeConc,2), "home_lineup_concentration CSV")}, away ${_dt(_fmtNum(awayConc,2), "away_lineup_concentration CSV")}. <span class="muted">>1.5 = top-heavy; >2.0 = severe star-anchored shape that bullpens can navigate around late.</span></p>`;
   }
 
-  // Umpire
+  let umpHtml = "";
   if (isFinite(umpK) || isFinite(umpBB)) {
-    html += `<p><strong>Plate umpire effects</strong>: K-rate Δ <strong>${_fmtNum(umpK, 3)}</strong>, BB-rate Δ <strong>${_fmtNum(umpBB, 3)}</strong>. <span class="muted">Positive K Δ = pitcher-friendly zone (suppresses runs); positive BB Δ = hitter-friendly zone (boosts runs).</span></p>`;
+    umpHtml += `<p>Plate ump: K Δ ${_dt(_fmtNum(umpK,3), "ump_k_pct_delta CSV")}, BB Δ ${_dt(_fmtNum(umpBB,3), "ump_bb_pct_delta CSV")}. <span class="muted">+K Δ = pitcher-friendly (run-suppressing); +BB Δ = hitter-friendly (run-boosting).</span></p>`;
   }
 
-  // Lineup BvP (relevant to totals because OPS vs SP drives run expectation)
   const bvpAway = _summarizeBvpJson(r.away_bvp_top5_json, "Away");
   const bvpHome = _summarizeBvpJson(r.home_bvp_top5_json, "Home");
+  let bvpHtml = "";
   if (bvpAway || bvpHome) {
-    html += `<p><strong>BvP run-environment signals.</strong></p><ul>`;
-    if (bvpAway) html += `<li>${bvpAway}</li>`;
-    if (bvpHome) html += `<li>${bvpHome}</li>`;
-    html += `</ul>`;
+    bvpHtml += `<ul>`;
+    if (bvpAway) bvpHtml += `<li>${bvpAway}</li>`;
+    if (bvpHome) bvpHtml += `<li>${bvpHome}</li>`;
+    bvpHtml += `</ul>`;
   }
 
-  // Verdict
+  const counterHtml = _deepCounterSignalsOU(r, item);
+  const pivotHtml = _deepPivotPointsOU(r, item);
+
   let verdict;
   const absEdge = Math.abs(edge || 0);
   if (absEdge >= 5) verdict = `<span class="flag">Strong edge.</span> Model materially diverges from book-fair; ${side} side worth a look.`;
-  else if (absEdge >= 2) verdict = `<span class="flag">Moderate edge.</span> Some signal, but within typical model-to-market noise band.`;
+  else if (absEdge >= 2) verdict = `<span class="flag">Moderate edge.</span> Some signal, but within typical model-to-market noise.`;
   else verdict = `<span class="muted">Thin edge.</span> Model and market closely aligned; little to extract.`;
-  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
-  return html;
+
+  return _deepSection("Pick thesis", thesis, true)
+       + _deepSection("Pitching environment", pitchHtml, false)
+       + _deepSection("Bullpen", bpHtml, false)
+       + _deepSection("Lineup concentration", lineupHtml, false)
+       + _deepSection("Umpire", umpHtml, false)
+       + _deepSection("BvP run-environment", bvpHtml, false)
+       + _deepSection("Counter-signals", counterHtml, false)
+       + _deepSection("What would change my mind", pivotHtml, false)
+       + _deepSection("Bottom line", `<p>${verdict}</p>`, true)
+       + _deepAskClaudeButton("ou", item);
 }
 
 // === Pitcher K deep narrative ===
@@ -3852,34 +4086,47 @@ function _deepNarrativeK(item) {
   const kPct = item.k_pct;
   const umpK = parseFloat(r.ump_k_pct_delta);
 
-  let html = `<p><strong>${name}</strong> (${team === "home" ? "home" : "away"} starter in <strong>${matchup}</strong>) — projecting <strong>${expK.toFixed(1)} K</strong> over ~26 BF / 6 IP at a <strong>${kPct.toFixed(1)}%</strong> K rate.</p>`;
+  const expTT = _dt(expK.toFixed(1), "expected_K from K-prop model (lambda over ~26 BF, 6 IP)");
+  const kPctTT = _dt(kPct.toFixed(1)+"%", "season K rate for the SP");
+  let thesis = `<p><strong>${name}</strong> (${team === "home" ? "home" : "away"} starter in <strong>${matchup}</strong>) — projecting ${expTT} K over ~26 BF / 6 IP at a ${kPctTT} K rate.</p>`;
 
-  // League comparison
+  // League context
   const lgAvg = 22.5;
-  if (kPct > lgAvg + 3) html += `<p><strong>Above-average K artist.</strong> ${(kPct - lgAvg).toFixed(1)}pp above the ~${lgAvg}% league average. Tends to outperform implied K props when stuff is on.</p>`;
-  else if (kPct < lgAvg - 3) html += `<p><strong>Pitch-to-contact profile.</strong> ${(lgAvg - kPct).toFixed(1)}pp below the ~${lgAvg}% league average. Expect K props to settle low even on a good night.</p>`;
-  else html += `<p><strong>Roughly league-average</strong> K rate (~${lgAvg}%). Threshold-relative props will track conditions (umpire, opposing whiff rate, lineup contact quality).</p>`;
+  let leagueHtml = "";
+  if (kPct > lgAvg + 3) leagueHtml = `<p><strong>Above-average K artist.</strong> ${(kPct - lgAvg).toFixed(1)}pp above the ~${lgAvg}% league average. Tends to outperform implied K props when stuff is on.</p>`;
+  else if (kPct < lgAvg - 3) leagueHtml = `<p><strong>Pitch-to-contact profile.</strong> ${(lgAvg - kPct).toFixed(1)}pp below the ~${lgAvg}% league average. Expect K props to settle low even on a good night.</p>`;
+  else leagueHtml = `<p><strong>Roughly league-average</strong> K rate (~${lgAvg}%). Threshold-relative props track conditions (umpire, opposing whiff rate, lineup contact quality).</p>`;
 
-  // Threshold probabilities
-  html += `<p><strong>Threshold probabilities</strong> (normal approximation to Poisson(${expK.toFixed(1)})):</p><ul>`;
-  if (item.p_over_5 !== null) html += `<li>P(K ≥ 5) = <strong>${(item.p_over_5*100).toFixed(0)}%</strong> ${item.p_over_5 > 0.85 ? "<span class=\"muted\">— near-lock floor</span>" : ""}</li>`;
-  if (item.p_over_6 !== null) html += `<li>P(K ≥ 6) = <strong>${(item.p_over_6*100).toFixed(0)}%</strong></li>`;
-  if (item.p_over_7 !== null) html += `<li>P(K ≥ 7) = <strong>${(item.p_over_7*100).toFixed(0)}%</strong> ${item.p_over_7 > 0.50 ? "<span class=\"muted\">— ceiling pick territory</span>" : ""}</li>`;
-  html += `</ul>`;
+  // Thresholds
+  let threshHtml = `<ul>`;
+  if (item.p_over_5 !== null) threshHtml += `<li>P(K ≥ 5) = <strong>${(item.p_over_5*100).toFixed(0)}%</strong> ${item.p_over_5 > 0.85 ? "<span class=\"muted\">— near-lock floor</span>" : ""}</li>`;
+  if (item.p_over_6 !== null) threshHtml += `<li>P(K ≥ 6) = <strong>${(item.p_over_6*100).toFixed(0)}%</strong></li>`;
+  if (item.p_over_7 !== null) threshHtml += `<li>P(K ≥ 7) = <strong>${(item.p_over_7*100).toFixed(0)}%</strong> ${item.p_over_7 > 0.50 ? "<span class=\"muted\">— ceiling pick territory</span>" : ""}</li>`;
+  threshHtml += `</ul><p class="muted" style="font-size:0.78rem;">Source: normal approximation to Poisson(${expK.toFixed(1)}).</p>`;
 
-  // Umpire effect
+  // Umpire
+  let umpHtml = "";
   if (isFinite(umpK)) {
     const tilt = umpK > 0 ? "boosts K rate" : "suppresses K rate";
-    html += `<p><strong>Umpire K Δ</strong>: ${_fmtNum(umpK, 3)} <span class="muted">(${tilt} vs league average).</span></p>`;
+    umpHtml = `<p>Umpire K Δ: ${_dt(_fmtNum(umpK,3), "ump_k_pct_delta CSV (vs league avg 0)")} <span class="muted">(${tilt} vs league average).</span></p>`;
   }
 
-  // Bottom line
+  const counterHtml = _deepCounterSignalsK(r, item);
+  const pivotHtml = _deepPivotPointsK(r, item);
+
   let verdict;
   if (kPct >= 27) verdict = `<span class="flag">Plus K profile.</span> Comfortable looking at over 5.5 / 6.5; over 7.5 carries real edge.`;
   else if (kPct >= 23) verdict = `<span class="flag">Solid K floor.</span> Over 5.5 is the safe play; 6.5 needs the ump + matchup to lean.`;
   else verdict = `<span class="flag-red">Contact-tolerant.</span> Default lean is under unless lineup whiff rate is materially elevated.`;
-  html += `<p><strong>Bottom line:</strong> ${verdict}</p>`;
-  return html;
+
+  return _deepSection("Pick thesis", thesis, true)
+       + _deepSection("League comparison", leagueHtml, false)
+       + _deepSection("Threshold probabilities", threshHtml, false)
+       + _deepSection("Umpire effect", umpHtml, false)
+       + _deepSection("Counter-signals", counterHtml, false)
+       + _deepSection("What would change my mind", pivotHtml, false)
+       + _deepSection("Bottom line", `<p>${verdict}</p>`, true)
+       + _deepAskClaudeButton("k", item);
 }
 
 function _propRenderDeepDeterministic(propType, payload) {
@@ -5529,6 +5776,38 @@ async function _initAskClaude() {
   });
 }
 document.addEventListener("DOMContentLoaded", _initAskClaude);
+
+// =============================================================
+// Deep-analysis click handlers (2026-05-24)
+//   - .deep-h5 toggles its parent .deep-section open/close.
+//   - .deep-ask-claude pre-fills the Ask-the-Slate textarea
+//     and scrolls to it (works on github.io fallback too —
+//     the user just clicks Ask to send).
+// =============================================================
+document.addEventListener("click", function (e) {
+  const h = e.target.closest(".deep-h5");
+  if (h) {
+    const section = h.parentElement;
+    if (section && section.classList.contains("deep-section")) {
+      section.classList.toggle("open");
+      e.stopPropagation();
+      return;
+    }
+  }
+  const ask = e.target.closest("[data-deep-ask-claude]");
+  if (ask) {
+    const q = ask.getAttribute("data-question") || "";
+    const ta = document.getElementById("ask-claude-input");
+    const card = document.getElementById("ask-claude-card");
+    if (ta && q) {
+      ta.value = q;
+      if (card && card.style.display === "none") card.style.display = "";
+      ta.focus();
+      ta.scrollIntoView({behavior: "smooth", block: "center"});
+    }
+    e.stopPropagation();
+  }
+});
 
 // ============================================================
 // Togglable cards (2026-05-23) — event-delegation listener.
