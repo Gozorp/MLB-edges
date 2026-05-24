@@ -985,11 +985,24 @@ async function fetchMLBResults(date) {
         homeLineupIds: (g.lineups && g.lineups.homePlayers) ? g.lineups.homePlayers.map(p => p.id) : []
       };
       if (!awayAbbr || !homeAbbr) continue;
+      // Doubleheader-aware keying (2026-05-23): preserve gameNumber so the
+      // second game of a DH does not overwrite the first.  Bare key still
+      // points to the first game encountered for back-compat.
+      const gameNumber = g.gameNumber || 1;
+      const doubleHeader = (g.doubleHeader || "N").toUpperCase();
+      entry.gameNumber = gameNumber;
+      entry.isDoubleHeader = doubleHeader !== "N";
       const aliases = (a) => [a, TEAM_ABBR_ALIASES[a]].filter(Boolean);
       for (const aA of aliases(awayAbbr)) {
         for (const hA of aliases(homeAbbr)) {
-          out[`${aA}@${hA}`] = entry;
-          out[`${hA}@${aA}`] = entry;
+          const k1 = `${aA}@${hA}`;
+          const k2 = `${hA}@${aA}`;
+          // Always write G-suffixed key so matchResult can disambiguate
+          out[`${k1}@G${gameNumber}`] = entry;
+          out[`${k2}@G${gameNumber}`] = entry;
+          // Bare key: only set if not yet taken (preserve G1 as default).
+          if (out[k1] == null) out[k1] = entry;
+          if (out[k2] == null) out[k2] = entry;
         }
       }
     }
@@ -2529,10 +2542,21 @@ function matchResult(r, results) {
   if (!results) return null;
   const matchup = (r.matchup || "").trim();
   if (!matchup) return null;
+  // Doubleheader disambiguation (2026-05-23): if the matchup string has
+  // "(G1)" or "(G2)" — appended at render time via _addSeriesSuffix —
+  // look up the specific game first before falling back to bare key.
+  let gameNumber = null;
+  const gMatch = matchup.match(/\(G([12])(?:\s+of\s+\d+)?\)/i);
+  if (gMatch) gameNumber = parseInt(gMatch[1], 10);
   // Pull two ALL-CAPS abbrev tokens out of the matchup string
   const abbrs = matchup.match(/[A-Z]{2,4}/g);
   if (abbrs && abbrs.length >= 2) {
     const a = abbrs[0], b = abbrs[1];
+    if (gameNumber != null) {
+      const specific = results[`${a}@${b}@G${gameNumber}`]
+                    || results[`${b}@${a}@G${gameNumber}`];
+      if (specific) return specific;
+    }
     return results[`${a}@${b}`] || results[`${b}@${a}`] || null;
   }
   return null;
@@ -3816,12 +3840,31 @@ function _propCard(idx, title, summaryHTML, narrativeHTML, propType, payload, re
          `</div>`;
 }
 
+// Live-score helper for LIVE chips (2026-05-23).  Returns "AWY 4-3 HOM" or
+// empty string.  Used by _resultChipHtml's `extra` arg so the chip carries
+// actionable info instead of just saying "LIVE".
+function _liveScoreFor(item, results) {
+  const result = matchResult(item._row || {matchup: item.matchup}, results);
+  if (!result) return "";
+  if (result.isFinal !== false) return "";
+  const a = result.awayScore, h = result.homeScore;
+  if (a == null || h == null) return "";
+  return `${result.awayAbbr} ${a}-${h} ${result.homeAbbr}`;
+}
+
 // ---------- HIT/MISS/PUSH badge helpers for the Top Probable Outcomes panel ----------
-function _resultChipHtml(status) {
+function _resultChipHtml(status, extra) {
   if (status === "HIT")  return `<span class="result-chip win">✓ HIT</span>`;
   if (status === "MISS") return `<span class="result-chip loss">✗ MISS</span>`;
   if (status === "PUSH") return `<span class="result-chip push">— PUSH</span>`;
   if (status === "POSTPONED") return `<span class="result-chip tbd" style="background:#3a2c1a;color:#d29922;border-color:#d29922;">POSTPONED</span>`;
+  if (status === "LIVE") {
+    const label = extra ? `● LIVE ${extra}` : `● LIVE`;
+    return `<span class="result-chip tbd" style="background:#1a3a2a;color:#3fb950;border-color:#3fb950;">${label}</span>`;
+  }
+  if (status === "PREGAME") {
+    return `<span class="result-chip tbd" style="background:#1a2a3a;color:#79c0ff;border-color:#79c0ff;">⏱ PRE-GAME</span>`;
+  }
   if (status === "TBD")  return `<span class="result-chip tbd">TBD</span>`;
   return "";
 }
@@ -3852,8 +3895,13 @@ function _sectionSummary(statuses) {
 function _gameMLStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
-  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
-  if (result.isFinal === false) return "TBD";
+  const _st = (result.statusText || "").toLowerCase();
+  if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
+  if (result.isFinal === false) {
+    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    return "TBD";
+  }
   if (result.winner == null) return "TBD";
   const aliasOf = (a) => new Set([a, TEAM_ABBR_ALIASES[a]].filter(Boolean));
   const picked = aliasOf(item.pick);
@@ -3866,8 +3914,13 @@ function _gameMLStatus(item, results) {
 function _totalStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
-  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
-  if (result.isFinal === false) return "TBD";
+  const _st = (result.statusText || "").toLowerCase();
+  if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
+  if (result.isFinal === false) {
+    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    return "TBD";
+  }
   const aSc = result.awayScore, hSc = result.homeScore;
   if (aSc == null || hSc == null) return "TBD";
   const total = aSc + hSc;
@@ -3883,8 +3936,13 @@ function _totalStatus(item, results) {
 function _pitcherKStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
-  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
-  if (result.isFinal === false) return "TBD";
+  const _st = (result.statusText || "").toLowerCase();
+  if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
+  if (result.isFinal === false) {
+    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    return "TBD";
+  }
   const pid = item.team === "home" ? result.homePitcherId : result.awayPitcherId;
   if (!pid || !result.gamePk) return null;
   const cache = window.__pitcherKResults || {};
@@ -3941,11 +3999,10 @@ async function _prefetchPitcherKResults(ks, results) {
     if (slate && slate.rows && slate.rows.length) {
       const el = document.getElementById("top-outcomes");
       if (el) {
-        // Apply same postponed filter as loadSlate's initial
-        // render — otherwise the K-results re-render would
-        // overwrite the filtered display with all 16 rows.
-        const playable = slate.rows.filter(r => !_isPostponedRow(r, slate.results));
-        el.innerHTML = renderTopProbableOutcomes(playable, window.__totalsByMatchup, slate.results);
+        // 2026-05-23: postponed games now render via the POSTPONED chip
+        // (color-coded amber) instead of being filtered out, so the user
+        // sees them on the slate.  Pass all rows through.
+        el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
       }
     }
   }
@@ -3977,7 +4034,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
     html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs market)</span>${_sectionSummary(mlStatuses)}</h3>`;
     gameMLs.forEach((item, i) => {
       const title = `${item.pick} ML over ${item.matchup}`;
-      html += _propCard(i, title, "", _narrateGameML(item), "ml", item, _resultChipHtml(mlStatuses[i]));
+      html += _propCard(i, title, "", _narrateGameML(item), "ml", item, _resultChipHtml(mlStatuses[i], _liveScoreFor(item, results)));
     });
   }
 
@@ -3985,7 +4042,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
     html += `<h3 style="margin-top:0.8rem;color:var(--accent);">O/U Totals <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs book-fair)</span>${_sectionSummary(ouStatuses)}</h3>`;
     totals.forEach((item, i) => {
       const title = `${item.side} ${item.line.toFixed(1)} on ${item.matchup}`;
-      html += _propCard(i, title, "", _narrateTotal(item), "ou", item, _resultChipHtml(ouStatuses[i]));
+      html += _propCard(i, title, "", _narrateTotal(item), "ou", item, _resultChipHtml(ouStatuses[i], _liveScoreFor(item, results)));
     });
   }
 
@@ -3993,7 +4050,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
     html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Pitcher Strikeouts <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by expected Ks; no market line)</span>${_sectionSummary(kStatuses)}</h3>`;
     ks.forEach((item, i) => {
       const title = `${item.name} — ${item.expected_K.toFixed(1)} expected K`;
-      html += _propCard(i, title, "", _narrateKProp(item), "k", item, _resultChipHtml(kStatuses[i]));
+      html += _propCard(i, title, "", _narrateKProp(item), "k", item, _resultChipHtml(kStatuses[i], _liveScoreFor(item, results)));
     });
     // Kick off boxscore prefetch for K hit/miss; re-renders this panel when
     // results land.  Safe no-op when slate isn't final or pitcher IDs missing.
@@ -4068,7 +4125,21 @@ function renderSlate(rows, gradeMap, results) {
       } else if (accuracy === "loss") {
         resultCell = `<td><span class="result-chip loss">✗ LOSS</span></td>`;
       } else if (result && !result.isFinal) {
-        resultCell = `<td><span class="result-chip tbd">${(result.statusText || "TBD").slice(0,12)}</span></td>`;
+        // Route through the chip helper so postponed / live / pre-game
+        // games get distinct color-coded styling instead of one undifferentiated
+        // gray "TBD" chip (2026-05-23).
+        const _st = (result.statusText || "").toLowerCase();
+        let _sl = "TBD";
+        let _extra = undefined;
+        if (/postpon|suspend|cancel/.test(_st)) _sl = "POSTPONED";
+        else if (/in progress|manager challenge|delayed/.test(_st)) {
+          _sl = "LIVE";
+          if (result.awayScore != null && result.homeScore != null) {
+            _extra = `${result.awayAbbr} ${result.awayScore}-${result.homeScore} ${result.homeAbbr}`;
+          }
+        }
+        else if (/pre-game|warmup|scheduled/.test(_st)) _sl = "PREGAME";
+        resultCell = `<td>${_resultChipHtml(_sl, _extra)}</td>`;
       } else {
         resultCell = `<td><span class="muted">—</span></td>`;
       }
@@ -4528,8 +4599,9 @@ async function silentRefresh(date) {
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
     const results = await fetchMLBResults(date);
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
-    // Apply postponed filter (same rule as loadSlate)
-    const playableRows = rows.filter(r => !_isPostponedRow(r, results));
+    // 2026-05-23: postponed games render via POSTPONED chip (amber);
+    // no longer filtered out.
+    const playableRows = rows;
 
     // Load Claude post-mortem sidecar for this date if it exists.  Failure is
     // silent — the dashboard renders normally without it.
@@ -4792,13 +4864,9 @@ async function loadSlate(date, { bust = false } = {}) {
       }
     } catch (_) { window.__bullpenMeta = null; }
 
-    // Filter postponed / suspended / cancelled games from the
-    // picks display.  Picks for these games came from the
-    // pipeline (which ran with the original schedule), but MLB
-    // then pulled them — they aren't actionable.  All rows are
-    // preserved on window.__slate.rows for the Ask Claude /
-    // search interface so users can still query them.
-    const playableRows = rows.filter(r => !_isPostponedRow(r, results));
+    // 2026-05-23: postponed games render via the POSTPONED chip
+    // (amber) instead of being filtered out.  All 16 rows go through.
+    const playableRows = rows;
     const postponedCount = rows.length - playableRows.length;
 
     const slateHtml = playableRows.length
