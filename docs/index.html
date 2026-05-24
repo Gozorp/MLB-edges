@@ -2686,18 +2686,69 @@ function _formatGamePreviewUpcoming(preview) {
     return `<li><strong>${p.name}</strong> (${hand}HP) — ${p.gs || 0} GS, ${p.ip || "0"} IP, ${p.era || "-"} ERA, ${p.whip || "-"} WHIP, ${p.k9 || "-"} K/9</li>`;
   };
 
-  const fmtBullpen = (rels) => {
+  // Build a lookup of fatigue rows keyed by reliever name so the
+  // per-arm narrative can pull in the FRESH/B2B/OVERWORKED context
+  // alongside the roster ERA/WHIP/K9 line.
+  const _bpFatigueLookup = (function() {
+    try {
+      const _m = `${preview.awayAbbr} @ ${preview.homeAbbr}`;
+      const _bp = _bullpenMetaForMatchup(_m);
+      const out = { away: {}, home: {} };
+      const _idx = (block) => {
+        const o = {};
+        if (block && Array.isArray(block.top_relievers)) {
+          for (const r of block.top_relievers) {
+            if (r && r.name) o[r.name.toLowerCase()] = r;
+          }
+        }
+        return o;
+      };
+      if (_bp) {
+        out.away = _idx(_bp.away);
+        out.home = _idx(_bp.home);
+      }
+      return out;
+    } catch (_) { return { away: {}, home: {} }; }
+  })();
+
+  function _relImpactNarrative(rel, fatigueRow, roleLabel, oppName) {
+    const lines = [];
+    const role = String(roleLabel || "").toLowerCase();
+    if (role.includes("closer")) lines.push("owns the 9th when his team leads — the inning that decides a one-run line");
+    else if (role.includes("setup")) lines.push("7th–8th-inning bridge to the closer; a clean lead lands here first");
+    else lines.push("middle-leverage / matchup work, often used on the platoon edge");
+    const k9 = parseFloat(rel.k9 || 0);
+    if (isFinite(k9) && k9 >= 10.5) lines.push(`<strong>punch-out arm</strong> (${k9.toFixed(1)} K/9) — neutralizes ${oppName || "the opposing lineup"}'s contact threats`);
+    else if (isFinite(k9) && k9 < 7.5) lines.push(`contact-prone (${k9.toFixed(1)} K/9) — relies on weak contact and quick outs`);
+    const era = parseFloat(rel.era || 0);
+    if (isFinite(era) && era > 0 && era < 2.5) lines.push(`elite ratio (${era.toFixed(2)} ERA)`);
+    else if (isFinite(era) && era > 4.5) lines.push(`fringe results lately (${era.toFixed(2)} ERA)`);
+    if (fatigueRow) {
+      const flag = String(fatigueRow.fatigue_flag || "").toUpperCase();
+      if (flag === "B2B2B" || flag === "OVERWORKED") {
+        lines.push(`<span class="flag-red">on ${fatigueRow.consecutive_days || 3}-day, effectively unavailable tonight</span>`);
+      } else if (flag === "B2B") {
+        lines.push(`<span style="color:var(--yellow);">on B2B (${fatigueRow.pitches_72h || 0}p / 72h)</span> — usable but managed`);
+      } else if (typeof fatigueRow.rest_days === "number" && fatigueRow.rest_days >= 3) {
+        lines.push(`well-rested (${fatigueRow.rest_days}d off)`);
+      }
+    }
+    return lines.join(". ") + ".";
+  }
+
+  const fmtBullpen = (rels, side, oppName) => {
     if (!rels || !rels.length) return `<li class="muted">Roster fetch returned no qualified relievers.</li>`;
     const labels = ["Closer (proxy)", "Setup", "Third lever"];
-    const blurbs = [
-      "Owns the 9th when his team leads; if the line is one-run, he is the inning that decides the game.",
-      "The 7th–8th-inning bridge; getting a clean lead to the closer starts here.",
-      "Used for high-leverage middle work or matchup work."
-    ];
+    const fatigueIdx = (side === "away") ? _bpFatigueLookup.away : _bpFatigueLookup.home;
     let html = "";
     for (let i = 0; i < Math.min(rels.length, 3); i++) {
       const r = rels[i];
-      html += `<li><strong>${r.name}</strong> (${labels[i]}) — ${r.era} ERA, ${r.whip} WHIP, ${r.sv} SV, ${r.hld} HLD, ${r.ip} IP. ${blurbs[i]}</li>`;
+      const fat = fatigueIdx[(r.name || "").toLowerCase()] || null;
+      const impact = _relImpactNarrative(r, fat, labels[i], oppName);
+      html += `<li style="margin-bottom:0.5rem;">`
+           +   `<div><strong>${r.name}</strong> <span class="muted">(${labels[i]})</span> — ${r.era} ERA, ${r.whip} WHIP, ${r.sv} SV, ${r.hld} HLD, ${r.ip} IP, ${r.k9 || "-"} K/9</div>`
+           +   `<div style="font-size:0.83rem;color:var(--muted);margin-top:0.2rem;line-height:1.45;">${impact}</div>`
+           + `</li>`;
     }
     return html;
   };
@@ -2750,9 +2801,9 @@ function _formatGamePreviewUpcoming(preview) {
       </div>
       <div class="preview-card">
         <h5>${preview.awayName} bullpen — three highest-leverage arms</h5>
-        <ul>${fmtBullpen(preview.awayBullpen)}</ul>
+        <ul>${fmtBullpen(preview.awayBullpen, "away", preview.homeName)}</ul>
         <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
-        <ul>${fmtBullpen(preview.homeBullpen)}</ul>
+        <ul>${fmtBullpen(preview.homeBullpen, "home", preview.awayName)}</ul>
         ${(function() {
           // Phase 1+2 sprint: per-team fatigue table from bullpen_meta sidecar
           try {
@@ -3875,9 +3926,44 @@ function _bullpenFlagBadge(flag) {
          `margin-left:0.3rem;">${flag}</span>`;
 }
 
+function _bullpenTeamProse(s, relievers) {
+  // Multi-sentence prose summary built from team_summary metrics.
+  // Mirrors the structure of _pitcherImpact: state -> alarms ->
+  // rest -> top arm.
+  const parts = [];
+  if (s.n_relievers_three_consecutive > 0) {
+    const n = s.n_relievers_three_consecutive;
+    parts.push(`<strong class="flag-red">${n} reliever${n>1?"s":""} on three consecutive days</strong> — effectively unavailable tonight; manager works with a shortened menu.`);
+  } else if (s.n_relievers_back_to_back > 0) {
+    const n = s.n_relievers_back_to_back;
+    parts.push(`<span style="color:var(--yellow);">${n} reliever${n>1?"s":""} on back-to-back days</span> — usable but managed, likely capped at a single inning.`);
+  }
+  if (typeof s.avg_rest_days === "number") {
+    if (s.avg_rest_days < 1.5) {
+      parts.push(`Average rest across the top-${s.n_relievers_tracked} sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — short. Late-leverage choices are constrained.`);
+    } else if (s.avg_rest_days >= 3.0) {
+      parts.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — fresh. Manager has the full menu of late-leverage options.`);
+    } else {
+      parts.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — workable but not deep.`);
+    }
+  }
+  if (relievers && relievers.length) {
+    const top = relievers[0];
+    const topName = top.name || `pitcher #${top.pitcher_id}`;
+    parts.push(
+      `Most-used arm: <strong>${topName}</strong> ` +
+      `(${top.pitches_72h}p in 72h, last LI avg ${(top.avg_leverage_last_3||0).toFixed(2)}) ` +
+      _bullpenFlagBadge(top.fatigue_flag) + "."
+    );
+  }
+  return parts.join(" ");
+}
+
 function _bullpenTeamNarrative(teamBlock, teamLabel) {
-  // Quant-terminal compact card: status tag + pitch count + top arm.
-  // Walls of prose moved to the expandable game row; this stays scannable.
+  // Detailed panel (2026-05-24): status badge + team-summary metrics
+  // + multi-sentence prose + per-reliever fatigue table inline.
+  // Replaces the prior compact one-liner; user asked for Probable-
+  // Starters-level depth on this surface.
   if (!teamBlock) {
     return `<div class="muted" style="font-size:0.82rem;">no bullpen data</div>`;
   }
@@ -3889,32 +3975,26 @@ function _bullpenTeamNarrative(teamBlock, teamLabel) {
   const tierColor = _bullpenTierColor(tier);
   const relievers = teamBlock.top_relievers || [];
   const pitchCount = s.top3_pitch_total_72h || 0;
-  const top = relievers[0];
-  let topLine = "";
-  if (top) {
-    const topName = top.name || `#${top.pitcher_id}`;
-    topLine = `<div style="font-size:0.78rem;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
-            + `Top: <span style="color:var(--text);">${topName}</span> (${top.pitches_72h}p) `
-            + _bullpenFlagBadge(top.fatigue_flag)
-            + `</div>`;
+  const restStr = (typeof s.avg_rest_days === "number")
+    ? `${s.avg_rest_days.toFixed(1)}d`
+    : "n/a";
+
+  // Header: status badge + key metrics in a single mono line
+  let html = `<div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.35rem;">`
+           +   `<span style="display:inline-block;padding:0.1rem 0.45rem;border-radius:3px;border:1px solid ${tierColor};color:${tierColor};font-weight:700;font-size:0.74rem;letter-spacing:0.06em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${tier}</span>`
+           +   `<span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.78rem;color:var(--text);">${pitchCount}p / 72h · ${s.n_relievers_tracked || 0} tracked · avg rest ${restStr}</span>`
+           + `</div>`;
+
+  // Multi-sentence narrative paragraph
+  const prose = _bullpenTeamProse(s, relievers);
+  if (prose) {
+    html += `<div style="font-size:0.83rem;color:var(--text);margin-bottom:0.4rem;line-height:1.5;">${prose}</div>`;
   }
-  const alarms = [];
-  if (s.n_relievers_three_consecutive > 0) {
-    alarms.push(`<span class="flag-red" style="font-size:0.74rem;">${s.n_relievers_three_consecutive} on 3-day · UNAVAILABLE</span>`);
-  } else if (s.n_relievers_back_to_back > 0) {
-    alarms.push(`<span style="color:var(--yellow);font-size:0.74rem;">${s.n_relievers_back_to_back} on B2B</span>`);
-  }
-  const alarmLine = alarms.length
-    ? `<div style="margin-top:0.15rem;">${alarms.join(" · ")}</div>`
-    : "";
-  return `<div style="display:flex;flex-direction:column;gap:0.2rem;">`
-       + `<div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">`
-       +   `<span style="display:inline-block;padding:0.1rem 0.45rem;border-radius:3px;border:1px solid ${tierColor};color:${tierColor};font-weight:700;font-size:0.74rem;letter-spacing:0.06em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${tier}</span>`
-       +   `<span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.82rem;color:var(--text);">${pitchCount}p / 72h</span>`
-       + `</div>`
-       + topLine
-       + alarmLine
-       + `</div>`;
+
+  // Per-reliever fatigue table inline (was previously hidden behind a
+  // separate panel that only the expander showed)
+  html += _bullpenFatigueTable(teamBlock, teamLabel);
+  return html;
 }
 
 function _bullpenFatigueTable(teamBlock, teamLabel) {
