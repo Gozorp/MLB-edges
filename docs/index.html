@@ -4271,7 +4271,13 @@ function renderSlate(rows, gradeMap, results) {
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
     const matchupKey = (r.matchup || "").trim();
-    const fromParlay = (gradeMap && gradeMap[matchupKey]) || {};
+    // bareMatchupKey strips any "(G2 of 3)" / "(G2)" suffix that
+    // _addSeriesSuffix or _dedupDoubleheaders appends; sidecar maps
+    // (gradeMap, claudePicks, totalsByMatchup) are keyed by the bare
+    // "AWAY @ HOME" form, so the suffixed key never hits. Bare first,
+    // suffixed fallback in case some sidecar ever uses the full string.
+    const bareMatchupKey = matchupKey.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    const fromParlay = (gradeMap && (gradeMap[bareMatchupKey] || gradeMap[matchupKey])) || {};
     const grade = (r.grade || fromParlay.grade || "").trim();
     const reasons = (r.grade_reasons || fromParlay.reasons || r.signals || "")
       .replace(/\|/g, " · ");
@@ -4311,7 +4317,7 @@ function renderSlate(rows, gradeMap, results) {
     // Claude Brain executive call (CONFIRM / DOWNGRADE / OVERRIDE) — sourced
     // from docs/data/claude_picks/<date>.json sidecar if present.
     const cb = (window.__claudePicks && window.__claudePicks.by_matchup)
-      ? window.__claudePicks.by_matchup[matchupKey] : null;
+      ? (window.__claudePicks.by_matchup[bareMatchupKey] || window.__claudePicks.by_matchup[matchupKey]) : null;
     let claudeCell = "<td><span class='muted'>—</span></td>";
     if (cb && cb.claude_decision) {
       const dec = cb.claude_decision.toUpperCase();
@@ -4331,7 +4337,7 @@ function renderSlate(rows, gradeMap, results) {
     // CSV writes pred_runs but leaves total_line/side/edge_runs as empty
     // strings. We detect this and render a "Model: X.X runs (no market)"
     // pill in the muted/flat style — still useful information for the user.
-    const tot = (window.__totalsByMatchup) ? window.__totalsByMatchup[matchupKey] : null;
+    const tot = (window.__totalsByMatchup) ? (window.__totalsByMatchup[bareMatchupKey] || window.__totalsByMatchup[matchupKey]) : null;
     let ouCell = "<td><span class='muted'>—</span></td>";
     // Player-aware tooltip lines (2026-05-23). Surfaces the lineup wRC+ /
     // xwOBA gaps + BvP signal strength that already feed pred_runs, so the
