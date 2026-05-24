@@ -20,9 +20,10 @@
   * { box-sizing: border-box; }
   body {
     margin: 0; padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     background: var(--bg); color: var(--text);
     line-height: 1.5;
+    font-variant-ligatures: none;
   }
   header {
     border-bottom: 1px solid var(--border);
@@ -523,7 +524,7 @@
 </header>
 
 <main>
-  <div class="date-strip" id="dateStrip">
+  <div class="date-strip" id="dateStrip" style="display:none;">
     <span class="date-strip-label">Slates:</span>
     <span class="muted" style="font-size:0.85rem;align-self:center;">loading…</span>
   </div>
@@ -544,12 +545,14 @@
       Try: <code>ATL vs SEA</code> · <code>best pick</code> · <code>parlay legs</code> ·
       <code>contrarian</code> · <code>NYY</code> · <code>show A grades</code>
     </p>
-    <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;">
+    <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem;align-items:center;border-bottom:1px solid var(--accent);padding:0.25rem 0;">
+      <span style="color:var(--accent);font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;padding-left:0.4rem;">&gt;</span>
       <input type="text" id="queryInput"
-             placeholder="Ask a question about the loaded slate…"
-             style="flex:1;background:var(--bg);color:var(--text);
-                    border:1px solid var(--border);border-radius:4px;
-                    padding:0.5rem 0.75rem;font-size:0.95rem;" />
+             placeholder="ask the slate..."
+             style="flex:1;background:transparent;color:var(--text);
+                    border:none;outline:none;
+                    padding:0.45rem 0.25rem;font-size:0.95rem;
+                    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;" />
       <button id="askBtn">Ask</button>
     </div>
     <div id="queryResult"></div>
@@ -3588,60 +3591,45 @@ function _bullpenFlagBadge(flag) {
 }
 
 function _bullpenTeamNarrative(teamBlock, teamLabel) {
+  // Quant-terminal compact card: status tag + pitch count + top arm.
+  // Walls of prose moved to the expandable game row; this stays scannable.
   if (!teamBlock) {
-    return `<span class="muted">${teamLabel}: no bullpen data available.</span>`;
+    return `<div class="muted" style="font-size:0.82rem;">no bullpen data</div>`;
   }
   if (teamBlock.unavailable) {
-    return `<span class="muted">${teamLabel}: ${teamBlock.reason || "no recent appearances"}.</span>`;
+    return `<div class="muted" style="font-size:0.82rem;">${teamBlock.reason || "no recent appearances"}</div>`;
   }
   const s = teamBlock.team_summary || {};
   const tier = s.ceiling_tier || "NORMAL";
   const tierColor = _bullpenTierColor(tier);
   const relievers = teamBlock.top_relievers || [];
-
-  // Compose a multi-sentence paragraph
-  let sentences = [];
-  sentences.push(
-    `<strong>${teamLabel}'s bullpen is currently <span style="color:${tierColor};">${tier}</span></strong> ` +
-    `(${s.top3_pitch_total_72h || 0} pitches across the top-3 high-leverage arms in the last 72 hours, ` +
-    `${s.n_relievers_tracked || 0} relievers tracked).`
-  );
-
-  // Fatigue alarms
+  const pitchCount = s.top3_pitch_total_72h || 0;
+  const top = relievers[0];
+  let topLine = "";
+  if (top) {
+    const topName = top.name || `#${top.pitcher_id}`;
+    topLine = `<div style="font-size:0.78rem;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
+            + `Top: <span style="color:var(--text);">${topName}</span> (${top.pitches_72h}p) `
+            + _bullpenFlagBadge(top.fatigue_flag)
+            + `</div>`;
+  }
   const alarms = [];
   if (s.n_relievers_three_consecutive > 0) {
-    alarms.push(`<span class="flag-red">${s.n_relievers_three_consecutive} reliever(s) on three consecutive days — effectively unavailable tonight</span>`);
+    alarms.push(`<span class="flag-red" style="font-size:0.74rem;">${s.n_relievers_three_consecutive} on 3-day · UNAVAILABLE</span>`);
+  } else if (s.n_relievers_back_to_back > 0) {
+    alarms.push(`<span style="color:var(--yellow);font-size:0.74rem;">${s.n_relievers_back_to_back} on B2B</span>`);
   }
-  if (s.n_relievers_back_to_back > 0) {
-    alarms.push(`${s.n_relievers_back_to_back} reliever(s) on back-to-back days — usable but limited`);
-  }
-  if (alarms.length) {
-    sentences.push(`<em>${alarms.join("; ")}.</em>`);
-  }
-
-  // Average rest interpretation
-  if (typeof s.avg_rest_days === "number") {
-    if (s.avg_rest_days < 1.5) {
-      sentences.push(`Average rest across the top-${s.n_relievers_tracked} sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — short. Late-leverage choices are constrained.`);
-    } else if (s.avg_rest_days >= 3.0) {
-      sentences.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — fresh. Manager has full menu of late-leverage options.`);
-    } else {
-      sentences.push(`Average rest sits at <strong>${s.avg_rest_days.toFixed(1)} days</strong> — workable but not deep.`);
-    }
-  }
-
-  // Top reliever summary line
-  if (relievers.length) {
-    const top = relievers[0];
-    const topName = top.name || `pitcher #${top.pitcher_id}`;
-    sentences.push(
-      `Most-used arm: <strong>${topName}</strong> ` +
-      `(${top.pitches_72h}p in 72h, last LI avg ${top.avg_leverage_last_3 || 0}) ` +
-      _bullpenFlagBadge(top.fatigue_flag) + `.`
-    );
-  }
-
-  return sentences.join(" ");
+  const alarmLine = alarms.length
+    ? `<div style="margin-top:0.15rem;">${alarms.join(" · ")}</div>`
+    : "";
+  return `<div style="display:flex;flex-direction:column;gap:0.2rem;">`
+       + `<div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">`
+       +   `<span style="display:inline-block;padding:0.1rem 0.45rem;border-radius:3px;border:1px solid ${tierColor};color:${tierColor};font-weight:700;font-size:0.74rem;letter-spacing:0.06em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${tier}</span>`
+       +   `<span style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.82rem;color:var(--text);">${pitchCount}p / 72h</span>`
+       + `</div>`
+       + topLine
+       + alarmLine
+       + `</div>`;
 }
 
 function _bullpenFatigueTable(teamBlock, teamLabel) {
@@ -4103,7 +4091,6 @@ function renderSlate(rows, gradeMap, results) {
         <th>Tier</th><th>Grade</th>
         <th title="Claude Brain (executive review): CONFIRM / DOWNGRADE / OVERRIDE">Claude</th>
         ${haveAnyResult ? "<th>Result</th>" : ""}
-        <th>Reasons</th>
       </tr></thead><tbody>`;
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
@@ -4259,7 +4246,7 @@ function renderSlate(rows, gradeMap, results) {
       }
       ouCell = `<td><span class="ou-pill ou-flat" title="${tooltip}">${pillBody}</span></td>`;
     }
-    const colspan = haveAnyResult ? 14 : 13;
+    const colspan = haveAnyResult ? 13 : 12;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
@@ -4274,7 +4261,6 @@ function renderSlate(rows, gradeMap, results) {
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
       ${claudeCell}
       ${resultCell}
-      <td class="why">${reasons || "<span class='muted'>—</span>"}</td>
     </tr>
     <tr class="details-row" id="details-${i}">
       <td colspan="${colspan}">${narrative}</td>
