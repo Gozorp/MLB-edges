@@ -2280,6 +2280,114 @@ document.addEventListener("visibilitychange", () => {
 });
 
 // =====================================================================
+// Bullpen edge card — when the SP gives way to the closer/top arm,
+// who in the lineup is most vulnerable to a strikeout? Same Log5
+// math as the SP version, swapping in the opposing team's top
+// high-leverage reliever. Adds a strain note pulled from bullpen_meta
+// so the user can see when the obvious leverage arm is on B2B / 3-day
+// and the manager will likely reach for someone else.
+// =====================================================================
+function _bullpenStrainNote(teamBlock, closerName) {
+  if (!teamBlock || !closerName || !Array.isArray(teamBlock.top_relievers)) {
+    return null;
+  }
+  // Name match — bullpen_meta names sometimes carry "Jr." / accents
+  // that the roster fetch strips; do a loose contains-test in either
+  // direction so we don't silently miss the closer.
+  const lc = String(closerName).toLowerCase();
+  const rel = teamBlock.top_relievers.find(r => {
+    const rn = String(r.name || "").toLowerCase();
+    return rn && (rn === lc || rn.includes(lc) || lc.includes(rn));
+  });
+  if (!rel) return null;
+  const flag = String(rel.fatigue_flag || "").toUpperCase();
+  if (flag === "FRESH" || flag === "NORMAL" || flag === "") return null;
+  if (flag === "B2B") {
+    return `<span style="color:var(--yellow);">${closerName} on B2B — usable but limited; setup man may take the 9th</span>`;
+  }
+  if (flag === "B2B2B" || flag === "OVERWORKED") {
+    return `<span class="flag-red">${closerName} ${flag === "B2B2B" ? "on 3-day" : "OVERWORKED"} — effectively unavailable tonight</span>`;
+  }
+  return null;
+}
+
+function _topBullpenArm(bullpen) {
+  // preview.{away|home}Bullpen is already sorted by save+hold weight in
+  // _fetchTeamRoster, so element [0] is the closer proxy.
+  if (!Array.isArray(bullpen) || bullpen.length === 0) return null;
+  return bullpen[0];
+}
+
+function renderBullpenEdge(preview) {
+  if (!preview) return "";
+  // Look up bullpen_meta for the strain notes (best-effort; if the
+  // sidecar isn't baked yet we simply omit the strain line).
+  const meta = (function() {
+    try {
+      const m = `${preview.awayAbbr || preview.awayName} @ ${preview.homeAbbr || preview.homeName}`;
+      return _bullpenMetaForMatchup(m) || {};
+    } catch (_) { return {}; }
+  })();
+  const awayCloser = _topBullpenArm(preview.awayBullpen);
+  const homeCloser = _topBullpenArm(preview.homeBullpen);
+
+  const kList = (lineup, opposingCloser, teamName, teamAbbr, oppTeamBlock) => {
+    if (!opposingCloser) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: opposing bullpen not yet hydrated.</div>`;
+    }
+    if (!lineup || !lineup.length) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: lineup card not yet posted.</div>`;
+    }
+    const rows = [];
+    for (const b of lineup) {
+      const pK = _batterKProb(b, opposingCloser);
+      if (pK == null) continue;
+      rows.push({ name: b.name, pos: b.pos, pa: b.pa, prob: pK });
+    }
+    if (!rows.length) {
+      return `<div class="muted" style="font-size:0.82rem;">${teamName}: not enough batter PA for K-projection.</div>`;
+    }
+    rows.sort((a, b) => b.prob - a.prob);
+    const meanK = rows.reduce((s, r) => s + r.prob, 0) / rows.length;
+    const contactPct = (1 - meanK) * 100;
+    const k9Str = parseFloat(opposingCloser.k9 || 0).toFixed(1);
+    const strain = _bullpenStrainNote(oppTeamBlock, opposingCloser.name);
+    let html = `<div>`
+             + `<div style="display:flex;align-items:baseline;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.25rem;">`
+             +   `<strong style="font-size:0.88rem;">${teamAbbr || teamName} lineup</strong>`
+             +   `<span class="muted" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.76rem;">`
+             +     `contact ${contactPct.toFixed(0)}% · vs ${opposingCloser.name} (${k9Str} K/9)`
+             +   `</span>`
+             + `</div>`;
+    if (strain) {
+      html += `<div style="font-size:0.76rem;margin:0.2rem 0 0.3rem 0;font-style:italic;">${strain}</div>`;
+    }
+    html += `<ol style="margin:0.2rem 0 0 1.4rem;padding:0;font-size:0.8rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`;
+    for (const r of rows) {
+      const pct = (r.prob * 100).toFixed(0);
+      const color = r.prob >= 0.32 ? "var(--red)"
+                  : r.prob >= 0.25 ? "var(--yellow)"
+                  : "var(--muted)";
+      html += `<li style="margin:0.1rem 0;">`
+            +   `<span style="display:inline-block;min-width:3.2rem;color:${color};font-weight:700;">${pct}% K</span>`
+            +   `<span class="muted"> · </span>`
+            +   `<span style="color:var(--text);">${r.name}</span>`
+            +   `<span class="muted"> (${r.pos || "-"})</span>`
+            + `</li>`;
+    }
+    html += `</ol></div>`;
+    return html;
+  };
+
+  return `<div class="preview-card" style="grid-column: 1 / -1;">`
+       + `<h5>Bullpen edge <span class="muted" style="font-size:0.78rem;font-weight:normal;">— per-batter K vs the opposing top-leverage arm + manager-decision context</span></h5>`
+       + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;">`
+       +   kList(preview.awayLineup, homeCloser, preview.awayName, preview.awayAbbr, meta.home)
+       +   kList(preview.homeLineup, awayCloser, preview.homeName, preview.homeAbbr, meta.away)
+       + `</div></div>`;
+}
+
+// =====================================================================
 // Lineup edge card — composite lineup score + per-batter K-vulnerability
 // list vs the opposing SP. Renders above the "projected lineup" cards in
 // the per-game expander. Composite sourced from player_aware_signal JSON
@@ -2661,6 +2769,7 @@ function _formatGamePreviewUpcoming(preview) {
         })()}
       </div>
       ${renderLineupEdge(preview)}
+      ${renderBullpenEdge(preview)}
       <div class="preview-card">
         <h5>${preview.awayName} top hitters (by 2026 OPS)</h5>
         <ul>${fmtBatters(preview.awayBatters)}</ul>
