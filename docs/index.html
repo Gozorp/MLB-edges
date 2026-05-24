@@ -3821,6 +3821,7 @@ function _resultChipHtml(status) {
   if (status === "HIT")  return `<span class="result-chip win">✓ HIT</span>`;
   if (status === "MISS") return `<span class="result-chip loss">✗ MISS</span>`;
   if (status === "PUSH") return `<span class="result-chip push">— PUSH</span>`;
+  if (status === "POSTPONED") return `<span class="result-chip tbd" style="background:#3a2c1a;color:#d29922;border-color:#d29922;">POSTPONED</span>`;
   if (status === "TBD")  return `<span class="result-chip tbd">TBD</span>`;
   return "";
 }
@@ -3829,18 +3830,19 @@ function _resultChipHtml(status) {
 // one game in the section is final (i.e., we have at least one non-TBD,
 // non-null status).  PUSH is counted but hidden when zero.
 function _sectionSummary(statuses) {
-  const tally = {HIT: 0, MISS: 0, PUSH: 0, TBD: 0};
+  const tally = {HIT: 0, MISS: 0, PUSH: 0, TBD: 0, POSTPONED: 0};
   let anyFinal = false;
   for (const s of statuses) {
     if (!s) continue;
     if (s in tally) tally[s] += 1;
-    if (s === "HIT" || s === "MISS" || s === "PUSH") anyFinal = true;
+    if (s === "HIT" || s === "MISS" || s === "PUSH" || s === "POSTPONED") anyFinal = true;
   }
   if (!anyFinal) return "";
   const parts = [];
   parts.push(`<span style="color:var(--green);font-weight:600;">${tally.HIT} HIT</span>`);
   parts.push(`<span style="color:var(--red);font-weight:600;">${tally.MISS} MISS</span>`);
   if (tally.PUSH) parts.push(`<span style="color:#d29922;font-weight:600;">${tally.PUSH} PUSH</span>`);
+  if (tally.POSTPONED) parts.push(`<span style="color:#d29922;font-weight:600;">${tally.POSTPONED} PPD</span>`);
   if (tally.TBD)  parts.push(`<span class="muted">${tally.TBD} TBD</span>`);
   return ` <span class="muted" style="font-size:0.78rem;font-weight:normal;">(${parts.join(" / ")})</span>`;
 }
@@ -3850,6 +3852,7 @@ function _sectionSummary(statuses) {
 function _gameMLStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
+  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
   if (result.isFinal === false) return "TBD";
   if (result.winner == null) return "TBD";
   const aliasOf = (a) => new Set([a, TEAM_ABBR_ALIASES[a]].filter(Boolean));
@@ -3863,6 +3866,7 @@ function _gameMLStatus(item, results) {
 function _totalStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
+  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
   if (result.isFinal === false) return "TBD";
   const aSc = result.awayScore, hSc = result.homeScore;
   if (aSc == null || hSc == null) return "TBD";
@@ -3879,6 +3883,7 @@ function _totalStatus(item, results) {
 function _pitcherKStatus(item, results) {
   const result = matchResult(item._row || {matchup: item.matchup}, results);
   if (!result) return null;
+  if (/postpon|suspend|cancel/i.test(result.statusText || "")) return "POSTPONED";
   if (result.isFinal === false) return "TBD";
   const pid = item.team === "home" ? result.homePitcherId : result.awayPitcherId;
   if (!pid || !result.gamePk) return null;
