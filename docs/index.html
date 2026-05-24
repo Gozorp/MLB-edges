@@ -3941,7 +3941,11 @@ async function _prefetchPitcherKResults(ks, results) {
     if (slate && slate.rows && slate.rows.length) {
       const el = document.getElementById("top-outcomes");
       if (el) {
-        el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
+        // Apply same postponed filter as loadSlate's initial
+        // render — otherwise the K-results re-render would
+        // overwrite the filtered display with all 16 rows.
+        const playable = slate.rows.filter(r => !_isPostponedRow(r, slate.results));
+        el.innerHTML = renderTopProbableOutcomes(playable, window.__totalsByMatchup, slate.results);
       }
     }
   }
