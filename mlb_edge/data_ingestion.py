@@ -132,8 +132,26 @@ def fetch_schedule_mlb_api(day: date) -> List[Dict]:
         return []
 
     games = []
+    slate_iso = day.isoformat()
     for dd in data.get("dates", []):
         for g in dd.get("games", []):
+            # Skip games whose officialDate differs from the
+            # requested slate date.  MLB returns postponed games
+            # under their original gameDate in the schedule
+            # endpoint, but their officialDate is the reschedule
+            # date.  Without this check, rained-out games leak
+            # into picks_<date>_diag.csv even though they're
+            # booked for a different day (verified 2026-05-23
+            # with TB@NYY officialDate=9/22 and DET@BAL
+            # officialDate=5/24, both rained out from 5/23).
+            official = g.get("officialDate")
+            if official and official != slate_iso:
+                log.info(
+                    "[schedule] skip gamePk=%s: officialDate=%s"
+                    " != slate %s (rescheduled / postponed)",
+                    g.get("gamePk"), official, slate_iso,
+                )
+                continue
             games.append({
                 "game_pk":        g.get("gamePk"),
                 "game_date":      g.get("gameDate"),

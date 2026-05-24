@@ -4528,7 +4528,7 @@ async function silentRefresh(date) {
     document.getElementById("parlay").innerHTML = parlayText ? renderParlay(parlayText) : "";
     const postponedCount = rows.length - playableRows.length;
     document.getElementById("status").textContent
-      = `Auto-updated ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} hidden (played/postponed)` : "") + `) at ${new Date().toLocaleTimeString()}`;
+      = `Auto-updated ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `) at ${new Date().toLocaleTimeString()}`;
   } catch (e) {
     console.warn("silentRefresh failed:", e);
   }
@@ -4636,12 +4636,22 @@ function _addSeriesSuffix(rows, seriesMeta) {
 // the row's matchup before splitting.  Best-effort: missing
 // results entry or unknown status returns false (assume playable).
 function _isPostponedRow(row, results) {
-  // DISABLED 2026-05-23: filter reverted per user request.
-  // All 16 games render on the slate regardless of MLB status
-  // (Final / In Progress / Pre-Game / Postponed).  Function
-  // and callsites preserved so we can re-enable filtering by
-  // restoring the original body if/when desired.
-  return false;
+  // RE-ENABLED 2026-05-23 (narrow): hide only Postponed/
+  // Suspended/Cancelled games (games that won't play today).
+  // Final games stay visible with their HIT/MISS grading.
+  // The pipeline now filters by officialDate so this should
+  // be a no-op going forward, but it cleans up today's stale
+  // CSV (baked before data_ingestion.py was patched).
+  if (!row || !results) return false;
+  const raw = (row.matchup || "").trim();
+  if (!raw) return false;
+  const m = raw.replace(/\s*\([^)]*\)\s*$/, "");
+  const parts = m.split(/\s+@\s+/);
+  if (parts.length !== 2) return false;
+  const [away, home] = parts.map(p => p.trim());
+  const entry = results[`${away}@${home}`] || results[`${home}@${away}`];
+  if (!entry) return false;
+  return /postpon|suspend|cancel/i.test(entry.statusText || "");
 }
 
 function _dedupDoubleheaders(rows) {
@@ -4790,7 +4800,7 @@ async function loadSlate(date, { bust = false } = {}) {
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
-      ? `Loaded ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} hidden (played/postponed)` : "") + `)`
+      ? `Loaded ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `)`
       : "";
 
     // Update state indicator + (re)start polling if this is today
