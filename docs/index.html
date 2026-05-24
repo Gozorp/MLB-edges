@@ -4523,7 +4523,7 @@ async function silentRefresh(date) {
     document.getElementById("parlay").innerHTML = parlayText ? renderParlay(parlayText) : "";
     const postponedCount = rows.length - playableRows.length;
     document.getElementById("status").textContent
-      = `Auto-updated ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `) at ${new Date().toLocaleTimeString()}`;
+      = `Auto-updated ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} hidden (played/postponed)` : "") + `) at ${new Date().toLocaleTimeString()}`;
   } catch (e) {
     console.warn("silentRefresh failed:", e);
   }
@@ -4799,7 +4799,7 @@ async function loadSlate(date, { bust = false } = {}) {
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
-      ? `Loaded ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} postponed hidden` : "") + `)`
+      ? `Loaded ${date} (${playableRows.length} games` + (postponedCount > 0 ? `, ${postponedCount} hidden (played/postponed)` : "") + `)`
       : "";
 
     // Update state indicator + (re)start polling if this is today
