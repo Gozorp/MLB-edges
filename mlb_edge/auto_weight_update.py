@@ -71,6 +71,21 @@ TIER_LEARN_WEIGHT: Dict[str, float] = {
 
 CALIB_LEARN_RATE: float = 0.04
 
+# Safeguards (2026-05-25):
+#   NEW_CEILING_MULT: weights can grow modestly past their initial
+#     value. Previously ceil=base hard-clipped any upward update,
+#     turning the loop into a one-sided decay rule.
+#   STRESS_MASK_FACTOR: down-weights games the model itself flagged
+#     as low-confidence (stress_warnings non-empty OR
+#     confidence_downgrade=True) so their outcomes feed back less.
+#   WARMUP_THRESHOLD: minimum cumulative learned-from observations
+#     across audit history before updates apply. Self-healing:
+#     blowing away the audit log re-engages probation automatically.
+#     IMPORTANT: do not git-clean data/state/ without thinking.
+NEW_CEILING_MULT: float = 1.5
+STRESS_MASK_FACTOR: float = 0.3
+WARMUP_THRESHOLD: int = 30
+
 
 # ---------------------------------------------------------------------------
 # Outcome ingestion
@@ -202,9 +217,36 @@ def _picks_diag_to_calib_rows(picks_diag_df, outcomes_df):
                               .map(TIER_LEARN_WEIGHT)
                               .fillna(TIER_LEARN_WEIGHT["SKIP"]))
     out_cols = ["pick", "pick_prob", "p_model", "full_prob",
-                "tier", "signals", "won", "tier_weight", "run_diff"]
+                "tier", "signals", "won", "tier_weight", "run_diff",
+                "stress_warnings", "confidence_downgrade"]
     keep = [c for c in out_cols if c in merged.columns]
     return merged[keep].reset_index(drop=True)
+
+
+def _total_learned_from_count() -> int:
+    """Sum n_picks_used_for_learning across the entire audit log.
+
+    Used by the warm-up gate. A missing/empty log returns 0, which
+    structurally re-engages probation \u2014 desired behavior if the
+    state is ever blown away. See WARMUP_THRESHOLD docstring.
+    """
+    if not AUDIT_LOG.exists():
+        return 0
+    total = 0
+    try:
+        with AUDIT_LOG.open(encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    total += int(entry.get("n_picks_used_for_learning", 0))
+                except (json.JSONDecodeError, ValueError, TypeError):
+                    continue
+    except OSError:
+        return 0
+    return total
 
 
 def apply_calibration_from_all_picks(
@@ -229,6 +271,16 @@ def apply_calibration_from_all_picks(
     n_with_signals = 0
     if prob_col is None:
         return state, int(len(rows)), 0
+    # Warm-up gate: pass iff we have enough historical observations.
+    # Backfilled audit log has ~125 obs, so this passes on day one.
+    historical = _total_learned_from_count()
+    audit_only = historical < WARMUP_THRESHOLD
+    if audit_only:
+        log.info(
+            "[warmup] %d/%d learned-from obs in audit log \u2014 audit-only mode",
+            historical, WARMUP_THRESHOLD,
+        )
+
     for _, r in rows.iterrows():
         try:
             p = float(r.get(prob_col))
@@ -237,6 +289,19 @@ def apply_calibration_from_all_picks(
         won = int(r.get("won", 0))
         residual = won - p
         tw = float(r.get("tier_weight", TIER_LEARN_WEIGHT["SKIP"]))
+        # Stress-warned mask: down-weight games the model itself
+        # flagged as low-confidence. Either a non-empty
+        # stress_warnings string OR confidence_downgrade=True
+        # triggers the 0.3x multiplier.
+        sw_raw = r.get("stress_warnings", "")
+        sw = str(sw_raw).strip() if pd.notna(sw_raw) else ""
+        cd_raw = r.get("confidence_downgrade", False)
+        try:
+            cd = bool(cd_raw) and str(cd_raw).strip().lower() not in ("false", "0", "")
+        except Exception:
+            cd = False
+        if sw or cd:
+            tw *= STRESS_MASK_FACTOR
         sigs = _parse_signals(r.get("signals", "") if pd.notna(r.get("signals", "")) else "")
         if not sigs:
             continue
@@ -251,14 +316,23 @@ def apply_calibration_from_all_picks(
     for feat, g in feature_grad.items():
         base = baseline_weights.get(feat, 1.0)
         floor = MIN_RELATIVE_WEIGHT * base
-        ceil  = base
+        # 2026-05-25: ceil bumped from `base` to `base * 1.5` so a
+        # weight that was under-credited at init can recover. Prior
+        # behavior was a one-sided decay rule (could shrink to 25%
+        # of base, but never grow past base).
+        ceil  = base * NEW_CEILING_MULT
         delta_mult = 1.0 + learn_rate * (g / denom)
         cur = state.get(feat, base)
         new = cur * delta_mult
         if new < floor: new = floor
         if new > ceil: new = ceil
-        state[feat] = new
-    _save_state(state)
+        if not audit_only:
+            state[feat] = new
+        # If audit_only, state[feat] stays at cur and the audit
+        # entry will record a zero delta. The new value is still
+        # written to the proposed_state dict below for observability.
+    if not audit_only:
+        _save_state(state)
     return state, n_total, n_with_signals
 
 
@@ -279,6 +353,27 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         wins = 0
     deltas = {k: round(new_state.get(k, 1.0) - prev_state.get(k, 1.0), 6)
               for k in set(prev_state) | set(new_state)}
+    # Safeguard observability (2026-05-25): surface the largest
+    # single-weight move + any weight that grew past its baseline
+    # in this update. weights_growing_past_prior should be empty
+    # for the first ~10 days under the new ceil=1.5*base rule
+    # since most weights are well below their priors.
+    try:
+        from .recursive_weight_update import SP_WEIGHTS as _BASELINES
+    except Exception:
+        _BASELINES = {}
+    max_change_pct = 0.0
+    growing_past_prior: List[str] = []
+    for k, d in deltas.items():
+        prev_v = prev_state.get(k, 1.0)
+        if prev_v:
+            pct = abs(d) / abs(prev_v)
+            if pct > max_change_pct:
+                max_change_pct = pct
+        new_v = new_state.get(k, prev_v)
+        base_v = _BASELINES.get(k)
+        if base_v is not None and new_v > base_v:
+            growing_past_prior.append(k)
     entry: Dict = {
         "ts": datetime.now(timezone.utc).isoformat(),
         "slate_date": target_date.isoformat(),
@@ -286,6 +381,8 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         "wins": int(wins),
         "learn_mode": learn_mode,
         "weight_deltas": deltas,
+        "max_weight_change_pct": round(max_change_pct, 6),
+        "weights_growing_past_prior": growing_past_prior,
         "new_state": {k: round(v, 6) for k, v in new_state.items()},
     }
     if n_picks_total is not None:
