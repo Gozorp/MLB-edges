@@ -364,6 +364,8 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         _BASELINES = {}
     max_change_pct = 0.0
     growing_past_prior: List[str] = []
+    runaway_alarm = False
+    runaway_features: List[str] = []
     for k, d in deltas.items():
         prev_v = prev_state.get(k, 1.0)
         if prev_v:
@@ -374,6 +376,13 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         base_v = _BASELINES.get(k)
         if base_v is not None and new_v > base_v:
             growing_past_prior.append(k)
+        # Runaway tripwire (2026-05-25): any weight >= 1.4 * base
+        # is 10pp from the new 1.5 * base ceiling and signals
+        # potential signal-stacking that magnitude weighting
+        # (Phase 4) would address. Flag it loudly.
+        if base_v is not None and new_v >= 1.4 * base_v:
+            runaway_alarm = True
+            runaway_features.append(k)
     entry: Dict = {
         "ts": datetime.now(timezone.utc).isoformat(),
         "slate_date": target_date.isoformat(),
@@ -383,6 +392,8 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         "weight_deltas": deltas,
         "max_weight_change_pct": round(max_change_pct, 6),
         "weights_growing_past_prior": growing_past_prior,
+        "runaway_ceiling_alarm": runaway_alarm,
+        "runaway_features": runaway_features,
         "new_state": {k: round(v, 6) for k, v in new_state.items()},
     }
     if n_picks_total is not None:
@@ -393,6 +404,11 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
         f.write(json.dumps(entry) + "\n")
     log.info("Wrote audit entry for %s (mode=%s, n_bets=%d, wins=%d)",
              target_date, learn_mode, n_bets, wins)
+    if runaway_alarm:
+        log.warning(
+            "[runaway-ceiling-alarm] %s: weights >= 1.4 * base: %s",
+            target_date, runaway_features,
+        )
 
 
 def _already_processed(target_date):
