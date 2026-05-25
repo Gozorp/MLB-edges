@@ -51,6 +51,11 @@ data/state/auto_weight_update.lock
 
 # Large derived artifacts (regenerable)
 *.parquet
+# Whitelist umpire effects DB (built weekly by .github/workflows/umpire-refresh.yml).
+# These files are committed back to the repo so build_pipeline.py picks up the
+# refreshed deltas without an extra fetch step.
+!data/umpire_assignments.parquet
+!data/umpire_effects.parquet
 *.pkl
 *.feather
 *.h5
