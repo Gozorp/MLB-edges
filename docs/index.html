@@ -6197,6 +6197,13 @@ document.addEventListener("click", function (e) {
   // collapse the parent card.
   const t = e.target.closest("h2, h3");
   if (!t) return;
+  // Bail when the click target is an interactive control inside
+  // the header — e.g. the Simple/Advanced mode toggle in the slate
+  // header, the help glossary button, etc. Otherwise clicking them
+  // collapses the whole card (2026-05-25 user report).
+  if (e.target.closest("button, a, input, select, textarea, label")) {
+    return;
+  }
   const parent = t.parentElement;
   if (!parent || !parent.classList.contains("card")) return;
   if (t.tagName === "H3" && !t.classList.contains("card-toggle")) return;
