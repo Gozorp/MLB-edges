@@ -539,6 +539,131 @@ def _flip_perspective(r: pd.Series) -> pd.Series:
 # ---------------------------------------------------------------------------
 # Orchestration
 # ---------------------------------------------------------------------------
+# =============================================================
+# Locked-pick logic (2026-05-25)
+#   When the bake re-runs after first pitch, the pick column
+#   should NOT flip mid-game. Capture prior CSV at run start,
+#   check MLB status per game, and for any game whose state is
+#   past pre-game restore the LOCK_COLUMNS from the prior row.
+# =============================================================
+_LOCK_COLUMNS = (
+    "pick", "p_model", "pick_prob",
+    "f5_prob", "full_prob", "fair_prob", "edge_pp",
+    "grade", "grade_reasons", "grade_score",
+    "pre_cap_score", "pre_cap_grade",
+    "tier", "signals", "why_skipped",
+    "ev_per_dollar", "kelly_full", "kelly_quarter", "kelly_eighth",
+)
+
+
+def _load_prior_picks_for_lock(out_picks_path):
+    """Read prior CSV BEFORE any to_csv overwrites it.
+
+    Returns DataFrame or None.
+    """
+    if not out_picks_path:
+        return None
+    p = Path(out_picks_path)
+    if not p.exists() or p.stat().st_size == 0:
+        return None
+    try:
+        return pd.read_csv(p)
+    except Exception as e:
+        log.warning("[lock] could not read prior CSV %s: %s", p, e)
+        return None
+
+
+def _games_started_map(slate_date):
+    """Fetch MLB schedule for the date once.
+
+    Returns {\"{away_abbr} @ {home_abbr}\": True if game past pre-game}.
+    abstractGameState == \"Preview\" means scheduled / pre-game; anything
+    else (Live / Final) counts as started.
+    """
+    out = {}
+    try:
+        import urllib.request as _ur
+        import json as _json
+        url = (
+            "https://statsapi.mlb.com/api/v1/schedule"
+            f"?sportId=1&date={slate_date.isoformat()}"
+        )
+        with _ur.urlopen(url, timeout=10) as resp:
+            j = _json.loads(resp.read().decode("utf-8"))
+        for d in j.get("dates", []) or []:
+            for g in d.get("games", []) or []:
+                status = g.get("status") or {}
+                state = status.get("abstractGameState", "")
+                started = state in ("Live", "Final")
+                teams = g.get("teams") or {}
+                away = (teams.get("away") or {}).get("team") or {}
+                home = (teams.get("home") or {}).get("team") or {}
+                a = away.get("abbreviation") or ""
+                h = home.get("abbreviation") or ""
+                if a and h:
+                    out[f"{a} @ {h}"] = started
+    except Exception as e:
+        log.warning("[lock] failed to fetch MLB schedule: %s", e)
+    return out
+
+
+def _apply_started_game_lock(new_df, prior_df, started_map):
+    """In place: restore _LOCK_COLUMNS from prior_df for any row whose
+    matchup has started AND whose prior row has a real (non-TBD) pick.
+
+    Returns count of locked rows.
+    """
+    if prior_df is None or prior_df.empty:
+        return 0
+    if "matchup" not in new_df.columns or "matchup" not in prior_df.columns:
+        return 0
+    import re as _re
+    # Build prior lookup by matchup, taking the FIRST occurrence so a
+    # doubleheader doesn't blow up (downstream G2/G3 suffixing is
+    # applied at render time, not in the CSV).
+    prior_idx = {}
+    for _, pr in prior_df.iterrows():
+        mk = str(pr.get("matchup", "")).strip()
+        if mk and mk not in prior_idx:
+            prior_idx[mk] = pr
+    n_locked = 0
+    for i, row in new_df.iterrows():
+        mk = str(row.get("matchup", "")).strip()
+        if not mk:
+            continue
+        # Strip any "(G2 of 3)" / "(G2)" suffix before matching the
+        # MLB schedule (schedule keys are bare).
+        bare = _re.sub(r"\s*\([^)]*\)\s*$", "", mk).strip()
+        started = started_map.get(bare, False) or started_map.get(mk, False)
+        if not started:
+            continue
+        if mk not in prior_idx:
+            continue
+        prior_row = prior_idx[mk]
+        # Only lock when the PRIOR pick was a real pick — don't freeze
+        # TBD/PENDING; in that case let fresh model output stand.
+        prior_pick = str(prior_row.get("pick", "")).strip().upper()
+        if prior_pick in ("", "TBD", "NAN", "NONE"):
+            continue
+        # Copy locked columns from prior row over the fresh row.
+        for col in _LOCK_COLUMNS:
+            if col in new_df.columns and col in prior_row.index:
+                v = prior_row[col]
+                if pd.notna(v):
+                    new_df.at[i, col] = v
+        # Tag in stress_warnings so the lock is visible in audits.
+        if "stress_warnings" in new_df.columns:
+            sw_raw = new_df.at[i, "stress_warnings"]
+            sw = str(sw_raw) if pd.notna(sw_raw) else ""
+            if "locked_at_first_pitch" not in sw:
+                new_df.at[i, "stress_warnings"] = (
+                    f"{sw};locked_at_first_pitch" if sw
+                    else "locked_at_first_pitch"
+                )
+        n_locked += 1
+    return n_locked
+
+
 def run(slate_date: date,
         bankroll: float = 100.0,
         model_path: str = "models/latest.pkl",
@@ -547,6 +672,12 @@ def run(slate_date: date,
         skip_auto_update: bool = False,
         skip_savant_refresh: bool = False,
         skip_news: bool = False) -> None:
+    # Capture prior CSV BEFORE any to_csv overwrites it. Used at the
+    # end of the grading pass to freeze picks for games already in
+    # progress (avoids mid-game flips when bullpen state changes,
+    # 2026-05-25 user request).
+    _prior_picks_for_lock = _load_prior_picks_for_lock(out_picks)
+
     if not skip_savant_refresh:
         log.info("[step 0/5] savant leaderboard refresh")
         try:
@@ -1109,6 +1240,25 @@ def run(slate_date: date,
                 graded = parlay_builder.grade_picks(
                     table, anchor=matchup_to_sps, slate_date=slate_date,
                 )
+                # Freeze picks for games that have already started.
+                # Restores LOCK_COLUMNS from the prior CSV row so a
+                # mid-game re-bake (e.g. bullpen-fatigue flip) never
+                # changes what the user saw pre-game.
+                try:
+                    _started_map = _games_started_map(slate_date)
+                    _n_locked = _apply_started_game_lock(
+                        graded, _prior_picks_for_lock, _started_map,
+                    )
+                    if _n_locked:
+                        log.info(
+                            "[lock] preserved pre-game picks for %d "
+                            "started game(s)", _n_locked,
+                        )
+                except Exception as _e_lock:
+                    log.warning(
+                        "[lock] failed (continuing without lock): %s",
+                        _e_lock,
+                    )
                 parlay_path = Path(f"parlay_{slate_date.isoformat()}.txt")
                 parlay_builder.write_parlay_report(graded, slate_date, parlay_path)
                 log.info("Wrote parlay report to %s", parlay_path)
