@@ -170,6 +170,125 @@
     font-size: 0.8rem; color: var(--green);
   }
 
+  /* ===== Apple-style hero section (2026-05-25) ===== */
+  html { scroll-behavior: smooth; }
+
+  #mlb-hero {
+    position: relative; min-height: 92vh;
+    display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center;
+    padding: 4rem 2rem 5rem 2rem; overflow: hidden;
+    background: radial-gradient(ellipse at top left, rgba(63,185,80,0.10), transparent 55%),
+                radial-gradient(ellipse at bottom right, rgba(88,166,255,0.10), transparent 55%),
+                linear-gradient(180deg, var(--bg) 0%, var(--bg-elev) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  #mlb-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(63,185,80,0.05) 0%, transparent 25%),
+                radial-gradient(circle at 70% 80%, rgba(88,166,255,0.05) 0%, transparent 25%);
+    animation: heroPulse 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes heroPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+  }
+  .hero-eyebrow {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    color: var(--green); font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.3em;
+    margin-bottom: 1.2rem; opacity: 0;
+    animation: heroFadeUp 0.7s ease-out 0.05s forwards;
+  }
+  .hero-headline {
+    font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700;
+    line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0 0 1rem 0; opacity: 0;
+    animation: heroFadeUp 0.8s ease-out 0.2s forwards;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-width: 14ch;
+  }
+  .hero-tagline {
+    font-size: clamp(1rem, 1.8vw, 1.3rem); color: var(--muted);
+    font-weight: 400; margin: 0 0 2.5rem 0;
+    max-width: 50ch; line-height: 1.5; opacity: 0;
+    animation: heroFadeUp 0.8s ease-out 0.35s forwards;
+  }
+  .hero-stats {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    justify-content: center; margin: 1rem 0 2rem 0;
+    opacity: 0; animation: heroFadeUp 0.9s ease-out 0.5s forwards;
+  }
+  .hero-stat {
+    display: flex; flex-direction: column; align-items: center;
+    min-width: 6rem;
+  }
+  .hero-stat-value {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 700;
+    line-height: 1; color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-stat-value.green { color: var(--green); }
+  .hero-stat-value.accent { color: var(--accent); }
+  .hero-stat-label {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.7rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.18em;
+    margin-top: 0.5rem;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent); color: var(--bg);
+    border: none; padding: 0.85rem 1.8rem;
+    border-radius: 999px; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    opacity: 0; animation: heroFadeUp 0.8s ease-out 0.7s forwards;
+  }
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(88,166,255,0.3);
+  }
+  .hero-scroll-indicator {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%); color: var(--muted);
+    font-size: 0.78rem; font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.5rem; opacity: 0;
+    animation: heroFadeUp 1s ease-out 1s forwards, heroFloat 2.5s ease-in-out 1.5s infinite;
+  }
+  .hero-scroll-indicator .arrow {
+    width: 1.5rem; height: 1.5rem;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+  }
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes heroFloat {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, 10px); }
+  }
+
+  /* IntersectionObserver fade-in for cards as they enter viewport */
+  .reveal-on-scroll {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 720px) {
+    #mlb-hero { min-height: 80vh; padding: 3rem 1.2rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
+
   /* ===== Newbie UX scaffold (2026-05-24) ===== */
   /* Intro card — auto-shown on first visit, dismissable */
   #mlb-intro-card {
@@ -672,7 +791,34 @@
   <button id="help-btn" title="Help &amp; glossary — what does each column mean?" aria-label="Open help panel">?</button>
 </header>
 
-<main>
+<section id="mlb-hero" aria-label="mlb_edge hero">
+  <div class="hero-eyebrow">Daily MLB Slate · The Quant Terminal</div>
+  <h2 class="hero-headline">Find the model's edge.</h2>
+  <p class="hero-tagline">
+    Multi-rule grading of every game on today's slate. Pre-game picks locked at first pitch, live win-prob trajectories during play, and a deep-analysis panel under every row.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value" id="hero-stat-games" data-target="0">0</div>
+      <div class="hero-stat-label">Games today</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value green" id="hero-stat-a-grades" data-target="0">0</div>
+      <div class="hero-stat-label">A · A− picks</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value accent" id="hero-stat-live" data-target="0">0</div>
+      <div class="hero-stat-label">Live now</div>
+    </div>
+  </div>
+  <a href="#main-slate-anchor" class="hero-cta">View today's slate ↓</a>
+  <div class="hero-scroll-indicator">
+    <span>Scroll</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<main id="main-slate-anchor">
   <div class="card" id="mlb-intro-card" style="display:none;">
     <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
     <h2>First time here? Here is what this dashboard does.</h2>
@@ -5972,6 +6118,107 @@ document.addEventListener("click", function (e) {
     sib = sib.nextElementSibling;
   }
 });
+
+// =============================================================
+// Apple-style hero animations (2026-05-25)
+//   - Count-up animation for the 3 hero stats once the slate
+//     loads (games count, A-grade count, live-game count).
+//   - IntersectionObserver adds .revealed to .reveal-on-scroll
+//     elements when they enter the viewport.
+// =============================================================
+(function() {
+  function animateCounter(el, target, duration) {
+    if (!el) return;
+    const start = parseFloat(el.textContent) || 0;
+    const dur = duration || 900;
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / dur);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(start + (target - start) * eased);
+      el.textContent = val;
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function updateHeroStats() {
+    const slate = window.__slate || {};
+    const rows = slate.rows || [];
+    const results = slate.results || {};
+    const games = rows.length;
+    const aGrades = rows.filter(r => {
+      const g = (r.grade || "").trim();
+      return g === "A" || g === "A-" || g === "A−";
+    }).length;
+    let liveCount = 0;
+    for (const k of Object.keys(results)) {
+      const r = results[k];
+      const s = String(r.statusText || "").toLowerCase();
+      if (/in progress|manager challenge|delayed/.test(s)) {
+        liveCount++;
+      }
+    }
+    // Each unique game has up to 4 keys in the results map (away@home,
+    // home@away, and DH variants). Divide by 4 as a rough dedupe.
+    liveCount = Math.round(liveCount / 4);
+    const sg = document.getElementById("hero-stat-games");
+    const sa = document.getElementById("hero-stat-a-grades");
+    const sl = document.getElementById("hero-stat-live");
+    if (sg) { sg.setAttribute("data-target", games); animateCounter(sg, games); }
+    if (sa) { sa.setAttribute("data-target", aGrades); animateCounter(sa, aGrades); }
+    if (sl) { sl.setAttribute("data-target", liveCount); animateCounter(sl, liveCount); }
+  }
+
+  function installRevealObserver() {
+    if (typeof IntersectionObserver !== "function") return;
+    const cards = document.querySelectorAll(".card, .preview-card");
+    cards.forEach(c => c.classList.add("reveal-on-scroll"));
+    const obs = new IntersectionObserver(function(entries) {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add("revealed");
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    cards.forEach(c => obs.observe(c));
+  }
+
+  function init() {
+    installRevealObserver();
+    // Update stats once the slate has loaded. Try a few times since
+    // loadSlate is async.
+    let tries = 0;
+    const t = setInterval(function() {
+      tries++;
+      const slate = window.__slate || {};
+      if ((slate.rows && slate.rows.length) || tries > 30) {
+        updateHeroStats();
+        clearInterval(t);
+        // Re-install observer on any newly-rendered .card elements.
+        installRevealObserver();
+      }
+    }, 400);
+
+    // Re-update on every slate render (date change, refresh).
+    const slateEl = document.getElementById("slate");
+    if (slateEl && typeof MutationObserver === "function") {
+      const mo = new MutationObserver(function() {
+        updateHeroStats();
+        installRevealObserver();
+      });
+      mo.observe(slateEl, { childList: true });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
 
 // ============================================================
 // Newbie UX scaffold (2026-05-24)
