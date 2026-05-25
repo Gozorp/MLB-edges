@@ -837,6 +837,132 @@
   content: "";
   width: 0;
 }
+  /* ===== Mobile-friendly responsive layer (2026-05-25) ===== */
+  /* Touch hint: scroll table horizontally to see all columns. */
+  .table-scroll-hint {
+    display: none; font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    color: var(--muted); font-size: 0.74rem; margin-top: 0.5rem;
+    text-align: right; letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 720px) {
+    /* Layout: tighter padding throughout. */
+    header { padding: 1rem 1rem; gap: 0.6rem; }
+    header h1 { font-size: 1.15rem; }
+    header .meta { font-size: 0.78rem; }
+    main { padding: 1rem 1rem 2rem 1rem; }
+    .card { padding: 1.1rem; margin-bottom: 1rem; border-radius: 8px; }
+
+    /* Hero: shorter + stacked stats. */
+    #mlb-hero { min-height: 78vh; padding: 2.5rem 1rem 4rem 1rem; }
+    .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.22em; }
+    .hero-headline { max-width: 100%; }
+    .hero-tagline { font-size: 0.95rem; padding: 0 0.5rem; }
+    .hero-stats { gap: 1.2rem; margin: 0.5rem 0 1.5rem 0; }
+    .hero-stat-value { font-size: 2.4rem; }
+    .hero-stat-label { font-size: 0.62rem; }
+    .hero-cta { padding: 0.9rem 1.4rem; font-size: 0.92rem; }
+    .hero-scroll-indicator { bottom: 1rem; font-size: 0.68rem; }
+    .hero-scroll-indicator .arrow { width: 1.1rem; height: 1.1rem; }
+
+    /* Intro card: single column. */
+    #mlb-intro-card { padding: 1rem 1.1rem; }
+    #mlb-intro-card h2 { font-size: 1rem; padding-right: 1.5rem; }
+    #mlb-intro-card .intro-grid { grid-template-columns: 1fr; gap: 0.7rem; }
+    #mlb-intro-card .intro-step { font-size: 0.86rem; }
+
+    /* Ask the Slate accordion. */
+    #ask-the-slate-section { margin: 1.5rem 0 1rem 0; }
+    #ask-the-slate-section > h2 { font-size: 1.5rem; }
+    .accordion-header {
+      padding: 1.1rem 1rem; font-size: 1rem;
+      min-height: 44px; /* Apple-recommended tap target */
+    }
+    .accordion-body-inner { padding: 0 1rem 1.1rem 1rem; }
+
+    /* Date picker row: wrap cleanly + larger buttons. */
+    .picker { gap: 0.4rem; flex-wrap: wrap; }
+    .picker input, .picker button {
+      min-height: 40px; padding: 0.5rem 0.8rem;
+      font-size: 0.88rem;
+    }
+    .picker-arrow { width: 40px; }
+
+    /* Mode toggle: bigger tap targets. */
+    .mode-toggle button { padding: 0.5rem 0.8rem; font-size: 0.72rem; }
+
+    /* Help button: keep ≥ 44px tap area. */
+    #help-btn { width: 44px; height: 44px; font-size: 1.05rem; }
+
+    /* Visit pill: smaller. */
+    #visitPill { font-size: 0.74rem; }
+
+    /* Slate table: horizontally scrollable + tighter cells. */
+    .card table {
+      display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      font-size: 0.78rem;
+      /* Avoid sub-pixel scrollbar flash. */
+      scrollbar-width: thin;
+    }
+    .card th, .card td { padding: 0.4rem 0.35rem; }
+    .card th { font-size: 0.7rem; }
+    .table-scroll-hint { display: block; }
+
+    /* Per-game expander: drop fixed 2-col grids to single column. */
+    .preview-grid { grid-template-columns: 1fr !important; gap: 0.8rem; }
+    .preview-card { padding: 0.9rem; }
+    .preview-card h5 { font-size: 0.9rem; }
+    /* The inner Lineup-Edge / Bullpen-Edge per-side panels also stack. */
+    .preview-card > div[style*="grid-template-columns:1fr 1fr"],
+    .preview-card > div[style*="grid-template-columns: 1fr 1fr"] {
+      display: block !important;
+    }
+    .preview-card > div[style*="grid-template-columns:1fr 1fr"] > div,
+    .preview-card > div[style*="grid-template-columns: 1fr 1fr"] > div {
+      margin-bottom: 0.8rem;
+    }
+
+    /* Bullpen Outlook 2-col team grids stack on mobile. */
+    #bullpen-outlook > div > div[style*="grid-template-columns:1fr 1fr"],
+    #bullpen-outlook > div > div[style*="grid-template-columns: 1fr 1fr"] {
+      display: block !important;
+    }
+    #bullpen-outlook > div > div[style*="grid-template-columns:1fr 1fr"] > div,
+    #bullpen-outlook > div > div[style*="grid-template-columns: 1fr 1fr"] > div {
+      margin-bottom: 0.8rem;
+    }
+
+    /* Deep-analysis sub-sections. */
+    .deep-section > .deep-h5 { font-size: 0.78rem; padding: 0.4rem 0; }
+    .deep-section > .deep-body { font-size: 0.84rem; }
+
+    /* Failure analysis side-by-side stacks. */
+    .failure-grid { grid-template-columns: 1fr !important; }
+
+    /* Disable hover-driven transforms on touch (avoid sticky state). */
+    @media (hover: none) {
+      .hero-cta:hover { transform: none; box-shadow: none; }
+      .accordion-header:hover { background: transparent; }
+      .row-clickable:hover { background: transparent; }
+    }
+  }
+
+  @media (max-width: 480px) {
+    /* Small phone refinements. */
+    header { padding: 0.85rem 0.9rem; }
+    header h1 { font-size: 1.05rem; }
+    header .meta { display: none; } /* save vertical space */
+    main { padding: 0.85rem 0.85rem 2rem 0.85rem; }
+    .card { padding: 0.9rem; }
+    .hero-headline { font-size: 2.2rem; }
+    .hero-tagline { font-size: 0.86rem; }
+    .hero-stat-value { font-size: 2rem; }
+    .accordion-header { padding: 1rem 0.85rem; font-size: 0.95rem; }
+    .accordion-body-inner { padding: 0 0.85rem 1rem 0.85rem; }
+    .card th, .card td { padding: 0.35rem 0.3rem; }
+    .card table { font-size: 0.74rem; }
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -5256,7 +5382,9 @@ function renderSlate(rows, gradeMap, results) {
       <td colspan="${colspan}">${narrative}</td>
     </tr>`;
   }
-  html += "</tbody></table></div>";
+  html += "</tbody></table>"
+       + "<div class=\"table-scroll-hint\">← swipe →</div>"
+       + "</div>";
   return html;
 }
 
