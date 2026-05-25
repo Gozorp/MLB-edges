@@ -170,6 +170,67 @@
     font-size: 0.8rem; color: var(--green);
   }
 
+  /* ===== Ask the Slate accordion (2026-05-25) ===== */
+  #ask-the-slate-section {
+    margin: 2.5rem 0 1.5rem 0;
+  }
+  #ask-the-slate-section > h2 {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700; margin: 0 0 1.2rem 0;
+    letter-spacing: -0.015em;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .accordion {
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; background: var(--bg-elev);
+  }
+  .accordion-item {
+    border-bottom: 1px solid var(--border);
+  }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-header {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; background: transparent; border: none;
+    padding: 1.2rem 1.5rem; cursor: pointer;
+    color: var(--text); font-family: inherit;
+    font-size: 1.1rem; font-weight: 600;
+    text-align: left; transition: background 0.18s ease;
+  }
+  .accordion-header:hover { background: rgba(88,166,255,0.05); }
+  .accordion-header .chev {
+    color: var(--muted); font-size: 1.4rem;
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block; line-height: 1;
+  }
+  .accordion-item.open .accordion-header .chev {
+    transform: rotate(180deg); color: var(--accent);
+  }
+  .accordion-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .accordion-item.open .accordion-body {
+    max-height: 12000px; /* large enough for any rendered content */
+  }
+  .accordion-body-inner {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+  }
+  /* The inner cards rendered into #top-outcomes/#bullpen-outlook/#slate
+     already have their own .card styling - reset their margins so they
+     don't double-pad inside the accordion body. */
+  .accordion-body-inner > .card {
+    margin-bottom: 0;
+    background: transparent; border: none; padding: 0.5rem 0;
+  }
+  .accordion-eyebrow {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    color: var(--muted); font-size: 0.72rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 0.6rem; display: block;
+  }
+
   /* ===== Apple-style hero section (2026-05-25) ===== */
   html { scroll-behavior: smooth; }
 
@@ -866,9 +927,45 @@
     <div id="queryResult"></div>
   </div>
 
-  <div id="top-outcomes"></div>
-  <div id="bullpen-outlook"></div>
-  <div id="slate"></div>
+  <section id="ask-the-slate-section">
+    <span class="accordion-eyebrow">Browse the slate</span>
+    <h2>Ask the Slate</h2>
+    <div class="accordion" role="tablist">
+      <div class="accordion-item" data-acc="top-outcomes">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Top Probable Outcomes</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="top-outcomes"></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" data-acc="bullpen-outlook">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Bullpen Outlook</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="bullpen-outlook"></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" data-acc="slate">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>The Slate</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="slate"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <div id="parlay"></div>
 
   <div class="card">
@@ -6118,6 +6215,26 @@ document.addEventListener("click", function (e) {
     sib = sib.nextElementSibling;
   }
 });
+
+// =============================================================
+// "Ask the Slate" accordion (2026-05-25)
+//   Toggles .open on .accordion-item when its header is clicked.
+//   Each body uses max-height transitions; we set a large ceiling
+//   in CSS so any rendered content (slate table with 16+ rows)
+//   fits without measuring scrollHeight on every toggle.
+// =============================================================
+(function() {
+  document.addEventListener("click", function(e) {
+    const btn = e.target.closest("[data-acc-toggle]");
+    if (!btn) return;
+    const item = btn.closest(".accordion-item");
+    if (!item) return;
+    const willOpen = !item.classList.contains("open");
+    item.classList.toggle("open");
+    btn.setAttribute("aria-expanded", String(willOpen));
+    e.stopPropagation();
+  });
+})();
 
 // =============================================================
 // Apple-style hero animations (2026-05-25)
