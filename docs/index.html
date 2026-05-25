@@ -170,6 +170,115 @@
     font-size: 0.8rem; color: var(--green);
   }
 
+  /* ===== Newbie UX scaffold (2026-05-24) ===== */
+  /* Intro card — auto-shown on first visit, dismissable */
+  #mlb-intro-card {
+    background: linear-gradient(135deg, rgba(63,185,80,0.05), rgba(88,166,255,0.05));
+    border: 1px solid var(--accent);
+    border-radius: 8px; padding: 1.2rem 1.4rem;
+    margin-bottom: 1.5rem; position: relative;
+  }
+  #mlb-intro-card.hidden { display: none; }
+  #mlb-intro-card h2 { margin-top: 0; color: var(--green); font-size: 1.05rem; }
+  #mlb-intro-card .intro-close {
+    position: absolute; top: 0.6rem; right: 0.9rem;
+    background: transparent; border: none; color: var(--muted);
+    font-size: 1.2rem; cursor: pointer; line-height: 1;
+    font-family: inherit;
+  }
+  #mlb-intro-card .intro-close:hover { color: var(--text); }
+  #mlb-intro-card .intro-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem 1.4rem;
+    margin-top: 0.8rem; font-size: 0.88rem;
+  }
+  @media (max-width: 720px) {
+    #mlb-intro-card .intro-grid { grid-template-columns: 1fr; }
+  }
+  #mlb-intro-card .intro-step strong { color: var(--accent); }
+  #mlb-intro-card .intro-step .num {
+    display: inline-block; min-width: 1.4rem; color: var(--green);
+    font-weight: 700; font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  /* Help button (?) in header */
+  #help-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); width: 1.8rem; height: 1.8rem;
+    border-radius: 50%; cursor: pointer; font-family: inherit;
+    font-size: 0.9rem; font-weight: 700; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: 0.5rem; transition: all 0.15s;
+  }
+  #help-btn:hover { border-color: var(--accent); color: var(--accent); }
+  /* Slide-over help panel */
+  #help-panel-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 10000; display: none; backdrop-filter: blur(2px);
+  }
+  #help-panel-backdrop.open { display: block; }
+  #help-panel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: min(440px, 92vw); background: var(--bg-elev);
+    border-left: 1px solid var(--border); padding: 1.5rem 1.6rem;
+    overflow-y: auto; z-index: 10001;
+    transform: translateX(100%); transition: transform 0.22s ease-out;
+    box-shadow: -8px 0 24px rgba(0,0,0,0.4);
+  }
+  #help-panel.open { transform: translateX(0); }
+  #help-panel .help-close {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 0.25rem 0.55rem; cursor: pointer;
+    border-radius: 4px; font-family: inherit; font-size: 0.78rem;
+    float: right;
+  }
+  #help-panel h2 { margin-top: 0; color: var(--accent); font-size: 1.05rem; }
+  #help-panel h3 {
+    color: var(--text); font-size: 0.92rem; margin: 1.2rem 0 0.4rem 0;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.3rem;
+  }
+  #help-panel .glossary-row {
+    display: grid; grid-template-columns: 5.5rem 1fr;
+    gap: 0.5rem; padding: 0.4rem 0; font-size: 0.86rem;
+    border-bottom: 1px dashed rgba(255,255,255,0.06);
+  }
+  #help-panel .glossary-row .term {
+    color: var(--accent); font-weight: 700;
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  #help-panel .glossary-row .def { color: var(--muted); line-height: 1.5; }
+  #help-panel .grade-row { display: flex; gap: 0.5rem; margin: 0.3rem 0; align-items: center; }
+  /* Simple / Advanced mode toggle near slate header */
+  .mode-toggle {
+    display: inline-flex; gap: 0; margin-left: 0.8rem;
+    border: 1px solid var(--border); border-radius: 4px;
+    overflow: hidden; vertical-align: middle;
+  }
+  .mode-toggle button {
+    background: transparent; border: none; color: var(--muted);
+    padding: 0.25rem 0.7rem; cursor: pointer;
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.74rem; letter-spacing: 0.04em;
+  }
+  .mode-toggle button.active {
+    background: var(--accent); color: var(--bg); font-weight: 700;
+  }
+  .mode-toggle button:not(.active):hover { color: var(--text); }
+  /* Simple mode column hides — driven by body.simple-mode */
+  body.simple-mode table th.col-f5,
+  body.simple-mode table td.col-f5,
+  body.simple-mode table th.col-fair,
+  body.simple-mode table td.col-fair,
+  body.simple-mode table th.col-edge,
+  body.simple-mode table td.col-edge,
+  body.simple-mode table th.col-pred,
+  body.simple-mode table td.col-pred,
+  body.simple-mode table th.col-tier,
+  body.simple-mode table td.col-tier,
+  body.simple-mode table th.col-claude,
+  body.simple-mode table td.col-claude { display: none; }
+  /* Help-tooltip cursor on column headers */
+  th[title] { cursor: help; }
+
   /* Deep-analysis collapsible sub-sections (2026-05-24) */
   .deep-section { margin: 0.6rem 0 0.4rem 0; }
   .deep-section > .deep-h5 {
@@ -560,9 +669,23 @@
     <span class="visit-dot"></span>
     <span id="visitText">… loading visits</span>
   </span>
+  <button id="help-btn" title="Help &amp; glossary — what does each column mean?" aria-label="Open help panel">?</button>
 </header>
 
 <main>
+  <div class="card" id="mlb-intro-card" style="display:none;">
+    <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
+    <h2>First time here? Here is what this dashboard does.</h2>
+    <p style="margin:0.3rem 0 0.6rem 0;font-size:0.92rem;color:var(--muted);line-height:1.55;">
+      mlb_edge predicts every MLB game on today's slate and grades how confident the model is in each pick. It uses a rule-based system trained on historical results, not a crystal ball — read it as <em>where the model thinks the market is wrong</em>, not as guaranteed winners.
+    </p>
+    <div class="intro-grid">
+      <div class="intro-step"><span class="num">1.</span> <strong>Pick the date</strong> with the date picker above. Today's slate auto-refreshes during games.</div>
+      <div class="intro-step"><span class="num">2.</span> <strong>Each row is one game.</strong> The <code>Pick</code> column is the team the model favors, with its win probability.</div>
+      <div class="intro-step"><span class="num">3.</span> <strong>Grade tells you conviction:</strong> A = strong, B = moderate, C/D = skip. Click any row for the full reasoning.</div>
+      <div class="intro-step"><span class="num">4.</span> <strong>Need more detail?</strong> Toggle <code>Advanced</code> mode below to show all columns. Click the <strong>?</strong> button in the header any time for the glossary.</div>
+    </div>
+  </div>
   <div class="date-strip" id="dateStrip" style="display:none;">
     <span class="date-strip-label">Slates:</span>
     <span class="muted" style="font-size:0.85rem;align-self:center;">loading…</span>
@@ -4693,16 +4816,22 @@ function renderSlate(rows, gradeMap, results) {
       </div>
       <div id="ask-claude-out" class="muted" style="margin-top:0.6rem;font-size:0.92rem;line-height:1.5;"></div>
     </div>
-    <h2>Slate (${rows.length} games) <span class="muted" style="font-size:0.8rem;font-weight:normal;">— click any row for in-depth reasoning</span></h2>
+    <h2 style="display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;">Slate (${rows.length} games) <span class="muted" style="font-size:0.8rem;font-weight:normal;">— click any row for in-depth reasoning</span><span class="mode-toggle" role="tablist" aria-label="Slate detail level"><button id="mode-simple-btn" type="button" data-mode="simple">SIMPLE</button><button id="mode-advanced-btn" type="button" data-mode="advanced">ADVANCED</button></span></h2>
     <table>
       <thead><tr>
         <th></th>
-        <th>Matchup</th><th>Pick</th><th>F5</th><th>Full</th>
-        <th>Fair</th><th>Edge</th><th>Pred</th>
-        <th title="Over/Under prediction: side · Vegas total · edge in runs. From picks_totals_<date>.csv">O/U</th>
-        <th>Tier</th><th>Grade</th>
-        <th title="Claude Brain (executive review): CONFIRM / DOWNGRADE / OVERRIDE">Claude</th>
-        ${haveAnyResult ? "<th>Result</th>" : ""}
+        <th title="Away team @ Home team. (G2 of 3) = game 2 of a 3-game series.">Matchup</th>
+        <th title="Team the model favors to win, with its win probability for that team.">Pick</th>
+        <th class="col-f5" title="First-5-innings win probability. Reflects starting pitchers vs each other before bullpens.">F5</th>
+        <th title="Full-game win probability — the model's headline number combining SP + bullpen + late-leverage signals.">Full</th>
+        <th class="col-fair" title="Market-implied fair probability (sportsbook vig removed). The market's honest opinion.">Fair</th>
+        <th class="col-edge" title="Model − Fair, in percentage points. Positive = model thinks market is underrating the pick.">Edge</th>
+        <th class="col-pred" title="Model's projected final score (away–home), in runs.">Pred</th>
+        <th title="Over/Under: side (OVER/UNDER), Vegas total line, and edge in runs. Empty = no market signal.">O/U</th>
+        <th class="col-tier" title="Pre-grade conviction level: PLATINUM > GOLD > SILVER > BRONZE > SKIP.">Tier</th>
+        <th title="Final grade after the 8-rule grader: A/A− = strong, B family = moderate, C = skip, D = avoid.">Grade</th>
+        <th class="col-claude" title="Claude's executive review of the model's call: CONFIRM / DOWNGRADE / OVERRIDE.">Claude</th>
+        ${haveAnyResult ? '<th title="Post-game outcome: WIN / LOSS / LIVE / PRE-GAME / POSTPONED.">Result</th>' : ""}
       </tr></thead><tbody>`;
   for (let i = 0; i < rows.length; i++) {
     const r = rows[i];
@@ -4869,15 +4998,15 @@ function renderSlate(rows, gradeMap, results) {
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong></td>
       <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
-      <td>${favTeamProb(matchupKey, r.f5_prob)}</td>
+      <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
-      <td>${fairFmt}</td>
-      <td>${edgeFmt}</td>
-      <td class="pred-score">${_formatPredScore(r)}</td>
+      <td class="col-fair">${fairFmt}</td>
+      <td class="col-edge">${edgeFmt}</td>
+      <td class="pred-score col-pred">${_formatPredScore(r)}</td>
       ${ouCell}
-      <td>${tierBadge(r)}</td>
+      <td class="col-tier">${tierBadge(r)}</td>
       <td><span class="grade ${gradeClass(grade)}">${grade || "—"}</span></td>
-      ${claudeCell}
+      ${claudeCell.replace('<td>', '<td class="col-claude">').replace('<td class=\'', '<td class="col-claude ').replace('<td class="', '<td class="col-claude ')}
       ${resultCell}
     </tr>
     <tr class="details-row" id="details-${i}">
@@ -5844,7 +5973,142 @@ document.addEventListener("click", function (e) {
   }
 });
 
+// ============================================================
+// Newbie UX scaffold (2026-05-24)
+//   - Auto-show intro card on first visit (localStorage gate)
+//   - Open/close help slide-over panel
+//   - Simple / Advanced mode toggle + persistence
+// ============================================================
+(function() {
+  const LS_INTRO = "mlb_edge_intro_seen";
+  const LS_MODE = "mlb_edge_slate_mode";
+
+  function setMode(mode, persist) {
+    const m = mode === "simple" ? "simple" : "advanced";
+    document.body.classList.toggle("simple-mode", m === "simple");
+    const btnS = document.getElementById("mode-simple-btn");
+    const btnA = document.getElementById("mode-advanced-btn");
+    if (btnS) btnS.classList.toggle("active", m === "simple");
+    if (btnA) btnA.classList.toggle("active", m === "advanced");
+    if (persist) {
+      try { localStorage.setItem(LS_MODE, m); } catch (_) {}
+    }
+  }
+
+  function openHelp() {
+    const bd = document.getElementById("help-panel-backdrop");
+    const p  = document.getElementById("help-panel");
+    if (bd) bd.classList.add("open");
+    if (p)  { p.classList.add("open"); p.setAttribute("aria-hidden", "false"); }
+  }
+  function closeHelp() {
+    const bd = document.getElementById("help-panel-backdrop");
+    const p  = document.getElementById("help-panel");
+    if (bd) bd.classList.remove("open");
+    if (p)  { p.classList.remove("open"); p.setAttribute("aria-hidden", "true"); }
+  }
+
+  function init() {
+    // Intro card: show iff first visit. Defaults Simple mode on first visit.
+    let isFirst = false;
+    try {
+      isFirst = !localStorage.getItem(LS_INTRO);
+    } catch (_) { isFirst = true; }
+    const intro = document.getElementById("mlb-intro-card");
+    if (intro && isFirst) {
+      intro.style.display = "";
+    }
+    const closeBtn = document.getElementById("intro-close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function() {
+        if (intro) intro.style.display = "none";
+        try { localStorage.setItem(LS_INTRO, "1"); } catch (_) {}
+      });
+    }
+
+    // Mode toggle: first-visit default Simple; otherwise persisted choice (default Advanced).
+    let mode = "advanced";
+    try {
+      const saved = localStorage.getItem(LS_MODE);
+      if (saved === "simple" || saved === "advanced") mode = saved;
+      else if (isFirst) mode = "simple";
+    } catch (_) {
+      if (isFirst) mode = "simple";
+    }
+    setMode(mode, false);
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest("[data-mode]");
+      if (btn) {
+        setMode(btn.getAttribute("data-mode"), true);
+        e.stopPropagation();
+      }
+    });
+
+    // Help button + panel
+    const helpBtn = document.getElementById("help-btn");
+    if (helpBtn) helpBtn.addEventListener("click", openHelp);
+    const helpClose = document.getElementById("help-close-btn");
+    if (helpClose) helpClose.addEventListener("click", closeHelp);
+    const bd = document.getElementById("help-panel-backdrop");
+    if (bd) bd.addEventListener("click", closeHelp);
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") closeHelp();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+
 </script>
+
+<div id="help-panel-backdrop"></div>
+<aside id="help-panel" aria-label="Help and glossary" aria-hidden="true">
+  <button class="help-close" id="help-close-btn">close ✕</button>
+  <h2>Dashboard help</h2>
+  <p class="muted" style="font-size:0.88rem;line-height:1.55;margin:0.4rem 0 0.6rem 0;">
+    Quick reference for new visitors. The model predicts every MLB game on the slate and grades its confidence in each pick. Click any slate row for the full reasoning behind a pick.
+  </p>
+
+  <h3>How to use it</h3>
+  <ol style="margin:0.4rem 0 0.8rem 1.2rem;padding:0;font-size:0.86rem;line-height:1.55;">
+    <li>Pick a date in the date picker. Today auto-refreshes; past dates are archived.</li>
+    <li>Scan the <strong>Grade</strong> column. A and A− are the model's most confident calls. C/D = skip.</li>
+    <li>Click a row to open the deep-analysis panel: pitching matchup, lineup edge, bullpen state, counter-signals, what would change the call.</li>
+    <li>Use <strong>Simple</strong> mode (default for new users) to hide expert columns. Toggle to <strong>Advanced</strong> when you want the full data.</li>
+    <li>Ask-the-Slate (the <code>&gt; </code> prompt below the picker) lets you search the slate in plain English: "best pick", "show A grades", "parlay legs", or a team name.</li>
+  </ol>
+
+  <h3>What each column means</h3>
+  <div class="glossary-row"><div class="term">Matchup</div><div class="def">Away team @ Home team. A "(G2 of 3)" tag means it's game 2 of a 3-game series.</div></div>
+  <div class="glossary-row"><div class="term">Pick</div><div class="def">Which team the model favors to win, plus the model's win probability for that team.</div></div>
+  <div class="glossary-row"><div class="term">F5</div><div class="def">First-5-innings win probability. Reflects the starting pitchers facing each other before bullpens take over.</div></div>
+  <div class="glossary-row"><div class="term">Full</div><div class="def">Full-game win probability. The model's headline number — combines F5 + bullpen quality + late-leverage signals.</div></div>
+  <div class="glossary-row"><div class="term">Fair</div><div class="def">Market-implied "fair" win probability, with the sportsbook's vig (juice) removed. Think of this as the market's honest opinion.</div></div>
+  <div class="glossary-row"><div class="term">Edge</div><div class="def">Gap between Model and Fair, in percentage points. Positive = model thinks market is underrating the pick. &gt;5pp is meaningful.</div></div>
+  <div class="glossary-row"><div class="term">Pred</div><div class="def">Model's projected final score (away–home), in runs.</div></div>
+  <div class="glossary-row"><div class="term">O/U</div><div class="def">Over/Under recommendation: side (OVER/UNDER), the Vegas total line, and the edge in runs. Empty = no market signal.</div></div>
+  <div class="glossary-row"><div class="term">Tier</div><div class="def">Pre-grade conviction level: PLATINUM &gt; GOLD &gt; SILVER &gt; BRONZE &gt; SKIP. Assigned before the rule layer runs.</div></div>
+  <div class="glossary-row"><div class="term">Grade</div><div class="def">Final grade after the 8-rule grader applies caps and adjustments. <strong>A/A−</strong> = strong; <strong>B/B+/B−</strong> = moderate; <strong>C</strong> = skip (cap fired); <strong>D</strong> = avoid.</div></div>
+  <div class="glossary-row"><div class="term">Claude</div><div class="def">Claude's executive review of the model's call: <strong>CONFIRM</strong> (agrees), <strong>DOWNGRADE</strong> (less confident), <strong>OVERRIDE</strong> (disagrees with direction).</div></div>
+  <div class="glossary-row"><div class="term">Result</div><div class="def">Post-game outcome: ✓ WIN / ✗ LOSS / LIVE (with score) / PRE-GAME / POSTPONED.</div></div>
+
+  <h3>Grade legend</h3>
+  <div class="grade-row"><span class="grade grade-A">A</span> <span style="color:var(--muted);font-size:0.85rem;">Strong conviction — multiple confirming layers.</span></div>
+  <div class="grade-row"><span class="grade grade-A-">A−</span> <span style="color:var(--muted);font-size:0.85rem;">Strong, just below A.</span></div>
+  <div class="grade-row"><span class="grade grade-Bp">B+</span> <span style="color:var(--muted);font-size:0.85rem;">Moderate signal.</span></div>
+  <div class="grade-row"><span class="grade grade-B">B</span> <span style="color:var(--muted);font-size:0.85rem;">Marginal edge.</span></div>
+  <div class="grade-row"><span class="grade grade-C">C</span> <span style="color:var(--muted);font-size:0.85rem;">Skip — a cap rule fired.</span></div>
+  <div class="grade-row"><span class="grade grade-D">D</span> <span style="color:var(--muted);font-size:0.85rem;">Avoid — direction disagreement or stress warnings.</span></div>
+
+  <h3>Anything else?</h3>
+  <p class="muted" style="font-size:0.85rem;line-height:1.5;">
+    This is a <strong>research dashboard</strong>, not betting advice. The grades reflect the model's confidence in its own picks; results vary, and historical accuracy is no guarantee of future games. Treat A-grade picks as worth examining, not as locks.
+  </p>
+</aside>
 
 </body>
 </html>
