@@ -32,6 +32,7 @@ on:
     - cron: "0 14 * * *"     # 10am ET — late-add games and SP swaps
     - cron: "0 17 * * *"     # 1pm ET  — pre-afternoon-game lineup cards
     - cron: "0 21 * * *"     # 5pm ET  — pre-evening-game lineup cards + odds refresh
+    - cron: "0 * * * *"      # hourly catch-all for late lineup updates
   workflow_dispatch:
     inputs:
       slate_date:
