@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-05-26T02:59:14.849778+00:00",
+  "checked_at": "2026-05-26T04:40:31.332586+00:00",
   "overall": "red",
   "categories": {
     "workflows": "yellow",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "yellow",
-      "message": "daily-slate last ran 8.5h ago (threshold 6h)",
+      "message": "daily-slate last ran 10.2h ago (threshold 6h)",
       "detail": {
         "last_run_iso": "2026-05-25T18:28:30Z",
-        "age_hours": 8.51
+        "age_hours": 10.2
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 1.8d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:22:02Z",
-        "age_hours": 43.62,
+        "age_hours": 45.31,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 1.8d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:47:38Z",
-        "age_hours": 43.19,
+        "age_hours": 44.88,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 3.1h ago",
+      "message": "last fired 4.8h ago",
       "detail": {
         "last_run_iso": "2026-05-25T23:50:44Z",
-        "age_hours": 3.14,
+        "age_hours": 4.83,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -55,10 +55,10 @@
     {
       "name": "bullpen_meta_freshness",
       "severity": "green",
-      "message": "written 5.7h ago",
+      "message": "written 0.0h ago",
       "detail": {
-        "path": "docs\\data\\bullpen_meta_2026-05-26.json",
-        "mtime_age_hours": 5.73
+        "path": "docs/data/bullpen_meta_2026-05-26.json",
+        "mtime_age_hours": 0.0
       },
       "category": "data_flow"
     },
@@ -94,17 +94,17 @@
       "message": "/api/health unreachable: URLError",
       "detail": {
         "pages_url": "https://mlb-edges.pages.dev",
-        "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+        "error": "<urlopen error [Errno -2] Name or service not known>"
       },
       "category": "deployment"
     },
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 3.6h ago",
+      "message": "last learned 5.3h ago",
       "detail": {
         "last_entry_iso": "2026-05-25T23:25:05.814833+00:00",
-        "age_hours": 3.57
+        "age_hours": 5.26
       },
       "category": "model"
     },
@@ -113,7 +113,7 @@
       "severity": "green",
       "message": "present (1.7 MB)",
       "detail": {
-        "path": "models\\latest.pkl",
+        "path": "models/latest.pkl",
         "size_bytes": 1779213
       },
       "category": "model"
