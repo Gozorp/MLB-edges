@@ -1,0 +1,65 @@
+# =============================================================================
+# health-check.yml
+# -----------------------------------------------------------------------------
+# Periodic pipeline-health observer. Runs tools/health_check.py every 30 min:
+#   1. Computes the 3 MVP checks (daily-slate heartbeat, weights freshness,
+#      core model presence).
+#   2. Writes docs/data/health.json + docs/data/health_alert_state.json.
+#   3. POSTs to DISCORD_HEALTH_WEBHOOK on RED transitions (rate-limited 6h)
+#      and once per day at 08:00 UTC as a dead-man-switch digest.
+#
+# Setup (one-time, manual):
+#   1. Create a Discord webhook: Server Settings -> Integrations -> Webhooks
+#      -> New Webhook -> Copy URL.
+#   2. Add as repo secret: Settings -> Secrets and variables -> Actions ->
+#      New repository secret -> Name: DISCORD_HEALTH_WEBHOOK, Value: <URL>.
+# If the secret isn't set, the workflow still writes health.json (pull side
+# of observability stays alive). Only the push half is disabled.
+# =============================================================================
+name: Pipeline health check
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # every 30 minutes
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          # Need enough history for `git log --grep="daily-slate:"` to find
+          # the most recent slate commit. 100 commits is well past one day's
+          # worth even on the busiest days.
+          fetch-depth: 100
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run health check
+        env:
+          DISCORD_HEALTH_WEBHOOK: ${{ secrets.DISCORD_HEALTH_WEBHOOK }}
+        run: python tools/health_check.py
+
+      - name: Commit health artifacts (if changed)
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/health.json docs/data/health_alert_state.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no health-artifact changes to commit"
+          else
+            git commit -m "health-check: $(date -u +%Y-%m-%dT%H:%MZ)"
+            # Use `git pull --rebase` defensively in case the daily-slate
+            # workflow pushed something between checkout and commit.
+            git pull --rebase --autostash origin main 2>/dev/null || true
+            git push
+          fi

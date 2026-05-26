@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-05-26T00:02:09.176478+00:00",
+  "overall": "green",
+  "checks": [
+    {
+      "name": "daily_slate_heartbeat",
+      "severity": "green",
+      "message": "last ran 5.6h ago",
+      "detail": {
+        "last_run_iso": "2026-05-25T18:28:30Z",
+        "age_hours": 5.56
+      }
+    },
+    {
+      "name": "weights_state_freshness",
+      "severity": "green",
+      "message": "last learned 0.6h ago",
+      "detail": {
+        "last_entry_iso": "2026-05-25T23:25:05.814833+00:00",
+        "age_hours": 0.62
+      }
+    },
+    {
+      "name": "core_models_presence",
+      "severity": "green",
+      "message": "present (1.7 MB)",
+      "detail": {
+        "path": "models\\latest.pkl",
+        "size_bytes": 1779213
+      }
+    }
+  ]
+}
