@@ -1,0 +1,73 @@
+{
+  "window": {
+    "start": "2026-04-27",
+    "end": "2026-05-25",
+    "n_dates_with_outcomes": 29
+  },
+  "totals": {
+    "resolved_picks": 299,
+    "losses": 138,
+    "blowout_losses": 44,
+    "baseline_mlb_games": 385
+  },
+  "blowout_rates": {
+    "our_losses": 0.3188,
+    "mlb_baseline": 0.3013,
+    "delta_pp": 1.75
+  },
+  "tier_table": {
+    "DIAMOND": {
+      "n": 1,
+      "won_close": 0,
+      "won_blow": 0,
+      "lost_close": 0,
+      "lost_blow": 1,
+      "blow_loss_rate": 1.0
+    },
+    "GOLD": {
+      "n": 141,
+      "won_close": 55,
+      "won_blow": 23,
+      "lost_close": 46,
+      "lost_blow": 17,
+      "blow_loss_rate": 0.1206
+    },
+    "PLATINUM": {
+      "n": 30,
+      "won_close": 9,
+      "won_blow": 5,
+      "lost_close": 10,
+      "lost_blow": 6,
+      "blow_loss_rate": 0.2
+    },
+    "SKIP": {
+      "n": 127,
+      "won_close": 50,
+      "won_blow": 19,
+      "lost_close": 38,
+      "lost_blow": 20,
+      "blow_loss_rate": 0.1575
+    }
+  },
+  "loss_cohort_pick_prob": {
+    "lost_close": {
+      "n": 94,
+      "mean": 0.4527,
+      "p25": 0.5078,
+      "p50": 0.5313,
+      "p75": 0.5719
+    },
+    "lost_blowout": {
+      "n": 44,
+      "mean": 0.4599,
+      "p25": 0.5026,
+      "p50": 0.5193,
+      "p75": 0.6157
+    }
+  },
+  "high_conviction_losses": {
+    "platinum_diamond_total": 31,
+    "platinum_diamond_losses": 17,
+    "platinum_diamond_blowout_losses": 7
+  }
+}
