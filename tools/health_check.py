@@ -84,6 +84,7 @@ CHECK_CATEGORIES = {
     "pending_sp_data_rate":        CAT_DATA_FLOW,
     # deployment
     "cloudflare_deploy_freshness": CAT_DEPLOYMENT,
+    "anthropic_api_probe":         CAT_DEPLOYMENT,
     # model
     "weights_state_freshness":     CAT_MODEL,
     "core_models_presence":        CAT_MODEL,
@@ -433,6 +434,51 @@ def check_cloudflare_deploy_freshness(now: datetime) -> Dict:
             "detail": detail}
 
 
+def check_anthropic_api_probe(now: datetime) -> Dict:
+    """HTTPS GET to /api/claude/health. Asserts the Pages deployment
+    has the ANTHROPIC_API_KEY env var set (enabled:true) and is on
+    the expected model. A missing key silently disables Deep Analysis
+    on the dashboard, which is exactly the kind of failure that
+    needs proactive paging rather than waiting for a user to notice.
+    """
+    name = "anthropic_api_probe"
+    expected_model = "claude-opus-4-6"
+    try:
+        req = urllib.request.Request(
+            f"{PAGES_BASE_URL}/api/claude/health",
+            headers={"User-Agent": "mlb-edge-health-check/1"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as r:
+            body = json.loads(r.read().decode("utf-8"))
+    except (urllib.error.URLError, urllib.error.HTTPError, OSError,
+            json.JSONDecodeError) as e:
+        return {"name": name, "severity": RED,
+                "message": f"/api/claude/health unreachable: "
+                           f"{type(e).__name__}",
+                "detail": {"pages_url": PAGES_BASE_URL,
+                           "error": str(e)[:200]}}
+    enabled = bool(body.get("enabled"))
+    model = (body.get("model") or "").strip()
+    detail = {"pages_url": PAGES_BASE_URL,
+              "enabled": enabled, "model": model,
+              "max_tokens": body.get("max_tokens"),
+              "deployed_commit": (body.get("commit")
+                                  or "unknown")[:12]}
+    if not enabled:
+        return {"name": name, "severity": RED,
+                "message": "ANTHROPIC_API_KEY not set on Pages env "
+                           "(Deep Analysis disabled)",
+                "detail": detail}
+    if model != expected_model:
+        return {"name": name, "severity": YELLOW,
+                "message": f"model is '{model}', expected "
+                           f"'{expected_model}'",
+                "detail": detail}
+    return {"name": name, "severity": GREEN,
+            "message": f"enabled, model={model}",
+            "detail": detail}
+
+
 def check_runaway_ceiling_alarm(now: datetime) -> Dict:
     name = "runaway_ceiling_alarm"
     if not AUDIT_LOG.exists():
@@ -529,6 +575,7 @@ CHECKS: List[Callable[[datetime], Dict]] = [
     check_pending_sp_data_rate,
     # deployment
     check_cloudflare_deploy_freshness,
+    check_anthropic_api_probe,
     # model
     check_weights_state_freshness,
     check_core_models_presence,
