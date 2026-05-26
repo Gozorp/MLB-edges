@@ -22,6 +22,12 @@ on:
   schedule:
     - cron: "*/30 * * * *"  # every 30 minutes
   workflow_dispatch:
+    inputs:
+      force_test_alert:
+        description: 'Fire a synthetic Discord test ping (no real check runs)'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -47,6 +53,10 @@ jobs:
       - name: Run health check
         env:
           DISCORD_HEALTH_WEBHOOK: ${{ secrets.DISCORD_HEALTH_WEBHOOK }}
+          # workflow_dispatch input plumbs through here. On cron runs
+          # this resolves to an empty string, so the script's truthy
+          # check correctly skips the test path.
+          FORCE_TEST_ALERT: ${{ inputs.force_test_alert }}
         run: python tools/health_check.py
 
       - name: Commit health artifacts (if changed)

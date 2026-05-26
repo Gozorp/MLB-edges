@@ -225,6 +225,23 @@ def _should_fire_digest(now: datetime, state: Dict) -> bool:
     return last_dt.date() != now.date()
 
 
+def _build_test_embed(now: datetime) -> Dict:
+    return {
+        "embeds": [{
+            "title": "\ud83d\udd14 mlb_edge: test ping",
+            "description": (
+                "**End-to-end webhook verification.**\n\n"
+                "If you see this, the loop is wired correctly:\n"
+                "GitHub Actions \u2192 health_check.py \u2192 Discord.\n\n"
+                "_This is a manual workflow_dispatch test, not a real alert._"
+            ),
+            "color": 0x58A6FF,
+            "timestamp": now.isoformat(),
+            "footer": {"text": "fire via Actions \u2192 Pipeline health check \u2192 Run workflow"},
+        }]
+    }
+
+
 def _post_discord(payload: Dict) -> bool:
     if not DISCORD_WEBHOOK:
         return False
@@ -277,6 +294,16 @@ def _build_digest_embed(results: List[Dict], overall: str,
 # ---------------------------------------------------------------------------
 def main() -> int:
     now = datetime.now(timezone.utc)
+
+    # Test-ping mode: bypass all checks and post a synthetic ping.
+    # Manual diagnostic only \u2014 only firable via workflow_dispatch
+    # with force_test_alert=true. Returns immediately after posting so
+    # it doesn't touch health.json or alert state.
+    if os.environ.get("FORCE_TEST_ALERT", "").lower() in ("1", "true", "yes"):
+        ok = _post_discord(_build_test_embed(now))
+        print(f"[health] FORCE_TEST_ALERT fired: posted={ok}")
+        return 0 if ok else 1
+
     results = [c(now) for c in CHECKS]
     overall = _overall_severity(results)
 
