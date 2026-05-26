@@ -231,6 +231,71 @@
     margin-bottom: 0.6rem; display: block;
   }
 
+  /* ===== Pipeline health card (2026-05-26) ===== */
+  #health-card {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+  #health-card h2 {
+    margin: 0 0 0.6rem 0; font-size: 1.05rem;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  #health-card .health-overall-pill {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.72rem; padding: 0.2rem 0.55rem;
+    border-radius: 4px; letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 700;
+  }
+  #health-card .health-overall-pill.green  { background: rgba(63,185,80,0.18);  color: var(--green); }
+  #health-card .health-overall-pill.yellow { background: rgba(210,153,34,0.18); color: var(--yellow); }
+  #health-card .health-overall-pill.red    { background: rgba(248,81,73,0.20);  color: var(--red); }
+  #health-card .health-checked-at {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.72rem; color: var(--muted);
+    margin-left: auto;
+  }
+  #health-card .health-cat {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer; font-size: 0.9rem;
+    transition: color 0.15s;
+  }
+  #health-card .health-cat:last-of-type { border-bottom: none; }
+  #health-card .health-cat:hover { color: var(--accent); }
+  #health-card .health-cat .label {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  #health-card .health-cat .summary {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  #health-card .health-checks {
+    display: none; padding: 0.3rem 0 0.8rem 1.4rem;
+  }
+  #health-card .health-cat.open + .health-checks { display: block; }
+  #health-card .health-check {
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size: 0.78rem; padding: 0.25rem 0;
+    color: var(--muted); line-height: 1.45;
+  }
+  #health-card .sev-dot {
+    display: inline-block; width: 0.55rem; height: 0.55rem;
+    border-radius: 50%; margin-right: 0.45rem;
+    vertical-align: middle;
+  }
+  #health-card .sev-dot.green  { background: var(--green); }
+  #health-card .sev-dot.yellow { background: var(--yellow); }
+  #health-card .sev-dot.red    { background: var(--red); }
+  #health-card .health-check code { color: var(--text); }
+  #health-card .health-card-loading {
+    color: var(--muted); font-size: 0.85rem;
+  }
+
   /* ===== Apple-style hero section (2026-05-25) ===== */
   html { scroll-behavior: smooth; }
 
@@ -1092,6 +1157,18 @@
       </div>
     </div>
   </section>
+
+  <section id="health-card">
+    <h2>
+      <span>Pipeline health</span>
+      <span id="health-card-overall" class="health-overall-pill green">—</span>
+      <span id="health-card-checked-at" class="health-checked-at"></span>
+    </h2>
+    <div id="health-card-body" class="health-card-loading">
+      Loading health snapshot…
+    </div>
+  </section>
+
   <div id="parlay"></div>
 
   <div class="card">
@@ -6350,6 +6427,98 @@ document.addEventListener("click", function (e) {
     sib = sib.nextElementSibling;
   }
 });
+
+// =============================================================
+// Pipeline health card (2026-05-26)
+//   Fetches docs/data/health.json on load, renders category
+//   roll-up + click-to-expand individual checks. Cache-busted
+//   on every load so the dashboard reflects the latest run.
+// =============================================================
+(function() {
+  const CAT_ORDER = ["workflows", "data_flow", "deployment", "model"];
+  const CAT_LABEL = {
+    workflows:  "Workflows",
+    data_flow:  "Data flow",
+    deployment: "Deployment",
+    model:      "Model behavior",
+  };
+
+  function ageStr(iso) {
+    const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+    if (mins < 1) return "just now";
+    if (mins < 60) return mins + "m ago";
+    const h = mins / 60;
+    if (h < 24) return h.toFixed(1) + "h ago";
+    return (h / 24).toFixed(1) + "d ago";
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
+  }
+
+  function renderHealth(h) {
+    const overallEl = document.getElementById("health-card-overall");
+    const checkedAtEl = document.getElementById("health-card-checked-at");
+    const body = document.getElementById("health-card-body");
+    if (!overallEl || !checkedAtEl || !body) return;
+
+    overallEl.className = "health-overall-pill " + h.overall;
+    overallEl.textContent = h.overall.toUpperCase();
+    checkedAtEl.textContent = "checked " + ageStr(h.checked_at);
+
+    const byCat = {};
+    for (const c of h.checks || []) {
+      const cat = c.category || "uncategorized";
+      (byCat[cat] = byCat[cat] || []).push(c);
+    }
+
+    body.className = "";
+    body.innerHTML = CAT_ORDER.map(cat => {
+      if (!byCat[cat] || !byCat[cat].length) return "";
+      const checks = byCat[cat];
+      const sev = (h.categories || {})[cat] || "green";
+      const red = checks.filter(c => c.severity === "red").length;
+      const yel = checks.filter(c => c.severity === "yellow").length;
+      const summary = red ? red + " critical, " + checks.length + " total"
+                          : yel ? yel + " warning, " + checks.length + " total"
+                                : checks.length + "/" + checks.length + " healthy";
+      const inner = checks.map(c => (
+        '<div class="health-check"><span class="sev-dot ' + c.severity + '"></span>' +
+        '<code>' + escapeHtml(c.name) + '</code> — ' + escapeHtml(c.message) +
+        '</div>'
+      )).join("");
+      return (
+        '<div class="health-cat" data-cat="' + cat + '">' +
+          '<span class="label">' + CAT_LABEL[cat] + '</span>' +
+          '<span class="summary"><span class="sev-dot ' + sev + '"></span>' +
+            summary + '</span>' +
+        '</div>' +
+        '<div class="health-checks">' + inner + '</div>'
+      );
+    }).join("");
+
+    body.querySelectorAll(".health-cat").forEach(row =>
+      row.addEventListener("click", () => row.classList.toggle("open")));
+  }
+
+  function loadHealth() {
+    fetch("data/health.json?v=" + Date.now(), { cache: "no-store" })
+      .then(r => r.ok ? r.json() : null)
+      .then(h => h && renderHealth(h))
+      .catch(() => {
+        const body = document.getElementById("health-card-body");
+        if (body) body.textContent = "Health snapshot unavailable.";
+      });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadHealth);
+  } else {
+    loadHealth();
+  }
+})();
 
 // =============================================================
 // "Ask the Slate" accordion (2026-05-25)

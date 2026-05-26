@@ -1,24 +1,112 @@
 {
-  "checked_at": "2026-05-26T00:02:09.176478+00:00",
-  "overall": "green",
+  "version": 2,
+  "checked_at": "2026-05-26T02:59:14.849778+00:00",
+  "overall": "red",
+  "categories": {
+    "workflows": "yellow",
+    "data_flow": "yellow",
+    "deployment": "red",
+    "model": "green"
+  },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
-      "severity": "green",
-      "message": "last ran 5.6h ago",
+      "severity": "yellow",
+      "message": "daily-slate last ran 8.5h ago (threshold 6h)",
       "detail": {
         "last_run_iso": "2026-05-25T18:28:30Z",
-        "age_hours": 5.56
-      }
+        "age_hours": 8.51
+      },
+      "category": "workflows"
+    },
+    {
+      "name": "refit_calibrator_heartbeat",
+      "severity": "green",
+      "message": "last fired 1.8d ago",
+      "detail": {
+        "last_run_iso": "2026-05-24T07:22:02Z",
+        "age_hours": 43.62,
+        "cadence": "weekly calibrator refit"
+      },
+      "category": "workflows"
+    },
+    {
+      "name": "weekly_backtest_heartbeat",
+      "severity": "green",
+      "message": "last fired 1.8d ago",
+      "detail": {
+        "last_run_iso": "2026-05-24T07:47:38Z",
+        "age_hours": 43.19,
+        "cadence": "weekly backtest"
+      },
+      "category": "workflows"
+    },
+    {
+      "name": "claude_brain_heartbeat",
+      "severity": "green",
+      "message": "last fired 3.1h ago",
+      "detail": {
+        "last_run_iso": "2026-05-25T23:50:44Z",
+        "age_hours": 3.14,
+        "cadence": "daily Claude Brain review"
+      },
+      "category": "workflows"
+    },
+    {
+      "name": "bullpen_meta_freshness",
+      "severity": "green",
+      "message": "written 5.7h ago",
+      "detail": {
+        "path": "docs\\data\\bullpen_meta_2026-05-26.json",
+        "mtime_age_hours": 5.73
+      },
+      "category": "data_flow"
+    },
+    {
+      "name": "odds_api_completeness",
+      "severity": "yellow",
+      "message": "33% of slate is non-fetched odds",
+      "detail": {
+        "total_rows": 15,
+        "ok_rows": 10,
+        "non_ok_pct": 33.3,
+        "status_distribution": {
+          "fetched": 10,
+          "pending_sp_data": 5
+        }
+      },
+      "category": "data_flow"
+    },
+    {
+      "name": "pending_sp_data_rate",
+      "severity": "yellow",
+      "message": "33% PENDING_SP_DATA (5/15)",
+      "detail": {
+        "total_rows": 15,
+        "pending_sp_data_count": 5,
+        "pct_of_slate": 33.3
+      },
+      "category": "data_flow"
+    },
+    {
+      "name": "cloudflare_deploy_freshness",
+      "severity": "red",
+      "message": "/api/health unreachable: URLError",
+      "detail": {
+        "pages_url": "https://mlb-edges.pages.dev",
+        "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+      },
+      "category": "deployment"
     },
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 0.6h ago",
+      "message": "last learned 3.6h ago",
       "detail": {
         "last_entry_iso": "2026-05-25T23:25:05.814833+00:00",
-        "age_hours": 0.62
-      }
+        "age_hours": 3.57
+      },
+      "category": "model"
     },
     {
       "name": "core_models_presence",
@@ -27,7 +115,29 @@
       "detail": {
         "path": "models\\latest.pkl",
         "size_bytes": 1779213
-      }
+      },
+      "category": "model"
+    },
+    {
+      "name": "runaway_ceiling_alarm",
+      "severity": "green",
+      "message": "no runaway alarms in last 7 days",
+      "detail": {
+        "alarms_7d": 0,
+        "alarms_24h": 0
+      },
+      "category": "model"
+    },
+    {
+      "name": "stress_warning_rate",
+      "severity": "green",
+      "message": "3/15 rows stress-warned",
+      "detail": {
+        "total_rows": 15,
+        "stress_warned_count": 3,
+        "pct_of_slate": 20.0
+      },
+      "category": "model"
     }
   ]
 }

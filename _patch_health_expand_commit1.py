@@ -1,0 +1,733 @@
+#!/usr/bin/env python3
+"""
+_patch_health_expand_commit1.py
+================================
+Commit 1 of the health-check expansion (9 of 11 new checks, plus the
+dashboard card and schema v2). Network-dependent checks (anthropic
+probe, kalshi divergence) are held for Commit 2.
+
+Edits two files:
+
+  1. tools/health_check.py
+       - Constants: SCHEMA_VERSION=2, PAGES_BASE_URL, category names,
+         CHECK_CATEGORIES name->category map.
+       - Helpers: _today_iso_utc, _find_today_picks_csv, _load_picks_csv,
+         _workflow_heartbeat_check.
+       - New checks (9): refit_calibrator_heartbeat, weekly_backtest_heartbeat,
+         claude_brain_heartbeat, bullpen_meta_freshness, odds_api_completeness,
+         pending_sp_data_rate, cloudflare_deploy_freshness,
+         runaway_ceiling_alarm, stress_warning_rate.
+       - CHECKS list extended.
+       - main() now tags every result with its category, computes the
+         per-category roll-up, and emits {version, categories} alongside
+         the existing fields.
+
+  2. docs/index.html
+       - CSS block for #health-card (~40 lines, monospace + neon palette).
+       - HTML section inserted between #ask-the-slate-section and #parlay.
+       - JS that fetches data/health.json and renders the category roll-up.
+
+Per locked memory: bash + Python str.replace; no Edit tool.
+"""
+from __future__ import annotations
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent
+SCRIPT = REPO / "tools" / "health_check.py"
+INDEX = REPO / "docs" / "index.html"
+
+
+def must_replace(p: Path, old: str, new: str, label: str = "") -> None:
+    src = p.read_text(encoding="utf-8")
+    n = src.count(old)
+    if n != 1:
+        print(f"[FAIL] {label}: expected 1 occurrence, found {n}")
+        sys.exit(2)
+    p.write_text(src.replace(old, new, 1), encoding="utf-8")
+    print(f"[ok]   {label}")
+
+
+# ===========================================================================
+# Part A: tools/health_check.py
+# ===========================================================================
+
+# --- A1. Add constants right after the existing color constants ------------
+must_replace(
+    SCRIPT,
+    'COLORS = {GREEN: 0x3FB950, YELLOW: 0xD29922, RED: 0xF85149}\n',
+    'COLORS = {GREEN: 0x3FB950, YELLOW: 0xD29922, RED: 0xF85149}\n'
+    '\n'
+    '# Schema version. Bumped 2026-05-26 when we added per-check `category`\n'
+    '# fields and the top-level `categories` roll-up.\n'
+    'SCHEMA_VERSION = 2\n'
+    '\n'
+    '# Cloudflare Pages deploy base URL. Hardcoded to the default Pages\n'
+    '# subdomain; flip to a custom domain if/when one is mapped.\n'
+    'PAGES_BASE_URL = "https://mlb-edges.pages.dev"\n'
+    '\n'
+    '# Categories — used for the rolled-up dashboard card.\n'
+    'CAT_WORKFLOWS  = "workflows"\n'
+    'CAT_DATA_FLOW  = "data_flow"\n'
+    'CAT_DEPLOYMENT = "deployment"\n'
+    'CAT_MODEL      = "model"\n'
+    '\n'
+    '# Name -> category. Each check result gets this stamped on it in\n'
+    '# main() so the check functions stay framework-free.\n',
+    "A1: constants (SCHEMA_VERSION, PAGES_BASE_URL, categories)",
+)
+
+# --- A2. Add CHECK_CATEGORIES dict + helpers right above the helpers block --
+must_replace(
+    SCRIPT,
+    '# ---------------------------------------------------------------------------\n'
+    '# Helpers\n'
+    '# ---------------------------------------------------------------------------\n',
+    'CHECK_CATEGORIES = {\n'
+    '    # workflows\n'
+    '    "daily_slate_heartbeat":       CAT_WORKFLOWS,\n'
+    '    "refit_calibrator_heartbeat":  CAT_WORKFLOWS,\n'
+    '    "weekly_backtest_heartbeat":   CAT_WORKFLOWS,\n'
+    '    "claude_brain_heartbeat":      CAT_WORKFLOWS,\n'
+    '    # data flow\n'
+    '    "bullpen_meta_freshness":      CAT_DATA_FLOW,\n'
+    '    "odds_api_completeness":       CAT_DATA_FLOW,\n'
+    '    "pending_sp_data_rate":        CAT_DATA_FLOW,\n'
+    '    # deployment\n'
+    '    "cloudflare_deploy_freshness": CAT_DEPLOYMENT,\n'
+    '    # model\n'
+    '    "weights_state_freshness":     CAT_MODEL,\n'
+    '    "core_models_presence":        CAT_MODEL,\n'
+    '    "runaway_ceiling_alarm":       CAT_MODEL,\n'
+    '    "stress_warning_rate":         CAT_MODEL,\n'
+    '}\n'
+    '\n'
+    '\n'
+    '# ---------------------------------------------------------------------------\n'
+    '# Helpers\n'
+    '# ---------------------------------------------------------------------------\n',
+    "A2: CHECK_CATEGORIES map",
+)
+
+
+# --- A3. Add new helper functions right after _age_hours --------------------
+must_replace(
+    SCRIPT,
+    'def _age_hours(iso: str, now: datetime) -> Optional[float]:\n'
+    '    dt = _parse_iso(iso)\n'
+    '    if dt is None:\n'
+    '        return None\n'
+    '    return (now - dt).total_seconds() / 3600.0\n',
+    'def _age_hours(iso: str, now: datetime) -> Optional[float]:\n'
+    '    dt = _parse_iso(iso)\n'
+    '    if dt is None:\n'
+    '        return None\n'
+    '    return (now - dt).total_seconds() / 3600.0\n'
+    '\n'
+    '\n'
+    'def _today_iso_utc(now: datetime) -> str:\n'
+    '    return now.strftime("%Y-%m-%d")\n'
+    '\n'
+    '\n'
+    'def _find_today_picks_csv(now: datetime) -> Optional[Path]:\n'
+    '    """Locate today\'s picks diag CSV in either of two known locations."""\n'
+    '    today = _today_iso_utc(now)\n'
+    '    for p in (REPO / "docs" / "data" / f"picks_{today}_diag.csv",\n'
+    '              REPO / f"picks_{today}_diag.csv"):\n'
+    '        if p.exists():\n'
+    '            return p\n'
+    '    return None\n'
+    '\n'
+    '\n'
+    'def _load_picks_csv(p: Path) -> List[Dict]:\n'
+    '    import csv as _csv\n'
+    '    try:\n'
+    '        with p.open(encoding="utf-8") as f:\n'
+    '            return list(_csv.DictReader(f))\n'
+    '    except (OSError, _csv.Error):\n'
+    '        return []\n'
+    '\n'
+    '\n'
+    'def _workflow_heartbeat_check(now: datetime, name: str,\n'
+    '                                grep_pattern: str,\n'
+    '                                yellow_h: float, red_h: float,\n'
+    '                                cadence_desc: str) -> Dict:\n'
+    '    """Shared shape for workflow-heartbeat checks via `git log --grep`."""\n'
+    '    iso = _git_last_commit_iso(grep_pattern)\n'
+    '    if iso is None:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"no `{grep_pattern}` commit found in git log",\n'
+    '                "detail": {}}\n'
+    '    age = _age_hours(iso, now)\n'
+    '    detail = {"last_run_iso": iso, "age_hours": round(age, 2),\n'
+    '              "cadence": cadence_desc}\n'
+    '    if age > red_h:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": (f"{cadence_desc} hasn\'t fired in "\n'
+    '                            f"{age/24:.1f} days "\n'
+    '                            f"(threshold {red_h/24:.0f}d)"),\n'
+    '                "detail": detail}\n'
+    '    if age > yellow_h:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": (f"last fired {age/24:.1f} days ago "\n'
+    '                            f"(threshold {yellow_h/24:.0f}d)"),\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": (f"last fired {age:.1f}h ago" if age < 24\n'
+    '                        else f"last fired {age/24:.1f}d ago"),\n'
+    '            "detail": detail}\n',
+    "A3: helper functions (date, csv, workflow heartbeat)",
+)
+
+
+# --- A4. Add 9 new check functions after check_core_models_presence ---------
+must_replace(
+    SCRIPT,
+    'CHECKS: List[Callable[[datetime], Dict]] = [\n'
+    '    check_daily_slate_heartbeat,\n'
+    '    check_weights_state_freshness,\n'
+    '    check_core_models_presence,\n'
+    ']\n',
+    'def check_refit_calibrator_heartbeat(now: datetime) -> Dict:\n'
+    '    return _workflow_heartbeat_check(\n'
+    '        now, "refit_calibrator_heartbeat", "refit-calibrator:",\n'
+    '        yellow_h=240.0, red_h=336.0,\n'
+    '        cadence_desc="weekly calibrator refit")\n'
+    '\n'
+    '\n'
+    'def check_weekly_backtest_heartbeat(now: datetime) -> Dict:\n'
+    '    return _workflow_heartbeat_check(\n'
+    '        now, "weekly_backtest_heartbeat", "weekly-backtest:",\n'
+    '        yellow_h=240.0, red_h=336.0,\n'
+    '        cadence_desc="weekly backtest")\n'
+    '\n'
+    '\n'
+    'def check_claude_brain_heartbeat(now: datetime) -> Dict:\n'
+    '    return _workflow_heartbeat_check(\n'
+    '        now, "claude_brain_heartbeat", "claude-brain:",\n'
+    '        yellow_h=36.0, red_h=72.0,\n'
+    '        cadence_desc="daily Claude Brain review")\n'
+    '\n'
+    '\n'
+    'def check_bullpen_meta_freshness(now: datetime) -> Dict:\n'
+    '    name = "bullpen_meta_freshness"\n'
+    '    today = _today_iso_utc(now)\n'
+    '    p = REPO / "docs" / "data" / f"bullpen_meta_{today}.json"\n'
+    '    if not p.exists():\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"bullpen_meta_{today}.json missing",\n'
+    '                "detail": {"expected_path": str(p.relative_to(REPO))}}\n'
+    '    age = (now.timestamp() - p.stat().st_mtime) / 3600.0\n'
+    '    detail = {"path": str(p.relative_to(REPO)),\n'
+    '              "mtime_age_hours": round(age, 2)}\n'
+    '    if age > 24.0:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"bullpen_meta written {age:.1f}h ago "\n'
+    '                           f"(threshold 24h)",\n'
+    '                "detail": detail}\n'
+    '    if age > 12.0:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"bullpen_meta written {age:.1f}h ago "\n'
+    '                           f"(threshold 12h)",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": f"written {age:.1f}h ago",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'def check_odds_api_completeness(now: datetime) -> Dict:\n'
+    '    name = "odds_api_completeness"\n'
+    '    p = _find_today_picks_csv(now)\n'
+    '    if p is None:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": "no picks_<today>_diag.csv found",\n'
+    '                "detail": {}}\n'
+    '    rows = _load_picks_csv(p)\n'
+    '    if not rows:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "picks CSV is empty",\n'
+    '                "detail": {"path": str(p.relative_to(REPO))}}\n'
+    '    statuses = {}\n'
+    '    for r in rows:\n'
+    '        k = (r.get("odds_status") or "").strip() or "(blank)"\n'
+    '        statuses[k] = statuses.get(k, 0) + 1\n'
+    '    total = len(rows)\n'
+    '    ok = statuses.get("fetched", 0) + statuses.get("fetched_capped", 0)\n'
+    '    non_ok = total - ok\n'
+    '    pct_non_ok = (non_ok / total) if total else 0.0\n'
+    '    detail = {"total_rows": total, "ok_rows": ok,\n'
+    '              "non_ok_pct": round(pct_non_ok * 100, 1),\n'
+    '              "status_distribution": statuses}\n'
+    '    if pct_non_ok > 0.75:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"{pct_non_ok*100:.0f}% of slate is "\n'
+    '                           f"non-fetched odds",\n'
+    '                "detail": detail}\n'
+    '    if pct_non_ok > 0.25:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"{pct_non_ok*100:.0f}% of slate is "\n'
+    '                           f"non-fetched odds",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": f"{ok}/{total} rows have market odds",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'def check_pending_sp_data_rate(now: datetime) -> Dict:\n'
+    '    name = "pending_sp_data_rate"\n'
+    '    p = _find_today_picks_csv(now)\n'
+    '    if p is None:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "no picks CSV for today",\n'
+    '                "detail": {}}\n'
+    '    rows = _load_picks_csv(p)\n'
+    '    if not rows:\n'
+    '        return {"name": name, "severity": GREEN,\n'
+    '                "message": "no rows to evaluate",\n'
+    '                "detail": {}}\n'
+    '    pending = sum(1 for r in rows\n'
+    '                  if (r.get("tier") or "").strip() == "PENDING_SP_DATA")\n'
+    '    total = len(rows)\n'
+    '    pct = pending / total if total else 0.0\n'
+    '    detail = {"total_rows": total, "pending_sp_data_count": pending,\n'
+    '              "pct_of_slate": round(pct * 100, 1)}\n'
+    '    if pct > 0.50:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"{pct*100:.0f}% PENDING_SP_DATA "\n'
+    '                           f"({pending}/{total})",\n'
+    '                "detail": detail}\n'
+    '    if pct > 0.25:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"{pct*100:.0f}% PENDING_SP_DATA "\n'
+    '                           f"({pending}/{total})",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": f"{pending}/{total} rows PENDING_SP_DATA",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'def check_cloudflare_deploy_freshness(now: datetime) -> Dict:\n'
+    '    name = "cloudflare_deploy_freshness"\n'
+    '    try:\n'
+    '        req = urllib.request.Request(\n'
+    '            f"{PAGES_BASE_URL}/api/health",\n'
+    '            headers={"User-Agent": "mlb-edge-health-check/1"},\n'
+    '        )\n'
+    '        with urllib.request.urlopen(req, timeout=10) as r:\n'
+    '            body = json.loads(r.read().decode("utf-8"))\n'
+    '    except (urllib.error.URLError, urllib.error.HTTPError, OSError,\n'
+    '            json.JSONDecodeError) as e:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"/api/health unreachable: "\n'
+    '                           f"{type(e).__name__}",\n'
+    '                "detail": {"pages_url": PAGES_BASE_URL,\n'
+    '                           "error": str(e)[:200]}}\n'
+    '    deployed_sha = (body.get("commit") or "unknown").strip()\n'
+    '    if deployed_sha in ("unknown", ""):\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "deployed commit SHA not reported by /api/health",\n'
+    '                "detail": {"pages_url": PAGES_BASE_URL,\n'
+    '                           "body": body}}\n'
+    '    try:\n'
+    '        ct = subprocess.check_output(\n'
+    '            ["git", "show", "-s", "--format=%cI", deployed_sha],\n'
+    '            cwd=str(REPO), text=True, timeout=10).strip()\n'
+    '    except (subprocess.CalledProcessError, subprocess.TimeoutExpired,\n'
+    '            FileNotFoundError):\n'
+    '        ct = None\n'
+    '    detail = {"deployed_sha": deployed_sha[:12],\n'
+    '              "pages_url": PAGES_BASE_URL,\n'
+    '              "deployed_commit_iso": ct}\n'
+    '    if ct is None:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "deployed SHA not in local git history "\n'
+    '                           "(maybe fetch-depth too small)",\n'
+    '                "detail": detail}\n'
+    '    age = _age_hours(ct, now)\n'
+    '    detail["age_hours"] = round(age, 2)\n'
+    '    if age > 48.0:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"deployed commit is {age/24:.1f}d old",\n'
+    '                "detail": detail}\n'
+    '    if age > 24.0:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"deployed commit is {age:.1f}h old",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": f"deployed {age:.1f}h ago "\n'
+    '                       f"({deployed_sha[:8]})",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'def check_runaway_ceiling_alarm(now: datetime) -> Dict:\n'
+    '    name = "runaway_ceiling_alarm"\n'
+    '    if not AUDIT_LOG.exists():\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "audit log missing",\n'
+    '                "detail": {}}\n'
+    '    alarms_7d, alarms_24h = [], []\n'
+    '    cutoff_7d = now.timestamp() - 7 * 86400\n'
+    '    cutoff_24h = now.timestamp() - 86400\n'
+    '    try:\n'
+    '        with AUDIT_LOG.open(encoding="utf-8") as f:\n'
+    '            for line in f:\n'
+    '                line = line.strip()\n'
+    '                if not line:\n'
+    '                    continue\n'
+    '                try:\n'
+    '                    entry = json.loads(line)\n'
+    '                except json.JSONDecodeError:\n'
+    '                    continue\n'
+    '                if not entry.get("runaway_ceiling_alarm"):\n'
+    '                    continue\n'
+    '                ts = _parse_iso(entry.get("ts", ""))\n'
+    '                if ts is None:\n'
+    '                    continue\n'
+    '                if ts.timestamp() > cutoff_7d:\n'
+    '                    alarms_7d.append(entry)\n'
+    '                if ts.timestamp() > cutoff_24h:\n'
+    '                    alarms_24h.append(entry)\n'
+    '    except OSError:\n'
+    '        pass\n'
+    '    detail = {"alarms_7d": len(alarms_7d),\n'
+    '              "alarms_24h": len(alarms_24h)}\n'
+    '    if alarms_24h:\n'
+    '        last = alarms_24h[-1]\n'
+    '        features = last.get("runaway_features", [])\n'
+    '        detail["last_alarm_iso"] = last.get("ts")\n'
+    '        detail["runaway_features"] = features\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"runaway alarm fired in last 24h on: "\n'
+    '                           f"{\', \'.join(features) or \'(unknown)\'}",\n'
+    '                "detail": detail}\n'
+    '    if alarms_7d:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"{len(alarms_7d)} runaway alarm(s) "\n'
+    '                           f"in last 7 days",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": "no runaway alarms in last 7 days",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'def check_stress_warning_rate(now: datetime) -> Dict:\n'
+    '    name = "stress_warning_rate"\n'
+    '    p = _find_today_picks_csv(now)\n'
+    '    if p is None:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": "no picks CSV for today",\n'
+    '                "detail": {}}\n'
+    '    rows = _load_picks_csv(p)\n'
+    '    if not rows:\n'
+    '        return {"name": name, "severity": GREEN,\n'
+    '                "message": "no rows to evaluate",\n'
+    '                "detail": {}}\n'
+    '    stressed = sum(1 for r in rows\n'
+    '                   if (r.get("stress_warnings") or "").strip())\n'
+    '    total = len(rows)\n'
+    '    pct = stressed / total if total else 0.0\n'
+    '    detail = {"total_rows": total, "stress_warned_count": stressed,\n'
+    '              "pct_of_slate": round(pct * 100, 1)}\n'
+    '    if pct > 0.75:\n'
+    '        return {"name": name, "severity": RED,\n'
+    '                "message": f"{pct*100:.0f}% of slate stress-warned "\n'
+    '                           f"({stressed}/{total})",\n'
+    '                "detail": detail}\n'
+    '    if pct > 0.50:\n'
+    '        return {"name": name, "severity": YELLOW,\n'
+    '                "message": f"{pct*100:.0f}% of slate stress-warned "\n'
+    '                           f"({stressed}/{total})",\n'
+    '                "detail": detail}\n'
+    '    return {"name": name, "severity": GREEN,\n'
+    '            "message": f"{stressed}/{total} rows stress-warned",\n'
+    '            "detail": detail}\n'
+    '\n'
+    '\n'
+    'CHECKS: List[Callable[[datetime], Dict]] = [\n'
+    '    # workflows\n'
+    '    check_daily_slate_heartbeat,\n'
+    '    check_refit_calibrator_heartbeat,\n'
+    '    check_weekly_backtest_heartbeat,\n'
+    '    check_claude_brain_heartbeat,\n'
+    '    # data flow\n'
+    '    check_bullpen_meta_freshness,\n'
+    '    check_odds_api_completeness,\n'
+    '    check_pending_sp_data_rate,\n'
+    '    # deployment\n'
+    '    check_cloudflare_deploy_freshness,\n'
+    '    # model\n'
+    '    check_weights_state_freshness,\n'
+    '    check_core_models_presence,\n'
+    '    check_runaway_ceiling_alarm,\n'
+    '    check_stress_warning_rate,\n'
+    ']\n',
+    "A4: 9 new check functions + extended CHECKS list",
+)
+
+
+# --- A5. Update main() to tag results + emit version/categories -------------
+must_replace(
+    SCRIPT,
+    '    results = [c(now) for c in CHECKS]\n'
+    '    overall = _overall_severity(results)\n'
+    '\n'
+    '    # Build snapshot\n'
+    '    health = {\n'
+    '        "checked_at": now.isoformat(),\n'
+    '        "overall": overall,\n'
+    '        "checks": results,\n'
+    '    }\n',
+    '    results = [c(now) for c in CHECKS]\n'
+    '    # Stamp each result with its category for the dashboard roll-up.\n'
+    '    for r in results:\n'
+    '        r["category"] = CHECK_CATEGORIES.get(r["name"], "uncategorized")\n'
+    '    overall = _overall_severity(results)\n'
+    '\n'
+    '    # Per-category roll-up: max-severity within each category.\n'
+    '    category_severity: Dict[str, str] = {}\n'
+    '    sev_rank = {GREEN: 0, YELLOW: 1, RED: 2}\n'
+    '    for r in results:\n'
+    '        cat = r["category"]\n'
+    '        cur = category_severity.get(cat, GREEN)\n'
+    '        if sev_rank[r["severity"]] > sev_rank[cur]:\n'
+    '            category_severity[cat] = r["severity"]\n'
+    '        elif cat not in category_severity:\n'
+    '            category_severity[cat] = r["severity"]\n'
+    '\n'
+    '    # Build snapshot (schema v2)\n'
+    '    health = {\n'
+    '        "version": SCHEMA_VERSION,\n'
+    '        "checked_at": now.isoformat(),\n'
+    '        "overall": overall,\n'
+    '        "categories": category_severity,\n'
+    '        "checks": results,\n'
+    '    }\n',
+    "A5: main() tags categories + emits version/categories",
+)
+
+
+# ===========================================================================
+# Part B: docs/index.html — CSS, HTML, JS for the dashboard card
+# ===========================================================================
+
+# --- B1. CSS injected before the Apple-style hero CSS block -----------------
+must_replace(
+    INDEX,
+    '  /* ===== Apple-style hero section (2026-05-25) ===== */\n',
+    '  /* ===== Pipeline health card (2026-05-26) ===== */\n'
+    '  #health-card {\n'
+    '    background: var(--bg-elev); border: 1px solid var(--border);\n'
+    '    border-radius: 8px; padding: 1.25rem;\n'
+    '    margin: 1.5rem 0;\n'
+    '  }\n'
+    '  #health-card h2 {\n'
+    '    margin: 0 0 0.6rem 0; font-size: 1.05rem;\n'
+    '    color: var(--accent);\n'
+    '    display: flex; align-items: center; gap: 0.6rem;\n'
+    '    flex-wrap: wrap;\n'
+    '  }\n'
+    '  #health-card .health-overall-pill {\n'
+    '    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;\n'
+    '    font-size: 0.72rem; padding: 0.2rem 0.55rem;\n'
+    '    border-radius: 4px; letter-spacing: 0.08em;\n'
+    '    text-transform: uppercase; font-weight: 700;\n'
+    '  }\n'
+    '  #health-card .health-overall-pill.green  '
+    '{ background: rgba(63,185,80,0.18);  color: var(--green); }\n'
+    '  #health-card .health-overall-pill.yellow '
+    '{ background: rgba(210,153,34,0.18); color: var(--yellow); }\n'
+    '  #health-card .health-overall-pill.red    '
+    '{ background: rgba(248,81,73,0.20);  color: var(--red); }\n'
+    '  #health-card .health-checked-at {\n'
+    '    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;\n'
+    '    font-size: 0.72rem; color: var(--muted);\n'
+    '    margin-left: auto;\n'
+    '  }\n'
+    '  #health-card .health-cat {\n'
+    '    display: flex; align-items: center;\n'
+    '    justify-content: space-between;\n'
+    '    padding: 0.55rem 0;\n'
+    '    border-bottom: 1px solid rgba(255,255,255,0.06);\n'
+    '    cursor: pointer; font-size: 0.9rem;\n'
+    '    transition: color 0.15s;\n'
+    '  }\n'
+    '  #health-card .health-cat:last-of-type { border-bottom: none; }\n'
+    '  #health-card .health-cat:hover { color: var(--accent); }\n'
+    '  #health-card .health-cat .label {\n'
+    '    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;\n'
+    '  }\n'
+    '  #health-card .health-cat .summary {\n'
+    '    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;\n'
+    '    font-size: 0.78rem; color: var(--muted);\n'
+    '  }\n'
+    '  #health-card .health-checks {\n'
+    '    display: none; padding: 0.3rem 0 0.8rem 1.4rem;\n'
+    '  }\n'
+    '  #health-card .health-cat.open + .health-checks { display: block; }\n'
+    '  #health-card .health-check {\n'
+    '    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;\n'
+    '    font-size: 0.78rem; padding: 0.25rem 0;\n'
+    '    color: var(--muted); line-height: 1.45;\n'
+    '  }\n'
+    '  #health-card .sev-dot {\n'
+    '    display: inline-block; width: 0.55rem; height: 0.55rem;\n'
+    '    border-radius: 50%; margin-right: 0.45rem;\n'
+    '    vertical-align: middle;\n'
+    '  }\n'
+    '  #health-card .sev-dot.green  { background: var(--green); }\n'
+    '  #health-card .sev-dot.yellow { background: var(--yellow); }\n'
+    '  #health-card .sev-dot.red    { background: var(--red); }\n'
+    '  #health-card .health-check code { color: var(--text); }\n'
+    '  #health-card .health-card-loading {\n'
+    '    color: var(--muted); font-size: 0.85rem;\n'
+    '  }\n'
+    '\n'
+    '  /* ===== Apple-style hero section (2026-05-25) ===== */\n',
+    "B1: health card CSS",
+)
+
+
+# --- B2. HTML section inserted between accordion and parlay ----------------
+must_replace(
+    INDEX,
+    '  </section>\n'
+    '  <div id="parlay"></div>\n',
+    '  </section>\n'
+    '\n'
+    '  <section id="health-card">\n'
+    '    <h2>\n'
+    '      <span>Pipeline health</span>\n'
+    '      <span id="health-card-overall" class="health-overall-pill green">—</span>\n'
+    '      <span id="health-card-checked-at" class="health-checked-at"></span>\n'
+    '    </h2>\n'
+    '    <div id="health-card-body" class="health-card-loading">\n'
+    '      Loading health snapshot…\n'
+    '    </div>\n'
+    '  </section>\n'
+    '\n'
+    '  <div id="parlay"></div>\n',
+    "B2: health card markup",
+)
+
+
+# --- B3. JS injected at the bottom of the existing inline <script> block ---
+must_replace(
+    INDEX,
+    '    sib = sib.nextElementSibling;\n'
+    '  }\n'
+    '});\n',
+    '    sib = sib.nextElementSibling;\n'
+    '  }\n'
+    '});\n'
+    '\n'
+    '// =============================================================\n'
+    '// Pipeline health card (2026-05-26)\n'
+    '//   Fetches docs/data/health.json on load, renders category\n'
+    '//   roll-up + click-to-expand individual checks. Cache-busted\n'
+    '//   on every load so the dashboard reflects the latest run.\n'
+    '// =============================================================\n'
+    '(function() {\n'
+    '  const CAT_ORDER = ["workflows", "data_flow", "deployment", "model"];\n'
+    '  const CAT_LABEL = {\n'
+    '    workflows:  "Workflows",\n'
+    '    data_flow:  "Data flow",\n'
+    '    deployment: "Deployment",\n'
+    '    model:      "Model behavior",\n'
+    '  };\n'
+    '\n'
+    '  function ageStr(iso) {\n'
+    '    const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);\n'
+    '    if (mins < 1) return "just now";\n'
+    '    if (mins < 60) return mins + "m ago";\n'
+    '    const h = mins / 60;\n'
+    '    if (h < 24) return h.toFixed(1) + "h ago";\n'
+    '    return (h / 24).toFixed(1) + "d ago";\n'
+    '  }\n'
+    '\n'
+    '  function escapeHtml(s) {\n'
+    '    return String(s == null ? "" : s)\n'
+    '      .replace(/&/g, "&amp;").replace(/</g, "&lt;")\n'
+    '      .replace(/>/g, "&gt;").replace(/\\"/g, "&quot;");\n'
+    '  }\n'
+    '\n'
+    '  function renderHealth(h) {\n'
+    '    const overallEl = document.getElementById("health-card-overall");\n'
+    '    const checkedAtEl = document.getElementById("health-card-checked-at");\n'
+    '    const body = document.getElementById("health-card-body");\n'
+    '    if (!overallEl || !checkedAtEl || !body) return;\n'
+    '\n'
+    '    overallEl.className = "health-overall-pill " + h.overall;\n'
+    '    overallEl.textContent = h.overall.toUpperCase();\n'
+    '    checkedAtEl.textContent = "checked " + ageStr(h.checked_at);\n'
+    '\n'
+    '    const byCat = {};\n'
+    '    for (const c of h.checks || []) {\n'
+    '      const cat = c.category || "uncategorized";\n'
+    '      (byCat[cat] = byCat[cat] || []).push(c);\n'
+    '    }\n'
+    '\n'
+    '    body.className = "";\n'
+    '    body.innerHTML = CAT_ORDER.map(cat => {\n'
+    '      if (!byCat[cat] || !byCat[cat].length) return "";\n'
+    '      const checks = byCat[cat];\n'
+    '      const sev = (h.categories || {})[cat] || "green";\n'
+    '      const red = checks.filter(c => c.severity === "red").length;\n'
+    '      const yel = checks.filter(c => c.severity === "yellow").length;\n'
+    '      const summary = red ? red + " critical, " + checks.length + " total"\n'
+    '                          : yel ? yel + " warning, " + checks.length + " total"\n'
+    '                                : checks.length + "/" + checks.length + " healthy";\n'
+    '      const inner = checks.map(c => (\n'
+    '        \'<div class="health-check"><span class="sev-dot \' + c.severity + \'"></span>\' +\n'
+    '        \'<code>\' + escapeHtml(c.name) + \'</code> — \' + escapeHtml(c.message) +\n'
+    '        \'</div>\'\n'
+    '      )).join("");\n'
+    '      return (\n'
+    '        \'<div class="health-cat" data-cat="\' + cat + \'">\' +\n'
+    '          \'<span class="label">\' + CAT_LABEL[cat] + \'</span>\' +\n'
+    '          \'<span class="summary"><span class="sev-dot \' + sev + \'"></span>\' +\n'
+    '            summary + \'</span>\' +\n'
+    '        \'</div>\' +\n'
+    '        \'<div class="health-checks">\' + inner + \'</div>\'\n'
+    '      );\n'
+    '    }).join("");\n'
+    '\n'
+    '    body.querySelectorAll(".health-cat").forEach(row =>\n'
+    '      row.addEventListener("click", () => row.classList.toggle("open")));\n'
+    '  }\n'
+    '\n'
+    '  function loadHealth() {\n'
+    '    fetch("data/health.json?v=" + Date.now(), { cache: "no-store" })\n'
+    '      .then(r => r.ok ? r.json() : null)\n'
+    '      .then(h => h && renderHealth(h))\n'
+    '      .catch(() => {\n'
+    '        const body = document.getElementById("health-card-body");\n'
+    '        if (body) body.textContent = "Health snapshot unavailable.";\n'
+    '      });\n'
+    '  }\n'
+    '\n'
+    '  if (document.readyState === "loading") {\n'
+    '    document.addEventListener("DOMContentLoaded", loadHealth);\n'
+    '  } else {\n'
+    '    loadHealth();\n'
+    '  }\n'
+    '})();\n',
+    "B3: health card JS",
+)
+
+
+# ===========================================================================
+# Validation
+# ===========================================================================
+import ast
+ast.parse(SCRIPT.read_text(encoding="utf-8"))
+print("[ok]   tools/health_check.py AST parse: OK")
+
+# Quick HTML sanity: brace balance in the JS body of the largest <script>.
+import re
+html_src = INDEX.read_text(encoding="utf-8")
+chunks = re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", html_src, re.DOTALL)
+chunks.sort(key=len, reverse=True)
+body = chunks[0]
+braces = body.count("{") - body.count("}")
+print(f"[ok]   docs/index.html longest script: {len(body)} chars, "
+      f"braces delta = {braces}")
