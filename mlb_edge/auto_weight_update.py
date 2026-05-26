@@ -82,6 +82,13 @@ NEW_CEILING_MULT: float = 1.5
 STRESS_MASK_FACTOR: float = 0.3
 WARMUP_THRESHOLD: int = 30
 
+# Floor multiplier on the per-feature gradient update. A feature
+# can shrink to at most MIN_RELATIVE_WEIGHT * baseline; never below.
+# Inherited from the legacy recursive_weight_update.py (value 0.25);
+# restored 2026-05-26 after the Commit 3 teardown (8283396) removed
+# the import but left the reference at floor=MIN_RELATIVE_WEIGHT*base.
+MIN_RELATIVE_WEIGHT: float = 0.25
+
 
 # ---------------------------------------------------------------------------
 # Outcome ingestion
