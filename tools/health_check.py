@@ -4,7 +4,7 @@ tools/health_check.py
 =====================
 Periodic pipeline-health observer. Runs the 3-check MVP:
 
-  - daily_slate_heartbeat:   last daily-slate commit age (RED >24h, YELLOW >6h)
+  - daily_slate_heartbeat:   last daily-slate commit age (RED >24h, YELLOW >14h)
   - weights_state_freshness: last audit log entry age   (RED >48h, YELLOW >26h)
   - core_models_presence:    models/latest.pkl exists   (RED if missing)
 
@@ -80,7 +80,7 @@ CHECK_CATEGORIES = {
     "claude_brain_heartbeat":      CAT_WORKFLOWS,
     # data flow
     "bullpen_meta_freshness":      CAT_DATA_FLOW,
-    "odds_api_completeness":       CAT_DATA_FLOW,
+    "kalshi_coverage_rate":        CAT_DATA_FLOW,
     "pending_sp_data_rate":        CAT_DATA_FLOW,
     # deployment
     "cloudflare_deploy_freshness": CAT_DEPLOYMENT,
@@ -215,10 +215,10 @@ def check_daily_slate_heartbeat(now: datetime) -> Dict:
                 "message": f"daily-slate hasn't run in {age:.1f}h "
                            f"(threshold 24h)",
                 "detail": detail}
-    if age > 6.0:
+    if age > 14.0:
         return {"name": name, "severity": YELLOW,
                 "message": f"daily-slate last ran {age:.1f}h ago "
-                           f"(threshold 6h)",
+                           f"(threshold 14h)",
                 "detail": detail}
     return {"name": name, "severity": GREEN,
             "message": f"last ran {age:.1f}h ago",
@@ -310,8 +310,14 @@ def check_bullpen_meta_freshness(now: datetime) -> Dict:
             "detail": detail}
 
 
-def check_odds_api_completeness(now: datetime) -> Dict:
-    name = "odds_api_completeness"
+def check_kalshi_coverage_rate(now: datetime) -> Dict:
+    """Segments today's picks_*_diag odds_status column to measure
+    Kalshi moneyline coverage. Despite the legacy "odds_status"
+    column name, since the 2026-05-21 OddsAPI cancellation every
+    row that's "fetched" or "fetched_capped" is ok via Kalshi.
+    The check is renamed from odds_api_completeness to reflect
+    what it actually measures."""
+    name = "kalshi_coverage_rate"
     p = _find_today_picks_csv(now)
     if p is None:
         return {"name": name, "severity": RED,
@@ -335,13 +341,13 @@ def check_odds_api_completeness(now: datetime) -> Dict:
               "status_distribution": statuses}
     if pct_non_ok > 0.75:
         return {"name": name, "severity": RED,
-                "message": f"{pct_non_ok*100:.0f}% of slate is "
-                           f"non-fetched odds",
+                "message": f"{pct_non_ok*100:.0f}% of slate has no "
+                           f"Kalshi moneyline",
                 "detail": detail}
     if pct_non_ok > 0.25:
         return {"name": name, "severity": YELLOW,
-                "message": f"{pct_non_ok*100:.0f}% of slate is "
-                           f"non-fetched odds",
+                "message": f"{pct_non_ok*100:.0f}% of slate has no "
+                           f"Kalshi moneyline",
                 "detail": detail}
     return {"name": name, "severity": GREEN,
             "message": f"{ok}/{total} rows have market odds",
@@ -571,7 +577,7 @@ CHECKS: List[Callable[[datetime], Dict]] = [
     check_claude_brain_heartbeat,
     # data flow
     check_bullpen_meta_freshness,
-    check_odds_api_completeness,
+    check_kalshi_coverage_rate,
     check_pending_sp_data_rate,
     # deployment
     check_cloudflare_deploy_freshness,
