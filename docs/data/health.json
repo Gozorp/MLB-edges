@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-05-26T14:45:49.712231+00:00",
+  "checked_at": "2026-05-26T17:51:52.617418+00:00",
   "overall": "red",
   "categories": {
     "workflows": "green",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 0.6h ago",
+      "message": "last ran 0.4h ago",
       "detail": {
-        "last_run_iso": "2026-05-26T14:12:05Z",
-        "age_hours": 0.56
+        "last_run_iso": "2026-05-26T17:29:17Z",
+        "age_hours": 0.38
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3d ago",
+      "message": "last fired 2.4d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:22:02Z",
-        "age_hours": 55.4,
+        "age_hours": 58.5,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3d ago",
+      "message": "last fired 2.4d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:47:38Z",
-        "age_hours": 54.97,
+        "age_hours": 58.07,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 14.9h ago",
+      "message": "last fired 18.0h ago",
       "detail": {
         "last_run_iso": "2026-05-25T23:50:44Z",
-        "age_hours": 14.92,
+        "age_hours": 18.02,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -111,10 +111,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 6.4h ago",
+      "message": "last learned 9.5h ago",
       "detail": {
         "last_entry_iso": "2026-05-26T08:24:29.212478+00:00",
-        "age_hours": 6.36
+        "age_hours": 9.46
       },
       "category": "model"
     },
@@ -141,11 +141,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "5/15 rows stress-warned",
+      "message": "3/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 5,
-        "pct_of_slate": 33.3
+        "stress_warned_count": 3,
+        "pct_of_slate": 20.0
       },
       "category": "model"
     }
