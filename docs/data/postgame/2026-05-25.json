@@ -1,0 +1,132 @@
+{
+  "date": "2026-05-25",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-26T14:50:00Z",
+  "n_analyzed": 13,
+  "summary": "May 25 went 9-4 directionally (69.2%) across 13 analyzed matchups, but the sole staked pick — CLE PLATINUM (Bibee vs Littell, edge +4.32pp, HARD CAP 7 reduced score 10→1) — lost 2-10 in a blowout variance failure. The primary learning is the total collapse of the D-grade dual-signal-against pattern: all four D-grade picks (TB@BAL, CIN@NYM, ARI@SF, MIA@TOR) won their model direction, pushing cumulative pattern reliability below 55%. Three of four Claude DOWNGRADEs (MIN@CHW, NYY@KC, PHI@SD) were wrong, confirming stress flags predict stake-suppression but not direction reversal.",
+  "by_matchup": {
+    "CHC @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "PIT won 2-1 at home; CHC lost despite F1* xERA and PQI signals as Mlodzinski limited Chicago to one run.",
+      "hypothesis": "Variance failure on a near-coin-flip pick (pick_prob=0.508). F1_xera_gap=2.23* and PQI=−28.2 both supported CHC, but Mlodzinski held CHC to 1 run and Ben Brown surrendered 2. The F1* small-sample asterisk and the 2-of-5 WEAK_VS BvP for CHC vs Mlodzinski (Crow-Armstrong shrunk 0.576, Busch shrunk 0.538) were soft negative signals that in retrospect aligned with the loss. HARD CAPs 8 and 10 correctly zeroed the stake — no financial impact. The directional miss at pick_prob=0.508 is near-coin-flip variance, not a process failure, but the mixed BvP deserved more weight.",
+      "signals_to_recheck": "F1_xera_gap=2.23* on a pick_prob=0.508 marginal pick with 2-of-5 WEAK_VS BvP; when F1* fires on a near-coin-flip with mixed-to-negative BvP, directional conviction is too thin to CONFIRM even with PQI corroboration"
+    },
+    "TB @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-9",
+      "headline": "BAL held off TB 9-7 in a high-scoring game; model pick direction correct despite D-grade and all primary signals against BAL.",
+      "hypothesis": "The D-grade dual-signal-against pattern (SP edge 0.66 xERA for McClanahan over Bradish, PQI=−6.4 against BAL) predicted BAL direction was wrong, but BAL won 9-7. The pattern failed; BAL's offense overwhelmed the pitching disadvantage. Yandy Diaz's OWNER BvP vs Bradish (26 PA, shrunk OPS 0.929) may reflect an undercount of BAL's lineup strength. Variance failure of the dual-signal-against heuristic; SKIP correctly prevented stake so no financial impact. This is the first of four D-grade pattern failures today.",
+      "signals_to_recheck": "D-grade dual-signal-against pattern (SP xERA against + PQI against on BAL) failed as BAL's offense prevailed 9-7; pen_strain_pick_side=0.1072 (HIGH) described a two-sided high-run game rather than BAL lineup weakness"
+    },
+    "MIN @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-3",
+      "headline": "CHW won 3-1 at home, validating model direction despite Stage 1/2 disagreement and PQI against that prompted Claude's DOWNGRADE.",
+      "hypothesis": "Claude downgraded CHW to SKIP citing f5_full_delta=0.2751 (MIN dominates F5 at 69.7%, CHW's full-game lead requires a bullpen flip) and PQI=−15.9 directly against CHW's late-game profile. CHW's 3-1 win shows the full-game bullpen-carry thesis materialized. F3_swing_take_gap=3402.3 as the primary F-signal was directionally correct. No financial impact (stake_mult=0 regardless of tier). DOWNGRADE-wrong: the extreme Stage 1/2 disagreement is a structural concern signal but not a reliable direction-reversal indicator when the F3 swing/take conviction is this high.",
+      "signals_to_recheck": "f5_full_delta=0.2751 + PQI against pick: extreme Stage 1/2 disagreement used as DOWNGRADE justification; CHW won 3-1, suggesting the bullpen-flip thesis can materialize even when F5 strongly favors the opponent"
+    },
+    "STL @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-5",
+      "headline": "MIL dominated STL 5-1; Misiorowski's dominant xERA edge delivered as expected, HARD CAP 1 correctly prevented stake.",
+      "hypothesis": "Process-correct CONFIRM with variance-free outcome. F1_xera_gap=5.04 (Misiorowski over Liberatore) and PQI=+46.6 provided the highest SP conviction on today's slate. STL's BvP vs Misiorowski was collectively weak (most batters shrunk OPS 0.54–0.72), producing just 1 run. HARD CAP 1 correctly zeroed stake (fair_prob=0.8613 vs model's 66.83% — market already priced the MIL advantage at 86.1%). The 5-1 final margin is fully consistent with the model's structural read.",
+      "signals_to_recheck": "negative_edge_GOLD (HARD CAP 1): F1=5.04 + PQI=+46.6 correctly directional in a 5-1 win; EV protection confirmed — staking at model's inferior odds vs market's 86% fair_prob would have been negative-EV even on a directional win"
+    },
+    "NYY @ KC": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "4-3",
+      "headline": "NYY won 4-3 at KC; model direction correct despite Claude's triple-flag DOWNGRADE on confidence_downgrade + bullpen_fatigue + F1* thin.",
+      "hypothesis": "Claude downgraded NYY citing confidence_downgrade=True, bullpen_fatigue, and F1*=1.17 (thin-sample asterisk) as a triple-flag stack. NYY won 4-3, a margin fully consistent with the model's 54.65% pick probability. The stress flags did not predict directional failure. No financial impact (edge=−0.88pp, stake_mult=0 regardless). DOWNGRADE-wrong: 3 compounding stress flags triggered a direction demotion that was unwarranted. The model's F-signal (F1*+F2=1.17+0.028) was directionally correct against Wacha, who surrendered 4 runs.",
+      "signals_to_recheck": "confidence_downgrade_True + bullpen_fatigue + F1* triple-flag stack triggered unnecessary DOWNGRADE; stress flags reduced directional confidence without providing directional predictive value — 4-3 NYY win validates model direction"
+    },
+    "CIN @ NYM": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-2",
+      "headline": "CIN blew out NYM 7-2 away; D-grade dual-signal-against pattern failed dramatically as CIN dominated with a lopsided offensive output.",
+      "hypothesis": "The D-grade dual-signal-against pattern (SP edge 4.52 xERA against CIN for Lodolo over McLean, PQI=+49.1 against CIN's late-game profile) predicted CIN direction was wrong. CIN won 7-2. McLean (small-sample SP, min_pa=67) underperformed his xERA dramatically while CIN's offense produced 7 runs. The NO_DATA BvP for CIN vs Lodolo removed the expected lineup-suppression signal entirely. Variance failure: the signals accurately described expected probabilities but did not guarantee the outcome. SKIP correctly prevented stake. Second D-grade pattern failure today.",
+      "signals_to_recheck": "D-grade dual-signal-against pattern (SP xERA 4.52 against + PQI=+49.1 against) with all-NO_DATA BvP for CIN: pattern failed 7-2 CIN win; small-sample SP (min_pa=67) xERA estimates may be less predictive than the grade system assumes"
+    },
+    "ARI @ SF": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-2",
+      "headline": "ARI won 6-2 away at SF; worst-grade pick on the slate (D, −4) won despite triple signals against and extreme Stage 1/2 disagreement.",
+      "hypothesis": "ARI's 6-2 win is the most extreme D-grade dual-signal-against pattern failure today: SP edge 5.38 xERA against ARI (Roupp >> Kelly), PQI=+42.5 against ARI late-game, f5_full_delta=0.3341 (SF wins F5 at 74.9%), Stage 1/2 disagree (−1 in grade), and two SF OWNER-level BvP entries (Arraez shrunk 0.905, Chapman shrunk 0.789 vs Kelly) all pointed to SF. ARI won by 4 runs. The full-game bullpen thesis materialized completely. No financial impact (SKIP). Third consecutive D-grade pattern failure today; the pattern is no longer reliable as a high-confidence directional predictor.",
+      "signals_to_recheck": "f5_full_delta=0.3341 (extreme Stage 1/2 disagreement) + D-grade −4 + dual SF OWNER BvP: all combined still produced ARI win 6-2; BvP OWNER entries for SF did not suppress ARI's offense, suggesting park/bullpen factors override BvP correlations in some matchups"
+    },
+    "WSH @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-2",
+      "headline": "WSH blew out CLE 10-2; Bibee underperformed catastrophically on the sole staked pick despite F1_xera_gap=3.87 and pre-cap score=10/A.",
+      "hypothesis": "Variance failure on the only staked pick. Pre-cap conviction was exceptional (score=10/A): Bibee's F1_xera_gap=3.87 over Littell and PQI=+39.9 both strongly supported CLE. HARD CAP 7 fired correctly on hl_bullpen_xwoba_gap=+0.014 (barely above the 0 threshold) and demoted score 10→1, but still allowed a minimal stake (edge=+4.32pp, within [4,15]pp band). Bibee had a catastrophically off night, WSH scored 10 runs, and the 10-2 blowout is entirely inconsistent with CLE's 68.33% win probability. The HARD CAP 7 minimum-threshold firing (+0.014 gap) provided insufficient protection. Ramirez OWNER BvP vs Littell (12 PA, shrunk 0.789) did not tip into a CLE win. Process-correct CONFIRM given available information; extreme variance failure.",
+      "signals_to_recheck": "HARD CAP 7 at minimum threshold (hl_bullpen_xwoba_gap=+0.014, barely above 0): near-zero gap still allowed stake on a PLATINUM pick that lost 2-10; consider implementing a zero-stake floor when hl_bullpen_xwoba_gap < +0.025 on PLATINUM tier to prevent exposure on minimum-threshold firings"
+    },
+    "PHI @ SD": {
+      "verdict": "WIN",
+      "model_pick": "PHI ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-0",
+      "headline": "PHI shutout SD 3-0 away; Claude's DOWNGRADE based on two SD OWNER-level BvP entries (Tatis, Machado) failed as Canning dominated.",
+      "hypothesis": "Claude downgraded PHI to SKIP citing Tatis (OWNER, shrunk 0.829) and Machado (OWNER, 2 HR in 11 PA, shrunk 0.917) vs Luzardo as a qualitative DOWNGRADE signal. PHI's Canning held SD scoreless while PHI scored 3. The OWNER-level BvP did not materialize against Canning (a different pitcher than Luzardo — the BvP was for SD batters vs Luzardo, PHI's away SP). No financial impact (negative edge −1.72pp, stake_mult=0). DOWNGRADE-wrong: BvP OWNER entries for opposing lineup batters vs the pick-side SP (Luzardo) failed entirely when Canning pitched for PHI. BvP OWNERs are probabilistic correlations, not game-level outcomes.",
+      "signals_to_recheck": "OWNER-level BvP (Tatis shrunk 0.829, Machado shrunk 0.917) used as primary standalone DOWNGRADE trigger; PHI shutout SD 3-0 — BvP OWNERs require corroborating signals (negative model edge, D-grade) and should not be the primary reason to override F3_swing_take_gap conviction"
+    },
+    "HOU @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-0",
+      "headline": "HOU shutout TEX 9-0; Imai dominated and Rocker was shelled despite model's SP edge for TEX, acute_roster flag was prescient.",
+      "hypothesis": "Process failure with variance elements. Model picked TEX (Rocker) with SP edge 1.30 xERA over Imai, small-sample SP flag on Imai (min_pa=83). HOU's 9-0 blowout shutout suggests Imai dramatically outperformed his thin-sample xERA while Rocker underperformed. The acute_roster=True flag was prescient — possible HOU lineup changes not captured by the model. The small-sample xERA estimate for Imai (83 PA) produced an unstable SP quality comparison; the actual performance was opposite the model's direction. HARD CAP 10 correctly zeroed the stake (no financial impact), but the directional CONFIRM added noise given the small-sample SP flag.",
+      "signals_to_recheck": "small_sample_SP_True on Imai (min_pa=83) + acute_roster=True for TEX: small-sample opposing SP outperformed xERA by a 9-run margin; the 83-PA threshold may not be sufficient for stable xERA estimation when the SP is a short-season pitcher"
+    },
+    "MIA @ TOR": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-2",
+      "headline": "MIA won 8-2 away at Toronto; D-grade dual-signal-against pattern and market pricing (fair_prob=0.384 for MIA) both failed.",
+      "hypothesis": "Claude's qualitative assessment called MIA direction wrong (dual-signal-against D-grade: SP edge 1.99 xERA for Junk over Yesavage, PQI=+30.5 against MIA, plus extreme 12pp market gap with fair_prob=0.384 vs model's 50.27%). MIA won 8-2. Yesavage outperformed expectations, MIA's offense scored 8 runs, and the market's 38.4% probability for MIA was a severe market underestimation. No financial impact (SKIP). This is the fourth D-grade dual-signal-against pattern failure today and the clearest example of market pricing being wrong. Market pricing should be treated as probabilistic information, not a certainty signal.",
+      "signals_to_recheck": "D-grade dual-signal-against + extreme market gap (fair_prob=0.384 vs model 0.503): MIA wins 8-2 despite both pattern and market predicting TOR; extreme market underpricing of MIA was not a 'model blind-spot confirmed' signal — it was a market error"
+    },
+    "COL @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-5",
+      "headline": "LAD won 5-3 at home; PLATINUM direction confirmed, HARD CAP 1 correctly prevented stake on a −12.54pp edge.",
+      "hypothesis": "Process-correct CONFIRM with HARD CAP 1 correctly blocking stake (fair_prob=0.7937 vs model's 66.83% — market priced LAD at 79.4%). LAD won 5-3, validating the directional read. F2_xwoba_gap=0.050 and F3=11311.1 (largest on today's slate) correctly identified LAD's lineup and SP quality edge over COL. The 5-3 margin (not a blowout) is consistent with a moderate LAD structural advantage rather than market-priced near-certain win. HARD CAP 1 enforcement validated for the second consecutive PLATINUM pick.",
+      "signals_to_recheck": "negative_edge_GOLD (HARD CAP 1): LAD dual F-signal (F2+F3) on PLATINUM correctly directional 5-3; market's 79.4% vs model's 66.8% gap continued to be correctly handled by blocking stake while confirming direction"
+    },
+    "SEA @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "9-2",
+      "headline": "SEA demolished OAK 9-2; Claude's DOWNGRADE correctly avoided a major directional loss as Castillo dominated Civale.",
+      "hypothesis": "Process-correct DOWNGRADE. F1_xera_gap=0.81* (thin-sample asterisk, small SP sample) was the sole F-signal — no F2/F3/PQI corroboration — and HARD CAP 5 correctly fired (F1* alone cannot sustain GOLD). Castillo (SEA) dominated with OAK's Civale thin-sample giving up 9 runs. The 9-2 blowout confirms the DOWNGRADE saved tracking a significant directional loss. HARD CAP 5 design is validated: F1* as the only signal provides insufficient directional confidence when facing an established ace-quality SP like Castillo.",
+      "signals_to_recheck": "[HARD CAP 5] F1_star_no_secondary_signal: F1*=0.81 sole signal without F2/F3/PQI correctly suppressed; Castillo vs Civale thin-sample produced 9-2 SEA blowout, validating the cap's design rationale"
+    }
+  },
+  "patterns_observed": [
+    "D-grade dual-signal-against pattern went 0/4 today (TB@BAL won 9-7, CIN@NYM won 7-2, ARI@SF won 6-2, MIA@TOR won 8-2) despite all four having SP xERA against and PQI against the model pick direction; the historical ~78% directional failure rate is no longer valid. Cumulative record through 5/21 was 7/9 (78%); today's 0/4 result pushes the directional failure rate below 55% across the visible archive. Downgrade this heuristic from 'expected wrong direction' to 'weak negative signal' — do not use it to assert high-confidence directional reversal.",
+    "Three of four Claude DOWNGRADEs were wrong directionally (MIN@CHW won 3-1, NYY@KC won 4-3, PHI@SD won 3-0 after being downgraded on confidence_downgrade, bullpen_fatigue, F1* thin, and BvP OWNER signals). Stress flags (confidence_downgrade_True, acute_roster_True, bullpen_fatigue, F1* small-sample) are stake-size reducers that correctly suppress financial exposure but have poor predictive value for direction; do not use them as standalone triggers to flip direction from CONFIRM to DOWNGRADE.",
+    "WSH@CLE PLATINUM (pre-cap score=10/A, Bibee F1_xera_gap=3.87, edge+4.32pp) lost 2-10 as the sole staked pick; HARD CAP 7 fired at the near-zero minimum threshold (hl_bullpen_xwoba_gap=+0.014) and demoted score 10→1 but still allowed stake. The 10-2 blowout margin against an A-grade pre-cap pick suggests that any hl_bullpen_xwoba_gap below +0.025 on PLATINUM tier should result in a zero-stake hard floor rather than a score demotion — minimum-threshold HARD CAP 7 firings provide insufficient EV protection on high-conviction tier-elevated picks.",
+    "PHI@SD shutout 3-0 despite two SD OWNER-level BvP entries (Tatis shrunk 0.829, Machado shrunk 0.917) that Claude used as the primary DOWNGRADE justification; OWNER-level BvP failed entirely when Canning dominated. BvP OWNER correlations must not serve as a standalone DOWNGRADE trigger — require at minimum one of: (a) D-grade with negative model signals, (b) negative edge below the staking band, or (c) acute_roster flag. Two OWNER entries without corroborating directional signals is insufficient to override an F-signal conviction."
+  ]
+}
