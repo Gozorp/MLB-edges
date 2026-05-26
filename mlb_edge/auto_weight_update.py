@@ -10,7 +10,7 @@ Workflow:
     2. Pull yesterday's box scores from the MLB Stats API.
     3. Build a normalized outcomes DF
         [game_id, home_team, away_team, home_R, away_R].
-    4. Reuse `recursive_weight_update.apply_blowout_penalties` to update the
+    4. Call apply_calibration_from_all_picks to symmetrically update the
        persisted weights state file (`data/state/weights_state.json`).
     5. Append a structured JSONL audit entry to `recalibration_log.jsonl`
        so the season-long history is tracker-readable.
@@ -37,13 +37,9 @@ import pandas as pd
 import requests
 
 from .config import SP_WEIGHTS
-from .recursive_weight_update import (
-    BLOWOUT_RUN_DIFF, BLOWOUT_TIERS_PENALIZED,
-    PENALTY_PER_BLOWOUT, RECOVERY_PER_GOOD_DAY,
-    SIGNAL_TO_FEATURES,
-    apply_blowout_penalties, get_active_weights,
-    _load_state, _save_state, _parse_signals,
-    MIN_RELATIVE_WEIGHT,
+from .weights_state import (
+    SIGNAL_TO_FEATURES, WEIGHTS_STATE_FILE,
+    get_active_weights, _load_state, _save_state, _parse_signals,
 )
 from .stadiums import normalize_team
 
@@ -358,10 +354,11 @@ def _write_audit_entry(target_date, picks_df, outcomes_df,
     # in this update. weights_growing_past_prior should be empty
     # for the first ~10 days under the new ceil=1.5*base rule
     # since most weights are well below their priors.
-    try:
-        from .recursive_weight_update import SP_WEIGHTS as _BASELINES
-    except Exception:
-        _BASELINES = {}
+    # 2026-05-26: was a try/except import from recursive_weight_update
+    # which always raised (recursive_weight_update never defined
+    # SP_WEIGHTS). Direct reference to the already-imported config
+    # constant makes the safeguard fields actually populate.
+    _BASELINES = SP_WEIGHTS
     max_change_pct = 0.0
     growing_past_prior: List[str] = []
     runaway_alarm = False
@@ -492,7 +489,7 @@ def run(target_date,
         if learn_from_all and not diag_df.empty:
             if dry_run:
                 _orig_state_text = None
-                from .recursive_weight_update import WEIGHTS_STATE_FILE as _WSF
+                _WSF = WEIGHTS_STATE_FILE
                 if _WSF.exists():
                     _orig_state_text = _WSF.read_text(encoding="utf-8")
                 new_state, n_picks_total, n_picks_used_for_learning = (

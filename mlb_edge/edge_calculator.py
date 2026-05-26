@@ -36,7 +36,7 @@ from .config import (
     TIER_SIZES,
 )
 from .market_analysis import shin
-from .recursive_weight_update import get_active_weights
+from .weights_state import get_active_weights
 from .sp_savant_gate import adjusted_xera_gap
 
 # v5.1 PLATINUM-eligibility threshold on the reliability-weighted xERA gap.
@@ -49,11 +49,12 @@ ADJ_XERA_PLATINUM_MIN = 1.20
 
 
 def _f1_scale() -> float:
-    """v5.1 recursive penalty multiplier on the F1 raw signal. After a
-    PLATINUM blowout, recursive_weight_update reduces sp_xera_gap's stored
-    weight; we read that here and divide by the baseline so the effective
-    xera_gap a slate sees is its raw value times the (penalized/baseline)
-    ratio. On a clean baseline this is exactly 1.0 — a no-op."""
+    """Learned-weight multiplier on the F1 raw signal. The symmetric
+    gradient loop in auto_weight_update.apply_calibration_from_all_picks
+    nudges sp_xera_gap up or down per-slate; we read its current value
+    here and divide by the baseline so the effective xera_gap a slate
+    sees is its raw value times the (learned/baseline) ratio. On a
+    clean baseline this is exactly 1.0 — a no-op."""
     active = get_active_weights(SP_WEIGHTS)
     base = SP_WEIGHTS["sp_xera_gap"]
     if base <= 0:
