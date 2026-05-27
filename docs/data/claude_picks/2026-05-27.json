@@ -1,135 +1,159 @@
 {
   "date": "2026-05-27",
-  "fit_at": "2026-05-27T10:50:00Z",
+  "fit_at": "2026-05-27T12:00:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 15,
   "patterns_recognized": [
-    "D-grade dual-signal-against pattern went 0-for-4 on 5/25 (all four D-grade picks won model direction, e.g. MIA won 8-2, CIN won 7-2, ARI won 6-2, TB/BAL won 9-7); cumulative directional failure rate has fallen below 55% — no longer a high-confidence direction reversal, treat as weak negative signal only.",
-    "Claude DOWNGRADEs triggered by stress flags (confidence_downgrade, bullpen_fatigue, F1* thin) went 3-of-4 wrong directionally on 5/25 (MIN@CHW, NYY@KC, PHI@SD all models correct); these flags should suppress stake size but not flip direction — avoid using as standalone DOWNGRADE triggers.",
-    "HARD CAP 7 near-zero firings (+0.014 on 5/25 WSH@CLE, +0.0014 on 5/20 HOU@MIN) provided insufficient EV protection on PLATINUM-level picks; CLE lost 2-10 despite minimal gap — WSH@CLE repeat matchup today warrants extra caution on CLE despite positive internal signals.",
-    "BvP OWNER entries without corroborating D-grade or negative-edge signals failed as standalone DOWNGRADE triggers on 5/25 (PHI@SD: Tatis/Machado OWNERs used to downgrade PHI → PHI won 3-0); require at minimum one corroborating structural signal before using OWNER BvP to override F-signal conviction.",
-    "HARD CAP 1 (negative edge) has blocked stake on ~50% winning/~50% losing directional calls across the full archive — market information superiority is EV-protective and directionally neutral; never relax based on F-signal conviction alone (validated again by 5/25 STL@MIL/COL@LAD wins and WSH@CLE loss)."
+    "Large f5_full_delta (>0.15) + positive hl_bullpen_xwoba_gap (pick-side pen worse) is a reliable double-down SKIP signal — confirmed 5/26 TB@BAL (6-1 loss) and WSH@CLE (6-3 loss); do not CONFIRM full-game picks where the bullpen-carry thesis conflicts with an inferior pick-side pen.",
+    "D-grade dual-signal-against (SP xERA against + PQI against pick) is unreliable as a high-confidence directional predictor: 0-for-4 on 5/25, 2-for-2 on 5/26; cumulative ~55-60%; treat as moderate negative factor requiring corroboration before DOWNGRADE or OVERRIDE.",
+    "Stress-flag stacks (acute_roster + bullpen_fatigue + confidence_downgrade) correctly suppress stake but are poor direction-reversal triggers — 5/25 showed 3-of-4 DOWNGRADEs on triple-flag stacks wrong directionally; keep them as stake dampers only.",
+    "F1_xera_gap* (thin-sample asterisk) on the pick-side SP at sub-55% pick_prob is an insufficient directional anchor — 5/26 LAA@DET (F1*=1.53, pick_prob=0.525) produced a 10-6 LAA blowout; F3 or PQI corroboration does not fully compensate for thin-sample xERA.",
+    "HARD CAP 6 calibrator hallucination (edge_pp > +25pp) consistently coincides with market pricing dramatically against the model pick — today SEA@OAK fair_prob=0.183 for OAK, ARI@SF model pick_prob 79.5% vs grade D; cap is structurally correct and should not be re-litigated."
   ],
   "by_matchup": {
     "MIA @ TOR": {
       "model_pick": "MIA",
-      "model_prob": 0.5343,
+      "model_prob": 0.558,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "MIA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.48,
-      "reasoning": "SKIP is correct. Gausman (TOR) holds a 1.80 xERA advantage over Pérez (MIA), and PQI opposes MIA's late-game profile. Fair_prob=0.384 signals the market already prices TOR as a heavy favorite — a 15pp gap between model (53.4%) and market (38.4%) that HARD CAP rules correctly handle. D, -2 grade reflects dual primary signals against MIA. No BvP data to supplement. The D-grade dual-signal-against pattern has weakened recently (0-for-4 on 5/25) but the market gap here is genuine and large.",
-      "lessons_applied": ["fair_prob_below_0.42_hard_skip", "D-grade-dual-signal-against-now-unreliable-post-5/25", "Gausman-xERA-advantage-plus-PQI-against-MIA"]
+      "claude_confidence": 0.42,
+      "reasoning": "D-grade with SP edge 1.83 xERA AGAINST MIA (Gausman >> Pérez) and PQI against (Δ=+23.9) both oppose the MIA pick direction. Market has fair_prob=0.360 for MIA — a 20pp gap vs model's 55.8%. calibration_caution_18_25pp flag on +19.82pp edge. BvP is all SMALL_SAMPLE with no directional conviction. Multiple structural signals align against MIA; SKIP is correct.",
+      "lessons_applied": ["D-grade dual-signal-against moderate-negative", "calibration_caution_18_25pp on edge>18pp", "market-gap as negative anchor"]
     },
     "WSH @ CLE": {
       "model_pick": "CLE",
-      "model_prob": 0.505,
+      "model_prob": 0.5535,
       "model_tier": "GOLD",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
-      "claude_tier": "GOLD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 7 correctly fires on hl_bullpen_xwoba_gap=+0.0147 (CLE pen slightly worse). f5_full_delta=0.2939 — CLE dominates F5 at 84.7% but only barely wins full game at 55.4%, requiring a bullpen flip from an inferior pen. Per 5/26 WSH@CLE and TB@BAL postgames, this profile (large delta + pen disadvantage) reliably merits SKIP. WSH also won yesterday in this series 6-3. Coin-flip territory after caps.",
+      "lessons_applied": ["f5_full_delta>0.15 + positive bullpen-gap = SKIP", "consecutive-series loss recency (WSH won 6-3 yesterday)", "HARD CAP 7 near-zero threshold confirmed 5/20"]
+    },
+    "STL @ MIL": {
+      "model_pick": "MIL",
+      "model_prob": 0.5158,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
       "claude_confidence": 0.51,
-      "reasoning": "HARD CAP 1 (negative edge -15.14pp) correctly prevents staking; market prices CLE at ~65% vs model's 50.5%. CLE's internal signals are positive (F1*=1.41, SP edge 1.13 xERA, PQI +15.2 all agree) but the market holds superior information. WSH blew out CLE 10-2 two days ago in this same series — a caution signal per the 5/21 same-series repeat pattern. HARD CAP 10 fires for bottom-bucket (pick_prob=0.507). Direction may be correct but EV protection overrides.",
-      "lessons_applied": ["HARD_CAP_1_negative_edge_enforced", "same-series-WSH-beat-CLE-10-2-two-days-ago-5/25", "HARD_CAP_10_bottom_bucket_fires_correctly"]
+      "reasoning": "HARD CAP 7 fires (hl_bullpen_xwoba_gap=+0.0051, MIL pen slightly worse). f5_full_delta=0.1681 — STL wins F5 at 65.2% but MIL wins full at 51.6%, again requiring a bullpen flip from a worse pen. HARD CAP 10 fires on pick_prob=0.509. Chad Patrick (STL) is a debut or thin-sample SP — MIL BvP vs Patrick is all NO_DATA. edge +16.03pp outside [4,15]pp; fair_prob=0.355 for MIL indicates market disagrees strongly.",
+      "lessons_applied": ["f5_full_delta>0.15 + pen disadvantage SKIP profile", "HARD CAP 7 + HARD CAP 10 double-fire", "thin-sample opposing SP with no BvP data reduces conviction"]
     },
     "SEA @ OAK": {
       "model_pick": "OAK",
-      "model_prob": 0.5143,
+      "model_prob": 0.5892,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "OAK",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "SKIP tier. OAK is picked at pick_prob=0.508 (near coin-flip), with PQI slightly against OAK (Δ=-3.5) and Stage 1/2 tight. Logan Gilbert (SEA) is an established quality SP facing Jeffrey Springs (OAK) — Springs is a solid pitcher but Gilbert's track record favors SEA direction. Edge=+6.97pp is within the staking band but HARD CAP 10 fires correctly for bottom-bucket marginal favorite. No BvP data to supplement. No exceptional reason to override the model's SKIP designation.",
-      "lessons_applied": ["HARD_CAP_10_bottom_bucket_fires", "Gilbert-quality-SP-provides-SEA-lean", "PQI-slightly-against-OAK"]
+      "claude_confidence": 0.35,
+      "reasoning": "HARD CAP 6 fires on edge_pp=+40.62pp — textbook calibrator hallucination. Market fair_prob=0.183 for OAK (vs model's 58.9%) is a 40pp gap confirming the hallucination. SEA BvP vs Jeffrey Springs shows Rodriguez OWNER (shrunk 0.791) and Refsnyder OWNER (shrunk 0.946) — SEA has the stronger BvP profile, further undermining OAK direction. Cap correctly prevents any stake.",
+      "lessons_applied": ["HARD CAP 6 calibrator hallucination validated", "market 40pp gap confirms cap", "SEA BvP owners vs Springs noted but no override on zero-stake game"]
     },
     "ARI @ SF": {
       "model_pick": "ARI",
-      "model_prob": 0.702,
+      "model_prob": 0.7945,
       "model_tier": "SKIP",
-      "model_grade": "D",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "SKIP due to outside-band edge (+15.37pp). f5_full_delta=0.318 is extreme — SF wins F5 at 61.6% yet ARI is projected to win full game at 70.2%, a massive bullpen-carry thesis with hl_bullpen_xwoba_gap=-0.0016 (near-zero). Trevor McDonald (SF) holds a 0.40 xERA edge but has only 94 PA (small-sample instability). ARI won 6-2 at SF two days ago in this series. The extreme Stage 1/2 divergence and outside-band edge combine to make this a genuine directional coin-flip; SKIP is correct.",
-      "lessons_applied": ["extreme_f5_full_delta_0.318_outside_staking_band", "small-sample-SP-McDonald-94PA-less-reliable", "ARI-won-6-2-at-SF-two-days-ago"]
+      "claude_confidence": 0.45,
+      "reasoning": "HARD CAP 6 fires on edge_pp=+27.68pp. Pre-cap grade D (-2): SP edge 0.40 xERA AGAINST ARI with small-sample SP flag (min_pa=94 for Michael Soroka). f5_full_delta=0.4104 is the largest on the slate — SF dominates F5 at 61.6% but ARI wins full at 79.5%. ARI had consecutive wins at SF on 5/25 and 5/26, but the hallucinated edge makes directional confidence invalid. Pre-cap D grade undermines direction.",
+      "lessons_applied": ["HARD CAP 6 calibrator hallucination", "pre-cap D grade undermines direction despite consecutive series wins", "small-sample SP flag on pick-side SP"]
     },
     "PHI @ SD": {
-      "model_pick": "SD",
-      "model_prob": 0.5891,
-      "model_tier": "SKIP",
-      "model_grade": "D",
+      "model_pick": "PHI",
+      "model_prob": 0.5313,
+      "model_tier": "GOLD",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "SD",
+      "claude_pick": "PHI",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.43,
-      "reasoning": "SKIP with D, -3 and both primary signals strongly opposing SD: Buehler (PHI) holds a 1.78 xERA advantage over Sánchez (SD), and PQI at Δ=-24.9 predicts significant SD late-game degradation. Confidence_downgrade=True and bullpen_fatigue add uncertainty. Edge=+19.74pp sits in SOFT CAP 6.5 calibration-suspect territory. PHI won 3-0 here two days ago. While D-grade dual-signal-against is now less reliable (0-for-4 on 5/25), PHI's specific SP quality advantage (Buehler >> Sánchez) is a genuine structural signal supporting PHI direction.",
-      "lessons_applied": ["D-grade-dual-signal-against-weakened-post-5/25-but-Buehler-xERA-real", "PHI-won-3-0-at-SD-same-series", "SOFT_CAP_6.5_calibration_suspect_edge"]
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 1 fires on negative edge (-5.28pp) — market prices PHI at fair_prob=0.584, more bullish than model's 53.1%. F1_xera_gap=2.71 supports PHI (Sánchez >> Buehler) and PQI=-25.0 strongly confirms PHI direction. However confidence_downgrade=True + bullpen_fatigue, and Tatis is OWNER vs Sánchez (12 PA, shrunk 0.865). Market already prices PHI direction fully — no edge to stake; cap enforcement is EV-correct.",
+      "lessons_applied": ["HARD CAP 1 negative-edge enforcement", "market pricing above model on pick direction", "Tatis OWNER vs pick-side SP noted; insufficient standalone OVERRIDE per 5/25 lesson"]
+    },
+    "TB @ BAL": {
+      "model_pick": "TB",
+      "model_prob": 0.5013,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.47,
+      "reasoning": "Near-coin-flip (50.1%) with triple stress flags (acute_roster + bullpen_fatigue + confidence_downgrade). f5_full_delta=0.196 — BAL dominates F5 at 69.5% but TB picks up full game at 50.1%, requiring a bullpen flip from a worse pen (hl_bullpen_xwoba_gap=+0.005 for TB). 5/26 TB@BAL with near-identical profile lost 6-1. No BvP data available. HARD CAP 10 correctly fires at the absolute bottom of conviction bands.",
+      "lessons_applied": ["f5_full_delta>0.15 + pen disadvantage SKIP", "triple stress flags suppress directional confidence", "5/26 TB@BAL 6-1 loss with same profile"]
     },
     "LAA @ DET": {
       "model_pick": "DET",
-      "model_prob": 0.6139,
+      "model_prob": 0.6293,
       "model_tier": "GOLD",
-      "model_grade": "C",
+      "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "DET",
       "claude_tier": "GOLD",
       "claude_confidence": 0.60,
-      "reasoning": "Pre-cap A (score=5): F1*=1.11, SP edge 0.98 xERA, PQI +10.7 all agree with DET. HARD CAP 7 fires (hl_bullpen_xwoba_gap=+0.0027, barely positive). HARD CAP 10 grade_reasons show 'pick_prob=0.550 in (0.50, 0.55]' but CSV pick_prob=0.6139 — apparent data inconsistency worth pipeline review. Regardless, HARD CAP 7's near-zero gap plus acute_roster+bullpen_fatigue stress flags and confidence_downgrade=True justify the no-stake outcome. Mize (DET) has solid multi-signal backing; directional case is sound. Flag pick_prob discrepancy for pipeline audit.",
-      "lessons_applied": ["HARD_CAP_7_near-zero_gap_correct_suppression", "pick_prob_HARD_CAP_10_data_inconsistency_flagged_for_pipeline_review", "acute_roster_bullpen_fatigue_stress_flags_justify_no_stake"]
+      "reasoning": "DET at 62.9% is the highest-conviction non-LAD non-SKIP pick above the bottom bucket. Two F-signals (F1_xera_gap=1.12* + F3=1769.2), PQI +10.8, and tight Stage 1/2 agreement (f5_full_delta=0.021). hl_bullpen_xwoba_gap=+0.0005 is essentially neutral pens. HARD CAP 7 fired at near-zero threshold; 5/20 inaugural near-zero firing was direction-correct. Triple stress flags (acute_roster + bullpen_fatigue + confidence_downgrade) are stake dampers not direction reversers per 5/25 lesson. F1* risk acknowledged but pick_prob=62.9% provides better structural support than 5/26 LAA@DET (52.5%).",
+      "lessons_applied": ["HARD CAP 7 near-zero threshold noted but not overriding at 62.9%", "stress flags as stake-suppressors not direction reversers (5/25 lesson)", "F1* asterisk risk at higher pick_prob than the 5/26 loss case"]
     },
     "CHC @ PIT": {
       "model_pick": "PIT",
-      "model_prob": 0.5334,
+      "model_prob": 0.526,
       "model_tier": "GOLD",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "PIT",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.55,
-      "reasoning": "GOLD but three caps correctly fire: edge=+1.56pp (below [4,15]pp minimum), HARD CAP 7 (bullpen gap +0.0019), HARD CAP 10 (bottom bucket pick_prob=0.5334). Pre-cap A (score=5) reflects genuine Chandler (PIT) conviction with F1*=0.94, SP edge 0.71, PQI +11 all aligning. Confidence_downgrade=True adds further caution. On 5/25, model picked CHC and PIT won 2-1; today direction flips to PIT. The F1* asterisk and minimal edge prevent any stake; directional read for PIT is sound but very low conviction.",
-      "lessons_applied": ["edge_below_4pp_minimum_kills_stake", "HARD_CAP_7_and_10_correct_suppression", "confidence_downgrade_True_adds_caution"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 fires on negative edge (-1.65pp). F1_xera_gap=0.94* has the thin-sample asterisk on Bubba Chandler (young PIT SP), and no BvP data is available for either team. hl_bullpen_xwoba_gap=+0.0037 (PIT pen slightly worse). confidence_downgrade=True. pick_prob=0.510 is at the very floor of marginal-favorite range. No qualitative reason to rescue this from SKIP.",
+      "lessons_applied": ["HARD CAP 1 negative-edge enforcement", "F1* thin-sample with no BvP = no confidence boost", "bottom-bucket pick_prob 51.0%"]
     },
     "ATL @ BOS": {
       "model_pick": "BOS",
-      "model_prob": 0.5204,
+      "model_prob": 0.5448,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "BOS",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "SKIP with D, -3. Elder (ATL) holds a 1.70 xERA advantage over Connelly Early (BOS home SP), and PQI at Δ=-25.1 strongly opposes BOS late-game performance. BOS dominates F5 at 72.2% but full game drops to 52.0% (f5_full_delta=0.2017). Hl_bullpen_xwoba_gap=-0.0134 shows BOS bullpen is genuinely better, but the dual SP+PQI signal against BOS and D, -3 grade outweigh that minor edge. Bullpen_fatigue and confidence_downgrade=True compound uncertainty. ATL's SP quality advantage is the primary structural concern here.",
-      "lessons_applied": ["D-grade-dual-signal-against-weakened-but-Elder-1.70-xERA-is-real", "f5_full_delta_0.2017_bullpen_carry_dependency", "PQI_minus_25_strong_opposition_to_BOS"]
+      "claude_confidence": 0.44,
+      "reasoning": "D-grade: SP edge 1.71 xERA AGAINST BOS (Elder >> Connelly Early) and PQI Δ=-25.2 against BOS both oppose the pick. ATL has Acuña, Olson, Albies — dangerous lineup vs a xERA-disadvantaged home SP. BOS bullpen is better (gap=-0.0135) but f5_full_delta=0.167 shows BOS dominates F5 at 71.2%, consistent with a SP-driven F5 advantage that evaporates in the bullpen era. W. Contreras is OWNER vs Elder (13 PA, shrunk 0.805) for BOS but one OWNER is insufficient to override D-grade dual signals.",
+      "lessons_applied": ["D-grade dual-signal-against as moderate negative", "single OWNER BvP insufficient to override D-grade (5/25 lesson)", "Elder xERA edge for ATL is primary directional concern"]
     },
     "CIN @ NYM": {
       "model_pick": "CIN",
-      "model_prob": 0.7012,
+      "model_prob": 0.5776,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "CIN",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.45,
-      "reasoning": "SKIP with D, -4. Brazobán (NYM) holds a 2.06 xERA advantage over Abbott (CIN), PQI at Δ=+39.4 strongly opposes CIN's late-game profile, Stage 1/2 disagree (Δ=0.363), and edge=+22.63pp sits in SOFT CAP 6.5 suspect territory. The model's 70.1% CIN full-game probability depends on an extreme bullpen-carry thesis when NYM's SP dominates F5 at 66.2%. CIN won 7-2 at NYM on 5/25 but with different pitchers; today Brazobán's substantial xERA advantage makes the directional case weaker than on 5/25.",
-      "lessons_applied": ["D-grade-score-minus-4-all-signals-oppose-CIN", "SOFT_CAP_6.5_calibration_suspect_edge_22pp", "extreme_f5_full_delta_0.363_pure_bullpen_carry"]
+      "claude_confidence": 0.40,
+      "reasoning": "D-grade with heavy signals against CIN: SP edge 2.06 xERA AGAINST CIN (Brazobán >> Abbott) and PQI Δ=+39.4 against CIN — the largest PQI headwind on the slate. f5_full_delta=0.2393 (NYM dominates F5 at 66.2%, CIN needs full-game bullpen flip). Juan Soto is OWNER vs Abbott (12 PA, shrunk 0.813) — a meaningful soft-negative for CIN's SP effectiveness. CIN BvP vs Brazobán is entirely empty. Multiple structural factors oppose CIN direction.",
+      "lessons_applied": ["D-grade dual-signal-against with largest PQI headwind on slate", "Soto OWNER vs pick-side SP is soft negative", "f5_full_delta>0.15 without pen advantage for CIN"]
     },
     "MIN @ CHW": {
-      "model_pick": "MIN",
-      "model_prob": 0.5021,
+      "model_pick": "CHW",
+      "model_prob": 0.5141,
       "model_tier": "GOLD",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "MIN",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.52,
-      "reasoning": "GOLD but HARD CAP 10 fires correctly for bottom-bucket (pick_prob=0.507, score 1→0). Pre-cap B- (score=1): F3_swing_take_gap=3351.4 fires (+1) but PQI slightly against MIN (Δ=+5.9, -1) net. Bullpen_fatigue and confidence_downgrade=True add stress. Edge=+6.28pp is within the staking band but the barely-above-0.50 pick probability correctly justifies suppression. On 5/25, model picked CHW (different direction) and CHW won 3-1. Today MIN is the pick at near-coin-flip pick_prob — extremely low conviction, CONFIRM SKIP.",
-      "lessons_applied": ["HARD_CAP_10_bottom_bucket_correct_suppression", "pick_prob_0.507_near_coin_flip", "5/25_CHW_won_different_direction_than_today"]
+      "claude_pick": "CHW",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "HARD CAP 8 fires (pick_prob=0.508 in (0.50,0.52], edge=+0.80pp ≤ +12pp). HARD CAP 10 also fires. F3_swing_take_gap=3586.4 is the sole F-signal with no F1/F2 corroboration. confidence_downgrade=True + bullpen_fatigue. CHW lost to MIN 5-3 yesterday in this same series. CHW bullpen is marginally better (gap=-0.0013) but all BvP data is NO_DATA. Edge of +0.80pp is structurally unstakeable.",
+      "lessons_applied": ["HARD CAP 8 + HARD CAP 10 double-fire at 50.8%", "consecutive-series loss recency (CHW lost 5-3 yesterday)", "sole F3 signal without corroboration on coin-flip"]
     },
     "NYY @ KC": {
       "model_pick": "TBD",
@@ -139,21 +163,21 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "TBD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "PENDING_SP_DATA: Gerrit Cole (NYY away SP) has 0 Statcast pitches season-to-date, likely due to injury return or early-season absence. Without Statcast data for Cole, SP quality comparison is impossible and no grade can be issued. Per pipeline protocol, no pick. If Cole is pitching today and his true-talent xERA is available from historical data, this could be a significant model blind-spot — KC's home advantage and their probable SP quality may materially shift the directional call. Monitor pre-game lineups.",
-      "lessons_applied": ["PENDING_SP_DATA_protocol_enforced", "Cole_0_Statcast_pitches_possible_injury_return"]
+      "claude_confidence": null,
+      "reasoning": "PENDING_SP_DATA: Gerrit Cole has 0 Statcast pitches season-to-date — no SP quality estimate possible. Same threshold that correctly prevented picks on CHC@PIT 5/26 (PIT won 12-1) and SEA@OAK 5/26. No directional call is made. Zero-data SP protection is non-negotiable; no qualitative override can substitute for absent Statcast data.",
+      "lessons_applied": ["PENDING_SP_DATA zero-data threshold validated 5/26 CHC@PIT 12-1 blowout", "zero-data SP protection prevents false precision on either direction"]
     },
     "HOU @ TEX": {
-      "model_pick": "HOU",
-      "model_prob": 0.5044,
+      "model_pick": "TEX",
+      "model_prob": 0.5285,
       "model_tier": "SKIP",
-      "model_grade": "D",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "HOU",
+      "claude_pick": "TEX",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.44,
-      "reasoning": "SKIP with D, -2. Jacob deGrom (TEX home) pitches against Mike Burrows (HOU away). The 0.31 xERA gap favoring deGrom is surprisingly modest for a pitcher of his caliber — possible injury-related performance suppression — but the market is pricing it: fair_prob=0.384 means the market gives HOU only 38.4%. SP and PQI both oppose HOU. HOU won 9-0 at TEX on 5/25 but with entirely different pitchers. The market's heavy deGrom premium combined with the dual-signal-against D, -2 grade makes this SKIP unambiguous.",
-      "lessons_applied": ["fair_prob_below_0.42_hard_skip", "deGrom_market_premium_validated", "D-grade-dual-signal-against-HOU"]
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 fires on negative edge (-5.37pp). HOU-TEX series has been violently volatile: TEX picked on 5/25 → HOU won 9-0; HOU picked on 5/26 → TEX won 10-7. Now TEX is picked again — the consecutive-reversal pattern flags this series as structurally unstable. acute_roster=True + confidence_downgrade. Jacob deGrom pitching for TEX is positive qualitative context, but negative market edge indicates market has already priced the matchup.",
+      "lessons_applied": ["HARD CAP 1 negative-edge enforcement", "consecutive-day series reversal pattern (5/26 postgame lesson)", "market pricing already incorporates known deGrom matchup"]
     },
     "COL @ LAD": {
       "model_pick": "LAD",
@@ -163,33 +187,9 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "LAD",
       "claude_tier": "DIAMOND",
-      "claude_confidence": 0.71,
-      "reasoning": "DIAMOND direction firmly correct: Ohtani (LAD) holds a 5.11 xERA advantage over Sugano (COL), triple F-signal (F1=6.54, F2=0.050, F3=11324), PQI=+63.6. Edge=-15.34pp means the market prices LAD at 82.8% vs model's 67.4% — HARD CAP 1 correctly prevents staking at inferior odds. Stage 1/2 disagree moderately (Δ=0.152). LAD won 5-3 here two days ago in this series. This is the strongest directional read on today's slate; no stake due to negative EV, but direction confidence is high.",
-      "lessons_applied": ["HARD_CAP_1_EV_protection_enforced", "Ohtani_triple_F_signal_highest_conviction_on_slate", "LAD_won_5-3_same_series_two_days_ago"]
-    },
-    "STL @ MIL": {
-      "model_pick": "TBD",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": "C",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "PENDING_SP_DATA: MIL home SP not yet announced. Without both starters' Statcast data (pipeline requires 100+ pitches), SP quality comparison and grading are impossible. No pick issued. MIL had a dominant SP edge on 5/25 (Misiorowski, F1=5.04, won 5-1) — if a similar quality starter is announced, this matchup could resurface as a strong CONFIRM. Recommend re-running the model once the MIL starter is confirmed.",
-      "lessons_applied": ["PENDING_SP_DATA_protocol_enforced", "MIL_5/25_Misiorowski_win_context_for_re-run"]
-    },
-    "TB @ BAL": {
-      "model_pick": "TBD",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": "C",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "PENDING_SP_DATA: BAL home SP not yet announced. Without both starters' Statcast data, grading is impossible. No pick issued. BAL's home-field context and bullpen quality (hl_bullpen_xwoba gap unknown without SP context) could shift the model's direction materially either way. Recommend re-running once BAL's starter is confirmed. TB vs BAL series context: TB and BAL have played closely in recent matchups; SP announcement is the key gating factor.",
-      "lessons_applied": ["PENDING_SP_DATA_protocol_enforced"]
+      "claude_confidence": 0.68,
+      "reasoning": "Strongest directional conviction on the slate. Shohei Ohtani pitching at home with triple F-signal (F1=6.57, F2=0.052, F3=12071.3) and PQI=+63.7 — largest SP advantage and largest PQI on today's slate. LAD has won both prior games in this COL series (5/25: 5-3, 5/26: 15-6). f5_full_delta=0.152 is manageable. hl_bullpen_xwoba_gap=+0.0008 is essentially neutral. Negative edge (-16.48pp) correctly prevents stake — market at 83.9% vs model's 67.4%. Direction is unambiguous; zero-staked per prior HARD CAP 1 validations.",
+      "lessons_applied": ["triple F-signal + Ohtani = highest directional conviction", "negative-edge enforcement correct even on directionally-correct DIAMOND picks (5/25 5-3, 5/26 15-6 wins)", "consecutive-series wins reinforce structural LAD edge vs COL"]
     }
   }
 }
