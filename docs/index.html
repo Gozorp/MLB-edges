@@ -231,6 +231,66 @@
     margin-bottom: 0.6rem; display: block;
   }
 
+  /* ===== Head-to-Head History accordion (2026-05-27) ===== */
+  .h2h-matchup-block {
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.6rem;
+    background: rgba(13,17,23,0.4);
+  }
+  .h2h-matchup-header {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .h2h-matchup-summary {
+    color: var(--muted);
+    font-size: 0.85em;
+    font-variant-numeric: tabular-nums;
+    font-weight: 400;
+  }
+  .h2h-game-row {
+    padding: 0.18rem 0;
+    display: grid;
+    grid-template-columns: 6.5em 10em 6.5em minmax(8em, 1fr) 1.5em;
+    gap: 0.5rem;
+    font-size: 0.88em;
+    font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-variant-numeric: tabular-nums;
+    align-items: baseline;
+  }
+  .h2h-game-row.won  { color: #56d364; }
+  .h2h-game-row.lost { color: #f85149; }
+  .h2h-game-row.pending { color: var(--muted); font-style: italic; }
+  .h2h-result-icon {
+    text-align: center;
+    font-weight: 700;
+  }
+  .h2h-empty {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.9em;
+  }
+  @media (max-width: 720px) {
+    .h2h-game-row {
+      grid-template-columns: 5em 1fr 1.5em;
+      grid-template-areas:
+        "date matchup icon"
+        "pick result result";
+      row-gap: 0.1rem;
+    }
+    .h2h-game-row > :nth-child(1) { grid-area: date; }
+    .h2h-game-row > :nth-child(2) { grid-area: matchup; }
+    .h2h-game-row > :nth-child(3) { grid-area: pick; }
+    .h2h-game-row > :nth-child(4) { grid-area: result; }
+    .h2h-game-row > :nth-child(5) { grid-area: icon; }
+  }
+
   /* ===== Pipeline health card (2026-05-26) ===== */
   #health-card {
     background: var(--bg-elev); border: 1px solid var(--border);
@@ -1152,6 +1212,17 @@
         <div class="accordion-body">
           <div class="accordion-body-inner">
             <div id="slate"></div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item" data-acc="h2h-history">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Head-to-Head History</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="h2h-history">Open to scan up to 30 days of historical picks for the current matchups.</div>
           </div>
         </div>
       </div>
@@ -5235,6 +5306,210 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   return html;
 }
 
+// ============================================================================
+// Head-to-Head History accordion (2026-05-27)
+// Pure client-side: scans up to 30 days of picks_<date>_diag.csv files in
+// docs/data/, filters per-matchup, fetches MLB Stats API for outcomes (with
+// localStorage caching), renders one block per game on today's slate.
+// ============================================================================
+const H2H_HISTORY_DAYS = 30;
+const H2H_OUTCOMES_CACHE_KEY = "mlb_h2h_outcomes_v1";
+
+// Parse "ARI @ SF (G2 of 3)" -> {away, home, gameNum}.
+function _h2hParseMatchup(s) {
+  const m = (s || "").match(/^(\w{2,4})\s*@\s*(\w{2,4})(?:\s*\(G(\d+)(?:\s+of\s+\d+)?\))?/);
+  if (!m) return null;
+  return { away: m[1], home: m[2], gameNum: parseInt(m[3] || "1", 10) };
+}
+
+// Stable key for a matchup pair (order-insensitive).
+function _h2hPairKey(a, b) { return [a, b].sort().join("_"); }
+
+// Generate the last N dates (ISO yyyy-mm-dd), excluding today.
+function _h2hHistoricalDates(daysBack) {
+  const dates = [];
+  const now = new Date();
+  for (let i = 1; i <= daysBack; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - i);
+    dates.push(d.toISOString().slice(0, 10));
+  }
+  return dates;
+}
+
+// Load one historical diag CSV (silent on 404 — off-days are normal).
+async function _h2hLoadDiag(date) {
+  try {
+    const r = await fetch(`./data/picks_${date}_diag.csv`, { cache: "force-cache" });
+    if (!r.ok) return [];
+    const rows = parseCSV(await r.text());
+    return rows.map(row => Object.assign({}, row, { _date: date }));
+  } catch (_) { return []; }
+}
+
+// Map MLB Stats API full team name -> 3-letter abbrev matching our diag CSVs.
+function _h2hAbbrev(n) {
+  const M = {
+    "Arizona Diamondbacks":"ARI","Atlanta Braves":"ATL","Baltimore Orioles":"BAL",
+    "Boston Red Sox":"BOS","Chicago White Sox":"CWS","Chicago Cubs":"CHC",
+    "Cincinnati Reds":"CIN","Cleveland Guardians":"CLE","Colorado Rockies":"COL",
+    "Detroit Tigers":"DET","Houston Astros":"HOU","Kansas City Royals":"KC",
+    "Los Angeles Angels":"LAA","Los Angeles Dodgers":"LAD","Miami Marlins":"MIA",
+    "Milwaukee Brewers":"MIL","Minnesota Twins":"MIN","New York Yankees":"NYY",
+    "New York Mets":"NYM","Oakland Athletics":"OAK","Athletics":"ATH",
+    "Philadelphia Phillies":"PHI","Pittsburgh Pirates":"PIT","San Diego Padres":"SD",
+    "San Francisco Giants":"SF","Seattle Mariners":"SEA","St. Louis Cardinals":"STL",
+    "Tampa Bay Rays":"TB","Texas Rangers":"TEX","Toronto Blue Jays":"TOR",
+    "Washington Nationals":"WSH",
+  };
+  return M[n] || n;
+}
+
+// In-memory dedupe + localStorage cache for MLB Stats outcomes.
+function _h2hReadCache() {
+  try { return JSON.parse(localStorage.getItem(H2H_OUTCOMES_CACHE_KEY) || "{}"); }
+  catch (_) { return {}; }
+}
+function _h2hWriteCache(c) {
+  try { localStorage.setItem(H2H_OUTCOMES_CACHE_KEY, JSON.stringify(c)); }
+  catch (_) {}
+}
+
+// Fetch MLB Stats API outcome for a date+matchup; cache final-only.
+async function _h2hFetchOutcome(date, away, home, gameNum) {
+  const cache = _h2hReadCache();
+  const key = `${date}_${away}@${home}_G${gameNum}`;
+  if (cache[key]) return cache[key];
+
+  try {
+    const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1` +
+                `&date=${date}&hydrate=linescore`;
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const data = await r.json();
+    const games = (data.dates || []).flatMap(d => d.games || []);
+    const m = games.find(g => {
+      const h = _h2hAbbrev(g.teams && g.teams.home && g.teams.home.team && g.teams.home.team.name);
+      const a = _h2hAbbrev(g.teams && g.teams.away && g.teams.away.team && g.teams.away.team.name);
+      const gn = g.gameNumber || 1;
+      return h === home && a === away && gn === gameNum;
+    });
+    if (!m) return null;
+    const ls = (m.linescore && m.linescore.teams) || {};
+    const hr = ls.home && ls.home.runs;
+    const ar = ls.away && ls.away.runs;
+    if (hr == null || ar == null) return null;
+    const status = m.status && m.status.abstractGameState;
+    if (status !== "Final") return null;
+    const result = { winner: hr > ar ? home : away, home_R: hr, away_R: ar };
+    cache[key] = result;
+    _h2hWriteCache(cache);
+    return result;
+  } catch (_) { return null; }
+}
+
+// Main render — fires after the slate paints; updates the H2H div async.
+async function renderH2HHistory(todayRows) {
+  const el = document.getElementById("h2h-history");
+  if (!el) return;
+  if (!todayRows || !todayRows.length) {
+    el.innerHTML = `<div class="h2h-empty">No slate loaded — pick a date to populate H2H history.</div>`;
+    return;
+  }
+  el.innerHTML = `<div class="h2h-empty">Scanning up to ${H2H_HISTORY_DAYS} days of historical picks…</div>`;
+
+  // 1. Fetch all historical diag CSVs in parallel (silent on 404).
+  const dates = _h2hHistoricalDates(H2H_HISTORY_DAYS);
+  const allRows = (await Promise.all(dates.map(_h2hLoadDiag))).flat();
+
+  // 2. Index by sorted-team-pair key for O(1) lookup per matchup.
+  const byPair = {};
+  for (const row of allRows) {
+    const m = _h2hParseMatchup(row.matchup);
+    if (!m) continue;
+    if (!row.pick || row.pick === "TBD") continue;
+    const key = _h2hPairKey(m.away, m.home);
+    (byPair[key] = byPair[key] || []).push(Object.assign({}, m, row));
+  }
+
+  // 3. Per-game block: filter history, fetch outcomes, render.
+  const blocks = [];
+  // De-dup today's matchups by pair (doubleheaders display both games as one
+  // H2H query — they share the same pair history).
+  const seenPairs = new Set();
+  for (const row of todayRows) {
+    const m = _h2hParseMatchup(row.matchup);
+    if (!m) continue;
+    const key = _h2hPairKey(m.away, m.home);
+    if (seenPairs.has(key)) continue;
+    seenPairs.add(key);
+
+    const history = (byPair[key] || []).slice();
+    if (!history.length) {
+      blocks.push(
+        `<div class="h2h-matchup-block">` +
+          `<div class="h2h-matchup-header">` +
+            `<span>${m.away} vs ${m.home}</span>` +
+            `<span class="h2h-matchup-summary">No prior 2026 games</span>` +
+          `</div>` +
+        `</div>`
+      );
+      continue;
+    }
+
+    // Sort by date asc + fetch outcomes in parallel.
+    history.sort((a, b) => a._date.localeCompare(b._date));
+    const enriched = await Promise.all(history.map(async h => {
+      const out = await _h2hFetchOutcome(h._date, h.away, h.home, h.gameNum);
+      return Object.assign({}, h, { _outcome: out });
+    }));
+
+    let correct = 0, resolved = 0;
+    const rowsHtml = enriched.map(h => {
+      const gnTag = h.gameNum > 1 ? ` G${h.gameNum}` : "";
+      if (!h._outcome) {
+        return `<div class="h2h-game-row pending">` +
+          `<span>${h._date}</span>` +
+          `<span>${h.away}@${h.home}${gnTag}</span>` +
+          `<span>pick: ${h.pick}</span>` +
+          `<span>in progress</span>` +
+          `<span class="h2h-result-icon">·</span>` +
+        `</div>`;
+      }
+      resolved++;
+      const won = h.pick === h._outcome.winner;
+      if (won) correct++;
+      const cls = won ? "won" : "lost";
+      const icon = won ? "✓" : "✗";
+      const score = `${h._outcome.away_R}-${h._outcome.home_R}`;
+      return `<div class="h2h-game-row ${cls}">` +
+        `<span>${h._date}</span>` +
+        `<span>${h.away}@${h.home}${gnTag}</span>` +
+        `<span>pick: ${h.pick}</span>` +
+        `<span>${score} → ${h._outcome.winner}</span>` +
+        `<span class="h2h-result-icon">${icon}</span>` +
+      `</div>`;
+    }).join("");
+
+    const pct = resolved ? ` (${(100 * correct / resolved).toFixed(0)}%)` : "";
+    const summary = resolved
+      ? `Model: ${correct}/${resolved}${pct}`
+      : "All games still in progress";
+    blocks.push(
+      `<div class="h2h-matchup-block">` +
+        `<div class="h2h-matchup-header">` +
+          `<span>${m.away} vs ${m.home}</span>` +
+          `<span class="h2h-matchup-summary">${summary}</span>` +
+        `</div>` +
+        rowsHtml +
+      `</div>`
+    );
+  }
+
+  el.innerHTML = blocks.join("") ||
+    `<div class="h2h-empty">No matchups found on today's slate.</div>`;
+}
+
 // Map a row's odds_status to a short human-readable reason for why
 // fair_prob / edge_pp would be blank.  Used as a hover title on the
 // dashes shown in the slate table.
@@ -6065,6 +6340,10 @@ async function loadSlate(date, { bust = false } = {}) {
     document.getElementById("parlay").innerHTML = parlayHtml;
     document.getElementById("top-outcomes").innerHTML = topOutcomesHtml;
     document.getElementById("bullpen-outlook").innerHTML = bullpenOutlookHtml;
+    // H2H History — async, fires-and-forgets in the background. Pure
+    // client-side: scans up to 30 days of picks_*_diag.csv + MLB Stats
+    // API for outcomes (localStorage cached).
+    try { renderH2HHistory(playableRows); } catch (_) {}
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
