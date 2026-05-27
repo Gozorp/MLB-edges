@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "checked_at": "2026-05-27T01:31:43.912094+00:00",
+  "checked_at": "2026-05-27T06:10:19.192626+00:00",
   "overall": "red",
   "categories": {
     "workflows": "green",
-    "data_flow": "yellow",
+    "data_flow": "green",
     "deployment": "red",
     "model": "green"
   },
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 1.2h ago",
+      "message": "last ran 0.7h ago",
       "detail": {
-        "last_run_iso": "2026-05-27T00:22:27Z",
-        "age_hours": 1.15
+        "last_run_iso": "2026-05-27T05:25:20Z",
+        "age_hours": 0.75
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.8d ago",
+      "message": "last fired 3.0d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:22:02Z",
-        "age_hours": 66.16,
+        "age_hours": 70.8,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.7d ago",
+      "message": "last fired 2.9d ago",
       "detail": {
         "last_run_iso": "2026-05-24T07:47:38Z",
-        "age_hours": 65.73,
+        "age_hours": 70.38,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 5.2h ago",
+      "message": "last fired 9.8h ago",
       "detail": {
         "last_run_iso": "2026-05-26T20:22:17Z",
-        "age_hours": 5.16,
+        "age_hours": 9.8,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -64,27 +64,27 @@
     },
     {
       "name": "kalshi_coverage_rate",
-      "severity": "yellow",
-      "message": "33% of slate has no Kalshi moneyline",
+      "severity": "green",
+      "message": "12/15 rows have market odds",
       "detail": {
         "total_rows": 15,
-        "ok_rows": 10,
-        "non_ok_pct": 33.3,
+        "ok_rows": 12,
+        "non_ok_pct": 20.0,
         "status_distribution": {
-          "fetched": 10,
-          "pending_sp_data": 5
+          "fetched": 12,
+          "pending_sp_data": 3
         }
       },
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "yellow",
-      "message": "33% PENDING_SP_DATA (5/15)",
+      "severity": "green",
+      "message": "3/15 rows PENDING_SP_DATA",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 5,
-        "pct_of_slate": 33.3
+        "pending_sp_data_count": 3,
+        "pct_of_slate": 20.0
       },
       "category": "data_flow"
     },
@@ -111,10 +111,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 17.1h ago",
+      "message": "last learned 21.8h ago",
       "detail": {
         "last_entry_iso": "2026-05-26T08:24:29.212478+00:00",
-        "age_hours": 17.12
+        "age_hours": 21.76
       },
       "category": "model"
     },
@@ -141,11 +141,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "2/15 rows stress-warned",
+      "message": "5/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 2,
-        "pct_of_slate": 13.3
+        "stress_warned_count": 5,
+        "pct_of_slate": 33.3
       },
       "category": "model"
     }
