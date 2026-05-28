@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "purpose": "Home stadium lat/lon + roof info for the weather HUD (docs/js/weather.js).",
+    "coord_source": "Stadium GPS coordinates from public records. Verified against MLB Stats API venue records where possible.",
+    "roof_semantics": {
+      "is_indoor": "Permanently roofed dome — weather not a factor. Weather HUD shows 'INDOOR' chip.",
+      "is_retractable": "Roof can close. Weather HUD shows ambient outdoor weather with a small retractable-roof badge; the model treats these as outdoor by default since roof-open is the more common state."
+    },
+    "abbreviations": "3-letter abbrevs match the picks_*_diag.csv convention (CHW not CWS, OAK not ATH).",
+    "notes": {
+      "OAK": "Athletics play at Sutter Health Park in West Sacramento for 2025-2027 while awaiting Las Vegas relocation; coords reflect Sutter Health, not Oakland Coliseum.",
+      "TB":  "Tropicana Field. Note: Rays played the 2025 season at Steinbrenner Field (Tampa, ~27.9789, -82.5042) due to Hurricane Milton damage; if they remained there in 2026, flip is_indoor to false and update coords."
+    }
+  },
+  "teams": {
+    "ARI": {"name": "Chase Field",                 "lat": 33.4453, "lon": -112.0667, "is_indoor": false, "is_retractable": true},
+    "AZ":  {"name": "Chase Field",                 "lat": 33.4453, "lon": -112.0667, "is_indoor": false, "is_retractable": true},
+    "ATL": {"name": "Truist Park",                 "lat": 33.8908, "lon":  -84.4678, "is_indoor": false, "is_retractable": false},
+    "BAL": {"name": "Oriole Park at Camden Yards", "lat": 39.2839, "lon":  -76.6217, "is_indoor": false, "is_retractable": false},
+    "BOS": {"name": "Fenway Park",                 "lat": 42.3467, "lon":  -71.0972, "is_indoor": false, "is_retractable": false},
+    "CHC": {"name": "Wrigley Field",               "lat": 41.9484, "lon":  -87.6553, "is_indoor": false, "is_retractable": false},
+    "CHW": {"name": "Rate Field",                  "lat": 41.8300, "lon":  -87.6339, "is_indoor": false, "is_retractable": false},
+    "CIN": {"name": "Great American Ball Park",    "lat": 39.0975, "lon":  -84.5067, "is_indoor": false, "is_retractable": false},
+    "CLE": {"name": "Progressive Field",           "lat": 41.4962, "lon":  -81.6852, "is_indoor": false, "is_retractable": false},
+    "COL": {"name": "Coors Field",                 "lat": 39.7559, "lon": -104.9942, "is_indoor": false, "is_retractable": false},
+    "DET": {"name": "Comerica Park",               "lat": 42.3390, "lon":  -83.0485, "is_indoor": false, "is_retractable": false},
+    "HOU": {"name": "Daikin Park",                 "lat": 29.7572, "lon":  -95.3552, "is_indoor": false, "is_retractable": true},
+    "KC":  {"name": "Kauffman Stadium",            "lat": 39.0517, "lon":  -94.4803, "is_indoor": false, "is_retractable": false},
+    "LAA": {"name": "Angel Stadium",               "lat": 33.8003, "lon": -117.8827, "is_indoor": false, "is_retractable": false},
+    "LAD": {"name": "Dodger Stadium",              "lat": 34.0739, "lon": -118.2400, "is_indoor": false, "is_retractable": false},
+    "MIA": {"name": "loanDepot park",              "lat": 25.7781, "lon":  -80.2197, "is_indoor": false, "is_retractable": true},
+    "MIL": {"name": "American Family Field",       "lat": 43.0280, "lon":  -87.9712, "is_indoor": false, "is_retractable": true},
+    "MIN": {"name": "Target Field",                "lat": 44.9817, "lon":  -93.2776, "is_indoor": false, "is_retractable": false},
+    "NYM": {"name": "Citi Field",                  "lat": 40.7571, "lon":  -73.8458, "is_indoor": false, "is_retractable": false},
+    "NYY": {"name": "Yankee Stadium",              "lat": 40.8296, "lon":  -73.9262, "is_indoor": false, "is_retractable": false},
+    "OAK": {"name": "Sutter Health Park",          "lat": 38.5803, "lon": -121.5133, "is_indoor": false, "is_retractable": false},
+    "PHI": {"name": "Citizens Bank Park",          "lat": 39.9061, "lon":  -75.1665, "is_indoor": false, "is_retractable": false},
+    "PIT": {"name": "PNC Park",                    "lat": 40.4469, "lon":  -80.0057, "is_indoor": false, "is_retractable": false},
+    "SD":  {"name": "Petco Park",                  "lat": 32.7073, "lon": -117.1566, "is_indoor": false, "is_retractable": false},
+    "SEA": {"name": "T-Mobile Park",               "lat": 47.5914, "lon": -122.3325, "is_indoor": false, "is_retractable": true},
+    "SF":  {"name": "Oracle Park",                 "lat": 37.7786, "lon": -122.3893, "is_indoor": false, "is_retractable": false},
+    "STL": {"name": "Busch Stadium",               "lat": 38.6226, "lon":  -90.1928, "is_indoor": false, "is_retractable": false},
+    "TB":  {"name": "Tropicana Field",             "lat": 27.7682, "lon":  -82.6534, "is_indoor": true,  "is_retractable": false},
+    "TEX": {"name": "Globe Life Field",            "lat": 32.7473, "lon":  -97.0833, "is_indoor": false, "is_retractable": true},
+    "TOR": {"name": "Rogers Centre",               "lat": 43.6414, "lon":  -79.3894, "is_indoor": false, "is_retractable": true},
+    "WSH": {"name": "Nationals Park",              "lat": 38.8728, "lon":  -77.0075, "is_indoor": false, "is_retractable": false}
+  }
+}
