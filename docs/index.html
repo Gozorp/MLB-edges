@@ -5597,6 +5597,22 @@ function renderSlate(rows, gradeMap, results) {
         }
         else if (/pre-game|warmup|scheduled/.test(_st)) _sl = "PREGAME";
         resultCell = `<td>${_resultChipHtml(_sl, _extra)}</td>`;
+      } else if (result && result.isFinal &&
+                 result.awayScore != null && result.homeScore != null) {
+        // Final game but the model didn't make a pick (TBD / PENDING_SP_DATA).
+        // Surface the actual score + winner so the user can see the outcome
+        // even though there's no win/loss accuracy to grade against.
+        // Added 2026-05-28 after MIN@CHW + NYY@KC on 5/27 stuck as blank
+        // dashes because Sandlin (rookie, 0 Statcast pitches) and Cole
+        // (returning from IL, <100 pitches) couldn't be scored.
+        const _aw = result.awayAbbr, _hm = result.homeAbbr;
+        const _as = result.awayScore, _hs = result.homeScore;
+        const _winner = _as > _hs ? _aw : _hm;
+        const _label = `FINAL ${_aw} ${_as}-${_hs} ${_hm}`;
+        const _tooltip = `Model declined to pick (insufficient SP data). Final: ${_winner} won.`;
+        resultCell = `<td><span class="result-chip tbd" ` +
+          `style="background:#2a2a2a;color:#8b949e;border-color:#484f58;" ` +
+          `title="${_tooltip}">${_label}</span></td>`;
       } else {
         resultCell = `<td><span class="muted">—</span></td>`;
       }
