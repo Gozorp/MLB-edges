@@ -1,0 +1,35 @@
+{
+  "probe_run_at": "2026-05-28T05:37:58+00:00",
+  "archive_window": "2026-04-27 .. 2026-05-26",
+  "locked_spec": {
+    "X_xwoba_gate": 0.025,
+    "Y_keep_delta_pp": 8.0,
+    "kill_delta_pp": -3.0,
+    "window_n": 5,
+    "re_probe_date": "2026-06-26",
+    "re_probe_keep_pp": 10.0,
+    "memory_pointer": "project_luck_adjusted_probe_thresholds.md"
+  },
+  "joined_sample_size": 331,
+  "bucket_counts": {
+    "null_zone": 47,
+    "bad_read": 94,
+    "win": 157,
+    "bad_beat": 33
+  },
+  "bad_beat_cohort": {
+    "n_losses": 33,
+    "window_wins": 80,
+    "window_games": 146,
+    "win_rate": 0.5479
+  },
+  "bad_read_cohort": {
+    "n_losses": 94,
+    "window_wins": 213,
+    "window_games": 431,
+    "win_rate": 0.4942
+  },
+  "delta_pp": 5.37,
+  "verdict": "NULL",
+  "verdict_long": "No code change. Delta +5.37pp falls in the locked null zone [-3.0, +8.0]. Document directional reading and re-probe at 2026-06-26 with the tighter +10pp criterion on the larger sample."
+}
