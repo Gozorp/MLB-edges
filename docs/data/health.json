@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-05-28T17:49:21.933306+00:00",
+  "checked_at": "2026-05-28T20:06:39.834067+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 0.2h ago",
+      "message": "last ran 0.5h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T17:39:49Z",
-        "age_hours": 0.16
+        "last_run_iso": "2026-05-28T19:36:54Z",
+        "age_hours": 0.5
       },
       "category": "workflows"
     },
@@ -36,10 +36,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 17.8h ago",
+      "message": "last fired 20.1h ago",
       "detail": {
         "last_run_iso": "2026-05-28T00:02:48Z",
-        "age_hours": 17.78,
+        "age_hours": 20.06,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -63,7 +63,8 @@
         "ok_rows": 6,
         "non_ok_pct": 0.0,
         "status_distribution": {
-          "fetched": 6
+          "fetched_capped": 2,
+          "fetched": 4
         }
       },
       "category": "data_flow"
@@ -102,10 +103,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "yellow",
-      "message": "weights last learned 26.3h ago (expected ~daily)",
+      "message": "weights last learned 28.5h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-05-27T15:34:07.240821+00:00",
-        "age_hours": 26.25
+        "age_hours": 28.54
       },
       "category": "model"
     },
@@ -131,12 +132,12 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "yellow",
-      "message": "67% of slate stress-warned (4/6)",
+      "severity": "green",
+      "message": "2/6 rows stress-warned",
       "detail": {
         "total_rows": 6,
-        "stress_warned_count": 4,
-        "pct_of_slate": 66.7
+        "stress_warned_count": 2,
+        "pct_of_slate": 33.3
       },
       "category": "model"
     }
