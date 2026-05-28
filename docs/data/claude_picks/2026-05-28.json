@@ -1,86 +1,86 @@
 {
   "date": "2026-05-28",
-  "fit_at": "2026-05-28T20:18:00Z",
+  "fit_at": "2026-05-28T21:45:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 6,
   "patterns_recognized": [
-    "HARD CAP 7 near-zero threshold firings (+0.0009 MIN@CHW, +0.0028 CHC@PIT) are rule-correct but extremely conservative; both pre-cap picks were A-grade — revisit minimum gap threshold after 30 live captures.",
-    "Large f5_full_delta (>=0.12) with negative hl_bullpen_xwoba_gap is bullpen-carry conviction signal, NOT a DOWNGRADE trigger — validated by 5/26 NYY@KC 15-1 blowout.",
-    "Market pricing 13+pp against model pick on bottom-bucket games warrants DOWNGRADE over CONFIRM; CONFIRM-rescued (0.50,0.55] band hits only 47.6% (below 50% breakeven).",
-    "D-grade dual-signal-against pattern degraded to ~55% cumulative reliability after 5/25 0-for-4 outlier; treat as weak directional signal only, not certainty-of-loss."
+    "F1* thin-sample asterisk + stress flags (confidence_downgrade/acute_roster) on sub-55% picks proved unreliable across 5/25-5/26: DET lost 10-6 on 5/26 matching this archetype exactly; treat as near-coin-flip regardless of corroborating PQI signal.",
+    "D-grade dual-signal-against (SP xERA against pick AND PQI against pick) holds ~60% directional accuracy in the archive — moderate negative signal applicable when collective BvP also opposes the pick side (5/5 WEAK_VS).",
+    "HARD CAP 6 edge-hallucination (>+25pp) has fired correctly on every application through 5/28; the calibrator cannot generate valid +33pp edge in MLB markets — no override warranted even when pre-cap grade is A.",
+    "Consecutive HOU@TEX series reversals (HOU won 9-0 on 5/25, TEX won 10-7 on 5/26) confirm this matchup is structurally volatile and unstakeable in the bottom-probability band — a third-game DOWNGRADE is the correct posture."
   ],
   "by_matchup": {
     "LAA @ DET": {
-      "model_pick": "DET",
+      "model_pick": "DET ML GOLD",
       "model_prob": 0.6503,
       "model_tier": "GOLD",
       "model_grade": "D",
-      "claude_decision": "CONFIRM",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "DET",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Pre-cap grade was already D (-1) before any hard caps fired — dual opposing signals: Grayson Rodriguez (LAA) holds a +0.60 xERA edge over Flaherty (DET), and PQI Δ=-7.8 directly against DET late-game. The model itself rated this a no-bet before any cap logic. Game is FINAL: LAA won 7-1, validating the D-grade analysis. No qualitative basis to override a pre-cap D with dual opposing signals.",
-      "lessons_applied": ["D-grade pre-cap requires no additional cap to suppress", "dual-opposing-signals pattern directionally correct (LAA won 7-1)"]
+      "claude_confidence": 0.52,
+      "reasoning": "D-grade with dual opposing signals: Rodriguez (LAA SP) holds a 0.60 xERA edge over Flaherty (DET SP) and PQI=-7.5 directly against DET's late-game profile. More critically, all 5 DET top-order batters are WEAK_VS Rodriguez (10 PA each, shrunk_OPS 0.618) — the strongest collective BvP opposition on today's slate. No fair_prob available removes market validation. D-grade dual-signal-against pattern holds ~60% directional accuracy in the archive; combined with the structural top-5 WEAK_VS BvP pattern, DOWNGRADE is warranted despite DET's F3 swing/take gap firing.",
+      "lessons_applied": ["D-grade dual-signal-against (SP+PQI against pick)", "collective WEAK_VS BvP on pick side (5/5 batters, shrunk 0.618)", "no-market-data caution on near-50% directional calls"]
     },
     "MIN @ CHW": {
-      "model_pick": "CHW",
-      "model_prob": 0.6446,
+      "model_pick": "CHW ML PLATINUM",
+      "model_prob": 0.6347,
       "model_tier": "PLATINUM",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHW",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.62,
-      "reasoning": "Pre-cap A/8 with strong conviction (F1_xera_gap=3.01 Davis Martin, F3=4419.9). HARD CAP 7 fired at near-zero hl_bullpen_xwoba_gap=+0.0009 (minimum threshold); Odds API failure also left fair_prob missing — market validation unavailable. Both caps fired correctly per rules. CHW is winning 6-2 live (directionally sound), but fair_prob absence alone warrants zero-stake. PLATINUM tier historical ~43% hit rate adds further skepticism.",
-      "lessons_applied": ["HARD CAP 7 near-zero threshold fires per rules regardless of pre-cap conviction", "fair_prob missing = market validation unavailable = no stake", "PLATINUM tier ~43% historical hit rate warrants scrutiny"]
+      "claude_confidence": 0.61,
+      "reasoning": "Strong directional case for CHW: Davis Martin carries a 2.41 xERA advantage over Simeon Woods Richardson (10.55% K-rate, contact-oriented), with F3_swing_take_gap=4419.9 and PQI=+38.2 both confirming CHW. HARD CAP 7 barely fired (gap=+0.0009), consistent with near-zero threshold pattern that was direction-correct on 5/20. MIN batters vs Martin show shrunk_OPS 0.734 (MEANINGFUL, not threatening). CHW batters show shrunk 0.905 vs Woods Richardson (favorable). No market data but F1+F3+PQI triple-signal stack is unusually consistent at PLATINUM level.",
+      "lessons_applied": ["F1+F3+PQI triple-signal confirms direction at PLATINUM", "HARD CAP 7 near-zero threshold directionally correct on 5/20 historical precedent", "SP K-rate differential (27.4% vs 10.6%) as secondary quality signal"]
     },
     "ATL @ BOS": {
-      "model_pick": "BOS",
-      "model_prob": 0.5724,
+      "model_pick": "BOS ML SKIP",
+      "model_prob": 0.5216,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "BOS",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "Pre-cap A- (score=4) with SP edge (+0.86 xERA BOS, Tolle over Sale) and PQI=+8.3. However, market prices ATL at 55.5% (fair_prob=0.4447 for BOS — a 13pp market gap against model). ATL's 37-19 record vs BOS's 23-31 reflects a genuine quality gap the model may underweight. CONFIRM-rescued picks in the (0.50, 0.55] band hit only 47.6% (below 50% breakeven). Declining to rescue HARD CAP 10; SKIP is the correct tier.",
-      "lessons_applied": ["HARD CAP 10 bottom-bucket SKIP-unless-CONFIRM: declining to CONFIRM given market gap", "market 13pp disagreement = do not override bottom-bucket cap", "CONFIRM-rescued band hits 47.6% below breakeven — no rescue"]
+      "reasoning": "Declining HARD CAP 10 rescue. BOS top-5 batters are all WEAK_VS Tolle (12 PA each, shrunk_OPS 0.633) while ATL carries an elite lineup (Acuña 0.907 OPS vs RHP, Olson 0.887 vs RHP). Fair_prob missing — no market validation for a 52.2% pick in the bottom-probability band. Sale holds a 0.86 xERA edge over Tolle which is the primary BOS support, but with BOS batters collectively suppressed vs Tolle and ATL's lineup depth, the directional case is insufficient to rescue HARD CAP 10. CONFIRM band hits only 47.6% in this range.",
+      "lessons_applied": ["HARD CAP 10 bottom-bucket — declining rescue without market validation", "collective WEAK_VS BvP on pick side (5/5 BOS batters vs Tolle)", "ATL lineup quality (Acuña/Olson) as structural headwind", "47.6% CONFIRM-band hit rate below breakeven"]
     },
     "TOR @ BAL": {
-      "model_pick": "BAL",
+      "model_pick": "BAL ML GOLD",
       "model_prob": 0.6713,
       "model_tier": "GOLD",
-      "model_grade": "A",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "BAL",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.65,
-      "reasoning": "Primary pick of today's slate: grade A (score=5), no caps fired. Bassitt (BAL) holds 0.54 xERA edge over Corbin (TOR). F3_swing_take_gap=4279.4 and PQI=+6.4 both confirm BAL. hl_bullpen_xwoba_gap=-0.0094 with f5_full_delta=0.1441 triggers bullpen-carry conviction pattern per 5/26 NYY@KC lesson (negative gap + large delta = CONFIRM, not DOWNGRADE). Risk: Springer is OWNER vs Bassitt (17 PA, 2 HR, shrunk 0.821), but top-3 BvP is mixed overall. bullpen_fatigue is a stake-size qualifier, not a direction flip.",
-      "lessons_applied": ["f5_full_delta>=0.12 + negative hl_bullpen_xwoba_gap = bullpen-carry conviction (5/26)", "stress flags are stake reducers not direction predictors (5/25)", "single OWNER batter insufficient to flip top-3 BvP analysis"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.63,
+      "reasoning": "HARD CAP 6 correctly fires on edge_pp=+33.52pp (calibrator hallucination range; no override). Directionally, BAL is well-supported: Bassitt holds a 0.54 xERA edge over Corbin, PQI=+6.4 confirms, bullpen gap favors BAL (hl_bullpen_xwoba_gap=-0.0094). BAL's BvP is compelling — Pete Alonso has LOTS_OF_HISTORY vs Corbin (63 PA, 5 HR, shrunk_OPS 1.026, OWNER), Taylor Ward also OWNER (20 PA, shrunk 0.856). TOR has only Springer as OWNER vs Bassitt. Directional CONFIRM; HARD CAP 6 tier enforcement stands.",
+      "lessons_applied": ["HARD CAP 6 calibrator-hallucination enforcement confirmed every application", "OWNER BvP with LOTS_OF_HISTORY (Alonso 63 PA, shrunk 1.026) as strong confirming signal", "hl_bullpen_xwoba_gap=-0.0094 + f5_full_delta=0.1441 = bullpen-carry conviction pattern (5/26)"]
     },
     "CHC @ PIT": {
-      "model_pick": "PIT",
+      "model_pick": "PIT ML GOLD",
       "model_prob": 0.6743,
       "model_tier": "GOLD",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "PIT",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.61,
-      "reasoning": "Paul Skenes' F1_xera_gap=4.25 over Rea and PQI=+43.7 drove pre-cap A/5. HARD CAP 7 fired at marginal hl_bullpen_xwoba_gap=+0.0028 (near-zero). Live CHC lineup includes Alex Bregman at cleanup (absent from empty CSV batter data) — this strengthens the late-inning bullpen pressure case for PIT, validating CAP 7 rather than arguing against it. Edge is thin (4.7pp). B- grade confirmed; Skenes verified as starter per MLB API.",
-      "lessons_applied": ["HARD CAP 7 confirmed: Bregman in cleanup adds lineup quality validating bullpen pressure concern", "thin edge (4.7pp) warrants no escalation beyond B-", "Skenes confirmed starter — no PENDING_SP_DATA risk unlike 5/26"]
+      "claude_confidence": 0.63,
+      "reasoning": "Paul Skenes carries a dominant xERA advantage (F1_xera_gap=4.25, SP edge 2.77) over Colin Rea; PQI=+43.7 strongly confirms PIT and f5_prob=0.769 reflects Skenes' F5 dominance. HARD CAP 7 barely fired (gap=+0.0028, near-zero). CHC BvP shows 2 OWNERs vs Skenes (Hoerner shrunk 0.813, Busch shrunk 0.858) — a mild caution, but Bryan Reynolds is a strong OWNER vs Rea for PIT (20 PA, 2 HR, shrunk_OPS 0.949). Skenes' elite-level xERA gap overrides the marginal CHC BvP concern.",
+      "lessons_applied": ["elite SP xERA gap (4.25 F1) as primary driver", "Bryan Reynolds OWNER vs Rea (20 PA, shrunk 0.949) as confirming BvP signal", "HARD CAP 7 near-zero threshold fires per rules — B- grade confirmed"]
     },
     "HOU @ TEX": {
-      "model_pick": "TEX",
-      "model_prob": 0.5387,
+      "model_pick": "TEX ML GOLD",
+      "model_prob": 0.5599,
       "model_tier": "GOLD",
       "model_grade": "C",
-      "claude_decision": "CONFIRM",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "TEX",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.42,
-      "reasoning": "HARD CAP 1 (edge=-1.66pp < 0) and HARD CAP 10 (pick_prob=0.511 in bottom-bucket) correctly zero this pick. F1_xera_gap=1.03* carries thin-sample asterisk — unreliable xERA estimate. acute_roster + confidence_downgrade flag additional instability. HOU-TEX series produced 9-0 HOU win followed by 10-7 TEX win in consecutive prior days — highly volatile near-50% matchup confirmed as no-stake archetype.",
-      "lessons_applied": ["HARD CAP 1 negative edge = zero stake", "F1* thin-sample asterisk = unreliable sole signal", "consecutive series volatility (9-0 then 10-7 reversal) validates bottom-bucket no-stake"]
+      "claude_confidence": 0.51,
+      "reasoning": "Three converging DOWNGRADE signals: (1) F1_xera_gap=1.03* thin-sample asterisk with stress flags (confidence_downgrade=True, acute_roster) on pick_prob=0.518 — per 5/26 DET lesson, this archetype is near-coin-flip regardless of corroborating PQI. (2) HOU holds 2 OWNERs vs Eovaldi (Peña shrunk 0.800 OWNER, Alvarez shrunk 0.867 OWNER with 18 PA) — HOU's cleanup pair historically punishes TEX's SP. (3) Third consecutive HOU@TEX game with reversals on 5/25 (HOU won 9-0) and 5/26 (TEX won 10-7) — structurally volatile series. Withholding CONFIRM; HARD CAP 1 (negative edge) + HARD CAP 10 both correctly enforce.",
+      "lessons_applied": ["F1* thin-sample + stress flags = near-coin-flip archetype (5/26 DET lesson)", "HOU OWNERs vs Eovaldi (Peña+Alvarez, 14-18 PA)", "consecutive HOU@TEX series reversals — third-game volatile-series no-stake", "HARD CAP 1 + HARD CAP 10 both correctly fire"]
     }
   }
 }
