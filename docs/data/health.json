@@ -1,21 +1,21 @@
 {
   "version": 2,
-  "checked_at": "2026-05-28T14:29:40.365839+00:00",
+  "checked_at": "2026-05-28T17:49:21.933306+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
     "data_flow": "green",
     "deployment": "red",
-    "model": "green"
+    "model": "yellow"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 4.2h ago",
+      "message": "last ran 0.2h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T10:18:12Z",
-        "age_hours": 4.19
+        "last_run_iso": "2026-05-28T17:39:49Z",
+        "age_hours": 0.16
       },
       "category": "workflows"
     },
@@ -36,10 +36,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 14.4h ago",
+      "message": "last fired 17.8h ago",
       "detail": {
         "last_run_iso": "2026-05-28T00:02:48Z",
-        "age_hours": 14.45,
+        "age_hours": 17.78,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -101,11 +101,11 @@
     },
     {
       "name": "weights_state_freshness",
-      "severity": "green",
-      "message": "last learned 22.9h ago",
+      "severity": "yellow",
+      "message": "weights last learned 26.3h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-05-27T15:34:07.240821+00:00",
-        "age_hours": 22.93
+        "age_hours": 26.25
       },
       "category": "model"
     },
@@ -131,12 +131,12 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "green",
-      "message": "3/6 rows stress-warned",
+      "severity": "yellow",
+      "message": "67% of slate stress-warned (4/6)",
       "detail": {
         "total_rows": 6,
-        "stress_warned_count": 3,
-        "pct_of_slate": 50.0
+        "stress_warned_count": 4,
+        "pct_of_slate": 66.7
       },
       "category": "model"
     }
