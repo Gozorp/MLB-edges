@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-05-28T20:06:39.834067+00:00",
+  "checked_at": "2026-05-28T22:15:11.570176+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 0.5h ago",
+      "message": "last ran 1.0h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T19:36:54Z",
-        "age_hours": 0.5
+        "last_run_iso": "2026-05-28T21:14:28Z",
+        "age_hours": 1.01
       },
       "category": "workflows"
     },
@@ -36,10 +36,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 20.1h ago",
+      "message": "last fired 1.8h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T00:02:48Z",
-        "age_hours": 20.06,
+        "last_run_iso": "2026-05-28T20:26:50Z",
+        "age_hours": 1.81,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -103,10 +103,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "yellow",
-      "message": "weights last learned 28.5h ago (expected ~daily)",
+      "message": "weights last learned 30.7h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-05-27T15:34:07.240821+00:00",
-        "age_hours": 28.54
+        "age_hours": 30.68
       },
       "category": "model"
     },
