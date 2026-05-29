@@ -60,7 +60,7 @@ SCHEMA_VERSION = 2
 
 # Cloudflare Pages deploy base URL. Hardcoded to the default Pages
 # subdomain; flip to a custom domain if/when one is mapped.
-PAGES_BASE_URL = "https://mlb-edges.pages.dev"
+PAGES_BASE_URL = "https://mlb-edges.saladin-alfaatih.workers.dev"
 
 # Categories — used for the rolled-up dashboard card.
 CAT_WORKFLOWS  = "workflows"
