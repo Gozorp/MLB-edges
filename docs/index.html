@@ -4847,7 +4847,7 @@ function _deepNarrativeOU(item) {
   let bpHtml = "";
   if (isFinite(hlBp)) {
     const sign = hlBp >= 0 ? "home worse" : "home better";
-    bpHtml += `<p>Bullpen gap (home vs away xwOBA-allowed): ${_dt(_fmtNum(hlBp,4), "hl_bullpen_xwoba_gap CSV")} <span class="muted">(${sign}).</span> ${Math.abs(hlBp) > 0.015 ? "Material gap — could push runs to one side late." : "Narrow gap — comparable late."}</p>`;
+    bpHtml += `<p>Bullpen gap (home vs away xwOBA-allowed): <span class="gp-stat ${_gpHeatDir(hlBp,-0.04,0,0.04,true)}">${_dt(_fmtNum(hlBp,4), "hl_bullpen_xwoba_gap CSV")}</span> <span class="muted">(${sign}).</span> ${Math.abs(hlBp) > 0.015 ? "Material gap — could push runs to one side late." : "Narrow gap — comparable late."}</p>`;
   }
 
   let lineupHtml = "";
