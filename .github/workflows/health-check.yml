@@ -20,7 +20,7 @@ name: Pipeline health check
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # every 30 minutes
+    - cron: "7,37 * * * *"  # 2x/hour at off-peak min (GitHub delays/drops :00 and :30)
   workflow_dispatch:
     inputs:
       force_test_alert:
