@@ -40,10 +40,12 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v4
         with:
-          # Need enough history for `git log --grep="daily-slate:"` to find
-          # the most recent slate commit. 100 commits is well past one day's
-          # worth even on the busiest days.
-          fetch-depth: 100
+          # Full history. `git log --grep` heartbeats must find WEEKLY commits
+          # (refit-calibrator: / weekly-backtest:), not just daily-slate:. At
+          # ~24 commits/day (health-check every 30m + daily-slate), depth 100
+          # only spanned ~4 days, so the Sunday weekly commits scrolled out of
+          # range by mid-week and the heartbeats false-RED-ed ("no commit found").
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -68,8 +70,4 @@ jobs:
             echo "no health-artifact changes to commit"
           else
             git commit -m "health-check: $(date -u +%Y-%m-%dT%H:%MZ)"
-            # Use `git pull --rebase` defensively in case the daily-slate
-            # workflow pushed something between checkout and commit.
-            git pull --rebase --autostash origin main 2>/dev/null || true
-            git push
-          fi
+            # Use `git pull --rebase` defensively in 
