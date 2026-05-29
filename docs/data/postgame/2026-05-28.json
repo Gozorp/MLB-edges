@@ -1,0 +1,69 @@
+{
+  "date": "2026-05-28",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-29T00:05:00Z",
+  "n_analyzed": 6,
+  "summary": "May 28 went 1-5 directionally (16.7%) — the model's worst single-day hit rate in the visible archive. The sole WIN was MIN@CHW (CHW 6-2, CONFIRM correct on Davis Martin's K-rate dominance). All five losses were shielded from financial exposure: Claude's three DOWNGRADEs (DET, BOS, TEX) correctly avoided all three losses, while the two confirmed losses (BAL, PIT) were zero-staked by HARD CAPs 6 and 7 respectively. Key learning: OWNER-level BvP concentration (≥2 batters with ≥14 PA) against even elite SPs (F1_xera_gap > 3.5) carries enough realized risk to undermine high-confidence picks — Paul Skenes lost as PIT's SP (CHC won 7-2) with Hoerner and Busch confirmed OWNER threats.",
+  "by_matchup": {
+    "LAA @ DET": {
+      "verdict": "LOSS",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "7-1",
+      "headline": "LAA dominated DET 7-1 with Grayson Rodriguez as the winning pitcher; DOWNGRADE was fully validated.",
+      "hypothesis": "Process-correct DOWNGRADE. DET's D-grade (dual opposing signals: Rodriguez 0.60 xERA edge over Flaherty + PQI=-7.5 against DET's late-game profile) combined with 5/5 DET top-order batters WEAK_VS Rodriguez (shrunk OPS 0.618) painted a textbook directional-avoid structure. Rodriguez was confirmed as the winning pitcher; LAA's 7-1 margin is not a coin-flip result — it reflects a genuine structural mismatch. F3_swing_take_gap=2070.2 provided F-signal conviction, but could not overcome D-grade dual-signal-against. No financial impact (stake_mult=0). DOWNGRADE archetype validated.",
+      "signals_to_recheck": "D-grade dual-signal-against (Rodriguez xERA edge + PQI against DET) with 5/5 WEAK_VS BvP on pick side — DOWNGRADE 100% correct in 7-1 result. Cumulative D-grade dual-signal-against pattern directionally correct again; continues to justify DOWNGRADE trigger when SP xERA AND PQI both oppose the pick."
+    },
+    "MIN @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-6",
+      "headline": "CHW won convincingly 6-2; Davis Martin's K-rate dominance and F1+F3+PQI triple-signal stack delivered as expected.",
+      "hypothesis": "Process-correct CONFIRM and WIN. Davis Martin (CHW) leveraged a 2.41 xERA advantage with F1_xera_gap=3.01, F3_swing_take_gap=4419.9, and PQI=+38.2 all confirming CHW direction. The 27.4% vs 10.55% K-rate differential between Martin and Woods Richardson was among the strongest SP quality mismatches on today's slate and materialized fully. Martin was the winning pitcher. HARD CAP 7 near-zero threshold (gap=+0.0009) fired per rules but was directionally immaterial — CHW won comfortably. The triple-signal PLATINUM structure continues to be the most reliable confirmation archetype in the archive.",
+      "signals_to_recheck": "F1_xera_gap=3.01 + F3_swing_take_gap=4419.9 + PQI=+38.2 triple-signal stack at PLATINUM: all three confirmed directionally. SP K-rate differential (27.4% vs 10.6%) as secondary quality signal tracks reliably when paired with F1+PQI agreement — reinforces its use as a confirming factor."
+    },
+    "ATL @ BOS": {
+      "verdict": "LOSS",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "10-2",
+      "headline": "ATL blew out BOS 10-2; DOWNGRADE correct — and the winning pitcher decision (Chris Sale for ATL) flags a possible SP assignment reversal in the diag CSV.",
+      "hypothesis": "Process-correct DOWNGRADE, with an additional process-failure note. BOS at 52.2% pick_prob with HARD CAP 10 (bottom-bucket, 31.2% archive non-CONFIRM hit rate) and 5/5 BOS batters WEAK_VS Tolle (shrunk 0.633) correctly justified DOWNGRADE. ATL's 10-2 blowout reflects exactly the lineup advantage cited. However, the MLB decisions API lists Chris Sale as the winning pitcher for the winning ATL team, while the diag CSV listed Sale as BOS's home SP with a 0.86 xERA advantage as the primary BOS support signal. If Sale was actually pitching for ATL (consistent with his known ATL tenure), the model's BOS pick was doubly wrong — built on a reversed SP assignment that placed the better pitcher on the wrong team. This SP-assignment data error is a potential process failure in the pipeline.",
+      "signals_to_recheck": "HARD CAP 10 bottom-bucket (pick_prob=0.522) + 5/5 WEAK_VS BvP on pick side: DOWNGRADE validated. CRITICAL: Sale listed as winning pitcher for ATL (winning team) contradicts diag CSV (Sale as BOS home SP) — if the SP assignment was reversed in the pipeline, the BOS directional pick had no valid basis. Investigate SP assignment validation in the data ingestion step."
+    },
+    "TOR @ BAL": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "TOR won 2-1 in a tight game; directional CONFIRM on BAL lost despite Bassitt xERA edge and Alonso OWNER BvP.",
+      "hypothesis": "Variance failure on directional CONFIRM. BAL had strong confirming signals: Bassitt's 0.54 xERA edge over Corbin, PQI=+6.4, hl_bullpen_xwoba_gap=-0.0094 (BAL pen better), Pete Alonso OWNER BvP (63 PA, 5 HR, shrunk 1.026 — LOTS_OF_HISTORY level). TOR won 2-1 in a low-scoring pitcher's duel where BAL's offense never materialized. HARD CAP 6 (edge_pp=+33.52pp calibrator hallucination) correctly prevented any stake — no financial impact. The tight 2-1 margin vs BAL's implied 67.1% win probability is consistent with variance failure: the directional read was reasonable given available signals, but baseball's inherent single-game variance produced the opposite outcome. OWNER-level BvP with LOTS_OF_HISTORY did not overcome a tight game.",
+      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (edge_pp=+33.5pp): BAL lost 2-1 despite strong directional signals; 4th+ consecutive HARD CAP 6 validation without exception. Pete Alonso OWNER BvP (63 PA, shrunk 1.026) did not materialize in a 2-run game — confirms LOTS_OF_HISTORY BvP is a directional correlator, not a game-outcome guarantee in low-run contexts."
+    },
+    "CHC @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-2",
+      "headline": "CHC won 7-2 with Paul Skenes as the losing pitcher; OWNER BvP concentration overcame F1_xera_gap=4.25.",
+      "hypothesis": "Process concern. Despite F1_xera_gap=4.25 (elite-tier — among the highest recorded in the archive), Paul Skenes was the losing pitcher in a 7-2 CHC victory. CHC's lineup held two OWNER-level batters with meaningful PA against Skenes: Hoerner (14 PA, shrunk 0.813, OWNER) and Busch (18 PA, shrunk 0.858, OWNER). The cumulative BvP pressure from 2 OWNER-level hitters appears to have reflected a genuine structural threat that the F1 signal did not fully offset. HARD CAP 7 (gap=+0.0028 near-zero bullpen disadvantage) correctly prevented stake — no financial impact. Uncertain whether this is process failure or variance: even elite SPs can have off nights, but 2+ confirmed OWNER entries with ≥14 PA deserve more weight as a risk-adjustment factor going forward.",
+      "signals_to_recheck": "F1_xera_gap=4.25 vs 2 OWNER-level opposing batters (Hoerner shrunk 0.813/14PA, Busch shrunk 0.858/18PA): Skenes lost as PIT's SP, CHC won 7-2. Monitor: when ≥2 opposing batters have OWNER-level shrunk_OPS (>0.800) with ≥14 PA against even an elite SP, the cumulative BvP concentration may offset xERA-gap conviction — apply at minimum one tier of caution."
+    },
+    "HOU @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-1",
+      "headline": "HOU won 5-1 with Arrighetti as winning pitcher; third consecutive HOU@TEX series game where model direction failed.",
+      "hypothesis": "Process-correct DOWNGRADE on a structurally volatile series. Arrighetti was confirmed as the winning pitcher while Eovaldi (TEX, F1_xera_gap=1.03*) was the losing pitcher — the thin-sample asterisk on Arrighetti's xERA correctly flagged an unreliable SP quality estimate. HOU's key OWNERs vs Eovaldi (Peña shrunk 0.800, Alvarez shrunk 0.867 — both 14-18 PA) delivered against TEX's starter as anticipated. This is the third consecutive game in the HOU@TEX series where the model's directional pick lost: 5/25 TEX pick lost (HOU won 9-0), 5/26 HOU pick lost (TEX won 10-7), 5/28 TEX pick lost (HOU won 5-1). The series-level instability pattern is confirmed — DOWNGRADE was the only defensible posture given HARD CAP 1 + HARD CAP 10 both firing.",
+      "signals_to_recheck": "F1_xera_gap=1.03* (thin-sample asterisk on Arrighetti) + confidence_downgrade_True + acute_roster: DOWNGRADE validated by 5-1 HOU win. HOU@TEX series: model 0/3 in consecutive directional picks — series-level instability overrides game-level SP signals in this matchup for the remainder of the current series."
+    }
+  },
+  "patterns_observed": [
+    "OWNER-level BvP concentration (≥2 batters with shrunk_OPS > 0.800 and ≥14 PA) overcame Paul Skenes' elite F1_xera_gap=4.25 in CHC@PIT (CHC won 7-2, Skenes the losing pitcher): when an elite SP (F1_xera_gap > 3.5) faces ≥2 OWNER-level batters with ≥14 PA, apply one tier of directional caution regardless of xERA gap magnitude. Single OWNER entries are insufficient to override xERA conviction (per 5/25 lesson), but 2+ concentrated OWNER threats with ≥14 PA appear sufficient to materially elevate realized SP failure risk — treat as a soft DOWNGRADE trigger on otherwise-CONFIRMED picks.",
+    "Three consecutive DOWNGRADE-correct calls with comfortable loss margins (DET 7-1, BOS 10-2, TEX 5-1) validate the DOWNGRADE archetype: D-grade OR HARD CAP 10 bottom-bucket + F1*/thin-sample SP + sub-55% probability = reliable directional avoid. All three were multi-run blowouts (not coin-flip variance) confirming structural failure, not luck. Future Brain: treat this three-condition combination (grade ≤ C with dual opposing signals, thin-sample or no-market-data, sub-55% pick_prob) as a hard DOWNGRADE trigger even when F3 or PQI corroborate the pick direction.",
+    "HOU@TEX series now 0/3 for the model across three consecutive games (5/25 TEX pick lost 0-9, 5/26 HOU pick lost 7-10, 5/28 TEX pick lost 1-5): the series exhibits structural volatility that overrides SP and F-signal inputs in both directions. Any TEX or HOU pick should receive an automatic DOWNGRADE for the remainder of the current series regardless of tier, edge, or signal quality — HARD CAP enforcement alone is insufficient; the recurring directional failure warrants a series-level override heuristic.",
+    "MIN@CHW CONFIRM WIN (6-2, Davis Martin winning pitcher) validates the F1+F3+PQI triple-signal PLATINUM structure when paired with an extreme SP K-rate differential (27.4% vs 10.6%): when all three primary signals agree at PLATINUM level and the opposing SP's K-rate is sub-15%, directional conviction is high even when HARD CAP 7 fires at near-zero threshold. SP K-rate differential ≥15pp continues to track as a reliable secondary conviction signal in the archive."
+  ]
+}
