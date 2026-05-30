@@ -239,19 +239,24 @@ def build_diagnostic_table(games: pd.DataFrame,
         # a misleadingly confident pick.
         h_n = r.get("home_sp_n_pitches", float("nan"))
         a_n = r.get("away_sp_n_pitches", float("nan"))
+        # Display the TRUE pitch count (home_sp_n_pitches is NaN'd below 100
+        # by pitcher_as_of; the actual count rides in *_actual) so a thin arm
+        # shows "85", not "0". The gate decision below still keys off h_n/a_n.
+        h_n_act = r.get("home_sp_n_pitches_actual", h_n)
+        a_n_act = r.get("away_sp_n_pitches_actual", a_n)
         h_name = (r.get("home_sp_name") or "").strip()
         a_name = (r.get("away_sp_name") or "").strip()
         thin_sides: list[str] = []
         if pd.isna(h_n) or float(h_n) < SP_THIN_SAMPLE_THRESHOLD:
             label = h_name or f"{home_abbr} SP"
-            n_disp = "0" if pd.isna(h_n) else str(int(h_n))
+            n_disp = "0" if pd.isna(h_n_act) else str(int(h_n_act))
             thin_sides.append(
                 f"{label} has only {n_disp} Statcast pitches season-to-date; "
                 f"need {SP_THIN_SAMPLE_THRESHOLD}+ to score"
             )
         if pd.isna(a_n) or float(a_n) < SP_THIN_SAMPLE_THRESHOLD:
             label = a_name or f"{away_abbr} SP"
-            n_disp = "0" if pd.isna(a_n) else str(int(a_n))
+            n_disp = "0" if pd.isna(a_n_act) else str(int(a_n_act))
             thin_sides.append(
                 f"{label} has only {n_disp} Statcast pitches season-to-date; "
                 f"need {SP_THIN_SAMPLE_THRESHOLD}+ to score"

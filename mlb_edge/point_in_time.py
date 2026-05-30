@@ -177,7 +177,13 @@ def pitcher_as_of(statcast_df: pd.DataFrame,
         (pd.to_datetime(statcast_df["game_date"]) < pd.Timestamp(as_of_date))
     ]
     if len(df) < min_pitches:
-        return _nan_pitcher_dict()
+        # Below the stable-rate threshold: rate stats stay NaN (too noisy
+        # to report), but surface the TRUE pitch count so a thin arm reads
+        # "85", not "0", and a genuine 0 stays 0. Leaves the model feature
+        # sp_n_pitches and the SP-savant gate untouched. (fix 2026-05-29)
+        _thin = _nan_pitcher_dict()
+        _thin["sp_n_pitches_actual"] = float(len(df))
+        return _thin
 
     # xwOBA allowed (weighted on-base)
     xwoba_num = df["estimated_woba_using_speedangle"].fillna(0).sum()
@@ -303,6 +309,7 @@ def pitcher_as_of(statcast_df: pd.DataFrame,
         "sp_ip_per_start":        ip_per_start,
         "sp_era_xera_gap":        era_xera_gap,  # positive = unlucky, due for improvement
         "sp_n_pitches":           len(df),
+        "sp_n_pitches_actual":    float(len(df)),
         "sp_ttop3_penalty":       sp_ttop3_shrunk,
     }
 
@@ -312,6 +319,7 @@ def _nan_pitcher_dict() -> Dict[str, float]:
         "sp_xera", "sp_xwoba_allowed", "sp_k_bb_pct", "sp_k_pct", "sp_bb_pct",
         "sp_hardhit_pct_allowed", "sp_siera", "sp_fip", "sp_recent_xfip",
         "sp_ip_per_start", "sp_era_xera_gap", "sp_n_pitches",
+        "sp_n_pitches_actual",
         "sp_ttop3_penalty",
     ]}
 

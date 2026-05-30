@@ -726,6 +726,11 @@ def _build_game_row(*, sc: pd.DataFrame, game_pk: int,
         #      higher pitch count.
         "home_sp_n_pitches":     float(home_sp.get("sp_n_pitches") or 0.0),
         "away_sp_n_pitches":     float(away_sp.get("sp_n_pitches") or 0.0),
+        # Telemetry-only true counts (incl. sub-100 thin arms). NOT model
+        # features / shrinkage inputs - drives the PENDING_SP_DATA display
+        # so a thin starter shows its real count instead of a misleading 0.
+        "home_sp_n_pitches_actual": float(home_sp.get("sp_n_pitches_actual") or 0.0),
+        "away_sp_n_pitches_actual": float(away_sp.get("sp_n_pitches_actual") or 0.0),
         # Per-SP K rate (shrunk to league average for thin samples).  Surfaced
         # to the diag CSV so the dashboard can compute pitcher-K prop
         # probabilities client-side (Top Probable Outcomes Phase 1, 2026-05-20).
