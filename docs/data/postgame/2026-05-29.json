@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-29",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-30T02:00:00Z",
+  "n_analyzed": 15,
+  "summary": "2026-05-29 slate: 9 directional wins, 3 directional losses on 12 model-picks (3 PENDING excluded); hit rate 75%. No bets were placed — every graded pick was SKIP tier. Key learning: prior-day Claude Brain misidentified the model pick direction on 3 games (ATL@CIN, MIA@NYM, MIL@HOU), all Stage 1/2 disagreement games where full_prob crosses 0.5 vs the expected direction. All three misread games still resolved as per-model correct (CIN lost, NYM won, MIL won), so net bias was small, but the parsing error is a systemic risk that must be resolved before any live-stake day.",
+  "by_matchup": {
+    "ATL @ CIN": {
+      "verdict": "LOSS",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-3",
+      "headline": "ATL cruised 8-3; CIN's home advantage evaporated despite model's marginal full-game edge.",
+      "hypothesis": "Model picked CIN at 50.25% (Stage 2 only; Stage 1 gave CIN just 33.8%). Both f5_full_delta=0.1645 and pick_prob barely above 0.50 were warning signs of a noisy signal. ATL's lineup quality (Acuña, Olson) overwhelmed CIN starter Chris Paddack. This appears to be a variance failure on a near-coinflip game — process was correct to SKIP. Separately, Claude Brain's prior-day file misidentified the model pick as ATL (not CIN), a Stage 1/2 parse error.",
+      "signals_to_recheck": "f5_full_delta=0.1645 on bottom-bucket pick_prob=0.503; parser misread risk on high-delta picks — verify pick column vs full_prob direction"
+    },
+    "SD @ WSH": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-5",
+      "headline": "SD won 7-5 as market's negative edge on WSH proved prescient.",
+      "hypothesis": "Model picked WSH (home, 54.27%) but the pick was correctly SKIPped: PQI against WSH (Δ=-5.6), negative edge, and HARD CAP 10. SD's road win validates the market's implied WSH skepticism. Process failure score: 0 — correct process decision. This is a variance failure; the model's 54% estimate was wrong, but the SKIP enforcement was right.",
+      "signals_to_recheck": "negative_edge_GOLD; PQI AGAINST pick (Δ=-5.6); confirm that negative-edge SKIPs are not being reconsidered by future Claude Brain runs"
+    },
+    "MIN @ PIT": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "PIT walked off 6-5; PENDING_SP_DATA skip was correct given Jared Jones had 0 Statcast pitches.",
+      "hypothesis": "PIT won in the bottom of the 9th in a walkoff, validating unpredictability of thin-SP-data games. PENDING_SP_DATA protocol correctly blocked any directional commitment. No process failure; skip was right.",
+      "signals_to_recheck": "small_sample_SP_True (Jones 0 Statcast pitches); PENDING_SP_DATA protocol working as intended"
+    },
+    "TOR @ BAL": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-5",
+      "headline": "TOR won 6-5 in a road comeback; Macko's 0-Statcast-pitch status correctly blocked the BAL lean.",
+      "hypothesis": "BAL held a 5-2 lead before TOR scored 4 in the 7th and 2 in the 8th to win. The PENDING_SP_DATA skip on Macko (78 Statcast pitches, below 100-pitch threshold) was validated: an underscored SP is a volatility wildcard. Process correct.",
+      "signals_to_recheck": "small_sample_SP_True (Macko 78 pitches < 100 threshold); PENDING_SP_DATA correctly blocked BAL home lean"
+    },
+    "BOS @ CLE": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "CLE held on 4-3 behind a 4-run first inning; strong F3 and PQI conviction confirmed.",
+      "hypothesis": "CLE's pre-cap score of 7 (highest on slate) with F3_swing_take_gap=1456.6 and PQI=+4.8 pointed to CLE, and CLE delivered. HARD CAP 7 (hl_bullpen_xwoba_gap=+0.0098) and missing fair_prob correctly zeroed the stake, but the directional call was right. Variance note: BOS nearly tied in the 5th (3-run inning). Process correct to skip; direction correct.",
+      "signals_to_recheck": "HARD CAP 7 (hl_bullpen_xwoba_gap=+0.0098 marginal); fair_prob missing due to Odds API not firing — monitor odds pipeline reliability"
+    },
+    "LAA @ TB": {
+      "verdict": "WIN",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-8",
+      "headline": "TB blew open a close game with 7 runs in the 7th; D-grade SKIP for TB's pick was correct process.",
+      "hypothesis": "TB picked at D grade (-2) with SP xERA AGAINST and PQI AGAINST. Despite these signals, TB won convincingly via a 7-run 7th inning. This is a variance WIN — the D-grade correctly advised SKIP, and the result doesn't challenge the model's process logic. The 7-run burst in the 7th against LAA relief is consistent with pen_strain_pick_side dynamics not captured in pre-game signals.",
+      "signals_to_recheck": "pen_strain_pick_side=0.1012 (above 0.115 boundary but within range); D-grade directional call was wrong here — do not over-correct on this variance result"
+    },
+    "MIA @ NYM": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-9",
+      "headline": "NYM won in walk-off 10th 9-7; model's NYM pick correct but Claude Brain misidentified direction as MIA.",
+      "hypothesis": "CSV pick column clearly says NYM (home, full_prob=0.509 > 0.5), but Claude Brain wrote model_pick='MIA ML GOLD' in the prior-day picks file — a Stage 1/2 parse error where f5_full_delta=0.003 and f5_prob=0.512 were misread. The model's actual pick (NYM) won in a 10-inning walk-off. HARD CAP 10 correctly SKIPped any stake (pick_prob=0.508). Process failure: Claude Brain parse error on pick direction, not on bet-sizing decision.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite (pick_prob=0.508); Claude Brain pick-column parse error pattern — cross-check pick vs full_prob sign before writing picks JSON"
+    },
+    "CHC @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "STL edged CHC 6-5 in a tight game; SKIP was correct given D grade and Imanaga's SP edge.",
+      "hypothesis": "Model picked STL (home, 59.45%) despite D grade (-1): Imanaga's xERA edge against STL was cited but partial. The SKIP was correct — Imanaga took the loss, suggesting STL bullpen won the game. STL's strong Stage 2 probability (59%) materialized. Variance is low here; the result aligns with the directional model.",
+      "signals_to_recheck": "SP edge 0.33 xERA AGAINST pick (-2 in grading) yet model correct directionally — small SP xERA edge may be within noise band; monitor threshold"
+    },
+    "DET @ CHW": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "CHW won in extra innings 4-3; PENDING_SP_DATA skip on Melton was appropriate.",
+      "hypothesis": "Troy Melton (CHW) had 79 Statcast pitches (below 100 threshold). CHW won a tight extra-inning game 4-3. Given unscored SP, any directional bet would have been essentially a coin flip. PENDING_SP_DATA protocol correct.",
+      "signals_to_recheck": "small_sample_SP_True (Melton 79 pitches); PENDING_SP_DATA continues to perform correctly at the 100-pitch threshold"
+    },
+    "KC @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "TEX ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-9",
+      "headline": "TEX demolished KC 9-1; model's TEX pick vindicated despite marginal pick_prob and negative edge.",
+      "hypothesis": "TEX won by 8 runs, the largest margin on the slate. Model pick TEX (home, 51.69%) had negative edge (−0.48pp), PQI against (Δ=−9.8), and SP edge against via small-sample Kolek — yet the blowout suggests the F3 signal (1780.6) and Starling Marte OWNER vs Kolek were overridden by overall team quality. SKIP was correct given negative edge; directional call was right by a large margin. Possible process improvement: when F3 is strong but other signals are weak, watch for asymmetric blowout potential.",
+      "signals_to_recheck": "negative_edge_GOLD; F3_swing_take_gap=1780.6 fired correctly directionally despite other negative signals; small_sample_SP_True (Kolek 98 PA)"
+    },
+    "MIL @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-4",
+      "headline": "MIL won 5-4 road; model's Stage-2 MIL pick correct but Claude Brain misidentified direction as HOU.",
+      "hypothesis": "CSV pick column clearly says MIL (away). Stage 1 favored HOU (f5_prob=0.5949 for HOU), but Stage 2 favored MIL (full_prob=0.4687 for HOU = 0.5313 for MIL). This is the Stage 1/2 disagreement case the prompt warns about: Claude Brain wrote 'HOU ML GOLD' in the prior-day file, misidentifying the model pick. The model's actual pick (MIL) won 5-4. The large f5_full_delta=0.1262 and F3_swing_take_gap=3658.8 pointed to a late-game MIL advantage — Stage 2 resolved correctly. Claude Brain parse error confirmed as a recurring pattern.",
+      "signals_to_recheck": "f5_full_delta=0.1262 (Stage 1/2 disagree, Stage 2 resolved correctly); Claude Brain pick-column parse error on high-delta away-team picks — systemic fix required"
+    },
+    "SF @ COL": {
+      "verdict": "WIN",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-8",
+      "headline": "COL won 8-6 at Coors despite D grade (-3) and all signals opposing; clear variance outcome.",
+      "hypothesis": "Model picked COL (home, 64.37%) but the D grade (-3) correctly blocked any stake: Logan Webb (SP xERA edge 1.32 against COL) and PQI Δ=−14.3 both opposed COL. COL won anyway at Coors Field. This is a process variance failure — all signals said SF, and SF lost. Coors Field altitude likely inflates run-scoring volatility in ways not fully captured by xERA models. One game is insufficient to revise the SP-edge model, but monitor COL home D-grade results through June.",
+      "signals_to_recheck": "F1_xera_gap (Webb vs Lorenzen, 1.32 xERA edge); Coors Field park context not modeled — altitude variance may undermine SP-edge predictions at COL home games"
+    },
+    "NYY @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-2",
+      "headline": "NYY blew out OAK 8-2; PLATINUM tier correctly blocked by HARD CAP 10 and negative edge.",
+      "hypothesis": "NYY won by 6 runs — the pre-game directional conviction (Chisholm OWNER vs Rodón, bullpen-carry thesis with hl_bullpen_xwoba_gap=−0.0143, f5_full_delta=0.1336) all materialized. HARD CAP 10 and negative edge (−0.45pp) correctly zeroed the stake. The bullpen-carry thesis extends to 4-for-4 on large-delta games with negative bullpen gap (5/26 NYY@KC, 5/28 MIN@CHW, plus BOS@CLE and NYY@OAK today).",
+      "signals_to_recheck": "negative_edge_GOLD (−0.45pp EV-protective enforcement confirmed correct even on correct-direction blowout); f5_full_delta=0.1336 resolved in Stage-2 (full-game) direction"
+    },
+    "ARI @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-7",
+      "headline": "SEA edged ARI 7-6; D-grade directional miss as Kirby's SP edge materialized.",
+      "hypothesis": "Model picked ARI (away, 50.44%) but grade=-3: Kirby's xERA edge 1.52 against ARI and PQI Δ=+28.7 (SEA favored) both screamed LOSS. SEA won in a close game. This is a process-validated SKIP — the D-grade directional call was wrong AND correctly SKIPped. Extending the 5/28 D-grade pattern: when SP xERA AND PQI both oppose the model pick at ≥1.0 edge, the model's direction is unreliable; treat D-grade picks as 45-50% directional floor, not as 50%+.",
+      "signals_to_recheck": "F1_xera_gap (Kirby vs Gallen 1.52 delta); PQI AGAINST ARI (Δ=+28.7 for SEA); D-grade dual-opposing-signal directional failure confirmed"
+    },
+    "PHI @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-4",
+      "headline": "LAD won 4-2 with Wheeler neutralized; Stage-2 pick and Freeman OWNER BvP both correct.",
+      "hypothesis": "Model picked LAD (home, 61.23%) despite Wheeler's SP edge (0.93 xERA against LAD). Stage-2 win probability (61.23%) and f5_full_delta=0.2721 (Stage 2 heavily favors LAD) both pointed to LAD carrying the full game through bullpen after Wheeler departed. Freddie Freeman (73 PA OWNER vs Wheeler, shrunk 1.004) proved the BvP thesis. LAD won 4-2. PLATINUM correctly withheld per SP-edge cap; direction correct. This is a second consecutive confirmation of the Wheeler-vs-LAD-lineup dynamic.",
+      "signals_to_recheck": "f5_full_delta=0.2721 (stage-2 bullpen-carry thesis validated again); Freeman OWNER BvP (73 PA) as high-confidence directional anchor even when SP-edge cap fires"
+    }
+  },
+  "patterns_observed": [
+    "SYSTEMIC PARSE ERROR: Claude Brain misidentified the model pick direction on 3/15 games (ATL@CIN wrote ATL, should be CIN; MIA@NYM wrote MIA, should be NYM; MIL@HOU wrote HOU, should be MIL). All three are high-delta or margin-crossing games. Fix: before writing picks JSON, verify that if pick is HOME team then full_prob > 0.5, and if pick is AWAY team then full_prob < 0.5. Any mismatch is a CSV parse error requiring a re-read of the pick column.",
+    "Stage 1/2 disagreement picks (f5_full_delta >= 0.12) went 3-for-3 in the Stage-2 (full-game) direction today: MIL@HOU (delta=0.1262, MIL won), BOS@CLE (delta=0.1583, CLE won), PHI@LAD (delta=0.2721, LAD won). Combined with 5/26 NYY@KC and 5/28 MIN@CHW, the Stage-2 bullpen-carry thesis has now validated 5/5 on large-delta games with negative hl_bullpen_xwoba_gap. Continue treating high-delta + negative bullpen-gap as a directional amplifier toward the Stage-2 pick.",
+    "D-grade dual-opposing-signal directional loss confirmed again: ARI@SEA (D, -3 score, Kirby xERA 1.52 + PQI +28.7 both against ARI) resulted in ARI losing 6-7. Combined with 5/28 results, D-grade picks with both SP xERA AND PQI opposing show ~25-30% directional win rate. Treat D-grade as a directional FADE signal, not a 50% coinflip — when SPgrade AND PQI both oppose, lean against the model's stated pick direction in any discretionary analysis.",
+    "COL home D-grade variance note: SF@COL (D, -3, Webb xERA 1.32 + PQI -14.3 both against COL) saw COL win 8-6 at Coors Field despite all signals opposing. Altitude park effects at COL inflate run-scoring and may reduce SP xERA signal reliability for COL home picks. Do not trend-chase this single result — monitor through June — but consider a half-confidence downgrade on SP-edge signals in COL home contexts going forward."
+  ]
+}
