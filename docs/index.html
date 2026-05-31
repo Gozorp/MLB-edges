@@ -1695,6 +1695,7 @@ async function fetchMLBResults(date) {
         awayAbbr, homeAbbr, awayName, homeName,
         awayScore: aSc, homeScore: hSc, winner,
         isFinal, statusText: status.detailedState || "",
+        gameDate: g.gameDate || null,          // ISO first-pitch UTC -- drives adaptive poll cadence
         gamePk: g.gamePk,
         awayTeamId: away.team && away.team.id,
         homeTeamId: home.team && home.team.id,
@@ -6252,17 +6253,53 @@ function renderLiveIndicator(date, dataPresent) {
 // =============================================================================
 // Auto-refresh polling — only active when viewing today
 // =============================================================================
+// Adaptive poll cadence: aggressive near first pitch / during games,
+// relaxed in the overnight & post-game dead zones. Recomputed every cycle
+// from the slate first-pitch times + live statuses (both refreshed by
+// silentRefresh, which re-fetches fetchMLBResults each tick).
+const POLL_AGGRESSIVE_MS = 30 * 1000;        // 30s  -- live, or within ~2.5h of first pitch
+const POLL_ACTIVE_MS     = 3 * 60 * 1000;    // 3min -- games today but still hours out
+const POLL_RELAXED_MS    = 20 * 60 * 1000;   // 20min -- overnight / everything final
+
+function _adaptivePollMs(results, now) {
+  const games = results ? Object.values(results) : [];
+  if (!games.length) return POLL_RELAXED_MS;
+  let aggressive = false, active = false;
+  for (const g of games) {
+    if (/progress|warmup|pre-?game|delayed/i.test(g.statusText || "")) { aggressive = true; continue; }
+    if (g.isFinal) continue;                       // done -- contributes nothing
+    const fp = g.gameDate ? Date.parse(g.gameDate) : NaN;
+    if (isFinite(fp)) {
+      const mins = (fp - now) / 60000;
+      if (mins <= 150 && mins >= -240) aggressive = true;   // ~2.5h before -> ~4h after first pitch
+      else if (mins > 150)             active = true;       // scheduled later today
+    } else {
+      active = true;                                 // scheduled, time unknown
+    }
+  }
+  return aggressive ? POLL_AGGRESSIVE_MS : active ? POLL_ACTIVE_MS : POLL_RELAXED_MS;
+}
+
+function _pollTick(date) {
+  silentRefresh(date).finally(() => {
+    if (date !== todayISO()) { stopPolling(); return; }     // rolled past midnight
+    const ms = _adaptivePollMs(window.__slate && window.__slate.results, Date.now());
+    window.__poll.intervalMs = ms;
+    window.__poll.timer = setTimeout(() => _pollTick(date), ms);
+  });
+}
+
 function startPolling(date) {
   stopPolling();
   if (date !== todayISO()) return;          // only poll for today
-  window.__poll.timer = setInterval(() => {
-    silentRefresh(date);
-  }, window.__poll.intervalMs);
+  const ms = _adaptivePollMs(window.__slate && window.__slate.results, Date.now());
+  window.__poll.intervalMs = ms;
+  window.__poll.timer = setTimeout(() => _pollTick(date), ms);
 }
 
 function stopPolling() {
   if (window.__poll.timer) {
-    clearInterval(window.__poll.timer);
+    clearTimeout(window.__poll.timer);
     window.__poll.timer = null;
   }
 }
