@@ -18,7 +18,7 @@ name: Daily self-learn
 
 on:
   schedule:
-    - cron: "30 13 * * *"   # 13:30 UTC (~6:30am PT) -- prior-day games final + diag baked
+    - cron: "0 0,18 * * *"   # 00:00 + 18:00 UTC. auto_weight_update's completeness guard skips any slate not 100% Final, so the 00:00 run no-ops while the prior night's west-coast games are still playing and 18:00 does the learn (00:00 only learns on rare all-day-game slates already final by midnight).
   workflow_dispatch:
     inputs:
       learn_date:

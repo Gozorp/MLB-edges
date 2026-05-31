@@ -428,6 +428,39 @@ def _already_processed(target_date):
     return False
 
 
+_TERMINAL_GAME_STATES = {
+    # Played to completion
+    "Final", "Game Over", "Completed Early",
+    # Won't be played / produce a same-day final -> must not block a learn
+    "Postponed", "Cancelled", "Canceled", "Suspended", "Forfeit",
+}
+
+
+def _slate_completion(target_date):
+    """(total_games, terminal_games) for the slate schedule. The slate is
+    'complete' when every scheduled game is in a terminal state. Fail-open:
+    on any fetch error return (0, 0) so the caller does NOT block the learn."""
+    try:
+        r = requests.get(
+            SCHEDULE_URL,
+            params={"sportId": 1, "date": target_date.isoformat()},
+            timeout=20,
+        )
+        r.raise_for_status()
+        data = r.json()
+    except Exception as e:
+        log.warning("Slate-completion fetch failed for %s: %s -- proceeding", target_date, e)
+        return (0, 0)
+    total = done = 0
+    for d in data.get("dates", []):
+        for g in d.get("games", []):
+            total += 1
+            state = (g.get("status", {}) or {}).get("detailedState", "")
+            if state in _TERMINAL_GAME_STATES:
+                done += 1
+    return (total, done)
+
+
 def run(target_date,
         picks_dir=Path("."),
         force=False,
@@ -449,6 +482,18 @@ def run(target_date,
         if not dry_run and _already_processed(target_date) and not force:
             log.info("Audit log contained %s by the time we got the lock — skipping", target_date)
             return get_active_weights(SP_WEIGHTS)
+
+        # Completeness guard: never learn a slate whose games are not all
+        # final yet (e.g. a 00:00 UTC run firing while the prior day's
+        # west-coast night games are still in progress). Returning WITHOUT
+        # writing an audit entry leaves the date unprocessed, so a later run
+        # (e.g. 18:00 UTC) retries and learns the COMPLETE slate -- avoids a
+        # biased partial learn. force (manual dispatch) bypasses the guard.
+        if not force:
+            sched_total, sched_done = _slate_completion(target_date)
+            if sched_total > 0 and sched_done < sched_total:
+                log.info("Slate %s not all final (%d/%d games done) -- skipping; a later run will retry", target_date, sched_done, sched_total)
+                return get_active_weights(SP_WEIGHTS)
 
         picks_path = picks_dir / PICKS_GLOB.format(date=target_date.isoformat())
         diag_path = picks_dir / PICKS_DIAG_GLOB.format(date=target_date.isoformat())
