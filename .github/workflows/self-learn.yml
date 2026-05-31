@@ -1,0 +1,73 @@
+# =============================================================================
+# self-learn.yml
+# -----------------------------------------------------------------------------
+# Daily automated self-learn.
+#
+# ROOT CAUSE of the stale-weights RED on the pipeline-health card: there was
+# NEVER a workflow that ran auto_weight_update. Every weights update in git
+# history is a manual `awu.run` / backfill / relearn -- including the last one
+# on 2026-05-29 (the RUN_ALL_FIXES bat). With no cron the weights crossed the
+# 48h freshness threshold within ~2 days and the monitor (correctly) went RED.
+#
+# This automates the exact proven manual call so the daily learn runs without
+# manual intervention. It grades the prior day's slate (picks_<date>_diag.csv,
+# already baked + committed under docs/data/) against actual MLB results,
+# updates data/state/weights_state.json, and appends recalibration_log.jsonl.
+# =============================================================================
+name: Daily self-learn
+
+on:
+  schedule:
+    - cron: "30 13 * * *"   # 13:30 UTC (~6:30am PT) -- prior-day games final + diag baked
+  workflow_dispatch:
+    inputs:
+      learn_date:
+        description: "Slate date to learn (YYYY-MM-DD). Blank = yesterday UTC."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # full history for a clean rebase before push
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run the self-learn for the target slate
+        env:
+          LEARN_DATE: ${{ inputs.learn_date }}
+        run: |
+          python -c "import os, sys; sys.path.insert(0,'.'); from datetime import date, datetime, timedelta, timezone; from pathlib import Path; from mlb_edge import auto_weight_update as awu; arg=(os.environ.get('LEARN_DATE') or '').strip(); d=date.fromisoformat(arg) if arg else (datetime.now(timezone.utc).date()-timedelta(days=1)); print('[self-learn] target slate_date =', d); awu.run(d, picks_dir=Path('docs/data')); print('[self-learn] done')"
+
+      - name: Commit + push updated weights state
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/state/weights_state.json data/state/recalibration_log.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no weights change to commit (already learned / no picks)"
+          else
+            git commit -m "self-learn: auto awu.run ($(date -u +%Y-%m-%d))"
+            # main moves often (hourly daily-slate); rebase before push so a
+            # non-fast-forward doesn't fail the run, and a lost race just retries
+            # next day instead of failing the workflow.
+            git pull --rebase --autostash origin main || true
+            git push origin main || echo "push race lost; next run will retry"
+          fi
