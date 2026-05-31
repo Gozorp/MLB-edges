@@ -185,6 +185,15 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Structure gate: skip the commit when SP/lineups are unchanged vs
+          # HEAD. The diag still churns every bake from Monte-Carlo/odds
+          # jitter; committing that is pure noise. data/state does not change
+          # in this job, so skipping loses nothing real. The gate fail-safes
+          # to commit on any error, so it can never freeze the slate.
+          if ! python tools/slate_structure_gate.py; then
+            echo "slate structure unchanged vs HEAD - skipping churn commit"
+            exit 0
+          fi
           git add picks_*.csv parlay_*.txt docs/data/ data/state/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "no changes to commit (nothing changed today)"
