@@ -1,0 +1,150 @@
+{
+  "date": "2026-05-30",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-05-31T00:08:00Z",
+  "n_analyzed": 15,
+  "summary": "2026-05-30 slate: 11 directional wins, 4 directional losses (73.3% hit rate) across 15 model picks. The sole staked pick was NYY@OAK PLATINUM CONFIRM, which lost 4-6 — net financial result: -1 unit. All 11 directional wins carried zero stake due to hard caps (SKIP tier, negative-edge HARD CAP 1, or bottom-bucket HARD CAP 10). Key learning: the PLATINUM consecutive-day same-matchup trap struck again — NYY fired PLATINUM after an 8-2 blowout on 5/29, but OAK's lineup (Kurtz, Rooker) rebounded and won. Model directional accuracy was strong but entirely uncaptured by the stake-filter architecture.",
+  "by_matchup": {
+    "DET @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-7",
+      "headline": "CHW cruised past DET 7-1 with Framber Valdez dominant over Anthony Kay.",
+      "hypothesis": "Model correctly identified CHW directionally (70.1% full-game) despite D-grade (-3). All grade signals opposed CHW (SP xERA -2, PQI -1), but the underlying probability was high enough to produce a comfortable win. This is likely a variance win on a D-grade pick — the grade signals were right that this was a bad bet, but CHW's raw probability carried the day. No process failure identified; SKIP tier was correct.",
+      "signals_to_recheck": "None — D-grade correctly enforced SKIP; directional win is consistent with 70% base probability."
+    },
+    "SD @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-9",
+      "headline": "WSH routed SD 9-4 with Foster Griffin outperforming Michael King unexpectedly.",
+      "hypothesis": "Model picked WSH at D-grade (-2) despite King holding a 0.51 xERA edge over Griffin. WSH won comfortably, meaning the model's high full-game probability (65.9%) was correct directionally even as the grade signals opposed it. Variance win — Griffin outpitched his xERA projection while King underdelivered. The BvP data for SD batters vs Griffin was suspicious (uniform 1.0 OPS for all 5 batters), likely a data artifact that understated WSH's true advantage.",
+      "signals_to_recheck": "Suspicious uniform BvP OPS artifact (all 5 SD batters showing identical 1.0/10PA stats vs Griffin) should trigger data-integrity review in the BvP pipeline."
+    },
+    "KC @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "TEX ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-7",
+      "headline": "TEX edged KC 7-6 in a close game, validating the model's pre-cap A-grade conviction.",
+      "hypothesis": "Pre-cap score=5 (A) with F1*+F3 confirming TEX, SP edge 0.61 xERA (Rocker over Lugo), PQI +7.9. HARD CAP 7 fired (hl_bullpen_xwoba_gap=+0.0019) and reduced the score from 5 to 1, then fair_prob missing capped to C. TEX won 7-6 — the underlying signal stack was correct but the cap system prevented any stake. HARD CAP 7 over-fired at a near-zero gap (+0.0019); the gap is below any meaningful threshold. This is the second data point suggesting HARD CAP 7's trigger at any positive value may be too sensitive when |gap| < 0.010 and all other signals strongly confirm the pick.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap near-zero threshold (+0.0019); consider whether |gap| >= 0.010 minimum is warranted before cap fires on otherwise A-grade stacks."
+    },
+    "TOR @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "BAL ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-6",
+      "headline": "BAL held off TOR 6-5 in a tight game despite the model's D-grade and Claude DOWNGRADE.",
+      "hypothesis": "Model picked BAL at D-grade (-1) with dual-opposing signals (Brandon Young 2.27 xERA edge for TOR, PQI -26.9 against BAL). Claude correctly DOWNGRADED to SKIP given the 50.77% bottom-bucket probability and weak grade. BAL won 6-5 — a close result that could easily have gone the other way. The DOWNGRADE was the correct process decision (D-grade + dual-signal-against + extreme bottom-bucket), and the win is variance, not a signal the pick was wrongly downgraded.",
+      "signals_to_recheck": "F3_swing_take_gap=4190.7 fired but was insufficient to overcome dual SP+PQI opposition — correct per established heuristics. No new signal recalibration needed."
+    },
+    "MIN @ PIT": {
+      "verdict": "WIN",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-10",
+      "headline": "PIT edged MIN 10-9 in a high-scoring game; Josh Bell's OWNER BvP vs Bailey Ober was key.",
+      "hypothesis": "Pre-cap score=0 with HARD CAP 10 enforcing SKIP (pick_prob=0.526 in bottom-bucket). PIT won 10-9 in a high-scoring game — a result consistent with the model's F3 signal and Stage agree, despite the SP xERA (-2 for Bailey Ober over Mitch Keller) opposing PIT. Josh Bell's OWNER status vs Ober (18 PA, shrunk 0.926) likely contributed to PIT's offense. HARD CAP 10 was correct to enforce zero stake; the 10-9 result would have been difficult to predict and reflects Coors-esque run-scoring variance in a pitcher's matchup.",
+      "signals_to_recheck": "F3_swing_take_gap=4448.5 confirmed directionality; pre_cap_score=0 correctly prevented any stake despite directional accuracy."
+    },
+    "BOS @ CLE": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-1",
+      "headline": "BOS blew out CLE 9-1 despite D-grade (-3) with all grade signals favoring CLE.",
+      "hypothesis": "Model picked BOS at D-grade (-3) with Sonny Gray holding 1.22 xERA edge for CLE, PQI opposing BOS. Despite all signals favoring CLE, BOS dominated 9-1 — a significant variance failure where the model's direction was right but every quality signal said otherwise. José Ramírez (CLE's best bat) historically struggles vs Parker Messick (48 PA, shrunk 0.622), removing CLE's biggest lineup threat. SKIP was the correct financial call; BOS winning 9-1 in a D-grade game is not a signal to recalibrate.",
+      "signals_to_recheck": "D-grade dual-signal (SP xERA + PQI both against BOS) correctly enforced SKIP. LOTS_OF_HISTORY flag on Ramírez vs Messick correctly identified a key hitter suppression, though it favored the wrong team's narrative."
+    },
+    "LAA @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "14-3",
+      "headline": "LAA demolished TB 14-3 in a massive blowout; TB model pick was crushed.",
+      "hypothesis": "Model picked TB at C-grade (score=0) with HARD CAP 10 enforcing zero stake. The 14-3 blowout is a variance failure — TB was a reasonable directional choice at 58% with Drew Rasmussen (23.39% K%) vs Reid Detmers (27.96% K%), but LAA's offense exploded. TB's lineup_concentration_idx=1.268 (top-heavy) with hl_bullpen_xwoba_gap=-0.002 (near zero) provided no structural insurance. The f5_full_delta=0.1781 suggested Stage-2 needed bullpen carry; the near-zero pen gap couldn't support it. SKIP was correct.",
+      "signals_to_recheck": "lineup_concentration_idx=1.268 (top-heavy TB) + near-zero pen_strain_pick_side: when pick-side lineup is top-heavy (>1.25) with near-zero hl_bullpen_xwoba_gap, the carry thesis has no insurance — blowout losses become plausible outcomes."
+    },
+    "MIA @ NYM": {
+      "verdict": "LOSS",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-6",
+      "headline": "NYM routed MIA 6-1; model's 64.76% MIA confidence was unchecked by missing fair_prob.",
+      "hypothesis": "Model picked MIA at C-grade (score=0, capped due to missing fair_prob) with apparent strong signals: F3_swing_take_gap=3264.2, SP edge 0.87 xERA (Phillips over Scott), PQI -11.3. But fair_prob was absent — no market validation anchor. Tyler Phillips outpitched Christian Scott, and NYM's lineup (Soto, Bichette) delivered. This is a process failure: without fair_prob, the model generated 64.76% MIA confidence with no market reality-check. The uniform BvP artifact (all MIA batters: 0.568 shrunk_OPS vs 8 PA) and uniform NYM batters (0.635 shrunk_OPS) were likely data noise. Fair_prob missing at model confidence 60-65% is a directional-unreliability signal.",
+      "signals_to_recheck": "fair_prob missing + model probability 60-65% (no PLATINUM conviction) = unchecked overconfidence zone; F3_swing_take_gap=3264.2 and SP edge were insufficient without market anchor."
+    },
+    "MIL @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-9",
+      "headline": "HOU dominated MIL 9-2; model's HOU pick was directionally correct despite DOWNGRADE.",
+      "hypothesis": "Model picked HOU at C-grade (pre-cap score=5, reduced to 0 by HARD CAP 10 at 50.76% probability). Claude correctly DOWNGRADED given the extreme bottom-bucket probability (50.76%) — staking a near-50/50 game at any tier would be unprofitable. HOU won 9-2, suggesting the underlying signals (F1*+F3, SP edge 1.05, PQI +9.3) were directionally sound. This is the correct decision correctly executed: DOWNGRADE on bottom-bucket picks regardless of pre-cap signal quality. Variance win on a correctly zero-staked pick.",
+      "signals_to_recheck": "F1_xera_gap=1.05* (thin-sample Lambert over Sproat) correctly noted as insufficient alone for bottom-bucket picks; HARD CAP 10 + DOWNGRADE combination was correct."
+    },
+    "CHC @ STL": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-1",
+      "headline": "CHC routed STL 6-1 with Ben Brown dominant; negative-edge HARD CAP 1 correctly prevented stake.",
+      "hypothesis": "Model picked CHC at C-grade (score=0 after HARD CAP 1 for edge=-3.56pp and HARD CAP 10). Ben Brown held a 4.09 xERA edge over Kyle Leahy — the largest SP edge on the slate — and PQI -40.1 strongly confirmed CHC. CHC won 6-1, validating the directional call. However, edge_pp=-3.56pp means the market was pricing CHC at 55.53% vs model's 51.97% — betting CHC would have meant staking at below-market confidence. HARD CAP 1 was correct: we should not stake negative-edge picks even when the model's direction is right. The market already knew CHC was favored more than we did.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD confirmed correct; CHC won despite betting against our edge — market pricing authority holds even when model direction is accurate."
+    },
+    "ATL @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-2",
+      "headline": "ATL beat CIN 5-2 with Matt Olson OWNER BvP delivering; negative-edge cap correctly prevented stake.",
+      "hypothesis": "Model picked ATL at C-grade (score=0 after HARD CAP 1 for edge=-0.98pp). ATL's qualitative case was strong: hl_bullpen_xwoba_gap=-0.0267 (ATL pen better), pen_strain_pick_side=0.1171 (HIGH), PQI -32.8, and Matt Olson OWNER vs Singer (15 PA, shrunk 0.913). ATL won 5-2. Market priced ATL at 54.83% vs model's 53.86% — essentially agreement, but the market was marginally more confident in ATL than we were. HARD CAP 1 was correct to prevent stake. The downgrade was correct process; the win is directionally gratifying but financially irrelevant.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD; confidence_downgrade_True added caution. F1_xera_gap=2.28* (thin-sample Pérez) would have been a legitimate reason to hold conviction slightly lower than market."
+    },
+    "SF @ COL": {
+      "verdict": "WIN",
+      "model_pick": "COL ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-8",
+      "headline": "COL dominated SF 8-3 at Coors Field; acute_roster flag correctly added caution.",
+      "hypothesis": "Model picked COL at C-grade (score=0 after HARD CAP 10) with positive edge=7.85pp but acute_roster=True flagging unknown roster uncertainty. COL won 8-3. The acute_roster flag was over-cautious here — COL dominated. However, the Coors Field run-inflation effect consistently produces games like this regardless of SP quality (Ryan Feltner small-sample SP, xERA vs Houser). Willy Adames was WEAK_VS Feltner (12 PA, shrunk 0.588), correctly dampening SF's leadoff bat. HARD CAP 10 at pick_prob=0.519 was the primary driver of zero stake.",
+      "signals_to_recheck": "acute_roster_True + confidence_downgrade_True appropriately flagged uncertainty; HARD CAP 10 bottom-bucket (pick_prob=0.519) was the authoritative gate. Coors Field home picks with positive edge may merit a dedicated Coors-boost review given consistent run-inflation artifacts."
+    },
+    "NYY @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-6",
+      "headline": "OAK beat NYY 6-4; the only staked pick on the slate lost — PLATINUM consecutive-day trap.",
+      "hypothesis": "NYY PLATINUM fired after an 8-2 blowout win vs OAK on 5/29. All signals appeared clean: F2_xwoba_gap=0.024, F5_bullpen_gap=+0.44, hl_bullpen_xwoba_gap=-0.0145 (NYY pen better), PQI confirmed, positive edge=11.55pp, kelly=22.9%. OAK won 6-4. This is likely a variance failure — the model's signal stack was legitimate — but with a process note: consecutive-day same-matchup PLATINUM picks after a blowout (≥5 run margin) underweight the losing team's lineup rebound potential. OAK's Nick Kurtz (1.096 RHP career OPS, 513 PA) and Brent Rooker (SMALL_SAMPLE OWNER vs Weathers: 4 PA, 1.25 OPS, 1 HR) were plausible difference-makers the F2/F5 aggregate signals didn't isolate. J.T. Ginn's home-team advantage also provided a venue edge the model may have underweighted.",
+      "signals_to_recheck": "Consecutive-day same-matchup PLATINUM after blowout: F2_xwoba_gap + F5_bullpen_gap do not capture lineup-rebound effects; check OAK individual hitter quality (Kurtz 1.096 RHP OPS) as a process-failure flag when picking against elite offensive players."
+    },
+    "ARI @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "SEA ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-5",
+      "headline": "SEA dominated ARI 5-1; Bryan Woo outpitched Ryne Nelson as model expected.",
+      "hypothesis": "Model picked SEA at C-grade (score=0 after HARD CAP 1 for edge=-3.31pp) with strong pre-cap signals: F1_xera_gap=1.98, F3_swing_take_gap=2799.3, PQI +20.6. SEA won 5-1 comfortably. Market priced SEA at 59.06% vs model's 55.75% — market was already more confident in SEA than the model. HARD CAP 1 correctly prevented staking below market conviction; the win is directionally correct but the market already knew it. Claude DOWNGRADE was correct process for a negative-edge pick with confidence_downgrade=True.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD; market's SEA pricing (59.06%) significantly exceeded model's 55.75% — the market was right and we correctly deferred. No signal recalibration needed."
+    },
+    "PHI @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-3",
+      "headline": "PHI upset LAD 4-3; D-grade (-4) correctly warned against LAD confidence.",
+      "hypothesis": "Model picked LAD at D-grade (-4) — the worst grade on the slate — with Luzardo holding 1.80 xERA edge over Sasaki, PQI -29.0 opposing LAD, and f5_full_delta=0.3299 with near-zero hl_bullpen_xwoba_gap=-0.0085 (insufficient carry). LAD lost 4-3 in a close game. PHI's lineup (Harper, Schwarber, Turner) delivered against Sasaki, while Luzardo held LAD in check. The D-grade correctly predicted this as a suspect pick — close result could be variance, but the structural failure signals (dual-opposing-signal D-grade) were validated. SKIP was correct.",
+      "signals_to_recheck": "D-grade dual-opposing-signal confirmed: SP xERA (-2) + PQI (-1) + Stage disagree (-1) all against LAD, and LAD lost. Near-zero hl_bullpen_xwoba_gap (-0.0085) could not support the carry thesis for f5_full_delta=0.3299."
+    }
+  },
+  "patterns_observed": [
+    "PLATINUM consecutive-day same-matchup trap (NYY@OAK loss, 4-6): PLATINUM fired after an 8-2 NYY blowout on 5/29, and OAK bounced back with lineup quality the F2/F5 signals missed (Nick Kurtz 1.096 RHP OPS, Brent Rooker OWNER BvP). Future rule: when PLATINUM fires on the same team vs. same opponent in consecutive games AND the prior game was a ≥5-run blowout, flag the LOSING team's rebound potential and apply one tier of skepticism — the F2/F5 aggregate signals do not capture motivation or lineup-adjustment effects that drive bounce-back wins.",
+    "fair_prob missing + model confidence 60-67% = directional unreliability zone (MIA@NYM LOSS, 1-6): MIA was picked at 64.76% full game with no fair_prob market anchor, and NYM won easily. When fair_prob is absent AND model probability is in the 58-67% range (not PLATINUM-level conviction), the directional call is unchecked speculation. Apply heightened skepticism to any GOLD-tier pick with missing fair_prob that lacks at least 2 independent confirming F-signals plus a clean PQI — the model's confidence figure is unreliable without market validation at this probability level.",
+    "HARD CAP 1 (negative_edge_GOLD) correctly prevented staking on 3 directional wins (CHC@STL 6-1, ATL@CIN 5-2, ARI@SEA 5-1): all three had negative model edge vs market and all won directionally. The market was directionally correct AND more confident than our model on all three — precisely why HARD CAP 1 fires. Do NOT loosen HARD CAP 1 based on these results; the cap's function is to prevent staking below market conviction, and a single-day sample of negative-edge directional wins is consistent with the 45-55% long-run rate that makes these picks unprofitable to stake. Tightening HARD CAP 1 would be the error here.",
+    "HARD CAP 7 near-zero gap over-fire candidate (KC@TEX +0.0019, TEX won 7-6): pre-cap score=5 (A-grade) with F1*+F3+SP edge+PQI all confirming TEX, but HARD CAP 7 fired at hl_bullpen_xwoba_gap=+0.0019 and dropped score from 5 to 1. TEX won 7-6. A gap of +0.0019 is economically indistinguishable from zero (below the 0.040 meaningful threshold). This is a second instance of HARD CAP 7 firing at near-zero values on otherwise-strong stacks; consider whether adding |hl_bullpen_xwoba_gap| >= 0.010 as a minimum trigger threshold would reduce cap over-firing without compromising its protective function on genuinely disadvantaged bullpen matchups."
+  ]
+}
