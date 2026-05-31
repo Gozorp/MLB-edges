@@ -5431,6 +5431,33 @@ async function _prefetchPitcherKResults(ks, results) {
   }
 }
 
+// Rank batters slate-wide by single-game HR probability (Phase 1.5).
+// Uses baked per-batter season HR/PA from the platoon top-5 batter JSON via
+// the _hrProbability formula. Neutral pitcher factor for the slate-wide
+// overview (the SP-weighted variant stays available in _hrProbability for
+// per-game context).
+function _topHRProps(rows) {
+  const out = [];
+  for (const r of rows || []) {
+    const matchup = (r.matchup || "").trim();
+    for (const side of ["away", "home"]) {
+      let bats = [];
+      try { bats = JSON.parse(r[side + "_top_5_batters_json"] || "[]") || []; }
+      catch (_) { bats = []; }
+      const team = (side === "away" ? r.away_team : r.home_team) || "";
+      for (const b of bats) {
+        const hr = parseInt((b.season_HR != null ? b.season_HR : b.hr) || 0);
+        const pa = parseInt((b.season_PA != null ? b.season_PA : b.pa) || 0);
+        if (!(pa >= 30) || hr < 0) continue;
+        const p = _hrProbability({ hr: hr, pa: pa }, null, 4.3);
+        if (p == null) continue;
+        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa });
+      }
+    }
+  }
+  return out.sort((a, b) => b.prob - a.prob);
+}
+
 function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   results = results || {};
   const gameMLs = _topGameMLPicks(rows).slice(0, 5);
@@ -5482,9 +5509,21 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
     }
   }
 
-  html += `<div class="muted" style="font-size:0.78rem;margin-top:0.8rem;font-style:italic;">` +
-          `ⓘ HR-prop ranking coming in Phase 1.5 once per-batter season HR/PA is in the diag CSV.` +
-          `</div></div>`;
+  const hrs = _topHRProps(rows).slice(0, 10);
+  if (hrs.length) {
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span></h3>`;
+    hrs.forEach((item, i) => {
+      const pct = (item.prob * 100).toFixed(1);
+      const rate = item.pa > 0 ? (item.hr / item.pa * 100).toFixed(1) : "0.0";
+      html += `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;padding:0.4rem 0.2rem;border-bottom:1px solid rgba(255,255,255,0.05);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
+            +   `<span><span class="muted">${i + 1}.</span> <strong>${item.name}</strong> <span class="muted">(${item.team})</span></span>`
+            +   `<span style="white-space:nowrap;"><strong style="color:var(--accent);">${pct}% HR</strong> <span class="muted" style="font-size:0.76rem;">· ${item.hr} HR / ${item.pa} PA (${rate}%)</span></span>`
+            + `</div>`;
+    });
+  } else {
+    html += `<div class="muted" style="font-size:0.78rem;margin-top:0.8rem;font-style:italic;">ⓘ Home Run Props populate once per-batter season HR/PA is baked into the diag (run a slate refresh).</div>`;
+  }
+  html += `</div>`;
 
   return html;
 }

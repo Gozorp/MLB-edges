@@ -102,7 +102,7 @@ def _write_cache(player_id: int, data: dict) -> None:
 def get_career_splits(player_id: int) -> dict:
     """Return {vs_LHP: {OPS, PA, AVG}, vs_RHP: {OPS, PA, AVG}, bat_side}."""
     cached = _read_cache(player_id)
-    if cached is not None:
+    if cached is not None and "season_PA" in cached:
         return cached
 
     url = (f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats"
@@ -146,6 +146,30 @@ def get_career_splits(player_id: int) -> dict:
             out["bat_side"] = bs
     except Exception:
         pass
+
+    # Season HR + PA (Phase 1.5 HR-prop ranking). Cached alongside the
+    # splits; the cache-version check above (requires "season_PA")
+    # refreshes pre-existing entries that lack it.
+    out["season_HR"] = 0
+    out["season_PA"] = 0
+    try:
+        sdata = _fetch_json(
+            f"https://statsapi.mlb.com/api/v1/people/{player_id}"
+            f"/stats?stats=season&group=hitting")
+        for s in sdata.get("stats", []):
+            for split in s.get("splits", []):
+                st = split.get("stat", {})
+                try:
+                    out["season_HR"] = int(st.get("homeRuns", 0) or 0)
+                except (TypeError, ValueError):
+                    pass
+                try:
+                    out["season_PA"] = int(st.get("plateAppearances", 0) or 0)
+                except (TypeError, ValueError):
+                    pass
+    except Exception as e:
+        log.debug("[platoon_splits] season HR/PA fetch failed for %s: %s",
+                  player_id, e)
 
     _write_cache(player_id, out)
     return out
@@ -253,6 +277,7 @@ def build_team_top_5_payload(game_pk: int, team_side: str,
                 "vs_LHP_OPS_career": None, "vs_LHP_PA_career": 0,
                 "vs_RHP_OPS_career": None, "vs_RHP_PA_career": 0,
                 "vs_today_SP_OPS": None, "vs_today_SP_PA": 0,
+                "season_HR": 0, "season_PA": 0,
                 "sample_flag": "NO_DATA",
             })
             continue
@@ -282,6 +307,8 @@ def build_team_top_5_payload(game_pk: int, team_side: str,
             "vs_RHP_PA_career": vs_r["PA"],
             "vs_today_SP_OPS": round(ops_today, 3) if ops_today else None,
             "vs_today_SP_PA": pa_today,
+            "season_HR": int(splits.get("season_HR", 0) or 0),
+            "season_PA": int(splits.get("season_PA", 0) or 0),
             "sample_flag": flag,
         })
     return out
