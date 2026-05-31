@@ -70,4 +70,9 @@ jobs:
             echo "no health-artifact changes to commit"
           else
             git commit -m "health-check: $(date -u +%Y-%m-%dT%H:%MZ)"
-            # Use `git pull --rebase` defensively in 
+            # main moves often (daily-slate commits hourly); rebase before push
+            # so a non-fast-forward doesn't fail the run, and a lost race just
+            # retries next cycle instead of failing the workflow.
+            git pull --rebase --autostash origin main || true
+            git push origin main || echo "push race lost; next run will retry"
+          fi
