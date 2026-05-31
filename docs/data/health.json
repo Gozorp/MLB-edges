@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "checked_at": "2026-05-28T23:47:36.933888+00:00",
+  "checked_at": "2026-05-31T23:11:49.371675+00:00",
   "overall": "red",
   "categories": {
-    "workflows": "red",
+    "workflows": "green",
     "data_flow": "green",
-    "deployment": "red",
-    "model": "yellow"
+    "deployment": "green",
+    "model": "red"
   },
   "checks": [
     {
@@ -14,32 +14,40 @@
       "severity": "green",
       "message": "last ran 0.4h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T23:24:13Z",
-        "age_hours": 0.39
+        "last_run_iso": "2026-05-31T22:50:32Z",
+        "age_hours": 0.35
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
-      "severity": "red",
-      "message": "no `refit-calibrator:` commit found in git log",
-      "detail": {},
+      "severity": "green",
+      "message": "last fired 15.4h ago",
+      "detail": {
+        "last_run_iso": "2026-05-31T07:47:14Z",
+        "age_hours": 15.41,
+        "cadence": "weekly calibrator refit"
+      },
       "category": "workflows"
     },
     {
       "name": "weekly_backtest_heartbeat",
-      "severity": "red",
-      "message": "no `weekly-backtest:` commit found in git log",
-      "detail": {},
+      "severity": "green",
+      "message": "last fired 15.0h ago",
+      "detail": {
+        "last_run_iso": "2026-05-31T08:12:47Z",
+        "age_hours": 14.98,
+        "cadence": "weekly backtest"
+      },
       "category": "workflows"
     },
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 3.3h ago",
+      "message": "last fired 3.8h ago",
       "detail": {
-        "last_run_iso": "2026-05-28T20:26:50Z",
-        "age_hours": 3.35,
+        "last_run_iso": "2026-05-31T19:22:41Z",
+        "age_hours": 3.82,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -49,7 +57,7 @@
       "severity": "green",
       "message": "written 0.0h ago",
       "detail": {
-        "path": "docs/data/bullpen_meta_2026-05-28.json",
+        "path": "docs/data/bullpen_meta_2026-05-31.json",
         "mtime_age_hours": 0.0
       },
       "category": "data_flow"
@@ -57,14 +65,15 @@
     {
       "name": "kalshi_coverage_rate",
       "severity": "green",
-      "message": "6/6 rows have market odds",
+      "message": "14/15 rows have market odds",
       "detail": {
-        "total_rows": 6,
-        "ok_rows": 6,
-        "non_ok_pct": 0.0,
+        "total_rows": 15,
+        "ok_rows": 14,
+        "non_ok_pct": 6.7,
         "status_distribution": {
-          "fetched_capped": 3,
-          "fetched": 3
+          "fetched_capped": 13,
+          "fetched": 1,
+          "pending_sp_data": 1
         }
       },
       "category": "data_flow"
@@ -72,41 +81,37 @@
     {
       "name": "pending_sp_data_rate",
       "severity": "green",
-      "message": "0/6 rows PENDING_SP_DATA",
+      "message": "1/15 rows PENDING_SP_DATA",
       "detail": {
-        "total_rows": 6,
-        "pending_sp_data_count": 0,
-        "pct_of_slate": 0.0
+        "total_rows": 15,
+        "pending_sp_data_count": 1,
+        "pct_of_slate": 6.7
       },
       "category": "data_flow"
     },
     {
       "name": "cloudflare_deploy_freshness",
-      "severity": "red",
-      "message": "/api/health unreachable: URLError",
+      "severity": "green",
+      "message": "deploy reachable, status ok (build SHA not injected)",
       "detail": {
-        "pages_url": "https://mlb-edges.pages.dev",
-        "error": "<urlopen error [Errno -2] Name or service not known>"
-      },
-      "category": "deployment"
-    },
-    {
-      "name": "anthropic_api_probe",
-      "severity": "red",
-      "message": "/api/claude/health unreachable: URLError",
-      "detail": {
-        "pages_url": "https://mlb-edges.pages.dev",
-        "error": "<urlopen error [Errno -2] Name or service not known>"
+        "pages_url": "https://mlb-edges.saladin-alfaatih.workers.dev",
+        "status": "ok",
+        "body": {
+          "status": "ok",
+          "timestamp": "2026-05-31T23:11:49.540Z",
+          "commit": "unknown",
+          "region": "DFW"
+        }
       },
       "category": "deployment"
     },
     {
       "name": "weights_state_freshness",
-      "severity": "yellow",
-      "message": "weights last learned 32.2h ago (expected ~daily)",
+      "severity": "red",
+      "message": "weights last learned 68.5h ago (threshold 48h)",
       "detail": {
-        "last_entry_iso": "2026-05-27T15:34:07.240821+00:00",
-        "age_hours": 32.22
+        "last_entry_iso": "2026-05-29T02:41:35.879427+00:00",
+        "age_hours": 68.5
       },
       "category": "model"
     },
@@ -133,11 +138,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "2/6 rows stress-warned",
+      "message": "0/15 rows stress-warned",
       "detail": {
-        "total_rows": 6,
-        "stress_warned_count": 2,
-        "pct_of_slate": 33.3
+        "total_rows": 15,
+        "stress_warned_count": 0,
+        "pct_of_slate": 0.0
       },
       "category": "model"
     }
