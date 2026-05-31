@@ -6462,8 +6462,10 @@ async function loadSlate(date, { bust = false } = {}) {
   // Tear down any live trackers from the previous slate before re-rendering
   try { _ltStopAllPollers(); } catch (_) {}
   try {
-    const q = bust ? `?v=${Date.now()}` : "";
-    const fetchOpts = bust ? { cache: "no-store" } : {};
+    // Always cache-bust the data fetches so a fresh deploy/bake is never
+    // masked by a stale browser cache. (`bust` now only affects status text.)
+    const q = `?v=${Date.now()}`;
+    const fetchOpts = { cache: "no-store" };
 
     // Try local docs/data first, fall back to raw.githubusercontent.com
     // if 404 and fallback is enabled
