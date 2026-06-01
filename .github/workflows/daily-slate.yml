@@ -199,5 +199,19 @@ jobs:
             echo "no changes to commit (nothing changed today)"
           else
             git commit -m "daily-slate: $(date -u +%Y-%m-%d) auto-run + bake"
-            git push
+            # main moves often (health-check :07/:37, self-learn, refit,
+            # bake, claude-brain). A bare push hits non-fast-forward
+            # rejections, which used to FAIL the scheduled run ~half the
+            # time. Rebase-and-retry up to 5x; -X theirs keeps our fresh
+            # bake on any same-file overlap. A persistent failure warns
+            # (next hourly run re-bakes) but does NOT fail the run, so
+            # transient races stop reddening the board.
+            for i in 1 2 3 4 5; do
+              if git push origin main; then echo "pushed (attempt $i)"; break; fi
+              echo "push rejected (attempt $i) - rebasing on origin/main and retrying..."
+              git fetch origin main || true
+              git rebase -X theirs origin/main || git rebase --abort 2>/dev/null || true
+              if [ "$i" = "5" ]; then echo "::warning::daily-slate push still rejected after 5 attempts; next run will re-bake"; fi
+              sleep $((RANDOM % 4 + 2))
+            done
           fi
