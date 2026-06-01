@@ -1,0 +1,67 @@
+# =============================================================================
+# savant-hitters-harvest.yml
+# -----------------------------------------------------------------------------
+# Isolated daily harvest of per-hitter Statcast leaderboards (exit velo/barrels,
+# expected stats, sprint speed) -> data/savant_hitters_<year>.csv, committed so
+# the daily slate bake reads it as a fast local lookup. Decoupled from the bake
+# on purpose: a slow or failed Savant fetch here can NEVER slow or break the
+# slate. Own schedule + manual dispatch.
+# =============================================================================
+name: Savant hitter harvest
+
+on:
+  schedule:
+    - cron: "0 11 * * *"   # 11:00 UTC daily -- well clear of the slate bake window
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Season year (blank = current UTC year)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "pybaseball>=2.2.7" "pandas>=2.0"
+
+      - name: Harvest per-hitter Statcast leaderboards
+        env:
+          HY: ${{ inputs.year }}
+        run: |
+          if [ -n "$HY" ]; then
+            python tools/harvest_savant_hitters.py --year "$HY"
+          else
+            python tools/harvest_savant_hitters.py
+          fi
+
+      - name: Commit the harvested CSV
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/savant_hitters_*.csv 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no hitter-leaderboard change to commit"
+          else
+            git commit -m "savant-hitters: refresh per-hitter Statcast leaderboards ($(date -u +%Y-%m-%d))"
+            git pull --rebase --autostash origin main || true
+            git push origin main || echo "push race lost; next run retries"
+          fi
