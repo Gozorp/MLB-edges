@@ -1137,7 +1137,7 @@
 #mlb-hero .hero-stat-value{font-size:1.3rem!important;}
 #mlb-hero .hero-stat-label{margin-top:0!important;font-size:.62rem!important;letter-spacing:.14em!important;}
 .reveal-on-scroll{opacity:1!important;transform:none!important;}
-main h2{font-size:1.05rem;letter-spacing:.01em;margin:1rem 0 .5rem;}
+main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}}
 /* === end usability-pass-2026 === */
 
@@ -6126,9 +6126,9 @@ async function toggleNarrative(i) {
       const _tp = (_tr && _tr.matchup ? _tr.matchup : "").split(/\s*@\s*/);
       const _tc = _theoChances(_tr);
       _ts.innerHTML =
-        `<span class="theo-num">${(_tc.home*100).toFixed(1)}%</span> <span class="theo-side">${_tp[1]||"HOME"}</span>`
+        `<span class="theo-num">${(_tc.home*100).toFixed(1)}%</span> <span class="theo-side">${(_tp[1]||"HOME").replace(/\s*\(.*$/,"")}</span>`
         + `<span class="theo-vs">·</span>`
-        + `<span class="theo-num">${(_tc.away*100).toFixed(1)}%</span> <span class="theo-side">${_tp[0]||"AWAY"}</span>`;
+        + `<span class="theo-num">${(_tc.away*100).toFixed(1)}%</span> <span class="theo-side">${(_tp[0]||"AWAY").replace(/\s*\(.*$/,"")}</span>`;
       _ts.dataset.filled = "1";
     }
   } catch (_e) { console.warn("theo chances fill failed:", _e); }
