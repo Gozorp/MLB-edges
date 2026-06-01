@@ -1140,6 +1140,17 @@
 main h2{font-size:1.05rem;letter-spacing:.01em;margin:1rem 0 .5rem;}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}}
 /* === end usability-pass-2026 === */
+
+/* === theoretical-chances-2026: hypothetical toy WP card === */
+.theo-card{margin:.6rem 0;padding:.7rem .9rem;border:1px dashed var(--border);border-radius:8px;background:rgba(88,166,255,0.045);}
+.theo-card h4{margin:0 0 .4rem;font-size:.92rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.theo-tag{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);border:1px solid var(--yellow);border-radius:999px;padding:.05rem .45rem;font-weight:600;}
+.theo-body{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;line-height:1.4;}
+.theo-num{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
+.theo-side{color:var(--muted);font-size:.8rem;margin-right:.35rem;}
+.theo-vs{color:var(--muted);margin:0 .35rem;}
+.theo-card .legend-note{margin:.45rem 0 0;}
+/* === end theoretical-chances-2026 === */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -4017,6 +4028,13 @@ function formatNarrative(r, gradeInfo, result) {
     Solid line appears once the game is final, showing the actual win-probability path from MLB statsapi.</p>
   </div>`;
 
+  // ----- 1c. Theoretical chances (HYPOTHETICAL toy model) -----
+  html += `<div class="theo-card" data-theo-slot>
+    <h4>⚛ Theoretical chances <span class="theo-tag">hypothetical · not the pick</span></h4>
+    <div class="theo-body"><span class="muted">expand to compute…</span></div>
+    <p class="legend-note">An independent from-scratch toy — air-density carry, Log5 + James-Stein shrinkage, a 24 base-out-state Markov inning sim, and a 9-inning convolution — run on this game\u2019s pitching &amp; lineup signal. Deliberately separate from the model\u2019s pick above: a curiosity, not a betting number.</p>
+  </div>`;
+
   // ----- 2. Pitching matchup (Stage 1) -----
   html += `<h4>Pitching matchup (Stage 1, first 5 innings)</h4>`;
   if (!isNaN(f5)) {
@@ -5997,6 +6015,84 @@ function renderSlate(rows, gradeMap, results) {
 // Toggle expand/collapse for in-depth row narrative.  On expand, lazily
 // fetches probable-pitcher stats + both rosters from MLB statsapi and renders
 // the named-player preview block.
+
+// ===== Theoretical chances (HYPOTHETICAL toy model) =========================
+// Front-end port of mlb_edge/theoretical_chances.py. An independent, from-
+// scratch win probability shown as a curiosity / cross-check -- NOT the model's
+// pick, and isolated from it. Real methods (Log5 + James-Stein shrinkage, a 24
+// base-out-state Markov inning sim, 9-inning convolution, honest 0.5 tie split)
+// are implemented faithfully; offense/bullpen tilts are small bounded
+// heuristics. Memoized; computed lazily on row expand so it costs the slate 0.
+const _THEO_LEAGUE_PA = [0.690, 0.085, 0.140, 0.045, 0.004, 0.036]; // out,bb,1b,2b,3b,hr
+const _theoMemo = new Map();
+function _theoNum(v){ const n = parseFloat(v); return isFinite(n) ? n : NaN; }
+function _theoKpct(v){ let n = _theoNum(v); if (!isFinite(n)) return 0.22; if (n > 1) n /= 100; return Math.min(Math.max(n, 0.10), 0.40); }
+function _theoRates(oppKpct, offMod){
+  // League prior tilted by the OPPOSING starter's K% (whiff suppression vs a
+  // ~22% league SP) and a small bounded offense modifier; renormalized (Log5 +
+  // shrinkage, compressed).
+  const pa = _THEO_LEAGUE_PA.slice();
+  const kTilt = oppKpct - 0.22;
+  pa[0] *= (1 + 1.4 * kTilt);
+  for (let j = 1; j < 6; j++) pa[j] *= (1 - 0.9 * kTilt);
+  const m = Math.max(Math.min(offMod, 0.15), -0.15);
+  pa[0] *= (1 - 0.6 * m); pa[5] *= (1 + 2.0 * m); pa[3] *= (1 + 1.2 * m); pa[2] *= (1 + 0.8 * m);
+  let s = 0; for (let j = 0; j < 6; j++){ pa[j] = Math.max(pa[j], 1e-9); s += pa[j]; }
+  return pa.map(x => x / s);
+}
+function _theoInningPMF(pa, sims){
+  const cum = []; let c = 0; for (const p of pa){ c += p; cum.push(c); }
+  const maxR = 16, counts = new Array(maxR + 1).fill(0);
+  for (let s = 0; s < sims; s++){
+    let on1 = false, on2 = false, on3 = false, outs = 0, runs = 0;
+    while (outs < 3){
+      const x = Math.random(); let ev = 0; while (ev < 5 && x > cum[ev]) ev++;
+      if (ev === 0){ outs++; }
+      else if (ev === 1){ if (on1 && on2 && on3) runs++; else if (on1 && on2) on3 = true; else if (on1) on2 = true; on1 = true; }
+      else if (ev === 2){ if (on3) runs++; on3 = on2; on2 = on1; on1 = true; }
+      else if (ev === 3){ runs += (on3 ? 1 : 0) + (on2 ? 1 : 0); on3 = on1; on2 = true; on1 = false; }
+      else if (ev === 4){ runs += (on1 ? 1 : 0) + (on2 ? 1 : 0) + (on3 ? 1 : 0); on1 = false; on2 = false; on3 = true; }
+      else { runs += 1 + (on1 ? 1 : 0) + (on2 ? 1 : 0) + (on3 ? 1 : 0); on1 = false; on2 = false; on3 = false; }
+    }
+    counts[Math.min(runs, maxR)]++;
+  }
+  let tot = 0; for (const v of counts) tot += v;
+  return counts.map(v => v / tot);
+}
+function _theoConv(a, b){ const out = new Array(a.length + b.length - 1).fill(0);
+  for (let i = 0; i < a.length; i++) for (let j = 0; j < b.length; j++) out[i + j] += a[i] * b[j]; return out; }
+function _theoGamePMF(inn){ let p = inn.slice(); for (let k = 0; k < 8; k++) p = _theoConv(p, inn);
+  let s = 0; for (const v of p) s += v; return p.map(v => v / s); }
+function _theoLeverage(pmf, supp){ if (!supp) return pmf;
+  const out = pmf.map((v, i) => v * Math.exp(-Math.abs(supp) * 0.04 * i));
+  let s = 0; for (const v of out) s += v; return out.map(v => v / s); }
+function _theoWP(h, a){ const ca = []; let c = 0; for (const v of a){ c += v; ca.push(c); }
+  let more = 0, tie = 0;
+  for (let i = 0; i < h.length; i++){ const below = i - 1 >= 0 ? ca[i - 1] : 0; more += h[i] * below; if (i < a.length) tie += h[i] * a[i]; }
+  return more + 0.5 * tie; }
+function _theoChances(r){
+  if (!r) return { home: 0.5, away: 0.5 };
+  const key = (r.matchup || "") + "|" + (r.home_sp_name || "") + "|" + (r.away_sp_name || "");
+  if (_theoMemo.has(key)) return _theoMemo.get(key);
+  const homeK = _theoKpct(r.home_sp_k_pct), awayK = _theoKpct(r.away_sp_k_pct);
+  const hConc = _theoNum(r.home_lineup_concentration), aConc = _theoNum(r.away_lineup_concentration);
+  const hOff = isFinite(hConc) ? (hConc - 0.5) * 0.10 : 0;   // tiny, bounded inside _theoRates
+  const aOff = isFinite(aConc) ? (aConc - 0.5) * 0.10 : 0;
+  const homePA = _theoRates(awayK, hOff);   // home offense faces the AWAY starter
+  const awayPA = _theoRates(homeK, aOff);   // away offense faces the HOME starter
+  const penGap = _theoNum(r.hl_bullpen_xwoba_gap) || 0;     // +ve favors home pen
+  const sims = 1200;
+  let homeInn = _theoInningPMF(homePA, sims), awayInn = _theoInningPMF(awayPA, sims);
+  awayInn = _theoLeverage(awayInn, Math.max(penGap, 0) * 8);    // home pen suppresses away
+  homeInn = _theoLeverage(homeInn, Math.max(-penGap, 0) * 8);   // away pen suppresses home
+  const wpHome = _theoWP(_theoGamePMF(homeInn), _theoGamePMF(awayInn));
+  const res = { home: Math.min(Math.max(wpHome, 0.01), 0.99), away: 0 };
+  res.away = 1 - res.home;
+  _theoMemo.set(key, res);
+  return res;
+}
+// ===== end Theoretical chances =============================================
+
 async function toggleNarrative(i) {
   const row  = document.getElementById("details-" + i);
   const chev = document.getElementById("chev-" + i);
@@ -6021,6 +6117,21 @@ async function toggleNarrative(i) {
     const result = matchResult(r, window.__slate.results || {});
     _ensureWinProbChart(i, r, result).catch(e => console.warn("chart render failed:", e));
   }
+
+  // Theoretical chances (HYPOTHETICAL) — compute once per game on expand.
+  try {
+    const _ts = row.querySelector("[data-theo-slot] .theo-body");
+    if (_ts && _ts.dataset.filled !== "1") {
+      const _tr = (window.__slate.rows || [])[i];
+      const _tp = (_tr && _tr.matchup ? _tr.matchup : "").split(/\s*@\s*/);
+      const _tc = _theoChances(_tr);
+      _ts.innerHTML =
+        `<span class="theo-num">${(_tc.home*100).toFixed(1)}%</span> <span class="theo-side">${_tp[1]||"HOME"}</span>`
+        + `<span class="theo-vs">·</span>`
+        + `<span class="theo-num">${(_tc.away*100).toFixed(1)}%</span> <span class="theo-side">${_tp[0]||"AWAY"}</span>`;
+      _ts.dataset.filled = "1";
+    }
+  } catch (_e) { console.warn("theo chances fill failed:", _e); }
 
   // Start the live in-game tracker for this row (no-op for pending /
   // postponed / completed games — see _startLiveTrackerForRow).
