@@ -41,6 +41,21 @@ def _lineup_names(raw):
         return []
 
 
+def _batter_schema(raw):
+    """Sorted tuple of the union of keys across a team's batter JSON,
+    or None when empty/unparseable (so a "[]" flap never falsely fires)."""
+    try:
+        bats = json.loads(raw or "[]") or []
+        if not bats:
+            return None
+        keys = set()
+        for b in bats:
+            keys |= set(b.keys())
+        return tuple(sorted(keys))
+    except Exception:
+        return None
+
+
 def _games_of(text):
     out = {}
     for r in csv.DictReader(io.StringIO(text)):
@@ -52,6 +67,8 @@ def _games_of(text):
             "hsp": (r.get("home_sp_name") or "").strip(),
             "al":  _lineup_names(r.get("away_top_5_batters_json")),
             "hl":  _lineup_names(r.get("home_top_5_batters_json")),
+            "schema": (_batter_schema(r.get("home_top_5_batters_json"))
+                       or _batter_schema(r.get("away_top_5_batters_json"))),
         }
     return out
 
@@ -76,8 +93,15 @@ def compare(new_text, old_text):
         # always co-confirms, and that commit carries the lineup with it).
         lineup_changed = ((ng["al"] and og["al"] and ng["al"] != og["al"])
                           or (ng["hl"] and og["hl"] and ng["hl"] != og["hl"]))
-        if sp_changed or lineup_changed:
-            return True, f"{m}: " + ("SP changed" if sp_changed else "lineup changed")
+        # Schema change: the batter payload gained/lost fields (e.g. a new
+        # per-hitter metric). Publish once so the data lands even when
+        # SP/lineups are unchanged; self-quiesces once HEAD catches up.
+        schema_changed = (ng.get("schema") and og.get("schema")
+                          and ng["schema"] != og["schema"])
+        if sp_changed or lineup_changed or schema_changed:
+            return True, f"{m}: " + ("SP changed" if sp_changed
+                                     else "lineup changed" if lineup_changed
+                                     else "batter schema changed")
     return False, "all SP/lineups identical to HEAD"
 
 
