@@ -99,17 +99,64 @@ def _write_cache(player_id: int, data: dict) -> None:
 # ---------------------------------------------------------------------------
 # Splits fetch
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Savant per-hitter Statcast leaderboard (harvested by the savant-hitters cron
+# into data/savant_hitters_<year>.csv). Read once, fail-safe: a missing file
+# just means hitters carry no Savant fields.
+# ---------------------------------------------------------------------------
+_SAVANT_HITTERS = None
+
+
+def _load_savant_hitters() -> dict:
+    global _SAVANT_HITTERS
+    if _SAVANT_HITTERS is not None:
+        return _SAVANT_HITTERS
+    import csv as _csv
+    import glob as _glob
+    from datetime import datetime as _dt, timezone as _tz
+    _SAVANT_HITTERS = {}
+    yr = _dt.now(_tz.utc).year
+    candidates = [Path(f"data/savant_hitters_{yr}.csv")]
+    candidates += [Path(p) for p in sorted(_glob.glob("data/savant_hitters_*.csv"),
+                                           reverse=True)]
+    for p in candidates:
+        if not p.exists():
+            continue
+        try:
+            with open(p, newline="", encoding="utf-8") as fh:
+                for row in _csv.DictReader(fh):
+                    try:
+                        pid = int(float(row["player_id"]))
+                    except (TypeError, ValueError, KeyError):
+                        continue
+                    rec = {}
+                    for k in ("ev", "la", "hard_hit_pct", "bbe",
+                              "xwoba", "xba", "xslg", "sprint"):
+                        v = (row.get(k) or "").strip()
+                        if v in ("", "NA", "nan"):
+                            continue
+                        try:
+                            rec[k] = round(float(v), 3)
+                        except ValueError:
+                            rec[k] = v
+                    _SAVANT_HITTERS[pid] = rec
+            break
+        except Exception as e:  # noqa: BLE001
+            log.debug("[platoon_splits] savant hitters load failed (%s): %s", p, e)
+    return _SAVANT_HITTERS
+
+
 def get_career_splits(player_id: int) -> dict:
     """Return {vs_LHP: {OPS, PA, AVG}, vs_RHP: {OPS, PA, AVG}, bat_side}."""
     cached = _read_cache(player_id)
-    if cached is not None and "season_PA" in cached:
+    if cached is not None and "k_pct" in cached:
         return cached
 
     url = (f"https://statsapi.mlb.com/api/v1/people/{player_id}/stats"
            f"?stats=careerStatSplits&group=hitting&sitCodes=vl,vr")
     out = {"vs_LHP": {"OPS": 0.0, "PA": 0, "AVG": 0.0},
            "vs_RHP": {"OPS": 0.0, "PA": 0, "AVG": 0.0},
-           "bat_side": None}
+           "bat_side": None, "pos": None, "k_pct": None, "bb_pct": None}
     try:
         data = _fetch_json(url)
         for s in data.get("stats", []):
@@ -144,6 +191,7 @@ def get_career_splits(player_id: int) -> dict:
         if people:
             bs = (people[0].get("batSide") or {}).get("code")
             out["bat_side"] = bs
+            out["pos"] = (people[0].get("primaryPosition") or {}).get("abbreviation")
     except Exception:
         pass
 
@@ -165,6 +213,13 @@ def get_career_splits(player_id: int) -> dict:
                     pass
                 try:
                     out["season_PA"] = int(st.get("plateAppearances", 0) or 0)
+                except (TypeError, ValueError):
+                    pass
+                try:
+                    _pa = int(st.get("plateAppearances", 0) or 0)
+                    if _pa > 0:
+                        out["k_pct"] = round(100.0 * int(st.get("strikeOuts", 0) or 0) / _pa, 1)
+                        out["bb_pct"] = round(100.0 * int(st.get("baseOnBalls", 0) or 0) / _pa, 1)
                 except (TypeError, ValueError):
                     pass
     except Exception as e:
@@ -297,9 +352,17 @@ def build_team_top_5_payload(game_pk: int, team_side: str,
                 else "SUB_STABLE" if "SUB_STABLE" in (flag_l, flag_r)
                 else "OK")
 
+        _sav = _load_savant_hitters().get(int(pid), {})
         out.append({
             "order": pos,
             "name": name,
+            "pos": splits.get("pos"),
+            "k_pct": splits.get("k_pct"),
+            "bb_pct": splits.get("bb_pct"),
+            "ev": _sav.get("ev"), "la": _sav.get("la"),
+            "hard_hit_pct": _sav.get("hard_hit_pct"), "bbe": _sav.get("bbe"),
+            "xwoba": _sav.get("xwoba"), "xba": _sav.get("xba"),
+            "xslg": _sav.get("xslg"), "sprint": _sav.get("sprint"),
             "bat_side": splits.get("bat_side"),
             "vs_LHP_OPS_career": round(vs_l["OPS"], 3),
             "vs_LHP_PA_career": vs_l["PA"],
