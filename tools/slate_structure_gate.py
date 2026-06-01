@@ -86,13 +86,15 @@ def compare(new_text, old_text):
         # real name change (TBD->name, name->name') counts.
         sp_changed = ((ng["asp"] or og["asp"]) != og["asp"]
                       or (ng["hsp"] or og["hsp"]) != og["hsp"])
-        # Lineup: a change only when BOTH versions have a real (non-empty) lineup
-        # AND they differ. This ignores the batter JSON flapping to "[]" in
-        # either direction (a known fetch hiccup); the cost is not firing on a
-        # brand-new posting that arrives with no SP change (rare -- the SP almost
-        # always co-confirms, and that commit carries the lineup with it).
-        lineup_changed = ((ng["al"] and og["al"] and ng["al"] != og["al"])
-                          or (ng["hl"] and og["hl"] and ng["hl"] != og["hl"]))
+        # Lineup: fire when the NEW lineup is non-empty and differs from HEAD.
+        # This catches a brand-new posting (HEAD empty -> populated) -- the case
+        # the old both-non-empty rule missed when the SP did not co-confirm --
+        # while still ignoring the batter JSON flap to "[]" (NEW empty -> falsy,
+        # no fire). HEAD is only ever empty when a lineup was never published
+        # (the gate never commits populated -> empty), so empty -> populated is
+        # always a real posting, never a flap.
+        lineup_changed = ((ng["al"] and ng["al"] != og["al"])
+                          or (ng["hl"] and ng["hl"] != og["hl"]))
         # Schema change: the batter payload gained/lost fields (e.g. a new
         # per-hitter metric). Publish once so the data lands even when
         # SP/lineups are unchanged; self-quiesces once HEAD catches up.
