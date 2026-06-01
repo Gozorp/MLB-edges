@@ -1127,6 +1127,19 @@
 
   /* GP-UPGRADES-CSS - inline heat chips for pitching metrics */
   .gp-stat{display:inline-block;padding:0 0.34rem;border-radius:3px;font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* === usability-pass-2026: data-first compact hero + calmer motion === */
+#mlb-hero{min-height:0!important;padding:14px clamp(16px,4vw,32px)!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;text-align:left!important;overflow:visible!important;background:var(--bg)!important;}
+#mlb-hero::before{display:none!important;animation:none!important;}
+#mlb-hero .hero-eyebrow,#mlb-hero .hero-headline,#mlb-hero .hero-tagline,#mlb-hero .hero-cta,#mlb-hero .hero-scroll-indicator{display:none!important;}
+#mlb-hero .hero-stats{margin:0!important;gap:clamp(1.2rem,4vw,2.2rem)!important;opacity:1!important;animation:none!important;justify-content:flex-start!important;flex-wrap:wrap!important;}
+#mlb-hero .hero-stat{flex-direction:row!important;align-items:baseline!important;gap:.5rem!important;min-width:0!important;}
+#mlb-hero .hero-stat-value{font-size:1.3rem!important;}
+#mlb-hero .hero-stat-label{margin-top:0!important;font-size:.62rem!important;letter-spacing:.14em!important;}
+.reveal-on-scroll{opacity:1!important;transform:none!important;}
+main h2{font-size:1.05rem;letter-spacing:.01em;margin:1rem 0 .5rem;}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}}
+/* === end usability-pass-2026 === */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -2387,7 +2400,7 @@ function _renderWinProbChart(canvasId, picked, modelCurve, actualCurve, isFinal)
     data: { labels, datasets },
     options: {
       responsive: true, maintainAspectRatio: false,
-      animation: { duration: 400 },
+      animation: { duration: 120 },
       scales: {
         y: { min: 0, max: 100, ticks: { color: "#8b949e", callback: v => v + "%" },
              grid: { color: "rgba(139,148,158,0.15)" },
