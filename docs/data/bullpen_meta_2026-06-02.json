@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-02T04:23:53.206106Z",
+  "generated_at": "2026-06-02T18:48:12.711171Z",
   "slate_date": "2026-06-02",
   "lookback_days": 7,
   "teams": {
@@ -663,12 +663,12 @@
     },
     "COL": {
       "team_summary": {
-        "top3_pitch_total_72h": 0,
-        "ceiling_tier": "FRESH",
+        "top3_pitch_total_72h": 33,
+        "ceiling_tier": "NORMAL",
         "n_relievers_back_to_back": 1,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.2,
-        "n_relievers_tracked": 6
+        "avg_rest_days": 1.9,
+        "n_relievers_tracked": 8
       },
       "top_relievers": [
         {
@@ -734,6 +734,28 @@
           "pitches_72h": 21,
           "pitches_last_appearance": 21,
           "avg_leverage_last_3": 0.9,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 622608,
+          "name": "Antonio Senzatela",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 17,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 677955,
+          "name": "Jaden Hill",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 16,
+          "pitches_last_appearance": 16,
+          "avg_leverage_last_3": 2.0,
           "fatigue_flag": "NORMAL",
           "available_today": true
         }
@@ -975,12 +997,12 @@
     },
     "LAA": {
       "team_summary": {
-        "top3_pitch_total_72h": 8,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 1,
+        "top3_pitch_total_72h": 60,
+        "ceiling_tier": "STRAINED",
+        "n_relievers_back_to_back": 2,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.5,
-        "n_relievers_tracked": 6
+        "avg_rest_days": 1.5,
+        "n_relievers_tracked": 8
       },
       "top_relievers": [
         {
@@ -991,6 +1013,17 @@
           "pitches_72h": 64,
           "pitches_last_appearance": 64,
           "avg_leverage_last_3": 0.7,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 820862,
+          "name": "Jos\u00e9 Fermin",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 59,
+          "pitches_last_appearance": 39,
+          "avg_leverage_last_3": 1.7,
           "fatigue_flag": "OVERWORKED",
           "available_today": true
         },
@@ -1006,6 +1039,17 @@
           "available_today": true
         },
         {
+          "pitcher_id": 681217,
+          "name": "Chase Silseth",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 40,
+          "pitches_last_appearance": 20,
+          "avg_leverage_last_3": 0.8,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
           "pitcher_id": 696147,
           "name": "Sam Bachman",
           "rest_days": 3,
@@ -1017,34 +1061,34 @@
           "available_today": true
         },
         {
-          "pitcher_id": 681217,
-          "name": "Chase Silseth",
-          "rest_days": 3,
+          "pitcher_id": 666171,
+          "name": "Ryan Zeferjahn",
+          "rest_days": 1,
           "consecutive_days": 1,
-          "pitches_72h": 20,
-          "pitches_last_appearance": 20,
-          "avg_leverage_last_3": 0.9,
-          "fatigue_flag": "FRESH",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 820862,
-          "name": "Jos\u00e9 Fermin",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 20,
-          "pitches_last_appearance": 20,
+          "pitches_72h": 16,
+          "pitches_last_appearance": 16,
           "avg_leverage_last_3": 1.4,
-          "fatigue_flag": "FRESH",
+          "fatigue_flag": "NORMAL",
           "available_today": true
         },
         {
           "pitcher_id": 608718,
           "name": "Brent Suter",
-          "rest_days": 2,
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 3,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 489446,
+          "name": "Kirby Yates",
+          "rest_days": 1,
           "consecutive_days": 1,
-          "pitches_72h": 8,
-          "pitches_last_appearance": 8,
+          "pitches_72h": 10,
+          "pitches_last_appearance": 10,
           "avg_leverage_last_3": 2.0,
           "fatigue_flag": "NORMAL",
           "available_today": true
