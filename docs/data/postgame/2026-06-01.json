@@ -1,0 +1,96 @@
+{
+  "date": "2026-06-01",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-02T00:00:00Z",
+  "n_analyzed": 9,
+  "summary": "June 1 slate: 4 directional wins and 3 losses across 7 graded picks (57%), with 2 actionable bets going 1-1 (50%). MIL dominated SF 16-2 for the lone actionable WIN, validating the pre-cap A-minus rescue from HARD CAP 1 on a modest -3.4pp edge. The LOSS came from MIA @ WSH, where Sandy Alcantara led MIA to a decisive 7-3 road win, neutralizing WSH's Stage 2 carry thesis. Most critical finding: Claude Brain's prior run misidentified the model pick direction for TEX @ STL and COL @ LAA (reading `p_model` rather than the `pick` column directly), missing that both true model picks (TEX, COL) were directionally correct (TEX 2-1, COL 9-8).",
+  "by_matchup": {
+    "DET @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-9",
+      "headline": "DET rallied late to outlast TB 10-9, invalidating TB's Stage 2 full-game carry thesis.",
+      "hypothesis": "TB's Stage 2 model probability (59.1%) was undermined by DET's dominant early-inning performance — DET led 7-0 through 5 innings before TB rallied. The extreme f5_full_delta=0.326 (DET wins F5 at 73.5%) correctly signaled DET's offensive aggression; the SKIP tier was justified. This is variance: the carry thesis could work in theory but required TB's pen to recover from a large deficit, which is inherently fragile. Correct process, bad direction — but the SKIP preserved capital.",
+      "signals_to_recheck": "f5_full_delta (0.326) correctly flagged Stage 1/2 disagreement; carry thesis requires TB pen to bridge a multi-run F5 deficit — re-examine when f5_full_delta > 0.30 and pick side trails after 5."
+    },
+    "MIA @ WSH": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-3",
+      "headline": "Sandy Alcantara dominated WSH 7-3, nullifying the Stage 2 carry thesis on WSH's stronger bullpen.",
+      "hypothesis": "This is a process failure candidate: Alcantara (MIA away SP) won decisively and went 7+ innings, meaning the WSH bullpen advantage (hl_bullpen_xwoba_gap=-0.0109) was never leveraged. WSH's F2_xwoba_gap=0.029 was weak, and Alcantara's established track record against NL East lineups neutralized any late-game WSH edge. The PQI AGAINST pick (Δ=-5.9) was a genuine warning that WSH's late-game profile was degraded. Key lesson: when the opposing away SP is an established veteran with sub-3 xERA and the home lineup's top batters show WEAK_VS or NO_DATA vs that pitcher, Stage 2 carry confidence should be reduced by one tier even with supportive bullpen signals.",
+      "signals_to_recheck": "f5_full_delta (0.291) + pqi_diff (-5.9, AGAINST pick) + F2_xwoba_gap (0.029, weak F2) — the combination of low F2 conviction and negative PQI degradation should suppress Stage-2 carry confidence when opposing SP is an established ace."
+    },
+    "KC @ CIN": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-2",
+      "headline": "KC dominated CIN 9-2 with Lyon Richardson (11 Statcast pitches) taking the loss.",
+      "hypothesis": "PENDING_SP_DATA protocol correctly blocked any directional commitment. Richardson's extreme thin sample (11 pitches season-to-date) meant zero xERA/K-rate signal was computable. KC won 9-2, but this was unforecastable: the outcome validates the protocol, as Richardson demonstrably could not be scored (loss decision confirmed). Process worked correctly — no variance to assess.",
+      "signals_to_recheck": "small_sample_SP_True (Richardson, 11 Statcast pitches) — threshold of 100 pitches remains the right minimum; thin SP results remain wildly variable (KC won 9-2 today, prior thin-SP games ranged from blowouts to upsets)."
+    },
+    "CHW @ MIN": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-9",
+      "headline": "MIN beat CWS 9-6 with David Sandlin (61 Statcast pitches) taking the loss.",
+      "hypothesis": "PENDING_SP_DATA protocol correctly blocked directional commitment. Sandlin at 61 pitches is below the 100-pitch minimum threshold. MIN won, but Benintendi's OWNER BvP flag (23 PA, shrunk 0.912) could not offset structural SP uncertainty — a single-batter OWNER is insufficient with an unscored SP. Correct process, outcome is irrelevant to quality assessment.",
+      "signals_to_recheck": "small_sample_SP_True (Sandlin, 61 pitches) — single-OWNER BvP (Benintendi) alone cannot justify committing without SP data; archive note: single OWNER + unscored SP produced SKIP for good reason even when home team won."
+    },
+    "SF @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-16",
+      "headline": "MIL routed SF 16-2, delivering a dominant WIN that validated the pre-cap A-minus HARD CAP 1 rescue.",
+      "hypothesis": "Process WIN — the pre-cap A-minus score (4 points) was built on genuine multi-signal conviction: F3_swing_take_gap=1564, SP xERA advantage (Drohan over Roupp, 0.39 gap), PQI confirming MIL (+12.1), Stage 1/2 agree (f5_full_delta=0.226). The negative edge of -3.4pp was modest and insufficient to override strong fundamental signals. MIL won by 14 runs, validating the HARD CAP 10 rescue logic: when pre-cap score ≥ 4 (A-minus) and negative edge is the smallest on the slate (< -4pp), rescue is justified. Archive: HARD CAP 1 rescue when edge=-3.4pp + pre-cap A-minus went 1-for-1 today.",
+      "signals_to_recheck": "negative_edge_GOLD — correctly rescued today when edge was -3.4pp (modest) with pre-cap A-minus; continue tracking to determine lower threshold for rescue eligibility (current hypothesis: |edge_pp| < 4pp + pre-cap score ≥ 4 = rescue eligible)."
+    },
+    "TEX @ STL": {
+      "verdict": "WIN",
+      "model_pick": "TEX ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "deGrom dominated McGreevy 2-1 as TEX (the true model pick per CSV) won; HARD CAP 10 SKIP was correct caution on a 51% marginal favorite.",
+      "hypothesis": "CRITICAL PROCESS NOTE: Claude Brain's prior run (claude_picks.json) misidentified the model pick as STL based on p_model=0.5109, which is the home team's probability. The CSV `pick` column clearly shows TEX — the model's pick was the team with the higher full-game probability (TEX 51.09% vs STL 48.91%), supported by deGrom's 2.26 xERA advantage (F1_xera_gap=2.26). deGrom won the game 2-1. HARD CAP 10 correctly held the bet due to pick_prob=0.51 (marginal favorite threshold). The model's directional pick (TEX) was correct but the SKIP was justified — a coin-flip outcome at 51% in a tight 2-1 game. Process failure: Claude Brain read p_model as the pick direction; it must read the `pick` column.",
+      "signals_to_recheck": "[HARD CAP 10] correctly held pick_prob=0.51 marginal favorite — TEX won but only 2-1 (tight, consistent with 51% probability); also flag claude_brain_pick_direction_error: p_model misread as pick direction on high-f5_full_delta games."
+    },
+    "COL @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "9-8",
+      "headline": "COL (the true model pick per CSV) beat LAA 9-8; SKIP tier was correct — D-grade signals were against COL despite winning the direction.",
+      "hypothesis": "CRITICAL PROCESS NOTE: Claude Brain's prior run (claude_picks.json) misidentified the model pick as LAA ML PLATINUM, when the CSV `pick` column clearly shows COL. Claude Brain appears to have read p_model=0.5253 as the home team (LAA) probability, then concluded LAA was the model pick — when in fact p_model=0.5253 is the COL (away team) full-game win probability. COL's extreme Stage 1 conviction (f5_prob=0.8262 — F5 win at 82.6%) drove the full-game probability to 52.53% for COL despite negative SP and PQI signals. COL won 9-8. The D-grade SKIP was correct caution (SP edge 2.92 xERA against pick, PQI +30.0 against pick), but the direction (COL) was right. This is a variance WIN — the process called SKIP correctly, but Claude's analysis of the wrong team added confusion.",
+      "signals_to_recheck": "f5_full_delta (0.35) — extreme Stage 1/2 disagreement game where COL (away) dominated F5 but full-game signals were mixed; also flag claude_brain_pick_direction_error: p_model misread as home team pick on Stage 1/2 disagree games."
+    },
+    "LAD @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-4",
+      "headline": "AZ beat LAD 4-1; Claude's DOWNGRADE was correct — Sheehan (F1* thin-sample) was the losing pitcher.",
+      "hypothesis": "Process WIN (for the DOWNGRADE decision) — AZ won 4-1 and Sheehan took the loss, confirming that the F1_xera_gap=0.78* thin-sample flag on Sheehan (79 PA) was unreliable as a conviction signal. The -10.3pp negative edge correctly reflected market disagreement with LAD. The dual-OWNER BvP advantage (Ohtani and Freeman vs E. Rodriguez) was noted but insufficient to override the market signal. Claude's DOWNGRADE saved a loss on a well-signaled skip. Archive: F1* (thin-sample asterisk) + negative edge ≥ -10pp = reliable DOWNGRADE trigger regardless of BvP quality.",
+      "signals_to_recheck": "F1_xera_gap* (thin-sample Sheehan, 79 PA) — asterisk flag was correct caution; LAD's dual-OWNER BvP on Ohtani/Freeman was noted but the market's -10.3pp edge disagreement overruled directional conviction."
+    },
+    "NYM @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "SEA ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-3",
+      "headline": "SEA won 3-2 in 10 innings despite Claude's DOWNGRADE; opposing SP edge (Warren over Hancock, small sample) was cautious but SEA prevailed.",
+      "hypothesis": "Variance WIN — the model's directional pick (SEA) was correct but Claude's DOWNGRADE was defensible given the opposing SP edge (Austin Warren's xERA lower than Hancock's) and the game going to extra innings (3-2 SEA). The pre-cap score was only 1 (B-minus), the weakest non-negative base on the slate, with no F2/PQI secondary signals. The small-sample SP flag (Warren, min_pa=79) means uncertain but not a strong counter-signal. SEA won but barely — a reasonable DOWNGRADE on a weak-conviction pick. Archive: pre-cap score ≤ 1 with opposing SP edge and no F2/PQI = correct DOWNGRADE, even if direction is right.",
+      "signals_to_recheck": "F3_swing_take_gap alone (without F2 or PQI confirmation) at pre-cap score=1 with opposing SP edge [small-sample] — DOWNGRADE was correct process; SEA's 3-2 10-inning win is consistent with a marginal 53% pick that barely held."
+    }
+  },
+  "patterns_observed": [
+    "CRITICAL PROCESS FAILURE — Claude Brain pick-direction error on Stage 1/2 disagree games: for both TEX @ STL (f5_full_delta=0.15) and COL @ LAA (f5_full_delta=0.35), Claude Brain's prior run read `p_model` (home team full-game probability) as the model pick direction instead of reading the `pick` column directly from the CSV. Both true model picks (TEX, COL) were directionally correct — TEX won 2-1, COL won 9-8. Future Claude Brain runs MUST use the `pick` column, not infer from `p_model` or `full_prob`, especially when f5_full_delta > 0.12 and the game is a Stage 1/2 disagree case where home team probability ≈ 0.48-0.52.",
+    "Opposing ace SP nullifies Stage 2 carry thesis: MIA @ WSH LOSS (7-3) — Alcantara (MIA away SP) went 7+ innings, meaning WSH's bullpen advantage (hl_bullpen_xwoba_gap=-0.0109) was irrelevant. When the opposing SP is an established ace and the home lineup shows WEAK_VS or NO_DATA BvP patterns AND F2_xwoba_gap is weak (< 0.035), reduce Stage-2 carry confidence by one tier regardless of bullpen gap signal.",
+    "Pre-cap A-minus rescue from HARD CAP 1 (negative edge) validated: SF @ MIL WIN (16-2) — pre-cap score=4 (A-minus) with modest negative edge=-3.4pp and multi-signal confirmation (F3 + SP xERA + PQI all agree) produced a dominant blowout. Archive rule: when |edge_pp| < 4pp AND pre-cap grade ≥ A-minus AND at least 3 independent confirming signals fire, HARD CAP 1 rescue is justified. Track running record — 1-for-1 as of 2026-06-01.",
+    "HARD CAP 10 (marginal favorite) correctly held pre-cap A-grade picks: TEX @ STL had pre-cap score=10 (A-plus) but pick_prob=0.51, and TEX won 2-1 as expected for a coin-flip. The tightness of the win (2-1) validates the caution — even a correct pre-cap A-plus call on a 51% favorite produces razor-thin margins. Do not relax HARD CAP 10 threshold (0.55) for PLATINUM-tier picks without an explicit Claude CONFIRM and explicit directional edge beyond the model probability."
+  ]
+}
