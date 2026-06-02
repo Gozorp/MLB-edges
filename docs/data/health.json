@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-02T14:16:05.952701+00:00",
+  "checked_at": "2026-06-02T18:22:34.412174+00:00",
   "overall": "yellow",
   "categories": {
     "workflows": "green",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 3.4h ago",
+      "message": "last ran 7.5h ago",
       "detail": {
         "last_run_iso": "2026-06-02T10:51:18Z",
-        "age_hours": 3.41
+        "age_hours": 7.52
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3d ago",
+      "message": "last fired 2.4d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 54.48,
+        "age_hours": 58.59,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3d ago",
+      "message": "last fired 2.4d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 54.06,
+        "age_hours": 58.16,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.7h ago",
+      "message": "last fired 6.8h ago",
       "detail": {
         "last_run_iso": "2026-06-02T11:33:02Z",
-        "age_hours": 2.72,
+        "age_hours": 6.83,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-02T14:16:06.058Z",
+          "timestamp": "2026-06-02T18:22:34.619Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "LAX"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "yellow",
-      "message": "weights last learned 36.0h ago (expected ~daily)",
+      "message": "weights last learned 40.1h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-06-01T02:16:08.519357+00:00",
-        "age_hours": 36.0
+        "age_hours": 40.11
       },
       "category": "model"
     },
