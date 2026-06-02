@@ -5534,14 +5534,20 @@ function _topHRProps(rows) {
       let bats = [];
       try { bats = JSON.parse(r[side + "_top_5_batters_json"] || "[]") || []; }
       catch (_) { bats = []; }
-      const team = (side === "away" ? r.away_team : r.home_team) || "";
+      // diag has no away_team/home_team columns; derive abbrevs from matchup "AWY @ HOM"
+      const _mp = matchup.split("@");
+      const _awy = (_mp[0] || "").split("(")[0].trim();
+      const _hom = (_mp[1] || "").split("(")[0].trim();
+      const team = side === "away" ? _awy : _hom;
+      const oppTeam = side === "away" ? _hom : _awy;
+      const oppSP = (side === "away" ? r.home_sp_name : r.away_sp_name) || "";
       for (const b of bats) {
         const hr = parseInt((b.season_HR != null ? b.season_HR : b.hr) || 0);
         const pa = parseInt((b.season_PA != null ? b.season_PA : b.pa) || 0);
         if (!(pa >= 30) || hr < 0) continue;
         const p = _hrProbability({ hr: hr, pa: pa }, null, 4.3);
         if (p == null) continue;
-        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa });
+        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa, oppSP: oppSP, oppTeam: oppTeam });
       }
     }
   }
@@ -5602,12 +5608,18 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   const hrs = _topHRProps(rows).slice(0, 10);
   if (hrs.length) {
     html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span></h3>`;
+    html += `<div class="muted" style="font-size:0.74rem;margin:0.1rem 0 0.5rem;line-height:1.4;">Model: P(&ge;1 HR) = 1 - (1 - season HR/PA)<sup>4.3</sup> &mdash; each hitter's season home-run rate compounded over ~4.3 expected plate appearances. Ranking is pitcher-neutral; the opposing starter is shown for matchup context (the per-game preview applies the SP HR/9 adjustment).</div>`;
     hrs.forEach((item, i) => {
       const pct = (item.prob * 100).toFixed(1);
       const rate = item.pa > 0 ? (item.hr / item.pa * 100).toFixed(1) : "0.0";
-      html += `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;padding:0.4rem 0.2rem;border-bottom:1px solid rgba(255,255,255,0.05);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
+      const _sp = (item.oppSP && item.oppSP !== "TBD") ? item.oppSP : "";
+      const _vs = _sp ? `vs ${_sp}${item.oppTeam ? " (" + item.oppTeam + ")" : ""}` : (item.oppTeam ? "vs " + item.oppTeam : "");
+      html += `<div style="padding:0.4rem 0.2rem;border-bottom:1px solid rgba(255,255,255,0.05);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
+            +   `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;">`
             +   `<span><span class="muted">${i + 1}.</span> <strong>${item.name}</strong> <span class="muted">(${item.team})</span></span>`
             +   `<span style="white-space:nowrap;"><strong style="color:var(--accent);">${pct}% HR</strong> <span class="muted" style="font-size:0.76rem;">· ${item.hr} HR / ${item.pa} PA (${rate}%)</span></span>`
+            +   `</div>`
+            +   `<div class="muted" style="font-size:0.74rem;margin-top:0.22rem;line-height:1.4;">${rate}% season HR/PA compounded over ~4.3 PA ${_vs} &rarr; ${pct}% chance of &ge;1 HR</div>`
             + `</div>`;
     });
   } else {
