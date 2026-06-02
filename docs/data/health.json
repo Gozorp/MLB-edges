@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-02T21:34:19.511982+00:00",
+  "checked_at": "2026-06-02T23:18:06.463443+00:00",
   "overall": "green",
   "categories": {
     "workflows": "green",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 1.5h ago",
+      "message": "last ran 0.1h ago",
       "detail": {
-        "last_run_iso": "2026-06-02T20:05:16Z",
-        "age_hours": 1.48
+        "last_run_iso": "2026-06-02T23:14:47Z",
+        "age_hours": 0.06
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 61.78,
+        "age_hours": 63.51,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -36,7 +36,7 @@
       "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 61.36,
+        "age_hours": 63.09,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 0.5h ago",
+      "message": "last fired 2.3h ago",
       "detail": {
         "last_run_iso": "2026-06-02T21:02:27Z",
-        "age_hours": 0.53,
+        "age_hours": 2.26,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,7 +71,8 @@
         "ok_rows": 13,
         "non_ok_pct": 13.3,
         "status_distribution": {
-          "fetched": 13,
+          "fetched_capped": 1,
+          "fetched": 12,
           "pending_sp_data": 2
         }
       },
@@ -97,9 +98,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-02T21:34:19.653Z",
+          "timestamp": "2026-06-02T23:18:06.652Z",
           "commit": "unknown",
-          "region": "SJC"
+          "region": "LAX"
         }
       },
       "category": "deployment"
@@ -107,10 +108,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 1.0h ago",
+      "message": "last learned 2.7h ago",
       "detail": {
         "last_entry_iso": "2026-06-02T20:33:45.151556+00:00",
-        "age_hours": 1.01
+        "age_hours": 2.74
       },
       "category": "model"
     },
@@ -137,11 +138,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "3/15 rows stress-warned",
+      "message": "2/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 3,
-        "pct_of_slate": 20.0
+        "stress_warned_count": 2,
+        "pct_of_slate": 13.3
       },
       "category": "model"
     }
