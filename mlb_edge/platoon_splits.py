@@ -319,7 +319,7 @@ def build_team_top_5_payload(game_pk: int, team_side: str,
     "vs_today_SP_*" fields so the LLM doesn't have to do the lookup.
     Pass None if SP handedness unknown (the field stays null).
     """
-    lineup = get_top_n_lineup(game_pk, team_side, n=5)
+    lineup = get_top_n_lineup(game_pk, team_side, n=9)  # full batting order (was top-5)
     out: List[dict] = []
     for pos, name, pid in lineup:
         try:
