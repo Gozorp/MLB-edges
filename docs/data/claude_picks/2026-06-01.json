@@ -1,156 +1,42 @@
 {
   "date": "2026-06-01",
-  "fit_at": "2026-06-01T21:37:10Z",
+  "fit_at": "2026-06-02T00:00:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 9,
   "patterns_recognized": [
-    "Stage 1/2 disagree + negative hl_bullpen_xwoba_gap resolves in Stage-2 direction (5/26 NYY@KC 15-1, 5/29 3-for-3): when f5_full_delta >= 0.12 AND hl_bullpen_xwoba_gap < 0, treat the disagreement as bullpen-carry conviction, not a DOWNGRADE trigger. Relevant to MIA@WSH and SF@MIL.",
-    "bullpen_fatigue is a stake-size reducer, not a directional predictor (5/25 lesson confirmed 3 wrong DOWNGRADEs): stress flags suppress financial exposure but have poor direction reversal value. HARD CAP 4 already applies the appropriate score demotion for Stage 1/2 disagree; adding a second DOWNGRADE on top stacks two demotions beyond what the archive supports.",
-    "D-grade dual-signal-against (SP xERA AND PQI both opposing pick) is a reliable directional fade — archive shows ~60% directional failure rate (5/20 0-for-4, 5/26 2-for-2, 5/28 3-for-3 correct, 5/25 outlier 0-for-4). KC@CIN (Burns 1.87 xERA edge + PQI +28.0), TEX@STL (deGrom 1.76 edge + PQI -16.8), and COL@LAA (Soriano 2.91 edge + PQI +30.0) all carry this pattern today.",
-    "C-grade GOLD without SP or PQI support matches 5/21 process failure (NYM@WSH lost 2-1 as sole staked pick on F3 alone, Cavalli underperformed): apply DOWNGRADE to any C-grade GOLD pick where SP edge opposes pick AND PQI is negative — NYM@SEA fits exactly.",
-    "HARD CAP 7 near-zero threshold over-fires on otherwise strong stacks (5/30 KC@TEX +0.0019 cost an A-grade capture; 5/28 CHC@PIT +0.0028 similarly): gaps below |0.010| are economically indistinguishable from zero; the cap misfires at these levels without providing genuine bullpen protection."
+    "Stage 1/2 high-delta (f5_full_delta >= 0.12) + negative hl_bullpen_xwoba_gap went 5/5 in Stage-2 direction through 5/29 — treat as bullpen-carry conviction, not a DOWNGRADE trigger. Drives MIA@WSH CONFIRM.",
+    "HARD CAP 1 (negative-edge prevention) validated on 3 directional wins on 5/30; never relax regardless of pre-cap signal quality. COL@LAA (-17.2pp), LAD@ARI (-10.3pp), NYM@SEA (-2.3pp) all stay at SKIP.",
+    "D-grade dual-opposing-signal (SP xERA + PQI both against pick) archives ~60% directional failure rate (5/26-5/30); automatic SKIP confirmation on this pattern today for DET@TB and TEX@STL.",
+    "OWNER BvP concentration: LAD's Ohtani (26 PA, shrunk 0.814) + Freeman (20 PA, shrunk 1.048) vs E. Rodriguez is the strongest dual-OWNER stack on today's slate but insufficient to override -10.3pp market disagreement.",
+    "PENDING_SP_DATA threshold validated repeatedly (5/26, 5/29): Richardson (11 Statcast pitches) and Sandlin (61 pitches) both well below the 100-pitch minimum; KC@CIN and CHW@MIN are automatic skips."
   ],
   "by_matchup": {
     "DET @ TB": {
       "model_pick": "TB ML SKIP",
-      "model_prob": 0.6563,
+      "model_prob": 0.65,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.56,
-      "reasoning": "TB's 65.6% full-game probability relies entirely on a Stage 1/2 bullpen carry (f5_full_delta=0.391 — DET wins F5 at 73.5%). hl_bullpen_xwoba_gap=-0.0042 is near-zero and cannot support that carry. PQI=-4.7 directly opposes TB's late-game profile; confidence_downgrade=True and acute_roster stress add further uncertainty. Edge +1.62pp is outside the [4,15]pp stake band. D-grade (-2) with no F-signal for TB. Heuristic 1 applies (home favorite >65%). No qualitative basis to override the SKIP.",
-      "lessons_applied": [
-        "near-zero-pen-gap-cannot-support-extreme-carry-thesis",
-        "D-grade-no-F-signal-dual-opposing-PQI-Stage",
-        "acute-roster-stress-additional-uncertainty",
-        "heuristic-1-home-favorite-over-65pct"
-      ]
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-2) with dual-opposing signals: PQI against TB (delta=-7.6) plus extreme Stage 1/2 split (delta=0.385) — DET wins F5 at 73.5% yet TB is supposed to carry full game at 65%. hl_bullpen_xwoba_gap=-0.0039 is near-zero and cannot support that carry thesis. confidence_downgrade=True and acute_roster stress compound uncertainty. DET BvP note: Torkelson is OWNER vs Jax (11 PA, shrunk 0.915), meaningful upside against TB's pick-side SP. No basis to override the systematic SKIP on a D-grade dual-signal matchup.",
+      "lessons_applied": ["D-grade-dual-signal-automatic-SKIP", "near-zero-pen-gap-cannot-support-extreme-0.385-delta-carry", "acute-roster-confidence-downgrade-compound-uncertainty"]
     },
     "MIA @ WSH": {
       "model_pick": "WSH ML PLATINUM",
-      "model_prob": 0.6533,
+      "model_prob": 0.6593,
       "model_tier": "PLATINUM",
       "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "WSH",
-      "claude_tier": "PLATINUM",
-      "claude_confidence": 0.60,
-      "reasoning": "HARD CAP 4 correctly demoted WSH from A- (score=4) to B- (score=1) on Stage 1/2 delta + confidence_downgrade — appropriate demotion already applied. F2_xwoba_gap=0.029 and F3_swing_take_gap=7046.3 (strongest F-signal pair on the slate) provide dual-signal directional conviction. hl_bullpen_xwoba_gap=-0.0142 confirms WSH pen is meaningfully better, and the 5/26 archive lesson applies: negative pen gap + high f5_full_delta (0.337) = treat as bullpen-carry conviction, not a DOWNGRADE trigger. bullpen_fatigue is a stake-size reducer per 5/25 lesson, not a directional predictor. B- grade sets appropriately cautious exposure. Alcantara historically vulnerable to quality lineups (ATL@MIA 9-1 on 5/21, 9-3 on 5/20).",
-      "lessons_applied": [
-        "5/26-stage12-disagree-negative-pen-gap-means-CONFIRM-not-DOWNGRADE",
-        "5/25-bullpen-fatigue-is-stake-reducer-not-direction-predictor",
-        "HARD-CAP-4-already-applied-correct-demotion-to-B-minus",
-        "F2-plus-F3-dual-signal-strongest-on-slate",
-        "PLATINUM-tier-scrutiny-acknowledged-B-minus-grade-limits-exposure"
-      ]
-    },
-    "KC @ CIN": {
-      "model_pick": "KC ML GOLD",
-      "model_prob": 0.5425,
-      "model_tier": "GOLD",
-      "model_grade": "D",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "KC",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.42,
-      "reasoning": "D-grade dual-signal-against: Chase Burns (CIN) holds 1.87 xERA edge over small-sample Avila (KC, min_pa=95), and PQI=+28.0 strongly rejects KC's late-game profile. Stage 1 overwhelmingly favors CIN (wins F5 at 81.8%). Fair_prob=0.348 gives KC only 34.8% — the market prices CIN as a heavy favorite. Edge +19.48pp is in the calibration_caution_18_25pp zone AND outside the [4,15]pp stake band. The D-grade dual-signal pattern has ~60% directional failure rate in the archive. SKIP enforced on all grounds; KC direction treated as structurally unreliable.",
-      "lessons_applied": [
-        "D-grade-dual-signal-against-SP-and-PQI-60pct-directional-failure-rate",
-        "Chase-Burns-elite-SP-quality-opposing-pick",
-        "calibration-caution-18-25pp-hallucination-zone",
-        "fair-prob-below-0.42-KC-at-34.8pct-market-implied"
-      ]
-    },
-    "SF @ MIL": {
-      "model_pick": "MIL ML GOLD",
-      "model_prob": 0.6314,
-      "model_tier": "GOLD",
-      "model_grade": "B-",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "MIL",
       "claude_tier": "GOLD",
       "claude_confidence": 0.61,
-      "reasoning": "HARD CAP 4 correctly demoted from B+ (score=3) to B- (score=1) on Stage 1/2 delta 0.14 + confidence_downgrade=True. MIL's case is directionally sound: Drohan holds 0.39 xERA edge over Roupp per grade_reasons, PQI=+11.6 confirms MIL's late-game profile, and F3_swing_take_gap=2513.2 fires. hl_bullpen_xwoba_gap=-0.0062 (near-zero but slightly favorable). Per the 5/26 pattern, negative pen gap + f5_full_delta=0.262 = bullpen-carry conviction, not DOWNGRADE. Zero stake enforced via GOLD tier rule. Directional CONFIRM for MIL is appropriate given SP edge and PQI alignment.",
-      "lessons_applied": [
-        "HARD-CAP-4-correctly-demoted-appropriate-enforcement",
-        "5/26-negative-pen-gap-plus-high-delta-is-carry-conviction",
-        "SP-edge-PQI-dual-support-MIL-direction",
-        "GOLD-tier-zero-stake-enforced"
-      ]
+      "reasoning": "Valid +8.0pp edge in [4,15]pp range. HARD CAP 4 correctly demoted from PLATINUM to B- (Stage 1/2 delta=0.343 + confidence_downgrade=True). F2_xwoba_gap=0.029 + F3_swing_take_gap=7157 form the strongest dual F-signal pair on the slate. hl_bullpen_xwoba_gap=-0.0109 (WSH pen better) + f5_full_delta=0.343 matches the validated Stage-2 carry pattern (5-for-5 through 5/29). BvP caution: Garcia Jr. WEAK_VS Alcantara (25 PA, shrunk 0.598) and Abrams MEANINGFUL weak (17 PA) cap confidence — Alcantara will dominate the early innings as expected.",
+      "lessons_applied": ["Stage-2-carry-pattern-5-for-5-high-delta-negative-pen-gap", "HARD-CAP-4-correctly-demoted-do-not-fight", "WEAK_VS-BvP-top-order-vs-Alcantara-acknowledged-caps-confidence"]
     },
-    "TEX @ STL": {
-      "model_pick": "STL ML SKIP",
-      "model_prob": 0.5029,
-      "model_tier": "SKIP",
-      "model_grade": "D",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "STL",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "D-grade dual-signal-against: Jacob deGrom (TEX away SP) holds 1.76 xERA edge over McGreevy (STL home) with 29.05% K-rate vs McGreevy's 18.75%. PQI=-16.8 strongly rejects STL's late-game profile. STL model pick at only 50.29% — barely above coinflip — while market prices STL at 46.82% (fair_prob=0.468), confirming TEX as the slight market favorite. Edge +3.47pp is outside the [4,15]pp stake band. DeGrom's SP quality is a qualitative downside risk the xERA metrics may underweight given his return-to-form track record. CONFIRM the D-grade SKIP; STL direction treated as structurally questionable.",
-      "lessons_applied": [
-        "D-grade-dual-signal-against-SP-and-PQI",
-        "deGrom-elite-SP-qualitative-risk-opposing-pick",
-        "edge-outside-4-15pp-no-stake",
-        "market-gives-TEX-slight-edge-fair-prob-0.468"
-      ]
-    },
-    "COL @ LAA": {
-      "model_pick": "COL ML SKIP",
-      "model_prob": 0.5058,
-      "model_tier": "SKIP",
-      "model_grade": "D",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "COL",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.37,
-      "reasoning": "Worst grade on slate (score=-4). Soriano (LAA home SP) holds 2.91 xERA edge over Freeland (COL away) with 26.91% K-rate — the strongest SP quality opposition on today's slate. PQI=+30.0 strongly rejects COL's late-game profile. Stage 1/2 extreme disagree (delta=0.332): LAA wins F5 at 82.6%, COL barely favored full at 50.6%. Fair_prob=0.324 gives COL only 32.4% — market heavily favors LAA. Edge +18.21pp in the calibration_caution_18_25pp zone AND blocked by fair_prob < 0.42 floor. Acute roster flag adds uncertainty. D-grade with maximum signal opposition stack: COL direction treated as structurally wrong per the 60% archive failure rate.",
-      "lessons_applied": [
-        "D-grade-worst-on-slate-score-minus-4",
-        "Soriano-extreme-SP-edge-2.91-opposing-COL",
-        "calibration-caution-18-25pp-hallucination-zone",
-        "fair-prob-below-0.42-COL-at-32.4pct-market-implied",
-        "D-grade-dual-signal-directional-fade-60pct-archive-failure"
-      ]
-    },
-    "LAD @ ARI": {
-      "model_pick": "LAD ML GOLD",
-      "model_prob": 0.5212,
-      "model_tier": "GOLD",
-      "model_grade": "C",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "LAD",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.54,
-      "reasoning": "LAD (38-21) holds clear team quality advantage over ARI (31-27); market confirms LAD direction at 60.35% fair_prob vs model's 52.12%, validating direction. Rodriguez (LAD away SP) holds F1_xera_gap=0.78* + F2_xwoba_gap=0.039; PQI=-12.3 confirms LAD late-game; Stage 1/2 nearly agree (delta=0.010). HARD CAP 1 correctly fires on -8.22pp negative edge (market more confident than model — do not stake at inferior odds). CONFIRM rescues score from 0 to 1 via HARD CAP 10 logic, though stake remains zero via negative-edge + GOLD tier enforcement. Market direction agreement is the key supporting signal.",
-      "lessons_applied": [
-        "HARD-CAP-1-negative-edge-prevents-GOLD-stake-at-inferior-odds",
-        "market-confirms-LAD-direction-at-60.35pct",
-        "HARD-CAP-10-CONFIRM-rescue-preserves-B-minus-directional-record",
-        "F1-asterisk-plus-F2-dual-signal-meets-HARD-CAP-5-threshold"
-      ]
-    },
-    "NYM @ SEA": {
-      "model_pick": "SEA ML GOLD",
-      "model_prob": 0.5370,
-      "model_tier": "GOLD",
-      "model_grade": "C",
-      "claude_decision": "DOWNGRADE",
-      "claude_pick": "SEA",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.49,
-      "reasoning": "C-grade with both primary signals opposing SEA: Warren (NYM away, min_pa=79) holds 0.43 xERA edge over small-sample Hancock, and PQI=-3.1 is against SEA's late-game profile. Negative edge -1.84pp means market already prices SEA at 55.5%, leaving no model value. Confidence_downgrade=True. Per 5/21 archive lesson (NYM@WSH C-grade GOLD CONFIRM lost 2-1 as sole staked pick — F3 alone was insufficient without SP or PQI support), C-grade GOLD without SP quality agreement or positive PQI is a DOWNGRADE trigger. SEA's hl_bullpen_xwoba_gap=-0.009 is the only support signal — insufficient to override dual opposing signals at C-grade.",
-      "lessons_applied": [
-        "5/21-C-grade-GOLD-without-SP-PQI-support-triggers-DOWNGRADE",
-        "negative-edge-market-already-prices-SEA-higher-than-model",
-        "small-sample-Hancock-79PA-SP-edge-against-SEA",
-        "HARD-CAP-10-DOWNGRADE-enforces-zero-stake"
-      ]
-    },
-    "CHW @ MIN": {
-      "model_pick": "TBD",
+    "KC @ CIN": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
       "model_prob": null,
       "model_tier": "PENDING_SP_DATA",
       "model_grade": "C",
@@ -158,11 +44,80 @@
       "claude_pick": "TBD",
       "claude_tier": "SKIP",
       "claude_confidence": null,
-      "reasoning": "CHW probable SP not yet announced (confirmed via MLB API: no probablePitcher returned for CHW away). MIN's SP is confirmed but evaluating the matchup requires CHW's Statcast profile (100+ pitches minimum per protocol). No directional signal is possible without both starters' data. PENDING_SP_DATA protocol correctly prevents any stake commitment. Archive validates this threshold: 5/29 PIT walkoff, 5/26 PIT 12-1 blowout both occurred in games where thin SP data would have produced random directional exposure.",
-      "lessons_applied": [
-        "PENDING-SP-DATA-protocol-prevents-directional-commitment",
-        "100-pitch-Statcast-threshold-validated-by-archive"
-      ]
+      "reasoning": "Lyon Richardson has only 11 Statcast pitches season-to-date — far below the 100-pitch minimum scoring threshold. All BvP data is NO_DATA for KC batters vs Richardson; no xERA, swing-take, or K-rate signal is computable. PENDING_SP_DATA protocol correctly blocks any directional commitment. Archive validated: thin-SP games produce coin-flip outcomes (5/29 PIT walkoff, 5/26 PIT 12-1 blowout both unforecastable).",
+      "lessons_applied": ["PENDING_SP_DATA-protocol-blocks-thin-SP-games", "11-Statcast-pitches-zero-xERA-signal-possible"]
+    },
+    "CHW @ MIN": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "SKIP",
+      "claude_confidence": null,
+      "reasoning": "David Sandlin has only 61 Statcast pitches season-to-date, below the 100-pitch minimum. Benintendi carries an OWNER flag vs Sandlin (23 PA, shrunk 0.912) — a genuine soft signal — but a single-batter OWNER with an unscored SP is insufficient to stake directionally. PENDING_SP_DATA skip is correct. 5/28 lesson: single OWNER BvP did not override structural SP-data uncertainty.",
+      "lessons_applied": ["PENDING_SP_DATA-61-pitches-below-100-threshold", "single-OWNER-BvP-insufficient-with-unscored-SP"]
+    },
+    "SF @ MIL": {
+      "model_pick": "MIL ML GOLD",
+      "model_prob": 0.5565,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.55,
+      "reasoning": "Pre-cap score=4 (A-) is strong: F3_swing_take_gap=1564, SP edge 0.39 xERA (Drohan over Roupp), PQI +10.8 confirming MIL, Stage 1/2 agree. HARD CAP 1 correctly fires on edge=-3.4pp (reducing to B-); HARD CAP 10 then drops to SKIP pending CONFIRM. Rescuing via HARD CAP 10 because the negative edge is modest (-3.4pp — smallest on slate), hl_bullpen_xwoba_gap=-0.0062 supports Stage-2 carry, and MIL lineup is balanced (concentration=1.217). Low-conviction B- exposure only; market disagreement is modest not structural.",
+      "lessons_applied": ["pre-cap-A-minus-multi-signal-stack-justifies-HARD-CAP-10-rescue", "small-negative-edge-3.4pp-permits-low-conviction-CONFIRM", "Stage-2-carry-pattern-negative-pen-gap-applies"]
+    },
+    "TEX @ STL": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5212,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.45,
+      "reasoning": "D-grade with dual-opposing signals: Jacob deGrom (TEX away, 29.05% K-rate) holds 1.76 xERA advantage over McGreevy (STL, 18.75% K-rate), and PQI against STL (delta=-17.4) — worst late-game-degradation gap on today's slate. STL at 52.1% model probability while fair_prob=0.4575 gives STL only 45.8% (market slightly favors TEX). Edge +6.36pp is outside the [4,15]pp stake band. STL BvP vs deGrom is entirely NO_DATA or SMALL_SAMPLE. D-grade dual-signal archives ~60% directional failure; no basis to override.",
+      "lessons_applied": ["D-grade-dual-signal-60pct-directional-failure", "deGrom-29pct-K-rate-elite-quality-opposing-pick", "market-slight-TEX-favor-fair-prob-458"]
+    },
+    "COL @ LAA": {
+      "model_pick": "LAA ML PLATINUM",
+      "model_prob": 0.5043,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "LAA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Soriano's F1_xera_gap=3.46 and Trout OWNER vs Freeland (12 PA, shrunk 0.824) make the F5 thesis compelling. But edge=-17.2pp is the largest negative edge on the slate — market strongly disagrees with LAA at 50.4% full-game. f5_full_delta=0.322 requires LAA's pen to carry a massive lead; hl_bullpen_xwoba_gap=-0.0041 (near-zero) cannot support that carry thesis. HARD CAP 10 at pick_prob=0.504 confirms bottom-bucket structural instability. Not rescuing: near-zero pen gap + extreme delta + massive negative edge = unsupported carry.",
+      "lessons_applied": ["massive-negative-edge-17pp-market-authority", "near-zero-pen-gap-cannot-support-extreme-0.322-delta-carry", "HARD-CAP-10-bottom-bucket-pick-prob-0.504"]
+    },
+    "LAD @ ARI": {
+      "model_pick": "LAD ML GOLD",
+      "model_prob": 0.5199,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "LAD has the strongest dual OWNER BvP on the slate vs E. Rodriguez: Ohtani (26 PA, shrunk 0.814 OWNER) and Freeman (20 PA, shrunk 1.048 OWNER). Despite this, edge=-10.3pp means market is substantially more confident in ARI. F1_xera_gap=0.78* (thin-sample Sheehan, 79 PA) is the sole SP edge; hl_bullpen_xwoba_gap=+0.0047 (LAD pen marginally worse). 5/30 lesson: do not rescue negative-edge picks even with directional BvP evidence — market already reflects LAD's lineup quality. Not rescuing.",
+      "lessons_applied": ["dual-OWNER-BvP-Ohtani-Freeman-noted-insufficient-vs-10pp-negative-edge", "thin-sample-F1-asterisk-Sheehan-79PA-unreliable-anchor", "5/30-HARD-CAP-1-market-authority-holds-even-on-directional-wins"]
+    },
+    "NYM @ SEA": {
+      "model_pick": "SEA ML GOLD",
+      "model_prob": 0.5322,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "SEA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Pre-cap score=1 (B-) — weakest non-negative base on the slate. Only F3 fires; SP edge 0.41 xERA AGAINST pick (Warren over Hancock, min_pa=79 small-sample). Edge=-2.31pp negative, confidence_downgrade=True. BvP for both lineups is entirely NO_DATA or SMALL_SAMPLE — no qualitative signal available. hl_bullpen_xwoba_gap=-0.009 (SEA pen slightly better) is a mild positive but insufficient to rescue a pre-cap B- with opposing SP edge. 5/21 archive lesson: C-grade GOLD with SP edge opposing pick and no supporting PQI or F2 is a DOWNGRADE trigger. Not rescuing.",
+      "lessons_applied": ["pre-cap-score-1-weakest-base-on-slate", "opposing-SP-edge-small-sample-Warren-over-Hancock", "5/21-C-grade-GOLD-no-SP-or-PQI-support-triggers-DOWNGRADE"]
     }
   }
 }
