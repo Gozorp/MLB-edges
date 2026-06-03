@@ -5547,12 +5547,87 @@ function _topHRProps(rows) {
         if (!(pa >= 30) || hr < 0) continue;
         const p = _hrProbability({ hr: hr, pa: pa }, null, 4.3);
         if (p == null) continue;
-        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa, oppSP: oppSP, oppTeam: oppTeam });
+        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa, oppSP: oppSP, oppTeam: oppTeam, _row: r });
       }
     }
   }
   return out.sort((a, b) => b.prob - a.prob);
 }
+
+// ---- Home Run Props hit/miss (mirrors the pitcher-K prefetch pattern) ----
+// Normalize a player name so the diag payload (statsapi fullName) matches the
+// boxscore (also statsapi fullName): strip accents + punctuation, fold case.
+function _normName(s) {
+  return (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.\u2019'`]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+// HIT if the hitter homered in his (final) game; MISS if final and he didn't.
+// LIVE/PREGAME/TBD/POSTPONED pre-final; null until the boxscore prefetch lands
+// (or if the hitter never batted -> ungraded, no chip).
+function _hrPropStatus(item, results) {
+  const result = matchResult(item._row || {matchup: item.matchup}, results);
+  if (!result) return null;
+  const _st = (result.statusText || "").toLowerCase();
+  if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
+  if (result.isFinal === false) {
+    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    return "TBD";
+  }
+  if (!result.gamePk) return null;
+  const cache = window.__hrResults || {};
+  const v = cache[`${result.gamePk}|${_normName(item.name)}`];
+  if (v == null) return null;          // boxscore not fetched yet, or didn't bat
+  return v >= 1 ? "HIT" : "MISS";
+}
+
+// Prefetch boxscores for the final HR-prop games, cache each batter's game HR
+// count under `${gamePk}|${normName}`, then re-render so the badges appear.
+// Best-effort; dedupes by game and never re-fetches a game already loaded.
+async function _prefetchHRResults(hrs, results) {
+  if (!hrs || !hrs.length || !results) return;
+  if (!window.__hrResults) window.__hrResults = {};
+  if (!window.__hrGamesFetched) window.__hrGamesFetched = {};
+  const seen = new Set();
+  const jobs = [];
+  for (const item of hrs) {
+    const result = matchResult(item._row || {matchup: item.matchup}, results);
+    if (!result || !result.isFinal || !result.gamePk) continue;
+    if (seen.has(result.gamePk) || window.__hrGamesFetched[result.gamePk]) continue;
+    seen.add(result.gamePk);
+    jobs.push(_fetchBoxscore(result.gamePk).then(box => ({gamePk: result.gamePk, box})));
+  }
+  if (!jobs.length) return;
+  const fetched = await Promise.all(jobs);
+  let anyNew = false;
+  for (const {gamePk, box} of fetched) {
+    if (!box || !box.teams) continue;
+    window.__hrGamesFetched[gamePk] = true;
+    for (const side of ["away", "home"]) {
+      const teamBox = box.teams[side];
+      if (!teamBox) continue;
+      const players = teamBox.players || {};
+      for (const pkey of Object.keys(players)) {
+        const p = players[pkey] || {};
+        const nm = p.person && p.person.fullName;
+        if (!nm) continue;
+        const hr = p.stats && p.stats.batting && p.stats.batting.homeRuns;
+        if (hr == null) continue;
+        const key = `${gamePk}|${_normName(nm)}`;
+        if (window.__hrResults[key] !== hr) { window.__hrResults[key] = hr; anyNew = true; }
+      }
+    }
+  }
+  if (anyNew) {
+    const slate = window.__slate;
+    if (slate && slate.rows && slate.rows.length) {
+      const el = document.getElementById("top-outcomes");
+      if (el) el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
+    }
+  }
+}
+
 
 function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   results = results || {};
@@ -5607,7 +5682,8 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
 
   const hrs = _topHRProps(rows).slice(0, 10);
   if (hrs.length) {
-    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span></h3>`;
+    const hrStatuses = hrs.map(it => _hrPropStatus(it, results));
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span>${_sectionSummary(hrStatuses)}</h3>`;
     html += `<div class="muted" style="font-size:0.74rem;margin:0.1rem 0 0.5rem;line-height:1.4;">Model: P(&ge;1 HR) = 1 - (1 - season HR/PA)<sup>4.3</sup> &mdash; each hitter's season home-run rate compounded over ~4.3 expected plate appearances. Ranking is pitcher-neutral; the opposing starter is shown for matchup context (the per-game preview applies the SP HR/9 adjustment).</div>`;
     hrs.forEach((item, i) => {
       const pct = (item.prob * 100).toFixed(1);
@@ -5617,11 +5693,14 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
       html += `<div style="padding:0.4rem 0.2rem;border-bottom:1px solid rgba(255,255,255,0.05);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">`
             +   `<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;">`
             +   `<span><span class="muted">${i + 1}.</span> <strong>${item.name}</strong> <span class="muted">(${item.team})</span></span>`
-            +   `<span style="white-space:nowrap;"><strong style="color:var(--accent);">${pct}% HR</strong> <span class="muted" style="font-size:0.76rem;">· ${item.hr} HR / ${item.pa} PA (${rate}%)</span></span>`
+            +   `<span style="white-space:nowrap;"><strong style="color:var(--accent);">${pct}% HR</strong> <span class="muted" style="font-size:0.76rem;">· ${item.hr} HR / ${item.pa} PA (${rate}%)</span> ${_resultChipHtml(hrStatuses[i], _liveScoreFor(item, results))}</span>`
             +   `</div>`
             +   `<div class="muted" style="font-size:0.74rem;margin-top:0.22rem;line-height:1.4;">${rate}% season HR/PA compounded over ~4.3 PA ${_vs} &rarr; ${pct}% chance of &ge;1 HR</div>`
             + `</div>`;
     });
+    if (hrStatuses.some(s => s == null)) {
+      try { _prefetchHRResults(hrs, results); } catch (_) { /* best-effort */ }
+    }
   } else {
     html += `<div class="muted" style="font-size:0.78rem;margin-top:0.8rem;font-style:italic;">ⓘ Home Run Props populate once starting lineups are posted (~2h before first pitch).</div>`;
   }
