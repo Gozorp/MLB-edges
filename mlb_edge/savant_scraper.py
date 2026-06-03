@@ -191,7 +191,7 @@ SUPPLEMENTARY: List[EndpointSpec] = [
     EndpointSpec(
         name="swing-take",
         url=("https://baseballsavant.mlb.com/leaderboard/swing-take?"
-             "year={year}&team=&min=q&type=batter&csv=true"),
+             "year={year}&team=&min=q&playerType=batter&csv=true"),
         out_dir=Path("data/savant_extra"),
         out_filename="savant_swing-take_{ymd}.csv",
         min_bytes=1_500,
