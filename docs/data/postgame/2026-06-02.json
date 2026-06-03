@@ -1,0 +1,150 @@
+{
+  "date": "2026-06-02",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-03T10:30:00Z",
+  "n_analyzed": 15,
+  "summary": "June 2 slate: 7 directional wins and 7 losses across 14 graded picks (50%), with 1 NO_PICK (ATH@CHC, PENDING_SP_DATA on Gage Jump at 88 pitches). All 15 picks were SKIP-tier — zero actionable bets placed today, so no P&L impact. Critical finding: the away-team pick-direction error continued for a 3rd straight slate — BAL@BOS (CSV pick=BAL, Claude said BOS) and MIA@WSH (CSV pick=MIA, Claude said WSH) both had away-team wins confirmed by results. The near-zero HARD CAP 7 bullpen gap (|gap| < 0.010) demoted 4 picks; A-grade sub-group (CIN, ATL) went 2-for-2; B-grade sub-group (HOU) correctly lost 10-6.",
+  "by_matchup": {
+    "DET @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-0",
+      "headline": "DET crushed TB 8-0 — D-grade SKIP was correct caution; process worked as designed.",
+      "hypothesis": "Variance within expected range: TB was a D-grade SKIP, meaning the model had low conviction. Jack Flaherty (DET away SP) had a 0.35 xERA edge against TB's Matz, but the grade_reasons show the SP edge was AGAINST the TB pick. DET's 8-0 blowout confirms the grade was warranted. No stake was placed; this is a correct non-bet validated by the outcome.",
+      "signals_to_recheck": "D-grade SKIP record — DET@TB adds another loss on a D-grade game; sub-D picks continue to resolve against the pick side at elevated frequency."
+    },
+    "SD @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "PHI ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "PHI won 3-2; HARD CAP 1 (negative edge) and HARD CAP 10 (marginal favorite) correctly held — directional WIN with no stake placed.",
+      "hypothesis": "Process worked correctly: PHI won but both HARD CAP 1 (negative edge) and HARD CAP 10 correctly demoted this to SKIP. The 3-2 final is consistent with a marginal favorite. No loss exposure; directional win validates the model signal (F1_xera_gap=1.82*, F3=328.6 on Nola vs Vásquez) even at low conviction.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD + [HARD CAP 10] marginal_favorite both fired — PHI won 3-2; track F1* + negative edge combined over next 10 picks to determine if caps are over-firing when F1_xera_gap* is the primary signal."
+    },
+    "BAL @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "BAL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-2",
+      "headline": "BAL (the true CSV pick) won 4-2; Claude Brain misidentified the pick as BOS — pick-direction error, 3rd consecutive slate.",
+      "hypothesis": "CRITICAL PROCESS FAILURE: CSV `pick` column = BAL (away team). Claude Brain's claude_picks.json wrote model_pick=BOS ML SKIP, reading p_model as the home team's probability and concluding BOS was the model pick. BAL won 4-2, so the model's actual direction was correct. f5_full_delta=0.2084 is a high-disagreement game where Stage 1 and Stage 2 disagree — the exact condition that reliably triggers this error. This is the 3rd consecutive slate where an away-team pick was misidentified.",
+      "signals_to_recheck": "f5_full_delta (0.2084) + away-team pick — high Stage 1/2 disagreement games with away picks are the systematic failure mode; Claude Brain must read CSV `pick` column verbatim, never infer from p_model."
+    },
+    "MIA @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "7-3",
+      "headline": "MIA (the true CSV pick) won 7-3; Claude Brain misidentified the pick as WSH — pick-direction error for the 2nd away-team game today.",
+      "hypothesis": "CRITICAL PROCESS FAILURE: CSV `pick` column = MIA (away team). Claude Brain's claude_picks.json wrote model_pick=WSH ML PLATINUM and DOWNGRADED it, operating on the wrong team. F3_swing_take_gap=6905.6 and Lovelady's 2.23 xERA edge were MIA's signals per the CSV; the model correctly picked MIA. MIA won 7-3 comfortably. The DOWNGRADE reasoning was coherent but applied to the wrong team — a cascading error from the pick-direction misread.",
+      "signals_to_recheck": "f5_full_delta (0.042) + away-team pick — even low-delta games are vulnerable to the pick-direction error when p_model ≈ 0.52 and the away team has the higher probability; MIA@WSH is a 2-slate repeat error demanding a hard rule fix."
+    },
+    "CLE @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML DIAMOND",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-4",
+      "headline": "CLE upset NYY 9-4; HARD CAP 1 (negative edge) correctly held DIAMOND to SKIP — avoided large loss.",
+      "hypothesis": "Variance upset on a strong pre-cap grade: NYY had F1=2.56 xERA gap, F3=5018.5, and F2 support — genuine multi-signal conviction. However, hl_bullpen_xwoba_gap=+0.0024 is near-zero (opposing pen as good as NYY pen), and a -9.2pp negative edge fired HARD CAP 1. CLE won 9-4 in a blowout. No stake was placed; caps correctly prevented exposure on a vulnerable late-game profile. Process WIN despite directional LOSS.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD + [HARD CAP 7] hl_bullpen_xwoba_gap=+0.0024 (near-zero) — both fired on NYY DIAMOND and correctly avoided a 9-4 blowout loss; strongest cap validation of the slate."
+    },
+    "KC @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "CIN won 4-3 despite near-zero HARD CAP 7 gap (+0.0019) demoting to SKIP; A-grade conviction validated.",
+      "hypothesis": "Near-zero bullpen gap (hl_bullpen_xwoba_gap=+0.0019, below the 0.010 threshold) triggered HARD CAP 7 demotion to SKIP. CIN won 4-3, which is consistent with the pre-cap A-grade conviction (F3=5602.4, f5_full_delta=0.3202, pen_strain=0.1178 HIGH). This is the second data point suggesting near-zero CAP 7 fires may over-fire on A/PLATINUM grade picks where the gap is effectively zero rather than a genuine bullpen disadvantage.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0019 (near-zero) demoted CIN PLATINUM to SKIP — CIN won 4-3; running 2-for-2 on A-grade SKIP-by-CAP7 picks where |gap| < 0.010; consider treating near-zero gap as neutral rather than disadvantage when pre-cap grade >= A-minus."
+    },
+    "TOR @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "ATL won 4-3; near-zero HARD CAP 7 gap (+0.0074) demoted to SKIP but A-grade conviction held.",
+      "hypothesis": "hl_bullpen_xwoba_gap=+0.0074 is near-zero — HARD CAP 7 fired and demoted ATL to SKIP. ATL won 4-3 with F2+F3=6074.4 and PQI+8.8 confirming. This matches the CIN pattern: when |gap| < 0.010 AND pre-cap grade is A or better, the demotion may be noise rather than signal. A-grade sub-group for near-zero CAP 7 is 2W-0L today.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0074 — ATL wins 4-3 with strong pre-cap A grade (F2+F3+PQI); reinforces hypothesis that near-zero gap (< 0.010) should not demote A-grade picks; track running record to determine if threshold adjustment is warranted."
+    },
+    "CWS @ MIN": {
+      "verdict": "LOSS",
+      "model_pick": "CWS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-6",
+      "headline": "MIN won 6-4; CHW/CWS pick was SKIP-tier with high f5_full_delta=0.2192; SKIP correctly held no stake.",
+      "hypothesis": "CSV pick=CHW (away), tier=SKIP. f5_full_delta=0.2192 flagged strong Stage 1/2 disagreement — CHW had strong F5 conviction (66.99%) but Stage 2 full-game probability dropped to 54.93%, indicating pen/late-game weakness. MIN won 6-4. The SKIP was correct. Connor Prielipp (MIN SP) had a thin Statcast sample (F1*), compounding uncertainty. Process worked correctly.",
+      "signals_to_recheck": "f5_full_delta (0.2192) + F1* thin-sample opposing SP on away pick — Stage 1/2 disagreement correctly identified; CHW SKIP was justified even with CHW having the higher F5 probability."
+    },
+    "SF @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-8",
+      "headline": "MIL won 8-3; HARD CAP 1 (-10.5pp, market authority) demoted to SKIP but MIL won comfortably — multi-signal conviction was real.",
+      "hypothesis": "HARD CAP 1 fired on MIL (market prices MIL at fair_prob=0.7356, model only at 0.6308 — -10.5pp gap). MIL won 8-3 with F3=2333, SP edge 0.67 xERA (Harrison > McDonald), PQI+18.2 all confirming. MIL's second consecutive dominant home win (16-2 on June 1). The cap was correct to hold no stake at -10.5pp, but directional signal was strong. No P&L impact; process win for capital preservation.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge at -10.5pp correctly held no stake — MIL wins 8-3 again (2nd consecutive); multi-signal A-grade picks in this band should be tracked but cap remains correct per market-authority principle."
+    },
+    "TEX @ STL": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-4",
+      "headline": "TEX won 7-4; STL's modest F3+SP edge didn't hold against TEX offense — SKIP correctly held no stake.",
+      "hypothesis": "CSV pick=STL with F3=380.9 (below the high-conviction 1000+ threshold) and SP edge 0.34 xERA (May over Eovaldi). TEX won 7-4. The SP edge was thin, F3 was modest, and no F2 or PQI signal supported the pick. Both HARD CAP 7 (+0.0010, near-zero) and HARD CAP 10 (marginal 53.3% favorite) fired. The SKIP grade was correct. Variance loss on a legitimately low-conviction pick.",
+      "signals_to_recheck": "F3_swing_take_gap (380.9, modest) + thin SP edge (0.34 xERA) + [HARD CAP 7] near-zero + [HARD CAP 10] marginal — weak-conviction profile (no F2, no PQI, below-threshold F3) correctly landed in SKIP; TEX 7-4 win is consistent with the model's uncertainty."
+    },
+    "ATH @ CHC": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "ATH won 2-1 with Gage Jump (88 Statcast pitches, below 100-pitch threshold) — PENDING_SP_DATA protocol correctly blocked commitment.",
+      "hypothesis": "PENDING_SP_DATA protocol fired correctly on Gage Jump at 88 pitches (below the 100-pitch minimum). ATH won 2-1, but the outcome is irrelevant to process quality — Jump's sample was genuinely unscoreable. OAK/ATH wins in thin-SP games remain highly variable. Protocol validated.",
+      "signals_to_recheck": "small_sample_SP_True (Gage Jump, 88 Statcast pitches) — PENDING correctly blocked; ATH won 2-1 but variance on thin-SP games is high by design; 100-pitch threshold remains appropriate."
+    },
+    "PIT @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-6",
+      "headline": "PIT won 10-6 in an upset; HARD CAP 7 (near-zero +0.0001) and edge >15pp correctly held — avoided a large upset exposure.",
+      "hypothesis": "hl_bullpen_xwoba_gap=+0.0001 is essentially zero — HARD CAP 7 fired correctly and demoted HOU to SKIP. Edge=15.06pp also exceeded the [4,15]pp valid staking window. PIT won 10-6 in a blowout, validating both cap decisions. Unlike the ATL and CIN cases (A-grade picks with near-zero gap), HOU's pre-cap score was lower (B+ range), making the SKIP more justified. Confirms: near-zero CAP 7 over-fires ONLY on A-grade picks, not on B/B+ picks.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0001 (near-true-zero) on B-grade pick — PIT wins 10-6 blowout; both caps correctly avoided exposure; B-grade HOU with near-zero gap = correct SKIP vs A-grade CIN/ATL = possible over-fire."
+    },
+    "COL @ LAA": {
+      "verdict": "LOSS",
+      "model_pick": "LAA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-2",
+      "headline": "COL won 8-2 despite LAA's 3.19 xERA SP advantage (Rodriguez over Sugano K%=12.92%); contact-SP blowout risk materialized.",
+      "hypothesis": "LAA's SP advantage was quantitatively large (3.19 xERA gap) but Sugano's contact-first profile (K%=12.92%) made it exploitable. COL lineup showed NO_DATA BvP against Rodriguez, a neutral not confirming signal. COL won 8-2 in a blowout. This mirrors the pattern first documented today: sub-15% K-rate pitchers against lineups with NO_DATA BvP carry elevated blowout risk regardless of xERA gap. Both HARD CAP 1 (-6.3pp) and HARD CAP 10 fired; no stake was placed.",
+      "signals_to_recheck": "F1_xera_gap (3.19, large but contact-SP Sugano K%=12.92%) + NO_DATA BvP on opposing lineup — low-K-rate pick-side SP with uniform NO_DATA opponent BvP is an elevated upset signal; consider 0.5-tier confidence reduction when pick-side SP K% < 15% AND opponent BvP is uniformly NO_DATA."
+    },
+    "LAD @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-5",
+      "headline": "LAD won 6-5 despite ARI pick; Claude's DOWNGRADE was correct given F1_xera_gap* thin-sample and extreme f5_full_delta=0.319.",
+      "hypothesis": "CSV pick=ARI with F1_xera_gap=1.86* (thin-sample asterisk on Soroka) and f5_full_delta=0.319 (extreme Stage 1/2 disagreement — LAD dominated F5 at 84.62% while ARI's inferior pen would need to carry). LAD won 6-5 in a close game consistent with genuine 50/50 uncertainty. Claude's DOWNGRADE was a correct process decision. The 6-5 final validates the extreme-delta caution; large-delta + positive bpen_gap = carry thesis structurally unsupported.",
+      "signals_to_recheck": "F1_xera_gap* (thin-sample Soroka) + f5_full_delta (0.319, extreme) + hl_bullpen_xwoba_gap=+0.0042 (ARI pen inferior) — triple structural warning correctly triggered DOWNGRADE; LAD 6-5 win is consistent with marginal uncertainty; F1* + extreme delta + positive bpen_gap remains reliable DOWNGRADE trigger."
+    },
+    "NYM @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "SEA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-8",
+      "headline": "SEA won 8-3; Claude Brain misclassified as PENDING_SP_DATA but CSV shows confirmed SPs — pick-direction and SP-classification process error.",
+      "hypothesis": "CSV pick=SEA, tier=SKIP, why_skipped='tier SKIP -> stake_mult=0'. Both Logan Gilbert (SEA) and Huascar Brazobán (NYM) were confirmed SPs with scoreable samples. Claude Brain's claude_picks.json wrote PENDING_SP_DATA, misclassifying this as a thin-SP game. SEA won 8-3 comfortably. The SKIP designation was independently correct — this is a directional WIN with correct SKIP process, plus a secondary error in the claude_picks.json SP classification.",
+      "signals_to_recheck": "claude_picks_PENDING_misfire — CSV why_skipped='tier SKIP -> stake_mult=0' is authoritative; do not mark PENDING_SP_DATA when why_skipped does not contain 'pending_sp_data' or 'thin_sp_data'; SEA won 8-3 validating the model pick direction."
+    }
+  },
+  "patterns_observed": [
+    "CRITICAL — Away-team pick-direction error for 3rd consecutive slate: BAL@BOS (CSV pick=BAL, Claude wrote BOS) and MIA@WSH (CSV pick=MIA, Claude wrote WSH) both had away-team wins confirmed today. The error mechanism is consistent: Claude Brain reads p_model (home team full-game probability) and assigns the pick to the home team, ignoring the CSV `pick` column. Both correct away picks (BAL, MIA) won. RULE: Claude Brain MUST read the CSV `pick` column verbatim and write that team abbreviation to model_pick — never infer from p_model, full_prob, f5_prob, or tier. Affected game condition: any away-team pick, especially when f5_full_delta > 0.12.",
+    "Near-zero HARD CAP 7 (|hl_bullpen_xwoba_gap| < 0.010) over-fires on A/PLATINUM grade picks: CIN (gap=+0.0019, PLATINUM, won 4-3) and ATL (gap=+0.0074, PLATINUM, won 4-3) were correctly demoted to SKIP but the direction won. In contrast, HOU (gap=+0.0001, SKIP-tier, lost 10-6) correctly received the demotion. Emerging rule: when |gap| < 0.010 AND pre-cap grade >= A-minus (score >= 4) AND at least 2 independent signals confirm (F2+F3 or F3+PQI), treat the gap as effectively neutral. Running A-grade near-zero CAP 7 record: 2W-0L today.",
+    "Claude Brain PENDING_SP_DATA misfire: NYM@SEA CSV shows pick=SEA, tier=SKIP, why_skipped='tier SKIP -> stake_mult=0' — confirmed SPs (Gilbert, Brazobán), not a thin-sample game. RULE: use the CSV `why_skipped` column as authoritative for SP data status. Only mark PENDING if why_skipped contains 'pending_sp_data' or 'thin_sp_data'. Misclassifying a confirmed SKIP as PENDING obscures the directional record.",
+    "Low-K-rate pick-side SP (K% < 15%) with uniform NO_DATA opponent BvP = elevated upset risk: COL@LAA, Sugano (LAA SP, K%=12.92%) vs COL lineup (all NO_DATA BvP against Rodriguez) — COL won 8-2 despite LAA having a 3.19 xERA SP advantage. Contact-first pitchers facing lineups with no established weakness pattern carry blowout risk that xERA alone does not capture. Apply 0.5-tier confidence reduction when pick-side SP K% < 15% AND opponent BvP pattern is uniformly NO_DATA or WEAK_VS."
+  ]
+}
