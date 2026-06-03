@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-02T23:18:06.463443+00:00",
+  "checked_at": "2026-06-03T02:11:18.781709+00:00",
   "overall": "green",
   "categories": {
     "workflows": "green",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last ran 0.1h ago",
+      "message": "last ran 2.9h ago",
       "detail": {
         "last_run_iso": "2026-06-02T23:14:47Z",
-        "age_hours": 0.06
+        "age_hours": 2.94
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.6d ago",
+      "message": "last fired 2.8d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 63.51,
+        "age_hours": 66.4,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.6d ago",
+      "message": "last fired 2.7d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 63.09,
+        "age_hours": 65.98,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3h ago",
+      "message": "last fired 1.9h ago",
       "detail": {
-        "last_run_iso": "2026-06-02T21:02:27Z",
-        "age_hours": 2.26,
+        "last_run_iso": "2026-06-03T00:19:02Z",
+        "age_hours": 1.87,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -57,7 +57,7 @@
       "severity": "green",
       "message": "written 0.0h ago",
       "detail": {
-        "path": "docs/data/bullpen_meta_2026-06-02.json",
+        "path": "docs/data/bullpen_meta_2026-06-03.json",
         "mtime_age_hours": 0.0
       },
       "category": "data_flow"
@@ -65,15 +65,14 @@
     {
       "name": "kalshi_coverage_rate",
       "severity": "green",
-      "message": "13/15 rows have market odds",
+      "message": "14/15 rows have market odds",
       "detail": {
         "total_rows": 15,
-        "ok_rows": 13,
-        "non_ok_pct": 13.3,
+        "ok_rows": 14,
+        "non_ok_pct": 6.7,
         "status_distribution": {
-          "fetched_capped": 1,
-          "fetched": 12,
-          "pending_sp_data": 2
+          "fetched": 14,
+          "pending_sp_data": 1
         }
       },
       "category": "data_flow"
@@ -81,11 +80,11 @@
     {
       "name": "pending_sp_data_rate",
       "severity": "green",
-      "message": "2/15 rows PENDING_SP_DATA",
+      "message": "1/15 rows PENDING_SP_DATA",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 2,
-        "pct_of_slate": 13.3
+        "pending_sp_data_count": 1,
+        "pct_of_slate": 6.7
       },
       "category": "data_flow"
     },
@@ -98,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-02T23:18:06.652Z",
+          "timestamp": "2026-06-03T02:11:18.964Z",
           "commit": "unknown",
-          "region": "LAX"
+          "region": "DFW"
         }
       },
       "category": "deployment"
@@ -108,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 2.7h ago",
+      "message": "last learned 5.6h ago",
       "detail": {
         "last_entry_iso": "2026-06-02T20:33:45.151556+00:00",
-        "age_hours": 2.74
+        "age_hours": 5.63
       },
       "category": "model"
     },
