@@ -50,6 +50,11 @@ LOGS.mkdir(exist_ok=True)
 today = date.today()
 LOG_FILE = LOGS / f"nightly_backstop_{today:%Y%m%d}.log"
 
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)-5s %(message)s",
@@ -88,13 +93,13 @@ def _run_subprocess(label: str, cmd: list[str], timeout: int,
                 flags |= 0x00008000
             kwargs["creationflags"] = flags
         p = subprocess.run(cmd, cwd=ROOT, capture_output=True,
-                           text=True, timeout=timeout, **kwargs)
+                           text=True, encoding="utf-8", errors="replace", timeout=timeout, **kwargs)
         if p.returncode != 0:
             log.error("[%s] FAIL rc=%d\nSTDERR: %s\nSTDOUT: %s",
-                      label, p.returncode, p.stderr[-800:], p.stdout[-800:])
+                      label, p.returncode, (p.stderr or "")[-800:], (p.stdout or "")[-800:])
             return False
         # Log last few lines for visibility
-        tail = "\n".join(p.stdout.strip().splitlines()[-6:])
+        tail = "\n".join((p.stdout or "").strip().splitlines()[-6:])
         log.info("[%s] OK:\n%s", label, tail)
         return True
     except subprocess.TimeoutExpired:
