@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-04T14:09:11.776724+00:00",
+  "checked_at": "2026-06-04T17:32:45.097193+00:00",
   "overall": "red",
   "categories": {
     "workflows": "yellow",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "yellow",
-      "message": "daily-slate last ran 17.8h ago (threshold 14h)",
+      "message": "daily-slate last ran 21.2h ago (threshold 14h)",
       "detail": {
         "last_run_iso": "2026-06-03T20:22:08Z",
-        "age_hours": 17.78
+        "age_hours": 21.18
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 4.3d ago",
+      "message": "last fired 4.4d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 102.37,
+        "age_hours": 105.76,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 4.2d ago",
+      "message": "last fired 4.4d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 101.94,
+        "age_hours": 105.33,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 17.0h ago",
+      "message": "last fired 20.4h ago",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 16.98,
+        "age_hours": 20.37,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-04T14:09:11.904Z",
+          "timestamp": "2026-06-04T17:32:45.214Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "SJC"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 17.4h ago",
+      "message": "last learned 20.8h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 17.39
+        "age_hours": 20.79
       },
       "category": "model"
     },
