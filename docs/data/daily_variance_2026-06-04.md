@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-04
-_Generated 2026-06-04T18:56:58Z · 9 games · significant deviations only_
+_Generated 2026-06-04T19:04:11Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **SD** [IL] — San Diego Padres placed LF Ramón Laureano on the 10-day injured list retroactive to May 31, 2026. Right hip inflammtion.
