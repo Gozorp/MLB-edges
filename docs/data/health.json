@@ -1,21 +1,21 @@
 {
   "version": 2,
-  "checked_at": "2026-06-04T21:49:21.459696+00:00",
+  "checked_at": "2026-06-04T23:16:35.237239+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
     "data_flow": "green",
     "deployment": "green",
-    "model": "green"
+    "model": "yellow"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "red",
-      "message": "daily-slate hasn't run in 25.5h (threshold 24h)",
+      "message": "daily-slate hasn't run in 26.9h (threshold 24h)",
       "detail": {
         "last_run_iso": "2026-06-03T20:22:08Z",
-        "age_hours": 25.45
+        "age_hours": 26.91
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 4.6d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 110.04,
+        "age_hours": 111.49,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -36,7 +36,7 @@
       "message": "last fired 4.6d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 109.61,
+        "age_hours": 111.06,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 1.0d ago",
+      "message": "last fired 1.1d ago",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 24.65,
+        "age_hours": 26.1,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -98,20 +98,20 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-04T21:49:21.617Z",
+          "timestamp": "2026-06-04T23:16:35.462Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "ORD"
         }
       },
       "category": "deployment"
     },
     {
       "name": "weights_state_freshness",
-      "severity": "green",
-      "message": "last learned 25.1h ago",
+      "severity": "yellow",
+      "message": "weights last learned 26.5h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 25.06
+        "age_hours": 26.52
       },
       "category": "model"
     },
