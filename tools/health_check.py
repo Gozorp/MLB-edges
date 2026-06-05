@@ -30,7 +30,7 @@ import subprocess
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
@@ -149,12 +149,17 @@ def _today_iso_utc(now: datetime) -> str:
 
 
 def _find_today_picks_csv(now: datetime) -> Optional[Path]:
-    """Locate today's picks diag CSV in either of two known locations."""
-    today = _today_iso_utc(now)
-    for p in (REPO / "docs" / "data" / f"picks_{today}_diag.csv",
-              REPO / f"picks_{today}_diag.csv"):
-        if p.exists():
-            return p
+    """Locate the most recent slate's picks diag CSV (today OR yesterday UTC).
+    The local pipeline labels the slate by UTC date but publishes it at
+    PT-midnight (~07:00 UTC), so from 00:00-07:00 UTC the newest slate is still
+    yesterday-UTC. Accept either so the monitor does not false-red in that
+    window; genuine multi-day staleness is caught by daily_slate_heartbeat."""
+    for d in (_today_iso_utc(now),
+              (now - timedelta(days=1)).strftime("%Y-%m-%d")):
+        for p in (REPO / "docs" / "data" / f"picks_{d}_diag.csv",
+                  REPO / f"picks_{d}_diag.csv"):
+            if p.exists():
+                return p
     return None
 
 
@@ -201,26 +206,31 @@ def _workflow_heartbeat_check(now: datetime, name: str,
 # Checks
 # ---------------------------------------------------------------------------
 def check_daily_slate_heartbeat(now: datetime) -> Dict:
-    iso = _git_last_commit_iso("daily-slate:")
+    # Post-cutover the slate publishes locally as `local-publish:`; the cloud
+    # `daily-slate:` workflow only runs during travel. Accept the NEWEST of
+    # either so this heartbeat tracks whoever published last.
     name = "daily_slate_heartbeat"
-    if iso is None:
+    cands = [_parse_iso(x) for x in (_git_last_commit_iso("local-publish:"),
+                                     _git_last_commit_iso("daily-slate:"))]
+    cands = [c for c in cands if c]
+    if not cands:
         return {"name": name, "severity": RED,
-                "message": "no daily-slate commit found in git log",
+                "message": "no slate-publish commit (local-publish:/daily-slate:) in git log",
                 "detail": {}}
+    newest = max(cands)
+    iso = newest.isoformat()
     age = _age_hours(iso, now)
     detail = {"last_run_iso": iso, "age_hours": round(age, 2)}
     if age > 24.0:
         return {"name": name, "severity": RED,
-                "message": f"daily-slate hasn't run in {age:.1f}h "
-                           f"(threshold 24h)",
+                "message": f"no slate publish in {age:.1f}h (threshold 24h)",
                 "detail": detail}
     if age > 14.0:
         return {"name": name, "severity": YELLOW,
-                "message": f"daily-slate last ran {age:.1f}h ago "
-                           f"(threshold 14h)",
+                "message": f"last slate publish {age:.1f}h ago (threshold 14h)",
                 "detail": detail}
     return {"name": name, "severity": GREEN,
-            "message": f"last ran {age:.1f}h ago",
+            "message": f"last slate publish {age:.1f}h ago",
             "detail": detail}
 
 
@@ -286,11 +296,18 @@ def check_claude_brain_heartbeat(now: datetime) -> Dict:
 def check_bullpen_meta_freshness(now: datetime) -> Dict:
     name = "bullpen_meta_freshness"
     today = _today_iso_utc(now)
-    p = REPO / "docs" / "data" / f"bullpen_meta_{today}.json"
-    if not p.exists():
+    yest = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    p = None
+    for _d in (today, yest):
+        _cand = REPO / "docs" / "data" / f"bullpen_meta_{_d}.json"
+        if _cand.exists():
+            p = _cand
+            break
+    if p is None:
+        _exp = REPO / "docs" / "data" / f"bullpen_meta_{today}.json"
         return {"name": name, "severity": RED,
                 "message": f"bullpen_meta_{today}.json missing",
-                "detail": {"expected_path": str(p.relative_to(REPO))}}
+                "detail": {"expected_path": str(_exp.relative_to(REPO))}}
     age = (now.timestamp() - p.stat().st_mtime) / 3600.0
     detail = {"path": str(p.relative_to(REPO)),
               "mtime_age_hours": round(age, 2)}
