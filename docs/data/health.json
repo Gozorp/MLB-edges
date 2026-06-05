@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "checked_at": "2026-06-05T06:40:24.663400+00:00",
+  "checked_at": "2026-06-05T10:52:59.798351+00:00",
   "overall": "yellow",
   "categories": {
-    "workflows": "green",
+    "workflows": "yellow",
     "data_flow": "green",
     "deployment": "green",
     "model": "yellow"
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 2.1h ago",
+      "message": "last slate publish 3.8h ago",
       "detail": {
-        "last_run_iso": "2026-06-04T21:37:20-07:00",
-        "age_hours": 2.05
+        "last_run_iso": "2026-06-05T00:06:14-07:00",
+        "age_hours": 3.78
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 5.0d ago",
+      "message": "last fired 5.1d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 118.89,
+        "age_hours": 123.1,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,21 +33,21 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 4.9d ago",
+      "message": "last fired 5.1d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 118.46,
+        "age_hours": 122.67,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
     },
     {
       "name": "claude_brain_heartbeat",
-      "severity": "green",
-      "message": "last fired 1.4d ago",
+      "severity": "yellow",
+      "message": "last fired 1.6 days ago (threshold 2d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 33.5,
+        "age_hours": 37.71,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -97,7 +97,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-05T06:40:24.768Z",
+          "timestamp": "2026-06-05T10:52:59.934Z",
           "commit": "unknown",
           "region": "SJC"
         }
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "yellow",
-      "message": "weights last learned 33.9h ago (expected ~daily)",
+      "message": "weights last learned 38.1h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 33.91
+        "age_hours": 38.12
       },
       "category": "model"
     },
@@ -137,11 +137,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "5/15 rows stress-warned",
+      "message": "6/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 5,
-        "pct_of_slate": 33.3
+        "stress_warned_count": 6,
+        "pct_of_slate": 40.0
       },
       "category": "model"
     }
