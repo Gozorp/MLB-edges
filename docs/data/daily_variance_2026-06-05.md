@@ -1,0 +1,139 @@
+# Daily Variance Report — 2026-06-05
+_Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
+
+## 1 · Roster / Injury Delta
+- **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list retroactive to June 2, 2026. Right knee inflammation.
+- **SF** [recalled] — San Francisco Giants recalled RHP Dylan Smith from Sacramento River Cats.
+- **SF** [outrighted] — San Francisco Giants sent C Logan Porter outright to Sacramento River Cats.
+- **SEA** [signed] — Seattle Mariners signed free agent LHP Caleb Franzen to a minor league contract.
+- **CWS** [activated] — Chicago White Sox activated LHP Tyler Gilbert.
+- **CWS** [optioned] — Chicago White Sox optioned LHP Chris Murphy to Charlotte Knights.
+- **BOS** [IL] — Boston Red Sox placed 3B Nick Sogard on the 10-day injured list retroactive to May 31, 2026. Right oblique strain.
+- **BOS** [signed] — Boston Red Sox signed free agent LHP Victor Aracena to a minor league contract.
+- **BOS** [recalled] — Boston Red Sox recalled 2B Anthony Seigler from Worcester Red Sox.
+- **BOS** [IL] — Boston Red Sox transferred SS Trevor Story from the 10-day injured list to the 60-day injured list. Sports hernia.
+- **BOS** [selected] — Boston Red Sox selected the contract of RHP Tommy Kahnle from Worcester Red Sox.
+- **BOS** [optioned] — Boston Red Sox optioned LHP Tyler Samaniego to Worcester Red Sox.
+- **BAL** [DFA] — Baltimore Orioles designated RHP Eduarniel Núñez for assignment.
+- **BAL** [TRADE] — Cincinnati Reds traded RHP Kyle Nicolas to Baltimore Orioles for cash.
+- **BAL** [optioned] — Baltimore Orioles optioned RHP Kyle Nicolas to Norfolk Tides.
+- **TOR** [IL] — Toronto Blue Jays transferred LHP Joe Mantiply from the 15-day injured list to the 60-day injured list. Left knee inflammation.
+- **TOR** [TRADE] — Minnesota Twins traded RHP Simeon Woods Richardson to Toronto Blue Jays for cash.
+- **TOR** [DFA] — Toronto Blue Jays designated RHP Tanner Andrews for assignment.
+- **TOR** [activated] — Toronto Blue Jays activated RHP Chad Dallas.
+- **TOR** [selected] — Toronto Blue Jays selected the contract of RHP Chad Dallas from Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned RHP Hayden Juenger to Buffalo Bisons.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Trevor Martin to Durham Bulls.
+- **TB** [recalled] — Tampa Bay Rays recalled RHP Mason Englert from Durham Bulls.
+- **MIA** [returned] — RHP Matt Pushard returned to Miami Marlins from St. Louis Cardinals.
+- **ATL** [TRADE] — Los Angeles Angels traded C Austin Wynns to Atlanta Braves for cash.
+- **ATL** [DFA] — Atlanta Braves designated C Chadwick Tromp for assignment.
+- **ATL** [IL] — Atlanta Braves transferred C Sean Murphy from the 10-day injured list to the 60-day injured list. Fractured left middle finger.
+- **ATL** [selected] — Atlanta Braves selected the contract of C Austin Wynns from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned CF DaShawn Keirsey Jr. to Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of CF DaShawn Keirsey Jr. from Gwinnett Stripers.
+- **HOU** [DFA] — Houston Astros designated C César Salazar for assignment.
+- **HOU** [DFA] — Houston Astros designated LF Rhylan Thomas for assignment.
+- **HOU** [IL] — Houston Astros activated LF Joey Loperfido from the 10-day injured list.
+- **HOU** [signed] — Houston Astros signed free agent 1B LaMonte Wade Jr..
+- **HOU** [optioned] — Houston Astros optioned LF Joey Loperfido to Sugar Land Space Cowboys.
+- **HOU** [optioned] — Houston Astros optioned LF Zach Cole to Sugar Land Space Cowboys.
+- **HOU** [selected] — Houston Astros selected the contract of C Collin Price from Sugar Land Space Cowboys.
+- **CIN** [activated] — Cincinnati Reds activated RF Noelvi Marte.
+- **CIN** [outrighted] — Cincinnati Reds sent RHP Yunior Marte outright to Louisville Bats.
+- **CIN** [optioned] — Cincinnati Reds optioned CF TJ Friedl to Louisville Bats.
+- **CIN** [recalled] — Cincinnati Reds recalled OF Noelvi Marte from Louisville Bats.
+- **CIN** [TRADE] — Cincinnati Reds traded RHP Kyle Nicolas to Baltimore Orioles for cash.
+- **CIN** [outrighted] — Cincinnati Reds sent LHP Brandon Leibrandt outright to Louisville Bats.
+- **CIN** [outrighted] — Cincinnati Reds sent RHP Lyon Richardson outright to Louisville Bats.
+- **STL** [returned] — RHP Matt Pushard returned to Miami Marlins from St. Louis Cardinals.
+- **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 10-day injured list.
+- **TEX** [signed] — Texas Rangers signed free agent RHP Josh Sborz to a minor league contract.
+- **TEX** [optioned] — Texas Rangers optioned 3B Cody Freeman to Round Rock Express.
+- **TEX** [optioned] — Texas Rangers optioned LF Alejandro Osuna to Round Rock Express.
+- **KC** [signed] — Kansas City Royals signed free agent IF Juan Batista to a minor league contract.
+- **KC** [IL] — Kansas City Royals transferred 2B Jonathan India from the 10-day injured list to the 60-day injured list. Left shoulder subluxation.
+- **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
+- **KC** [selected] — Kansas City Royals selected the contract of 3B Josh Rojas from Omaha Storm Chasers.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Hunter Gregory to a minor league contract.
+- **MIN** [TRADE] — Minnesota Twins traded RHP Simeon Woods Richardson to Toronto Blue Jays for cash.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Austin Voth to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Jake Covey to a minor league contract.
+- **MIL** [IL] — Milwaukee Brewers placed LHP Rob Zastryzny on the 15-day injured list retroactive to May 31, 2026. Left trapezius strain.
+- **MIL** [recalled] — Milwaukee Brewers recalled LHP Robert Gasser from Nashville Sounds.
+- **AZ** [status] — RHP Taylor Clarke roster status changed by Arizona Diamondbacks.
+- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Brandon Pfaadt to Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Kade Strowd from Reno Aces.
+- **NYM** [optioned] — New York Mets optioned RHP Jonah Tong to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Joey Gerber from Syracuse Mets.
+- **SD** [DFA] — San Diego Padres designated RF Nick Castellanos for assignment.
+- **SD** [signed] — San Diego Padres signed free agent OF Luis Sanchez to a minor league contract.
+- **SD** [selected] — San Diego Padres selected the contract of 2B Samad Taylor from El Paso Chihuahuas.
+- **LAA** [signed] — Los Angeles Angels signed free agent LHP Joey Lucchesi to a minor league contract.
+- **LAA** [IL] — Los Angeles Angels transferred C Travis d'Arnaud from the 10-day injured list to the 60-day injured list. Right foot plantar fasciitis.
+- **LAA** [selected] — Los Angeles Angels selected the contract of RHP Shaun Anderson from Salt Lake Bees.
+- **LAA** [optioned] — Los Angeles Angels optioned LHP Sam Aldegheri to Salt Lake Bees.
+- **LAA** [TRADE] — Los Angeles Angels traded C Austin Wynns to Atlanta Braves for cash.
+
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+
+## 2 · Starting Pitcher Flags
+- **BOS @ NYY** (home SP Ryan Weathers): very high K% (29.1% vs lg 22.0)
+- **TB @ MIA** (home SP Ryan Gusto): thin sample / PENDING_SP_DATA — Ryan Gusto has only 52 Statcast pitches season-to-date; need 100+ to score
+- **LAA @ LAD** (away SP TBD): NOT CONFIRMED — probable SP not posted
+
+## 3 · Bullpen Fatigue (last 3 games)
+- **SF** JT Brubaker — threw 46 pitches last night — likely unavailable
+- **SF** Tristan Beck — 2 apps / 54 pitches over last 3 games — monitor
+- **SEA** Cooper Criswell — 2 apps / 35 pitches over last 3 games — monitor
+- **PHI** José Alvarado — 2 apps / 36 pitches over last 3 games — monitor
+- **NYY** Brent Headrick — 2 apps / 51 pitches over last 3 games — monitor
+- **TOR** Chad Dallas — threw 68 pitches last night — likely unavailable
+- **PIT** Carmen Mlodzinski — threw 55 pitches last night — likely unavailable
+- **ATH** Scott Barlow — 2 apps / 36 pitches over last 3 games — monitor
+- **HOU** Steven Okert — 2 apps / 62 pitches over last 3 games — monitor
+- **HOU** Bryan Abreu — 2 apps / 50 pitches over last 3 games — monitor
+- **HOU** AJ Blubaugh — 2 apps / 45 pitches over last 3 games — monitor
+- **STL** JoJo Romero — 2 apps / 37 pitches over last 3 games — monitor
+- **STL** Riley O'Brien — 2 apps / 45 pitches over last 3 games — monitor
+- **CLE** Hunter Gaddis — 2 apps / 37 pitches over last 3 games — monitor
+- **KC** Alex Lange — 2 apps / 44 pitches over last 3 games — monitor
+- **MIN** Mike Paredes — threw 50 pitches last night — likely unavailable
+- **MIN** Eric Orze — 2 apps / 42 pitches over last 3 games — monitor
+- **MIN** Justin Lawrence — 2 apps / 43 pitches over last 3 games — monitor
+- **MIL** Jake Woodford — threw 56 pitches last night — likely unavailable
+- **LAD** Kyle Hurt — 2 apps / 39 pitches over last 3 games — monitor
+- **LAD** Will Klein — 2 apps / 39 pitches over last 3 games — monitor
+
+## 4 · Lineup / Platoon
+- SF @ CHC — CHC faces LHP (Robbie Ray)
+- SF @ CHC — SF faces RHP (Edward Cabrera)
+- SEA @ DET — DET faces RHP (Bryan Woo)
+- SEA @ DET — SEA faces LHP (Framber Valdez)
+- CWS @ PHI — PHI faces LHP (Anthony Kay)
+- CWS @ PHI — CWS faces LHP (Jesús Luzardo)
+- BOS @ NYY — NYY faces RHP (Sonny Gray)
+- BOS @ NYY — BOS faces LHP (Ryan Weathers)
+- BAL @ TOR — TOR faces RHP (Brandon Young)
+- BAL @ TOR — BAL faces RHP (Trey Yesavage)
+- TB @ MIA — MIA faces RHP (Drew Rasmussen)
+- TB @ MIA — TB faces RHP (Ryan Gusto)
+- PIT @ ATL — ATL faces RHP (Mitch Keller)
+- PIT @ ATL — PIT faces LHP (Martín Pérez)
+- ATH @ HOU — HOU faces RHP (Jack Perkins)
+- ATH @ HOU — ATH faces RHP (Peter Lambert)
+- CIN @ STL — STL faces RHP (Brady Singer)
+- CIN @ STL — CIN faces RHP (Kyle Leahy)
+- CLE @ TEX — TEX faces LHP (Parker Messick)
+- CLE @ TEX — CLE faces RHP (Kumar Rocker)
+- KC @ MIN — MIN faces RHP (Michael Wacha)
+- KC @ MIN — KC faces RHP (Zebby Matthews)
+- MIL @ COL — COL faces RHP (Brandon Sproat)
+- MIL @ COL — MIL faces RHP (Ryan Feltner)
+- WSH @ AZ — AZ faces LHP (Foster Griffin)
+- WSH @ AZ — WSH faces RHP (Merrill Kelly)
+- NYM @ SD — SD faces RHP (Christian Scott)
+- NYM @ SD — NYM faces RHP (Michael King)
+- LAA @ LAD — LAA faces RHP (Roki Sasaki)
+
