@@ -1,0 +1,96 @@
+{
+  "date": "2026-06-04",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-05T01:00:00Z",
+  "n_analyzed": 9,
+  "summary": "June 4 slate: 5 directional wins and 3 losses across 8 graded matchups (62.5%), with 1 NO_PICK (PIT@HOU, PENDING_SP_DATA on Jones 77 pitches). Staked bets went 2W-2L (50%): PHI CONFIRM won 6-4 on BvP OWNER asymmetry; BAL CONFIRM won 8-2 behind a triple-OWNER BvP cluster. Critical process failure: Claude upgraded ATL from B- to GOLD despite HARD CAP 1 firing a -4.02pp negative edge — ATL lost 7-2 in a blowout. KC@MIN was the first failure (8-6) of the near-zero HARD CAP 7 A-grade override thesis, bringing that running record to 5W-1L. SF@MIL (12-9 loss) validates the established carry-thesis failure mode at near-zero bullpen gap with large f5_full_delta.",
+  "by_matchup": {
+    "SD @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "PHI ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-6",
+      "headline": "PHI won 6-4; BvP OWNER asymmetry (Schwarber vs Giolito) materialized; CONFIRM rescue of HARD CAP 10 validated.",
+      "hypothesis": "Process and direction correct. PHI's BvP advantage was real — Schwarber OWNER vs Giolito (shrunk OPS 0.842, 21 PA) while SD's top hitters Tatis and Machado were both WEAK_VS vs Wheeler. HARD CAP 10 was correctly rescued by Claude's CONFIRM (archive non-CONFIRM hit rate 31.2% in the bottom bucket vs ~47% with CONFIRM). PHI winning 6-4 is a comfortable margin consistent with genuine home advantage driven by the SP and BvP asymmetry. Variance win within expected distribution; no process concerns.",
+      "signals_to_recheck": "BvP OWNER asymmetry (Schwarber OWNER vs Giolito, SD top-2 WEAK_VS vs Wheeler) continues to function as a reliable CONFIRM trigger for CAP 10 rescues on GOLD picks."
+    },
+    "BAL @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "BAL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-2",
+      "headline": "BAL dominated 8-2; triple BvP OWNER cluster (Ward, Henderson, Rutschman vs Bello) delivered the strongest blowout on the slate.",
+      "hypothesis": "Process and direction correct. BAL's three-OWNER BvP cluster against Bello (Ward shrunk 0.841, Henderson shrunk 0.905, Rutschman shrunk 0.796 — all OWNER-tier, 13-25 PA each) was the strongest same-day directional confirmer on the slate. Near-zero HARD CAP 7 (gap=+0.0021) fired but was correctly identified as the 5th consecutive near-zero over-fire on A-grade picks per the documented 6/2–6/3 pattern. HARD CAP 10 was rescued by CONFIRM. The 8-2 blowout validates the pre-cap A-grade (score=5, F1* SP edge + PQI + Stage 1/2 agreement). BvP OWNER triple-cluster continues its strong track record as the most reliable confirming signal type on the slate.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0021 (near-zero, 5th consecutive A-grade near-zero CAP 7 WIN) — BAL wins 8-2; triple BvP OWNER cluster top-3 vs today SP is the strongest same-day directional signal; note that gap=+0.0021 is below +0.005 (sub-threshold zone, all wins)."
+    },
+    "CLE @ NYY": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "NYY won 2-1; HARD CAP 1 (-7pp negative edge) correctly declined stake on a directional win with fragile carry thesis.",
+      "hypothesis": "Process win and directional win. Rodón's F3=5097.2 and PQI=+19.5 correctly indicated NYY strength, and NYY won 2-1. HARD CAP 1 (edge=-7.0pp, fair_prob=0.5898) was authoritative — the market already priced NYY 7pp above the model, making any stake at model odds negative EV regardless of outcome. f5_full_delta=0.1762 showed the carry thesis was fragile; NYY's narrow 2-1 win is consistent with the carry structure relying on a near-zero bullpen gap (+0.0022), which provides no verified pen advantage. The directional win does not validate any potential cap override — market authority at -7pp was correct. No stake was placed; claude_tier=SKIP correctly maintained.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge (-7.0pp) + f5_full_delta (0.1762) + hl_bullpen_xwoba_gap (+0.0022, near-zero) — NYY wins 2-1 in a tight game consistent with fragile carry thesis; HARD CAP 1 market authority was correct process even on a directional win; close margin validates carry fragility concern."
+    },
+    "SF @ MIL": {
+      "verdict": "LOSS",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "12-9",
+      "headline": "SF won 12-9 in a blowout; missing fair_prob and large f5_full_delta=0.2045 correctly blocked stake on a decisive directional loss.",
+      "hypothesis": "Process win (no stake placed); directional loss. Fair_prob was missing (Odds API gap), triggering the SKIP per market-validation design. The 12-9 blowout validates the concern: MIL's full-game thesis required Coleman Crow (SF, new arm with NO_DATA BvP across all of MIL's top hitters) to be contained, and hl_bullpen_xwoba_gap=-0.0018 (near-neutral) provided no pen advantage to absorb the large F5 overhang (f5_full_delta=0.2045). SF's offense exploded for 12 runs — the largest margin on today's slate. This is consistent with the established carry-thesis failure pattern (6/3: MIA@WSH LOSS gap=-0.0121): when the carry pick's bullpen gap is sub-meaningful and the F5 deficit is large, the full-game edge is structurally unsupported. Process is a WIN; the SKIP correctly avoided a large loss.",
+      "signals_to_recheck": "fair_prob missing + f5_full_delta (0.2045) + hl_bullpen_xwoba_gap (-0.0018, near-zero) — SF wins 12-9; carry thesis with near-zero bullpen gap and large f5_full_delta is 0-for-3 across 6/1 (MIA@WSH), 6/3 (MIA@WSH), and 6/4 (SF@MIL); treat |hl_bullpen_xwoba_gap| < 0.020 + f5_full_delta >= 0.15 as a mandatory one-tier DOWNGRADE."
+    },
+    "TOR @ ATL": {
+      "verdict": "LOSS",
+      "model_pick": "ATL ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-2",
+      "headline": "TOR won 7-2 in a blowout; Claude's HARD CAP 1 override — upgrading ATL from B- to GOLD despite -4.02pp negative edge — produced a significant staked loss.",
+      "hypothesis": "PROCESS FAILURE: HARD CAP 1 fired on ATL (-4.02pp, fair_prob=0.7356), meaning the market already priced ATL at 73.56% while the model had 69.53% — no positive EV stake exists at model odds. Claude upgraded ATL from the post-cap B- grade back to GOLD, overriding the cap's market authority. Chris Sale's strong F3 (6075.4) and PQI (Δ=+16.1) were real directional signals, but they cannot create positive EV where the market has already incorporated that information. TOR won 7-2 in a convincing blowout — Mason Fluharty (TOR SP, 26.07% K%) outperformed against a stacked ATL lineup. The loss is partly process failure (CAP 1 override) and partly variance (Sale had an off night). The critical actionable lesson is the CAP 1 upgrade: CONFIRM the direction at the capped grade (B-), never upgrade a CAP 1-demoted pick above its post-cap tier.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-4.02pp) overridden by Claude tier upgrade to GOLD — critical process failure; HARD CAP 1 market authority is non-negotiable even when directional signals (F3=6075, PQI=+16.1, Sale ace start) are strong; TOR 7-2 blowout validates market authority; rule: never upgrade a CAP 1-demoted pick above its post-cap grade."
+    },
+    "KC @ MIN": {
+      "verdict": "LOSS",
+      "model_pick": "MIN ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-6",
+      "headline": "KC won 8-6; first failure of the near-zero HARD CAP 7 CONFIRM thesis on A-grade picks (series now 5W-1L); gap=+0.0092 was the largest in the near-zero zone.",
+      "hypothesis": "Near-zero HARD CAP 7 override (hl_bullpen_xwoba_gap=+0.0092, the largest in the documented near-zero series) failed for the first time. Seth Lugo (MIN, 1.69 xERA over Morris) and PQI=+24.6 correctly signaled MIN conviction, but KC overcame with an 8-run offensive outburst. The +0.0092 gap is the closest to the 0.010 meaningful threshold in the documented series (all prior wins ranged from +0.0001 to +0.0074). This is partially variance — KC's 8 runs exceeded the model's 11.98 predicted total, and the high-run environment is an outlier. But it is also a preliminary signal that the near-zero safe zone may narrow: gaps near the 0.010 boundary (+0.008–0.010) may carry elevated risk compared to gaps below +0.005 (3W-0L in that sub-range). Process was sound per established rule; outcome is the first counterexample. Classify as borderline variance; do not adjust near-zero threshold yet but track gap gradient.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0092 (first failure in near-zero A-grade series, now 5W-1L) — KC wins 8-6; gap=+0.0092 is the largest in the series and closest to the 0.010 meaningful threshold; track sub-range gradient: gaps below +0.005 are 3W-0L; gaps +0.005–+0.010 are 2W-1L; do not raise HARD CAP 7 threshold yet."
+    },
+    "OAK @ CHC": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-7",
+      "headline": "CHC won 7-6 narrowly; Claude's DOWNGRADE was process-sound but missed a narrow directional winner driven by Imanaga's quality advantage.",
+      "hypothesis": "Process-sound DOWNGRADE that missed a directional WIN. confidence_downgrade=True combined with below-threshold F3 (731.6, below 1000 high-conviction threshold) and barely-confirming PQI (+4.7) and edge outside the valid staking band (+0.65pp) correctly triggered the DOWNGRADE. CHC won 7-6 in a narrow game consistent with genuine uncertainty — Imanaga's quality was real, but the combined signal weakness meant conviction was low. The narrow 7-6 margin validates the uncertainty: a more decisive win would suggest a process miss; this margin is consistent with a legitimately marginal pick. This is a process-sound miss, not a process failure. Variance. Open question: when Imanaga pitches and F3 > 600, does confidence_downgrade=True deserve a partial override at the tier level?",
+      "signals_to_recheck": "confidence_downgrade_True + F3_swing_take_gap (731.6, below 1000 threshold) + edge outside valid band (+0.65pp) — CHC wins 7-6 in a narrow game; DOWNGRADE was correct process; narrow margin is consistent with genuine uncertainty; note for future: Imanaga starts with F3 > 600 may warrant tracking as a sub-pattern even under confidence_downgrade."
+    },
+    "PIT @ HOU": {
+      "verdict": "NO_PICK",
+      "model_pick": "NO_PICK (PENDING_SP_DATA)",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-1",
+      "headline": "PIT won 5-1; PENDING_SP_DATA protocol correctly blocked directional commitment on Jared Jones' 77-pitch thin sample.",
+      "hypothesis": "Protocol win. Jared Jones' 77 Statcast pitches (below the 100-pitch minimum) correctly triggered the hard stop. PIT won 5-1, but the outcome is irrelevant to process quality — Jones' sample was genuinely unscoreable, and any directional pick would have carried unknown edge. The 5-1 result is consistent with high variance in thin-SP games and does not create any directional learning. Archive validates this protocol across 5/26, 5/29, 6/1, 6/2, 6/3. The 100-pitch threshold remains appropriate.",
+      "signals_to_recheck": "thin_sp_data (Jared Jones, 77 Statcast pitches, below 100 threshold) — PIT wins 5-1; PENDING_SP_DATA protocol correct; thin-SP games continue to produce high-variance outcomes that are not reliably scoreable; protocol validated."
+    },
+    "LAD @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "ARI won 3-2; D-grade SKIP confirmed correctly; directional win on calibration_caution_18_25pp stress pick was narrow and consistent with inflated claimed edge.",
+      "hypothesis": "Directional win on a correctly SKIP-tiered pick. ARI won 3-2 in a narrow game — consistent with the calibration_caution_18_25pp stress flag (edge=+20.57pp is likely a calibration artifact in the upper bucket where the model's sparse data inflates edges). The model's D-grade (dual-signal against: Wrobleski xERA edge over Nelson, PQI=-21.8 against ARI) signals were real but ARI won anyway, adding to the 2-2 D-grade directional record from 6/3 (directionally uninformative, not anti-directional). The narrow 3-2 margin vs the claimed +20pp edge confirms the edge is significantly inflated. SKIP was correct; the near-4th-consecutive LAD win streak in ARI (7-0 on 6/3, 6-5 on 6/2) ended without a stake.",
+      "signals_to_recheck": "calibration_caution_18_25pp (edge=+20.57pp) + D-grade dual-signal-against — ARI wins 3-2 narrowly despite model claiming +20pp edge; extreme claimed edges in the upper calibration bucket are inflated (narrow margin confirms); SKIP was correct; D-grade remains directionally uninformative, not anti-directional."
+    }
+  },
+  "patterns_observed": [
+    "CRITICAL — HARD CAP 1 must not be overridden by Claude Brain tier upgrades: TOR@ATL was upgraded from B- to GOLD despite CAP 1 firing at -4.02pp negative edge; ATL lost 7-2 in a blowout. Market authority is non-negotiable at any negative edge value — when HARD CAP 1 fires, Claude must CONFIRM the direction at the post-cap grade without upgrading; upgrading above the post-cap grade manufactures false conviction by ignoring market information that the model lacks. Rule: HARD CAP 1 demotions are permanent through the grade chain; CONFIRM direction, never tier.",
+    "Near-zero HARD CAP 7 A-grade override series: first loss on 6/4 (KC@MIN gap=+0.0092, now 5W-1L across 6/2–6/4). Sub-range tracking: gaps below +0.005 are 3W-0L (CIN +0.0019, STL +0.0010, BAL +0.0021); gaps +0.005 to +0.010 are 2W-1L (ATL +0.0074 WIN, ATL +0.0049 WIN, MIN +0.0092 LOSS). Actionable: continue treating |gap| < 0.010 as effectively neutral on pre-cap score >= 4 with multi-signal confirmation, but flag gaps in the +0.008–+0.010 sub-range for extra scrutiny until 30-pick threshold is reached.",
+    "Carry-thesis failure with near-zero bullpen gap and large f5_full_delta is 0-for-3 on this structure (MIA@WSH 6/1 gap=-0.0109 LOSS, MIA@WSH 6/3 gap=-0.0121 LOSS, SF@MIL 6/4 gap=-0.0018 12-9 LOSS): when |hl_bullpen_xwoba_gap| < 0.020 AND f5_full_delta >= 0.15, the pen cannot reliably bridge the F5 deficit regardless of full_prob, PQI, or F3 strength. Actionable rule: apply a mandatory one-tier DOWNGRADE on any pick where both conditions hold simultaneously; do not CONFIRM at original tier.",
+    "BvP OWNER cluster in top-3 batting order continued to validate as the strongest same-day confirming signal: PHI (1 OWNER: Schwarber vs Giolito) won 6-4; BAL (3 OWNERs: Ward/Henderson/Rutschman vs Bello) won 8-2 in a blowout. Both were CAP 10-rescued CONFIRM picks; both won. Running 6/2–6/4 record for OWNER-cluster-supported CONFIRM picks: strong across all slates. Rule remains active: when top-3 batting order contains 2+ OWNER-status BvP matchups vs today's opposing SP, treat as a primary confirming signal sufficient to rescue HARD CAP 10 on pre-cap score >= 3 picks with at least one additional signal (F1/F3/PQI) confirming."
+  ]
+}

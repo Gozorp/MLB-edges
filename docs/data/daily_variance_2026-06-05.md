@@ -1,19 +1,28 @@
 # Daily Variance Report — 2026-06-05
-_Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
+_Generated 2026-06-05T19:35:11Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list retroactive to June 2, 2026. Right knee inflammation.
 - **SF** [recalled] — San Francisco Giants recalled RHP Dylan Smith from Sacramento River Cats.
 - **SF** [outrighted] — San Francisco Giants sent C Logan Porter outright to Sacramento River Cats.
+- **SF** [optioned] — San Francisco Giants optioned RHP Wilkin Ramos to Sacramento River Cats.
+- **SF** [recalled] — San Francisco Giants recalled RHP Carson Seymour from Sacramento River Cats.
+- **CHC** [IL] — Chicago Cubs activated RHP Edward Cabrera from the 15-day injured list.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
 - **SEA** [signed] — Seattle Mariners signed free agent LHP Caleb Franzen to a minor league contract.
+- **SEA** [signed] — Seattle Mariners signed free agent SS Magz German to a minor league contract.
+- **CWS** [signed] — Chicago White Sox signed free agent RHP Jose Taveras to a minor league contract.
 - **CWS** [activated] — Chicago White Sox activated LHP Tyler Gilbert.
 - **CWS** [optioned] — Chicago White Sox optioned LHP Chris Murphy to Charlotte Knights.
-- **BOS** [IL] — Boston Red Sox placed 3B Nick Sogard on the 10-day injured list retroactive to May 31, 2026. Right oblique strain.
 - **BOS** [signed] — Boston Red Sox signed free agent LHP Victor Aracena to a minor league contract.
+- **BOS** [IL] — Boston Red Sox placed 3B Nick Sogard on the 10-day injured list retroactive to May 31, 2026. Right oblique strain.
 - **BOS** [recalled] — Boston Red Sox recalled 2B Anthony Seigler from Worcester Red Sox.
 - **BOS** [IL] — Boston Red Sox transferred SS Trevor Story from the 10-day injured list to the 60-day injured list. Sports hernia.
-- **BOS** [selected] — Boston Red Sox selected the contract of RHP Tommy Kahnle from Worcester Red Sox.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Tyler Samaniego to Worcester Red Sox.
+- **BOS** [TRADE] — Pittsburgh Pirates traded LHP Joe La Sorsa to Boston Red Sox.
+- **BOS** [selected] — Boston Red Sox selected the contract of RHP Tommy Kahnle from Worcester Red Sox.
+- **NYY** [IL] — New York Yankees placed RF Aaron Judge on the 10-day injured list retroactive to June 2, 2026. Right rib stress fracture.
+- **NYY** [recalled] — New York Yankees recalled RF Spencer Jones from Scranton/Wilkes-Barre RailRiders.
 - **BAL** [DFA] — Baltimore Orioles designated RHP Eduarniel Núñez for assignment.
 - **BAL** [TRADE] — Cincinnati Reds traded RHP Kyle Nicolas to Baltimore Orioles for cash.
 - **BAL** [optioned] — Baltimore Orioles optioned RHP Kyle Nicolas to Norfolk Tides.
@@ -23,9 +32,12 @@ _Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
 - **TOR** [activated] — Toronto Blue Jays activated RHP Chad Dallas.
 - **TOR** [selected] — Toronto Blue Jays selected the contract of RHP Chad Dallas from Buffalo Bisons.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Hayden Juenger to Buffalo Bisons.
+- **TOR** [activated] — Toronto Blue Jays activated RHP Simeon Woods Richardson.
+- **TOR** [optioned] — Toronto Blue Jays optioned RHP Chad Dallas to Buffalo Bisons.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Trevor Martin to Durham Bulls.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Mason Englert from Durham Bulls.
 - **MIA** [returned] — RHP Matt Pushard returned to Miami Marlins from St. Louis Cardinals.
+- **PIT** [TRADE] — Pittsburgh Pirates traded LHP Joe La Sorsa to Boston Red Sox.
 - **ATL** [TRADE] — Los Angeles Angels traded C Austin Wynns to Atlanta Braves for cash.
 - **ATL** [DFA] — Atlanta Braves designated C Chadwick Tromp for assignment.
 - **ATL** [IL] — Atlanta Braves transferred C Sean Murphy from the 10-day injured list to the 60-day injured list. Fractured left middle finger.
@@ -33,9 +45,10 @@ _Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
 - **ATL** [optioned] — Atlanta Braves optioned CF DaShawn Keirsey Jr. to Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of CF DaShawn Keirsey Jr. from Gwinnett Stripers.
 - **HOU** [DFA] — Houston Astros designated C César Salazar for assignment.
-- **HOU** [DFA] — Houston Astros designated LF Rhylan Thomas for assignment.
 - **HOU** [IL] — Houston Astros activated LF Joey Loperfido from the 10-day injured list.
+- **HOU** [signed] — Houston Astros signed free agent RHP Dennisom Carrera to a minor league contract.
 - **HOU** [signed] — Houston Astros signed free agent 1B LaMonte Wade Jr..
+- **HOU** [DFA] — Houston Astros designated LF Rhylan Thomas for assignment.
 - **HOU** [optioned] — Houston Astros optioned LF Joey Loperfido to Sugar Land Space Cowboys.
 - **HOU** [optioned] — Houston Astros optioned LF Zach Cole to Sugar Land Space Cowboys.
 - **HOU** [selected] — Houston Astros selected the contract of C Collin Price from Sugar Land Space Cowboys.
@@ -47,24 +60,30 @@ _Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
 - **CIN** [outrighted] — Cincinnati Reds sent LHP Brandon Leibrandt outright to Louisville Bats.
 - **CIN** [outrighted] — Cincinnati Reds sent RHP Lyon Richardson outright to Louisville Bats.
 - **STL** [returned] — RHP Matt Pushard returned to Miami Marlins from St. Louis Cardinals.
-- **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 10-day injured list.
 - **TEX** [signed] — Texas Rangers signed free agent RHP Josh Sborz to a minor league contract.
+- **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 10-day injured list.
 - **TEX** [optioned] — Texas Rangers optioned 3B Cody Freeman to Round Rock Express.
 - **TEX** [optioned] — Texas Rangers optioned LF Alejandro Osuna to Round Rock Express.
+- **TEX** [signed] — Texas Rangers signed free agent LHP Kevin Colmenares to a minor league contract.
+- **TEX** [signed] — Texas Rangers signed free agent RHP Masahiro Fukuda to a minor league contract.
 - **KC** [signed] — Kansas City Royals signed free agent IF Juan Batista to a minor league contract.
 - **KC** [IL] — Kansas City Royals transferred 2B Jonathan India from the 10-day injured list to the 60-day injured list. Left shoulder subluxation.
 - **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
 - **KC** [selected] — Kansas City Royals selected the contract of 3B Josh Rojas from Omaha Storm Chasers.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Hunter Gregory to a minor league contract.
 - **MIN** [TRADE] — Minnesota Twins traded RHP Simeon Woods Richardson to Toronto Blue Jays for cash.
-- **MIN** [signed] — Minnesota Twins signed free agent RHP Austin Voth to a minor league contract.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Jake Covey to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Austin Voth to a minor league contract.
 - **MIL** [IL] — Milwaukee Brewers placed LHP Rob Zastryzny on the 15-day injured list retroactive to May 31, 2026. Left trapezius strain.
 - **MIL** [recalled] — Milwaukee Brewers recalled LHP Robert Gasser from Nashville Sounds.
+- **WSH** [signed] — Washington Nationals signed free agent RHP Sam Brodersen to a minor league contract.
+- **WSH** [signed] — Washington Nationals signed free agent RHP Darling Reyes to a minor league contract.
+- **WSH** [signed] — Washington Nationals signed free agent RHP Ike Buxton to a minor league contract.
+- **AZ** [signed] — Arizona Diamondbacks signed free agent RHP Hector Ozuna to a minor league contract.
 - **AZ** [status] — RHP Taylor Clarke roster status changed by Arizona Diamondbacks.
-- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Brandon Pfaadt to Reno Aces.
-- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Kade Strowd from Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Brandon Pfaadt to Reno Aces.
 - **NYM** [optioned] — New York Mets optioned RHP Jonah Tong to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Joey Gerber from Syracuse Mets.
 - **SD** [DFA] — San Diego Padres designated RF Nick Castellanos for assignment.
@@ -76,7 +95,10 @@ _Generated 2026-06-05T07:05:21Z · 15 games · significant deviations only_
 - **LAA** [optioned] — Los Angeles Angels optioned LHP Sam Aldegheri to Salt Lake Bees.
 - **LAA** [TRADE] — Los Angeles Angels traded C Austin Wynns to Atlanta Braves for cash.
 
-_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+## 1b · Unrecognized codes (review — kept, never dropped)
+- **MIN** code=OBT — Minnesota Twins obtain RHP Halton Hardy from Gastonia Ghost Peppers.
+
+_Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **BOS @ NYY** (home SP Ryan Weathers): very high K% (29.1% vs lg 22.0)
