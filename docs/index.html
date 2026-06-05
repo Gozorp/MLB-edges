@@ -3898,7 +3898,7 @@ function _gpTeamTable(bats, facingSP, label){
     var vsSP = (pa > 0) ? b.vs_today_SP_OPS : null;
     rows += '<tr>' +
       '<td class="gp-ord">' + (b.order != null ? b.order : "") + '</td>' +
-      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") +
+      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") + _skPlayerChip(b.name) +
         '<small>' + (b.bat_side || "") + '</small></td>' +
       _gpOps(b.vs_LHP_OPS_career) +
       _gpOps(b.vs_RHP_OPS_career) +
@@ -5928,6 +5928,66 @@ function _oddsBlankReason(status) {
   return "No market data available for this game.";
 }
 
+// ===== Hot/Cold streak chips (read-only display) ============================
+// Source sidecar: docs/data/streaks_<date>.json (tools/streak_indicator.py).
+// Teams keyed by abbrev, players by name. 7d + 14d thermometer segments;
+// INSUFF/absent data -> no segment. Never affects the model or the pick.
+function _skMeta(b){
+  switch(b){
+    case "HOT":     return {c:"#ff6b3b", g:"▲▲"};
+    case "WARM":    return {c:"#e8924a", g:"▲"};
+    case "NEUTRAL": return {c:"#7d8590", g:"="};
+    case "COOL":    return {c:"#5aa9e6", g:"▼"};
+    case "COLD":    return {c:"#3b82f6", g:"▼▼"};
+    default:        return null;
+  }
+}
+function _skAlias(a){ var M={AZ:"ARI",ARI:"AZ",ATH:"OAK",OAK:"ATH"}; return M[a]||null; }
+function _skSeg(winLabel, rec){
+  if (!rec) return "";
+  var m = _skMeta(rec.bucket);
+  if (!m) return "";
+  return '<span style="color:'+m.c+';font-weight:600;">'+winLabel+m.g+'</span>';
+}
+function _skTeam(ab){
+  var S = window.__streaks;
+  if (!S || !S.teams || !ab) return null;
+  return S.teams[ab] || (_skAlias(ab) ? S.teams[_skAlias(ab)] : null);
+}
+function _skTeamChip(ab){
+  var t = _skTeam(ab);
+  if (!t) return "";
+  var d7 = t["7d"]||{}, d14 = t["14d"]||{};
+  var s7 = _skSeg("7", d7), s14 = _skSeg("14", d14);
+  if (!s7 && !s14) return "";
+  var f = function(v){ if (v==null) return "—"; return (typeof v==="number") ? (v>=0?"+":"")+v.toFixed(2) : (""+v); };
+  var tip = ab+' streak  —  14d '+(d14.bucket||'n/a')
+    + (d14.H!=null ? ' (H '+f(d14.H)+', '+(d14.w||0)+'-'+(d14.l||0)+', capMargin '+f(d14.capped_margin)+')' : '')
+    + '   ·   7d '+(d7.bucket||'n/a')
+    + (d7.H!=null ? ' (H '+f(d7.H)+', '+(d7.w||0)+'-'+(d7.l||0)+')' : '');
+  return '<span title="'+tip.replace(/"/g,'&quot;')+'" style="display:inline-flex;gap:4px;margin-left:6px;padding:0 5px;border:1px solid var(--border);border-radius:3px;font-size:.72rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:nowrap;vertical-align:middle;"><span style="opacity:.55;">'+ab+'</span>'+s7+s14+'</span>';
+}
+function _skTeamChips(matchupKey){
+  if (!matchupKey || !window.__streaks) return "";
+  var m = (""+matchupKey).match(/^\s*([A-Za-z]{2,4})\s*@\s*([A-Za-z]{2,4})/);
+  if (!m) return "";
+  return _skTeamChip(m[1]) + _skTeamChip(m[2]);
+}
+function _skPlayerChip(name){
+  var S = window.__streaks;
+  if (!S || !S.players || !name) return "";
+  var p = S.players[name] || S.players[(""+name).trim()];
+  if (!p) return "";
+  var d7 = p["7d"]||{}, d14 = p["14d"]||{};
+  var s7 = _skSeg("7", d7), s14 = _skSeg("14", d14);
+  if (!s7 && !s14) return "";
+  var tip = name+' form  —  14d '+(d14.bucket||'n/a')
+    + (d14.ops!=null ? ' (OPS '+d14.ops+', '+(d14.pa||0)+' PA)' : '')
+    + '   ·   7d '+(d7.bucket||'n/a')
+    + (d7.ops!=null ? ' (OPS '+d7.ops+', '+(d7.pa||0)+' PA)' : '');
+  return '<span title="'+tip.replace(/"/g,'&quot;')+'" style="margin-left:5px;font-size:.66rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:nowrap;">'+s7+s14+'</span>';
+}
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -5946,7 +6006,7 @@ function renderSlate(rows, gradeMap, results) {
     <table>
       <thead><tr>
         <th></th>
-        <th title="Away team @ Home team. (G2 of 3) = game 2 of a 3-game series.">Matchup</th>
+        <th title="Away team @ Home team. (G2 of 3) = game 2 of a 3-game series.  Chips show per-team 7d/14d hot-cold streak (hover for detail).">Matchup</th>
         <th title="Team the model favors to win, with its win probability for that team.">Pick</th>
         <th class="col-f5" title="First-5-innings win probability. Reflects starting pitchers vs each other before bullpens.">F5</th>
         <th title="Full-game win probability — the model's headline number combining SP + bullpen + late-leverage signals.">Full</th>
@@ -6138,7 +6198,7 @@ function renderSlate(rows, gradeMap, results) {
     const colspan = haveAnyResult ? 13 : 12;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
-      <td><strong>${matchupKey || "—"}</strong></td>
+      <td><strong>${matchupKey || "—"}</strong>${_skTeamChips(matchupKey)}</td>
       <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
@@ -6790,11 +6850,14 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
       fetch(`./data/series_meta_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      fetch(`./data/streaks_${date}.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
@@ -6805,6 +6868,8 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__seriesMeta = (smR.status === "fulfilled" && smR.value
                            && smR.value.schema_version === 1)
                           ? smR.value : null;
+    // Hot/cold streak sidecar (read-only display; tools/streak_indicator.py).
+    window.__streaks = (stkR.status === "fulfilled" && stkR.value) ? stkR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
