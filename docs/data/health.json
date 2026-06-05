@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "checked_at": "2026-06-04T23:16:35.237239+00:00",
+  "checked_at": "2026-06-05T01:38:48.280513+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
-    "data_flow": "green",
+    "data_flow": "red",
     "deployment": "green",
     "model": "yellow"
   },
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "red",
-      "message": "daily-slate hasn't run in 26.9h (threshold 24h)",
+      "message": "daily-slate hasn't run in 29.3h (threshold 24h)",
       "detail": {
         "last_run_iso": "2026-06-03T20:22:08Z",
-        "age_hours": 26.91
+        "age_hours": 29.28
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 4.6d ago",
+      "message": "last fired 4.7d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 111.49,
+        "age_hours": 113.86,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 4.6d ago",
+      "message": "last fired 4.7d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 111.06,
+        "age_hours": 113.43,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,49 +44,35 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 1.1d ago",
+      "message": "last fired 1.2d ago",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 26.1,
+        "age_hours": 28.47,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
     },
     {
       "name": "bullpen_meta_freshness",
-      "severity": "green",
-      "message": "written 0.0h ago",
+      "severity": "red",
+      "message": "bullpen_meta_2026-06-05.json missing",
       "detail": {
-        "path": "docs/data/bullpen_meta_2026-06-04.json",
-        "mtime_age_hours": 0.0
+        "expected_path": "docs/data/bullpen_meta_2026-06-05.json"
       },
       "category": "data_flow"
     },
     {
       "name": "kalshi_coverage_rate",
-      "severity": "green",
-      "message": "8/9 rows have market odds",
-      "detail": {
-        "total_rows": 9,
-        "ok_rows": 8,
-        "non_ok_pct": 11.1,
-        "status_distribution": {
-          "fetched_capped": 3,
-          "fetched": 5,
-          "pending_sp_data": 1
-        }
-      },
+      "severity": "red",
+      "message": "no picks_<today>_diag.csv found",
+      "detail": {},
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "green",
-      "message": "1/9 rows PENDING_SP_DATA",
-      "detail": {
-        "total_rows": 9,
-        "pending_sp_data_count": 1,
-        "pct_of_slate": 11.1
-      },
+      "severity": "yellow",
+      "message": "no picks CSV for today",
+      "detail": {},
       "category": "data_flow"
     },
     {
@@ -98,9 +84,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-04T23:16:35.462Z",
+          "timestamp": "2026-06-05T01:38:48.372Z",
           "commit": "unknown",
-          "region": "ORD"
+          "region": "IAD"
         }
       },
       "category": "deployment"
@@ -108,10 +94,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "yellow",
-      "message": "weights last learned 26.5h ago (expected ~daily)",
+      "message": "weights last learned 28.9h ago (expected ~daily)",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 26.52
+        "age_hours": 28.89
       },
       "category": "model"
     },
@@ -137,13 +123,9 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "green",
-      "message": "1/9 rows stress-warned",
-      "detail": {
-        "total_rows": 9,
-        "stress_warned_count": 1,
-        "pct_of_slate": 11.1
-      },
+      "severity": "yellow",
+      "message": "no picks CSV for today",
+      "detail": {},
       "category": "model"
     }
   ]
