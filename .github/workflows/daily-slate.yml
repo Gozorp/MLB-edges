@@ -181,6 +181,24 @@ jobs:
           print(f"manifest now has {len(dates)} dates")
           PY
 
+      - name: Build display sidecars (streaks / SP-HR / weather / variance)
+        # Read-only DISPLAY sidecars (hot-cold chips, HR-prone SP flags, wind/weather
+        # runs-tilt, daily variance). stdlib + statsapi/Open-Meteo only -- no extra pip
+        # deps. Each tool is fully try/excepted internally, and the `|| echo` makes the
+        # step non-fatal, so a sidecar failure can NEVER break the slate publish. They
+        # write docs/data/<sidecar>_<date>.json which the commit step below picks up.
+        run: |
+          SLATE=$(ls -t docs/data/picks_*_diag.csv picks_*_diag.csv 2>/dev/null | head -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
+          echo "display sidecars for slate: ${SLATE:-<none found>}"
+          if [ -n "$SLATE" ]; then
+            python tools/streak_indicator.py     "$SLATE" || echo "::warning::streak_indicator failed (non-fatal)"
+            python tools/sp_hr_recency.py        "$SLATE" || echo "::warning::sp_hr_recency failed (non-fatal)"
+            python tools/weather_runs.py         "$SLATE" || echo "::warning::weather_runs failed (non-fatal)"
+            python tools/daily_variance_report.py "$SLATE" || echo "::warning::daily_variance_report failed (non-fatal)"
+          else
+            echo "::warning::no slate diag found; skipping display sidecars"
+          fi
+
       - name: Commit + push slate output and baked data in one shot
         run: |
           git config user.name  "github-actions[bot]"
