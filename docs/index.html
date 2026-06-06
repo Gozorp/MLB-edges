@@ -6015,6 +6015,35 @@ function _skPlayerChip(name){
   return '<span title="'+tip.replace(/"/g,'&quot;')+'" style="margin-left:5px;font-size:.66rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:nowrap;">'+s7+s14+'</span>';
 }
 
+// ===== Weather/wind runs-tilt badge (read-only display; weather_runs_<date>.json) =====
+// Wind blowing OUT to CF -> more runs; IN toward home -> fewer; rain/storm -> fewer.
+// Source: tools/weather_runs.py (Open-Meteo at first pitch). Never affects the model.
+function _wxRuns(matchupKey){
+  var W = window.__weatherRuns;
+  if (!W || !W.games || !matchupKey) return null;
+  var bare = (""+matchupKey).replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return W.games[bare] || null;
+}
+function _wxBadge(matchupKey){
+  var r = _wxRuns(matchupKey);
+  if (!r || !r.badge || r.badge === "NEUTRAL") return "";
+  var M = {
+    "OUT":   {c:"#ff8c42", t:"WIND↑"},
+    "IN":    {c:"#5aa9e6", t:"WIND↓"},
+    "WET":   {c:"#9aa0ff", t:"WET↓"},
+    "WET?":  {c:"#9aa0ff", t:"WET?↓"},
+    "INDOOR":{c:"#7d8590", t:"INDOOR"}
+  };
+  var m = M[r.badge];
+  if (!m) return "";
+  var ew = (r.eff_wind != null) ? ("  (eff wind " + (r.eff_wind>0?"+":"") + r.eff_wind + " mph)") : "";
+  var tip = (r.stadium ? r.stadium + " — " : "") + (r.why || r.badge) + ew;
+  return '<span title="' + (""+tip).replace(/"/g,"&quot;") + '" style="margin-left:6px;padding:0 5px;border:1px solid '
+    + m.c + ';border-radius:3px;color:' + m.c + ';font-size:.62rem;font-weight:700;letter-spacing:.2px;white-space:nowrap;vertical-align:middle;">'
+    + m.t + '</span>';
+}
+
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -6225,7 +6254,7 @@ function renderSlate(rows, gradeMap, results) {
     const colspan = haveAnyResult ? 13 : 12;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
-      <td><strong>${matchupKey || "—"}</strong>${_skTeamChips(matchupKey)}</td>
+      <td><strong>${matchupKey || "—"}</strong>${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
       <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
@@ -6877,7 +6906,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -6888,6 +6917,9 @@ async function loadSlate(date, { bust = false } = {}) {
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
       fetch(`./data/sp_hr_recent_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      fetch(`./data/weather_runs_${date}.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
@@ -6902,6 +6934,8 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__streaks = (stkR.status === "fulfilled" && stkR.value) ? stkR.value : null;
     // SP HR-prone recency sidecar (read-only display; tools/sp_hr_recency.py).
     window.__spHR = (sphrR.status === "fulfilled" && sphrR.value) ? sphrR.value : null;
+    // Weather/wind runs-tilt sidecar (read-only display; tools/weather_runs.py).
+    window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
