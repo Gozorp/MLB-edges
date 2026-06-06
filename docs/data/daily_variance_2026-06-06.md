@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-06
-_Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
+_Generated 2026-06-06T19:36:31Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **SEA** [signed] — Seattle Mariners signed free agent LHP Caleb Franzen to a minor league contract.
@@ -8,11 +8,13 @@ _Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
 - **KC** [IL] — Kansas City Royals transferred 2B Jonathan India from the 10-day injured list to the 60-day injured list. Left shoulder subluxation.
 - **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
 - **KC** [selected] — Kansas City Royals selected the contract of 3B Josh Rojas from Omaha Storm Chasers.
-- **MIN** [signed] — Minnesota Twins signed free agent RHP Jake Covey to a minor league contract.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Austin Voth to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Jake Covey to a minor league contract.
+- **MIN** [DFA] — Minnesota Twins designated CF James Outman for assignment.
+- **MIN** [recalled] — Minnesota Twins recalled 3B Royce Lewis from St. Paul Saints.
+- **CIN** [outrighted] — Cincinnati Reds sent RHP Lyon Richardson outright to Louisville Bats.
 - **CIN** [TRADE] — Cincinnati Reds traded RHP Kyle Nicolas to Baltimore Orioles for cash.
 - **CIN** [outrighted] — Cincinnati Reds sent LHP Brandon Leibrandt outright to Louisville Bats.
-- **CIN** [outrighted] — Cincinnati Reds sent RHP Lyon Richardson outright to Louisville Bats.
 - **STL** [IL] — St. Louis Cardinals placed RHP Ryan Fernandez on the 15-day injured list retroactive to June 3, 2026. Low back pain.
 - **STL** [IL] — St. Louis Cardinals activated LF Lars Nootbaar from the 60-day injured list.
 - **STL** [optioned] — St. Louis Cardinals optioned LF Thomas Saggese to Memphis Redbirds.
@@ -22,28 +24,39 @@ _Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
 - **SF** [recalled] — San Francisco Giants recalled RHP Carson Seymour from Sacramento River Cats.
 - **CHC** [IL] — Chicago Cubs activated RHP Edward Cabrera from the 15-day injured list.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
+- **CHC** [recalled] — Chicago Cubs recalled RHP Javier Assad from Iowa Cubs.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Ethan Roberts to Iowa Cubs.
 - **BAL** [DFA] — Baltimore Orioles designated RHP Eduarniel Núñez for assignment.
 - **BAL** [TRADE] — Cincinnati Reds traded RHP Kyle Nicolas to Baltimore Orioles for cash.
 - **BAL** [optioned] — Baltimore Orioles optioned RHP Kyle Nicolas to Norfolk Tides.
+- **BAL** [DFA] — Baltimore Orioles designated 3B Weston Wilson for assignment.
+- **BAL** [selected] — Baltimore Orioles selected the contract of C Sam Huff from Norfolk Tides.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Tanner Andrews for assignment.
 - **TOR** [activated] — Toronto Blue Jays activated RHP Chad Dallas.
-- **TOR** [optioned] — Toronto Blue Jays optioned RHP Hayden Juenger to Buffalo Bisons.
 - **TOR** [selected] — Toronto Blue Jays selected the contract of RHP Chad Dallas from Buffalo Bisons.
-- **TOR** [signed] — Toronto Blue Jays signed free agent SS Beau Philip to a minor league contract.
+- **TOR** [optioned] — Toronto Blue Jays optioned RHP Hayden Juenger to Buffalo Bisons.
 - **TOR** [activated] — Toronto Blue Jays activated RHP Simeon Woods Richardson.
+- **TOR** [signed] — Toronto Blue Jays signed free agent SS Beau Philip to a minor league contract.
+- **TOR** [signed] — Toronto Blue Jays signed free agent RHP Carlos Pena to a minor league contract.
+- **TOR** [signed] — Toronto Blue Jays signed free agent RHP Johan Figuera to a minor league contract.
+- **TOR** [signed] — Toronto Blue Jays signed free agent RHP Alexander Garcia to a minor league contract.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Chad Dallas to Buffalo Bisons.
 - **CWS** [signed] — Chicago White Sox signed free agent RHP Jose Taveras to a minor league contract.
 - **CWS** [activated] — Chicago White Sox activated LHP Tyler Gilbert.
 - **CWS** [optioned] — Chicago White Sox optioned LHP Chris Murphy to Charlotte Knights.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Bryse Wilson to a minor league contract.
+- **PHI** [outrighted] — Philadelphia Phillies sent RHP Zach Pop outright to Lehigh Valley IronPigs.
 - **WSH** [signed] — Washington Nationals signed free agent RHP Ike Buxton to a minor league contract.
 - **AZ** [status] — RHP Taylor Clarke roster status changed by Arizona Diamondbacks.
-- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Brandon Pfaadt to Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Kade Strowd from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Brandon Pfaadt to Reno Aces.
+- **AZ** [signed] — Arizona Diamondbacks signed free agent RHP Greudis De Los Santos to a minor league contract.
 - **AZ** [DFA] — Arizona Diamondbacks designated RHP Taylor Rashi for assignment.
-- **AZ** [optioned] — Arizona Diamondbacks optioned DH Jose Fernandez to Reno Aces.
 - **AZ** [selected] — Arizona Diamondbacks selected the contract of 3B LuJames Groover from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned DH Jose Fernandez to Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Drey Jameson from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Kade Strowd to Reno Aces.
 - **ATH** [DFA] — Athletics designated RHP Joel Kuhnel for assignment.
 - **ATH** [recalled] — Athletics recalled RHP Elvis Alvarado from Las Vegas Aviators.
 - **HOU** [signed] — Houston Astros signed free agent RHP Dennisom Carrera to a minor league contract.
@@ -57,12 +70,14 @@ _Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
 - **HOU** [released] — Houston Astros released LF Rhylan Thomas.
 - **HOU** [IL] — Houston Astros activated 2B Jose Altuve from the 10-day injured list.
 - **HOU** [optioned] — Houston Astros optioned LF Zach Dezenzo to Sugar Land Space Cowboys.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent LHP Cristhian Tortosa to a minor league contract.
 - **PIT** [TRADE] — Pittsburgh Pirates traded LHP Joe La Sorsa to Boston Red Sox.
 - **ATL** [DFA] — Atlanta Braves designated C Chadwick Tromp for assignment.
 - **ATL** [IL] — Atlanta Braves transferred C Sean Murphy from the 10-day injured list to the 60-day injured list. Fractured left middle finger.
 - **ATL** [selected] — Atlanta Braves selected the contract of C Austin Wynns from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned CF DaShawn Keirsey Jr. to Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of CF DaShawn Keirsey Jr. from Gwinnett Stripers.
+- **MIA** [signed] — Miami Marlins signed free agent RHP Richard Jimenez to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent RHP Josh Sborz to a minor league contract.
 - **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 10-day injured list.
 - **TEX** [optioned] — Texas Rangers optioned 3B Cody Freeman to Round Rock Express.
@@ -81,6 +96,7 @@ _Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
 - **NYY** [IL] — New York Yankees placed RF Aaron Judge on the 10-day injured list retroactive to June 2, 2026. Right rib stress fracture.
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [recalled] — New York Yankees recalled RF Spencer Jones from Scranton/Wilkes-Barre RailRiders.
+- **NYY** [selected] — New York Yankees selected the contract of C Ali Sánchez from Scranton/Wilkes-Barre RailRiders.
 - **MIL** [DFA] — Milwaukee Brewers designated RHP Jake Woodford for assignment.
 - **MIL** [IL] — Milwaukee Brewers placed LHP DL Hall on the 15-day injured list. Left pectoral strain.
 - **MIL** [recalled] — Milwaukee Brewers recalled LHP Brian Fitzpatrick from Nashville Sounds.
@@ -98,11 +114,12 @@ _Generated 2026-06-06T07:04:44Z · 15 games · significant deviations only_
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **MIN** code=OBT — Minnesota Twins obtain RHP Halton Hardy from Gastonia Ghost Peppers.
+- **MIN** code=OBT — Minnesota Twins obtain RHP Zach Vennaro from High Point Rockers.
+- **CIN** code=OBT — Cincinnati Reds obtain 3B Julio Carreras from Lake Country DockHounds.
 
 _Suppressed 11 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **BAL @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **PIT @ ATL** (home SP Spencer Strider): very high K% (28.6% vs lg 22.0)
 - **CLE @ TEX** (home SP Jack Leiter): very high K% (28.1% vs lg 22.0)
 - **MIL @ COL** (home SP TBD): NOT CONFIRMED — probable SP not posted
@@ -139,6 +156,7 @@ _Suppressed 11 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> 
 - SF @ CHC — CHC faces RHP (Landen Roupp)
 - SF @ CHC — SF faces RHP (Ben Brown)
 - BAL @ TOR — TOR faces RHP (Kyle Bradish)
+- BAL @ TOR — BAL faces RHP (Braydon Fisher)
 - CWS @ PHI — PHI faces LHP (Brandon Eisert)
 - CWS @ PHI — CWS faces RHP (Andrew Painter)
 - WSH @ AZ — AZ faces RHP (Zack Littell)
