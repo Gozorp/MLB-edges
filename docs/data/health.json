@@ -1,21 +1,21 @@
 {
   "version": 2,
-  "checked_at": "2026-06-06T05:33:45.060567+00:00",
-  "overall": "red",
+  "checked_at": "2026-06-06T06:33:03.404873+00:00",
+  "overall": "yellow",
   "categories": {
     "workflows": "yellow",
     "data_flow": "green",
     "deployment": "green",
-    "model": "red"
+    "model": "frozen"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 8.2h ago",
+      "message": "last slate publish 9.2h ago",
       "detail": {
         "last_run_iso": "2026-06-05T14:20:40-07:00",
-        "age_hours": 8.22
+        "age_hours": 9.21
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 5.9d ago",
       "detail": {
         "last_run_iso": "2026-05-31T07:47:14Z",
-        "age_hours": 141.78,
+        "age_hours": 142.76,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -36,7 +36,7 @@
       "message": "last fired 5.9d ago",
       "detail": {
         "last_run_iso": "2026-05-31T08:12:47Z",
-        "age_hours": 141.35,
+        "age_hours": 142.34,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "yellow",
-      "message": "last fired 2.3 days ago (threshold 2d)",
+      "message": "last fired 2.4 days ago (threshold 2d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 56.39,
+        "age_hours": 57.37,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -55,10 +55,10 @@
     {
       "name": "bullpen_meta_freshness",
       "severity": "green",
-      "message": "written 0.0h ago",
+      "message": "written 11.0h ago",
       "detail": {
-        "path": "docs/data/bullpen_meta_2026-06-05.json",
-        "mtime_age_hours": 0.0
+        "path": "docs\\data\\bullpen_meta_2026-06-05.json",
+        "mtime_age_hours": 11.01
       },
       "category": "data_flow"
     },
@@ -97,20 +97,21 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-06T05:33:45.160Z",
+          "timestamp": "2026-06-06T06:33:04.622Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "SJC"
         }
       },
       "category": "deployment"
     },
     {
       "name": "weights_state_freshness",
-      "severity": "red",
-      "message": "weights last learned 56.8h ago (threshold 48h)",
+      "severity": "frozen",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 57.8h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 56.8
+        "age_hours": 57.79,
+        "frozen_until": "2026-07-20"
       },
       "category": "model"
     },
@@ -119,7 +120,7 @@
       "severity": "green",
       "message": "present (1.7 MB)",
       "detail": {
-        "path": "models/latest.pkl",
+        "path": "models\\latest.pkl",
         "size_bytes": 1779213
       },
       "category": "model"
