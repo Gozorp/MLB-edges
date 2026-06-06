@@ -39,6 +39,7 @@ HEALTH_JSON = REPO / "docs" / "data" / "health.json"
 ALERT_STATE_JSON = REPO / "docs" / "data" / "health_alert_state.json"
 AUDIT_LOG = REPO / "data" / "state" / "recalibration_log.jsonl"
 MODEL_FILE = REPO / "models" / "latest.pkl"
+WEIGHTS_FREEZE = REPO / "data" / "state" / "weights_freeze.json"
 
 DISCORD_WEBHOOK = os.environ.get("DISCORD_HEALTH_WEBHOOK", "").strip()
 
@@ -50,9 +51,10 @@ DAILY_DIGEST_HOUR_UTC = 8
 GREEN = "green"
 YELLOW = "yellow"
 RED = "red"
+FROZEN = "frozen"   # muted / non-escalating: an intentional freeze (e.g. --skip-weights travel freeze)
 
-EMOJI = {GREEN: "🟢", YELLOW: "🟡", RED: "🔴"}
-COLORS = {GREEN: 0x3FB950, YELLOW: 0xD29922, RED: 0xF85149}
+EMOJI = {GREEN: "🟢", YELLOW: "🟡", RED: "🔴", FROZEN: "🧊"}
+COLORS = {GREEN: 0x3FB950, YELLOW: 0xD29922, RED: 0xF85149, FROZEN: 0x58A6FF}
 
 # Schema version. Bumped 2026-05-26 when we added per-check `category`
 # fields and the top-level `categories` roll-up.
@@ -234,6 +236,30 @@ def check_daily_slate_heartbeat(now: datetime) -> Dict:
             "detail": detail}
 
 
+def _weights_freeze_active(now: datetime):
+    """(active, until) from data/state/weights_freeze.json. Active = frozen flag
+    set AND (no 'until' OR now <= until). Lets the intentional --skip-weights
+    travel freeze mute the staleness check instead of false-reddening the board;
+    auto-expires after 'until' so a forgotten marker can't permanently mask a
+    real self-learn failure."""
+    try:
+        if not WEIGHTS_FREEZE.exists():
+            return (False, None)
+        d = json.loads(WEIGHTS_FREEZE.read_text(encoding="utf-8"))
+        if not d.get("frozen"):
+            return (False, None)
+        until = d.get("until")
+        if until:
+            try:
+                if now.date() > datetime.fromisoformat(until).date():
+                    return (False, until)
+            except (TypeError, ValueError):
+                pass
+        return (True, until)
+    except (OSError, json.JSONDecodeError):
+        return (False, None)
+
+
 def check_weights_state_freshness(now: datetime) -> Dict:
     iso = _audit_log_last_ts_iso()
     name = "weights_state_freshness"
@@ -243,6 +269,14 @@ def check_weights_state_freshness(now: datetime) -> Dict:
                 "detail": {}}
     age = _age_hours(iso, now)
     detail = {"last_entry_iso": iso, "age_hours": round(age, 2)}
+    _frozen, _until = _weights_freeze_active(now)
+    if _frozen:
+        detail["frozen_until"] = _until
+        return {"name": name, "severity": FROZEN,
+                "message": ("weights intentionally FROZEN (--skip-weights travel freeze"
+                            + (", muted until %s" % _until if _until else "") + "); "
+                            + "last learned %.1fh ago" % age),
+                "detail": detail}
     if age > 48.0:
         return {"name": name, "severity": RED,
                 "message": f"weights last learned {age:.1f}h ago "
@@ -701,7 +735,7 @@ def main() -> int:
 
     # Per-category roll-up: max-severity within each category.
     category_severity: Dict[str, str] = {}
-    sev_rank = {GREEN: 0, YELLOW: 1, RED: 2}
+    sev_rank = {GREEN: 0, FROZEN: 1, YELLOW: 2, RED: 3}
     for r in results:
         cat = r["category"]
         cur = category_severity.get(cat, GREEN)

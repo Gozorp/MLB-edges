@@ -312,6 +312,7 @@
   #health-card .health-overall-pill.green  { background: rgba(63,185,80,0.18);  color: var(--green); }
   #health-card .health-overall-pill.yellow { background: rgba(210,153,34,0.18); color: var(--yellow); }
   #health-card .health-overall-pill.red    { background: rgba(248,81,73,0.20);  color: var(--red); }
+  #health-card .health-overall-pill.frozen { background: rgba(88,166,255,0.18); color: #58a6ff; }
   #health-card .health-checked-at {
     font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
     font-size: 0.72rem; color: var(--muted);
@@ -351,6 +352,7 @@
   #health-card .sev-dot.green  { background: var(--green); }
   #health-card .sev-dot.yellow { background: var(--yellow); }
   #health-card .sev-dot.red    { background: var(--red); }
+  #health-card .sev-dot.frozen { background: #58a6ff; }
   #health-card .health-check code { color: var(--text); }
   #health-card .health-card-loading {
     color: var(--muted); font-size: 0.85rem;
@@ -7407,9 +7409,11 @@ document.addEventListener("click", function (e) {
       const sev = (h.categories || {})[cat] || "green";
       const red = checks.filter(c => c.severity === "red").length;
       const yel = checks.filter(c => c.severity === "yellow").length;
+      const frz = checks.filter(c => c.severity === "frozen").length;
       const summary = red ? red + " critical, " + checks.length + " total"
                           : yel ? yel + " warning, " + checks.length + " total"
-                                : checks.length + "/" + checks.length + " healthy";
+                                : frz ? frz + " frozen, " + checks.length + " total"
+                                      : checks.length + "/" + checks.length + " healthy";
       const inner = checks.map(c => (
         '<div class="health-check"><span class="sev-dot ' + c.severity + '"></span>' +
         '<code>' + escapeHtml(c.name) + '</code> — ' + escapeHtml(c.message) +
