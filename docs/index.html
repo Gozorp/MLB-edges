@@ -1296,6 +1296,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
+      <div class="accordion-item" data-acc="team-tiers">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Team Power Tiers</span>
+          <span class="chev" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="team-tiers">Open to see all 30 teams tiered by season record &amp; run differential.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -5841,6 +5852,33 @@ async function _h2hFetchOutcome(date, away, home, gameNum) {
 }
 
 // Main render — fires after the slate paints; updates the H2H div async.
+function renderTeamTiers(){
+  const el = document.getElementById("team-tiers");
+  if (!el) return;
+  const D = window.__teamTiers;
+  if (!D || !D.tiers || !D.tier_order){ el.innerHTML = '<div class="h2h-empty">Team tiers unavailable.</div>'; return; }
+  const COLORS = {"Elite":"#56d364","Above Average":"#3fb6e6","Average":"#7d8590","Below Average":"#e8924a","Poor":"#f85149"};
+  let html = "";
+  for (const tier of D.tier_order){
+    const teams = D.tiers[tier] || [];
+    if (!teams.length) continue;
+    const color = COLORS[tier] || "#7d8590";
+    html += '<div class="h2h-matchup-block" style="border-left:3px solid '+color+'">'
+      + '<div class="h2h-matchup-header"><span style="color:'+color+'">'+tier+'</span><span class="h2h-matchup-summary">'+teams.length+' teams</span></div>';
+    for (const t of teams){
+      html += '<div style="display:flex;gap:10px;padding:3px 2px;font-size:12px;line-height:1.35;border-top:1px solid rgba(127,127,127,.12)">'
+        + '<b style="min-width:40px;color:'+color+'">'+t.abbr+'</b>'
+        + '<span style="min-width:150px">'+t.name+'</span>'
+        + '<span style="min-width:52px;opacity:.85">'+t.w+'-'+t.l+'</span>'
+        + '<span style="flex:1;opacity:.82">'+(t.rationale||'')+'</span></div>';
+    }
+    html += '</div>';
+  }
+  const asof = D.generated_utc ? (' \u00b7 as of '+D.generated_utc.slice(0,10)) : '';
+  el.innerHTML = (html || '<div class="h2h-empty">No tier data.</div>')
+    + '<div style="margin-top:6px;font-size:11px;opacity:.6">'+(D.basis||'')+asof+'</div>';
+}
+
 async function renderH2HHistory(todayRows) {
   const el = document.getElementById("h2h-history");
   if (!el) return;
@@ -6912,7 +6950,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, teamTiersR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -6926,6 +6964,9 @@ async function loadSlate(date, { bust = false } = {}) {
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
       fetch(`./data/weather_runs_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      fetch(`./data/team_tiers.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
@@ -6942,6 +6983,7 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__spHR = (sphrR.status === "fulfilled" && sphrR.value) ? sphrR.value : null;
     // Weather/wind runs-tilt sidecar (read-only display; tools/weather_runs.py).
     window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
+    window.__teamTiers = (teamTiersR.status === "fulfilled" && teamTiersR.value) ? teamTiersR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
@@ -7033,6 +7075,7 @@ async function loadSlate(date, { bust = false } = {}) {
     // client-side: scans up to 30 days of picks_*_diag.csv + MLB Stats
     // API for outcomes (localStorage cached).
     try { renderH2HHistory(playableRows); } catch (_) {}
+    try { renderTeamTiers(); } catch (_) {}
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
