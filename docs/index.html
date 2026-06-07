@@ -5841,23 +5841,6 @@ async function _h2hFetchOutcome(date, away, home, gameNum) {
 }
 
 // Main render — fires after the slate paints; updates the H2H div async.
-function _theoTrackSummaryHTML(){
-  try{
-    var T=window.__theoTrack;
-    if(!T||!T.record||!T.n_games) return "";
-    var oc=T.overconfidence_pp;
-    var ocTxt=(oc>0?"+"+oc:""+oc)+"pp "+(oc>=0?"overconfident":"underconfident");
-    return '<div class="h2h-matchup-block" style="border-left:3px solid #a371f7">'
-      +'<div class="h2h-matchup-header"><span>&#9883; Theoretical-chances toy &mdash; track record</span>'
-      +'<span class="h2h-matchup-summary"><b>'+T.record.w+'-'+T.record.l+'</b> ('+Math.round(T.record.pct*100)+'%)</span></div>'
-      +'<div class="h2h-game-row"><span>since '+((T.window&&T.window.start)||"?")+'</span>'
-      +'<span>n='+T.n_games+'</span>'
-      +'<span>says '+Math.round(T.mean_pred*100)+'%</span>'
-      +'<span>wins '+Math.round(T.actual_hit*100)+'% ('+ocTxt+')</span>'
-      +'<span class="h2h-result-icon">'+(oc>0?'&uarr;':'&darr;')+'</span></div></div>';
-  }catch(_e){ return ""; }
-}
-
 async function renderH2HHistory(todayRows) {
   const el = document.getElementById("h2h-history");
   if (!el) return;
@@ -6929,7 +6912,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, theoR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -6943,9 +6926,6 @@ async function loadSlate(date, { bust = false } = {}) {
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
       fetch(`./data/weather_runs_${date}.json`, {cache: "no-store"})
-        .then(r => r.ok ? r.json() : null)
-        .catch(() => null),
-      fetch(`./data/theo_track.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
@@ -6962,7 +6942,6 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__spHR = (sphrR.status === "fulfilled" && sphrR.value) ? sphrR.value : null;
     // Weather/wind runs-tilt sidecar (read-only display; tools/weather_runs.py).
     window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
-    window.__theoTrack = (theoR.status === "fulfilled" && theoR.value) ? theoR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};

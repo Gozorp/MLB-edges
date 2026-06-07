@@ -196,7 +196,6 @@ jobs:
             python tools/weather_runs.py         "$SLATE" || echo "::warning::weather_runs failed (non-fatal)"
             python tools/daily_variance_report.py "$SLATE" || echo "::warning::daily_variance_report failed (non-fatal)"
             python tools/oos_ledger.py            "$SLATE" || echo "::warning::oos_ledger failed (non-fatal)"
-            python tools/theo_track.py                     || echo "::warning::theo_track failed (non-fatal)"
           else
             echo "::warning::no slate diag found; skipping display sidecars"
           fi
