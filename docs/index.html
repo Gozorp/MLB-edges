@@ -5913,6 +5913,11 @@ async function renderH2HHistory(todayRows) {
       return Object.assign({}, h, { _outcome: out });
     }));
 
+    let toyCorrect = 0, toyResolved = 0;
+    for (const _h of enriched){
+      if (!_h._outcome) continue;
+      try { const _tc = _theoChances(_h); const _tf = (_tc.home >= 0.5) ? _h.home : _h.away; if (_tf === _h._outcome.winner) toyCorrect++; toyResolved++; } catch(_e){}
+    }
     let correct = 0, resolved = 0;
     const rowsHtml = enriched.map(h => {
       const gnTag = h.gameNum > 1 ? ` G${h.gameNum}` : "";
@@ -5941,8 +5946,9 @@ async function renderH2HHistory(todayRows) {
     }).join("");
 
     const pct = resolved ? ` (${(100 * correct / resolved).toFixed(0)}%)` : "";
+    const toyPct = toyResolved ? ` (${(100 * toyCorrect / toyResolved).toFixed(0)}%)` : "";
     const summary = resolved
-      ? `Model: ${correct}/${resolved}${pct}`
+      ? `Model: ${correct}/${resolved}${pct} &middot; &#9883; Toy: ${toyCorrect}/${toyResolved}${toyPct}`
       : "All games still in progress";
     blocks.push(
       `<div class="h2h-matchup-block">` +
@@ -5955,8 +5961,8 @@ async function renderH2HHistory(todayRows) {
     );
   }
 
-  el.innerHTML = _theoTrackSummaryHTML() + (blocks.join("") ||
-    `<div class="h2h-empty">No matchups found on today's slate.</div>`);
+  el.innerHTML = blocks.join("") ||
+    `<div class="h2h-empty">No matchups found on today's slate.</div>`;
 }
 
 // Map a row's odds_status to a short human-readable reason for why
