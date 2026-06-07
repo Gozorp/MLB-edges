@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-07
-_Generated 2026-06-07T03:31:05Z · 15 games · significant deviations only_
+_Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [outrighted] — Atlanta Braves sent C Chadwick Tromp outright to Gwinnett Stripers.
@@ -97,7 +97,6 @@ _Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> 
 ## 2 · Starting Pitcher Flags
 - **CIN @ STL** (home SP Michael McGreevy): very low K% (14.4% vs lg 22.0)
 - **CLE @ TEX** (home SP Jacob deGrom): very high K% (29.0% vs lg 22.0)
-- **NYM @ SD** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **ATL** Raisel Iglesias — 2 apps / 39 pitches over last 3 games — monitor
@@ -107,6 +106,11 @@ _Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> 
 - **TOR** Spencer Miles — threw 73 pitches last night — likely unavailable
 - **ATH** Elvis Alvarado — threw 44 pitches last night — likely unavailable
 - **KC** Alex Lange — 2 apps / 48 pitches over last 3 games — monitor
+- **MIL** Grant Anderson — 2 apps / 49 pitches over last 3 games — monitor
+- **COL** Juan Mejia — 2 apps / 41 pitches over last 3 games — monitor
+- **COL** Blas Castaño — threw 46 pitches last night — likely unavailable
+- **LAA** Brent Suter — threw 55 pitches last night — likely unavailable
+- **SD** Adrian Morejon — 2 apps / 41 pitches over last 3 games — monitor
 - **CHC** Ryan Rolison — 2 apps / 43 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
@@ -136,6 +140,7 @@ _Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> 
 - WSH @ AZ — WSH faces RHP (Michael Soroka)
 - LAA @ LAD — LAD faces RHP (José Soriano)
 - LAA @ LAD — LAA faces RHP (Emmet Sheehan)
+- NYM @ SD — SD faces RHP (Huascar Brazobán)
 - NYM @ SD — NYM faces RHP (Randy Vásquez)
 - SF @ CHC — CHC faces RHP (Trevor McDonald)
 - SF @ CHC — SF faces RHP (Jameson Taillon)
