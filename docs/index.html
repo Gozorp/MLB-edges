@@ -6395,6 +6395,7 @@ async function toggleNarrative(i) {
         + `<span class="theo-vs">·</span>`
         + `<span class="theo-num">${(_tc.away*100).toFixed(1)}%</span> <span class="theo-side">${(_tp[0]||"AWAY").replace(/\s*\(.*$/,"")}</span>`;
       _ts.dataset.filled = "1";
+      try{ _ts.insertAdjacentHTML("beforeend", (function(){var T=window.__theoTrack;if(!T||!T.record||!T.n_games)return "";var oc=T.overconfidence_pp;var ocTxt=(oc>0?"+"+oc:""+oc)+"pp "+(oc>=0?"overconfident":"underconfident");return '<div class="theo-track" style="margin-top:5px;font-size:11px;opacity:.72">toy track record (since '+((T.window&&T.window.start)||"?")+'): <b>'+T.record.w+'-'+T.record.l+'</b> ('+Math.round(T.record.pct*100)+'%) on its pick &middot; says '+Math.round(T.mean_pred*100)+'%, wins '+Math.round(T.actual_hit*100)+'% ('+ocTxt+') &middot; n='+T.n_games+'</div>';})()); }catch(_e){}
     }
   } catch (_e) { console.warn("theo chances fill failed:", _e); }
 
@@ -6906,7 +6907,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, theoR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -6920,6 +6921,9 @@ async function loadSlate(date, { bust = false } = {}) {
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
       fetch(`./data/weather_runs_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
+      fetch(`./data/theo_track.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
@@ -6936,6 +6940,7 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__spHR = (sphrR.status === "fulfilled" && sphrR.value) ? sphrR.value : null;
     // Weather/wind runs-tilt sidecar (read-only display; tools/weather_runs.py).
     window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
+    window.__theoTrack = (theoR.status === "fulfilled" && theoR.value) ? theoR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
