@@ -195,6 +195,7 @@ jobs:
             python tools/sp_hr_recency.py        "$SLATE" || echo "::warning::sp_hr_recency failed (non-fatal)"
             python tools/weather_runs.py         "$SLATE" || echo "::warning::weather_runs failed (non-fatal)"
             python tools/daily_variance_report.py "$SLATE" || echo "::warning::daily_variance_report failed (non-fatal)"
+            python tools/oos_ledger.py            "$SLATE" || echo "::warning::oos_ledger failed (non-fatal)"
           else
             echo "::warning::no slate diag found; skipping display sidecars"
           fi
@@ -228,8 +229,4 @@ jobs:
               if git push origin main; then echo "pushed (attempt $i)"; break; fi
               echo "push rejected (attempt $i) - rebasing on origin/main and retrying..."
               git fetch origin main || true
-              git rebase -X theirs origin/main || git rebase --abort 2>/dev/null || true
-              if [ "$i" = "5" ]; then echo "::warning::daily-slate push still rejected after 5 attempts; next run will re-bake"; fi
-              sleep $((RANDOM % 4 + 2))
-            done
-          fi
+              git rebase -X theirs origin/main || git rebase 
