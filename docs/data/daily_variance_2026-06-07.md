@@ -1,7 +1,10 @@
 # Daily Variance Report — 2026-06-07
-_Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
+_Generated 2026-06-07T19:36:50Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
+- **PIT** [signed] — Pittsburgh Pirates signed free agent RHP Yunior Marte to a minor league contract.
+- **PIT** [selected] — Pittsburgh Pirates selected the contract of 3B Davis Wendzel from Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RF Jhostynxon Garcia to Indianapolis Indians.
 - **ATL** [outrighted] — Atlanta Braves sent C Chadwick Tromp outright to Gwinnett Stripers.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Bryse Wilson to a minor league contract.
 - **PHI** [outrighted] — Philadelphia Phillies sent RHP Zach Pop outright to Lehigh Valley IronPigs.
@@ -35,6 +38,8 @@ _Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 - **HOU** [outrighted] — Houston Astros sent C César Salazar outright to Sugar Land Space Cowboys.
 - **MIN** [DFA] — Minnesota Twins designated CF James Outman for assignment.
 - **MIN** [recalled] — Minnesota Twins recalled 3B Royce Lewis from St. Paul Saints.
+- **CIN** [IL] — Cincinnati Reds activated RHP Rhett Lowder from the 15-day injured list.
+- **CIN** [optioned] — Cincinnati Reds optioned RHP Luis Mey to Louisville Bats.
 - **STL** [IL] — St. Louis Cardinals placed RHP Ryan Fernandez on the 15-day injured list retroactive to June 3, 2026. Low back pain.
 - **STL** [IL] — St. Louis Cardinals activated LF Lars Nootbaar from the 60-day injured list.
 - **STL** [optioned] — St. Louis Cardinals optioned LF Thomas Saggese to Memphis Redbirds.
@@ -55,13 +60,20 @@ _Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 - **MIL** [selected] — Milwaukee Brewers selected the contract of LHP Drew Rom from Nashville Sounds.
 - **COL** [IL] — Colorado Rockies placed RHP Tanner Gordon on the 15-day injured list retroactive to June 2, 2026. Right hip impingement.
 - **COL** [recalled] — Colorado Rockies recalled RHP Zach Agnos from Albuquerque Isotopes.
+- **COL** [recalled] — Colorado Rockies recalled LHP Sammy Peralta from Albuquerque Isotopes.
+- **COL** [optioned] — Colorado Rockies optioned RHP TJ Shook to Albuquerque Isotopes.
 - **WSH** [signed] — Washington Nationals signed free agent RHP Ike Buxton to a minor league contract.
-- **AZ** [signed] — Arizona Diamondbacks signed free agent RHP Greudis De Los Santos to a minor league contract.
+- **WSH** [recalled] — Washington Nationals recalled RHP Riley Cornelio from Rochester Red Wings.
+- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
+- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
 - **AZ** [DFA] — Arizona Diamondbacks designated RHP Taylor Rashi for assignment.
-- **AZ** [selected] — Arizona Diamondbacks selected the contract of 3B LuJames Groover from Reno Aces.
+- **AZ** [signed] — Arizona Diamondbacks signed free agent RHP Greudis De Los Santos to a minor league contract.
 - **AZ** [optioned] — Arizona Diamondbacks optioned DH Jose Fernandez to Reno Aces.
-- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Drey Jameson from Reno Aces.
+- **AZ** [selected] — Arizona Diamondbacks selected the contract of 3B LuJames Groover from Reno Aces.
 - **AZ** [optioned] — Arizona Diamondbacks optioned RHP Kade Strowd to Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Drey Jameson from Reno Aces.
+- **AZ** [activated] — Arizona Diamondbacks activated RHP Taylor Clarke.
+- **AZ** [optioned] — Arizona Diamondbacks optioned LHP Philip Abner to Reno Aces.
 - **LAA** [DFA] — Los Angeles Angels designated RHP Shaun Anderson for assignment.
 - **LAA** [selected] — Los Angeles Angels selected the contract of LHP Samy Natera Jr. from Salt Lake Bees.
 - **LAA** [IL] — Los Angeles Angels placed DH Jorge Soler on the 10-day injured list retroactive to June 4, 2026. Left oblique strain.
@@ -69,9 +81,12 @@ _Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 - **LAA** [DFA] — Los Angeles Angels designated C Omar Martinez for assignment.
 - **LAA** [IL] — Los Angeles Angels activated 1B Nolan Schanuel from the 10-day injured list.
 - **LAA** [selected] — Los Angeles Angels selected the contract of C Gustavo Campero from Rocket City Trash Pandas.
+- **LAA** [IL] — Los Angeles Angels placed RHP Jack Kochanowicz on the 15-day injured list. Right elbow inflammation.
+- **LAA** [recalled] — Los Angeles Angels recalled LHP Sam Aldegheri from Salt Lake Bees.
 - **LAD** [IL] — Los Angeles Dodgers transferred RHP Tyler Glasnow from the 15-day injured list to the 60-day injured list. Low back spasms.
 - **LAD** [selected] — Los Angeles Dodgers selected the contract of RHP Nick Frasso from Oklahoma City Comets.
 - **LAD** [optioned] — Los Angeles Dodgers optioned RHP Nick Frasso to Oklahoma City Comets.
+- **LAD** [TRADE] — Los Angeles Dodgers traded LHP Antoine Kelly to Chicago Cubs.
 - **SD** [IL] — San Diego Padres transferred LF Ramón Laureano from the 10-day injured list to the 60-day injured list.
 - **SD** [IL] — San Diego Padres activated RHP Jhony Brito from the 60-day injured list.
 - **SD** [IL] — San Diego Padres placed RHP Jeremiah Estrada on the 15-day injured list retroactive to June 3, 2026. Right knee inflammation.
@@ -84,8 +99,9 @@ _Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 - **CHC** [IL] — Chicago Cubs activated RHP Edward Cabrera from the 15-day injured list.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
 - **CHC** [signed] — Chicago Cubs signed free agent RHP Andrew Wantz to a minor league contract.
-- **CHC** [recalled] — Chicago Cubs recalled RHP Javier Assad from Iowa Cubs.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Ethan Roberts to Iowa Cubs.
+- **CHC** [recalled] — Chicago Cubs recalled RHP Javier Assad from Iowa Cubs.
+- **CHC** [TRADE] — Los Angeles Dodgers traded LHP Antoine Kelly to Chicago Cubs.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **MIN** code=OBT — Minnesota Twins obtain RHP Halton Hardy from Gastonia Ghost Peppers.
@@ -95,8 +111,9 @@ _Generated 2026-06-07T07:05:20Z · 15 games · significant deviations only_
 _Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **CIN @ STL** (home SP Michael McGreevy): very low K% (14.4% vs lg 22.0)
-- **CLE @ TEX** (home SP Jacob deGrom): very high K% (29.0% vs lg 22.0)
+- **BOS @ NYY** (home SP Cam Schlittler): very high K% (27.9% vs lg 21.7)
+- **CIN @ STL** (home SP Michael McGreevy): very low K% (14.4% vs lg 21.7)
+- **CLE @ TEX** (home SP Jacob deGrom): very high K% (29.0% vs lg 21.7)
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **ATL** Raisel Iglesias — 2 apps / 39 pitches over last 3 games — monitor
@@ -114,7 +131,7 @@ _Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> 
 - **CHC** Ryan Rolison — 2 apps / 43 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
-- PIT @ ATL — ATL faces RHP (Bubba Chandler)
+- PIT @ ATL — ATL faces LHP (Mason Montgomery)
 - PIT @ ATL — PIT faces RHP (Bryce Elder)
 - CWS @ PHI — PHI faces LHP (Tyler Gilbert)
 - CWS @ PHI — CWS faces RHP (Aaron Nola)

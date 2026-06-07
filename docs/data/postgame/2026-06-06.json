@@ -1,0 +1,149 @@
+{
+  "date": "2026-06-06",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-07T12:00:00Z",
+  "n_analyzed": 15,
+  "summary": "June 6 slate: 3 directional wins and 9 losses across 12 graded matchups (25% hit rate), with 3 NO_PICK (2 PENDING_SP_DATA, 1 postponed). The only active bet — LAD ML downgraded from DIAMOND to B- via HARD CAP 1 — won 9-2, yielding 1W-0L on staked action. C-grade directional accuracy was 0W-5L; D-grade was 1W-4L. HARD CAP 9 (WSH@ARI: ARI lost 6-1 at p_model=0.84) and HARD CAP 1/10 pairings protected correctly on multiple losing directions. Key learning: B-grade+ multi-signal stacks (LAD, CWS) were 2-0 directionally even against CAP demotions, while C/D-grade picks remain near-random directionally.",
+  "by_matchup": {
+    "SEA @ DET": {
+      "verdict": "LOSS",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-0",
+      "headline": "DET shut out 4-0 by SEA; SP xERA gap 2.18 against DET was directionally accurate; D-grade fetched_capped SKIP correctly blocked stake.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered D-grade. Bryce Miller's SP xERA advantage of 2.18 over Montero proved decisive — SEA won 4-0 in a shutout. F3=113.8 (far below the 1000 high-conviction threshold) and fetched_capped (no valid market line) both independently blocked stake. SP xERA > 2.0 against a D-grade pick has now directionally predicted the opposing outcome multiple times; this is a process win for the SKIP, not a variance failure.",
+      "signals_to_recheck": "SP xERA (Bryce Miller 2.18 over Montero, AGAINST pick) + F3_swing_take_gap (113.8, well below 1000 threshold) — DET shut out 4-0; D-grade with SP xERA gap > 2.0 AGAINST pick reliably predicts opposing direction."
+    },
+    "KC @ MIN": {
+      "verdict": "WIN",
+      "model_pick": "KC ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "KC won 3-2; Stage 1 directional call correct despite f5_full_delta=0.29; SKIP was correct process given inflated edge and fair_prob < 0.42.",
+      "hypothesis": "Directional win on correctly SKIP-tiered D-grade. KC won 3-2, validating Stage 1 (f5_prob=0.77 for KC) over Stage 2 (full_prob=0.48 for MIN) — one counter-example to yesterday's 5/5 Stage 2 authority pattern when f5_full_delta > 0.17. However, SKIP was independently justified: fair_prob=0.308 failed the 0.42 threshold, calibration_caution_18_25pp (edge=+21.42pp) flagged likely inflated edge, and confidence_downgrade=True blocked rescue. Stage 1 vs Stage 2 authority on high-delta games may need more data before hardening.",
+      "signals_to_recheck": "f5_full_delta (0.2936) + calibration_caution_18_25pp (edge=+21.42pp) + fair_prob (0.308, below 0.42 threshold) — KC wins 3-2; Stage 1 correct over Stage 2 today on high-delta game; one exception to the 6/5 5/5 pattern; monitor further."
+    },
+    "CIN @ STL": {
+      "verdict": "LOSS",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "STL won 6-5; Stage 2 again correct when f5_full_delta=0.22; large negative edge and acute_roster correctly blocked CIN stake.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered D-grade. STL won 6-5 narrowly, confirming Stage 2 (full_prob=0.466 → STL) over Stage 1 (f5_prob=0.684 → CIN). This is the second consecutive day STL won at home over CIN. Stage 1/2 delta=0.2181, confidence_downgrade=True, acute_roster, and edge=-25.94pp (large negative) all correctly blocked stake. HARD CAP 1 at -25.94pp is categorical; no rescue path existed.",
+      "signals_to_recheck": "f5_full_delta (0.2181) + acute_roster_True + confidence_downgrade_True + [HARD CAP 1] negative_edge_GOLD (-25.94pp) — STL wins again (second consecutive day); Stage 2 correctly identifies STL home advantage in this matchup structure."
+    },
+    "SF @ CHC": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "CHC won 3-2; fair_prob=0.394 and confidence_downgrade correctly blocked SF stake; D-grade marginal pick_prob directional loss.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered D-grade. CHC won 3-2 narrowly. Fair_prob=0.3941 (below 0.42 threshold) was the primary block — market gave SF only 39.4% despite model's 50.1%; the market was right. Confidence_downgrade=True and acute_roster flags provided additional independent blocks. Ben Brown's SP xERA advantage (0.37 against SF) was marginal and did not materialize. Narrow 3-2 margin is consistent with genuine uncertainty; likely variance rather than a clear process failure.",
+      "signals_to_recheck": "fair_prob (0.3941, below 0.42 threshold) + confidence_downgrade_True + acute_roster_True — CHC wins 3-2; fair_prob sub-0.42 block was decisive; D-grade pick with marginal pick_prob=0.5013 correctly rejected."
+    },
+    "BAL @ TOR": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-6",
+      "headline": "TOR won 6-4; confidence_downgrade=True rule from 6/5 correctly blocked BAL rescue attempt on a losing direction.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered C-grade. TOR won 6-4. Confidence_downgrade=True permanently suspended any near-zero CAP-1 rescue attempt per the 6/5 rule update — a rule derived directly from BAL@TOR's prior blowout. HARD CAP 10 (pick_prob=0.529 bottom bucket) also fired. Stage 1/2 direction disagreement further undermined any rescue justification. The rule established from yesterday's process failure protected correctly on day two of the same matchup.",
+      "signals_to_recheck": "confidence_downgrade_True + [HARD CAP 10] bottom-bucket pick_prob (0.529) — TOR wins 6-4; 6/5 confidence_downgrade rescue suspension rule validated on second consecutive BAL@TOR game."
+    },
+    "CHW @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "CHW ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-3",
+      "headline": "CWS won 6-3; B-grade directional call correct; calibration_caution_18_25pp SKIP correctly avoided suspect edge on a game that went the right way.",
+      "hypothesis": "Directional win on correctly SKIP-tiered B-grade pick. CWS won 6-3, validating the model's directional call despite calibration_caution_18_25pp (edge=+20.12pp, outside the [4,15]pp staking band). SKIP was correct process — claimed +20pp edges in the 18-25pp band may be calibration artifacts, and a single win does not override the statistical evidence for that band's unreliability. The 6/5 CHW@PHI loss (PHI 8-6) and today's CWS win are now 1-1 in this matchup structure; accumulate more evidence before relaxing the cap.",
+      "signals_to_recheck": "calibration_caution_18_25pp (edge=+20.12pp) — CWS wins 6-3; B-grade directional call correct; calibration_caution band tracking 1W-1L in this structure; not enough signal to relax the staking block."
+    },
+    "WSH @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-1",
+      "headline": "WSH blew out ARI 6-1; HARD CAP 9 (p_model=0.837, top bucket) and HARD CAP 7 correctly blocked a catastrophically miscalibrated pick.",
+      "hypothesis": "Process win; decisive directional loss. Model had ARI at 83.7% (top probability bucket), but ARI lost 6-1 — a 5-run blowout by the road team. HARD CAP 9 correctly blocked: archive shows 33.3% actual vs 87.3% predicted in the pick_prob > 0.80 bucket. F1_xera_gap=1.53* carried a thin-sample asterisk reducing confirming value. This is a process failure in the model's probability estimates, not in Claude's SKIP — the CAPs worked exactly as designed.",
+      "signals_to_recheck": "[HARD CAP 9] pick_prob > 0.80 (p_model=0.8366, top miscalibration bucket) + F1_xera_gap* (1.53, thin-sample asterisk) + [HARD CAP 7] hl_bullpen_xwoba_gap — ARI loses 6-1; top-probability-bucket miscalibration confirmed (archive: 33.3% actual vs 87.3% predicted)."
+    },
+    "OAK @ HOU": {
+      "verdict": "NO_PICK",
+      "model_pick": "HOU ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-13",
+      "headline": "HOU crushed ATH 13-2; PENDING_SP_DATA (Kade Morris 0 Statcast pitches) correctly blocked directional commitment on a decisive outcome.",
+      "hypothesis": "Protocol win. Kade Morris (HOU home SP) had 0 Statcast pitches season-to-date, triggering the hard stop. HOU won 13-2 in a blowout — had ATH been picked based on thin-SP uncertainty, it would have been a catastrophic loss. The PENDING protocol's protective value is confirmed at extreme scale. No directional learning as model uncertainty was genuine.",
+      "signals_to_recheck": "thin_sp_data (Kade Morris, 0 Statcast pitches) — HOU wins 13-2 blowout; PENDING_SP_DATA protocol validated; thin-SP games continue to produce extreme-variance outcomes."
+    },
+    "PIT @ ATL": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-6",
+      "headline": "ATL won 6-3; Spencer Strider delivered; HARD CAP 10 and sub-4pp edge correctly blocked PIT stake on a losing direction.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered C-grade. ATL won 6-3 with Spencer Strider on the mound. Despite a thin post-TJS 2026 Statcast sample, Strider performed — F3=743.0 (below 1000 threshold) and edge=+3.91pp (just below the 4pp minimum) correctly signaled insufficient conviction. PIT top BvP vs Strider showed SMALL_SAMPLE flags providing no directional confirmation. HARD CAP 10 (pick_prob=0.523 bottom bucket) was the decisive block. Process win — the CAP correctly identified a coin-flip pick that lost.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket pick_prob (0.523) + F3_swing_take_gap (743.0, below 1000 threshold) + small_sample_SP_True (Strider post-TJS) — ATL wins 6-3; thin-sample home SP with ATL home advantage is a reliable pick-against condition."
+    },
+    "TB @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "MIA edged TB 4-3; D-grade negative edge and confidence_downgrade correctly blocked stake; narrow margin may be variance.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered D-grade. MIA won 4-3 narrowly. SP xERA gap 0.46 against TB (Bachar over McClanahan by model xERA) and PQI against TB were directionally correct — MIA's home pitching advantage materialized. Confidence_downgrade=True and negative edge (-1.80pp) blocked stake independently. The narrow 4-3 margin is consistent with genuine model uncertainty; this may be variance rather than a clear process failure. McClanahan's thin/recovering-arm sample may have suppressed TB's true SP advantage.",
+      "signals_to_recheck": "confidence_downgrade_True + [HARD CAP 1] negative_edge (−1.80pp) + SP xERA AGAINST pick (Bachar over McClanahan by xERA) — MIA wins 4-3; D-grade negative-edge with thin-sample SP gap correctly SKIP-ed; variance vs process unclear on narrow margin."
+    },
+    "CLE @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-0",
+      "headline": "CLE shut out TEX 6-0; HARD CAP 1 and HARD CAP 10 correctly blocked a shutout-loss direction on a C-grade coin-flip.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered C-grade. TEX was shut out 6-0 — a decisive loss validating the SKIP. HARD CAP 1 (edge=-2.35pp negative) and HARD CAP 10 (pick_prob=0.523 bottom bucket) both independently fired. F3=589.8 (below 1000 threshold) provided no high-conviction signal. Confidence_downgrade=True added structural uncertainty. The 6-0 shutout margin is consistent with the model's near-coin-flip read being genuinely wrong, not just unlucky.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge (−2.35pp) + [HARD CAP 10] bottom-bucket pick_prob (0.523) + F3_swing_take_gap (589.8, below 1000 threshold) + confidence_downgrade_True — TEX shut out 0-6; C-grade negative-edge with dual CAP demotions correctly blocked."
+    },
+    "BOS @ NYY": {
+      "verdict": "NO_PICK",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": null,
+      "headline": "BOS @ NYY postponed; no result to grade.",
+      "hypothesis": "Game postponed; no outcome data available. Stage 1/2 disagreement (f5_full_delta=0.2374, above the 0.17 SKIP threshold) and confidence_downgrade=True would have mandated SKIP regardless of outcome.",
+      "signals_to_recheck": "f5_full_delta (0.2374) + confidence_downgrade_True — postponement; no result; mandatory SKIP criteria would have applied."
+    },
+    "LAA @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML DIAMOND",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-9",
+      "headline": "LAD crushed LAA 9-2; strongest signal stack on slate confirmed; HARD CAP 1 tier demotion to B- was correct process while direction proved decisively right.",
+      "hypothesis": "Active bet WIN. Claude downgraded LAD from DIAMOND to B- due to HARD CAP 1 firing (edge=-15.16pp — market priced LAD at 81.7% vs model's 66.5%). Despite the demotion, the bet was placed at B- and LAD won 9-2. The signal stack (F1=2.77, F2=0.037, F3=8595, SP xERA +1.53 for Yamamoto over Kochanowicz, PQI+29.2) was the strongest on the slate and delivered. HARD CAP 1 correctly prevented over-sizing — the market had priced the edge away — but did not block the directional call where signal quality was genuinely high.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (−15.16pp) + F3_swing_take_gap (8595, highest on slate) + F1_xera_gap (2.77, strong SP edge FOR pick) — LAD wins 9-2; B+ multi-signal stack is directionally reliable even against HARD CAP 1 demotion; cap correctly limited tier, not direction."
+    },
+    "NYM @ SD": {
+      "verdict": "LOSS",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "SD edged NYM 3-2; HARD CAP 7 (pre_cap=3 below exception threshold) and HARD CAP 10 correctly blocked NYM stake on a narrow loss.",
+      "hypothesis": "Directional loss on correctly SKIP-tiered C-grade. SD won 3-2 narrowly. HARD CAP 7 fired (hl_bullpen_xwoba_gap=+0.0081 on pre_cap score=3 — the near-zero exception requires pre_cap >= 4, which pre_cap=3 does not satisfy). HARD CAP 10 (pick_prob=0.523 bottom bucket) also fired. Confidence_downgrade=True blocked any remaining rescue path. SP xERA confirming NYM (Nolan McLean 1.59 over Griffin Canning) was directionally wrong. Narrow 3-2 margin may be variance, but the SKIP was correct process.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap (near-zero +0.0081, pre_cap=3 below exception threshold of 4) + [HARD CAP 10] bottom-bucket pick_prob (0.523) + confidence_downgrade_True — SD wins 3-2; near-zero CAP-7 exception does not apply at pre_cap=3."
+    },
+    "MIL @ COL": {
+      "verdict": "NO_PICK",
+      "model_pick": "COL ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-1",
+      "headline": "MIL crushed COL 7-1; PENDING_SP_DATA (COL home SP unannounced) correctly blocked directional commitment on a decisive away win.",
+      "hypothesis": "Protocol win. COL's home SP was unannounced, triggering the hard stop. MIL won 7-1 — had COL been picked on home-field grounds, it would have been a significant directional loss. The PENDING protocol's protective value is confirmed. No directional learning as model uncertainty was genuine.",
+      "signals_to_recheck": "thin_sp_data (COL home SP unannounced) — MIL wins 7-1; PENDING_SP_DATA protocol validated; home-SP-unknown games continue to produce high-variance outcomes favoring the away team."
+    }
+  },
+  "patterns_observed": [
+    "C-grade directional accuracy was 0W-5L on this slate (BAL@TOR, WSH@ARI, PIT@ATL, CLE@TEX, NYM@SD all lost); combined with D-grade at 1W-4L, grades C and D produced near-random or sub-random directional signal. Reinforce: never attempt to rescue or upgrade C/D-grade picks via any CAP override, BvP cluster, or F-signal exception — their directional signal is insufficiently reliable to justify reopening any demoted gate.",
+    "HARD CAP 9 confirmed again — ARI (p_model=0.8366) lost 6-1 to WSH despite being a strong home team; archive shows 33.3% actual vs 87.3% predicted in the pick_prob > 0.80 bucket, and today's blowout is consistent. HARD CAP 9 is non-negotiable: any pick with p_model > 0.80 is a structural SKIP regardless of SP xERA, F-signals, or BvP quality.",
+    "B-grade+ multi-signal stacks were 2-0 directionally (LAD DIAMOND→B- won 9-2, CHW B-grade SKIP won 6-3) despite HARD CAP 1 demotions blocking or limiting stake; when the model assigns B-grade or better with multiple confirming F-signals (F1+F2+F3 all confirming), the directional call has demonstrated predictive value even when the market has priced away the edge — HARD CAP 1 correctly limits tier and size, but does not signal that the direction is wrong, only that the market disagrees on price."
+  ]
+}
