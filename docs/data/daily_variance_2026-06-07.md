@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-07
-_Generated 2026-06-07T02:20:18Z · 15 games · significant deviations only_
+_Generated 2026-06-07T03:31:05Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [outrighted] — Atlanta Braves sent C Chadwick Tromp outright to Gwinnett Stripers.
