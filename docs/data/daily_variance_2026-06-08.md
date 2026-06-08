@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-08
-_Generated 2026-06-08T00:07:31Z · 8 games · significant deviations only_
+_Generated 2026-06-08T03:29:58Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BAL** [DFA] — Baltimore Orioles designated 3B Weston Wilson for assignment.
