@@ -672,7 +672,7 @@ def _post_discord(payload: Dict) -> bool:
         req = urllib.request.Request(
             DISCORD_WEBHOOK,
             data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
+            headers={"Content-Type": "application/json", "User-Agent": "mlb-edge-health-check/1"},
         )
         urllib.request.urlopen(req, timeout=10).read()
         return True
