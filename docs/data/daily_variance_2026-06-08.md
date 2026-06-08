@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-08
-_Generated 2026-06-08T03:29:58Z · 8 games · significant deviations only_
+_Generated 2026-06-08T07:04:36Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BAL** [DFA] — Baltimore Orioles designated 3B Weston Wilson for assignment.
@@ -49,6 +49,8 @@ _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **CIN** Brock Burke — 2 apps / 35 pitches over last 3 games — monitor
 - **CIN** Sam Moll — 2 apps / 35 pitches over last 3 games — monitor
 - **WSH** Riley Cornelio — threw 44 pitches last night — likely unavailable
+- **SF** Erik Miller — 2 apps / 38 pitches over last 3 games — monitor
+- **SF** Keaton Winn — 2 apps / 41 pitches over last 3 games — monitor
 - **MIL** Craig Yoho — 2 apps / 53 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
