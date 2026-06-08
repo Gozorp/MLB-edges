@@ -3967,7 +3967,7 @@ function _gpStatcastTable(bats, label){
     }
     rows += '<tr>' +
       '<td class="gp-ord">' + (b.order != null ? b.order : "") + '</td>' +
-      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") +
+      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") + _hotColdTag(b.name) +
         '<small>' + (b.bat_side || "") + '</small></td>' +
       '<td class="gp-mini">' + (b.pos || "-") + '</td>' +
       _gpNum(b.bbe, 0, "", false) +
