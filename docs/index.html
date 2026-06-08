@@ -6087,6 +6087,28 @@ function _tierChips(matchupKey){
 }
 
 
+// ===== "The Spread" chip (display-only; spread_<date>.json) =====
+// Projected run differential for the favored team + a projected final score,
+// shown next to the win pick. Decoupled post-processing overlay written by
+// tools/spread_projection.py -- NEVER a model output.
+function _spreadChip(matchupKey){
+  var S = window.__spread;
+  if (!S || !S.games || !matchupKey) return "";
+  var bare = ("" + matchupKey).split(" (")[0].trim();
+  var g = S.games[bare] || S.games[matchupKey];
+  if (!g || g.spread == null) return "";
+  var home = (bare.split(" @ ")[1] || "").trim();
+  var favIsHome = (g.favored === home);
+  var fs = favIsHome ? g.proj_home : g.proj_away;
+  var os2 = favIsHome ? g.proj_away : g.proj_home;
+  var c = g.components || {};
+  var tip = g.favored + " projected to win by " + g.spread + " (proj " + (g.proj_score || "") + "). "
+    + "Display-only run-differential overlay, not a model output. "
+    + "base(win%)=" + c.base + " x scale=" + c.scale + " | gaps RDseason=" + c.rd_season_gap
+    + " RDrecent=" + c.rd_recent_gap + " xwOBA=" + c.xwoba_gap + " SPk=" + c.sp_k_gap;
+  return '<span title="' + tip.replace(/"/g, "&quot;") + '" style="margin-left:6px;padding:0 5px;border:1px solid #8a63d2;border-radius:3px;font-size:.62rem;font-weight:700;white-space:nowrap;vertical-align:middle;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"><span style="opacity:.5;">Δ</span> <span style="color:#b692f0;">+' + g.spread + '</span> <span style="opacity:.6;">' + fs + '-' + os2 + '</span></span>';
+}
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -6298,7 +6320,7 @@ function renderSlate(rows, gradeMap, results) {
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong>${_tierChips(matchupKey)}${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
-      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
+      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}${_spreadChip(matchupKey)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
       <td class="col-fair">${fairFmt}</td>
@@ -6949,7 +6971,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, teamTiersR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, teamTiersR, spreadR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -6968,6 +6990,9 @@ async function loadSlate(date, { bust = false } = {}) {
       fetch(`./data/team_tiers.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
+      fetch(`./data/spread_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
     ]);
 
     // Series-meta sidecar (series-game indicator).  Schema in
@@ -6983,6 +7008,7 @@ async function loadSlate(date, { bust = false } = {}) {
     // Weather/wind runs-tilt sidecar (read-only display; tools/weather_runs.py).
     window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
     window.__teamTiers = (teamTiersR.status === "fulfilled" && teamTiersR.value) ? teamTiersR.value : null;
+    window.__spread = (spreadR.status === "fulfilled" && spreadR.value) ? spreadR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
