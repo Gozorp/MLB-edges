@@ -259,10 +259,73 @@ def player_heat(stat, season_ops):
     return h, pa
 
 
+def _team_abbr_to_id():
+    j = _get("%s/teams?sportId=1&season=%d" % (API, datetime.date.today().year))
+    out = {}
+    for t in j.get("teams", []):
+        ab = (t.get("abbreviation") or "").strip()
+        if ab and t.get("id"):
+            out[ab] = t["id"]
+    return out
+
+
+_ROSTER_ALIAS = {"CHW": "CWS", "ARI": "AZ", "OAK": "ATH", "WSN": "WSH",
+                 "SDP": "SD", "SFG": "SF", "TBR": "TB", "KCR": "KC"}
+
+
+def _slate_teams(date):
+    path = os.path.join("docs", "data", "picks_%s_diag.csv" % date)
+    if not os.path.exists(path):
+        path = "picks_%s_diag.csv" % date
+    if not os.path.exists(path):
+        return []
+    teams, seen = [], set()
+    with open(path, encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            mm = re.match(r"\s*([A-Za-z]{2,4})\s*@\s*([A-Za-z]{2,4})", row.get("matchup", ""))
+            if not mm:
+                continue
+            for tm in (mm.group(1), mm.group(2)):
+                if tm not in seen:
+                    seen.add(tm); teams.append(tm)
+    return teams
+
+
+def _roster_batters(date):
+    """Pre-lineup fallback: when the diag has no posted lineup, cover every
+    active position player on the slate's teams so the dashboard's projected
+    lineup is fully tagged. Display-only; never feeds the model."""
+    teams = _slate_teams(date)
+    if not teams:
+        return []
+    try:
+        abbr2id = _team_abbr_to_id()
+    except Exception:
+        return []
+    out, seen = [], set()
+    for tm in teams:
+        tid = abbr2id.get(tm) or abbr2id.get(_ROSTER_ALIAS.get(tm, tm))
+        if not tid:
+            continue
+        try:
+            j = _get("%s/teams/%d/roster?rosterType=active" % (API, tid))
+        except Exception:
+            continue
+        for r in j.get("roster", []):
+            if ((r.get("position") or {}).get("abbreviation") or "") == "P":
+                continue
+            nm = ((r.get("person") or {}).get("fullName") or "").strip()
+            if nm and (nm, tm) not in seen:
+                seen.add((nm, tm)); out.append((nm, tm))
+    return out
+
+
 def build_players(end_date, windows):
     if not windows:
         return {}
     batters = _slate_batters(end_date)
+    if not batters:
+        batters = _roster_batters(end_date)
     if not batters:
         return {}
     name2id = _resolve_ids(batters)
