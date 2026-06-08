@@ -3277,6 +3277,7 @@ function renderLineupEdge(preview) {
             +   `<span class="muted"> · </span>`
             +   `<span style="color:var(--text);">${r.name}</span>`
             +   `<span class="muted"> (${r.pos || "-"})</span>`
+            +   _hotColdTag(r.name)
             + `</li>`;
     }
     html += `</ol></div>`;
