@@ -1,25 +1,43 @@
 {
- "generated_utc": "2026-06-08T07:05:11Z",
+ "generated_utc": "2026-06-08T19:35:32Z",
  "date": "2026-06-08",
- "n_games": 7,
+ "n_games": 8,
  "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
  "games": {
+  "SEA @ BAL": {
+   "favored": "BAL",
+   "win_prob": 0.6365,
+   "spread": 0.7,
+   "proj_away": 5,
+   "proj_home": 6,
+   "proj_score": "SEA 5-6 BAL",
+   "components": {
+    "base": 0.84,
+    "scale": 0.804,
+    "rd_season_gap": -0.606,
+    "rd_recent_gap": 0.042,
+    "off_recent_gap": 0.615,
+    "xwoba_gap": -0.533,
+    "sp_k_gap": -0.905,
+    "total_runs": 10.48
+   }
+  },
   "BOS @ TB": {
    "favored": "TB",
-   "win_prob": 0.6563,
-   "spread": 0.8,
+   "win_prob": 0.6713,
+   "spread": 0.9,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "BOS 4-5 TB",
    "components": {
-    "base": 0.97,
-    "scale": 0.847,
+    "base": 1.07,
+    "scale": 0.826,
     "rd_season_gap": 0.171,
     "rd_recent_gap": -1.0,
     "off_recent_gap": -0.542,
-    "xwoba_gap": 0.0,
+    "xwoba_gap": -0.175,
     "sp_k_gap": 0.102,
-    "total_runs": 8.6
+    "total_runs": 8.42
    }
   },
   "NYY @ CLE": {
@@ -42,31 +60,31 @@
   },
   "PHI @ TOR": {
    "favored": "TOR",
-   "win_prob": 0.5933,
-   "spread": 0.5,
-   "proj_away": 4,
-   "proj_home": 5,
-   "proj_score": "PHI 4-5 TOR",
+   "win_prob": 0.5497,
+   "spread": 0.2,
+   "proj_away": 5,
+   "proj_home": 6,
+   "proj_score": "PHI 5-6 TOR",
    "components": {
-    "base": 0.57,
-    "scale": 0.863,
+    "base": 0.3,
+    "scale": 0.79,
     "rd_season_gap": 0.064,
     "rd_recent_gap": -0.478,
     "off_recent_gap": 0.189,
-    "xwoba_gap": 0.0,
+    "xwoba_gap": -0.614,
     "sp_k_gap": -1,
-    "total_runs": 8.6
+    "total_runs": 9.77
    }
   },
   "HOU @ LAA": {
    "favored": "HOU",
-   "win_prob": 0.5433,
-   "spread": 0.3,
+   "win_prob": 0.5583,
+   "spread": 0.4,
    "proj_away": 5,
    "proj_home": 4,
    "proj_score": "HOU 5-4 LAA",
    "components": {
-    "base": 0.26,
+    "base": 0.35,
     "scale": 1.056,
     "rd_season_gap": 0.227,
     "rd_recent_gap": 0.272,
@@ -96,13 +114,13 @@
   },
   "WSH @ SF": {
    "favored": "WSH",
-   "win_prob": 0.5404,
+   "win_prob": 0.541,
    "spread": 0.3,
    "proj_away": 5,
    "proj_home": 4,
    "proj_score": "WSH 5-4 SF",
    "components": {
-    "base": 0.24,
+    "base": 0.25,
     "scale": 1.119,
     "rd_season_gap": 0.525,
     "rd_recent_gap": 0.788,
@@ -114,13 +132,13 @@
   },
   "MIL @ OAK": {
    "favored": "MIL",
-   "win_prob": 0.5343,
-   "spread": 0.3,
+   "win_prob": 0.5193,
+   "spread": 0.2,
    "proj_away": 5,
    "proj_home": 4,
    "proj_score": "MIL 5-4 OAK",
    "components": {
-    "base": 0.21,
+    "base": 0.12,
     "scale": 1.45,
     "rd_season_gap": 1.0,
     "rd_recent_gap": 1.0,

@@ -1,24 +1,33 @@
 # Daily Variance Report — 2026-06-08
-_Generated 2026-06-08T07:04:36Z · 8 games · significant deviations only_
+_Generated 2026-06-08T19:34:57Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BAL** [DFA] — Baltimore Orioles designated 3B Weston Wilson for assignment.
 - **BAL** [selected] — Baltimore Orioles selected the contract of C Sam Huff from Norfolk Tides.
+- **BAL** [IL] — Baltimore Orioles placed RHP Chris Bassitt on the 15-day injured list retroactive to June 5, 2026. Low back discomfort.
+- **BAL** [claimed] — Chicago Cubs claimed RHP Eduarniel Núñez off waivers from Baltimore Orioles.
+- **BAL** [recalled] — Baltimore Orioles recalled RHP Trey Gibson from Norfolk Tides.
 - **BOS** [IL] — Boston Red Sox placed LHP Jovani Morán on the 15-day injured list retroactive to June 5, 2026. Left elbow inflammation.
 - **BOS** [recalled] — Boston Red Sox recalled LHP Alec Gamboa from Worcester Red Sox.
+- **BOS** [optioned] — Boston Red Sox optioned LHP Joe La Sorsa to Worcester Red Sox.
+- **BOS** [recalled] — Boston Red Sox recalled OF Nate Eaton from Worcester Red Sox.
+- **TB** [IL] — Tampa Bay Rays transferred RHP Jonathan Heasley from the 15-day injured list to the 60-day injured list.
+- **TB** [selected] — Tampa Bay Rays selected the contract of RF Austin Slater from Durham Bulls.
+- **TB** [optioned] — Tampa Bay Rays optioned 3B Oliver Dunn to Durham Bulls.
 - **NYY** [IL] — New York Yankees placed C Austin Wells on the 10-day injured list. Cervical headaches.
 - **NYY** [selected] — New York Yankees selected the contract of C Ali Sánchez from Scranton/Wilkes-Barre RailRiders.
 - **NYY** [recalled] — New York Yankees recalled C J.C. Escarra from Scranton/Wilkes-Barre RailRiders.
 - **PHI** [outrighted] — Philadelphia Phillies sent RHP Zach Pop outright to Lehigh Valley IronPigs.
 - **TOR** [outrighted] — Toronto Blue Jays sent RHP Tanner Andrews outright to Buffalo Bisons.
 - **HOU** [outrighted] — Houston Astros sent C César Salazar outright to Sugar Land Space Cowboys.
-- **LAA** [IL] — Los Angeles Angels placed DH Jorge Soler on the 10-day injured list retroactive to June 4, 2026. Left oblique strain.
-- **LAA** [IL] — Los Angeles Angels placed C Gustavo Campero on the 10-day injured list. Right hand fracture.
 - **LAA** [DFA] — Los Angeles Angels designated C Omar Martinez for assignment.
 - **LAA** [IL] — Los Angeles Angels activated 1B Nolan Schanuel from the 10-day injured list.
+- **LAA** [IL] — Los Angeles Angels placed C Gustavo Campero on the 10-day injured list. Right hand fracture.
+- **LAA** [IL] — Los Angeles Angels placed DH Jorge Soler on the 10-day injured list retroactive to June 4, 2026. Left oblique strain.
 - **LAA** [selected] — Los Angeles Angels selected the contract of C Gustavo Campero from Rocket City Trash Pandas.
 - **LAA** [IL] — Los Angeles Angels placed RHP Jack Kochanowicz on the 15-day injured list. Right elbow inflammation.
 - **LAA** [recalled] — Los Angeles Angels recalled LHP Sam Aldegheri from Salt Lake Bees.
+- **LAA** [outrighted] — Los Angeles Angels sent RHP Shaun Anderson outright to Salt Lake Bees.
 - **CIN** [IL] — Cincinnati Reds activated RHP Rhett Lowder from the 15-day injured list.
 - **CIN** [optioned] — Cincinnati Reds optioned RHP Luis Mey to Louisville Bats.
 - **WSH** [recalled] — Washington Nationals recalled RHP Riley Cornelio from Rochester Red Wings.
@@ -37,7 +46,7 @@ _Generated 2026-06-08T07:04:36Z · 8 games · significant deviations only_
 _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **SEA @ BAL** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **SEA @ BAL** (away SP Emerson Hancock): very high K% (27.9% vs lg 21.7)
 - **NYY @ CLE** (home SP Gavin Williams): very high K% (29.1% vs lg 21.7)
 - **PHI @ TOR** (away SP Cristopher Sánchez): very high K% (30.8% vs lg 21.7)
 
@@ -55,6 +64,7 @@ _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 
 ## 4 · Lineup / Platoon
 - SEA @ BAL — BAL faces RHP (Emerson Hancock)
+- SEA @ BAL — SEA faces RHP (Trey Gibson)
 - BOS @ TB — TB faces LHP (Connelly Early)
 - BOS @ TB — BOS faces LHP (Ian Seymour)
 - NYY @ CLE — CLE faces RHP (Will Warren)
