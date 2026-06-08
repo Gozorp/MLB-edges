@@ -5841,32 +5841,6 @@ async function _h2hFetchOutcome(date, away, home, gameNum) {
 }
 
 // Main render — fires after the slate paints; updates the H2H div async.
-function renderTeamTiers(){
-  const el = document.getElementById("team-tiers");
-  if (!el) return;
-  const D = window.__teamTiers;
-  if (!D || !D.tiers || !D.tier_order){ el.innerHTML = '<div class="h2h-empty">Team tiers unavailable.</div>'; return; }
-  const COLORS = {"Elite":"#56d364","Above Average":"#3fb6e6","Average":"#7d8590","Below Average":"#e8924a","Poor":"#f85149"};
-  let html = "";
-  for (const tier of D.tier_order){
-    const teams = D.tiers[tier] || [];
-    if (!teams.length) continue;
-    const color = COLORS[tier] || "#7d8590";
-    html += '<div class="h2h-matchup-block" style="border-left:3px solid '+color+'">'
-      + '<div class="h2h-matchup-header"><span style="color:'+color+'">'+tier+'</span><span class="h2h-matchup-summary">'+teams.length+' teams</span></div>';
-    for (const t of teams){
-      html += '<div style="display:flex;gap:10px;padding:3px 2px;font-size:12px;line-height:1.35;border-top:1px solid rgba(127,127,127,.12)">'
-        + '<b style="min-width:40px;color:'+color+'">'+t.abbr+'</b>'
-        + '<span style="min-width:150px">'+t.name+'</span>'
-        + '<span style="flex:1;opacity:.82">'+(t.rationale||'')+'</span></div>';
-    }
-    html += '</div>';
-  }
-  const asof = D.generated_utc ? (' \u00b7 as of '+D.generated_utc.slice(0,10)) : '';
-  el.innerHTML = (html || '<div class="h2h-empty">No tier data.</div>')
-    + '<div style="margin-top:6px;font-size:11px;opacity:.6">'+(D.basis||'')+asof+'</div>';
-}
-
 async function renderH2HHistory(todayRows) {
   const el = document.getElementById("h2h-history");
   if (!el) return;
