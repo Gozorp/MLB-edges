@@ -1296,17 +1296,6 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
-      <div class="accordion-item" data-acc="team-tiers">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Team Power Tiers</span>
-          <span class="chev" aria-hidden="true">&#9662;</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="team-tiers">Open to see all 30 teams tiered by season record &amp; run differential.</div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -6087,6 +6076,43 @@ function _wxBadge(matchupKey){
 }
 
 
+// ===== Team Power Tier chips (read-only display; team_tiers.json) =====
+// Compact per-team season-strength tag shown inline in each Matchup cell next
+// to the team name (replaces the old standalone "Team Power Tiers" accordion).
+// Source: tools/team_tiers.py. Never affects the model.
+function _tierTeam(ab){
+  var D = window.__teamTiers;
+  if (!D || !D.tiers || !ab) return null;
+  var cand = [ab]; var al = (typeof _skAlias === "function") ? _skAlias(ab) : null; if (al) cand.push(al);
+  for (var tier in D.tiers){
+    var arr = D.tiers[tier] || [];
+    for (var i = 0; i < arr.length; i++){
+      if (arr[i] && cand.indexOf(arr[i].abbr) !== -1) return { tier: tier, t: arr[i] };
+    }
+  }
+  return null;
+}
+function _tierChip(ab){
+  var r = _tierTeam(ab);
+  if (!r) return "";
+  var COLORS = {"Elite":"#56d364","Above Average":"#3fb6e6","Average":"#7d8590","Below Average":"#e8924a","Poor":"#f85149"};
+  var LAB = {"Elite":"ELITE","Above Average":"ABOVE","Average":"AVG","Below Average":"BELOW","Poor":"POOR"};
+  var c = COLORS[r.tier] || "#7d8590";
+  var lab = LAB[r.tier] || r.tier;
+  var t = r.t || {};
+  var tip = (t.name || ab) + ' - ' + r.tier
+    + (t.w != null ? '  (' + t.w + '-' + t.l + ', ' + (t.rd >= 0 ? '+' : '') + t.rd + ' run diff)' : '')
+    + (t.rationale ? '\n' + t.rationale : '');
+  return '<span title="' + tip.replace(/"/g, '&quot;') + '" style="display:inline-flex;gap:4px;align-items:center;margin-left:6px;padding:0 5px;border:1px solid ' + c + ';border-radius:3px;font-size:.62rem;font-weight:700;letter-spacing:.3px;white-space:nowrap;vertical-align:middle;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"><span style="opacity:.55;">' + ab + '</span><span style="color:' + c + ';">' + lab + '</span></span>';
+}
+function _tierChips(matchupKey){
+  if (!matchupKey || !window.__teamTiers) return "";
+  var m = ("" + matchupKey).match(/^\s*([A-Za-z]{2,4})\s*@\s*([A-Za-z]{2,4})/);
+  if (!m) return "";
+  return _tierChip(m[1]) + _tierChip(m[2]);
+}
+
+
 function renderSlate(rows, gradeMap, results) {
   if (!rows.length) return '<div class="empty">No slate data found for this date.</div>';
   const have = (v) => v != null && v !== "" && !Number.isNaN(parseFloat(v));
@@ -6297,7 +6323,7 @@ function renderSlate(rows, gradeMap, results) {
     const colspan = haveAnyResult ? 13 : 12;
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
-      <td><strong>${matchupKey || "—"}</strong>${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
+      <td><strong>${matchupKey || "—"}</strong>${_tierChips(matchupKey)}${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
       <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
@@ -7074,7 +7100,6 @@ async function loadSlate(date, { bust = false } = {}) {
     // client-side: scans up to 30 days of picks_*_diag.csv + MLB Stats
     // API for outcomes (localStorage cached).
     try { renderH2HHistory(playableRows); } catch (_) {}
-    try { renderTeamTiers(); } catch (_) {}
     document.getElementById("queryCard").style.display = rows.length ? "" : "none";
     document.getElementById("queryResult").innerHTML = "";
     status.textContent = csvR.status === "fulfilled"
