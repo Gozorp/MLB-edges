@@ -323,9 +323,7 @@ def _roster_batters(date):
 def build_players(end_date, windows):
     if not windows:
         return {}
-    batters = _slate_batters(end_date)
-    if not batters:
-        batters = _roster_batters(end_date)
+    batters = list(dict.fromkeys(_slate_batters(end_date) + _roster_batters(end_date)))
     if not batters:
         return {}
     name2id = _resolve_ids(batters)
