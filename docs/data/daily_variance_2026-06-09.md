@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-09
-_Generated 2026-06-09T05:18:23Z · 15 games · significant deviations only_
+_Generated 2026-06-09T07:07:41Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **SEA** [IL] — Seattle Mariners placed SS J.P. Crawford on the 10-day injured list retroactive to June 6, 2026. Right hand contusion.
@@ -90,6 +90,11 @@ _Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **WSH** Mitchell Parker — 2 apps / 41 pitches over last 3 games — monitor
 - **SF** Keaton Winn — overused — 3 apps / 63 pitches over last 3 games
 - **SF** Erik Miller — 2 apps / 38 pitches over last 3 games — monitor
+- **MIL** Grant Anderson — 2 apps / 47 pitches over last 3 games — monitor
+- **MIL** Drew Rom — 2 apps / 42 pitches over last 3 games — monitor
+- **ATH** Mark Leiter Jr. — 2 apps / 39 pitches over last 3 games — monitor
+- **ATH** Hogan Harris — 2 apps / 51 pitches over last 3 games — monitor
+- **ATH** José Suarez — 2 apps / 63 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
 - SEA @ BAL — BAL faces RHP (Logan Gilbert)
