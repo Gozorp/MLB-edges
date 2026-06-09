@@ -1296,6 +1296,53 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
+      <div class="accordion-item" data-acc="edge-calc">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Edge Calculator</span>
+          <span class="chev" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="edge-calc" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;flex-wrap:wrap;">
+                <label for="ec-mp" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Model win prob</label>
+                <input type="range" id="ec-mp" min="1" max="99" value="60" step="1" style="flex:1;min-width:140px;">
+                <input type="number" id="ec-mpn" min="1" max="99" value="60" step="1" style="width:58px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+                <span style="color:var(--muted);font-size:0.8rem;">%</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:0.8rem;">
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Fair</div>
+                  <div id="ec-fair" style="font-size:1.3rem;font-weight:600;">-150</div>
+                </div>
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Min +4pp</div>
+                  <div id="ec-min" style="font-size:1.3rem;font-weight:600;color:var(--green);">-127</div>
+                </div>
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Max +15pp</div>
+                  <div id="ec-max" style="font-size:1.3rem;font-weight:600;color:var(--red);">+122</div>
+                </div>
+              </div>
+              <div id="ec-zone" style="font-size:0.8rem;color:var(--text);line-height:1.5;margin-bottom:0.6rem;"></div>
+              <div style="display:flex;height:26px;border-radius:5px;overflow:hidden;font-size:0.6rem;border:1px solid var(--border);margin-bottom:1rem;">
+                <div style="flex:5;background:rgba(125,133,144,.18);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;">&lt;4pp no edge</div>
+                <div style="flex:11;background:rgba(63,185,80,.18);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:600;">STAKE 4-15pp</div>
+                <div style="flex:9;background:rgba(248,81,73,.18);display:flex;align-items:center;justify-content:center;color:var(--red);text-align:center;">&gt;15pp TRAP</div>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:0.8rem;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+                  <label for="ec-ln" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Check a line</label>
+                  <input type="number" id="ec-ln" value="-120" step="5" style="width:80px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+                  <span style="color:var(--muted);font-size:0.72rem;">e.g. -120 or +150</span>
+                </div>
+                <div id="ec-verdict" style="font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--bg-elev);border:1px solid var(--border);"></div>
+              </div>
+              <div style="font-size:0.68rem;color:var(--muted);line-height:1.5;margin-top:0.8rem;">Mirrors the model edge_pp gate (stake when model minus Kalshi-implied is 4-15pp). Non-linear: a 4pp edge moves the line ~17 pts on a 54% favorite, ~125 pts on an 84% favorite. Benchmarks Kalshi only -- no cross-book line-shopping. Display-only; never affects picks.</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -7429,6 +7476,38 @@ async function _initAskClaude() {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); doAsk(); }
   });
 }
+function _initEdgeCalc(){
+  var mp=document.getElementById('ec-mp'), mpn=document.getElementById('ec-mpn'), ln=document.getElementById('ec-ln');
+  if(!mp||!mpn||!ln) return;
+  function p2a(p){ return p>=0.5 ? Math.round(-100*p/(1-p)) : Math.round(100*(1-p)/p); }
+  function fmt(o){ return (o>0?'+':'')+o; }
+  function a2p(o){ return o<0 ? (-o)/((-o)+100) : 100/(o+100); }
+  function check(P){
+    var o=parseFloat(ln.value), v=document.getElementById('ec-verdict');
+    if(isNaN(o)||(o>-100&&o<100)){ v.textContent='Enter an American line (-100 or lower, or +100 or higher).'; v.style.color='var(--muted)'; v.style.borderColor='var(--border)'; return; }
+    var edge=(P-a2p(o))*100, msg, col;
+    if(edge<0){ msg='Negative edge ('+edge.toFixed(1)+'pp) -- market rates this side higher than the model. Pass.'; col='var(--red)'; }
+    else if(edge<4){ msg='Edge '+edge.toFixed(1)+'pp -- below the +4pp gate. No value, SKIP.'; col='var(--muted)'; }
+    else if(edge<=15){ msg='GOOD VALUE -- edge '+edge.toFixed(1)+'pp is in the 4-15pp band. The model would stake this.'; col='var(--green)'; }
+    else { msg='TRAP WARNING -- edge '+edge.toFixed(1)+'pp exceeds +15pp. A line this good usually means missing info (late scratch) or a stale price. Model SKIPs.'; col='var(--red)'; }
+    v.textContent=msg; v.style.color=col; v.style.borderColor=col;
+  }
+  function upd(){
+    var P=Math.min(99,Math.max(1,parseFloat(mpn.value)||60))/100;
+    document.getElementById('ec-fair').textContent=fmt(p2a(P));
+    var minI=Math.max(0.01,P-0.04), maxI=Math.max(0.01,P-0.15);
+    document.getElementById('ec-min').textContent=fmt(p2a(minI));
+    document.getElementById('ec-max').textContent=fmt(p2a(maxI));
+    document.getElementById('ec-zone').innerHTML='Stake from <b>'+fmt(p2a(minI))+'</b> to <b>'+fmt(p2a(maxI))+'</b> (implied '+Math.round(maxI*100)+'%-'+Math.round(minI*100)+'%). Worse than '+fmt(p2a(minI))+' = no edge; better than '+fmt(p2a(maxI))+' = trap.';
+    check(P);
+  }
+  mp.addEventListener('input',function(){ mpn.value=mp.value; upd(); });
+  mpn.addEventListener('input',function(){ mp.value=mpn.value; upd(); });
+  ln.addEventListener('input',upd);
+  upd();
+}
+document.addEventListener("DOMContentLoaded", _initEdgeCalc);
+
 document.addEventListener("DOMContentLoaded", _initAskClaude);
 
 // =============================================================
