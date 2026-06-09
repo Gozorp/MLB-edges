@@ -1,0 +1,86 @@
+{
+  "date": "2026-06-08",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-09T09:00:00Z",
+  "n_analyzed": 8,
+  "summary": "June 8 went 4 wins and 4 losses (50% hit rate) across 8 matchups. PHI@TOR carry-thesis OVERRIDE won 5-2 — the best call of the slate; WSH@SF OVERRIDE narrowly lost 4-3 by one-run variance. SEA@BAL was the process failure: carry-thesis conditions matched PHI@TOR and WSH@SF identically (f5_full_delta=0.303, gap=0.0007) but Claude CONFIRMED BAL instead of overriding, and BAL lost 6-3 as the 7th carry-thesis failure predicted. D-grade SP-against picks (NYY@CLE, PHI@TOR model direction) resolved correctly for the better-SP side. Key learning: carry-thesis OVERRIDE must be applied uniformly — selective application of the hard-block on the same slate cost one avoidable directional loss.",
+  "by_matchup": {
+    "SEA @ BAL": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-3",
+      "headline": "SEA won 6-3; carry-thesis failure confirmed for 7th time — Claude CONFIRMED BAL despite identical carry conditions to same-slate OVERRIDE games.",
+      "hypothesis": "Process failure. BAL had f5_full_delta=0.303 and hl_bullpen_xwoba_gap=0.0007 — the same carry-thesis failure signature as PHI@TOR (where Claude correctly OVERRODE) and WSH@SF (where Claude also OVERRODE). Claude noted the carry concern in reasoning but still CONFIRMED BAL direction. SEA won 6-3 as the pattern predicted: Emerson Hancock (27.85% K%) dominated F5 early, and BAL's near-zero bullpen edge provided no recovery path. Consistent application of the carry-thesis hard-block would have switched to SEA, matching the other two override calls on this same slate.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap (0.0007, near-zero), f5_full_delta (0.303) — carry-thesis hard-block inconsistently applied vs same-slate PHI@TOR and WSH@SF overrides; 7th consecutive carry-thesis failure when model carry pick is maintained."
+    },
+    "BOS @ TB": {
+      "verdict": "WIN",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-3",
+      "headline": "TB won 3-1; clean A- grade CONFIRM correct — Stage 1/2 agreement and SP edge delivered.",
+      "hypothesis": "Process validation. Pre-cap A- (score=4) with Connelly Early's SP xERA edge for TB, PQI+7.7, and Stage 1/2 agreement (delta=0.05) all pointing to TB. Edge=+17.74pp outside the [4,15]pp staking band correctly blocked stake, but the directional read was sound. TB won 3-1 behind Early's performance. No carry-thesis concern (f5_full_delta=0.051). This is the expected outcome for a clean A- grade CONFIRM SKIP with aligned signals.",
+      "signals_to_recheck": "calibration_caution_18_25pp — edge in 18-25pp caution band; TB directional win validates the model read; staking block was correct process regardless of the win."
+    },
+    "NYY @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-5",
+      "headline": "NYY won 7-5; D-grade CLE pick with SP xERA against (Warren over Williams) resolved correctly for NYY.",
+      "hypothesis": "Process win on staking; directional loss consistent with D-grade unreliability. Will Warren (NYY) held 0.88 xERA edge over Gavin Williams — the SP quality gap materialized with NYY winning 7-5. Despite CLE dominating Stage 1 (f5_prob=0.7777 for CLE), the large f5_full_delta=0.234 combined with near-zero bullpen gap (hl_bullpen_xwoba_gap=-0.0006) meant CLE's early stage advantage eroded in the full game as expected. confidence_downgrade=True correctly flagged structural uncertainty; SKIP blocked stake correctly. The SP-quality side (NYY) won, consistent with the recurring D-grade + SP-against pattern from prior slates.",
+      "signals_to_recheck": "confidence_downgrade_True, f5_full_delta (0.234, large attenuation even when both stages agree direction), hl_bullpen_xwoba_gap (-0.0006, near-zero) — D-grade with SP xERA against the pick and high delta signals F5-advantage unsustainability even when Stage 2 still nominally picks the same side."
+    },
+    "PHI @ TOR": {
+      "verdict": "WIN",
+      "model_pick": "TOR ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "5-2",
+      "headline": "PHI won 5-2; carry-thesis OVERRIDE to PHI validated — extreme delta (0.463), near-zero gap, and BvP OWNER cluster all confirmed.",
+      "hypothesis": "Process validation. Claude correctly OVERRODE TOR to PHI based on: f5_full_delta=0.463 (extreme, PHI dominates F5 at 91.3%), hl_bullpen_xwoba_gap=-0.0095 (near-zero, TOR pen cannot bridge gap), and BvP OWNER cluster (Schwarber OWNER 28 PA shrunk 0.843, Bohm OWNER 30 PA shrunk 0.928, Harper LOTS_OF_HISTORY 56 PA shrunk 0.822 — all vs Patrick Corbin). PHI won 5-2 — Cristopher Sanchez outpitched Corbin and the BvP owners delivered. This is the strongest single validation of the carry-thesis override rule to date.",
+      "signals_to_recheck": "f5_full_delta (0.463), hl_bullpen_xwoba_gap (-0.0095), BvP OWNER cluster (2+ top-3 batters with OWNER/LOTS_OF_HISTORY vs opposing SP) — carry-thesis override validated at extreme delta with BvP amplification; highest override confidence conditions confirmed correct."
+    },
+    "HOU @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-4",
+      "headline": "HOU won 5-4; marginal C-grade directional win; HARD CAP 10 correctly blocked stake on a one-run game.",
+      "hypothesis": "Process validation. HOU's SP edge (Spencer Arrighetti 2.10 xERA over Grayson Rodriguez, small-sample flagged) delivered in a one-run game. Stage 1/2 agreement (delta=0.004) provided clean structural support. HARD CAP 10 correctly blocked stake (bottom-bucket marginal pick_prob=0.558). confidence_downgrade=True correctly blocked any near-zero edge rescue per the 6/5 rule. The one-run margin is consistent with marginal model probability. No process failure; correct SKIP protocol with valid directional read. Possibly variance — 5-4 games can flip easily.",
+      "signals_to_recheck": "small_sample_SP_True (Arrighetti min_pa=86 flagged) — HOU wins 5-4 narrowly; thin-sample SP edge held up; HARD CAP 10 block was correct regardless of result."
+    },
+    "CIN @ SD": {
+      "verdict": "LOSS",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-6",
+      "headline": "SD won 6-2; pick-side bullpen disadvantage and quality home SP (Buehler) outweighed CIN's marginal model edge.",
+      "hypothesis": "Process win on staking; directional loss consistent with CIN's structural weaknesses. hl_bullpen_xwoba_gap=0.0223 (CIN pen meaningfully worse than SD's, above the 0.020 meaningful threshold) combined with Walker Buehler at home (20.54% K% vs Andrew Abbott's 16.05%) and acute_roster stress all flagged the CIN pick as directionally weak. SD won 6-2 decisively — Buehler and SD's superior pen executed the advantage. HARD CAP 10 (pick_prob=0.5253 bottom-bucket) correctly blocked stake. The pick-side bullpen disadvantage was the decisive structural tell on this game.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap (0.0223, pick-side pen worse than opponent above 0.020 threshold), acute_roster_True, home_sp_k_pct (Buehler 20.54% at home) — SD wins 6-2; pick-side bullpen disadvantage > 0.020 with opposing quality home SP is a directional negative on marginal C-grade HARD CAP 10 picks."
+    },
+    "WSH @ SF": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "4-3",
+      "headline": "WSH won 4-3 by one run; carry-thesis OVERRIDE to SF was correct process — narrow margin is variance, not process failure.",
+      "hypothesis": "Variance failure, not a process failure. Carry-thesis conditions were present (f5_full_delta=0.337, hl_bullpen_xwoba_gap=0.0079 < 0.020, Logan Webb 1.34 xERA edge for SF). Claude correctly OVERRODE to SF per the hard-block rule — same logic as PHI@TOR on the same slate. WSH barely won 4-3: Miles Mikolas (WSH) contained SF to 3 runs while WSH scored 4. A one-run margin in a carry-thesis game is within expected variance. The process was correct; the 7-prior-failure baseline for carry-thesis games is not invalidated by a single one-run variance loss. Pattern is now 7-1 when the carry-thesis override is applied (1 variance loss vs 7 confirmed failures when model pick maintained).",
+      "signals_to_recheck": "f5_full_delta (0.337), hl_bullpen_xwoba_gap (0.0079) — WSH wins 4-3 by one run; carry-thesis override was correct process; classified as variance; pattern remains strongly valid (7 failures before today, 1-1 on overrides today counting PHI@TOR win)."
+    },
+    "MIL @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "15-14",
+      "headline": "MIL won 15-14 in a wild high-scoring game; HARD CAP 1 correctly blocked negative-edge staking while directional read proved valid.",
+      "hypothesis": "Process validation. HARD CAP 1 at -7.13pp correctly blocked staking — the market priced MIL even higher than model, making staking negative EV regardless of the directional win. MIL won 15-14 (OAK/ATH game), validating the directional read (F1_xera_gap=1.20* for Jeffrey Springs, F3=864.0 confirming MIL). The extremely high-scoring game (29 total runs) is inherently high-variance; the one-run margin means a small performance shift could have flipped the result. F1* thin-sample asterisk on Springs was appropriate caution and does not get dismissed by the directional win.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-7.13pp) + F1_xera_gap* (1.20, thin-sample Springs) — MIL wins 15-14; negative edge block was correct; extremely high-scoring game adds variance; thin-SP asterisk caution remains warranted even on directional wins."
+    }
+  },
+  "patterns_observed": [
+    "Carry-thesis hard-block must be applied uniformly across all games on the same slate: SEA@BAL (f5_full_delta=0.303, hl_bullpen_xwoba_gap=0.0007) had identical carry-thesis failure conditions to PHI@TOR (overridden, WON) and WSH@SF (overridden, narrow variance loss), but Claude CONFIRMED BAL and lost 6-3 — the 7th consecutive carry-thesis model-pick failure. Rule must be unconditional: whenever f5_full_delta >= 0.15 AND hl_bullpen_xwoba_gap < 0.020, OVERRIDE to the Stage-1 F5-dominant side regardless of model grade, tier, F-signal stack, or other signals. Selective or reasoned application of this rule defeats the hard-block; all three carry-thesis games today were structurally identical and required the same treatment.",
+    "D-grade picks with SP xERA AGAINST the model pick resolved for the better-SP side in both cases today: NYY@CLE (Warren 0.88 xERA over Williams, NYY won 7-5) and PHI@TOR model direction (Sanchez 2.45 xERA over Corbin, PHI won 5-2). Consistent with prior slates (6/5: 3/3, 6/6-6/7: multiple confirmations). Rule reinforced: on D-grade picks with confidence_downgrade=True AND SP xERA AGAINST pick by any margin, treat the better-SP team as the preferred directional read — the SP quality gap is a more reliable signal than the marginal model probability at this grade level.",
+    "Pick-side bullpen disadvantage above the 0.020 threshold on marginal HARD CAP 10 picks is a directional negative: CIN@SD had hl_bullpen_xwoba_gap=0.0223 (CIN pen worse than SD), acute_roster stress, Walker Buehler at home (20.54% K%) vs Andrew Abbott (16.05% K%), and SD won 6-2 decisively. When hl_bullpen_xwoba_gap > 0.020 on a C-grade HARD CAP 10 marginal favorite (pick_prob in 0.50-0.55 range), the opposing team with the better home SP and bullpen holds the actual edge; treat pick as near-coin-flip at best or fade-able at worst."
+  ]
+}

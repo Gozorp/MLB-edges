@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-09
-_Generated 2026-06-09T07:07:41Z · 15 games · significant deviations only_
+_Generated 2026-06-09T19:37:31Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **SEA** [IL] — Seattle Mariners placed SS J.P. Crawford on the 10-day injured list retroactive to June 6, 2026. Right hand contusion.
@@ -8,14 +8,21 @@ _Generated 2026-06-09T07:07:41Z · 15 games · significant deviations only_
 - **BAL** [claimed] — Chicago Cubs claimed RHP Eduarniel Núñez off waivers from Baltimore Orioles.
 - **BAL** [recalled] — Baltimore Orioles recalled RHP Trey Gibson from Norfolk Tides.
 - **LAD** [TRADE] — Los Angeles Dodgers traded LHP Antoine Kelly to Chicago Cubs for cash.
-- **PIT** [selected] — Pittsburgh Pirates selected the contract of 3B Davis Wendzel from Indianapolis Indians.
 - **PIT** [optioned] — Pittsburgh Pirates optioned RF Jhostynxon Garcia to Indianapolis Indians.
+- **PIT** [selected] — Pittsburgh Pirates selected the contract of 3B Davis Wendzel from Indianapolis Indians.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent RHP Chun Hsi Lin to a minor league contract.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Joe La Sorsa to Worcester Red Sox.
 - **BOS** [recalled] — Boston Red Sox recalled OF Nate Eaton from Worcester Red Sox.
+- **BOS** [IL] — Boston Red Sox activated RHP Garrett Whitlock from the 15-day injured list.
+- **BOS** [optioned] — Boston Red Sox optioned 2B Anthony Seigler to Worcester Red Sox.
 - **TB** [IL] — Tampa Bay Rays transferred RHP Jonathan Heasley from the 15-day injured list to the 60-day injured list.
 - **TB** [selected] — Tampa Bay Rays selected the contract of RF Austin Slater from Durham Bulls.
 - **TB** [optioned] — Tampa Bay Rays optioned 3B Oliver Dunn to Durham Bulls.
+- **MIN** [status] — IF Nolwer Barboza roster status changed by Minnesota Twins.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Failin Placencio to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent SS Cody Morissette to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent C Nolwer Barboza to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent IF Nolwer Barboza to a minor league contract.
 - **MIN** [TRADE] — Arizona Diamondbacks traded RHP Taylor Rashi to Minnesota Twins for cash.
 - **AZ** [signed] — Arizona Diamondbacks signed free agent LF Max Kepler.
 - **AZ** [activated] — Arizona Diamondbacks activated RHP Taylor Clarke.
@@ -26,8 +33,17 @@ _Generated 2026-06-09T07:07:41Z · 15 games · significant deviations only_
 - **TOR** [IL] — Toronto Blue Jays activated RHP Tommy Nance from the 15-day injured list.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Yariel Rodríguez for assignment.
 - **STL** [optioned] — St. Louis Cardinals optioned CF Victor Scott II to Memphis Redbirds.
+- **STL** [IL] — St. Louis Cardinals activated LF Nathan Church from the 10-day injured list.
+- **STL** [optioned] — St. Louis Cardinals optioned CF Victor Scott II to Memphis Redbirds.
+- **NYM** [signed] — New York Mets signed free agent C Jack Scanlon to a minor league contract.
+- **NYM** [optioned] — New York Mets optioned C Hayden Senger to Syracuse Mets.
 - **TEX** [released] — Texas Rangers released LF Sam Haggerty.
 - **TEX** [TRADE] — Texas Rangers traded SS Richie Martin Jr. to Colorado Rockies for cash.
+- **CWS** [IL] — Chicago White Sox placed LF Austin Hays on the 60-day injured list. Left calf strain.
+- **CWS** [selected] — Chicago White Sox selected the contract of OF Braden Montgomery from Charlotte Knights.
+- **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
+- **CWS** [recalled] — Chicago White Sox recalled LHP Joe Rock from Charlotte Knights.
+- **CWS** [optioned] — Chicago White Sox optioned RF Rikuu Nishida to Charlotte Knights.
 - **CHC** [TRADE] — Los Angeles Dodgers traded LHP Antoine Kelly to Chicago Cubs for cash.
 - **CHC** [claimed] — Chicago Cubs claimed RHP Eduarniel Núñez off waivers from Baltimore Orioles.
 - **CHC** [selected] — Chicago Cubs selected the contract of LHP Antoine Kelly from Iowa Cubs.
@@ -46,17 +62,25 @@ _Generated 2026-06-09T07:07:41Z · 15 games · significant deviations only_
 - **LAA** [selected] — Los Angeles Angels selected the contract of 1B Trey Mancini from Salt Lake Bees.
 - **CIN** [IL] — Cincinnati Reds activated RHP Rhett Lowder from the 15-day injured list.
 - **CIN** [optioned] — Cincinnati Reds optioned RHP Luis Mey to Louisville Bats.
+- **SD** [status] — San Diego Padres placed SS Xander Bogaerts on the paternity list.
+- **SD** [recalled] — San Diego Padres recalled 3B Will Wagner from El Paso Chihuahuas.
+- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
+- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
 - **WSH** [recalled] — Washington Nationals recalled RHP Riley Cornelio from Rochester Red Wings.
-- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
-- **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
 - **MIL** [IL] — Milwaukee Brewers placed RHP Carlos Rodriguez on the 15-day injured list retroactive to May 31, 2026.
 - **MIL** [activated] — Milwaukee Brewers activated RHP Joel Kuhnel.
 - **MIL** [outrighted] — Milwaukee Brewers sent RHP Jake Woodford outright to Nashville Sounds.
 - **MIL** [optioned] — Milwaukee Brewers optioned RHP Craig Yoho to Nashville Sounds.
 - **ATH** [IL] — Athletics activated 3B Max Muncy from the 10-day injured list.
 - **ATH** [optioned] — Athletics optioned SS Darell Hernaiz to Las Vegas Aviators.
+- **ATH** [signed] — Athletics signed free agent SS Kenny Fermin to a minor league contract.
 
-_Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+## 1b · Unrecognized codes (review — kept, never dropped)
+- **BOS** code=ACQ — Boston Red Sox acquired LHP Tyler Davis from the Washington Wild Things of the.
+- **CIN** code=ACQ — Cincinnati Reds acquired LHP Steffon Moore from the Kansas City Monarchs of the American Association.
+- **WSH** code=ACQ — Washington Nationals acquired RHP Brock Gillis from the Yuba-Sutter Freebirds of the Pioneer League.
+
+_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **LAD @ PIT** (home SP Paul Skenes): very high K% (28.0% vs lg 21.7)
