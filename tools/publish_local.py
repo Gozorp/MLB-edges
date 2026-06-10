@@ -14,7 +14,7 @@ Clean-room publish:
 
 Runs on the user's authed Windows git. Arg: short label for the commit.
 """
-import sys, os, glob, csv, shutil, subprocess, datetime, tempfile
+import sys, os, glob, csv, json, shutil, subprocess, datetime, tempfile
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 csv.field_size_limit(10 ** 7)
 label = sys.argv[1] if len(sys.argv) > 1 else "local"
@@ -95,6 +95,36 @@ try:
     print("gate: %s OK (%d games, %d cols, all rows intact)" % (diag, n, _hdr))
 except Exception as e:
     print("publish ABORT: %s invalid (%r)" % (diag, e)); raise SystemExit(1)
+
+def _candidate_ok(f):
+    """Fail-closed tear check before promoting a candidate: CSVs rectangular
+    (row width == header width), JSON parses, JSONL parses per line. Torn
+    sidecars are dropped with a warning; the publish keeps moving. (The diag
+    is gate-checked above and aborts the whole publish instead.)"""
+    try:
+        if f.endswith(".csv"):
+            with open(f, encoding="utf-8", newline="") as fh:
+                rws = list(csv.reader(fh))
+            if not rws:
+                print("candidate DROPPED (empty): %s" % f); return False
+            w = len(rws[0])
+            bad = [i for i, r in enumerate(rws[1:], 2) if len(r) != w]
+            if bad:
+                print("candidate DROPPED (torn row(s) %s): %s" % (bad[:5], f)); return False
+        elif f.endswith(".json"):
+            json.load(open(f, encoding="utf-8"))
+        elif f.endswith(".jsonl"):
+            for _ln in open(f, encoding="utf-8"):
+                _ln = _ln.strip()
+                if _ln:
+                    json.loads(_ln)
+    except Exception as e:
+        print("candidate DROPPED (invalid %r): %s" % (e, f)); return False
+    return True
+
+
+present = [f for f in present if _candidate_ok(f)]
+print("publish set after tear-check: %d file(s)" % len(present))
 
 tmp = tempfile.mkdtemp(prefix="mlbpub_")
 for f in present:

@@ -239,7 +239,10 @@ def main():
         except Exception as e: report[sec] = [{"note": "%s section failed: %r" % (sec, e)}]
 
     os.makedirs("docs/data", exist_ok=True)
-    json.dump(report, open("docs/data/daily_variance_%s.json" % day, "w"), indent=1)
+    _jp = "docs/data/daily_variance_%s.json" % day
+    with open(_jp + ".tmp", "w", encoding="utf-8") as _fh:
+        json.dump(report, _fh, indent=1)
+    os.replace(_jp + ".tmp", _jp)  # atomic + explicit utf-8 (was platform-default)
     L = ["# Daily Variance Report — %s" % day,
          "_Generated %s · %d games · significant deviations only_" % (report["generated"], len(games)), ""]
     def sect(title, items, fmt):
@@ -264,7 +267,10 @@ def main():
          lambda x: "**%s** %s — %s" % (x.get("team",""), x.get("reliever",""), x.get("flag", x.get("note",""))))
     sect("4 · Lineup / Platoon", report["platoon"],
          lambda x: "%s — %s %s" % (x.get("game",""), x.get("team",""), x.get("note","")))
-    open("docs/data/daily_variance_%s.md" % day, "w", encoding="utf-8").write("\n".join(L) + "\n")
+    _mp = "docs/data/daily_variance_%s.md" % day
+    with open(_mp + ".tmp", "w", encoding="utf-8") as _fh:
+        _fh.write("\n".join(L) + "\n")
+    os.replace(_mp + ".tmp", _mp)  # atomic
     print("Daily Variance Report -> docs/data/daily_variance_%s.md (.json)" % day)
     print("  roster:%d  sp_flags:%d  bullpen_fatigue:%d  platoon:%d" %
           (len(report["roster_delta"]), len(report["sp_flags"]), len(report["bullpen_fatigue"]), len(report["platoon"])))

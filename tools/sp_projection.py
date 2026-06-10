@@ -150,7 +150,9 @@ def main(date):
            "method": "rotation-rest-heuristic",
            "games": games}
     p = os.path.join("docs", "data", "sp_projection_%s.json" % date)
-    open(p, "w", encoding="utf-8").write(json.dumps(out, indent=2))
+    with open(p + ".tmp", "w", encoding="utf-8") as fh:
+        fh.write(json.dumps(out, indent=2))
+    os.replace(p + ".tmp", p)  # atomic: no torn sidecar on crash/AV-lock
     n_proj = sum(len(v) for v in games.values())
     print("sp_projection: %d pending side(s), %d projected -> %s" % (len(pend), n_proj, p))
     for mk, sides in games.items():

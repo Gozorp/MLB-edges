@@ -428,8 +428,9 @@ def main():
         print("PLAYER-FAIL %s: %s" % (type(e).__name__, e))
     outp = os.path.join("docs", "data", "streaks_%s.json" % date)
     os.makedirs(os.path.dirname(outp), exist_ok=True)
-    with open(outp, "w", encoding="utf-8") as fh:
+    with open(outp + ".tmp", "w", encoding="utf-8") as fh:
         json.dump(sidecar, fh, indent=1)
+    os.replace(outp + ".tmp", outp)  # atomic: no torn sidecar on crash/AV-lock
     print("wrote %s" % outp)
 
 

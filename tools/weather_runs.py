@@ -234,7 +234,9 @@ def main():
         print("WEATHER-FAIL %s: %s" % (type(e).__name__, e))
     outp = os.path.join("docs", "data", "weather_runs_%s.json" % date)
     os.makedirs(os.path.dirname(outp), exist_ok=True)
-    json.dump(sidecar, open(outp, "w", encoding="utf-8"), indent=1)
+    with open(outp + ".tmp", "w", encoding="utf-8") as fh:
+        json.dump(sidecar, fh, indent=1)
+    os.replace(outp + ".tmp", outp)  # atomic: no torn sidecar on crash/AV-lock
     print("wrote %s" % outp)
 
 

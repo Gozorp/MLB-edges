@@ -191,8 +191,9 @@ def main():
            "games": games}
     outp = os.path.join(ROOT, "docs", "data", "spread_%s.json" % slate)
     try:
-        with open(outp, "w", encoding="utf-8") as fh:
+        with open(outp + ".tmp", "w", encoding="utf-8") as fh:
             json.dump(out, fh, indent=1)
+        os.replace(outp + ".tmp", outp)  # atomic: no torn sidecar on crash/AV-lock
         print("[spread] wrote %d games -> %s" % (len(games), outp))
     except Exception as e:
         print("[spread] write failed: %s" % e)

@@ -86,8 +86,9 @@ def main():
            "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
            "tier_order": [n for n, _ in TIERS],
            "tiers": tiers}
-    with open(OUT, "w", encoding="utf-8") as f:
+    with open(OUT + ".tmp", "w", encoding="utf-8") as f:
         json.dump(out, f, indent=1, ensure_ascii=False)
+    os.replace(OUT + ".tmp", OUT)  # atomic: no torn sidecar on crash/AV-lock
     print("[team_tiers] wrote %d teams -> %s" % (sum(len(v) for v in tiers.values()), OUT))
     for n, _ in TIERS:
         print("  %-14s %d: %s" % (n, len(tiers[n]), ", ".join(t["abbr"] for t in tiers[n])))

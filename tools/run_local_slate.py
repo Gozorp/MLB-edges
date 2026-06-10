@@ -105,7 +105,8 @@ def main():
         m = re.search(r"(\d{4}-\d{2}-\d{2})", f.name)
         if m:
             dates.add(m.group(1))
-    (dd / "manifest.json").write_text(json.dumps({"dates": sorted(dates, reverse=True)}, indent=2))
+    (dd / "manifest.json.tmp").write_text(json.dumps({"dates": sorted(dates, reverse=True)}, indent=2))
+    os.replace(str(dd / "manifest.json.tmp"), str(dd / "manifest.json"))  # atomic
     log("  manifest.json -> %d dates" % len(dates))
 
     # summary
