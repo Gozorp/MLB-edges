@@ -1279,9 +1279,10 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
      ========================================================== */
 
   /* ---- quick-filter chips (all widths; scroll strip on phones) ---- */
+  .picker{ flex-wrap: wrap; }
   #quick-chips{
     display: flex; gap: var(--sp-2); flex-wrap: wrap;
-    margin-top: var(--sp-2);
+    flex-basis: 100%; margin-top: var(--sp-2);
   }
   .q-chip{
     font: inherit; font-size: 0.68rem; font-weight: 600;
@@ -1296,7 +1297,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   @media (max-width: 768px){
 
     /* ---- sticky controls card (date picker + status + chips) ---- */
-    .card:has(.picker){
+    .picker{
       position: sticky; top: 0; z-index: 60;
       background: var(--glass-bg);
       backdrop-filter: blur(16px) saturate(1.4);
@@ -7834,7 +7835,7 @@ document.addEventListener("DOMContentLoaded", function(){ setTimeout(_initPLRepo
 document.addEventListener("click", function(e){
   var chip = e.target.closest(".q-chip");
   if (!chip) return;
-  var q = document.getElementById("q"), b = document.getElementById("askBtn");
+  var q = document.getElementById("queryInput"), b = document.getElementById("askBtn");
   if (!q || !b) return;
   q.value = chip.getAttribute("data-query") || "";
   b.click();
