@@ -1797,7 +1797,38 @@ const REPO_RAW_BASE = "data/";
 const FALLBACK_RAW_BASE = "https://raw.githubusercontent.com/Gozorp/MLB-edges/main/";
 const USE_FALLBACK_ON_404 = true;   // set false when repo goes private
 
-function renderPerfectPair(rows, results) {
+async function _ppProjectedLineups() {
+  // Most recent POSTED lineup per team from the last 3 published diag dates.
+  // History is immutable -> force-cache; resolved once per session.
+  if (window.__ppProj) return window.__ppProj;
+  var out = {};
+  try {
+    var mf = await fetch("./data/manifest.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; });
+    var today = (window.__streaks && window.__streaks.date) || new Date().toISOString().slice(0, 10);
+    var dates = ((mf && mf.dates) || []).filter(function (d) { return d < today; }).sort().reverse().slice(0, 3);
+    for (var di = 0; di < dates.length; di++) {
+      var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: "force-cache" }).then(function (r) { return r.ok ? r.text() : null; });
+      if (!txt) continue;
+      var prows = [];
+      try { prows = parseCSV(txt); } catch (_e) { continue; }
+      prows.forEach(function (r) {
+        var mk = (r.matchup || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+        var t = mk.split(" @ ");
+        [["away_top_5_batters_json", (t[0] || "").trim()], ["home_top_5_batters_json", (t[1] || "").trim()]].forEach(function (cfg) {
+          if (!cfg[1] || out[cfg[1]]) return;
+          try {
+            var arr = JSON.parse(r[cfg[0]] || "[]");
+            if (arr.length >= 6) out[cfg[1]] = { batters: arr, from: dates[di] };
+          } catch (_e) {}
+        });
+      });
+    }
+  } catch (_e) {}
+  window.__ppProj = out;
+  return out;
+}
+
+async function renderPerfectPair(rows, results) {
   // ============================================================
   // Perfect Pair (2026-06-10, display-only heuristic; Rule-9
   // starting weights, tune by eyeball). Pairs posted-lineup bats
@@ -1809,6 +1840,8 @@ function renderPerfectPair(rows, results) {
   try {
     var wx = (window.__weatherRuns && window.__weatherRuns.games) || {};
     var stP = (window.__streaks && window.__streaks.players) || {};
+    var projMap = {};
+    try { projMap = await _ppProjectedLineups(); } catch (_e) {}
     var nz = function (v, lo, hi) { v = parseFloat(v); if (isNaN(v)) return null; return Math.max(0, Math.min(1, (v - lo) / (hi - lo))); };
     var pool = [];
     (rows || []).forEach(function (r) {
@@ -1825,8 +1858,9 @@ function renderPerfectPair(rows, results) {
       var teams = mk.split(" @ ");
       [[r.away_top_5_batters_json, r.home_sp_name, (teams[0] || "").trim()],
        [r.home_top_5_batters_json, r.away_sp_name, (teams[1] || "").trim()]].forEach(function (cfg) {
-        var arr = [];
+        var arr = [], proj = false;
         try { arr = JSON.parse(cfg[0] || "[]"); } catch (_e) {}
+        if (!arr.length && projMap[cfg[2]] && projMap[cfg[2]].batters) { arr = projMap[cfg[2]].batters; proj = true; }
         arr.forEach(function (b) {
           var pa = parseInt(b.season_PA || 0), hr = parseInt(b.season_HR || 0);
           if (!b.name || pa < 100) return;
@@ -1841,7 +1875,7 @@ function renderPerfectPair(rows, results) {
           var H = 0;
           try { var hh = stP[b.name] && stP[b.name]["14d"] && stP[b.name]["14d"].H; if (typeof hh === "number") H = hh; } catch (_e) {}
           var bpPA = parseFloat(b.vs_today_SP_PA || 0), bpOPS = parseFloat(b.vs_today_SP_OPS);
-          var bvp = (bpPA > 0 && !isNaN(bpOPS)) ? Math.max(-0.5, Math.min(0.5, bpOPS - 0.72)) * Math.min(1, bpPA / 20) : 0;
+          var bvp = (!proj && bpPA > 0 && !isNaN(bpOPS)) ? Math.max(-0.5, Math.min(0.5, bpOPS - 0.72)) * Math.min(1, bpPA / 20) : 0;
           var la = parseFloat(b.la);
           var loft = (!isNaN(la) && la < 8) ? 0.85 : ((la >= 12 && la <= 24) ? 1.05 : 1.0);
           var sf = String(b.sample_flag || "OK");
@@ -1853,12 +1887,13 @@ function renderPerfectPair(rows, results) {
           pool.push({ name: b.name, team: cfg[2], mk: mk, order: order,
                       k: parseFloat(b.k_pct), xslg: parseFloat(b.xslg), hh: parseFloat(b.hard_hit_pct),
                       xwoba: parseFloat(b.xwoba), hrP: hrP, H: H, tilt: tilt, spFlag: spFlag, oppSP: oppSP,
-                      score: 100 * base * loft * wMult * gMult * sMult });
+                      proj: proj,
+                      score: 100 * base * loft * wMult * gMult * sMult * (proj ? 0.93 : 1) });
         });
       });
     });
     if (pool.length < 2) {
-      host.innerHTML = '<div class="muted" style="font-size:0.8rem;">Perfect Pairs unlock once lineups post (needs 2+ qualified posted-lineup bats; pre-game only).</div>';
+      host.innerHTML = '<div class="muted" style="font-size:0.8rem;">Perfect Pairs build from posted lineups when available, else each team\'s most recent posted lineup as a projection. No qualified pre-game bats right now (all games started, or no lineup history yet).</div>';
       return;
     }
     pool.sort(function (a, b) { return b.score - a.score; });
@@ -1898,6 +1933,7 @@ function renderPerfectPair(rows, results) {
       if (p.a.tilt > 0.2 || p.b.tilt > 0.2) bits.push("wind/heat tilt +" + Math.max(p.a.tilt, p.b.tilt).toFixed(2));
       if (p.a.H >= 0.4) bits.push(p.a.name.split(" ").pop() + " HOT");
       if (p.b.H >= 0.4) bits.push(p.b.name.split(" ").pop() + " HOT");
+      if (p.a.proj || p.b.proj) bits.push((p.a.proj && p.b.proj) ? "both lineups projected" : "one lineup projected");
       if (!bits.length) bits.push("highest joint holistic confidence on the board");
       return bits.join(" &middot; ");
     };
@@ -1906,6 +1942,7 @@ function renderPerfectPair(rows, results) {
         + '<div style="font-weight:700;font-size:0.9rem;">' + x.name + '</div>'
         + '<div class="muted" style="font-size:0.68rem;">' + x.team + ' &middot; #' + x.order + ' &middot; vs ' + (x.oppSP || "TBD") + '</div>'
         + '<div style="font-size:0.78rem;margin-top:3px;">HR ' + pc(x.hrP) + ' <span class="muted">&middot; xSLG ' + (isNaN(x.xslg) ? "&mdash;" : x.xslg.toFixed(3)) + ' &middot; HH ' + (isNaN(x.hh) ? "&mdash;" : x.hh.toFixed(0)) + '%</span>'
+        + (x.proj ? ' <span style="color:var(--yellow);border:1px solid var(--yellow);border-radius:3px;padding:0 4px;font-size:0.58rem;font-weight:700;vertical-align:middle;">PROJ</span>' : '')
         + (x.H >= 0.4 ? ' <span style="color:var(--green);font-size:0.62rem;font-weight:700;">HOT</span>' : '') + '</div></div>';
     };
     var h = "";
@@ -1927,7 +1964,7 @@ function renderPerfectPair(rows, results) {
           + ' + <strong>' + bq.b.name + '</strong> <span class="muted">(' + bq.b.team + ', ' + pc(bq.b.hrP, 0) + ')</span></div>'
           + '<div class="muted" style="font-size:0.66rem;">' + bq.tag + ' &middot; ' + bq.score.toFixed(1) + ' &middot; both ' + pc(bq.pBoth) + (bq.rho ? "*" : "") + '</div></div>';
       }
-      h += '<div class="muted" style="font-size:0.62rem;margin-top:9px;">Display-only heuristic over posted lineups (P-Score: 45% HR prob &middot; 35% contact quality &middot; 12% 14-day form &middot; 8% BvP; context: loft, weather tilt, game grade, sample). * stack P(both) uses flat &rho;=0.06 same-team correlation (approx). Not a model output; nothing here feeds picks or staking.</div>';
+      h += '<div class="muted" style="font-size:0.62rem;margin-top:9px;">Display-only heuristic over posted lineups (P-Score: 45% HR prob &middot; 35% contact quality &middot; 12% 14-day form &middot; 8% BvP; context: loft, weather tilt, game grade, sample). * stack P(both) uses flat &rho;=0.06 same-team correlation (approx). PROJ legs use the team\'s most recent posted lineup (BvP zeroed, &times;0.93 confidence; platoon swaps possible) and are replaced automatically when today\'s lineup posts &mdash; scratched players drop and the next-best pair promotes on refresh. Not a model output; nothing here feeds picks or staking.</div>';
     } else {
       h = '<div class="muted" style="font-size:0.8rem;">No qualified pairs (pre-game posted lineups required).</div>';
     }
