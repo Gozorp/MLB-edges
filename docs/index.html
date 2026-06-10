@@ -2550,7 +2550,7 @@ function _ltClassifyStatus(detailedState) {
   if (/cancel/.test(s)) return "cancelled";
   if (/final|game over|completed early/.test(s)) return "final";
   if (/pre-game|warmup|delayed start|scheduled/.test(s)) return "pre";
-  if (/in progress|manager challenge|delayed|review|umpire|replay/.test(s)) return "live";
+  if (/in progress|challenge|delayed|review|umpire|replay/.test(s)) return "live";
   return "unknown";
 }
 
@@ -5504,7 +5504,7 @@ function _gameMLStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
     if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
@@ -5523,7 +5523,7 @@ function _totalStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
     if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
@@ -5545,7 +5545,7 @@ function _pitcherKStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
     if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
@@ -5664,7 +5664,7 @@ function _hrPropStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|manager challenge|delayed/.test(_st)) return "LIVE";
+    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
     if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
@@ -6280,7 +6280,7 @@ function renderSlate(rows, gradeMap, results) {
         let _sl = "TBD";
         let _extra = undefined;
         if (/postpon|suspend|cancel/.test(_st)) _sl = "POSTPONED";
-        else if (/in progress|manager challenge|delayed/.test(_st)) {
+        else if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) {
           _sl = "LIVE";
           if (result.awayScore != null && result.homeScore != null) {
             _extra = `${result.awayAbbr} ${result.awayScore}-${result.homeScore} ${result.homeAbbr}`;
@@ -7760,7 +7760,7 @@ document.addEventListener("click", function (e) {
     for (const k of Object.keys(results)) {
       const r = results[k];
       const s = String(r.statusText || "").toLowerCase();
-      if (/in progress|manager challenge|delayed/.test(s)) {
+      if (/in progress|challenge|delayed|review|replay|umpire/.test(s)) {
         liveCount++;
       }
     }
