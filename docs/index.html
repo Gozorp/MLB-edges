@@ -1269,6 +1269,144 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     }
   }
   </style>
+  <style id="refine-layer-2-mobile-slate">
+  /* ==========================================================
+     Refinement layer 2 (2026-06-10) -- mobile slate experience.
+     SIMPLE = card feed; ADVANCED = sticky-scroll spreadsheet;
+     sticky controls; quick-filter chips. Additive, cascade-last,
+     selectors verified against the live row template. Revert =
+     delete this block (+ the #quick-chips div and its listener).
+     ========================================================== */
+
+  /* ---- quick-filter chips (all widths; scroll strip on phones) ---- */
+  #quick-chips{
+    display: flex; gap: var(--sp-2); flex-wrap: wrap;
+    margin-top: var(--sp-2);
+  }
+  .q-chip{
+    font: inherit; font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--accent); background: rgba(88, 166, 255, 0.07);
+    border: 1px solid rgba(88, 166, 255, 0.35); border-radius: 999px;
+    padding: 5px 12px; cursor: pointer; white-space: nowrap;
+  }
+  .q-chip:hover{ background: rgba(88, 166, 255, 0.16); }
+  .q-chip:active{ transform: scale(0.96); }
+
+  @media (max-width: 768px){
+
+    /* ---- sticky controls card (date picker + status + chips) ---- */
+    .card:has(.picker){
+      position: sticky; top: 0; z-index: 60;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+    #quick-chips{
+      flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity;
+      margin-left: calc(-1 * var(--sp-2)); padding: 2px var(--sp-2);
+    }
+    #quick-chips::-webkit-scrollbar{ display: none; }
+    .q-chip{ scroll-snap-align: start; flex: 0 0 auto; min-height: 32px; }
+
+    /* =====================================================
+       SIMPLE mode: table -> card feed
+       (row template: td1 chev, td2 matchup, td3 pick,
+        td5 full, td7 edge, td10 o/u; grade chip via :has)
+       ===================================================== */
+    body.simple-mode table:has(tr.row-clickable),
+    body.simple-mode table:has(tr.row-clickable) tbody{ display: block; }
+    body.simple-mode table:has(tr.row-clickable) thead{ display: none; }
+
+    body.simple-mode tr.row-clickable{
+      display: block; position: relative;
+      margin: 0 0 var(--sp-2); padding: var(--sp-2) var(--sp-3);
+      background: var(--bg-elev);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 3px solid var(--border); border-radius: 10px;
+    }
+    body.simple-mode tr.row-clickable td{
+      display: block; padding: 0; border: none; white-space: normal;
+    }
+    /* grade strip -- existing grade-* chip classes, zero renderer change */
+    body.simple-mode tr.row-clickable:has(.grade-A),
+    body.simple-mode tr.row-clickable:has(.grade-A-){ border-left-color: var(--green); }
+    body.simple-mode tr.row-clickable:has(.grade-Bp),
+    body.simple-mode tr.row-clickable:has(.grade-B),
+    body.simple-mode tr.row-clickable:has(.grade-Bm){ border-left-color: var(--yellow); }
+
+    /* td1: chev -> bottom-right expand affordance */
+    body.simple-mode tr.row-clickable td:nth-child(1){
+      position: absolute; right: var(--sp-3); bottom: var(--sp-2);
+    }
+    /* td2: matchup headline (chips ride along inline) */
+    body.simple-mode tr.row-clickable td:nth-child(2){
+      font-size: 0.95rem; margin-bottom: 4px; padding-right: 3.2rem;
+    }
+    /* grade chip -> top-right corner */
+    body.simple-mode tr.row-clickable td:has(.grade){
+      position: absolute; top: var(--sp-2); right: var(--sp-3);
+    }
+    /* td3 pick / td7 edge / td5 full / td10 o/u -> labeled inline row */
+    body.simple-mode tr.row-clickable td:nth-child(3),
+    body.simple-mode tr.row-clickable td:nth-child(5),
+    body.simple-mode tr.row-clickable td:nth-child(10){
+      display: inline-block; margin-right: var(--sp-3); font-size: 0.82rem;
+    }
+    body.simple-mode tr.row-clickable td.col-edge{
+      display: inline-block; margin-right: var(--sp-3);
+      font-size: 0.82rem; font-weight: 700;
+    }
+    body.simple-mode tr.row-clickable td:nth-child(3)::before{ content: "PICK "; }
+    body.simple-mode tr.row-clickable td:nth-child(5)::before{ content: "FULL "; }
+    body.simple-mode tr.row-clickable td.col-edge::before{ content: "EDGE "; }
+    body.simple-mode tr.row-clickable td:nth-child(3)::before,
+    body.simple-mode tr.row-clickable td:nth-child(5)::before,
+    body.simple-mode tr.row-clickable td.col-edge::before{
+      color: var(--muted); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    /* remaining unclassed cells (status / result) settle below, quiet */
+    body.simple-mode tr.row-clickable td:nth-child(11),
+    body.simple-mode tr.row-clickable td:nth-child(13){
+      font-size: 0.72rem; color: var(--muted); margin-top: 2px;
+    }
+
+    /* drawer: existing .open class toggle, card-shaped */
+    body.simple-mode tr.details-row{ display: none; }
+    body.simple-mode tr.details-row.open{
+      display: block; margin: calc(-1 * var(--sp-2)) 0 var(--sp-2);
+      border: 1px solid rgba(255, 255, 255, 0.06); border-top: none;
+      border-radius: 0 0 10px 10px; background: var(--bg);
+    }
+    body.simple-mode tr.details-row.open td{
+      display: block; padding: var(--sp-3);
+    }
+
+    /* =====================================================
+       ADVANCED mode: dense table, own scrollport, pinned
+       matchup column, decorative chev hidden (rows still tap)
+       ===================================================== */
+    body:not(.simple-mode) table:has(tr.row-clickable){
+      display: block; overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable) th:nth-child(1),
+    body:not(.simple-mode) table:has(tr.row-clickable) td:nth-child(1){
+      display: none;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable) th:nth-child(2),
+    body:not(.simple-mode) table:has(tr.row-clickable) tr.row-clickable td:nth-child(2){
+      position: sticky; left: 0; z-index: 5;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border);
+    }
+  }
+  </style>
 </head>
 <body>
 
@@ -1336,6 +1474,12 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <button id="refreshBtn" title="Re-fetch with cache bypass">Refresh data</button>
     <span id="liveIndicator"></span>
     <span class="muted" id="status"></span>
+    <div id="quick-chips" aria-label="Quick slate filters">
+      <button type="button" class="q-chip" data-query="show A grades">A Grades</button>
+      <button type="button" class="q-chip" data-query="best pick">Best Pick</button>
+      <button type="button" class="q-chip" data-query="parlay legs">Parlay Legs</button>
+      <button type="button" class="q-chip" data-query="contrarian">Contrarian</button>
+    </div>
   </div>
 
   <div class="card" id="queryCard" style="display:none;">
@@ -7679,6 +7823,24 @@ function _initPLReport(){
     .catch(function(){ item.style.display = 'none'; });
 }
 document.addEventListener("DOMContentLoaded", function(){ setTimeout(_initPLReport, 2500); });
+
+// =============================================================
+// Quick-filter chips (2026-06-10). STRICTLY a macro for typing
+// into the existing, already-tested Ask-the-Slate box. Document-
+// level delegation: survives every slate re-render; chips live in
+// the static controls card that no renderer rewrites. Failure
+// mode: chip does nothing. Touches no existing function.
+// =============================================================
+document.addEventListener("click", function(e){
+  var chip = e.target.closest(".q-chip");
+  if (!chip) return;
+  var q = document.getElementById("q"), b = document.getElementById("askBtn");
+  if (!q || !b) return;
+  q.value = chip.getAttribute("data-query") || "";
+  b.click();
+  var card = document.getElementById("queryCard");
+  if (card && card.style.display !== "none") card.scrollIntoView({behavior: "smooth", block: "start"});
+});
 
 document.addEventListener("DOMContentLoaded", _initAskClaude);
 
