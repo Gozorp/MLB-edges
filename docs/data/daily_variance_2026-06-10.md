@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-10
-_Generated 2026-06-10T07:09:03Z · 15 games · significant deviations only_
+_Generated 2026-06-10T08:32:43Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BOS** [optioned] — Boston Red Sox optioned LHP Joe La Sorsa to Worcester Red Sox.
