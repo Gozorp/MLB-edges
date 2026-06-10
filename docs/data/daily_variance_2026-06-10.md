@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-10
-_Generated 2026-06-10T03:26:36Z · 15 games · significant deviations only_
+_Generated 2026-06-10T07:09:03Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BOS** [optioned] — Boston Red Sox optioned LHP Joe La Sorsa to Worcester Red Sox.
@@ -94,7 +94,6 @@ _Suppressed 9 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **LAD @ PIT** (away SP Shohei Ohtani): very high K% (30.9% vs lg 21.7)
 - **MIN @ DET** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **ATL @ CWS** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **MIL @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **HOU @ LAA** (home SP Reid Detmers): very high K% (29.4% vs lg 21.7)
 
 ## 3 · Bullpen Fatigue (last 3 games)
@@ -103,18 +102,30 @@ _Suppressed 9 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **NYY** Tim Hill — overused — 3 apps / 22 pitches over last 3 games
 - **NYY** David Bednar — 2 apps / 38 pitches over last 3 games — monitor
 - **NYY** Paul Blackburn — 2 apps / 38 pitches over last 3 games — monitor
+- **WSH** Brad Lord — threw 57 pitches last night — likely unavailable
+- **SF** JT Brubaker — 2 apps / 38 pitches over last 3 games — monitor
+- **SF** Dylan Smith — overused — 3 apps / 37 pitches over last 3 games
 - **SF** Keaton Winn — 2 apps / 41 pitches over last 3 games — monitor
+- **SD** Adrian Morejon — 2 apps / 47 pitches over last 3 games — monitor
+- **SD** Jason Adam — 2 apps / 44 pitches over last 3 games — monitor
+- **SD** Yuki Matsui — 2 apps / 39 pitches over last 3 games — monitor
 - **SEA** José A. Ferrer — 2 apps / 60 pitches over last 3 games — monitor
 - **SEA** Andrés Muñoz — 2 apps / 39 pitches over last 3 games — monitor
 - **LAD** Blake Treinen — 2 apps / 53 pitches over last 3 games — monitor
+- **MIN** Cody Laweryson — 2 apps / 48 pitches over last 3 games — monitor
+- **MIN** Justin Lawrence — 2 apps / 38 pitches over last 3 games — monitor
+- **DET** Kyle Finnegan — 2 apps / 39 pitches over last 3 games — monitor
 - **MIA** Michael Petersen — 2 apps / 43 pitches over last 3 games — monitor
 - **MIA** Anthony Bender — 2 apps / 35 pitches over last 3 games — monitor
 - **PHI** Orion Kerkering — 2 apps / 49 pitches over last 3 games — monitor
 - **PHI** José Alvarado — 2 apps / 40 pitches over last 3 games — monitor
 - **TOR** Adam Macko — 2 apps / 37 pitches over last 3 games — monitor
 - **CWS** Erick Fedde — threw 88 pitches last night — likely unavailable
+- **COL** Jaden Hill — 2 apps / 36 pitches over last 3 games — monitor
+- **MIL** Joel Kuhnel — 2 apps / 43 pitches over last 3 games — monitor
 - **ATH** Mark Leiter Jr. — 2 apps / 39 pitches over last 3 games — monitor
 - **ATH** Hogan Harris — 2 apps / 51 pitches over last 3 games — monitor
+- **LAA** Kirby Yates — 2 apps / 36 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
 - BOS @ TB — TB faces LHP (Jake Bennett)
@@ -141,6 +152,7 @@ _Suppressed 9 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - ATL @ CWS — CWS faces LHP (Chris Sale)
 - CHC @ COL — COL faces LHP (Shota Imanaga)
 - CHC @ COL — CHC faces RHP (Michael Lorenzen)
+- MIL @ ATH — ATH faces RHP (Brandon Sproat)
 - MIL @ ATH — MIL faces RHP (Jack Perkins)
 - HOU @ LAA — LAA faces RHP (Peter Lambert)
 - HOU @ LAA — HOU faces LHP (Reid Detmers)
