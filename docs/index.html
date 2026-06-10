@@ -1550,6 +1550,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
+      <div class="accordion-item" data-acc="perfect-pair">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Perfect Pair <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--accent);border-radius:3px;color:var(--accent);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">HEURISTIC</span></span>
+          <span class="chev" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="perfect-pair"><div class="muted" style="font-size:0.8rem;">Loading&hellip;</div></div>
+          </div>
+        </div>
+      </div>
       <div class="accordion-item" data-acc="pl-report">
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
           <span>PitcherList SP Report <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--yellow);border-radius:3px;color:var(--yellow);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">VOLATILE &middot; UNVERIFIED</span></span>
@@ -1785,6 +1796,146 @@ const REPO_RAW_BASE = "data/";
 // fails AND we know the repo is public.  Toggle this if you flip to private.
 const FALLBACK_RAW_BASE = "https://raw.githubusercontent.com/Gozorp/MLB-edges/main/";
 const USE_FALLBACK_ON_404 = true;   // set false when repo goes private
+
+function renderPerfectPair(rows, results) {
+  // ============================================================
+  // Perfect Pair (2026-06-10, display-only heuristic; Rule-9
+  // starting weights, tune by eyeball). Pairs posted-lineup bats
+  // by holistic P-Score, not naive HR prob. Never touches the
+  // model, picks, or staking. Errors degrade to a muted note.
+  // ============================================================
+  var host = document.getElementById("perfect-pair");
+  if (!host) return;
+  try {
+    var wx = (window.__weatherRuns && window.__weatherRuns.games) || {};
+    var stP = (window.__streaks && window.__streaks.players) || {};
+    var nz = function (v, lo, hi) { v = parseFloat(v); if (isNaN(v)) return null; return Math.max(0, Math.min(1, (v - lo) / (hi - lo))); };
+    var pool = [];
+    (rows || []).forEach(function (r) {
+      var mk = (r.matchup || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+      try {
+        var res = matchResult(r, results || {});
+        var st = String((res && res.statusText) || "").toLowerCase();
+        if (res && (res.isFinal || /in progress|challenge|review|replay|umpire/.test(st))) return;
+      } catch (_e) {}
+      var grade = (r.grade || "").trim();
+      var gMult = /^A/.test(grade) ? 1.0 : (/^B/.test(grade) ? 0.92 : 0.84);
+      var tilt = (wx[mk] && typeof wx[mk].runs_tilt === "number") ? wx[mk].runs_tilt : 0;
+      var wMult = 1 + Math.max(-0.25, Math.min(0.25, tilt)) * 0.4;
+      var teams = mk.split(" @ ");
+      [[r.away_top_5_batters_json, r.home_sp_name, (teams[0] || "").trim()],
+       [r.home_top_5_batters_json, r.away_sp_name, (teams[1] || "").trim()]].forEach(function (cfg) {
+        var arr = [];
+        try { arr = JSON.parse(cfg[0] || "[]"); } catch (_e) {}
+        arr.forEach(function (b) {
+          var pa = parseInt(b.season_PA || 0), hr = parseInt(b.season_HR || 0);
+          if (!b.name || pa < 100) return;
+          var order = parseInt(b.order || 5);
+          var N = 4.8 - 0.13 * (order - 1);
+          var oppSP = String(cfg[1] || "").trim();
+          var hrP = _hrProbability({ hr: hr, pa: pa }, { name: oppSP }, N);
+          if (hrP == null || hrP < 0.04) return;
+          var q = 0.40 * (nz(b.xslg, 0.300, 0.650) != null ? nz(b.xslg, 0.300, 0.650) : 0.4)
+                + 0.35 * (nz(b.hard_hit_pct, 25, 55) != null ? nz(b.hard_hit_pct, 25, 55) : 0.4)
+                + 0.25 * (nz(b.xwoba, 0.250, 0.420) != null ? nz(b.xwoba, 0.250, 0.420) : 0.4);
+          var H = 0;
+          try { var hh = stP[b.name] && stP[b.name]["14d"] && stP[b.name]["14d"].H; if (typeof hh === "number") H = hh; } catch (_e) {}
+          var bpPA = parseFloat(b.vs_today_SP_PA || 0), bpOPS = parseFloat(b.vs_today_SP_OPS);
+          var bvp = (bpPA > 0 && !isNaN(bpOPS)) ? Math.max(-0.5, Math.min(0.5, bpOPS - 0.72)) * Math.min(1, bpPA / 20) : 0;
+          var la = parseFloat(b.la);
+          var loft = (!isNaN(la) && la < 8) ? 0.85 : ((la >= 12 && la <= 24) ? 1.05 : 1.0);
+          var sf = String(b.sample_flag || "OK");
+          var sMult = sf === "LOW_SAMPLE" ? 0.88 : (sf === "SUB_STABLE" ? 0.95 : 1.0);
+          var base = 0.45 * (nz(hrP, 0.02, 0.18) != null ? nz(hrP, 0.02, 0.18) : 0)
+                   + 0.35 * q + 0.12 * (H + 1) / 2 + 0.08 * (bvp + 0.5);
+          var spFlag = null;
+          try { var m = _spHRMult(oppSP); spFlag = (m && (m.flag || (m.mult >= 2.5 ? "EXTREME" : (m.mult >= 1.6 ? "HEAVY" : null)))) || null; } catch (_e) {}
+          pool.push({ name: b.name, team: cfg[2], mk: mk, order: order,
+                      k: parseFloat(b.k_pct), xslg: parseFloat(b.xslg), hh: parseFloat(b.hard_hit_pct),
+                      xwoba: parseFloat(b.xwoba), hrP: hrP, H: H, tilt: tilt, spFlag: spFlag, oppSP: oppSP,
+                      score: 100 * base * loft * wMult * gMult * sMult });
+        });
+      });
+    });
+    if (pool.length < 2) {
+      host.innerHTML = '<div class="muted" style="font-size:0.8rem;">Perfect Pairs unlock once lineups post (needs 2+ qualified posted-lineup bats; pre-game only).</div>';
+      return;
+    }
+    pool.sort(function (a, b) { return b.score - a.score; });
+    var top = pool.slice(0, 40);
+    var anchorP = function (p) { return p.k <= 18 && p.xwoba >= 0.34; };
+    var dartP = function (p) { return p.xslg >= 0.48 || p.hh >= 45; };
+    var pairs = [];
+    for (var i = 0; i < top.length; i++) for (var j = i + 1; j < top.length; j++) {
+      var a = top[i], c = top[j];
+      var syn = 0, tag = "TOP CONFIDENCE", rho = 0;
+      if (a.mk === c.mk && a.team === c.team) {
+        var d = Math.abs(a.order - c.order); var prox = Math.min(d, 9 - d);
+        syn += (prox <= 2 ? 3 : (prox <= 4 ? 1.5 : 0)) + ((a.spFlag || a.tilt > 0.15) ? 2.5 : 0) - 2.5;
+        rho = 0.06; tag = prox <= 2 ? "STACK &middot; LINEUP PROX" : "STACK";
+      } else if (a.mk === c.mk) { syn -= 1; tag = "SAME GAME"; }
+      if ((anchorP(a) && dartP(c)) || (anchorP(c) && dartP(a))) { syn += 1.5; if (tag === "TOP CONFIDENCE") tag = "FLOOR + CEILING"; }
+      if (a.spFlag && c.spFlag && a.mk !== c.mk) tag = "MATCHUP EXPLOIT";
+      if (a.tilt > 0.2 && c.tilt > 0.2) tag = "ENVIRONMENT+";
+      pairs.push({ a: a, b: c, tag: tag, rho: rho,
+                   score: a.score + c.score + syn,
+                   pBoth: a.hrP * c.hrP * (1 + rho),
+                   pAny: 1 - (1 - a.hrP) * (1 - c.hrP) });
+    }
+    pairs.sort(function (x, y) { return y.score - x.score; });
+    var used = {}, board = [];
+    for (var k2 = 0; k2 < pairs.length && board.length < 5; k2++) {
+      var p = pairs[k2], ka = p.a.team + p.a.name, kb = p.b.team + p.b.name;
+      if (used[ka] || used[kb]) continue;
+      used[ka] = used[kb] = true; board.push(p);
+    }
+    var pc = function (v, dec) { return (100 * v).toFixed(dec == null ? 1 : dec) + "%"; };
+    var why = function (p) {
+      var bits = [];
+      if (/STACK/.test(p.tag)) bits.push(p.a.team + " stack, slots " + p.a.order + "-" + p.b.order);
+      if (p.a.spFlag) bits.push(p.a.name.split(" ").pop() + " faces " + p.a.spFlag + " HR-prone " + p.a.oppSP.split(" ").pop());
+      if (p.b.spFlag && p.b.oppSP !== p.a.oppSP) bits.push(p.b.name.split(" ").pop() + " faces " + p.b.spFlag + " " + p.b.oppSP.split(" ").pop());
+      if (p.a.tilt > 0.2 || p.b.tilt > 0.2) bits.push("wind/heat tilt +" + Math.max(p.a.tilt, p.b.tilt).toFixed(2));
+      if (p.a.H >= 0.4) bits.push(p.a.name.split(" ").pop() + " HOT");
+      if (p.b.H >= 0.4) bits.push(p.b.name.split(" ").pop() + " HOT");
+      if (!bits.length) bits.push("highest joint holistic confidence on the board");
+      return bits.join(" &middot; ");
+    };
+    var leg = function (x) {
+      return '<div style="flex:1;min-width:130px;">'
+        + '<div style="font-weight:700;font-size:0.9rem;">' + x.name + '</div>'
+        + '<div class="muted" style="font-size:0.68rem;">' + x.team + ' &middot; #' + x.order + ' &middot; vs ' + (x.oppSP || "TBD") + '</div>'
+        + '<div style="font-size:0.78rem;margin-top:3px;">HR ' + pc(x.hrP) + ' <span class="muted">&middot; xSLG ' + (isNaN(x.xslg) ? "&mdash;" : x.xslg.toFixed(3)) + ' &middot; HH ' + (isNaN(x.hh) ? "&mdash;" : x.hh.toFixed(0)) + '%</span>'
+        + (x.H >= 0.4 ? ' <span style="color:var(--green);font-size:0.62rem;font-weight:700;">HOT</span>' : '') + '</div></div>';
+    };
+    var h = "";
+    if (board.length) {
+      var b0 = board[0];
+      h += '<div style="border:1px solid rgba(88,166,255,0.35);border-radius:10px;padding:12px 14px;margin-bottom:10px;background:rgba(88,166,255,0.04);">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">'
+        + '<span style="font-size:0.62rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);">THE PERFECT PAIR</span>'
+        + '<span style="font-size:0.6rem;font-weight:700;border:1px solid var(--border);border-radius:3px;padding:1px 6px;color:var(--muted);">' + b0.tag + '</span></div>'
+        + '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;">' + leg(b0.a)
+        + '<div style="align-self:center;color:var(--accent);font-weight:700;">+</div>' + leg(b0.b) + '</div>'
+        + '<div style="margin-top:8px;font-size:0.74rem;">Pair score <strong>' + b0.score.toFixed(1) + '</strong>'
+        + ' <span class="muted">&middot; P(both HR) ' + pc(b0.pBoth) + (b0.rho ? "*" : "") + ' &middot; P(&ge;1 HR) ' + pc(b0.pAny) + '</span></div>'
+        + '<div class="muted" style="font-size:0.68rem;margin-top:4px;">' + why(b0) + '</div></div>';
+      for (var q2 = 1; q2 < board.length; q2++) {
+        var bq = board[q2];
+        h += '<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.05);padding:7px 2px;font-size:0.78rem;">'
+          + '<div><strong>' + bq.a.name + '</strong> <span class="muted">(' + bq.a.team + ', ' + pc(bq.a.hrP, 0) + ')</span>'
+          + ' + <strong>' + bq.b.name + '</strong> <span class="muted">(' + bq.b.team + ', ' + pc(bq.b.hrP, 0) + ')</span></div>'
+          + '<div class="muted" style="font-size:0.66rem;">' + bq.tag + ' &middot; ' + bq.score.toFixed(1) + ' &middot; both ' + pc(bq.pBoth) + (bq.rho ? "*" : "") + '</div></div>';
+      }
+      h += '<div class="muted" style="font-size:0.62rem;margin-top:9px;">Display-only heuristic over posted lineups (P-Score: 45% HR prob &middot; 35% contact quality &middot; 12% 14-day form &middot; 8% BvP; context: loft, weather tilt, game grade, sample). * stack P(both) uses flat &rho;=0.06 same-team correlation (approx). Not a model output; nothing here feeds picks or staking.</div>';
+    } else {
+      h = '<div class="muted" style="font-size:0.8rem;">No qualified pairs (pre-game posted lineups required).</div>';
+    }
+    host.innerHTML = h;
+  } catch (e) {
+    try { host.innerHTML = '<div class="muted" style="font-size:0.78rem;">Perfect Pair unavailable this slate (' + String(e).slice(0, 60) + ').</div>'; } catch (_e) {}
+  }
+}
 
 function gradeClass(g) {
   if (g === "A")   return "grade-A";
@@ -5875,6 +6026,7 @@ async function _prefetchPitcherKResults(ks, results) {
         // (color-coded amber) instead of being filtered out, so the user
         // sees them on the slate.  Pass all rows through.
         el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
+        try { renderPerfectPair(slate.rows, slate.results); } catch (_e) {}
       }
     }
   }
@@ -5983,6 +6135,7 @@ async function _prefetchHRResults(hrs, results) {
     if (slate && slate.rows && slate.rows.length) {
       const el = document.getElementById("top-outcomes");
       if (el) el.innerHTML = renderTopProbableOutcomes(slate.rows, window.__totalsByMatchup, slate.results);
+        try { renderPerfectPair(slate.rows, slate.results); } catch (_e) {}
     }
   }
 }
