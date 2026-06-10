@@ -1296,6 +1296,18 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
+      <div class="accordion-item" data-acc="pl-report">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>PitcherList SP Report <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--yellow);border-radius:3px;color:var(--yellow);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">VOLATILE &middot; UNVERIFIED</span></span>
+          <span class="chev" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div style="color:var(--muted);font-size:0.68rem;margin-bottom:0.6rem;">Third-party (pitcherlist.com) probable-SP extraction. Read-only reference &mdash; never feeds the model, picks, or [PROJ] badges. The source can flip values between requests; statsapi remains official truth.</div>
+            <pre id="pl-report-pre" style="white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.72rem;line-height:1.5;color:var(--text);margin:0;max-height:480px;overflow:auto;">Loading&hellip;</pre>
+          </div>
+        </div>
+      </div>
       <div class="accordion-item" data-acc="edge-calc">
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
           <span>Edge Calculator</span>
@@ -7532,6 +7544,32 @@ function _initEdgeCalc(){
   upd();
 }
 document.addEventListener("DOMContentLoaded", _initEdgeCalc);
+
+// =============================================================
+// PitcherList SP Report accordion (2026-06-10). DISPLAY-ONLY and
+// fully decoupled: static read-only fetch of a published markdown
+// artifact, rendered via textContent (no parsing, no innerHTML).
+// Never read by any other component -- if the file is missing or
+// the fetch fails, the accordion hides itself and nothing else
+// changes. Date preference: slate-date sidecars (loaded async),
+// else UTC today -- hence the small post-load delay.
+// =============================================================
+function _initPLReport(){
+  var item = document.querySelector('[data-acc="pl-report"]');
+  var pre = document.getElementById('pl-report-pre');
+  if (!item || !pre) return;
+  var d = (window.__spProj && window.__spProj.date)
+       || (window.__streaks && window.__streaks.date)
+       || new Date().toISOString().slice(0, 10);
+  fetch('./data/PL_probables_' + d + '.md?cb=' + Date.now(), {cache: 'no-store'})
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .then(function(t){
+      if (!t) { item.style.display = 'none'; return; }
+      pre.textContent = t;
+    })
+    .catch(function(){ item.style.display = 'none'; });
+}
+document.addEventListener("DOMContentLoaded", function(){ setTimeout(_initPLReport, 2500); });
 
 document.addEventListener("DOMContentLoaded", _initAskClaude);
 
