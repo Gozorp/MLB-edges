@@ -1160,6 +1160,115 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 /* === end statcast-hitter-table-2026 === */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style id="refine-layer-2026-06-10">
+  /* ==========================================================
+     Refinement layer (2026-06-10) -- Apple-grade execution of
+     the locked Quant Terminal identity. Additive + cascade-last
+     + CSS-only. Every selector verified present in this file.
+     Delete this whole style block (id above) to revert cleanly.
+     ========================================================== */
+  :root{
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur-fast: 140ms;
+    --dur-med: 280ms;
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 16px; --sp-4: 24px; --sp-5: 32px;
+    --glass-bg: rgba(14, 17, 23, 0.72);
+  }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* -- type discipline: tracking + tabular numerals everywhere -- */
+  h1, h2, h3{ letter-spacing: -0.015em; }
+  table{ font-variant-numeric: tabular-nums; }
+  .accordion-eyebrow, th{ letter-spacing: 0.06em; }
+
+  /* -- fluid micro-interactions (existing hovers, now eased) -- */
+  a, button, tr, .row-clickable, .accordion-header, .hero-cta,
+  .deep-ask-claude, .mode-toggle button, #help-btn, .picker button{
+    transition: background-color var(--dur-fast) var(--ease-out),
+                color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out),
+                opacity var(--dur-fast) var(--ease-out),
+                transform var(--dur-fast) var(--ease-out),
+                box-shadow var(--dur-med) var(--ease-out);
+  }
+  tr:hover{ background: rgba(88, 166, 255, 0.04); }
+  .row-clickable:active{ transform: scale(0.998); }
+  button:active, .hero-cta:active{ transform: scale(0.98); }
+
+  /* -- quieter change-flash: same signal, lower amplitude -- */
+  @keyframes flash{
+    0%   { background: rgba(210, 153, 34, 0.26); }
+    100% { background: transparent; }
+  }
+  .change-flash{ animation: flash 1.6s var(--ease-out); }
+
+  /* -- keyboard focus ring (never on mouse click) -- */
+  :focus-visible{
+    outline: 2px solid rgba(88, 166, 255, 0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* -- materials: layered glass on overlay + sticky surfaces -- */
+  #help-panel{
+    background: var(--glass-bg);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  }
+  #help-panel-backdrop{
+    background: rgba(8, 10, 14, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  .gp-tbl th{
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* -- grouping via contrast, not heavier borders -- */
+  .accordion-item{ border-bottom-color: rgba(255, 255, 255, 0.06); }
+  .accordion-item.open{ background: rgba(255, 255, 255, 0.015); }
+  .accordion-body-inner{
+    opacity: 0; transform: translateY(4px);
+    transition: opacity var(--dur-med) var(--ease-out) 60ms,
+                transform var(--dur-med) var(--ease-out) 60ms;
+  }
+  .accordion-item.open .accordion-body-inner{ opacity: 1; transform: none; }
+
+  /* -- quiet, thin scrollbars -- */
+  *{ scrollbar-width: thin; scrollbar-color: #2d333b transparent; }
+  *::-webkit-scrollbar{ width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb{
+    background: #2d333b; border-radius: 8px;
+    border: 2px solid transparent; background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover{ background: #3d444d; background-clip: content-box; }
+  *::-webkit-scrollbar-track{ background: transparent; }
+
+  /* -- responsive completeness (terminal density, smaller canvas) -- */
+  @media (max-width: 720px){
+    .accordion-body-inner{ padding-left: var(--sp-3); padding-right: var(--sp-3); }
+    th, td{ padding-top: 6px; padding-bottom: 6px; }
+  }
+  @media (max-width: 480px){
+    th, td{ padding-left: 6px; padding-right: 6px; }
+  }
+  @media (hover: none){
+    tr:hover{ background: transparent; }
+    a, button, .accordion-header{ -webkit-tap-highlight-color: rgba(88, 166, 255, 0.12); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    #refine-marker, *{
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+  </style>
 </head>
 <body>
 
