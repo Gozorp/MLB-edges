@@ -277,17 +277,31 @@ def _slate_teams(date):
     path = os.path.join("docs", "data", "picks_%s_diag.csv" % date)
     if not os.path.exists(path):
         path = "picks_%s_diag.csv" % date
-    if not os.path.exists(path):
+    if os.path.exists(path):
+        teams, seen = [], set()
+        with open(path, encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                mm = re.match(r"\s*([A-Za-z]{2,4})\s*@\s*([A-Za-z]{2,4})", row.get("matchup", ""))
+                if not mm:
+                    continue
+                for tm in (mm.group(1), mm.group(2)):
+                    if tm not in seen:
+                        seen.add(tm); teams.append(tm)
+        if teams:
+            return teams
+    # Pre-diag fallback (future/preview slate): derive slate teams from the
+    # statsapi schedule so projected-lineup previews still get hot/cold tags.
+    try:
+        j = _get("%s/schedule?sportId=1&date=%s&hydrate=team" % (API, date))
+    except Exception:
         return []
     teams, seen = [], set()
-    with open(path, encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            mm = re.match(r"\s*([A-Za-z]{2,4})\s*@\s*([A-Za-z]{2,4})", row.get("matchup", ""))
-            if not mm:
-                continue
-            for tm in (mm.group(1), mm.group(2)):
-                if tm not in seen:
-                    seen.add(tm); teams.append(tm)
+    for d in j.get("dates", []):
+        for g in d.get("games", []):
+            for side in ("away", "home"):
+                ab = ((((g.get("teams") or {}).get(side) or {}).get("team") or {}).get("abbreviation") or "").strip()
+                if ab and ab not in seen:
+                    seen.add(ab); teams.append(ab)
     return teams
 
 
