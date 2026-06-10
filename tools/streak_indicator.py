@@ -198,15 +198,35 @@ def _slate_batters(date):
 
 
 def _resolve_ids(batters):
-    j = _get("%s/sports/1/players?season=%d" % (API, datetime.date.today().year))
+    """name -> personId. Accent-stripped duplicate names are real in the actives
+    pool (probe 2026-06-10: Max Muncy x2, Jose Fermin x2), so on a collision
+    disambiguate by currentTeam id vs the batter's slate team. The hydrate
+    returns currentTeam.id only (no abbreviation) -- match on id."""
+    j = _get("%s/sports/1/players?season=%d&hydrate=currentTeam" % (API, datetime.date.today().year))
     idmap = defaultdict(list)
     for p in j.get("people", []):
-        idmap[_norm(p.get("fullName"))].append(p.get("id"))
+        _tid = (p.get("currentTeam") or {}).get("id")
+        idmap[_norm(p.get("fullName"))].append((p.get("id"), _tid))
+    a2i = {}
+    if any(len(v) > 1 for v in idmap.values()):
+        try:
+            a2i = _team_abbr_to_id()
+        except Exception as e:
+            print("collision team-map fetch failed (%r); falling back to first match" % (e,))
     out = {}
     for nm, tm in batters:
         cands = idmap.get(_norm(nm)) or []
-        if cands:
-            out[nm] = cands[0]
+        if not cands:
+            continue
+        pick = cands[0]
+        if len(cands) > 1 and a2i:
+            want = a2i.get(tm) or a2i.get(_ROSTER_ALIAS.get(tm, tm))
+            hit = [c for c in cands if want and c[1] == want]
+            if hit:
+                pick = hit[0]
+            else:
+                print("name-collision unresolved for %r (team %s): %d candidates" % (nm, tm, len(cands)))
+        out[nm] = pick[0]
     return out
 
 
@@ -383,10 +403,15 @@ def resolve_slate_date(arg):
 
 def main():
     date = resolve_slate_date(sys.argv[1] if len(sys.argv) > 1 else None)
+    # windows are pure date math (same formulas as build_teams) -- computed up
+    # front so a TEAM-FAIL can no longer silently kill the players section too.
+    _end = datetime.date.fromisoformat(date)
+    _win = {"7d": {"start": (_end - datetime.timedelta(days=6)).isoformat(), "end": date},
+            "14d": {"start": (_end - datetime.timedelta(days=13)).isoformat(), "end": date}}
     sidecar = {"date": date,
                "generated_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
                "method": "win0.45+dom0.55; dom=mean(cappedMargin/5,medMargin/5,2*cappedPythag-1); cap5; exp1.83",
-               "teams": {}, "players": {}, "windows": {}}
+               "teams": {}, "players": {}, "windows": _win}
     try:
         teams, windows = build_teams(date)
         sidecar["teams"] = teams

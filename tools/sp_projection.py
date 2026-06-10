@@ -18,16 +18,26 @@ Heuristic:
      within the standard 4-6 day window. Confidence reflects how clean the pick
      is (single 4-6d candidate = high; ambiguous = medium; fallback = low).
 """
-import sys, os, json, re, csv, datetime, urllib.request
+import sys, os, json, re, csv, time, datetime, urllib.request
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(ROOT)
 
 API = "https://statsapi.mlb.com/api/v1"
 UA = {"User-Agent": "mlb_edge-spproj/1.0"}
 
 
-def _get(url):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+def _get(url, timeout=30, retries=3, sleep=0.4):
+    last = None
+    for _ in range(retries):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.load(r)
+        except Exception as e:
+            last = e
+            time.sleep(sleep)
+    raise last
 
 
 _ALIAS = {"CHW": "CWS", "ARI": "AZ", "OAK": "ATH", "WSN": "WSH",
@@ -103,7 +113,8 @@ def _project(team_id, end_date):
     cand = [pid for pid in order if rest[pid] >= 4]   # eliminate last 1-3 day starters
     if not cand:
         return None
-    cand.sort(key=lambda pid: abs(rest[pid] - 5))     # the slot that's due (~5d)
+    # the slot that's due (~5d); ties prefer MORE rest -- the longer-rested arm is due first
+    cand.sort(key=lambda pid: (abs(rest[pid] - 5), -rest[pid]))
     best = cand[0]
     r = rest[best]
     in_window = [pid for pid in cand if 4 <= rest[pid] <= 6]
@@ -128,6 +139,7 @@ def main(date):
         try:
             proj = _project(tid, date)
         except Exception as e:
+            print("  project-fail %s (%s): %r" % (abbr, side, e))
             proj = None
         if not proj:
             continue

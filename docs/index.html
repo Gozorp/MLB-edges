@@ -5504,8 +5504,8 @@ function _gameMLStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
-    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|delayed start|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
   if (result.winner == null) return "TBD";
@@ -5523,8 +5523,8 @@ function _totalStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
-    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|delayed start|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
   const aSc = result.awayScore, hSc = result.homeScore;
@@ -5545,8 +5545,8 @@ function _pitcherKStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
-    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|delayed start|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
   const pid = item.team === "home" ? result.homePitcherId : result.awayPitcherId;
@@ -5664,8 +5664,8 @@ function _hrPropStatus(item, results) {
   const _st = (result.statusText || "").toLowerCase();
   if (/postpon|suspend|cancel/.test(_st)) return "POSTPONED";
   if (result.isFinal === false) {
-    if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) return "LIVE";
-    if (/pre-game|warmup|scheduled/.test(_st)) return "PREGAME";
+    if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(_st)) return "LIVE";
+    if (/pre-game|warmup|delayed start|scheduled/.test(_st)) return "PREGAME";
     return "TBD";
   }
   if (!result.gamePk) return null;
@@ -6280,13 +6280,13 @@ function renderSlate(rows, gradeMap, results) {
         let _sl = "TBD";
         let _extra = undefined;
         if (/postpon|suspend|cancel/.test(_st)) _sl = "POSTPONED";
-        else if (/in progress|challenge|delayed|review|replay|umpire/.test(_st)) {
+        else if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(_st)) {
           _sl = "LIVE";
           if (result.awayScore != null && result.homeScore != null) {
             _extra = `${result.awayAbbr} ${result.awayScore}-${result.homeScore} ${result.homeAbbr}`;
           }
         }
-        else if (/pre-game|warmup|scheduled/.test(_st)) _sl = "PREGAME";
+        else if (/pre-game|warmup|delayed start|scheduled/.test(_st)) _sl = "PREGAME";
         resultCell = `<td>${_resultChipHtml(_sl, _extra)}</td>`;
       } else if (result && result.isFinal &&
                  result.awayScore != null && result.homeScore != null) {
@@ -7760,7 +7760,7 @@ document.addEventListener("click", function (e) {
     for (const k of Object.keys(results)) {
       const r = results[k];
       const s = String(r.statusText || "").toLowerCase();
-      if (/in progress|challenge|delayed|review|replay|umpire/.test(s)) {
+      if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(s)) {
         liveCount++;
       }
     }

@@ -85,9 +85,14 @@ diag = "docs/data/picks_%s_diag.csv" % TODAY
 if not os.path.exists(diag):
     print("publish ABORT: no diag for %s (nothing to publish)" % TODAY); raise SystemExit(0)
 try:
-    n = len(list(csv.DictReader(open(diag, encoding="utf-8"))))
-    assert n >= 1
-    print("gate: %s OK (%d games)" % (diag, n))
+    with open(diag, encoding="utf-8", newline="") as _fh:
+        _rows = list(csv.reader(_fh))
+    n = len(_rows) - 1
+    assert n >= 1, "no data rows"
+    _hdr = len(_rows[0])
+    _torn = [i for i, _r in enumerate(_rows[1:], 2) if len(_r) != _hdr]
+    assert not _torn, "torn/short row(s) at line %s (cols != %d) -- refusing to publish a truncated diag" % (_torn[:5], _hdr)
+    print("gate: %s OK (%d games, %d cols, all rows intact)" % (diag, n, _hdr))
 except Exception as e:
     print("publish ABORT: %s invalid (%r)" % (diag, e)); raise SystemExit(1)
 
@@ -123,7 +128,8 @@ if git("reset", "--hard", "origin/main") != 0:
 
 for f in present:
     os.makedirs(os.path.dirname(f), exist_ok=True)
-    shutil.copy2(os.path.join(tmp, f), f)
+    shutil.copy2(os.path.join(tmp, f), f + ".tmp")
+    os.replace(f + ".tmp", f)  # atomic restore: a crash here can never leave a torn tracked file
 shutil.rmtree(tmp, ignore_errors=True)
 
 git("add", "--", *present)
