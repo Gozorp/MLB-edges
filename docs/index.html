@@ -4038,6 +4038,23 @@ function _gpStatcastTable(bats, label){
     '<th>xwOBA</th><th>xBA</th><th>xSLG</th><th>K%</th><th>BB%</th><th>Sprint</th>' +
     '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
 }
+function _spDisplay(spName, matchup, side){
+  spName = (spName || "TBD").trim();
+  if (spName && spName.toUpperCase() !== "TBD") return '<strong>' + spName + '</strong>';
+  var g = window.__spProj && window.__spProj.games;
+  var pr = null;
+  if (g){
+    var bare = (matchup || "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+    var rec = g[matchup] || g[bare];
+    pr = rec ? rec[side] : null;
+  }
+  if (pr && pr.projected_sp){
+    var col = pr.confidence === 'high' ? 'var(--green)' : (pr.confidence === 'medium' ? 'var(--yellow)' : 'var(--muted)');
+    var tip = 'Official starter pending. System projection from ' + (pr.team || side) + " rotation + rest (" + pr.rest_days + 'd rest, ' + pr.confidence + ' confidence). Display-only -- the model does NOT use this; the pick stays SKIP until the real probable posts.';
+    return '<strong style="opacity:.9;">' + pr.projected_sp + '</strong> <span title="' + tip.replace(/"/g, '&quot;') + '" style="padding:0 4px;border:1px solid ' + col + ';border-radius:3px;color:' + col + ';font-size:.58rem;font-weight:700;letter-spacing:.3px;vertical-align:middle;">PROJ &middot; ' + pr.rest_days + 'd &middot; ' + pr.confidence + '</span>';
+  }
+  return '<strong>TBD</strong>';
+}
 function _renderProjectedLineupTable(r){
   if (!r) return "";
   var matchup = (r.matchup || "").trim();
@@ -4054,8 +4071,8 @@ function _renderProjectedLineupTable(r){
     '<div class="gp-head">Statcast Game Preview' +
       '<span class="gp-sub">projected lineups &middot; OPS heatmap</span></div>' +
     '<div class="gp-matchup">' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': <strong>' + awaySP + '</strong>' + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + '</div>' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': <strong>' + homeSP + '</strong>' + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': ' + _spDisplay(awaySP, matchup, "away") + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + '</div>' +
     '</div>' +
     '<div class="gp-grid">' +
       _gpTeamTable(away, homeSP, awayAbbr + " Hitters") +
@@ -7061,7 +7078,7 @@ async function loadSlate(date, { bust = false } = {}) {
       throw new Error("not found in any source");
     }
 
-    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, teamTiersR, spreadR] = await Promise.allSettled([
+    const [csvR, txtR, resR, smR, stkR, sphrR, wxrR, teamTiersR, spreadR, spProjR] = await Promise.allSettled([
       fetchOneOf(`picks_${date}_diag.csv`),
       fetchOneOf(`parlay_${date}.txt`),
       fetchMLBResults(date),
@@ -7083,6 +7100,9 @@ async function loadSlate(date, { bust = false } = {}) {
       fetch(`./data/spread_${date}.json`, {cache: "no-store"})
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
+      fetch(`./data/sp_projection_${date}.json`, {cache: "no-store"})
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null),
     ]);
 
     // Series-meta sidecar (series-game indicator).  Schema in
@@ -7099,6 +7119,9 @@ async function loadSlate(date, { bust = false } = {}) {
     window.__weatherRuns = (wxrR.status === "fulfilled" && wxrR.value) ? wxrR.value : null;
     window.__teamTiers = (teamTiersR.status === "fulfilled" && teamTiersR.value) ? teamTiersR.value : null;
     window.__spread = (spreadR.status === "fulfilled" && spreadR.value) ? spreadR.value : null;
+    // Projected-SP sidecar (display-only; tools/sp_projection.py). Powers the [PROJ]
+    // badge on pending-probable games. NEVER consumed by the model.
+    window.__spProj = (spProjR.status === "fulfilled" && spProjR.value) ? spProjR.value : null;
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
