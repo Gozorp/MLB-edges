@@ -1414,6 +1414,8 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     border-bottom: 1px dotted rgba(88, 166, 255, 0.45);
   }
   .adv-name:hover, .adv-name-p:hover{ color: var(--accent); }
+  .adv-drawer-host{ display: block; }
+  li:has(> .adv-drawer-host), .adv-drawer{ break-inside: avoid; }
   .adv-drawer{
     background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -2137,30 +2139,43 @@ async function _advPitcherFill(el, pid, name){
 document.addEventListener("click", function(e){
   var bEl = e.target.closest(".adv-name");
   var pEl = e.target.closest(".adv-name-p");
-  if (!bEl && !pEl) return;
+  if (!bEl && !pEl){
+    // advRowTarget: whole-row toggle -- clicking anywhere on a list row that
+    // carries a wrapped name behaves like clicking the name itself.
+    var rowLi = e.target.closest("li");
+    if (rowLi && !e.target.closest(".adv-drawer")){
+      bEl = rowLi.querySelector(".adv-name");
+      if (!bEl){ pEl = rowLi.querySelector(".adv-name-p"); }
+    }
+    if (!bEl && !pEl) return;
+  }
   e.stopPropagation();
   try {
     var host = (bEl || pEl);
     var inTable = !!host.closest("td");
     var anchor = inTable ? host.closest("tr") : (host.closest("li") || host.parentElement);
     if (!anchor) return;
-    var nxt = anchor.nextElementSibling;
-    if (nxt && nxt.classList && nxt.classList.contains("adv-drawer-host")){ nxt.remove(); return; }
     var wrap, inner;
     if (inTable){
+      var nxt = anchor.nextElementSibling;
+      if (nxt && nxt.classList && nxt.classList.contains("adv-drawer-host")){ nxt.remove(); return; }
       wrap = document.createElement("tr");
       wrap.className = "adv-drawer-host";
       var tdCount = anchor.children.length || 6;
       wrap.innerHTML = '<td colspan="' + tdCount + '"><div class="adv-drawer"></div></td>';
       inner = wrap.querySelector(".adv-drawer");
+      anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
     } else {
-      wrap = document.createElement(anchor.tagName === "LI" ? "li" : "div");
+      // CHILD mount: the drawer lives INSIDE the clicked row, so no ancestor
+      // grid/column/flex reflow can ever separate it from the player's name.
+      var open = anchor.querySelector(":scope > .adv-drawer-host");
+      if (open){ open.remove(); return; }
+      wrap = document.createElement("div");
       wrap.className = "adv-drawer-host";
-      wrap.style.listStyle = "none";
       wrap.innerHTML = '<div class="adv-drawer"></div>';
       inner = wrap.querySelector(".adv-drawer");
+      anchor.appendChild(wrap);
     }
-    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
     if (bEl){
       inner.innerHTML = '<span class="muted">Loading profile&hellip;</span>';
       _advBatterFill(inner, (bEl.getAttribute("data-n") || "").trim());
