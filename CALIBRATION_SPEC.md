@@ -172,3 +172,40 @@ isolation.
 Before trusting any new result, run the harness on the 2024–25 OOF set and confirm it reproduces
 the §1 table (raw beats Platt). A harness that cannot reproduce the known verdict cannot be
 trusted to adjudicate the new one.
+
+
+---
+
+## INCOHERENCE BUCKET ADDENDUM (pre-registered 2026-06-11, LOCKED)
+
+Registered BEFORE any 2026-06-11+ results were examined (Rule 2). Motivated by
+the 6/11 SEA@BAL case: pick_prob 0.668 vs market fair 0.485 (edge_pp 18.31),
+F5/full inversion (0.312/0.668 home-ref), grade_reasons carrying
+"Stage 1/2 disagree (delta=0.19)"; executive layer graded D/SKIP.
+
+**Bucket definition (no new constants):** predict-phase games whose diag
+`grade_reasons` contains "Stage 1/2 disagree" -- i.e., the grade engine's own
+penalty trigger fired (delta >= 0.12 since the 2026-05-10 tightening from
+0.15, per parlay_builder.py). The bucket inherits whatever threshold the
+engine used on the day the row was produced; the reason string in the
+archived diag is the flag.
+
+**Data:** OOS window 2026-06-04 -> freeze lift. Join oos_ledger.jsonl
+(predict / result / f5_result phases) with archived docs/data/picks_<d>_diag.csv
+for grade_reasons (the ledger does not carry reasons; diags are retained).
+
+**Pre-registered questions (descriptive audit; hypothesis-generating only):**
+1. Calibration split: Brier + accuracy of pick_prob (and f5_prob via the F5
+   leg) in-bucket vs out-of-bucket.
+2. Which stage leaks alpha: within the bucket, full-game win rate of the
+   F5-favored side vs the full-favored side (f5_prob = Stage-1 proxy,
+   full_prob = Stage-2 proxy; both logged since ledger deployment).
+3. Market interaction: in-bucket subset with |edge_pp| >= 15 -- which is
+   closer to realized outcomes, fair_prob (market) or pick_prob (model)?
+
+**Discipline:** This audit changes NOTHING by itself -- no gate, weight,
+cap, or staking rule moves on its findings. Any actionable result requires
+its own pre-registered probe meeting the standing override bar (n >= 10,
+precision >= 85% to keep). Directional claims require bucket n >= 25; if the
+window is thinner, extend the window rather than the claim. Anchor case to
+re-grade first: 2026-06-11 SEA @ BAL.
