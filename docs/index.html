@@ -2152,8 +2152,11 @@ document.addEventListener("click", function(e){
   e.stopPropagation();
   try {
     var host = (bEl || pEl);
-    var inTable = !!host.closest("td");
-    var anchor = inTable ? host.closest("tr") : (host.closest("li") || host.parentElement);
+    var liA = host.closest("li");
+    // li wins over td: the whole expander sits inside the details-row's <td>,
+    // so a bare closest('td') test misrouted every list click to the outer tr.
+    var inTable = !liA && !!host.closest("td");
+    var anchor = inTable ? host.closest("tr") : (liA || host.parentElement);
     if (!anchor) return;
     var wrap, inner;
     if (inTable){
