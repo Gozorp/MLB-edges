@@ -2029,6 +2029,15 @@ function _advFindBatter(name){
         }
       }
     }
+    // __ppProj fallback: prior-day posted lineups (projection map) so the
+    // drawer works before today's lineups post. Same fields, older snapshot.
+    var pm = window.__ppProj || {};
+    for (var tm in pm){
+      var bats = (pm[tm] && pm[tm].batters) || [];
+      for (var q = 0; q < bats.length; q++){
+        if ((bats[q].name || "").trim() === name) return bats[q];
+      }
+    }
   } catch (_e) {}
   return null;
 }
