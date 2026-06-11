@@ -1408,6 +1408,37 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     }
   }
   </style>
+  <style id="adv-drawer-css">
+  .adv-name, .adv-name-p{
+    cursor: pointer;
+    border-bottom: 1px dotted rgba(88, 166, 255, 0.45);
+  }
+  .adv-name:hover, .adv-name-p:hover{ color: var(--accent); }
+  .adv-drawer{
+    background: var(--bg);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 2px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 6px 0;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+  .adv-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+    gap: 4px 10px;
+  }
+  .adv-grid b{ font-size: 0.76rem; }
+  .adv-k{ color: var(--muted); font-size: 0.6rem; letter-spacing: 0.05em; display: block; }
+  .adv-split-tbl{ width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .adv-split-tbl th, .adv-split-tbl td{
+    padding: 2px 6px; text-align: right;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-variant-numeric: tabular-nums;
+  }
+  .adv-split-tbl th:first-child, .adv-split-tbl td:first-child{ text-align: left; }
+  </style>
 </head>
 <body>
 
@@ -1973,6 +2004,130 @@ async function renderPerfectPair(rows, results) {
     try { host.innerHTML = '<div class="muted" style="font-size:0.78rem;">Perfect Pair unavailable this slate (' + String(e).slice(0, 60) + ').</div>'; } catch (_e) {}
   }
 }
+
+// =============================================================
+// Bullpen Edge advanced-stat drawers (2026-06-11). DISPLAY-ONLY.
+// Batter data = the diag lineup JSON already in memory; pitcher
+// splits = on-demand statsapi season vs-L/vs-R (cached). Document-
+// level delegation survives re-renders; failures degrade to a
+// muted note inside the drawer. No model surface.
+// =============================================================
+window.__advSplits = window.__advSplits || {};
+function _advEsc(x){ return String(x == null ? "" : x).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+function _advNum(v, d){ var f = parseFloat(v); return isFinite(f) ? f.toFixed(d == null ? 1 : d) : "&mdash;"; }
+function _advFindBatter(name){
+  try {
+    var rows = (window.__slate && window.__slate.rows) || [];
+    for (var i = 0; i < rows.length; i++){
+      var r = rows[i];
+      var sides = [r.away_top_5_batters_json, r.home_top_5_batters_json];
+      for (var sIdx = 0; sIdx < 2; sIdx++){
+        var arr = [];
+        try { arr = JSON.parse(sides[sIdx] || "[]"); } catch (_e) {}
+        for (var k = 0; k < arr.length; k++){
+          if ((arr[k].name || "").trim() === name) return arr[k];
+        }
+      }
+    }
+  } catch (_e) {}
+  return null;
+}
+function _advCell(label, val){ return '<span><span class="adv-k">' + label + '</span><b>' + val + '</b></span>'; }
+function _advBatterHtml(b){
+  if (!b) return '<div class="muted">Season Statcast profile not in today\'s lineup data (posts with lineups; projections carry prior-day data).</div>';
+  var h = '<div class="adv-grid">'
+    + _advCell("POS", _advEsc(b.pos || "&mdash;"))
+    + _advCell("BBE", _advNum(b.bbe, 0))
+    + _advCell("LA&deg;", _advNum(b.la, 1))
+    + _advCell("EV", _advNum(b.ev, 1))
+    + _advCell("HARD HIT%", _advNum(b.hard_hit_pct, 1))
+    + _advCell("xwOBA", _advNum(b.xwoba, 3))
+    + _advCell("xBA", _advNum(b.xba, 3))
+    + _advCell("xSLG", _advNum(b.xslg, 3))
+    + _advCell("K%", _advNum(b.k_pct, 1))
+    + _advCell("BB%", _advNum(b.bb_pct, 1))
+    + _advCell("SPRINT", _advNum(b.sprint, 1))
+    + '</div>';
+  var vl = parseFloat(b.vs_LHP_OPS_career), vr = parseFloat(b.vs_RHP_OPS_career);
+  var lBold = isFinite(vl) && isFinite(vr) && vl > vr;
+  h += '<div style="margin-top:6px;"><span class="adv-k">PLATOON (CAREER OPS &middot; bats ' + _advEsc(b.bat_side || "?") + ')</span>'
+    + '<span style="' + (lBold ? "font-weight:700;" : "") + '">vs LHP ' + _advNum(vl, 3) + ' <span class="muted">(' + _advNum(b.vs_LHP_PA_career, 0) + ' PA)</span></span>'
+    + '<span class="muted"> &middot; </span>'
+    + '<span style="' + (!lBold && isFinite(vr) ? "font-weight:700;" : "") + '">vs RHP ' + _advNum(vr, 3) + ' <span class="muted">(' + _advNum(b.vs_RHP_PA_career, 0) + ' PA)</span></span>'
+    + (b.sample_flag && b.sample_flag !== "OK" ? ' <span style="color:var(--yellow);font-size:0.6rem;">' + _advEsc(b.sample_flag) + '</span>' : '')
+    + '</div>'
+    + '<div class="muted" style="font-size:0.6rem;margin-top:4px;">Season Statcast suite; platoon = career OPS (per-split Statcast lands with the July backend work).</div>';
+  return h;
+}
+function _advSplitRow(lab, st){
+  if (!st) return '<tr><td>' + lab + '</td><td colspan="7" class="muted">&mdash;</td></tr>';
+  var bf = parseFloat(st.battersFaced), so = parseFloat(st.strikeOuts), bb = parseFloat(st.baseOnBalls);
+  var kp = (isFinite(so) && isFinite(bf) && bf > 0) ? (100 * so / bf).toFixed(1) : "&mdash;";
+  var bp = (isFinite(bb) && isFinite(bf) && bf > 0) ? (100 * bb / bf).toFixed(1) : "&mdash;";
+  return '<tr><td>' + lab + '</td><td>' + _advEsc(st.avg || "&mdash;") + '</td><td>' + _advEsc(st.obp || "&mdash;")
+    + '</td><td>' + _advEsc(st.slg || "&mdash;") + '</td><td>' + _advEsc(st.ops || "&mdash;")
+    + '</td><td>' + kp + '</td><td>' + bp + '</td><td>' + (isFinite(bf) ? bf : "&mdash;") + '</td></tr>';
+}
+async function _advPitcherFill(el, pid, name){
+  try {
+    if (!pid){
+      var sr = await fetch("https://statsapi.mlb.com/api/v1/people/search?names=" + encodeURIComponent(name), {cache: "no-store"}).then(function(r){ return r.ok ? r.json() : null; });
+      pid = sr && sr.people && sr.people[0] && sr.people[0].id;
+    }
+    if (!pid){ el.innerHTML = '<div class="muted">Could not resolve this pitcher in statsapi.</div>'; return; }
+    if (!window.__advSplits[pid]){
+      var j = await fetch("https://statsapi.mlb.com/api/v1/people/" + pid + "/stats?stats=statSplits&group=pitching&sitCodes=vl,vr&season=2026", {cache: "no-store"}).then(function(r){ return r.ok ? r.json() : null; });
+      var out = {};
+      ((j && j.stats && j.stats[0] && j.stats[0].splits) || []).forEach(function(sp){
+        var code = (sp.split && (sp.split.code || sp.split.lookupName)) || "";
+        out[String(code).toLowerCase()] = sp.stat || null;
+      });
+      window.__advSplits[pid] = out;
+    }
+    var d = window.__advSplits[pid];
+    el.innerHTML = '<span class="adv-k">SEASON PLATOON SPLITS (statsapi &middot; traditional &mdash; per-split Statcast is the July ticket)</span>'
+      + '<table class="adv-split-tbl"><thead><tr><th></th><th>BAA</th><th>OBP</th><th>SLG</th><th>OPS</th><th>K%</th><th>BB%</th><th>TBF</th></tr></thead><tbody>'
+      + _advSplitRow("vs LHB", d.vl) + _advSplitRow("vs RHB", d.vr)
+      + '</tbody></table>';
+  } catch (e) {
+    try { el.innerHTML = '<div class="muted">Splits unavailable (' + _advEsc(String(e).slice(0, 50)) + ').</div>'; } catch (_e) {}
+  }
+}
+document.addEventListener("click", function(e){
+  var bEl = e.target.closest(".adv-name");
+  var pEl = e.target.closest(".adv-name-p");
+  if (!bEl && !pEl) return;
+  e.stopPropagation();
+  try {
+    var host = (bEl || pEl);
+    var inTable = !!host.closest("td");
+    var anchor = inTable ? host.closest("tr") : (host.closest("li") || host.parentElement);
+    if (!anchor) return;
+    var nxt = anchor.nextElementSibling;
+    if (nxt && nxt.classList && nxt.classList.contains("adv-drawer-host")){ nxt.remove(); return; }
+    var wrap, inner;
+    if (inTable){
+      wrap = document.createElement("tr");
+      wrap.className = "adv-drawer-host";
+      var tdCount = anchor.children.length || 6;
+      wrap.innerHTML = '<td colspan="' + tdCount + '"><div class="adv-drawer"></div></td>';
+      inner = wrap.querySelector(".adv-drawer");
+    } else {
+      wrap = document.createElement(anchor.tagName === "LI" ? "li" : "div");
+      wrap.className = "adv-drawer-host";
+      wrap.style.listStyle = "none";
+      wrap.innerHTML = '<div class="adv-drawer"></div>';
+      inner = wrap.querySelector(".adv-drawer");
+    }
+    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+    if (bEl){
+      inner.innerHTML = _advBatterHtml(_advFindBatter((bEl.getAttribute("data-n") || "").trim()));
+    } else {
+      inner.innerHTML = '<span class="muted">Loading splits&hellip;</span>';
+      _advPitcherFill(inner, pEl.getAttribute("data-pid"), (pEl.getAttribute("data-pn") || "").trim());
+    }
+  } catch (_e) {}
+});
 
 function gradeClass(g) {
   if (g === "A")   return "grade-A";
@@ -3777,7 +3932,7 @@ function renderLineupEdge(preview) {
       html += `<li style="margin:0.1rem 0;">`
             +   `<span style="display:inline-block;min-width:3.2rem;color:${color};font-weight:700;">${pct}% K</span>`
             +   `<span class="muted"> · </span>`
-            +   `<span style="color:var(--text);">${r.name}</span>`
+            +   `<span class="adv-name" data-n="${r.name}" style="color:var(--text);">${r.name}</span>`
             +   `<span class="muted"> (${r.pos || "-"})</span>`
             +   _hotColdTag(r.name)
             + `</li>`;
@@ -4032,7 +4187,7 @@ function _formatGamePreviewUpcoming(preview) {
       const fat = fatigueIdx[(r.name || "").toLowerCase()] || null;
       const impact = _relImpactNarrative(r, fat, labels[i], oppName);
       html += `<li style="margin-bottom:0.5rem;">`
-           +   `<div><strong>${r.name}</strong> <span class="muted">(${labels[i]})</span> — ${_gpStat(r.era,2.5,3.9,5.5,true)} ERA, ${_gpStat(r.whip,1.0,1.25,1.55,true)} WHIP, ${r.sv} SV, ${r.hld} HLD, ${r.ip} IP, ${_gpStat(r.k9,6.5,8.8,11.5,false)} K/9</div>`
+           +   `<div><strong><span class="adv-name-p" data-pid="${(fat && fat.pitcher_id) || ""}" data-pn="${r.name}">${r.name}</span></strong> <span class="muted">(${labels[i]})</span> — ${_gpStat(r.era,2.5,3.9,5.5,true)} ERA, ${_gpStat(r.whip,1.0,1.25,1.55,true)} WHIP, ${r.sv} SV, ${r.hld} HLD, ${r.ip} IP, ${_gpStat(r.k9,6.5,8.8,11.5,false)} K/9</div>`
            +   `<div style="font-size:0.83rem;color:var(--muted);margin-top:0.2rem;line-height:1.45;">${impact}</div>`
            + `</li>`;
     }
@@ -4043,7 +4198,7 @@ function _formatGamePreviewUpcoming(preview) {
     if (!bats || !bats.length) return `<li class="muted">No qualified hitters in the snapshot yet.</li>`;
     let html = "";
     for (const b of bats) {
-      html += `<li><strong>${b.name}</strong> (${b.pos}, ${b.ops} OPS, ${b.hr} HR / ${b.avg} AVG, ${b.pa} PA) — ${_batImpact(b.ops_f)}</li>`;
+      html += `<li><strong><span class="adv-name" data-n="${b.name}">${b.name}</span></strong> (${b.pos}, ${b.ops} OPS, ${b.hr} HR / ${b.avg} AVG, ${b.pa} PA) — ${_batImpact(b.ops_f)}</li>`;
     }
     return html;
   };
@@ -5725,7 +5880,7 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
     const availStyle = r.available_today ? "" : "opacity:0.55;text-decoration:line-through;";
     const displayName = r.name || `#${r.pitcher_id}`;
     html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);${availStyle}">` +
-            `<td style="padding:0.2rem 0.3rem;">${displayName}</td>` +
+            `<td style="padding:0.2rem 0.3rem;"><span class="adv-name-p" data-pid="${r.pitcher_id || ""}" data-pn="${r.name || ""}">${displayName}</span></td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.rest_days}d</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.consecutive_days}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
