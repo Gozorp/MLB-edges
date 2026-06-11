@@ -1,7 +1,7 @@
 {
- "generated_utc": "2026-06-11T19:35:00Z",
+ "generated_utc": "2026-06-11T21:22:07Z",
  "date": "2026-06-11",
- "n_games": 7,
+ "n_games": 8,
  "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
  "games": {
   "STL @ NYM": {
@@ -13,13 +13,13 @@
    "proj_score": "STL 5-4 NYM",
    "components": {
     "base": 0.12,
-    "scale": 1.065,
-    "rd_season_gap": 0.312,
+    "scale": 1.061,
+    "rd_season_gap": 0.288,
     "rd_recent_gap": 0.545,
     "off_recent_gap": 0.273,
     "xwoba_gap": -0.563,
     "sp_k_gap": -0.269,
-    "total_runs": 9.13
+    "total_runs": 9.16
    }
   },
   "MIN @ DET": {
@@ -77,21 +77,21 @@
    }
   },
   "CHC @ COL": {
-   "favored": "COL",
-   "win_prob": 0.51,
+   "favored": "CHC",
+   "win_prob": 0.505,
    "spread": 0.2,
-   "proj_away": 6,
-   "proj_home": 7,
-   "proj_score": "CHC 6-7 COL",
+   "proj_away": 7,
+   "proj_home": 6,
+   "proj_score": "CHC 7-6 COL",
    "components": {
-    "base": 0.06,
-    "scale": 0.835,
-    "rd_season_gap": -0.902,
-    "rd_recent_gap": -0.106,
-    "off_recent_gap": 1.0,
-    "xwoba_gap": -0.629,
-    "sp_k_gap": -0.119,
-    "total_runs": 12.55
+    "base": 0.03,
+    "scale": 1.165,
+    "rd_season_gap": 0.902,
+    "rd_recent_gap": 0.106,
+    "off_recent_gap": -1.0,
+    "xwoba_gap": 0.629,
+    "sp_k_gap": 0.119,
+    "total_runs": 12.67
    }
   },
   "LAD @ PIT": {
@@ -115,19 +115,37 @@
   "SEA @ BAL": {
    "favored": "BAL",
    "win_prob": 0.6633,
-   "spread": 1.0,
-   "proj_away": 4,
-   "proj_home": 5,
-   "proj_score": "SEA 4-5 BAL",
+   "spread": 0.9,
+   "proj_away": 5,
+   "proj_home": 6,
+   "proj_score": "SEA 5-6 BAL",
    "components": {
     "base": 1.02,
-    "scale": 0.945,
+    "scale": 0.911,
     "rd_season_gap": -0.56,
     "rd_recent_gap": 0.256,
     "off_recent_gap": 0.526,
-    "xwoba_gap": 0.0,
+    "xwoba_gap": -0.29,
     "sp_k_gap": -0.423,
-    "total_runs": 8.6
+    "total_runs": 10.91
+   }
+  },
+  "ATL @ CHW": {
+   "favored": "CHW",
+   "win_prob": 0.5113,
+   "spread": 0.2,
+   "proj_away": 5,
+   "proj_home": 6,
+   "proj_score": "ATL 5-6 CHW",
+   "components": {
+    "base": 0.07,
+    "scale": 0.861,
+    "rd_season_gap": -1.0,
+    "rd_recent_gap": -0.208,
+    "off_recent_gap": 0.042,
+    "xwoba_gap": 0.702,
+    "sp_k_gap": -0.184,
+    "total_runs": 10.32
    }
   }
  }

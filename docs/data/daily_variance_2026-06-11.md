@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-11
-_Generated 2026-06-11T19:34:26Z · 8 games · significant deviations only_
+_Generated 2026-06-11T21:21:34Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **STL** [IL] — St. Louis Cardinals activated LF Nathan Church from the 10-day injured list.
@@ -63,17 +63,19 @@ _Generated 2026-06-11T19:34:26Z · 8 games · significant deviations only_
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP James Karinchak from Gwinnett Stripers.
 - **CWS** [IL] — Chicago White Sox placed LF Austin Hays on the 60-day injured list. Left calf strain.
-- **CWS** [recalled] — Chicago White Sox recalled LHP Joe Rock from Charlotte Knights.
-- **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
 - **CWS** [selected] — Chicago White Sox selected the contract of OF Braden Montgomery from Charlotte Knights.
+- **CWS** [recalled] — Chicago White Sox recalled LHP Joe Rock from Charlotte Knights.
 - **CWS** [optioned] — Chicago White Sox optioned RF Rikuu Nishida to Charlotte Knights.
+- **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
 - **CWS** [IL] — Chicago White Sox placed LHP Tyler Gilbert on the 15-day injured list. Left shoulder impingement.
 - **CWS** [recalled] — Chicago White Sox recalled LHP Chris Murphy from Charlotte Knights.
+- **CWS** [IL] — Chicago White Sox activated RF Everson Pereira from the 10-day injured list.
+- **CWS** [TRADE] — Chicago White Sox traded RF Derek Hill and Other Considerations to Philadelphia Phillies for CF Dylan Campbell and 2B Jose Colmenares.
 
 _Suppressed 11 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **ATL @ CWS** (home SP TBD): NOT CONFIRMED — probable SP not posted
+_None flagged._
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **NYM** David Peterson — threw 63 pitches last night — likely unavailable
@@ -98,4 +100,5 @@ _Suppressed 11 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> 
 - SEA @ BAL — BAL faces RHP (Bryan Woo)
 - SEA @ BAL — SEA faces RHP (Kyle Bradish)
 - ATL @ CWS — CWS faces LHP (Martín Pérez)
+- ATL @ CWS — ATL faces LHP (Anthony Kay)
 

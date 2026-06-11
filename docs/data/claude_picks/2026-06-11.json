@@ -1,0 +1,110 @@
+{
+  "date": "2026-06-11",
+  "fit_at": "2026-06-11T18:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 9,
+  "patterns_recognized": [
+    "Carry-thesis OVERRIDE suppression gate confirmed active: full_prob >= 0.62 for the model-pick side blocks override regardless of f5_full_delta magnitude (SEA@BAL 6/10: BAL full_prob=0.638 → BAL won 7-2 after SEA override; same pattern appears today in LAD@PIT and SEA@BAL).",
+    "HARD CAP 10 CONFIRM rescue requires Stage 1/2 directional alignment + strong F3 + pen advantage; Stage-disagreement picks (MIN@DET f5_full_delta=0.133, MIN wins F5 but DET wins full) with near-zero pen gap disqualify the rescue per 6/7 SF@CHC validated criteria.",
+    "Coors altitude over-weighting continues: model assigns COL home-pick at 51% despite CHC SP xERA advantage +1.05 and PQI -19.8 against COL; market correctly prices CHC at 53.96% implied — the gap is park-factor inflation not genuine value.",
+    "D-grade + SP xERA AGAINST pick is a reliable directional loss signal (5/5 on 6/5, multiple confirmations 6/6-6/10); treat opposing-SP team as preferred direction on D-grade games — the SP quality gap outweighs marginal model probability in this grade band."
+  ],
+  "by_matchup": {
+    "STL @ NYM": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5193,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 10 correctly blocked this bottom-bucket marginal pick (pick_prob=0.5193, score=1→0). No F-signal fired, no SP edge (Hunter Dobbins vs Christian Scott, neither flagged), f5_full_delta=0.0024 (stages essentially flat). hl_bullpen_xwoba_gap=0.0141 mildly adverse for STL. No market odds. CONFIRM rescue of CAP 10 requires at minimum Stage alignment and F-signal fire — absent here. 6/10 STL won 9-2 but that was classified as C-grade variance with identical signal quality; SKIP was correct process then and now.",
+      "lessons_applied": ["CAP10-rescue-requires-F-signal", "no-market-odds-no-edge-validation"]
+    },
+    "MIN @ DET": {
+      "model_pick": "DET ML GOLD",
+      "model_prob": 0.552,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "DET",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Pre-cap F3_swing_take_gap=2832.6 is strong, but Stage 1/2 disagree directionally: MIN wins F5 at 58.12%, DET wins full at 55.2% (f5_full_delta=0.133, just below 0.15 threshold). hl_bullpen_xwoba_gap=0.0029 (near-zero) means DET cannot bridge the F5 deficit through late-inning bullpen leverage. PQI slightly against DET (Δ=-3.4). No market odds. Per 6/7 SF@CHC lesson, CAP 10 CONFIRM rescue requires Stage alignment — Stage disagreement here disqualifies it. Downgrade to SKIP.",
+      "lessons_applied": ["CAP10-rescue-requires-stage-alignment", "near-zero-pen-gap-carry-risk", "F3-alone-insufficient-without-stage-alignment"]
+    },
+    "ARI @ MIA": {
+      "model_pick": "ARI ML SKIP",
+      "model_prob": 0.5409,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "Pre-cap score=-3: Tyler Phillips (MIA home) carries a 3.77 xERA advantage over Merrill Kelly (ARI away), and PQI heavily against ARI (+34.1). Both SP and PQI consistently oppose the model's ARI pick. No market odds available. 6/10 ARI@MIA was NO_PICK (PENDING_SP_DATA) with MIA winning 8-0. All signal layers reliably identify ARI as structurally weaker. D-grade SKIP is the correct and well-supported conclusion.",
+      "lessons_applied": ["D-grade-SP-xERA-against-pick-reliable-loss", "D-grade-PQI-large-against-reliable-loss"]
+    },
+    "TEX @ KC": {
+      "model_pick": "TEX ML SKIP",
+      "model_prob": 0.5493,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "KC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Carry-thesis conditions fully met: f5_full_delta=0.1511 (≥0.15 threshold), hl_bullpen_xwoba_gap=-0.0034 (<0.020). KC dominates F5 at 60.18%; TEX full-game flip unsupported by bullpen depth. Suppression gate does not apply (TEX full_prob=0.5493 <0.62). Market aligns: KC implied 51.77% vs TEX model 54.93% (edge_pp=6.7pp may be inflated by confidence_downgrade=True). SP also slightly favors KC (Rocker +0.39 xERA over Wacha). acute_roster stress further weakens TEX claim. OVERRIDE to KC; SKIP tier maintained per D-grade.",
+      "lessons_applied": ["carry-thesis-override-f5_full_delta>=0.15", "suppression-gate-below-0.62", "confidence-downgrade-degrades-edge-reliability", "market-alignment-KC-favored"]
+    },
+    "CHC @ COL": {
+      "model_pick": "COL ML SKIP",
+      "model_prob": 0.51,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "COL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "D-grade (-2): Cabrera (CHC away) carries 1.05 xERA advantage over Feltner (COL home); PQI against COL (Δ=-19.8). Market correctly prices CHC at 53.96% implied; edge_pp=4.97pp reflects Coors altitude inflation, not genuine COL value. f5_full_delta=0.0486 (<0.15, no carry-thesis). 6/10 COL won 3-2 over CHC was classified as 1-run Coors variance, not a signal change. Coors park-factor over-weighting is a known model deficiency; CHC is the structurally superior side. CONFIRM the SKIP.",
+      "lessons_applied": ["Coors-altitude-overweighting", "D-grade-SP-xERA-against-pick", "market-prices-CHC-higher"]
+    },
+    "LAD @ PIT": {
+      "model_pick": "LAD ML GOLD",
+      "model_prob": 0.6828,
+      "model_tier": "GOLD",
+      "model_grade": "B+",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.62,
+      "reasoning": "Strong signal stack: F2_xwoba_gap=0.026, Wrobleski SP edge +0.66 xERA over Keller, PQI confirms (−14.2). BvP OWNERs Ohtani (shrunk 0.971, 12 PA) and Freeman (shrunk 0.941, 20 PA) vs Keller top the lineup. pen_strain_pick_side=0.1147 (HIGH: LAD's dangerous top-of-order will punish PIT bullpen). Carry-thesis suppressed by gate (LAD full_prob=0.6828 ≥0.62). Edge in-band at +4.27pp. 6/10 LAD@PIT loss (9-8) was 1-run variance with negative edge that day; today edge is positive and BvP constellation is strong.",
+      "lessons_applied": ["carry-thesis-suppression-gate-0.62", "BvP-OWNER-cluster-top-2-batters", "HIGH-pen-strain-confirms-pick", "F2-SP-PQI-aligned-stack"]
+    },
+    "SEA @ BAL": {
+      "model_pick": "BAL ML SKIP",
+      "model_prob": 0.6633,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BAL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Pre-cap D (−4): Bryan Woo (SEA) carries 1.16 xERA edge over Bradish (BAL), PQI against BAL (Δ=−17.6), SEA wins F5 at 68.82%, bullpen_fatigue and confidence_downgrade=True flagged. Carry-thesis conditions met (f5_full_delta=0.3515, gap=0.0033) but suppression gate blocks override (BAL full_prob=0.6633 ≥0.62). 6/10 confirmed: carry-thesis override to SEA backfired when BAL full_prob=0.638 — BAL won 7-2. D-grade with four negative signals correctly assessed as SKIP. Suppression gate holds.",
+      "lessons_applied": ["carry-thesis-suppression-gate-0.62", "6-10-SEA-BAL-override-failure", "D-grade-multiple-signals-against-SKIP"]
+    },
+    "ATL @ CHW": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "CHW home SP not yet announced; PENDING_SP_DATA protocol correctly blocks directional commitment. No SP Statcast data means no reliable xERA, no edge calculation, and no valid tier assignment. 6/10 ATL@CHW had the same status (CHW won 2-1, protocol validated). No directional read is appropriate here.",
+      "lessons_applied": ["PENDING_SP_DATA-protocol-validated-6-10"]
+    }
+  }
+}
