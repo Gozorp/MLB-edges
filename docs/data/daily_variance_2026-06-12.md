@@ -1,0 +1,119 @@
+# Daily Variance Report — 2026-06-12
+_Generated 2026-06-11T21:27:47Z · 15 games · significant deviations only_
+
+## 1 · Roster / Injury Delta
+- **MIA** [signed] — Miami Marlins signed free agent RHP Junior Pina to a minor league contract.
+- **PIT** [status] — Pittsburgh Pirates placed C Henry Davis on the paternity list.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent OF Jean Rodriguez to a minor league contract.
+- **PIT** [IL] — Pittsburgh Pirates placed CF Oneil Cruz on the 10-day injured list retroactive to June 8, 2026. Left hand fourth and fifth metacarpal non-displaced fractures.
+- **PIT** [recalled] — Pittsburgh Pirates recalled C Rafael Flores Jr. from Indianapolis Indians.
+- **PIT** [recalled] — Pittsburgh Pirates recalled RF Billy Cook from Indianapolis Indians.
+- **PIT** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
+- **PIT** [optioned] — Pittsburgh Pirates optioned 3B Davis Wendzel to Indianapolis Indians.
+- **PIT** [recalled] — Pittsburgh Pirates recalled OF Esmerlyn Valdez from Indianapolis Indians.
+- **SEA** [IL] — Seattle Mariners activated 3B Miles Mastrobuoni from the 60-day injured list.
+- **SEA** [DFA] — Seattle Mariners designated RHP Yosver Zulueta for assignment.
+- **SEA** [IL] — Seattle Mariners placed RHP Matt Brash on the 15-day injured list retroactive to June 9, 2026. Right lat strain.
+- **SEA** [optioned] — Seattle Mariners optioned 2B Ryan Bliss to Tacoma Rainiers.
+- **SEA** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
+- **SEA** [recalled] — Seattle Mariners recalled RHP Domingo Gonzalez from Tacoma Rainiers.
+- **SEA** [DFA] — Seattle Mariners designated RHP Domingo Gonzalez for assignment.
+- **SEA** [selected] — Seattle Mariners selected the contract of RHP Michael Rucker from Tacoma Rainiers.
+- **SD** [signed] — San Diego Padres signed free agent 1B Nick Pratto to a minor league contract.
+- **BAL** [signed] — Baltimore Orioles signed free agent C Chadwick Tromp to a minor league contract.
+- **BAL** [signed] — Baltimore Orioles signed free agent RHP Fermin Magallanes to a minor league contract.
+- **DET** [TRADE] — Milwaukee Brewers traded RHP Jacob Waguespack to Detroit Tigers.
+- **TEX** [IL] — Texas Rangers placed LHP Jalen Beeks on the 10-day injured list retroactive to June 10, 2026. Low back spasms.
+- **TEX** [recalled] — Texas Rangers recalled RHP Luis Curvelo from Round Rock Express.
+- **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
+- **BOS** [recalled] — Boston Red Sox recalled LHP Jake Bennett from Worcester Red Sox.
+- **CIN** [recalled] — Cincinnati Reds recalled RHP Chase Petty from Louisville Bats.
+- **CIN** [optioned] — Cincinnati Reds optioned RHP Zach McCambley to Louisville Bats.
+- **ATL** [IL] — Atlanta Braves placed RF Ronald Acuña Jr. on the 10-day injured list. Strained left hamstring.
+- **ATL** [DFA] — Atlanta Braves designated RHP Jhancarlos Lara for assignment.
+- **ATL** [DFA] — Atlanta Braves designated RHP Carlos Carrasco for assignment.
+- **ATL** [signed] — Atlanta Braves signed free agent OF Elioberto Mondesir to a minor league contract.
+- **ATL** [IL] — Atlanta Braves placed RHP Tyler Kinley on the 15-day injured list retroactive to June 8, 2026. Right elbow inflammation.
+- **ATL** [selected] — Atlanta Braves selected the contract of 1B Rowdy Tellez from Gwinnett Stripers.
+- **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of RHP James Karinchak from Gwinnett Stripers.
+- **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
+- **NYY** [IL] — New York Yankees activated RHP Angel Chivilli from the 15-day injured list.
+- **NYY** [optioned] — New York Yankees optioned RHP Angel Chivilli to Scranton/Wilkes-Barre RailRiders.
+- **TOR** [signed] — Toronto Blue Jays signed free agent RHP Cristhian Espinosa to a minor league contract.
+- **TOR** [IL] — Toronto Blue Jays activated RHP Max Scherzer from the 15-day injured list.
+- **TOR** [DFA] — Toronto Blue Jays designated RHP Connor Seabold for assignment.
+- **LAD** [released] — Los Angeles Dodgers released 2B Tyler Fitzgerald.
+- **LAD** [IL] — Los Angeles Dodgers placed C Will Smith on the 10-day injured list retroactive to June 8, 2026. Neck inflammation.
+- **LAD** [selected] — Los Angeles Dodgers selected the contract of C Chuckie Robinson from Oklahoma City Comets.
+- **CWS** [IL] — Chicago White Sox placed LHP Tyler Gilbert on the 15-day injured list. Left shoulder impingement.
+- **CWS** [recalled] — Chicago White Sox recalled LHP Chris Murphy from Charlotte Knights.
+- **CWS** [IL] — Chicago White Sox activated RF Everson Pereira from the 10-day injured list.
+- **CWS** [TRADE] — Chicago White Sox traded RF Derek Hill and Other Considerations to Philadelphia Phillies for CF Dylan Campbell and 2B Jose Colmenares.
+- **PHI** [DFA] — Philadelphia Phillies designated RHP Jackson Rutledge for assignment.
+- **PHI** [TRADE] — Chicago White Sox traded RF Derek Hill and Other Considerations to Philadelphia Phillies for CF Dylan Campbell and 2B Jose Colmenares.
+- **MIL** [signed] — Milwaukee Brewers signed free agent RHP Lyon Richardson to a minor league contract.
+- **MIL** [TRADE] — Milwaukee Brewers traded RHP Jacob Waguespack to Detroit Tigers.
+- **HOU** [TRADE] — Tampa Bay Rays traded 2B Raynel Delgado to Houston Astros for cash.
+- **HOU** [optioned] — Houston Astros optioned 3B Shay Whitcomb to Sugar Land Space Cowboys.
+- **KC** [IL] — Kansas City Royals placed CF Kyle Isbel on the 10-day injured list. Left plantar fasciitis.
+- **KC** [recalled] — Kansas City Royals recalled CF Kameron Misner from Omaha Storm Chasers.
+- **TB** [TRADE] — Tampa Bay Rays traded 2B Raynel Delgado to Houston Astros for cash.
+- **LAA** [IL] — Los Angeles Angels placed C Sebastián Rivero on the 10-day injured list. Left hamate fracture.
+- **LAA** [IL] — Los Angeles Angels transferred RHP Jack Kochanowicz from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
+- **LAA** [selected] — Los Angeles Angels selected the contract of C Logan Porter from Salt Lake Bees.
+- **COL** [outrighted] — Colorado Rockies sent RHP Keegan Thompson outright to Albuquerque Isotopes.
+- **SF** [IL] — San Francisco Giants activated LHP Reiver Sanmartin from the 60-day injured list.
+- **SF** [DFA] — San Francisco Giants designated LF Will Brennan for assignment.
+- **SF** [optioned] — San Francisco Giants optioned RHP Tristan Beck to Sacramento River Cats.
+
+_Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+
+## 2 · Starting Pitcher Flags
+- **NYY @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **LAD @ CWS** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **PHI @ MIL** (home SP Jacob Misiorowski): very high K% (36.1% vs lg 21.7)
+- **COL @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **CHC @ SF** (away SP TBD): NOT CONFIRMED — probable SP not posted
+
+## 3 · Bullpen Fatigue (last 3 games)
+- **MIA** Michael Petersen — 2 apps / 40 pitches over last 3 games — monitor
+- **MIA** Pete Fairbanks — 2 apps / 37 pitches over last 3 games — monitor
+- **DET** Tyler Holton — 2 apps / 41 pitches over last 3 games — monitor
+- **TOR** Jeff Hoffman — 2 apps / 36 pitches over last 3 games — monitor
+- **KC** Alex Lange — 2 apps / 51 pitches over last 3 games — monitor
+- **STL** JoJo Romero — 2 apps / 37 pitches over last 3 games — monitor
+- **MIN** Cody Laweryson — 2 apps / 44 pitches over last 3 games — monitor
+- **COL** Antonio Senzatela — 2 apps / 36 pitches over last 3 games — monitor
+
+## 4 · Lineup / Platoon
+- MIA @ PIT — PIT faces RHP (Sandy Alcantara)
+- MIA @ PIT — MIA faces RHP (Braxton Ashcraft)
+- SEA @ WSH — WSH faces RHP (Bryce Miller)
+- SEA @ WSH — SEA faces RHP (Zack Littell)
+- SD @ BAL — BAL faces RHP (Griffin Canning)
+- SD @ BAL — SD faces RHP (Shane Baz)
+- DET @ CLE — CLE faces RHP (Jack Flaherty)
+- DET @ CLE — DET faces RHP (Tanner Bibee)
+- TEX @ BOS — BOS faces RHP (Jack Leiter)
+- TEX @ BOS — TEX faces RHP (Sonny Gray)
+- AZ @ CIN — CIN faces LHP (Eduardo Rodriguez)
+- AZ @ CIN — AZ faces LHP (Nick Lodolo)
+- ATL @ NYM — NYM faces RHP (Spencer Strider)
+- ATL @ NYM — ATL faces RHP (Nolan McLean)
+- NYY @ TOR — TOR faces LHP (Ryan Weathers)
+- LAD @ CWS — CWS faces RHP (Roki Sasaki)
+- PHI @ MIL — MIL faces RHP (Andrew Painter)
+- PHI @ MIL — PHI faces RHP (Jacob Misiorowski)
+- HOU @ KC — KC faces RHP (Tatsuya Imai)
+- HOU @ KC — HOU faces RHP (Luinder Avila)
+- STL @ MIN — MIN faces RHP (Kyle Leahy)
+- STL @ MIN — STL faces RHP (Joe Ryan)
+- TB @ LAA — LAA faces LHP (Shane McClanahan)
+- TB @ LAA — TB faces LHP (Sam Aldegheri)
+- COL @ ATH — COL faces LHP (Gage Jump)
+- CHC @ SF — CHC faces RHP (Landen Roupp)
+
