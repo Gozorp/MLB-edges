@@ -1,15 +1,20 @@
 # Daily Variance Report — 2026-06-11
-_Generated 2026-06-11T07:03:09Z · 8 games · significant deviations only_
+_Generated 2026-06-11T19:34:26Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **STL** [IL] — St. Louis Cardinals activated LF Nathan Church from the 10-day injured list.
 - **NYM** [signed] — New York Mets signed free agent C Jack Scanlon to a minor league contract.
 - **NYM** [optioned] — New York Mets optioned C Hayden Senger to Syracuse Mets.
-- **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
 - **DET** [TRADE] — Milwaukee Brewers traded RHP Jacob Waguespack to Detroit Tigers.
+- **MIA** [signed] — Miami Marlins signed free agent RHP Junior Pina to a minor league contract.
 - **TEX** [IL] — Texas Rangers activated RHP Cole Winn from the 15-day injured list.
 - **TEX** [optioned] — Texas Rangers optioned RHP Luis Curvelo to Round Rock Express.
+- **TEX** [IL] — Texas Rangers placed LHP Jalen Beeks on the 10-day injured list retroactive to June 10, 2026. Low back spasms.
+- **TEX** [recalled] — Texas Rangers recalled RHP Luis Curvelo from Round Rock Express.
 - **KC** [activated] — Kansas City Royals activated RHP Stephen Kolek.
 - **KC** [optioned] — Kansas City Royals optioned 3B Josh Rojas to Omaha Storm Chasers.
 - **KC** [IL] — Kansas City Royals placed CF Kyle Isbel on the 10-day injured list. Left plantar fasciitis.
@@ -25,22 +30,30 @@ _Generated 2026-06-11T07:03:09Z · 8 games · significant deviations only_
 - **COL** [selected] — Colorado Rockies selected the contract of OF Cole Carrigg from Albuquerque Isotopes.
 - **COL** [recalled] — Colorado Rockies recalled RHP Jeff Criswell from Albuquerque Isotopes.
 - **COL** [outrighted] — Colorado Rockies sent RHP Keegan Thompson outright to Albuquerque Isotopes.
+- **LAD** [released] — Los Angeles Dodgers released 2B Tyler Fitzgerald.
+- **LAD** [IL] — Los Angeles Dodgers placed C Will Smith on the 10-day injured list retroactive to June 8, 2026. Neck inflammation.
+- **LAD** [selected] — Los Angeles Dodgers selected the contract of C Chuckie Robinson from Oklahoma City Comets.
 - **PIT** [signed] — Pittsburgh Pirates signed free agent RHP Chun Hsi Lin to a minor league contract.
+- **PIT** [status] — Pittsburgh Pirates placed C Henry Davis on the paternity list.
 - **PIT** [signed] — Pittsburgh Pirates signed free agent OF Jean Rodriguez to a minor league contract.
 - **PIT** [IL] — Pittsburgh Pirates placed CF Oneil Cruz on the 10-day injured list retroactive to June 8, 2026. Left hand fourth and fifth metacarpal non-displaced fractures.
-- **PIT** [status] — Pittsburgh Pirates placed C Henry Davis on the paternity list.
 - **PIT** [recalled] — Pittsburgh Pirates recalled C Rafael Flores Jr. from Indianapolis Indians.
-- **PIT** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RF Billy Cook from Indianapolis Indians.
+- **PIT** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
+- **PIT** [optioned] — Pittsburgh Pirates optioned 3B Davis Wendzel to Indianapolis Indians.
+- **PIT** [recalled] — Pittsburgh Pirates recalled OF Esmerlyn Valdez from Indianapolis Indians.
 - **SEA** [IL] — Seattle Mariners placed RHP Cooper Criswell on the 15-day injured list. Right shoulder ctrain.
 - **SEA** [recalled] — Seattle Mariners recalled RHP Nick Davila from Tacoma Rainiers.
-- **SEA** [DFA] — Seattle Mariners designated RHP Yosver Zulueta for assignment.
 - **SEA** [IL] — Seattle Mariners activated 3B Miles Mastrobuoni from the 60-day injured list.
+- **SEA** [DFA] — Seattle Mariners designated RHP Yosver Zulueta for assignment.
 - **SEA** [IL] — Seattle Mariners placed RHP Matt Brash on the 15-day injured list retroactive to June 9, 2026. Right lat strain.
-- **SEA** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
 - **SEA** [optioned] — Seattle Mariners optioned 2B Ryan Bliss to Tacoma Rainiers.
+- **SEA** [TRADE] — Pittsburgh Pirates traded RHP Carson Fulmer to Seattle Mariners for cash.
 - **SEA** [recalled] — Seattle Mariners recalled RHP Domingo Gonzalez from Tacoma Rainiers.
+- **SEA** [DFA] — Seattle Mariners designated RHP Domingo Gonzalez for assignment.
+- **SEA** [selected] — Seattle Mariners selected the contract of RHP Michael Rucker from Tacoma Rainiers.
 - **BAL** [signed] — Baltimore Orioles signed free agent C Chadwick Tromp to a minor league contract.
+- **BAL** [signed] — Baltimore Orioles signed free agent RHP Fermin Magallanes to a minor league contract.
 - **ATL** [IL] — Atlanta Braves placed RF Ronald Acuña Jr. on the 10-day injured list. Strained left hamstring.
 - **ATL** [DFA] — Atlanta Braves designated RHP Jhancarlos Lara for assignment.
 - **ATL** [DFA] — Atlanta Braves designated RHP Carlos Carrasco for assignment.
@@ -57,7 +70,7 @@ _Generated 2026-06-11T07:03:09Z · 8 games · significant deviations only_
 - **CWS** [IL] — Chicago White Sox placed LHP Tyler Gilbert on the 15-day injured list. Left shoulder impingement.
 - **CWS** [recalled] — Chicago White Sox recalled LHP Chris Murphy from Charlotte Knights.
 
-_Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 11 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **ATL @ CWS** (home SP TBD): NOT CONFIRMED — probable SP not posted
