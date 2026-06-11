@@ -6632,10 +6632,13 @@ function _tierTeam(ab){
 function _tierChip(ab){
   var r = _tierTeam(ab);
   if (!r) return "";
+  var t0 = r.t || {};
   var COLORS = {"Elite":"#56d364","Above Average":"#3fb6e6","Average":"#7d8590","Below Average":"#e8924a","Poor":"#f85149"};
   var LAB = {"Elite":"ELITE","Above Average":"ABOVE","Average":"AVG","Below Average":"BELOW","Poor":"POOR"};
   var c = COLORS[r.tier] || "#7d8590";
   var lab = LAB[r.tier] || r.tier;
+  if (t0 && t0.movement === "promoted") lab += " \u25B2";
+  else if (t0 && t0.movement === "demoted") lab += " \u25BC";
   var t = r.t || {};
   var tip = (t.name || ab) + ' - ' + r.tier
     + (t.w != null ? '  (' + t.w + '-' + t.l + ', ' + (t.rd >= 0 ? '+' : '') + t.rd + ' run diff)' : '')
