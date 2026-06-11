@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-11
-_Generated 2026-06-11T05:47:13Z · 8 games · significant deviations only_
+_Generated 2026-06-11T07:03:09Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **STL** [IL] — St. Louis Cardinals activated LF Nathan Church from the 10-day injured list.

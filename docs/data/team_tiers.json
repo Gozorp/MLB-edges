@@ -1,15 +1,12 @@
 {
- "generated_utc": "2026-06-11T05:47:43Z",
+ "generated_utc": "2026-06-11T07:03:42Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
  "movements": [
-  "CWS promoted: Average -> Above Average (eff +0.62, mmr +0.28)",
-  "CHC demoted: Average -> Below Average (eff -0.43, mmr -0.40)",
-  "MIA promoted: Below Average -> Average (eff +0.11, mmr +0.29)",
-  "MIN demoted: Below Average -> Poor (eff -0.83, mmr -0.19)",
-  "CIN demoted: Below Average -> Poor (eff -0.96, mmr -0.29)",
-  "BOS demoted: Below Average -> Poor (eff -0.99, mmr -0.24)"
+  "PHI promoted: Average -> Above Average (eff +0.40, mmr +0.24)",
+  "AZ demoted: Average -> Below Average (eff -0.38, mmr -0.22)",
+  "HOU demoted: Below Average -> Poor (eff -0.82, mmr -0.07)"
  ],
  "tier_order": [
   "Elite",
@@ -141,11 +138,26 @@
     "z": 0.342,
     "mmr": 0.277,
     "eff": 0.619,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs MIN (06-01)",
      "upset L vs MIN (06-02)"
+    ]
+   },
+   {
+    "name": "Philadelphia Phillies",
+    "abbr": "PHI",
+    "w": 37,
+    "l": 31,
+    "pct": 0.544,
+    "rd": -14,
+    "rationale": "37-31 (.544), -14 run differential -- a negative run margin, winning above what that margin implies. Results running above tier expectation (MMR +0.24).",
+    "z": 0.159,
+    "mmr": 0.244,
+    "eff": 0.402,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs LAD (05-30)"
     ]
    }
   ],
@@ -164,25 +176,6 @@
     "upsets": [
      "upset L vs HOU (06-03)",
      "upset W vs LAD (06-10)"
-    ]
-   },
-   {
-    "name": "Philadelphia Phillies",
-    "abbr": "PHI",
-    "w": 37,
-    "l": 31,
-    "pct": 0.544,
-    "rd": -14,
-    "rationale": "37-31 (.544), -14 run differential -- a negative run margin, winning above what that margin implies. Results running above tier expectation (MMR +0.24).",
-    "z": 0.159,
-    "mmr": 0.244,
-    "eff": 0.402,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs LAD (05-30)"
     ]
    },
    {
@@ -244,26 +237,6 @@
     "eff": -0.168
    },
    {
-    "name": "Arizona Diamondbacks",
-    "abbr": "AZ",
-    "w": 34,
-    "l": 33,
-    "pct": 0.507,
-    "rd": -22,
-    "rationale": "34-33 (.507), -22 run differential -- a negative run margin, winning above what that margin implies. Results running below tier expectation (MMR -0.22).",
-    "z": -0.167,
-    "mmr": -0.217,
-    "eff": -0.384,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs LAD (06-01)",
-     "upset W vs LAD (06-04)"
-    ]
-   },
-   {
     "name": "Miami Marlins",
     "abbr": "MIA",
     "w": 33,
@@ -274,8 +247,6 @@
     "z": -0.181,
     "mmr": 0.291,
     "eff": 0.111,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs TB (06-06)",
      "upset W vs TB (06-07)"
@@ -294,11 +265,27 @@
     "z": -0.022,
     "mmr": -0.404,
     "eff": -0.426,
-    "movement": "demoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs SF (06-05)",
      "upset L vs SF (06-07)"
+    ]
+   },
+   {
+    "name": "Arizona Diamondbacks",
+    "abbr": "AZ",
+    "w": 34,
+    "l": 33,
+    "pct": 0.507,
+    "rd": -22,
+    "rationale": "34-33 (.507), -22 run differential -- a negative run margin, winning above what that margin implies. Results running below tier expectation (MMR -0.22).",
+    "z": -0.167,
+    "mmr": -0.217,
+    "eff": -0.384,
+    "movement": "demoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs LAD (06-01)",
+     "upset W vs LAD (06-04)"
     ]
    },
    {
@@ -363,26 +350,6 @@
     ]
    },
    {
-    "name": "Houston Astros",
-    "abbr": "HOU",
-    "w": 31,
-    "l": 39,
-    "pct": 0.443,
-    "rd": -38,
-    "rationale": "31-39 (.443), -38 run differential -- a poor run margin.",
-    "z": -0.751,
-    "mmr": -0.066,
-    "eff": -0.817,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs MIL (05-30)",
-     "upset W vs PIT (06-03)"
-    ]
-   },
-   {
     "name": "Detroit Tigers",
     "abbr": "DET",
     "w": 28,
@@ -411,8 +378,6 @@
     "z": -0.634,
     "mmr": -0.192,
     "eff": -0.826,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CWS (06-01)",
      "upset W vs CWS (06-02)"
@@ -429,8 +394,6 @@
     "z": -0.669,
     "mmr": -0.292,
     "eff": -0.961,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs ATL (05-31)"
     ]
@@ -446,11 +409,27 @@
     "z": -0.749,
     "mmr": -0.239,
     "eff": -0.988,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CLE (05-30)",
      "upset W vs CLE (05-31)"
+    ]
+   },
+   {
+    "name": "Houston Astros",
+    "abbr": "HOU",
+    "w": 31,
+    "l": 39,
+    "pct": 0.443,
+    "rd": -38,
+    "rationale": "31-39 (.443), -38 run differential -- a poor run margin.",
+    "z": -0.751,
+    "mmr": -0.066,
+    "eff": -0.817,
+    "movement": "demoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset W vs MIL (05-30)",
+     "upset W vs PIT (06-03)"
     ]
    },
    {
