@@ -2016,6 +2016,7 @@ window.__advSplits = window.__advSplits || {};
 function _advEsc(x){ return String(x == null ? "" : x).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
 function _advNum(v, d){ var f = parseFloat(v); return isFinite(f) ? f.toFixed(d == null ? 1 : d) : "&mdash;"; }
 function _advFindBatter(name){
+  // Today's posted lineup first (freshest vs-today fields).
   try {
     var rows = (window.__slate && window.__slate.rows) || [];
     for (var i = 0; i < rows.length; i++){
@@ -2029,21 +2030,52 @@ function _advFindBatter(name){
         }
       }
     }
-    // __ppProj fallback: prior-day posted lineups (projection map) so the
-    // drawer works before today's lineups post. Same fields, older snapshot.
-    var pm = window.__ppProj || {};
-    for (var tm in pm){
-      var bats = (pm[tm] && pm[tm].batters) || [];
-      for (var q = 0; q < bats.length; q++){
-        if ((bats[q].name || "").trim() === name) return bats[q];
+  } catch (_e) {}
+  var idx = window.__advIdx || {};
+  return idx[name.toLowerCase()] || null;
+}
+async function _advEnsureIdx(){
+  // Player index over the historical scraped record: every posted lineup in
+  // the last 14 published diag dates (immutable -> force-cache), dates
+  // descending so a player's MOST RECENT played game wins. Built once.
+  if (window.__advIdx) return window.__advIdx;
+  var idx = {};
+  try {
+    var mf = await fetch("./data/manifest.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; });
+    var dates = ((mf && mf.dates) || []).slice().sort().reverse().slice(0, 14);
+    for (var di = 0; di < dates.length; di++){
+      var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: "force-cache" }).then(function (r) { return r.ok ? r.text() : null; });
+      if (!txt) continue;
+      var prows = [];
+      try { prows = parseCSV(txt); } catch (_e) { continue; }
+      for (var ri = 0; ri < prows.length; ri++){
+        var sides2 = [prows[ri].away_top_5_batters_json, prows[ri].home_top_5_batters_json];
+        for (var s2 = 0; s2 < 2; s2++){
+          var arr2 = [];
+          try { arr2 = JSON.parse(sides2[s2] || "[]"); } catch (_e) {}
+          for (var k2 = 0; k2 < arr2.length; k2++){
+            var nm = (arr2[k2].name || "").trim().toLowerCase();
+            if (nm && !idx[nm]){ arr2[k2]._from = dates[di]; idx[nm] = arr2[k2]; }
+          }
+        }
       }
     }
   } catch (_e) {}
-  return null;
+  window.__advIdx = idx;
+  return idx;
+}
+async function _advBatterFill(el, name){
+  try {
+    var b = _advFindBatter(name);
+    if (!b){ await _advEnsureIdx(); b = _advFindBatter(name); }
+    el.innerHTML = _advBatterHtml(b);
+  } catch (e) {
+    try { el.innerHTML = '<div class="muted">Profile unavailable (' + _advEsc(String(e).slice(0, 50)) + ').</div>'; } catch (_e) {}
+  }
 }
 function _advCell(label, val){ return '<span><span class="adv-k">' + label + '</span><b>' + val + '</b></span>'; }
 function _advBatterHtml(b){
-  if (!b) return '<div class="muted">Season Statcast profile not in today\'s lineup data (posts with lineups; projections carry prior-day data).</div>';
+  if (!b) return '<div class="muted">No posted-lineup history for this player in the last 14 slates (recent debuts appear after their first posted game).</div>';
   var h = '<div class="adv-grid">'
     + _advCell("POS", _advEsc(b.pos || "&mdash;"))
     + _advCell("BBE", _advNum(b.bbe, 0))
@@ -2065,7 +2097,7 @@ function _advBatterHtml(b){
     + '<span style="' + (!lBold && isFinite(vr) ? "font-weight:700;" : "") + '">vs RHP ' + _advNum(vr, 3) + ' <span class="muted">(' + _advNum(b.vs_RHP_PA_career, 0) + ' PA)</span></span>'
     + (b.sample_flag && b.sample_flag !== "OK" ? ' <span style="color:var(--yellow);font-size:0.6rem;">' + _advEsc(b.sample_flag) + '</span>' : '')
     + '</div>'
-    + '<div class="muted" style="font-size:0.6rem;margin-top:4px;">Season Statcast suite; platoon = career OPS (per-split Statcast lands with the July backend work).</div>';
+    + '<div class="muted" style="font-size:0.6rem;margin-top:4px;">Season Statcast suite' + (b._from ? ' (as of ' + _advEsc(b._from) + ' lineup)' : '') + '; platoon = career OPS (per-split Statcast lands with the July backend work).</div>';
   return h;
 }
 function _advSplitRow(lab, st){
@@ -2130,7 +2162,8 @@ document.addEventListener("click", function(e){
     }
     anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
     if (bEl){
-      inner.innerHTML = _advBatterHtml(_advFindBatter((bEl.getAttribute("data-n") || "").trim()));
+      inner.innerHTML = '<span class="muted">Loading profile&hellip;</span>';
+      _advBatterFill(inner, (bEl.getAttribute("data-n") || "").trim());
     } else {
       inner.innerHTML = '<span class="muted">Loading splits&hellip;</span>';
       _advPitcherFill(inner, pEl.getAttribute("data-pid"), (pEl.getAttribute("data-pn") || "").trim());
