@@ -41,8 +41,30 @@ def _finals(date):
             a=canon(((t.get("away") or {}).get("team") or {}).get("abbreviation"))
             h=canon(((t.get("home") or {}).get("team") or {}).get("abbreviation"))
             ar=(ls.get("away") or {}).get("runs"); hr=(ls.get("home") or {}).get("runs")
-            out[(a,h)]=(g.get("status",{}).get("detailedState",""),ar,hr)
+            a5=h5=None
+            inn=(g.get("linescore",{}) or {}).get("innings") or []
+            if len(inn)>=5:
+                try:
+                    a5=sum(int((i.get("away") or {}).get("runs") or 0) for i in inn[:5])
+                    h5=sum(int((i.get("home") or {}).get("runs") or 0) for i in inn[:5])
+                except Exception:
+                    a5=h5=None
+            out[(a,h)]=(g.get("status",{}).get("detailedState",""),ar,hr,a5,h5)
     return out
+
+def _f5_fields(a5,h5,f5_prob_homeref):
+    """F5 leg fields. f5_prob is HOME-referenced (diag convention). Ties are
+    recorded as pushes, never coerced; Brier only on untied legs."""
+    if a5 is None or h5 is None: return {}
+    o={"f5_away_runs":a5,"f5_home_runs":h5,"f5_tie":bool(a5==h5)}
+    if a5==h5:
+        o["f5_home_win"]=None
+    else:
+        hw=1 if h5>a5 else 0
+        o["f5_home_win"]=hw
+        if f5_prob_homeref is not None:
+            o["f5_brier_homeref"]=round((f5_prob_homeref-hw)**2,4)
+    return o
 def log_predictions(slate):
     path=os.path.join(ROOT,"docs","data","picks_%s_diag.csv"%slate)
     if not os.path.exists(path): path=os.path.join(ROOT,"picks_%s_diag.csv"%slate)
@@ -82,7 +104,7 @@ def finalize():
         for r in recs:
             fin=F.get((canon(r["away"]),canon(r["home"])))
             if not fin: continue
-            st,ar,hr=fin
+            st,ar,hr,a5,h5=fin
             if st!="Final" or ar is None or hr is None:
                 if st in ("Postponed","Cancelled","Suspended"):
                     _append({"phase":"result","slate_date":date,"matchup":r["matchup"],"scored_at_utc":_utc(),"status":st,"voided":True}); n+=1
@@ -91,9 +113,44 @@ def finalize():
             if not r.get("has_pick") or pp is None:
                 _append({"phase":"result","slate_date":date,"matchup":r["matchup"],"scored_at_utc":_utc(),"status":"Final","away_runs":ar,"home_runs":hr,"winner":winner,"no_pick":True}); n+=1; continue
             outcome=1 if canon(r.get("pick"))==winner else 0
-            _append({"phase":"result","slate_date":date,"matchup":r["matchup"],"scored_at_utc":_utc(),"status":"Final","away_runs":ar,"home_runs":hr,"winner":winner,"pick":r.get("pick"),"pick_prob":pp,"outcome":outcome,"pick_correct":bool(outcome),"brier":round((pp-outcome)**2,4)}); n+=1
+            rec={"phase":"result","slate_date":date,"matchup":r["matchup"],"scored_at_utc":_utc(),"status":"Final","away_runs":ar,"home_runs":hr,"winner":winner,"pick":r.get("pick"),"pick_prob":pp,"outcome":outcome,"pick_correct":bool(outcome),"brier":round((pp-outcome)**2,4)}
+            rec.update(_f5_fields(a5,h5,r.get("f5_prob")))
+            _append(rec); n+=1
     print("[oos] finalized %d"%n); return n
+def backfill_f5():
+    """Append phase='f5_result' rows for games already scored before the F5
+    leg existed. One row per (date, matchup); idempotent."""
+    led=_read()
+    preds={(r["slate_date"],r["matchup"]):r for r in led if r.get("phase")=="predict"}
+    scored={(r["slate_date"],r["matchup"]) for r in led if r.get("phase")=="result" and r.get("status")=="Final"}
+    have_f5={(r["slate_date"],r["matchup"]) for r in led if r.get("phase")=="f5_result"}
+    inline_f5={(r["slate_date"],r["matchup"]) for r in led if r.get("phase")=="result" and "f5_tie" in r}
+    todo={}
+    for k in scored:
+        if k in have_f5 or k in inline_f5: continue
+        todo.setdefault(k[0],[]).append(k[1])
+    n=0
+    for date,ms in sorted(todo.items()):
+        try: F=_finals(date)
+        except Exception as e: print("[oos] f5 backfill %s failed: %s"%(date,e)); continue
+        for m in ms:
+            r=preds.get((date,m))
+            if not r: continue
+            fin=F.get((canon(r["away"]),canon(r["home"])))
+            if not fin: continue
+            st,ar,hr,a5,h5=fin
+            ff=_f5_fields(a5,h5,r.get("f5_prob"))
+            if not ff: continue
+            rec={"phase":"f5_result","slate_date":date,"matchup":m,"scored_at_utc":_utc(),"f5_prob":r.get("f5_prob")}
+            rec.update(ff)
+            _append(rec); n+=1
+    print("[oos] f5 backfill +%d"%n); return n
+
 def main():
+    if "--backfill-f5" in sys.argv:
+        try: backfill_f5()
+        except Exception as e: print("[oos] f5 backfill err (non-fatal): %s"%e)
+        return
     slate=sys.argv[1] if len(sys.argv)>1 else datetime.datetime.now(datetime.timezone.utc).date().isoformat()
     try: finalize()
     except Exception as e: print("[oos] finalize err (non-fatal): %s"%e)
