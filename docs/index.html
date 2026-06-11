@@ -7660,6 +7660,7 @@ async function loadSlate(date, { bust = false } = {}) {
     const topOutcomesHtml = playableRows.length
       ? renderTopProbableOutcomes(playableRows, window.__totalsByMatchup, results)
       : "";
+    try { renderPerfectPair(playableRows, results); } catch (_e) {}
     const bullpenOutlookHtml = playableRows.length
       ? renderBullpenOutlook(playableRows, window.__bullpenMeta)
       : "";
