@@ -1,0 +1,86 @@
+{
+  "date": "2026-06-11",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-12T00:00:00Z",
+  "n_analyzed": 8,
+  "summary": "The 2026-06-11 slate went 5W-2L on raw model picks (71% hit rate) across 7 scoreable games; 1 postponement (ATL@CWS). Directional decisions landed 4W-3L after Claude's carry-thesis OVERRIDE on TEX→KC failed: TEX won 4-2, grade_reasons showed 'Stage 1/2 agree (Δ=0.03)', which definitively blocks the carry-thesis regardless of f5_full_delta=0.1511. CHC@COL model pick was misread as COL in claude_picks; CSV pick=CHC won 9-3, escaping without damage but exposing a recurring same-matchup day-over-day assumption error. LAD's GOLD-tier B+ stack won 8-6; DET's F3-driven pick delivered an 11-0 blowout.",
+  "by_matchup": {
+    "STL @ NYM": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-5",
+      "headline": "New York edged St. Louis 5-4; bottom-bucket C-grade SKIP lost in a 1-run game consistent with the 31% non-confirm archive hit rate.",
+      "hypothesis": "STL was C-grade (score=0): no F-signal, Stage 1/2 agree (Δ=0.0024), hl_bullpen_xwoba_gap=0.0141 mildly adverse for STL, HARD CAP 10 correctly held at score=0. NYM won by 1 run — this is variance. The marginal signal stack accurately telegraphed low confidence; no process lesson to extract from a 1-run loss at pick_prob=0.5193.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite — 1-run loss on a C-grade 0-score pick is consistent with the 31.2% non-CONFIRM archive hit rate; no threshold recalibration warranted from this result."
+    },
+    "MIN @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "0-11",
+      "headline": "Detroit demolished Minnesota 11-0; DOWNGRADE to SKIP was correct tier process, and the F3-conviction direction proved massively accurate.",
+      "hypothesis": "DET had F3_swing_take_gap=2832.6 (strong) but HARD CAP 10 and grade_reasons 'Stage 1/2 agree (Δ=0.03)' made the DOWNGRADE to SKIP appropriate process. The 11-0 margin is exceptional directional validation. This is a variance win in magnitude — direction was correct, tier SKIP was correct, and the blowout does not justify relaxing HARD CAP 10 on its own. Worth tracking as a data point if F3 > 2000 picks with Stage agreement continue to win by large margins.",
+      "signals_to_recheck": "F3_swing_take_gap=2832.6 with Stage 1/2 agree and HARD CAP 10 — directionally correct at 11 runs; monitor whether HARD CAP 10 is over-blocking high-F3 (>2000) picks with Stage agreement across the next 5+ samples before considering a relaxation."
+    },
+    "ARI @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-2",
+      "headline": "Miami blanked Arizona 2-0; second consecutive day (6/10 MIA 8-0, 6/11 MIA 2-0) where all signals opposed the model's ARI pick.",
+      "hypothesis": "ARI was D-grade (-3): Tyler Phillips (MIA) carries a 3.77 xERA edge over Merrill Kelly (ARI), PQI +34.1 against ARI. Both opposing-SP and opposing-PQI signals fired simultaneously. This is a process failure by the model's raw probability layer — ARI's lineup xwOBA cannot reliably overcome a 3.77 xERA SP gap and a 34-point PQI gap on the same game. The two-day directional consistency (both MIA wins) signals a structural false positive; OVERRIDE to MIA should be considered when this configuration recurs.",
+      "signals_to_recheck": "SP xERA AGAINST pick (3.77) and PQI AGAINST pick (+34.1) — second consecutive day with this configuration ending in MIA win; when ARI@MIA shows grade=D + SP xERA AGAINST > 3.0 + PQI AGAINST > 25 simultaneously, model ARI pick is a known structural error candidate for OVERRIDE."
+    },
+    "TEX @ KC": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "4-2",
+      "headline": "Texas won 4-2; Claude's carry-thesis OVERRIDE to KC was a process failure — grade_reasons showed 'Stage 1/2 agree' on TEX throughout.",
+      "hypothesis": "Process failure. Claude overrode TEX→KC citing f5_full_delta=0.1511 (≥0.15 threshold), but grade_reasons explicitly show 'Stage 1/2 agree (Δ=0.03)' — both Stage 1 and Stage 2 models directionally favor TEX winning the full game. The carry-thesis requires a directional stage flip (F5 winner ≠ full-game winner); with both stages agreeing on TEX, f5_full_delta reflects only a probability magnitude gap, not a directional contradiction. TEX won 4-2 exactly as both stages predicted. The carry-thesis gate must add: block OVERRIDE when grade_reasons contains 'Stage 1/2 agree', regardless of f5_full_delta magnitude.",
+      "signals_to_recheck": "f5_full_delta (0.1511) — misapplied as carry-thesis override trigger; grade_reasons 'Stage 1/2 agree (Δ=0.03)' is authoritative and blocks the override. f5_full_delta alone cannot determine stage directional disagreement — always cross-check grade_reasons field."
+    },
+    "CHC @ COL": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-3",
+      "headline": "Chicago routed Colorado 9-3; CSV pick=CHC (not COL) was misread in claude_picks — model pick won, lucky escape from the misread.",
+      "hypothesis": "Process error: claude_picks wrote model_pick='COL ML SKIP' despite CSV pick=CHC; grade_reasons 'SP edge 1.05 xERA agrees with pick (+2)' unambiguously identifies CHC as the model pick since Cabrera's (CHC away SP) xERA beats Feltner's (COL home SP). On 6/10 the same matchup had COL as the pick (different SPs); Claude carried over the prior-day assumption without re-reading the pick column. CHC won 9-3 with pre-cap score=4 (A-) — the correct read all along. Lucky that CONFIRM of the misread COL pick did not generate a staking error (both were SKIP tier).",
+      "signals_to_recheck": "CSV pick column — grade_reasons 'SP edge agrees with pick' identifies the pick team via SP xERA direction; for recurring matchups across consecutive days, always re-read CSV pick column rather than inheriting prior-day team direction."
+    },
+    "LAD @ PIT": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-6",
+      "headline": "Los Angeles won 8-6 at Pittsburgh; GOLD-tier B+ stack with suppression gate intact delivered cleanly.",
+      "hypothesis": "LAD carried a pre-cap B+ (score=3): F2_xwoba_gap=0.026, Wrobleski SP edge +0.66 xERA over Keller, PQI confirms (Δ=−14.2), Stage 1/2 disagree (Δ=0.12). Carry-thesis correctly suppressed by gate (LAD full_prob=0.6828 ≥0.62). LAD won by 2 runs — a clean process WIN consistent with GOLD-tier signal quality. The suppression gate framework from 6/10 held correctly for a second consecutive LAD@PIT matchup.",
+      "signals_to_recheck": "F2_xwoba_gap=0.026, carry-thesis suppression gate (full_prob=0.6828 ≥0.62) — both validated again; no recalibration needed."
+    },
+    "SEA @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-7",
+      "headline": "Baltimore held off Seattle 7-5; D-grade model pick won despite 4 negative signals — variance, not a pattern change.",
+      "hypothesis": "BAL was D-grade (-4) with SP xERA AGAINST pick (Woo 1.16 above Bradish), PQI −17.6 against BAL, Stage 1/2 disagree (Δ=0.18), bullpen_fatigue, and calibration_caution_18_25pp. BAL won 7-5 anyway. This is variance: the negative signals were legitimate concerns, SKIP was correct (no staking), and the suppression gate (BAL full_prob=0.6633 ≥0.62) correctly blocked a carry-thesis override to SEA. This single variance outcome does not weaken the D-grade filter or the suppression gate.",
+      "signals_to_recheck": "calibration_caution_18_25pp (edge=18.11pp, grade=D) — BAL won despite 4 opposing signals; do not relax D-grade or calibration_caution filters from this single variance result. Suppression gate validated again at full_prob=0.6633."
+    },
+    "ATL @ CWS": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": null,
+      "headline": "ATL @ CWS postponed; no directional commitment or evaluation possible.",
+      "hypothesis": "Game was officially postponed — no score recorded. PENDING_SP_DATA was also active at model time, making this a double hold. No actionable evaluation.",
+      "signals_to_recheck": "None — postponed game, no signal data to evaluate."
+    }
+  },
+  "patterns_observed": [
+    "Carry-thesis OVERRIDE requires grade_reasons 'Stage 1/2 disagree', not just f5_full_delta >= 0.15: TEX@KC override (f5_full_delta=0.1511) failed 4-2 because grade_reasons showed 'Stage 1/2 agree (Δ=0.03)' — both models directionally favored TEX for the full game. When both stages agree, f5_full_delta reflects a probability magnitude gap, not a directional flip; carry-thesis has no basis. New rule: block carry-thesis OVERRIDE whenever grade_reasons contains 'Stage 1/2 agree', regardless of f5_full_delta value, secondary signal alignment, or grade. The authoritative disagreement signal is grade_reasons, not f5_full_delta.",
+    "Same-matchup day-over-day pick direction must be re-read from CSV, not inherited: CHC@COL on 6/10 had model pick COL (home); on 6/11 the pick flipped to CHC (away) due to a different SP matchup (Cabrera vs Feltner replaced prior day's Imanaga vs Lorenzen). Claude failed to re-read the pick column and confirmed the wrong team. Cross-check: if grade_reasons say 'SP edge agrees with pick', identify which team's SP has the lower xERA — that is the model's pick team regardless of what prior-day memory suggests. For any matchup appearing on consecutive dates, explicit pick column re-read is mandatory.",
+    "ARI@MIA structural false-positive accumulating: model picks ARI on back-to-back days (6/10 PENDING_SP_DATA, MIA won 8-0; 6/11 D-grade ARI pick with SP xERA 3.77 AGAINST pick + PQI +34.1 AGAINST pick, MIA won 2-0). The model's raw ARI probability is overweighting lineup xwOBA relative to the SP quality gap. When ARI@MIA appears with grade=D, SP xERA AGAINST pick > 3.0, and PQI AGAINST pick > 25 simultaneously, consider OVERRIDE to MIA — the two-day directional consistency is a reliable early signal even at a thin sample."
+  ]
+}

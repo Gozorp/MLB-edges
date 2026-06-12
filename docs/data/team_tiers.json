@@ -1,9 +1,11 @@
 {
- "generated_utc": "2026-06-12T07:06:53Z",
+ "generated_utc": "2026-06-12T19:36:07Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "TEX promoted: Average -> Above Average (eff +0.39, mmr +0.24)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -156,6 +158,23 @@
     "upsets": [
      "upset W vs LAD (05-30)"
     ]
+   },
+   {
+    "name": "Texas Rangers",
+    "abbr": "TEX",
+    "w": 34,
+    "l": 34,
+    "pct": 0.5,
+    "rd": 16,
+    "rationale": "34-34 (.500), +16 run differential -- a solidly positive run margin. Results running above tier expectation (MMR +0.24).",
+    "z": 0.148,
+    "mmr": 0.242,
+    "eff": 0.39,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset L vs KC (06-09)"
+    ]
    }
   ],
   "Average": [
@@ -173,25 +192,6 @@
     "upsets": [
      "upset L vs HOU (06-03)",
      "upset W vs LAD (06-10)"
-    ]
-   },
-   {
-    "name": "Texas Rangers",
-    "abbr": "TEX",
-    "w": 34,
-    "l": 34,
-    "pct": 0.5,
-    "rd": 16,
-    "rationale": "34-34 (.500), +16 run differential -- a solidly positive run margin. Results running above tier expectation (MMR +0.24).",
-    "z": 0.148,
-    "mmr": 0.242,
-    "eff": 0.39,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs KC (06-09)"
     ]
    },
    {
