@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-12
-_Generated 2026-06-11T21:27:47Z · 15 games · significant deviations only_
+_Generated 2026-06-12T07:05:55Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIA** [signed] — Miami Marlins signed free agent RHP Junior Pina to a minor league contract.
@@ -23,6 +23,9 @@ _Generated 2026-06-11T21:27:47Z · 15 games · significant deviations only_
 - **BAL** [signed] — Baltimore Orioles signed free agent C Chadwick Tromp to a minor league contract.
 - **BAL** [signed] — Baltimore Orioles signed free agent RHP Fermin Magallanes to a minor league contract.
 - **DET** [TRADE] — Milwaukee Brewers traded RHP Jacob Waguespack to Detroit Tigers.
+- **DET** [IL] — Detroit Tigers transferred SS Javier Báez from the 10-day injured list to the 60-day injured list. Right ankle sprain.
+- **DET** [claimed] — Detroit Tigers claimed CF James Outman off waivers from Minnesota Twins.
+- **CLE** [optioned] — Cleveland Guardians optioned RHP Codi Heuer to Columbus Clippers.
 - **TEX** [IL] — Texas Rangers placed LHP Jalen Beeks on the 10-day injured list retroactive to June 10, 2026. Low back spasms.
 - **TEX** [recalled] — Texas Rangers recalled RHP Luis Curvelo from Round Rock Express.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
@@ -37,10 +40,11 @@ _Generated 2026-06-11T21:27:47Z · 15 games · significant deviations only_
 - **ATL** [selected] — Atlanta Braves selected the contract of 1B Rowdy Tellez from Gwinnett Stripers.
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP James Karinchak from Gwinnett Stripers.
+- **NYM** [signed] — New York Mets signed free agent SS Angel Osuna to a minor league contract.
 - **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
-- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
 - **NYY** [IL] — New York Yankees activated RHP Angel Chivilli from the 15-day injured list.
 - **NYY** [optioned] — New York Yankees optioned RHP Angel Chivilli to Scranton/Wilkes-Barre RailRiders.
 - **TOR** [signed] — Toronto Blue Jays signed free agent RHP Cristhian Espinosa to a minor league contract.
@@ -61,33 +65,44 @@ _Generated 2026-06-11T21:27:47Z · 15 games · significant deviations only_
 - **HOU** [optioned] — Houston Astros optioned 3B Shay Whitcomb to Sugar Land Space Cowboys.
 - **KC** [IL] — Kansas City Royals placed CF Kyle Isbel on the 10-day injured list. Left plantar fasciitis.
 - **KC** [recalled] — Kansas City Royals recalled CF Kameron Misner from Omaha Storm Chasers.
+- **MIN** [claimed] — Detroit Tigers claimed CF James Outman off waivers from Minnesota Twins.
 - **TB** [TRADE] — Tampa Bay Rays traded 2B Raynel Delgado to Houston Astros for cash.
-- **LAA** [IL] — Los Angeles Angels placed C Sebastián Rivero on the 10-day injured list. Left hamate fracture.
 - **LAA** [IL] — Los Angeles Angels transferred RHP Jack Kochanowicz from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
+- **LAA** [IL] — Los Angeles Angels placed C Sebastián Rivero on the 10-day injured list. Left hamate fracture.
 - **LAA** [selected] — Los Angeles Angels selected the contract of C Logan Porter from Salt Lake Bees.
+- **LAA** [signed] — Los Angeles Angels signed free agent RHP Taijuan Walker to a minor league contract.
 - **COL** [outrighted] — Colorado Rockies sent RHP Keegan Thompson outright to Albuquerque Isotopes.
-- **SF** [IL] — San Francisco Giants activated LHP Reiver Sanmartin from the 60-day injured list.
+- **COL** [signed] — Colorado Rockies signed free agent 2B Ben Wilmes to a minor league contract.
 - **SF** [DFA] — San Francisco Giants designated LF Will Brennan for assignment.
+- **SF** [IL] — San Francisco Giants activated LHP Reiver Sanmartin from the 60-day injured list.
 - **SF** [optioned] — San Francisco Giants optioned RHP Tristan Beck to Sacramento River Cats.
+- **SF** [optioned] — San Francisco Giants optioned RHP Carson Seymour to Sacramento River Cats.
 
-_Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 7 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **NYY @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAD @ CWS** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **PHI @ MIL** (home SP Jacob Misiorowski): very high K% (36.1% vs lg 21.7)
 - **COL @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **CHC @ SF** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **MIA** Michael Petersen — 2 apps / 40 pitches over last 3 games — monitor
 - **MIA** Pete Fairbanks — 2 apps / 37 pitches over last 3 games — monitor
+- **PIT** Evan Sisk — 2 apps / 39 pitches over last 3 games — monitor
+- **PIT** Brandan Bidois — 2 apps / 65 pitches over last 3 games — monitor
+- **PIT** Dennis Santana — 2 apps / 47 pitches over last 3 games — monitor
+- **SEA** Alex Hoppe — 2 apps / 37 pitches over last 3 games — monitor
+- **BAL** Tyler Wells — 2 apps / 47 pitches over last 3 games — monitor
 - **DET** Tyler Holton — 2 apps / 41 pitches over last 3 games — monitor
 - **TOR** Jeff Hoffman — 2 apps / 36 pitches over last 3 games — monitor
+- **LAD** Will Klein — 2 apps / 43 pitches over last 3 games — monitor
+- **LAD** Tanner Scott — 2 apps / 35 pitches over last 3 games — monitor
 - **KC** Alex Lange — 2 apps / 51 pitches over last 3 games — monitor
 - **STL** JoJo Romero — 2 apps / 37 pitches over last 3 games — monitor
 - **MIN** Cody Laweryson — 2 apps / 44 pitches over last 3 games — monitor
+- **COL** Blas Castaño — threw 46 pitches last night — likely unavailable
 - **COL** Antonio Senzatela — 2 apps / 36 pitches over last 3 games — monitor
+- **CHC** Ryan Rolison — 2 apps / 37 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
 - MIA @ PIT — PIT faces RHP (Sandy Alcantara)
@@ -106,6 +121,7 @@ _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - ATL @ NYM — ATL faces RHP (Nolan McLean)
 - NYY @ TOR — TOR faces LHP (Ryan Weathers)
 - LAD @ CWS — CWS faces RHP (Roki Sasaki)
+- LAD @ CWS — LAD faces LHP (Anthony Kay)
 - PHI @ MIL — MIL faces RHP (Andrew Painter)
 - PHI @ MIL — PHI faces RHP (Jacob Misiorowski)
 - HOU @ KC — KC faces RHP (Tatsuya Imai)
@@ -115,5 +131,6 @@ _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - TB @ LAA — LAA faces LHP (Shane McClanahan)
 - TB @ LAA — TB faces LHP (Sam Aldegheri)
 - COL @ ATH — COL faces LHP (Gage Jump)
+- CHC @ SF — SF faces RHP (Javier Assad)
 - CHC @ SF — CHC faces RHP (Landen Roupp)
 
