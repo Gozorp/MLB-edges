@@ -1,14 +1,11 @@
 {
- "generated_utc": "2026-06-13T07:05:57Z",
+ "generated_utc": "2026-06-13T19:39:37Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
  "movements": [
-  "PHI demoted: Above Average -> Average (eff +0.19, mmr +0.14)",
-  "TEX demoted: Above Average -> Average (eff +0.12, mmr +0.10)",
-  "MIA promoted: Average -> Above Average (eff +0.39, mmr +0.41)",
-  "SD demoted: Average -> Below Average (eff -0.32, mmr -0.24)",
-  "BOS promoted: Poor -> Below Average (eff -0.67, mmr -0.05)"
+  "CHC promoted: Below Average -> Average (eff -0.02, mmr -0.19)",
+  "HOU promoted: Poor -> Below Average (eff -0.66, mmr +0.03)"
  ],
  "tier_order": [
   "Elite",
@@ -159,9 +156,7 @@
     "rationale": "35-35 (.500), -1 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.41).",
     "z": -0.013,
     "mmr": 0.407,
-    "eff": 0.394,
-    "movement": "promoted",
-    "moved_from": "Average"
+    "eff": 0.394
    }
   ],
   "Average": [
@@ -179,6 +174,24 @@
     "upsets": [
      "upset W vs NYY (06-02)",
      "upset W vs NYY (06-03)"
+    ]
+   },
+   {
+    "name": "Chicago Cubs",
+    "abbr": "CHC",
+    "w": 36,
+    "l": 34,
+    "pct": 0.514,
+    "rd": 8,
+    "rationale": "36-34 (.514), +8 run differential -- a roughly even run margin. Results running below tier expectation (MMR -0.19).",
+    "z": 0.169,
+    "mmr": -0.188,
+    "eff": -0.019,
+    "movement": "promoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset L vs SF (06-05)",
+     "upset L vs SF (06-07)"
     ]
    },
    {
@@ -207,8 +220,6 @@
     "z": 0.056,
     "mmr": 0.138,
     "eff": 0.194,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs LAD (05-30)"
     ]
@@ -224,8 +235,6 @@
     "z": 0.014,
     "mmr": 0.102,
     "eff": 0.116,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs KC (06-09)"
     ]
@@ -248,26 +257,6 @@
   ],
   "Below Average": [
    {
-    "name": "Chicago Cubs",
-    "abbr": "CHC",
-    "w": 36,
-    "l": 34,
-    "pct": 0.514,
-    "rd": 8,
-    "rationale": "36-34 (.514), +8 run differential -- a roughly even run margin. Results running below tier expectation (MMR -0.19).",
-    "z": 0.169,
-    "mmr": -0.188,
-    "eff": -0.019,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs SF (06-05)",
-     "upset L vs SF (06-07)"
-    ]
-   },
-   {
     "name": "San Diego Padres",
     "abbr": "SD",
     "w": 35,
@@ -277,9 +266,7 @@
     "rationale": "35-33 (.515), -19 run differential -- a negative run margin, winning above what that margin implies. Results running below tier expectation (MMR -0.24).",
     "z": -0.08,
     "mmr": -0.243,
-    "eff": -0.324,
-    "movement": "demoted",
-    "moved_from": "Average"
+    "eff": -0.324
    },
    {
     "name": "Arizona Diamondbacks",
@@ -368,10 +355,25 @@
     "z": -0.621,
     "mmr": -0.054,
     "eff": -0.675,
+    "upsets": [
+     "upset W vs NYY (06-05)"
+    ]
+   },
+   {
+    "name": "Houston Astros",
+    "abbr": "HOU",
+    "w": 32,
+    "l": 39,
+    "pct": 0.451,
+    "rd": -36,
+    "rationale": "32-39 (.451), -36 run differential -- a poor run margin.",
+    "z": -0.686,
+    "mmr": 0.03,
+    "eff": -0.657,
     "movement": "promoted",
     "moved_from": "Poor",
     "upsets": [
-     "upset W vs NYY (06-05)"
+     "upset W vs MIL (05-30)"
     ]
    },
    {
@@ -392,25 +394,6 @@
    }
   ],
   "Poor": [
-   {
-    "name": "Houston Astros",
-    "abbr": "HOU",
-    "w": 32,
-    "l": 39,
-    "pct": 0.451,
-    "rd": -36,
-    "rationale": "32-39 (.451), -36 run differential -- a poor run margin.",
-    "z": -0.686,
-    "mmr": 0.03,
-    "eff": -0.657,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs MIL (05-30)"
-    ]
-   },
    {
     "name": "Minnesota Twins",
     "abbr": "MIN",
