@@ -1594,17 +1594,6 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
-      <div class="accordion-item" data-acc="bp-fatigue-shadow">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Bullpen Fatigue <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--muted);border-radius:3px;color:var(--muted);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">SHADOW &middot; OFFLINE</span></span>
-          <span class="chev" aria-hidden="true">&#9662;</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="bp-fatigue-shadow"><div class="muted" style="font-size:0.8rem;">Loading&hellip;</div></div>
-          </div>
-        </div>
-      </div>
       <div class="accordion-item" data-acc="pl-report">
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
           <span>PitcherList SP Report <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--yellow);border-radius:3px;color:var(--yellow);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">VOLATILE &middot; UNVERIFIED</span></span>
@@ -2199,6 +2188,24 @@ document.addEventListener("click", function(e){
     }
   } catch (_e) {}
 });
+
+function _bpProfile(pid){
+  var P = window.__bpProfiles && window.__bpProfiles.profiles;
+  if (!P || pid == null || pid === "") return null;
+  return P[String(pid)] || null;
+}
+function _bpFadeChip(pid){
+  var p = _bpProfile(pid);
+  if (!p) return '<span class="muted" style="font-size:0.7rem;">&mdash;</span>';
+  var col = p.susceptibility === "FRAGILE" ? "var(--red)" : (p.susceptibility === "DURABLE" ? "var(--green)" : "var(--muted)");
+  var lab = p.susceptibility === "FRAGILE" ? "FADES" : (p.susceptibility === "DURABLE" ? "HOLDS" : "STEADY");
+  var tip = "Within-appearance durability (" + p.n_app + " outings): out-of-breath in " + Math.round(p.oob_rate * 100)
+    + "% of outings"
+    + (p.velo_late != null ? ", avg " + p.velo_late.toFixed(1) + " mph velo loss past 20 pitches" : "")
+    + ", reaches 20+ pitches " + Math.round(p.deep_rate * 100) + "% of the time. Offline shadow feature \u2014 NOT a model input.";
+  return '<span title="' + tip.replace(/"/g, "&quot;") + '" style="border:1px solid ' + col + ';border-radius:3px;color:' + col
+    + ';padding:0 5px;font-size:0.6rem;font-weight:700;letter-spacing:.3px;">' + lab + '</span>';
+}
 
 function gradeClass(g) {
   if (g === "A")   return "grade-A";
@@ -5958,6 +5965,7 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
              `<th style="text-align:right;padding:0.2rem 0.3rem;">P/72h</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">LI (last 3)</th>` +
              `<th style="text-align:left;padding:0.2rem 0.3rem;">Flag</th>` +
+             `<th style="text-align:left;padding:0.2rem 0.3rem;" title="Within-appearance durability (offline shadow feature; not a model input)">Fade</th>` +
              `</tr></thead><tbody>`;
   for (const r of relievers) {
     const availStyle = r.available_today ? "" : "opacity:0.55;text-decoration:line-through;";
@@ -5969,6 +5977,7 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${(r.avg_leverage_last_3 || 0).toFixed(2)}</td>` +
             `<td style="padding:0.2rem 0.3rem;">${_bullpenFlagBadge(r.fatigue_flag)}</td>` +
+            `<td style="padding:0.2rem 0.3rem;">${_bpFadeChip(r.pitcher_id)}</td>` +
             `</tr>`;
   }
   html += `</tbody></table>`;
@@ -7819,6 +7828,7 @@ async function loadSlate(date, { bust = false } = {}) {
     // Projected-SP sidecar (display-only; tools/sp_projection.py). Powers the [PROJ]
     // badge on pending-probable games. NEVER consumed by the model.
     window.__spProj = (spProjR.status === "fulfilled" && spProjR.value) ? spProjR.value : null;
+    try { window.__bpProfiles = await fetch("./data/bp_fatigue_profiles.json", {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__bpProfiles = null; }
     // Resolve the projection map BEFORE rows render: details panels (gp
     // preview etc.) are pre-built during the slate render, so the pre-posting
     // lineup fallback needs __ppProj available now, not 8s later.
@@ -8260,48 +8270,6 @@ function _initPLReport(){
     .catch(function(){ item.style.display = 'none'; });
 }
 document.addEventListener("DOMContentLoaded", function(){ setTimeout(_initPLReport, 2500); });
-
-// =============================================================
-// Bullpen Fatigue shadow monitor (2026-06-12). DISPLAY-ONLY.
-// Reads the static docs/data/bp_fatigue_shadow.json produced by
-// the OFFLINE tools/bp_fatigue_shadow_report.py. NOT a model
-// input; the frozen booster never reads it. Hides on any failure.
-// =============================================================
-function _initBpFatigue(){
-  var host = document.getElementById("bp-fatigue-shadow");
-  var item = document.querySelector('[data-acc="bp-fatigue-shadow"]');
-  if (!host || !item) return;
-  fetch("./data/bp_fatigue_shadow.json?cb=" + Date.now(), {cache: "no-store"})
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(j){
-      if (!j || !j.tiers) { item.style.display = "none"; return; }
-      var fiMax = 40;
-      var pc = function(v){ return (100 * v).toFixed(1) + "%"; };
-      var rows = j.tiers.map(function(t){
-        var fic = "rgba(248,81,73," + Math.max(0.06, Math.min(1, t.mean_fi / fiMax)).toFixed(2) + ")";
-        return '<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">'
-          + '<td style="padding:3px 8px;font-weight:700;">' + t.tier + '</td>'
-          + '<td style="padding:3px 8px;text-align:right;" class="muted">' + t.n.toLocaleString() + '</td>'
-          + '<td style="padding:3px 8px;text-align:right;">' + pc(t.neg_rate) + '</td>'
-          + '<td style="padding:3px 8px;text-align:right;background:' + fic + ';border-radius:3px;">' + t.mean_fi.toFixed(1) + '</td>'
-          + '<td style="padding:3px 8px;text-align:right;" class="muted">' + pc(t.out_of_breath_rate) + '</td></tr>';
-      }).join("");
-      var seas = (j.by_season || []).map(function(y){
-        return y.year + ' +' + (y.gap_pp == null ? "?" : y.gap_pp) + 'pp';
-      }).join(" &middot; ");
-      host.innerHTML =
-        '<div class="muted" style="font-size:0.68rem;margin-bottom:0.5rem;">Within-appearance reliever fatigue, pitch-by-pitch Statcast &middot; <strong style="color:var(--muted);">offline shadow feature, NOT a model input</strong> &middot; ' + _advEscape(j.span || "") + ' &middot; ' + (j.n_appearances || 0).toLocaleString() + ' appearances / ' + (j.n_pitches || 0).toLocaleString() + ' pitches</div>'
-        + '<table style="width:100%;border-collapse:collapse;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.74rem;">'
-        + '<thead><tr style="color:var(--muted);font-size:0.6rem;letter-spacing:.05em;">'
-        + '<th style="text-align:left;padding:2px 8px;">PITCH TIER</th><th style="text-align:right;padding:2px 8px;">PITCHES</th>'
-        + '<th style="text-align:right;padding:2px 8px;">NEG-OUTCOME%</th><th style="text-align:right;padding:2px 8px;">MEAN FATIGUE IDX</th>'
-        + '<th style="text-align:right;padding:2px 8px;">OUT-OF-BREATH%</th></tr></thead><tbody>' + rows + '</tbody></table>'
-        + '<div class="muted" style="font-size:0.64rem;margin-top:0.5rem;line-height:1.5;">The Fatigue Index climbs cleanly with pitch count while raw neg-outcome% barely moves &mdash; survivorship (managers pull tiring arms selectively), which is exactly why the multivariate degradation signals (velo / command / spin) earn their keep over raw count. 30+ tier neg-outcome gap by season: ' + seas + '. Promotion to the live model = July pre-registered offline-lift study.</div>';
-    })
-    .catch(function(){ item.style.display = "none"; });
-}
-function _advEscape(x){ return String(x == null ? "" : x).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-document.addEventListener("DOMContentLoaded", function(){ setTimeout(_initBpFatigue, 2600); });
 
 // =============================================================
 // Quick-filter chips (2026-06-10). STRICTLY a macro for typing
