@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-13
-_Generated 2026-06-13T02:56:09Z · 15 games · significant deviations only_
+_Generated 2026-06-13T07:05:00Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **STL** [IL] — St. Louis Cardinals placed 3B Ramón Urías on the 60-day injured list. Right elbow lateral epicondylitis.
@@ -98,17 +98,35 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **MIA @ PIT** (away SP Lake Bachar): very high K% (28.4% vs lg 21.7)
 - **TEX @ BOS** (away SP Jacob deGrom): very high K% (29.0% vs lg 21.7)
 - **ATL @ NYM** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **COL @ ATH** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **STL** JoJo Romero — 2 apps / 37 pitches over last 3 games — monitor
+- **MIN** Taylor Rogers — 2 apps / 36 pitches over last 3 games — monitor
+- **MIN** Yoendrys Gómez — 2 apps / 42 pitches over last 3 games — monitor
+- **MIN** Anthony Banda — 2 apps / 39 pitches over last 3 games — monitor
+- **MIN** Andrew Morris — 2 apps / 48 pitches over last 3 games — monitor
 - **TOR** Braydon Fisher — 2 apps / 53 pitches over last 3 games — monitor
 - **SD** Wandy Peralta — 2 apps / 44 pitches over last 3 games — monitor
+- **WSH** Riley Cornelio — threw 73 pitches last night — likely unavailable
+- **WSH** Paxton Schultz — 2 apps / 66 pitches over last 3 games — monitor
 - **PIT** Evan Sisk — 2 apps / 39 pitches over last 3 games — monitor
 - **CIN** Zach Maxwell — 2 apps / 56 pitches over last 3 games — monitor
 - **DET** Ty Madden — 2 apps / 50 pitches over last 3 games — monitor
+- **ATL** JR Ritchie — threw 73 pitches last night — likely unavailable
+- **NYM** Brooks Raley — 2 apps / 42 pitches over last 3 games — monitor
+- **NYM** Devin Williams — 2 apps / 49 pitches over last 3 games — monitor
 - **LAD** Jonathan Hernández — threw 46 pitches last night — likely unavailable
+- **HOU** Enyel De Los Santos — 2 apps / 40 pitches over last 3 games — monitor
+- **KC** Mason Black — 2 apps / 87 pitches over last 3 games — monitor
+- **KC** Steven Cruz — 2 apps / 40 pitches over last 3 games — monitor
+- **KC** Lucas Erceg — 2 apps / 59 pitches over last 3 games — monitor
+- **KC** Matt Strahm — 2 apps / 35 pitches over last 3 games — monitor
 - **PHI** Andrew Painter — threw 78 pitches last night — likely unavailable
+- **COL** Jeff Criswell — 2 apps / 49 pitches over last 3 games — monitor
+- **COL** Zach Agnos — threw 60 pitches last night — likely unavailable
+- **ATH** Hogan Harris — 2 apps / 38 pitches over last 3 games — monitor
+- **TB** Mason Englert — threw 65 pitches last night — likely unavailable
+- **LAA** Mitch Farris — threw 48 pitches last night — likely unavailable
 
 ## 4 · Lineup / Platoon
 - STL @ MIN — MIN faces LHP (Matthew Liberatore)
@@ -135,6 +153,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - PHI @ MIL — MIL faces RHP (Aaron Nola)
 - PHI @ MIL — PHI faces LHP (Shane Drohan)
 - COL @ ATH — ATH faces LHP (Kyle Freeland)
+- COL @ ATH — COL faces RHP (Joey Estes)
 - CHC @ SF — SF faces RHP (Ben Brown)
 - CHC @ SF — CHC faces RHP (Trevor McDonald)
 - TB @ LAA — LAA faces RHP (Griffin Jax)
