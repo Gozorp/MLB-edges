@@ -121,7 +121,28 @@ def main():
             csv.field_size_limit(10 ** 7)
             rows = list(csv.DictReader(open(dfp, encoding="utf-8")))
             staked = [r for r in rows if (r.get("tier") or "") not in ("SKIP", "PENDING_SP_DATA", "")]
-            log("  baked %s: %d games, %d non-SKIP tiers" % (dfp.name, len(rows), len(staked)))
+            # game_picks = count Top Probable Outcomes will show in Game Picks
+            # (mirrors the frontend _topGameMLPicks guardrail: edge>0, grade in
+            # A/B/C, not SKIP/pending). Passive record so a thin slate is visible
+            # in the log; -1 = count failed (never raises into the chain).
+            try:
+                _GW = {"A", "A-", "B+", "B", "B-", "C"}
+
+                def _fe(x):
+                    try:
+                        return float(x)
+                    except Exception:
+                        return None
+                game_picks = sum(
+                    1 for r in rows
+                    if (_fe(r.get("edge_pp")) or 0) > 0
+                    and (r.get("grade") or "").strip() in _GW
+                    and "SKIP" not in (r.get("tier") or "").upper()
+                    and "PENDING_SP_DATA" not in (r.get("tier") or ""))
+            except Exception:
+                game_picks = -1
+            log("  baked %s: %d games, %d non-SKIP tiers, game_picks=%d"
+                % (dfp.name, len(rows), len(staked), game_picks))
     log("=" * 64)
     flush()
 
