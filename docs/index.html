@@ -2271,6 +2271,25 @@ function favTeamProb(matchup, homeSideProb) {
 // Format "<PICK> NN.N%" from the pick string and the pick-side probability
 // (p_model or pick_prob — both pick-perspective by construction).
 // Used in the PICK column to show not just which team but its win prob.
+// _pickOrTossup (2026-06-13, DISPLAY-ONLY): a game whose model prob hovers on
+// the 50% line flips its pick label DET<->CLE on routine re-bakes (label jitter
+// on a hard threshold). When the model has no lean -- gated by its OWN signal:
+// tier SKIP AND |full_prob-0.5| < 0.01 -- show a stable "Toss-Up" instead of a
+// phantom side. Cosmetic only: the `pick` column, grading, ledger are unchanged.
+function _pickOrTossup(r){
+  try {
+    var fp = parseFloat(r.full_prob);
+    var tier = (r.tier || "").toString().toUpperCase();
+    if (tier.indexOf("SKIP") !== -1 && isFinite(fp) && Math.abs(fp - 0.5) < 0.01){
+      return '<span class="muted" title="Model has no lean here (within 1pp of 50/50) '
+        + '\u2014 a toss-up, not a pick; graded SKIP either way. The team label can '
+        + 'flip on routine re-runs, so it is shown as a toss-up for stability." '
+        + 'style="font-weight:600;">Toss-Up <span style="font-size:0.72rem;font-weight:400;">~'
+        + Math.round(fp * 100) + '%</span></span>';
+    }
+  } catch (_e) {}
+  return pickWithProb(r.pick, r.p_model || r.pick_prob);
+}
 function pickWithProb(pickTeam, pickSideProb, row) {
   if (!pickTeam) return "—";
   const f = parseFloat(pickSideProb);
@@ -7144,7 +7163,7 @@ function renderSlate(rows, gradeMap, results) {
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong>${_tierChips(matchupKey)}${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
-      <td>${pickWithProb(r.pick, r.p_model || r.pick_prob)}${_spreadChip(matchupKey)}</td>
+      <td>${_pickOrTossup(r)}${_spreadChip(matchupKey)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}</td>
       <td class="col-fair">${fairFmt}</td>
