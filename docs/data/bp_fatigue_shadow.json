@@ -1,0 +1,92 @@
+{
+ "generated_utc": "2026-06-13T06:57:03Z",
+ "status": "SHADOW / OFFLINE-ONLY \u2014 not a model input; display monitor only",
+ "source": "local Statcast cache, within-appearance reliever fatigue features",
+ "span": "2022-03-20 .. 2026-06-11",
+ "n_appearances": 70863,
+ "n_pitches": 1653122,
+ "method": "Fatigue Index 0-100 = 30%*count + 30%*velo(primary FB vs leak-safe inning baseline) + 22%*command(zone/armslot) + 18%*stuff(spin/IVB). out_of_breath = past 15 pitches AND >=2 degradation systems firing. Target = AB ended walk/hit/wild-pitch.",
+ "thresholds": {
+  "pitch_tiers": [
+   15,
+   20,
+   30
+  ],
+  "velo_drop_mph": 1.5
+ },
+ "tiers": [
+  {
+   "tier": "1-10",
+   "n": 689145,
+   "neg_rate": 0.3072,
+   "mean_fi": 5.3,
+   "out_of_breath_rate": 0.0
+  },
+  {
+   "tier": "11-14",
+   "n": 218120,
+   "neg_rate": 0.3123,
+   "mean_fi": 10.3,
+   "out_of_breath_rate": 0.0
+  },
+  {
+   "tier": "15-19",
+   "n": 188927,
+   "neg_rate": 0.3129,
+   "mean_fi": 17.6,
+   "out_of_breath_rate": 0.0477
+  },
+  {
+   "tier": "20-29",
+   "n": 192517,
+   "neg_rate": 0.3141,
+   "mean_fi": 28.2,
+   "out_of_breath_rate": 0.0491
+  },
+  {
+   "tier": "30+",
+   "n": 364413,
+   "neg_rate": 0.321,
+   "mean_fi": 37.8,
+   "out_of_breath_rate": 0.0469
+  }
+ ],
+ "by_season": [
+  {
+   "year": "2022",
+   "neg_1_10": 0.3041,
+   "neg_30plus": 0.3135,
+   "gap_pp": 0.9,
+   "n_30plus": 21060
+  },
+  {
+   "year": "2023",
+   "neg_1_10": 0.3125,
+   "neg_30plus": 0.3203,
+   "gap_pp": 0.8,
+   "n_30plus": 27604
+  },
+  {
+   "year": "2024",
+   "neg_1_10": 0.3029,
+   "neg_30plus": 0.332,
+   "gap_pp": 2.9,
+   "n_30plus": 22692
+  },
+  {
+   "year": "2025",
+   "neg_1_10": 0.3085,
+   "neg_30plus": 0.3296,
+   "gap_pp": 2.1,
+   "n_30plus": 23238
+  },
+  {
+   "year": "2026",
+   "neg_1_10": 0.31,
+   "neg_30plus": 0.3199,
+   "gap_pp": 1.0,
+   "n_30plus": 269819
+  }
+ ],
+ "promotion": "July pre-registered offline-lift study (feature AUC/log-loss on walk-forward split) before any live wire."
+}
