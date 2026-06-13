@@ -5168,15 +5168,25 @@ function _kPropProbability(spKPct, threshold) {
 
 // Rank game ML picks by edge_vs_market, positive edges only.
 function _topGameMLPicks(rows) {
+  // _topGameMLPicks grade guardrail (2026-06-13). The executive grader already
+  // demotes trap-band / low-conviction picks to C/D + SKIP; a pure edge-sort was
+  // surfacing those rejects to the #1 slot (27 of 36 top-3-by-edge were C/D over
+  // the 6/2-6/13 sample; most per-slate #1s were D/SKIP, incl. the SEA@BAL
+  // D/SKIP). Respect the model's own grade: drop explicit SKIP tiers and D/F
+  // grades, then rank grade-first (edge is the tiebreaker, still shown per card).
+  // A non-SKIP C can backfill a thin slate so the card is never barren.
+  const GW = { "A": 6, "A-": 5, "B+": 4, "B": 3, "B-": 2, "C": 1 };
   return rows
     .map(r => {
       const edge = parseFloat(r.edge_pp);
       const prob = parseFloat(r.pick_prob);
       const grade = (r.grade || "").toString().trim();
-      // Filter out non-actionable rows
+      const tier = (r.tier || "").toString();
       if (!isFinite(edge) || !isFinite(prob)) return null;
       if (edge <= 0) return null;
-      if ((r.tier || "").includes("PENDING_SP_DATA")) return null;
+      if (tier.includes("PENDING_SP_DATA")) return null;
+      if (tier.toUpperCase().includes("SKIP")) return null;   // model said don't bet
+      if (!(grade in GW)) return null;                        // drops D / F / ungraded
       return {
         pick: r.pick,
         matchup: r.matchup,
@@ -5184,13 +5194,14 @@ function _topGameMLPicks(rows) {
         edge_pp: edge,
         tier: r.tier,
         grade: grade,
+        _gw: GW[grade],
         signals: r.signals || "",
         reasons: r.grade_reasons || "",
         _row: r,  // full diag row for deep-analysis lookup
       };
     })
     .filter(Boolean)
-    .sort((a, b) => b.edge_pp - a.edge_pp);
+    .sort((a, b) => (b._gw - a._gw) || (b.edge_pp - a.edge_pp));   // grade first, edge tiebreaker
 }
 
 // Rank totals (over/under) by edge vs book-fair probability.
@@ -6448,7 +6459,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
              `<span class="muted" style="font-size:0.8rem;font-weight:normal;">— ranked by model conviction across prop categories</span></h2>`;
 
   if (gameMLs.length) {
-    html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by edge vs market)</span>${_sectionSummary(mlStatuses)}</h3>`;
+    html += `<h3 style="margin-top:0.6rem;color:var(--accent);">Game Picks <span class="muted" style="font-size:0.78rem;font-weight:normal;">(model A/B grade first, then edge)</span>${_sectionSummary(mlStatuses)}</h3>`;
     gameMLs.forEach((item, i) => {
       const title = `${item.pick} ML over ${item.matchup}`;
       html += _propCard(i, title, "", _narrateGameML(item), "ml", item, _resultChipHtml(mlStatuses[i], _liveScoreFor(item, results)));
