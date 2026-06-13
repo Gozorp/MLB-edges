@@ -4735,6 +4735,18 @@ function _renderProjectedLineupTable(r){
   var awayK = parseFloat(r.away_sp_k_pct), homeK = parseFloat(r.home_sp_k_pct);
   var away = _gpParseBatters(r.away_top_5_batters_json);
   var home = _gpParseBatters(r.home_top_5_batters_json);
+  // Projection-map fallback (same bridge as Perfect Pair / stat drawers):
+  // a side with an empty baked lineup pre-posting renders the team's most
+  // recent posted lineup; vs-today-SP fields stripped (they reference the
+  // prior game's starter). Posted data supersedes at the next bake.
+  var gpProjA = null, gpProjH = null;
+  try {
+    var pmGp = window.__ppProj || {};
+    var gpStrip = function(arr){ return arr.map(function(b){ var c = {}; for (var k in b) c[k] = b[k]; c.vs_today_SP_OPS = null; c.vs_today_SP_PA = 0; return c; }); };
+    if (!away.length && pmGp[awayAbbr] && pmGp[awayAbbr].batters){ away = gpStrip(pmGp[awayAbbr].batters); gpProjA = pmGp[awayAbbr].from || "prior"; }
+    if (!home.length && pmGp[homeAbbr] && pmGp[homeAbbr].batters){ home = gpStrip(pmGp[homeAbbr].batters); gpProjH = pmGp[homeAbbr].from || "prior"; }
+  } catch (_e) {}
+  var gpProjTag = function(d){ return d ? ' <span style="color:var(--yellow);border:1px solid var(--yellow);border-radius:3px;padding:0 4px;font-size:0.58rem;font-weight:700;vertical-align:middle;">PROJ ' + String(d).slice(5) + '</span>' : ''; };
   var kbit = function(k){ return isFinite(k) ? ' <span class="gp-stat ' + _gpHeatDir(k,15,22,30,false) + '">' + k.toFixed(1) + '% K</span>' : ""; };
   return '<div class="gp-preview">' +
     '<div class="gp-head">Statcast Game Preview' +
@@ -4744,14 +4756,14 @@ function _renderProjectedLineupTable(r){
       '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + '</div>' +
     '</div>' +
     '<div class="gp-grid">' +
-      _gpTeamTable(away, homeSP, awayAbbr + " Hitters") +
-      _gpTeamTable(home, awaySP, homeAbbr + " Hitters") +
+      _gpTeamTable(away, homeSP, awayAbbr + " Hitters" + gpProjTag(gpProjA)) +
+      _gpTeamTable(home, awaySP, homeAbbr + " Hitters" + gpProjTag(gpProjH)) +
     '</div>' +
     '<div class="gp-head" style="margin-top:.7rem;">Statcast Profile'+
       '<span class="gp-sub">season batted-ball &middot; expected stats &middot; sprint</span></div>' +
     '<div class="gp-grid">' +
-      _gpStatcastTable(away, awayAbbr + " Hitters") +
-      _gpStatcastTable(home, homeAbbr + " Hitters") +
+      _gpStatcastTable(away, awayAbbr + " Hitters" + gpProjTag(gpProjA)) +
+      _gpStatcastTable(home, homeAbbr + " Hitters" + gpProjTag(gpProjH)) +
     '</div>' +
     '<div class="gp-legend"><span class="gp-leg-bar"></span>' +
       ' OPS: poor -&gt; average -&gt; excellent &middot; "vs SP" = career vs today\'s starter (PA shown)</div>' +
