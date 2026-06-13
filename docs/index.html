@@ -7808,6 +7808,10 @@ async function loadSlate(date, { bust = false } = {}) {
     // Projected-SP sidecar (display-only; tools/sp_projection.py). Powers the [PROJ]
     // badge on pending-probable games. NEVER consumed by the model.
     window.__spProj = (spProjR.status === "fulfilled" && spProjR.value) ? spProjR.value : null;
+    // Resolve the projection map BEFORE rows render: details panels (gp
+    // preview etc.) are pre-built during the slate render, so the pre-posting
+    // lineup fallback needs __ppProj available now, not 8s later.
+    try { await _ppProjectedLineups(); } catch (_e) {}
 
     const gradeMap = txtR.status === "fulfilled"
       ? parseParlayGrades(txtR.value) : {};
