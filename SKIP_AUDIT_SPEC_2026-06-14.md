@@ -17,6 +17,23 @@ stretch — that's how you overfit to recent pain. The only clean question is:
 Measured by **net units / CLV / calibration / tail**, never by raw skipped-winner count. Every
 conservative filter eats some winners; that alone proves nothing.
 
+## 0.5 Baseline finding (verified 2026-06-14) — the book is dormant, not exposed
+
+Before designing relaxations, the live state was measured directly over the frozen era (6/4–6/14):
+
+- **Tier counts:** SKIP 72 · GOLD 48 (stake_mult 0) · PLATINUM 10 · DIAMOND 3.
+- **Moneyline bets actually placed: 0.** Every one of the 13 DIAMOND/PLATINUM picks was killed
+  upstream by the Layer-2 **edge gate** (e.g. 6/14 COL@OAK PLATINUM at −17.48pp; 6/12 MIA@PIT
+  DIAMOND at +2.23pp), not by the HARD CAPs.
+
+This **refutes** the "unprotected max-unit bets got crushed" hypothesis: no bets fired. The cold
+stretch is 100% paper (directional picks). The HARD CAPs being display-only was operationally moot —
+the edge gate had already zeroed every stake. So the audit's real target is **gate conservatism**
+(is the engine never firing, leaving a clean modest-edge band on the table?), not cap exposure. The
+gate is also doing genuine work — it correctly rejected the −17pp OAK model-vs-market disagreement —
+so the fix is not "drop the +4 floor," it's "find whether a narrow, market-supported GOLD/edge-near-
+miss band (§6) deserves a tiny shadow stake." This is the corrected framing for everything below.
+
 ## 1. Verified architecture — there are TWO surfaces, audit them separately
 
 Confirmed in source (not assumed):

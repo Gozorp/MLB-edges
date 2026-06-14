@@ -8,7 +8,7 @@
 
 ## 1. Today (6/14) — mixed, low exposure
 
-Today by itself is unremarkable: of the games already final the directional picks are roughly even, several are still live, and the **staked** book (what the model would actually bet) is tiny and positive (1–0 graded, one stake still live). Almost everything else is SKIP. So "today" is not the story — the recent *run* is.
+Today by itself is unremarkable: of the games already final the directional picks are roughly even, several are still live. **Correction (verified 2026-06-14):** the **staked** book is not "1–0" as an earlier draft said — it is **0–0**. Across the entire frozen era (6/4–6/14) the executive layer placed **zero** moneyline bets: every DIAMOND/PLATINUM tier pick (13 of them) was independently killed by the Layer-2 edge gate (edge outside [4,15]pp), and GOLD/SKIP carry stake_mult 0 by design. So the cold stretch is **entirely paper** (directional picks); there is no live P&L behind it. "Today" is not the story — the recent *run* is.
 
 ## 2. The cold stretch is real — quantified
 
@@ -60,7 +60,7 @@ When the July re-test runs, the method order should match the failure mode (uppe
 
 ## 6. The SKIP layer is useful — but not a clean bill of health
 
-Almost everything in this stretch was SKIP, and the staked book stayed small and roughly flat. That's the executive layer protecting bankroll during a rough directional period — genuinely good. **But a SKIP system can keep P&L looking safe while the underlying signal quietly degrades.** So the SKIP argument is necessary, not sufficient. The open question isn't "did SKIP dodge the bad picks?" — it's:
+Almost everything in this stretch was SKIP, and the staked book was **empty — 0 bets placed across 6/4–6/14** (verified). That's the executive layer protecting bankroll during a rough directional period — arguably *too* well (see the audit's GOLD-clean question). **But a SKIP system can keep P&L looking safe while the underlying signal quietly degrades.** So the SKIP argument is necessary, not sufficient. The open question isn't "did SKIP dodge the bad picks?" — it's:
 
 > **Are the rare non-SKIP (staked) picks still beating their expected value, after calibration?**
 
