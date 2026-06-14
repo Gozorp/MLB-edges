@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-14
-_Generated 2026-06-14T04:32:53Z · 15 games · significant deviations only_
+_Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIA** [signed] — Miami Marlins signed free agent RHP Zach Pop to a minor league contract.
@@ -107,7 +107,6 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **STL @ MIN** (away SP Michael McGreevy): very low K% (14.4% vs lg 21.7)
 - **PHI @ MIL** (away SP Cristopher Sánchez): very high K% (31.3% vs lg 21.7)
 - **PHI @ MIL** (home SP Kyle Harrison): very high K% (28.5% vs lg 21.7)
-- **TB @ LAA** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **MIA** Michael Petersen — 2 apps / 43 pitches over last 3 games — monitor
@@ -122,6 +121,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **HOU** Enyel De Los Santos — 2 apps / 43 pitches over last 3 games — monitor
 - **HOU** Bryan King — 2 apps / 35 pitches over last 3 games — monitor
 - **CWS** Joe Rock — threw 60 pitches last night — likely unavailable
+- **COL** Seth Halvorsen — 2 apps / 47 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
 - MIA @ PIT — PIT faces RHP (Max Meyer)
@@ -148,8 +148,9 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - PHI @ MIL — PHI faces LHP (Kyle Harrison)
 - COL @ ATH — ATH faces RHP (Tomoyuki Sugano)
 - COL @ ATH — COL faces LHP (Jeffrey Springs)
-- CHC @ SF — SF faces RHP (Colin Rea)
+- CHC @ SF — SF faces LHP (Ryan Rolison)
 - CHC @ SF — CHC faces RHP (Logan Webb)
+- TB @ LAA — LAA faces RHP (Casey Legumina)
 - TB @ LAA — TB faces RHP (Grayson Rodriguez)
 - TEX @ BOS — BOS faces RHP (Nathan Eovaldi)
 - TEX @ BOS — TEX faces LHP (Connelly Early)
