@@ -1,0 +1,183 @@
+{
+  "date": "2026-06-14",
+  "fit_at": "2026-06-14T12:45:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 14,
+  "patterns_recognized": [
+    "F1* (thin-sample SP asterisk) without F3 corroboration inflates pre-cap score artificially — both the F-signal (+1) and SP xERA (+2) derive from the same thin-sample measurement; 6/12 LAD@CHW blowup and 6/13 NYY@TOR downgrade confirmed DOWNGRADE is correct process regardless of directional outcome.",
+    "Grade_reasons lacking SP xERA dimension is structurally vulnerable to blowup loss; 6/13 SD@BAL (F3+PQI+Stage only, no SP xERA) lost 9-3; require at least one of F3 or SP xERA independently in grade_reasons before high-conviction CONFIRM.",
+    "Carry-thesis OVERRIDE requires three gates simultaneously: grade_reasons 'Stage 1/2 disagree' + hl_bullpen_xwoba_gap < 0.020 + full_prob for pick side < 0.62; 6/10 SEA@BAL and 6/11 TEX@KC failures established these gates; 6/13 ATL@NYM misfired when |gap| < 0.015 with confidence_downgrade=True.",
+    "D-grade + SP xERA AGAINST pick + PQI AGAINST pick = reliable opposing-direction structural read; 6/11 ARI@MIA, 6/13 ARI@CIN (lost 1-2), and 6/13 TB@LAA (LAA won 8-0) confirmed 3/3 correct direction on this combination.",
+    "HARD CAP 1 at large negative edge (>10pp) on PLATINUM/GOLD picks is correct even when the signal stack is otherwise strong; market absorbs large F1_xera_gap advantages (6/12: F1=3.92 PHI@MIL won 6-0 — direction right, stake block right)."
+  ],
+  "by_matchup": {
+    "MIA @ PIT": {
+      "model_pick": "MIA ML SKIP",
+      "model_prob": 0.516,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-2): SP xERA 1.38 AGAINST MIA (Paul Skenes >> Max Meyer), PQI also against pick. Both primary grading signals oppose the model pick. 6/13 postgame noted MIA@PIT was a variance loss at pick_prob=0.516 with identical structure — process was correct. Skenes remains elite; Meyer's thin track record provides no qualitative override. SKIP confirmed.",
+      "lessons_applied": ["D-grade SP-against SKIP validation", "MIA@PIT 6/13 variance-only loss precedent"]
+    },
+    "SD @ BAL": {
+      "model_pick": "BAL ML GOLD",
+      "model_prob": 0.5232,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BAL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 6 fires at +40.57pp (calibrator hallucination, above +25pp ceiling). HARD CAP 10 additionally fires on pick_prob=0.5232 bottom bucket. Pre-cap score=2 built on F3+Stage only — no SP xERA in grade_reasons, exactly the 'vulnerable stack' pattern that produced the 6/13 SD@BAL 9-3 blowout loss. Both caps correctly applied; no qualitative override for extreme-edge hallucination.",
+      "lessons_applied": ["HARD CAP 6 extreme-edge hallucination", "HARD CAP 10 bottom-bucket block", "6/13 SD@BAL F3-only vulnerable stack"]
+    },
+    "SEA @ WSH": {
+      "model_pick": "WSH ML SKIP",
+      "model_prob": 0.5941,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "WSH",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-1): SP xERA 0.63 AGAINST WSH (Hancock over Poulin), PQI against WSH. F3_swing_take_gap=4010 fires (+1) but is outvoted by two opposing grade signals. WSH full_prob=0.5941 is solid but model's own grader flags SP and late-game structural weaknesses. 6/13 WSH@SEA WIN was a different SP matchup with F3+F1* corroboration. Today's setup lacks that. SKIP confirmed.",
+      "lessons_applied": ["D-grade dual-opposing-signal SKIP validation"]
+    },
+    "NYY @ TOR": {
+      "model_pick": "NYY ML PLATINUM",
+      "model_prob": 0.5343,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 1 fires at -5.25pp (negative edge on PLATINUM). HARD CAP 10 fires on pick_prob=0.5343 bottom bucket. Will Warren's F1=3.05 + F2 signal stack is genuinely strong (pre-cap=4, A-), but market fully prices the Warren-over-Corbin SP gap. Pattern from 6/13 NYY@TOR DOWNGRADE: negative-edge PLATINUM with confidence_downgrade=True is a structural double-block — verify confidence_downgrade for today but structural cap is authoritative.",
+      "lessons_applied": ["HARD CAP 1 negative-edge PLATINUM block", "HARD CAP 10 bottom-bucket block", "6/13 NYY@TOR cap precedent"]
+    },
+    "ARI @ CIN": {
+      "model_pick": "ARI ML SKIP",
+      "model_prob": 0.5116,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade: No F-signal fires. SP xERA 0.81 AGAINST ARI (Andrew Abbott superior to Zac Gallen at CIN), PQI against ARI. Model picks ARI (away) despite both SP quality and late-game signals opposing. Edge=7.24pp is in-band but grade=D blocks GOLD elevation. f5_full_delta=0.1327 below carry-threshold. No qualitative basis to override a D-grade SKIP with dual opposing signals.",
+      "lessons_applied": ["D-grade no-F-signal SP-against SKIP", "D-grade dual-opposing structural read"]
+    },
+    "ATL @ NYM": {
+      "model_pick": "ATL ML GOLD",
+      "model_prob": 0.5128,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "ATL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "PRE_CAP_SCORE=5 would normally trigger a Claude CONFIRM per the 6/12 ARI@CIN rule (CONFIRM pre-cap=5 in bottom bucket when all four dimensions fire). However the sole F-signal is F1*=1.42 (asterisk = thin Bryce Elder sample), and both the F-signal (+1) and SP xERA agrees (+2) derive from the same thin-sample measurement. Per 6/12 LAD@CHW and 6/13 NYY@TOR: F1* without independent F3 corroboration is unreliable — the pre-cap=5 score is inflated by a single uncertain source. Freddy Peralta (NYM home) is quality; downgrade to preserve the F1*-without-F3 reliability rule.",
+      "lessons_applied": ["F1* without F3 = DOWNGRADE (6/12 LAD@CHW blowup)", "6/13 NYY@TOR F1*-only DOWNGRADE validated", "pre-cap-5 CONFIRM exception requires independent F-signal (not F1*)"]
+    },
+    "HOU @ KC": {
+      "model_pick": "HOU ML SKIP",
+      "model_prob": 0.5218,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-2): SP xERA 1.41 AGAINST HOU (Kolek >> Arrighetti), PQI against HOU. f5_full_delta=0.122 (Stage mostly agree). Pattern from 6/13 HOU@KC: identical D-grade structure won 8-7 in a 15-run variance game — but that is variance, not a process signal. The 6/13 postgame explicitly notes 'D-grade filters remain valid.' SKIP confirmed.",
+      "lessons_applied": ["D-grade SP-against PQI-against SKIP", "6/13 HOU@KC variance-win does not relax D-grade filter"]
+    },
+    "STL @ MIN": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.502,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Massive negative edge (-26.89pp), SP xERA 0.98 AGAINST STL (Taj Bradley over Michael McGreevy), PQI against STL. f5_full_delta=0.4282 anomalous (Stage 1 overwhelmingly favors MIN in F5, Stage 2 barely edges to STL full-game). Edge alone mandates SKIP. D-grade with no redeeming dimensions and extreme negative edge is the clearest structural SKIP on the slate.",
+      "lessons_applied": ["Extreme negative edge = categorical SKIP", "D-grade dual-opposing-signal SKIP"]
+    },
+    "LAD @ CHW": {
+      "model_pick": "LAD ML GOLD",
+      "model_prob": 0.5081,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "HARD CAP 10 fires (pick_prob=0.5081 bottom bucket). PRE_CAP_SCORE=1 (B-) — only F2_xwoba_gap=0.029 fires alongside SP xERA agreement; Stage 1/2 disagree. Edge=-33.1pp is a massive negative (market heavily favors CHW despite LAD dominating F5). Pattern from 6/13 LAD@CHW: LAD won 7-1 with HARD CAP 1 at -16.87pp blocking correctly. Today's -33.1pp is even more extreme — market is pricing information the model doesn't have. SKIP confirmed.",
+      "lessons_applied": ["HARD CAP 10 bottom-bucket block", "Extreme negative edge market signal", "6/13 LAD@CHW HARD CAP 1 precedent"]
+    },
+    "PHI @ MIL": {
+      "model_pick": "MIL ML SKIP",
+      "model_prob": 0.6226,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-2): SP xERA 0.73 AGAINST MIL (Cristopher Sánchez over Kyle Harrison), PQI against MIL, edge=-0.33pp (slightly negative). Pattern from 6/13 PHI@MIL: MIL lost 9-8 (PHI won); HARD CAP 1 correctly saved from staking on the 1-run loss. Today negative edge plus SP opposing pick is the same structural double-block. SKIP confirmed.",
+      "lessons_applied": ["D-grade SP-against negative-edge SKIP", "6/13 PHI@MIL HARD CAP 1 save precedent"]
+    },
+    "COL @ OAK": {
+      "model_pick": "OAK ML PLATINUM",
+      "model_prob": 0.6773,
+      "model_tier": "PLATINUM",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "OAK",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.60,
+      "reasoning": "HARD CAP 1 fires at -17.48pp on PLATINUM pick. PRE_CAP_SCORE=3 (B+) reduces to B- post-cap. Jeffrey Springs (OAK) carries a massive F1_xera_gap=3.80 and SP xERA 3.31 over Sugano — a genuinely strong directional signal stack (PQI confirms, Stage agree). However, 6/12 lessons on F1_xera_gap ≥ 3.5 with negative edge: market aggressively absorbs large SP gaps, making the negative edge genuine rather than a calibrator artifact. SKIP is correct; direction is likely sound but no staking path exists.",
+      "lessons_applied": ["HARD CAP 1 large-negative-edge on PLATINUM", "6/12 F1>=3.5 + negative-edge: market absorbs SP premium correctly"]
+    },
+    "CHC @ SF": {
+      "model_pick": "SF ML GOLD",
+      "model_prob": 0.5087,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SF",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "HARD CAP 1 (-7.54pp) and HARD CAP 10 (pick_prob=0.5087 bottom bucket) both fire. PRE_CAP_SCORE=4 (A-) with Logan Webb (SF home) carrying a solid SP xERA advantage (1.92) and F5_bullpen_gap=+0.43. From 6/13 CHC@SF: CHC won 6-1 despite this exact setup (SF model pick, similar dual caps, hl_bullpen_xwoba_gap marginally positive). hl_bullpen_xwoba_gap=0.0023 today (SF pen marginally weaker). Negative edge and bottom bucket both fire — no override path.",
+      "lessons_applied": ["HARD CAP 1 + HARD CAP 10 dual-cap confirmed", "6/13 CHC@SF cap save precedent", "hl_bullpen_xwoba_gap positive (SF pen weaker)"]
+    },
+    "TB @ LAA": {
+      "model_pick": "TB ML GOLD",
+      "model_prob": 0.6256,
+      "model_tier": "GOLD",
+      "model_grade": "B",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "GOLD pick (edge=+8.31pp, no hard caps) with PQI+F3=1533 supporting TB. However: Stage 1/2 disagree strongly (LAA wins F5 at 68.66%, f5_full_delta=0.3122), hl_bullpen_xwoba_gap=0.0047 (near-zero positive = TB pen marginally weaker). Carry-thesis OVERRIDE is blocked by suppression gate (TB full_prob=0.6256 ≥ 0.62), but structural carry risk persists. No SP xERA in grade_reasons (vulnerable per 6/13 SD@BAL lesson); F3=1533 below 2000 high-conviction threshold; Grayson Rodriguez (LAA home) is quality. Two consecutive model-pick TB losses at LAA (6/12 HARD CAP saved, 6/13 LAA won 8-0 per OVERRIDE). DOWNGRADE to SKIP.",
+      "lessons_applied": ["carry-thesis structural risk (suppression gate blocks override but risk remains)", "no-SP-xERA vulnerable stack (6/13 lesson)", "F3 below 2000 high-conviction threshold", "6/12-6/13 TB@LAA consecutive losses pattern"]
+    },
+    "TEX @ BOS": {
+      "model_pick": "BOS ML SKIP",
+      "model_prob": 0.6683,
+      "model_tier": "SKIP",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.60,
+      "reasoning": "Edge=+15.06pp is marginally above the [4,15]pp staking ceiling, setting stake_mult=0. B-grade: PQI confirms BOS, Stage agree. No F-signal fires, no SP xERA dimension in grade_reasons. hl_bullpen_xwoba_gap=0.0077 (BOS pen slightly weaker). Pattern from 6/13 TEX@BOS: BOS won 6-3 with similar B-grade structure; suppression gate blocked carry-thesis concern. The edge-band exclusion is structural; directional read favors BOS but no staking path exists.",
+      "lessons_applied": ["Edge outside [4,15]pp staking band = stake_mult=0", "B-grade without SP xERA: low conviction", "6/13 TEX@BOS BOS directional win precedent"]
+    }
+  }
+}
