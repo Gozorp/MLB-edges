@@ -73,6 +73,7 @@ candidates = [
     "docs/data/weather_runs_%s.json" % TODAY,
     "docs/data/weather_runs_%s.json" % YEST,
     "docs/data/oos_ledger.jsonl",
+    "docs/data/skip_shadow_ledger.jsonl",
     "docs/data/team_tiers.json",
     "docs/data/spread_%s.json" % TODAY,
     "docs/data/spread_%s.json" % YEST,

@@ -196,6 +196,7 @@ jobs:
             python tools/weather_runs.py         "$SLATE" || echo "::warning::weather_runs failed (non-fatal)"
             python tools/daily_variance_report.py "$SLATE" || echo "::warning::daily_variance_report failed (non-fatal)"
             python tools/oos_ledger.py            "$SLATE" || echo "::warning::oos_ledger failed (non-fatal)"
+            python tools/skip_shadow_audit.py     "$SLATE" || echo "::warning::skip_shadow_audit failed (non-fatal)"
             python tools/team_tiers.py                    || echo "::warning::team_tiers failed (non-fatal)"
             python tools/spread_projection.py    "$SLATE" || echo "::warning::spread_projection failed (non-fatal)"
             python tools/sp_projection.py        "$SLATE" || echo "::warning::sp_projection failed (non-fatal)"

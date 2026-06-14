@@ -41,6 +41,9 @@ REM 2.7) weather/wind runs-tilt sidecar (Open-Meteo at first pitch; fully sandbo
 REM 2.8) OOS prediction ledger (append-only; logs pre-executive pick_prob, scores vs finals; sandboxed)
 %PY% tools\oos_ledger.py %SLATE% >> "logs\midnight.log" 2>&1
 
+REM 2.85) SKIP shadow-audit ledger (read-only; Tier-1 schema + GOLD+ shadow candidate; sandboxed)
+%PY% tools\skip_shadow_audit.py %SLATE% >> "logs\midnight.log" 2>&1
+
 REM 2.9) Team Power Tiers (season record + run differential; display-only; sandboxed)
 %PY% tools\team_tiers.py >> "logs\midnight.log" 2>&1
 
