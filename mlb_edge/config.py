@@ -165,7 +165,7 @@ MIN_FAIR_PROB: float = 0.42           # v8.2: raised 0.45 -> 0.50. Aligns with
 MIN_MODEL_PROB: float = 0.48          # avoid extreme longshots
 MAX_MODEL_PROB: float = 0.72          # avoid extreme chalk (value compression)
 KELLY_FRACTION: float = 0.25          # quarter-Kelly to control variance
-MAX_DAILY_RISK_UNITS: float = 10.0    # v12 structural cap per slate
+MAX_DAILY_RISK_UNITS: float = 15.0    # v12 structural cap per slate
 
 
 # ---------------------------------------------------------------------------
