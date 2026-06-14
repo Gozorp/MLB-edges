@@ -1,0 +1,150 @@
+{
+  "date": "2026-06-13",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-14T08:00:00Z",
+  "n_analyzed": 15,
+  "summary": "The 2026-06-13 slate produced 9W-5L on raw model picks across 14 scoreable games (64.3% hit rate); 1 NO_PICK (COL@OAK, PENDING_SP_DATA). The highest-confidence CONFIRM of the day — MIA@PIT (pre-cap=5, all four dimensions, GOLD tier) — lost 2-3 in a 1-run variance game. Claude's carry-thesis OVERRIDE on ATL@NYM misfired: ATL won 3-1, the first OVERRIDE wrong-call this week. Conversely, TB@LAA OVERRIDE to LAA was correct (LAA won 8-0 blowout, D-grade + dual opposing signals). HARD CAP 1 saved PHI@MIL (PHI won 9-8). Key lesson: carry-thesis OVERRIDE with confidence_downgrade=True and near-zero bullpen gap requires tighter conditions.",
+  "by_matchup": {
+    "STL @ MIN": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-6",
+      "headline": "St. Louis routed Minnesota 9-6; D-grade SKIP confirmed directionally, STL won by 3.",
+      "hypothesis": "Model picked STL despite D-grade (-2): SP xERA 1.51 AGAINST pick (Prielipp favored over Liberatore), PQI AGAINST (Δ=+20.1), confidence_downgrade=True. No qualitative override — Claude confirmed SKIP direction. STL won 9-6. This is a variance WIN on a D-grade pick; the offense outperformed the SP and late-game-degradation signals. SKIP was correct process and no pattern recalibration is warranted from a single D-grade directional win.",
+      "signals_to_recheck": "F1_xera_gap AGAINST pick, PQI AGAINST pick (Δ=+20.1), confidence_downgrade_True — D-grade variance WIN; do not revise D-grade filters from this outcome."
+    },
+    "NYY @ TOR": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-1",
+      "headline": "New York beat Toronto 3-1; DOWNGRADE to SKIP kept NYY tier suppressed but direction was correct.",
+      "hypothesis": "Claude downgraded NYY from GOLD to SKIP based on three blockers: confidence_downgrade=True permanently suspending HARD CAP 10 rescue, F1*=1.29 without F3 corroboration (6/12 rule), and three WEAK_VS NYY batters vs Gausman (Rice shrunk 0.624, Bellinger 0.507, Chisholm 0.545). NYY won 3-1 against Gausman. The DOWNGRADE was directionally conservative but correct risk management — the BvP cluster and confidence_downgrade flags justify tier suppression. Likely variance WIN at the SKIP level.",
+      "signals_to_recheck": "F1_xera_gap=1.29* (small-sample), confidence_downgrade_True, acute_roster — DOWNGRADE held correct per 6/12 rule; BvP WEAK_VS cluster (3 batters vs Gausman) did not prevent NYY win, consistent with small-sample BvP unreliability."
+    },
+    "SD @ BAL": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-3",
+      "headline": "San Diego blew out Baltimore 9-3; B+ grade with F3=4532.3 and PQI confirming lost by 6 runs.",
+      "hypothesis": "BAL had a strong lineup signal stack: F3_swing_take_gap=4532.3, PQI confirms (Δ=+21.9), Stage 1/2 agree (Δ=0.01), hl_bullpen_xwoba_gap=-0.0129 (BAL pen slightly better). The missing dimension was SP xERA — grade_reasons contained no 'SP edge' or 'xERA agrees' component. Trey Gibson (BAL home SP) got shelled, SD scoring 9 runs. This is a potential process failure: a B+ grade built on F3+PQI+Stage alone without SP xERA corroboration left the pick vulnerable to SP blowup. When no SP xERA dimension is present, the signal stack is incomplete regardless of F3 strength.",
+      "signals_to_recheck": "F3_swing_take_gap=4532.3, pen_strain_pick_side — B+ grade without SP xERA dimension in grade_reasons produced 6-run blowout loss; scrutinize CONFIRM confidence when grade_reasons lack 'SP edge' or 'xERA agrees'."
+    },
+    "SEA @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-8",
+      "headline": "Washington beat Seattle 8-3; F1*+F3 corroborated pick paid off decisively.",
+      "hypothesis": "WSH had F1*=0.83 (starred small-sample Cavalli) corroborated by F3_swing_take_gap=4229.1, satisfying the 6/12 rule requiring F3 to back a starred F1. SP xERA +0.53 (Cavalli over Castillo) agreed. Claude confirmed WSH direction. WSH won 8-3 by 5 runs. Process WIN — the F1*+F3 corroboration rule correctly identified WSH's structural advantage. The 5-run blowout margin validated the signal convergence.",
+      "signals_to_recheck": "F1_xera_gap=0.83*, F3_swing_take_gap=4229.1 — F3 corroboration of starred F1 worked as intended; rule confirmed."
+    },
+    "MIA @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "Pittsburgh edged Miami 3-2; highest-confidence CONFIRM of the slate (pre-cap=5, all four dimensions, GOLD) lost in a 1-run game.",
+      "hypothesis": "MIA had the strongest signal stack on the slate: F3_swing_take_gap=5349.6, SP xERA 1.38 favoring MIA, PQI confirms (Δ=-23.1), Stage 1/2 agree (Δ=0.04). Claude marked this the highest-confidence CONFIRM, unlocking GOLD tier per the 6/12 ARI@CIN precedent. PIT won 3-2. With pick_prob=0.5643, a 1-run loss is within normal variance — the model wins this game ~56% of the time. This is a variance failure, not a process failure. Do not revise the pre-cap=5 CONFIRM rule from a single 1-run variance loss at this pick_prob level.",
+      "signals_to_recheck": "F3_swing_take_gap=5349.6, SP xERA 1.38 agrees with pick, PQI confirms (Δ=-23.1) — all four grading dimensions fired; 1-run loss at pick_prob=0.5643 is within expected variance. No recalibration warranted."
+    },
+    "ARI @ CIN": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "Cincinnati edged Arizona 2-1; HARD CAP 1 (-2.93pp) correctly blocked staking on a 1-run loss.",
+      "hypothesis": "ARI had F1*=1.52 + F3=4313.6 (F3 corroborates starred F1) with SP xERA agreeing and PQI confirming — a directionally solid stack. But HARD CAP 1 fired at -2.93pp negative edge, and confidence_downgrade=True added structural uncertainty. ARI lost 2-1. HARD CAP 1 correctly protected against the loss; an EV-negative stake on ARI would have lost. Confidence_downgrade=True was an additional warning that proved relevant. This is a variance loss in a coin-flip 1-run game at a market-priced edge.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -2.93pp), confidence_downgrade_True — HARD CAP 1 protected correctly; F1*+F3 corroborated directional case still lost in a thin-market 1-run game."
+    },
+    "DET @ CLE": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-3",
+      "headline": "Cleveland beat Detroit 3-1; D-grade SKIP confirmed, CLE won by 2 despite opposing SP and PQI signals.",
+      "hypothesis": "CLE was D-grade (-2): SP xERA 1.27 AGAINST CLE (Skubal > Cantillo), PQI AGAINST CLE (Δ=-12.7). Claude noted Ramírez as an OWNER vs Skubal (34 PA, shrunk OPS 0.838) as a mitigating factor but held below the 2.0 SP gap OVERRIDE threshold. CLE won 3-1. This is a variance WIN on a D-grade pick — SKIP was appropriate process. The Ramírez BvP OWNER factor may have contributed but a single game is insufficient to revise the D-grade OVERRIDE threshold.",
+      "signals_to_recheck": "SP xERA AGAINST pick (1.27), PQI AGAINST pick (Δ=-12.7) — D-grade variance WIN; BvP OWNER factor (Ramírez vs Skubal) noted as mitigant but did not change process decision correctly."
+    },
+    "TEX @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-6",
+      "headline": "Boston beat Texas 6-3; B- grade with PQI only (score=1) confirmed and won by 3 runs.",
+      "hypothesis": "BOS was B- grade (score=1, PQI only). f5_full_delta=0.2451 flagged carry-thesis risk (TEX wins F5 via deGrom) but BOS full_prob=0.6773 > 0.62 suppression gate correctly blocked OVERRIDE. WEAK_VS BvP for BOS batters vs deGrom (Burger 0.527, Contreras 0.595) noted but suppression gate was authoritative. BOS won 6-3. The suppression gate held correctly — BOS's full-game strength overwhelmed TEX's F5 advantage. Process WIN.",
+      "signals_to_recheck": "f5_full_delta=0.2451 (carry-thesis flag suppressed by full_prob=0.6773 > 0.62 gate) — suppression gate validated again; BvP WEAK_VS did not prevent BOS win."
+    },
+    "ATL @ NYM": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "3-1",
+      "headline": "Atlanta beat New York 3-1; Claude's carry-thesis OVERRIDE to NYM was wrong — model's ATL direction was correct.",
+      "hypothesis": "Claude applied carry-thesis OVERRIDE: f5_full_delta=0.3419 (NYM wins F5 via Manaea), hl_bullpen_xwoba_gap=-0.0079 (near-zero, |gap|=0.0079 < 0.020 threshold), grade_reasons say 'Stage 1/2 disagree', ATL full_prob=0.5071 < 0.62. All technical conditions for OVERRIDE were met. But ATL's bullpen held NYM to 1 run over the full game. This is a process failure for the OVERRIDE rule: |hl_bullpen_xwoba_gap|=0.0079 is barely below the near-zero threshold and does not guarantee the opposing bullpen bridges the F5 gap. With confidence_downgrade=True on ATL's pick, the model's uncertainty applies in both directions — fading ATL via OVERRIDE is riskier than the rule implies when confidence_downgrade is present.",
+      "signals_to_recheck": "f5_full_delta=0.3419, hl_bullpen_xwoba_gap=-0.0079 (near-zero but |gap|=0.0079 is at the edge of threshold), confidence_downgrade_True — carry-thesis OVERRIDE mis-fired; when confidence_downgrade=True accompanies |hl_bullpen_xwoba_gap| < 0.015, OVERRIDE conviction is materially reduced."
+    },
+    "LAD @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-1",
+      "headline": "Los Angeles beat Chicago White Sox 7-1; HARD CAP 1 (-16.87pp) blocked staking but direction was correct by 6 runs.",
+      "hypothesis": "LAD had F1*=0.80, F2_xwoba_gap=0.032, SP xERA agreeing, PQI confirming, Stage agree. HARD CAP 1 fired at -16.87pp (market aggressively priced in Yamamoto advantage). Claude confirmed direction, SKIP enforced by cap. LAD won 7-1 by 6 runs. HARD CAP 1 blocked a correct directional pick, mirroring the 6/12 PHI@MIL pattern (F1_xera_gap large → market absorbed SP advantage → negative edge genuine). At -16.87pp, the EV-blocking was correct even though direction was right.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -16.87pp) — direction correct but extreme negative edge was correct not to chase; F1*=0.80 without F3 would normally warrant DOWNGRADE (moot given cap)."
+    },
+    "HOU @ KC": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-7",
+      "headline": "Houston edged Kansas City 8-7; D-grade (-4) SKIP confirmed, HOU won in a 15-run variance game.",
+      "hypothesis": "HOU was D-grade (-4, weakest on slate): SP xERA AGAINST HOU, PQI AGAINST, Stage 1/2 disagree. f5_full_delta=0.3512 flagged carry-thesis (KC wins F5) but HOU full_prob=0.6489 > 0.62 blocked OVERRIDE. HOU won 8-7 in a 15-run environment. This is a variance WIN — high-scoring games flatten SP advantages and the result is noise. D-grade SKIP was appropriate; no pattern recalibration warranted.",
+      "signals_to_recheck": "D-grade (-4), SP xERA AGAINST pick, PQI AGAINST pick, f5_full_delta=0.3512 (carry-thesis blocked by suppression gate) — variance WIN in 15-run game; D-grade filters remain valid."
+    },
+    "PHI @ MIL": {
+      "verdict": "LOSS",
+      "model_pick": "MIL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-8",
+      "headline": "Philadelphia beat Milwaukee 9-8; HARD CAP 1 (-10.05pp) correctly blocked staking — saved a 1-run loss.",
+      "hypothesis": "MIL had HARD CAP 1 at -10.05pp, confidence_downgrade=True, acute_roster. f5_full_delta=0.1927 but grade_reasons 'Stage 1/2 agree' blocked carry-thesis OVERRIDE per 6/11 rule. Claude confirmed MIL direction. PHI won 9-8. HARD CAP 1 correctly protected: a -10.05pp bet on MIL would have lost. Confidence_downgrade=True flagged additional structural uncertainty that proved relevant. Clean cap save — the rule held perfectly.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -10.05pp), confidence_downgrade_True, acute_roster — HARD CAP 1 saved 1-run loss; confidence_downgrade=True on a negative-edge home team is a reliable double-warning combination."
+    },
+    "COL @ OAK": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-7",
+      "headline": "Oakland beat Colorado 7-5; PENDING_SP_DATA hard stop correctly applied.",
+      "hypothesis": "Joey Estes (OAK) had 0 Statcast pitches season-to-date at modeling time, triggering PENDING_SP_DATA hard stop. Protocol correctly held no directional commitment. OAK won 7-5. No directional evaluation is possible.",
+      "signals_to_recheck": "small_sample_SP_True (PENDING_SP_DATA) — protocol correctly applied; no action needed."
+    },
+    "CHC @ SF": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-1",
+      "headline": "Chicago Cubs beat San Francisco 6-1; HARD CAP 7 and HARD CAP 10 blocked staking correctly; CHC won by 5.",
+      "hypothesis": "CHC had SP xERA +0.94 agreeing, PQI -15.8 confirming, Stage agree — pre-cap A- (score=4). HARD CAP 7 fired (hl_bullpen_xwoba_gap=+0.0017, CHC pen marginally worse than SF) and HARD CAP 10 zeroed further. Edge=0.69pp far below 4pp staking floor. confidence_downgrade=True. CHC won 6-1. The cap architecture correctly suppressed staking on this pick — edge was too thin regardless of directional accuracy. Variance WIN; cap process was sound.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap=+0.0017 ([HARD CAP 7]), confidence_downgrade_True — both caps fired correctly; edge=0.69pp too thin for stake regardless of direction."
+    },
+    "TB @ LAA": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "OVERRIDE",
+      "final_score": "0-8",
+      "headline": "Los Angeles Angels shut out Tampa Bay 8-0; Claude's D-grade OVERRIDE to LAA was correct — blowout validated dual-opposing-signal pattern.",
+      "hypothesis": "HARD CAP 6 fired (edge=+26.73pp > 25pp hallucination threshold). Pre-cap was D (-1): SP xERA 0.87 AGAINST TB (Soriano > Jax), PQI AGAINST TB (Δ=+5.7). Both primary grade signals opposed the model's TB pick. Claude OVERRIDE to LAA with no stake. LAA won 8-0 in a shutout. This is the clearest OVERRIDE validation of the week — D-grade with both SP xERA and PQI opposing the model's pick predicted the correct team by 8 runs. The dual-opposing-signal OVERRIDE pattern continues its strong track record.",
+      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (edge=+26.73pp), SP xERA AGAINST pick (0.87), PQI AGAINST pick (Δ=+5.7) — D-grade dual-opposing OVERRIDE correct; 3rd+ consecutive validation of this pattern this week."
+    }
+  },
+  "patterns_observed": [
+    "Carry-thesis OVERRIDE mis-fired on ATL@NYM (f5_full_delta=0.3419, hl_bullpen_xwoba_gap=-0.0079, Stage disagree, confidence_downgrade=True): ATL held NYM to 1 run and won 3-1. Process failure for the OVERRIDE rule. When confidence_downgrade=True accompanies a carry-thesis setup with |hl_bullpen_xwoba_gap| < 0.015 (barely near-zero), OVERRIDE conviction is reduced — the model uncertainty cuts both ways and a marginal bullpen gap does not reliably guarantee the away bullpen bridges the F5 difference. Tighten: require |hl_bullpen_xwoba_gap| > 0.020 (meaningful gap) OR confidence_downgrade=False on the pick side before committing to a carry-thesis OVERRIDE.",
+    "D-grade + SP xERA AGAINST pick + PQI AGAINST pick correctly called blowout direction for the 3rd+ time this week: TB@LAA (D pre-cap, SP 0.87 AGAINST TB, PQI AGAINST TB, HARD CAP 6 hallucination) → LAA won 8-0. Rule confirmed: when pre-cap grade is D with both SP xERA and PQI opposing the model's pick, OVERRIDE to opposing team (no stake) is structurally sound and directionally reliable. Track record this week: 3/3 correct directional OVERRIDEs on this signal combination.",
+    "B+ grade with F3_swing_take_gap=4532.3 + PQI confirms (Δ=+21.9) but no SP xERA dimension in grade_reasons lost 9-3 (SD@BAL). When grade_reasons lack 'SP edge agrees' or 'xERA agrees with pick', the signal stack is incomplete: the F3+PQI+Stage combination without SP quality corroboration is vulnerable to SP blowup and large-margin losses. Emerging rule: reduce CONFIRM confidence when grade_reasons contain no SP xERA signal — require at least one of F3 OR SP xERA agrees, not just F3 alone, for a CONFIRM that merits high conviction.",
+    "HARD CAP 1 (negative_edge_GOLD) continued its protection streak: PHI@MIL (-10.05pp, PHI won 9-8) joins ARI@CIN (-2.93pp, CIN won 2-1) and prior-day TB@LAA as recent negative-edge saves. When confidence_downgrade=True accompanies a negative edge, the combination reliably signals a structurally unfavorable bet — the market has absorbed the edge and the model's uncertainty compounds the problem. Continue treating HARD CAP 1 + confidence_downgrade as a strong double-block signal."
+  ]
+}

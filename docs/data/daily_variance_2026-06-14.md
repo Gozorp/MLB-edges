@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-14
-_Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
+_Generated 2026-06-14T19:35:25Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIA** [signed] — Miami Marlins signed free agent RHP Zach Pop to a minor league contract.
@@ -11,10 +11,13 @@ _Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Isaac Mattson from Indianapolis Indians.
 - **PIT** [optioned] — Pittsburgh Pirates optioned RHP Antwone Kelly to Indianapolis Indians.
 - **PIT** [optioned] — Pittsburgh Pirates optioned C Rafael Flores Jr. to Indianapolis Indians.
-- **SD** [activated] — San Diego Padres activated SS Xander Bogaerts from the paternity list.
 - **SD** [DFA] — San Diego Padres designated RF Bryce Johnson for assignment.
+- **SD** [activated] — San Diego Padres activated SS Xander Bogaerts from the paternity list.
 - **SD** [IL] — San Diego Padres placed DH Miguel Andujar on the 10-day injured list retroactive to June 11, 2026. Left hamstring strain.
 - **SD** [selected] — San Diego Padres selected the contract of 1B Nick Solak from El Paso Chihuahuas.
+- **SD** [IL] — San Diego Padres placed C Freddy Fermin on the 7-day injured list. Concussion.
+- **SD** [DFA] — San Diego Padres designated RHP Ty Adcock for assignment.
+- **SD** [selected] — San Diego Padres selected the contract of C Blake Hunt from El Paso Chihuahuas.
 - **BAL** [signed] — Baltimore Orioles signed free agent RHP Darling VIllalona to a minor league contract.
 - **BAL** [outrighted] — Baltimore Orioles sent 3B Weston Wilson outright to Norfolk Tides.
 - **SEA** [signed] — Seattle Mariners signed free agent LHP Michael Plassmeyer to a minor league contract.
@@ -35,17 +38,10 @@ _Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 - **TOR** [recalled] — Toronto Blue Jays recalled LF Davis Schneider from Buffalo Bisons.
 - **AZ** [IL] — Arizona Diamondbacks activated LF Jordan Lawlar from the 60-day injured list.
 - **AZ** [DFA] — Arizona Diamondbacks designated C Aramis Garcia for assignment.
-- **DET** [activated] — Detroit Tigers activated CF James Outman.
-- **DET** [IL] — Detroit Tigers activated RHP Kenley Jansen from the 15-day injured list.
-- **DET** [DFA] — Detroit Tigers designated SS Zack Short for assignment.
-- **DET** [optioned] — Detroit Tigers optioned RHP Brenan Hanifee to Toledo Mud Hens.
-- **DET** [selected] — Detroit Tigers selected the contract of RHP Jacob Waguespack from Toledo Mud Hens.
-- **DET** [optioned] — Detroit Tigers optioned RHP Beau Brieske to Toledo Mud Hens.
-- **DET** [IL] — Detroit Tigers placed RHP Jack Flaherty on the 15-day injured list. Left peroneal strain.
-- **DET** [IL] — Detroit Tigers activated LHP Tarik Skubal from the 15-day injured list.
-- **DET** [recalled] — Detroit Tigers recalled 2B Hao-Yu  Lee from Toledo Mud Hens.
-- **DET** [optioned] — Detroit Tigers optioned RHP Ty Madden to Toledo Mud Hens.
-- **CLE** [recalled] — Cleveland Guardians recalled RHP Daniel Espino from Columbus Clippers.
+- **AZ** [outrighted] — Arizona Diamondbacks sent C Aramis Garcia outright to Reno Aces.
+- **CIN** [signed] — Cincinnati Reds signed free agent LF Sam Haggerty to a minor league contract.
+- **CIN** [IL] — Cincinnati Reds activated C Jose Trevino from the 10-day injured list.
+- **CIN** [optioned] — Cincinnati Reds optioned C P.J. Higgins to Louisville Bats.
 - **ATL** [released] — Atlanta Braves released C Maverick Handley.
 - **ATL** [IL] — Atlanta Braves activated RHP Hurston Waldrep from the 60-day injured list.
 - **ATL** [status] — Atlanta Braves reassigned RHP Hurston Waldrep to the minor leagues.
@@ -58,6 +54,8 @@ _Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 - **HOU** [selected] — Houston Astros selected the contract of 2B Raynel Delgado from Sugar Land Space Cowboys.
 - **KC** [IL] — Kansas City Royals placed RHP Seth Lugo on the 7-day injured list retroactive to June 11, 2026. Concussion.
 - **KC** [recalled] — Kansas City Royals recalled RHP Eli Morgan from Omaha Storm Chasers.
+- **KC** [IL] — Kansas City Royals placed 1B Vinnie Pasquantino on the 10-day injured list. Right hamate fracture.
+- **KC** [recalled] — Kansas City Royals recalled RF John Rave from Omaha Storm Chasers.
 - **STL** [IL] — St. Louis Cardinals placed 3B Ramón Urías on the 60-day injured list. Right elbow lateral epicondylitis.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Hunter Dobbins to Memphis Redbirds.
 - **STL** [recalled] — St. Louis Cardinals recalled RHP Chris Roycroft from Memphis Redbirds.
@@ -76,23 +74,31 @@ _Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 - **COL** [IL] — Colorado Rockies transferred RHP Chase Dollander from the 15-day injured list to the 60-day injured list. Right elbow strain.
 - **COL** [optioned] — Colorado Rockies optioned LHP Sammy Peralta to Albuquerque Isotopes.
 - **COL** [selected] — Colorado Rockies selected the contract of LHP Sean Sullivan from Albuquerque Isotopes.
-- **COL** [outrighted] — Colorado Rockies sent RHP Valente Bellozo outright to Albuquerque Isotopes.
 - **COL** [optioned] — Colorado Rockies optioned RHP Jeff Criswell to Albuquerque Isotopes.
+- **COL** [outrighted] — Colorado Rockies sent RHP Valente Bellozo outright to Albuquerque Isotopes.
 - **COL** [selected] — Colorado Rockies selected the contract of RHP Eiberson Castellano from Albuquerque Isotopes.
-- **ATH** [IL] — Athletics placed DH Brent Rooker on the 10-day injured list retroactive to June 9, 2026. Bone bruise in left knee.
+- **COL** [IL] — Colorado Rockies activated RF Tyler Freeman from the 7-day injured list.
+- **COL** [optioned] — Colorado Rockies optioned 2B Chad Stevens to Albuquerque Isotopes.
 - **ATH** [IL] — Athletics activated SS Jacob Wilson from the 10-day injured list.
+- **ATH** [IL] — Athletics placed DH Brent Rooker on the 10-day injured list retroactive to June 9, 2026. Bone bruise in left knee.
+- **ATH** [optioned] — Athletics optioned RHP Joey Estes to Las Vegas Aviators.
+- **ATH** [recalled] — Athletics recalled LHP Brady Basso from Las Vegas Aviators.
 - **CHC** [activated] — Chicago Cubs activated RHP Trent Thornton from the paternity list.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
 - **SF** [signed] — San Francisco Giants signed free agent 2B Nelson Lopez to a minor league contract.
 - **SF** [recalled] — San Francisco Giants recalled RHP Ryan Walker from Sacramento River Cats.
+- **SF** [IL] — San Francisco Giants placed RHP Keaton Winn on the 15-day injured list retroactive to June 11, 2026. Right elbow strain.
+- **SF** [recalled] — San Francisco Giants recalled RHP Tristan Beck from Sacramento River Cats.
 - **TB** [IL] — Tampa Bay Rays activated RHP Craig Kimbrel from the 15-day injured list.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Mason Englert to Durham Bulls.
 - **LAA** [outrighted] — Los Angeles Angels sent C Omar Martinez outright to Salt Lake Bees.
-- **TEX** [IL] — Texas Rangers placed CF Evan Carter on the 10-day injured list. Right oblique strain.
 - **TEX** [DFA] — Texas Rangers designated RHP Michel Otañez for assignment.
+- **TEX** [IL] — Texas Rangers placed CF Evan Carter on the 10-day injured list. Right oblique strain.
 - **TEX** [selected] — Texas Rangers selected the contract of RHP Joe Ross from Round Rock Express.
 - **TEX** [optioned] — Texas Rangers optioned RHP Luis Curvelo to Round Rock Express.
 - **TEX** [recalled] — Texas Rangers recalled 3B Cody Freeman from Round Rock Express.
+- **TEX** [IL] — Texas Rangers placed CF Michael Helman on the 10-day injured list.
+- **TEX** [recalled] — Texas Rangers recalled LF Alejandro Osuna from Round Rock Express.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **SEA** code=ACQ — Seattle Mariners acquired RHP Connor Wilford from the Lexington Legends of the Atlantic League.
@@ -102,11 +108,10 @@ _Generated 2026-06-14T07:05:18Z · 15 games · significant deviations only_
 _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **MIA @ PIT** (home SP Paul Skenes): very high K% (28.0% vs lg 21.7)
-- **DET @ CLE** (home SP Gavin Williams): very high K% (28.7% vs lg 21.7)
-- **STL @ MIN** (away SP Michael McGreevy): very low K% (14.4% vs lg 21.7)
-- **PHI @ MIL** (away SP Cristopher Sánchez): very high K% (31.3% vs lg 21.7)
-- **PHI @ MIL** (home SP Kyle Harrison): very high K% (28.5% vs lg 21.7)
+- **MIA @ PIT** (home SP Paul Skenes): very high K% (28.0% vs lg 22.0)
+- **STL @ MIN** (away SP Michael McGreevy): very low K% (14.4% vs lg 22.0)
+- **PHI @ MIL** (away SP Cristopher Sánchez): very high K% (31.3% vs lg 22.0)
+- **PHI @ MIL** (home SP Kyle Harrison): very high K% (28.5% vs lg 22.0)
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **MIA** Michael Petersen — 2 apps / 43 pitches over last 3 games — monitor
@@ -114,7 +119,6 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **PIT** Yohan Ramírez — 2 apps / 58 pitches over last 3 games — monitor
 - **SEA** Alex Hoppe — 2 apps / 40 pitches over last 3 games — monitor
 - **NYY** Fernando Cruz — 2 apps / 47 pitches over last 3 games — monitor
-- **CLE** Cade Smith — 2 apps / 44 pitches over last 3 games — monitor
 - **NYM** Austin Warren — threw 40 pitches last night — likely unavailable
 - **NYM** Brooks Raley — 2 apps / 42 pitches over last 3 games — monitor
 - **NYM** Devin Williams — 2 apps / 49 pitches over last 3 games — monitor
@@ -129,13 +133,11 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - SD @ BAL — BAL faces RHP (Walker Buehler)
 - SD @ BAL — SD faces LHP (Trevor Rogers)
 - SEA @ WSH — WSH faces RHP (Emerson Hancock)
-- SEA @ WSH — SEA faces RHP (Miles Mikolas)
+- SEA @ WSH — SEA faces LHP (PJ Poulin)
 - NYY @ TOR — TOR faces RHP (Will Warren)
 - NYY @ TOR — NYY faces LHP (Patrick Corbin)
 - AZ @ CIN — CIN faces RHP (Zac Gallen)
 - AZ @ CIN — AZ faces LHP (Andrew Abbott)
-- DET @ CLE — CLE faces RHP (Casey Mize)
-- DET @ CLE — DET faces RHP (Gavin Williams)
 - ATL @ NYM — NYM faces RHP (Bryce Elder)
 - ATL @ NYM — ATL faces RHP (Freddy Peralta)
 - HOU @ KC — KC faces RHP (Spencer Arrighetti)
@@ -143,7 +145,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - STL @ MIN — MIN faces RHP (Michael McGreevy)
 - STL @ MIN — STL faces RHP (Taj Bradley)
 - LAD @ CWS — CWS faces RHP (Emmet Sheehan)
-- LAD @ CWS — LAD faces RHP (Erick Fedde)
+- LAD @ CWS — LAD faces LHP (Bryan Hudson)
 - PHI @ MIL — MIL faces LHP (Cristopher Sánchez)
 - PHI @ MIL — PHI faces LHP (Kyle Harrison)
 - COL @ ATH — ATH faces RHP (Tomoyuki Sugano)
