@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-14T18:18:51.915561+00:00",
+  "checked_at": "2026-06-14T20:08:24.891815+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 10.8h ago",
+      "message": "last slate publish 0.5h ago",
       "detail": {
-        "last_run_iso": "2026-06-14T00:30:03-07:00",
-        "age_hours": 10.81
+        "last_run_iso": "2026-06-14T12:37:55-07:00",
+        "age_hours": 0.51
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 10.0h ago",
+      "message": "last fired 11.9h ago",
       "detail": {
         "last_run_iso": "2026-06-14T08:16:47Z",
-        "age_hours": 10.03,
+        "age_hours": 11.86,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 9.7h ago",
+      "message": "last fired 11.5h ago",
       "detail": {
         "last_run_iso": "2026-06-14T08:39:41Z",
-        "age_hours": 9.65,
+        "age_hours": 11.48,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 10.9 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 11.0 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 261.14,
+        "age_hours": 262.96,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -65,13 +65,14 @@
     {
       "name": "kalshi_coverage_rate",
       "severity": "green",
-      "message": "15/15 rows have market odds",
+      "message": "14/14 rows have market odds",
       "detail": {
-        "total_rows": 15,
-        "ok_rows": 15,
+        "total_rows": 14,
+        "ok_rows": 14,
         "non_ok_pct": 0.0,
         "status_distribution": {
-          "fetched": 15
+          "fetched_capped": 5,
+          "fetched": 9
         }
       },
       "category": "data_flow"
@@ -79,9 +80,9 @@
     {
       "name": "pending_sp_data_rate",
       "severity": "green",
-      "message": "0/15 rows PENDING_SP_DATA",
+      "message": "0/14 rows PENDING_SP_DATA",
       "detail": {
-        "total_rows": 15,
+        "total_rows": 14,
         "pending_sp_data_count": 0,
         "pct_of_slate": 0.0
       },
@@ -96,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-14T18:18:52.081Z",
+          "timestamp": "2026-06-14T20:08:24.992Z",
           "commit": "unknown",
-          "region": "SJC"
+          "region": "ORD"
         }
       },
       "category": "deployment"
@@ -106,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 261.6h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 263.4h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 261.56,
+        "age_hours": 263.38,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -137,11 +138,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "7/15 rows stress-warned",
+      "message": "4/14 rows stress-warned",
       "detail": {
-        "total_rows": 15,
-        "stress_warned_count": 7,
-        "pct_of_slate": 46.7
+        "total_rows": 14,
+        "stress_warned_count": 4,
+        "pct_of_slate": 28.6
       },
       "category": "model"
     }
