@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-15
-_Generated 2026-06-14T23:26:29Z · 10 games · significant deviations only_
+_Generated 2026-06-15T07:03:19Z · 10 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [signed] — Philadelphia Phillies signed free agent 2B Luke Ritter to a minor league contract.
