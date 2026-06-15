@@ -56,6 +56,9 @@ REM 2.96) Projected SP for pending-probable games (display-only; statsapi rotati
 REM 2.97) Provisional lean for TBD/no-SP games (display-only; side-only badge; sandboxed)
 %PY% tools\provisional_lean.py %SLATE% >> "logs\midnight.log" 2>&1
 
+REM 2.98) SP Dominance / ceiling flags (display-only; statsapi-only K%/xFIP proxy; sandboxed)
+%PY% tools\dominance_engine.py %SLATE% >> "logs\midnight.log" 2>&1
+
 REM 3) calibrator refit (fits on rolling postgame outcomes; self-throttles)
 %PY% tools\refit_post_calibrator.py >> "logs\midnight.log" 2>&1
 

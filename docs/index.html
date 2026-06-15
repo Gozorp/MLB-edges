@@ -4083,6 +4083,33 @@ function _spHRFlagChip(rec){
 }
 
 
+// ===== SP Dominance / "ceiling" flag (read-only display; dominance_engine.py) =====
+// The CEILING companion to the HR floor chip: which starters take a game over.
+// statsapi-only Phase 1 -- rolling-3-start K% (~0.85 corr w/ CSW%) gated vs the
+// opponent lineup's K%. Green ▲ to distinguish from the red/orange HR-risk chips.
+// NEVER feeds the model. (Full Savant kill-pitch/chase engine = July.)
+function _domRec(spName){
+  var D = window.__dom;
+  if (!D || !D.sps || !spName) return null;
+  return D.sps[spName] || D.sps[("" + spName).trim()] || null;
+}
+function _domChip(spName){
+  var r = _domRec(spName);
+  if (!r || !r.dom_flag) return "";
+  var pal = { ULTRA: ["#22c55e", "ULTRA-K"], ACE: ["#38bdf8", "HIGH-FLOOR"], LEAN: ["#7dd3fc", "HIGH-K"] };
+  var pc = pal[r.dom_flag] || ["#7dd3fc", "HIGH-K"];
+  var t = [];
+  if (r.dom_label) t.push(r.dom_label);
+  if (r.rolling3_k_pct != null) t.push("L3 K% " + r.rolling3_k_pct + (r.starts ? " (" + r.starts + "GS)" : ""));
+  if (r.season_kbb != null) t.push("K-BB% " + r.season_kbb);
+  if (r.xfip != null) t.push("xFIP " + r.xfip);
+  if (r.opp_k_pct != null) t.push("opp K% " + r.opp_k_pct + (r.opp_k_high ? " (whiff-prone)" : ""));
+  if (r.edge) t.push(r.edge);
+  var tip = t.join("  ·  ") + "  —  CSW% proxy = rolling-3-start K% (statsapi); display-only, never feeds the model";
+  return '<span title="' + tip.replace(/"/g, "&quot;") + '" style="margin-left:6px;padding:0 5px;border:1px solid ' + pc[0] + ';border-radius:3px;color:' + pc[0] + ';font-size:.64rem;font-weight:700;letter-spacing:.3px;white-space:nowrap;vertical-align:middle;">▲ ' + pc[1] + '</span>';
+}
+
+
 function _hrProbability(batter, opposingSP, expectedPAs) {
   if (!batter) return null;
   const pa = parseInt(batter.pa || 0);
@@ -4797,8 +4824,8 @@ function _renderProjectedLineupTable(r){
     '<div class="gp-head">Statcast Game Preview' +
       '<span class="gp-sub">projected lineups &middot; OPS heatmap</span></div>' +
     '<div class="gp-matchup">' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': ' + _spDisplay(awaySP, matchup, "away") + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + '</div>' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': ' + _spDisplay(awaySP, matchup, "away") + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + _domChip(awaySP) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + _domChip(homeSP) + '</div>' +
     '</div>' +
     '<div class="gp-grid">' +
       _gpTeamTable(away, homeSP, awayAbbr + " Hitters" + gpProjTag(gpProjA)) +
@@ -7895,6 +7922,8 @@ async function loadSlate(date, { bust = false } = {}) {
     // badge on TBD/no-SP games. NEVER consumed by the model or staking.
     window.__provLean = (provLeanR.status === "fulfilled" && provLeanR.value) ? provLeanR.value : null;
     try { window.__bpProfiles = await fetch("./data/bp_fatigue_profiles.json", {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__bpProfiles = null; }
+    // SP Dominance / ceiling sidecar (read-only display; tools/dominance_engine.py). NEVER feeds the model.
+    try { window.__dom = await fetch(`./data/dominance_${date}.json`, {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__dom = null; }
     // Resolve the projection map BEFORE rows render: details panels (gp
     // preview etc.) are pre-built during the slate render, so the pre-posting
     // lineup fallback needs __ppProj available now, not 8s later.

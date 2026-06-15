@@ -201,6 +201,7 @@ jobs:
             python tools/spread_projection.py    "$SLATE" || echo "::warning::spread_projection failed (non-fatal)"
             python tools/sp_projection.py        "$SLATE" || echo "::warning::sp_projection failed (non-fatal)"
             python tools/provisional_lean.py     "$SLATE" || echo "::warning::provisional_lean failed (non-fatal)"
+            python tools/dominance_engine.py     "$SLATE" || echo "::warning::dominance_engine failed (non-fatal)"
           else
             echo "::warning::no slate diag found; skipping display sidecars"
           fi
