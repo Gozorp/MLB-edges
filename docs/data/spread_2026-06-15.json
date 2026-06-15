@@ -1,18 +1,18 @@
 {
- "generated_utc": "2026-06-15T07:04:00Z",
+ "generated_utc": "2026-06-15T19:36:02Z",
  "date": "2026-06-15",
- "n_games": 7,
+ "n_games": 8,
  "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
  "games": {
   "MIA @ PHI": {
    "favored": "MIA",
-   "win_prob": 0.5383,
-   "spread": 0.3,
+   "win_prob": 0.5583,
+   "spread": 0.4,
    "proj_away": 5,
    "proj_home": 4,
    "proj_score": "MIA 5-4 PHI",
    "components": {
-    "base": 0.23,
+    "base": 0.35,
     "scale": 1.182,
     "rd_season_gap": 0.216,
     "rd_recent_gap": 1.0,
@@ -24,19 +24,37 @@
   },
   "NYM @ CIN": {
    "favored": "CIN",
-   "win_prob": 0.5518,
+   "win_prob": 0.5668,
    "spread": 0.3,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "NYM 4-5 CIN",
    "components": {
-    "base": 0.31,
+    "base": 0.4,
     "scale": 0.828,
     "rd_season_gap": -0.449,
     "rd_recent_gap": -1.0,
     "off_recent_gap": -0.5,
     "xwoba_gap": 0.0,
     "sp_k_gap": 0.991,
+    "total_runs": 8.6
+   }
+  },
+  "SD @ STL": {
+   "favored": "STL",
+   "win_prob": 0.5548,
+   "spread": 0.4,
+   "proj_away": 4,
+   "proj_home": 5,
+   "proj_score": "SD 4-5 STL",
+   "components": {
+    "base": 0.33,
+    "scale": 1.296,
+    "rd_season_gap": 0.211,
+    "rd_recent_gap": 1.0,
+    "off_recent_gap": 1.0,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": 0.179,
     "total_runs": 8.6
    }
   },
@@ -60,13 +78,13 @@
   },
   "DET @ HOU": {
    "favored": "HOU",
-   "win_prob": 0.6303,
+   "win_prob": 0.6353,
    "spread": 0.7,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "DET 4-5 HOU",
    "components": {
-    "base": 0.8,
+    "base": 0.83,
     "scale": 0.823,
     "rd_season_gap": -0.243,
     "rd_recent_gap": -1.0,
@@ -96,13 +114,13 @@
   },
   "PIT @ OAK": {
    "favored": "OAK",
-   "win_prob": 0.5096,
+   "win_prob": 0.509,
    "spread": 0.2,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "PIT 4-5 OAK",
    "components": {
-    "base": 0.06,
+    "base": 0.05,
     "scale": 0.933,
     "rd_season_gap": -0.609,
     "rd_recent_gap": 0.0,
