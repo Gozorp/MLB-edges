@@ -39,3 +39,21 @@
 
 ## Integrity
 This file is committed BEFORE the harness (`tools/backtest_sp_features.py`). Thresholds above are frozen; any change after seeing results requires a dated amendment in this file, not a silent edit.
+
+---
+
+## RESULTS — run 2026-06-15 (full results log: `logs/backtest_sp_features_2026-06-15.log`)
+
+**Sample:** 308 diag games with both SP + model prob; 296 scored vs statsapi finals (281 full-feature, 15 partial-imputed); 165 OOS predictions after the 120-game walk-forward burn-in.
+
+**Baseline validation (done before trusting any verdict):** diag `pick_side` is blank in all rows, so `full_prob` is read directly as the home-win probability — confirmed correct: raw `full_prob` AUC = 0.5486 over 583 games (orientation is NOT inverted). **However**, on the both-SP date-tail that the OOS test actually scores, raw `full_prob` AUC = **0.504 (n=176) — essentially coin-flip.** The frozen model shows ~no discrimination on this particular slice (vs its ~54% directional over its full history).
+
+**Numbers vs the locked bar:**
+1. Log-loss Δ (B0−B1) = **+0.0102**, bootstrap 95% CI **[−0.019, +0.037] → includes 0** ⇒ NOT significant. **FAIL gate 1.**
+2. Signs: d_roll3_k +, d_kbb +, d_hr9 + (correct); **d_l3_trend − and d_xfip − (WRONG-SIGN).** **FAIL gate 2.**
+3. Tail: worst single-game log-loss B0 0.821 → B1 1.431. **FAIL gate 3.**
+Secondary: Brier Δ +0.0054; AUC B0 0.439 → B1 0.579 (B0 fitted below 0.5 reflects the near-coin-flip slice, not a wiring bug).
+
+**VERDICT: DOES NOT PASS → no green light for a July retrain on this evidence.** Mechanically the script returns KILL (sign rule), but the most accurate scientific reading is **NULL / fails-to-validate**: the OOS slice carried almost no baseline signal (AUC 0.504) and n is below the power needed for a 0.002–0.005 effect, so the wrong-signs are not a trustworthy "harm" signal — they're what collinear features do on a near-random, underpowered slice.
+
+**Decision (locked rule honored, not rescued):** the model is **protected** — the data does not justify feeding these features in now. **Re-test in July** with: (a) the season-long ledger (more games, windows where the model shows its normal edge); (b) single-feature / orthogonalized tests to avoid collinear sign-flips; (c) re-confirm baseline discrimination on the eval window before interpreting deltas. Only then consider the gated XGBoost retrain. No model change made.
