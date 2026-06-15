@@ -1916,7 +1916,7 @@ async function renderPerfectPair(rows, results) {
           var base = 0.45 * (nz(hrP, 0.02, 0.18) != null ? nz(hrP, 0.02, 0.18) : 0)
                    + 0.35 * q + 0.12 * (H + 1) / 2 + 0.08 * (bvp + 0.5);
           var spFlag = null;
-          try { var m = _spHRMult(oppSP); spFlag = (m && (m.flag || (m.mult >= 2.5 ? "EXTREME" : (m.mult >= 1.6 ? "HEAVY" : null)))) || null; } catch (_e) {}
+          try { var m = _spHRMult(oppSP); spFlag = (m && (m.flag === "EXTREME" || m.flag === "HEAVY" || m.flag === "MODERATE")) ? m.flag : null; } catch (_e) {}
           pool.push({ name: b.name, team: cfg[2], mk: mk, order: order,
                       k: parseFloat(b.k_pct), xslg: parseFloat(b.xslg), hh: parseFloat(b.hard_hit_pct),
                       xwoba: parseFloat(b.xwoba), hrP: hrP, H: H, tilt: tilt, spFlag: spFlag, oppSP: oppSP,
@@ -4062,15 +4062,23 @@ function _spHRMult(spName){
   var r = H.sps[spName] || H.sps[(""+spName).trim()];
   return (r && r.mult != null) ? r : null;
 }
+// v2 ERA-gated cascade (sp_hr_recency.py schema v2): flag in
+// {EXTREME(L1 Severe), HEAVY(L2 Moderate / L3 worsening), MODERATE(L3 Regression),
+// SMALL(low lean)} or null. God Tier (ERA<=2.50) + clean Aces return null -> NO chip.
 function _spHRFlagChip(rec){
-  if (!rec || (!rec.flag && !rec.er_spike)) return "";
-  var sev = rec.flag === "EXTREME" ? "#ff4d4d" : (rec.flag === "HEAVY" ? "#ff8c42" : "#e8b04a");
-  var lab = rec.flag ? (rec.flag === "EXTREME" ? "EXTREME HR" : "HEAVY HR") : "ER SPIKE";
-  if (rec.flag && rec.er_spike) lab += " +ER";
-  var det = [];
-  if (rec.hr_per_start != null) det.push(rec.hr_per_start + " HR/start");
-  if (rec.era != null) det.push(rec.era + " ERA");
-  var tip = "HR-prone SP — last " + (rec.starts || "?") + " starts: " + det.join(", ") + (rec.mult != null ? "  → HR-prob x" + rec.mult : "");
+  if (!rec || !rec.flag) return "";
+  var palette = { EXTREME: ["#ff4d4d", "EXTREME HR"], HEAVY: ["#ff8c42", "HEAVY HR"],
+                  MODERATE: ["#e8b04a", "HR RISK"], SMALL: ["#9aa0a6", "HR LEAN"] };
+  var pc = palette[rec.flag] || ["#9aa0a6", "HR"];
+  var sev = pc[0], lab = pc[1];
+  if (rec.trend_down) lab += " ↓";
+  var t = [];
+  if (rec.risk_label) t.push(rec.risk_label + (rec.risk_level != null ? " (L" + rec.risk_level + ")" : ""));
+  if (rec.season_era != null) t.push((rec.era_tier ? rec.era_tier + " " : "") + "ERA " + rec.season_era);
+  if (rec.smoothed_matchup_hr9 != null && rec.opp) t.push("vs " + rec.opp + " " + rec.smoothed_matchup_hr9 + " HR/9 (" + (rec.matchup_freq || "?") + ")");
+  if (rec.matchup_basis) t.push(rec.matchup_basis);
+  if (rec.trend && rec.trend !== "HOLD") t.push("trend " + rec.trend + (rec.trend_basis ? ": " + rec.trend_basis : ""));
+  var tip = t.join("  ·  ") + "  —  display-only HR-risk tag, never feeds the model";
   return '<span title="' + tip.replace(/"/g, "&quot;") + '" style="margin-left:6px;padding:0 5px;border:1px solid ' + sev + ';border-radius:3px;color:' + sev + ';font-size:.64rem;font-weight:700;letter-spacing:.3px;white-space:nowrap;vertical-align:middle;">' + lab + '</span>';
 }
 
@@ -4084,7 +4092,7 @@ function _hrProbability(batter, opposingSP, expectedPAs) {
   let pitcherFactor = 1.0;
   const _rec = (opposingSP && opposingSP.name) ? _spHRMult(opposingSP.name) : null;
   if (_rec && _rec.mult != null) {
-    pitcherFactor = _rec.mult;            // last-3-start recency (already blends season HR/9)
+    pitcherFactor = _rec.mult;            // ERA-gated tier multiplier (God/Ace capped; opp-HR + trend driven)
   } else if (opposingSP && opposingSP.hr9 != null) {
     const phr9 = parseFloat(opposingSP.hr9);
     if (!isNaN(phr9) && phr9 > 0) {
@@ -6510,7 +6518,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   if (hrs.length) {
     const hrStatuses = hrs.map(it => _hrPropStatus(it, results));
     html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span>${_sectionSummary(hrStatuses)}</h3>`;
-    html += `<div class="muted" style="font-size:0.74rem;margin:0.1rem 0 0.5rem;line-height:1.4;">Model: P(&ge;1 HR) = 1 - (1 - season HR/PA)<sup>4.3</sup> &mdash; each hitter's season home-run rate compounded over ~4.3 expected plate appearances. Ranking now applies the opposing starter's last-3-start HR/ER recency &mdash; HR-prone starters (flagged) boost the hitters they face.</div>`;
+    html += `<div class="muted" style="font-size:0.74rem;margin:0.1rem 0 0.5rem;line-height:1.4;">Model: P(&ge;1 HR) = 1 - (1 - season HR/PA)<sup>4.3</sup> &mdash; each hitter's season home-run rate compounded over ~4.3 expected plate appearances. Ranking applies an ERA-gated HR-risk tier for the opposing starter &mdash; aces (ERA &le;3.40) are capped and God-Tier arms (&le;2.50) are exempt; HR risk is driven by opponent-specific HR/9 (3yr, Bayesian-shrunk) plus a last-3-start trend. Flagged starters boost the hitters they face.</div>`;
     hrs.forEach((item, i) => {
       const pct = (item.prob * 100).toFixed(1);
       const rate = item.pa > 0 ? (item.hr / item.pa * 100).toFixed(1) : "0.0";
