@@ -79,6 +79,8 @@ candidates = [
     "docs/data/spread_%s.json" % YEST,
     "docs/data/sp_projection_%s.json" % TODAY,
     "docs/data/sp_projection_%s.json" % YEST,
+    "docs/data/provisional_lean_%s.json" % TODAY,
+    "docs/data/provisional_lean_%s.json" % YEST,
 ]
 present = [f for f in candidates if os.path.exists(f)]
 

@@ -53,6 +53,9 @@ REM 2.95) The Spread -- projected run differential (display-only post-processing
 REM 2.96) Projected SP for pending-probable games (display-only; statsapi rotation+rest; sandboxed)
 %PY% tools\sp_projection.py %SLATE% >> "logs\midnight.log" 2>&1
 
+REM 2.97) Provisional lean for TBD/no-SP games (display-only; side-only badge; sandboxed)
+%PY% tools\provisional_lean.py %SLATE% >> "logs\midnight.log" 2>&1
+
 REM 3) calibrator refit (fits on rolling postgame outcomes; self-throttles)
 %PY% tools\refit_post_calibrator.py >> "logs\midnight.log" 2>&1
 
