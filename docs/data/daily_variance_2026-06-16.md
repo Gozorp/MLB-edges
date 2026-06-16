@@ -1,7 +1,9 @@
 # Daily Variance Report — 2026-06-16
-_Generated 2026-06-16T07:05:17Z · 15 games · significant deviations only_
+_Generated 2026-06-16T19:36:25Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
+- **MIA** [optioned] — Miami Marlins optioned RHP William Kempner to Jacksonville Jumbo Shrimp.
+- **MIA** [recalled] — Miami Marlins recalled LHP Dax Fulton from Jacksonville Jumbo Shrimp.
 - **PHI** [signed] — Philadelphia Phillies signed free agent 2B Luke Ritter to a minor league contract.
 - **PHI** [activated] — Philadelphia Phillies activated RF Steward Berroa from the paternity list.
 - **PHI** [optioned] — Philadelphia Phillies optioned RF Steward Berroa to Lehigh Valley IronPigs.
@@ -9,32 +11,37 @@ _Generated 2026-06-16T07:05:17Z · 15 games · significant deviations only_
 - **KC** [recalled] — Kansas City Royals recalled RF John Rave from Omaha Storm Chasers.
 - **KC** [IL] — Kansas City Royals placed RHP Carlos Estévez on the 60-day injured list. Left foot contusion.
 - **KC** [TRADE] — Kansas City Royals traded RHP Denis Samudio and cash to Toronto Blue Jays for RHP Connor Seabold.
-- **KC** [optioned] — Kansas City Royals optioned RHP Eli Morgan to Omaha Storm Chasers.
 - **KC** [recalled] — Kansas City Royals recalled RHP Mitch Spence from Omaha Storm Chasers.
 - **KC** [optioned] — Kansas City Royals optioned RHP Eli Morgan to Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned RHP Eli Morgan to Omaha Storm Chasers.
+- **KC** [activated] — Kansas City Royals activated RHP Connor Seabold.
+- **KC** [optioned] — Kansas City Royals optioned RHP Mitch Spence to Omaha Storm Chasers.
 - **TOR** [TRADE] — Kansas City Royals traded RHP Denis Samudio and cash to Toronto Blue Jays for RHP Connor Seabold.
-- **NYM** [IL] — New York Mets placed RHP Christian Scott on the 15-day injured list retroactive to June 12, 2026. Right hip impingement.
 - **NYM** [IL] — New York Mets placed 1B Jorge Polanco on the 60-day injured list. Right wrist contusion.
-- **NYM** [claimed] — New York Mets claimed SS Zack Short off waivers from Detroit Tigers.
+- **NYM** [IL] — New York Mets placed RHP Christian Scott on the 15-day injured list retroactive to June 12, 2026. Right hip impingement.
 - **NYM** [optioned] — New York Mets optioned RHP Daniel Duarte to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
+- **NYM** [claimed] — New York Mets claimed SS Zack Short off waivers from Detroit Tigers.
 - **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
-- **CIN** [IL] — Cincinnati Reds activated C Jose Trevino from the 10-day injured list.
-- **CIN** [optioned] — Cincinnati Reds optioned C P.J. Higgins to Louisville Bats.
+- **NYM** [IL] — New York Mets activated RHP Kodai Senga from the 15-day injured list.
+- **NYM** [DFA] — New York Mets designated SS Vidal Bruján for assignment.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
 - **SF** [IL] — San Francisco Giants placed RHP Keaton Winn on the 15-day injured list retroactive to June 11, 2026. Right elbow strain.
 - **SF** [recalled] — San Francisco Giants recalled RHP Tristan Beck from Sacramento River Cats.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Carlos Carrasco to a minor league contract.
 - **ATL** [IL] — Atlanta Braves activated C Drake Baldwin from the 10-day injured list.
 - **ATL** [outrighted] — Atlanta Braves sent C Austin Wynns outright to Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of CF Brewer Hicklen from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned CF Brewer Hicklen to Gwinnett Stripers.
 - **CLE** [IL] — Cleveland Guardians activated SS Gabriel Arias from the 60-day injured list.
 - **CLE** [IL] — Cleveland Guardians placed 3B José Ramírez on the 10-day injured list. Left hamate fracture.
 - **CLE** [DFA] — Cleveland Guardians designated LF George Valera for assignment.
-- **SD** [DFA] — San Diego Padres designated RHP Ty Adcock for assignment.
 - **SD** [IL] — San Diego Padres placed C Freddy Fermin on the 7-day injured list. Concussion.
+- **SD** [DFA] — San Diego Padres designated RHP Ty Adcock for assignment.
 - **SD** [selected] — San Diego Padres selected the contract of C Blake Hunt from El Paso Chihuahuas.
 - **SD** [status] — San Diego Padres placed RHP Mason Miller on the bereavement list.
-- **SD** [recalled] — San Diego Padres recalled LHP Kyle Hart from El Paso Chihuahuas.
 - **SD** [outrighted] — San Diego Padres sent RF Bryce Johnson outright to El Paso Chihuahuas.
+- **SD** [recalled] — San Diego Padres recalled LHP Kyle Hart from El Paso Chihuahuas.
 - **COL** [IL] — Colorado Rockies activated RF Tyler Freeman from the 7-day injured list.
 - **COL** [optioned] — Colorado Rockies optioned 2B Chad Stevens to Albuquerque Isotopes.
 - **COL** [IL] — Colorado Rockies activated RHP Victor Vodnik from the 15-day injured list.
@@ -52,10 +59,10 @@ _Generated 2026-06-16T07:05:17Z · 15 games · significant deviations only_
 - **DET** [claimed] — New York Mets claimed SS Zack Short off waivers from Detroit Tigers.
 - **HOU** [optioned] — Houston Astros optioned RHP Alimber Santa to Sugar Land Space Cowboys.
 - **HOU** [recalled] — Houston Astros recalled RHP Jayden Murray from Sugar Land Space Cowboys.
-- **LAA** [IL] — Los Angeles Angels placed RHP Grayson Rodriguez on the 15-day injured list. Low back inflammation.
 - **LAA** [DFA] — Los Angeles Angels designated LHP Drew Pomeranz for assignment.
-- **LAA** [recalled] — Los Angeles Angels recalled RHP José Fermin from Salt Lake Bees.
+- **LAA** [IL] — Los Angeles Angels placed RHP Grayson Rodriguez on the 15-day injured list. Low back inflammation.
 - **LAA** [selected] — Los Angeles Angels selected the contract of RHP Brett Kerry from Salt Lake Bees.
+- **LAA** [recalled] — Los Angeles Angels recalled RHP José Fermin from Salt Lake Bees.
 - **AZ** [outrighted] — Arizona Diamondbacks sent C Aramis Garcia outright to Reno Aces.
 - **AZ** [IL] — Arizona Diamondbacks activated LF Lourdes Gurriel Jr. from the 10-day injured list.
 - **AZ** [optioned] — Arizona Diamondbacks optioned CF Ryan Waldschmidt to Reno Aces.
@@ -63,14 +70,19 @@ _Generated 2026-06-16T07:05:17Z · 15 games · significant deviations only_
 - **ATH** [optioned] — Athletics optioned RHP Joey Estes to Las Vegas Aviators.
 - **ATH** [recalled] — Athletics recalled RHP Luis Morales from Las Vegas Aviators.
 - **ATH** [optioned] — Athletics optioned LHP Brady Basso to Las Vegas Aviators.
+- **BAL** [IL] — Baltimore Orioles activated RHP Ryan Helsley from the 15-day injured list.
+- **BAL** [optioned] — Baltimore Orioles optioned RHP Anthony Nunez to Norfolk Tides.
 - **SEA** [outrighted] — Seattle Mariners sent RHP Domingo Gonzalez outright to Tacoma Rainiers.
 - **SEA** [optioned] — Seattle Mariners optioned 3B Patrick Wisdom to Tacoma Rainiers.
 - **SEA** [TRADE] — Seattle Mariners traded RHP Yosver Zulueta to Chicago Cubs for cash.
 
-_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+## 1b · Unrecognized codes (review — kept, never dropped)
+- **CIN** code= — transactions fetch failed (URLError(ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)))
+
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TOR @ BOS** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **TOR @ BOS** (away SP Dylan Cease): very high K% (37.4% vs lg 22.0)
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **MIA** Cade Gibson — 2 apps / 51 pitches over last 3 games — monitor
@@ -99,6 +111,7 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - MIA @ PHI — MIA faces LHP (Jesús Luzardo)
 - KC @ WSH — WSH faces RHP (Michael Wacha)
 - KC @ WSH — KC faces LHP (Foster Griffin)
+- TOR @ BOS — BOS faces RHP (Dylan Cease)
 - TOR @ BOS — TOR faces LHP (Payton Tolle)
 - CWS @ NYY — NYY faces RHP (Davis Martin)
 - CWS @ NYY — CWS faces RHP (Gerrit Cole)

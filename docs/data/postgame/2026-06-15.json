@@ -1,0 +1,104 @@
+{
+  "date": "2026-06-15",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-16T00:00:00Z",
+  "n_analyzed": 10,
+  "summary": "The 2026-06-15 slate produced 6W-2L on 8 directional model picks (75% hit rate); 2 NO_PICK (PENDING_SP_DATA for KC@WSH and MIN@TEX). The only bet-eligible staked pick — DET@HOU ML GOLD (grade B, edge +9.86pp) — lost 9-3 as Detroit dominated from start to finish, neutralizing the otherwise strong directional performance. Six other directional picks were correctly SKIPped by cap architecture (HARD CAP 1 on negative-edge picks, HARD CAP 10 on bottom-bucket marginal favorites). Critical process lesson: DET@HOU's f5_full_delta=0.3932 is the most extreme Stage 1/2 disagreement seen on a staked pick this season, yet carry-thesis DOWNGRADE failed to fire because |hl_bullpen_xwoba_gap|=0.0012 < 0.020; the bullpen gap threshold must yield to extreme f5_full_delta magnitude.",
+  "by_matchup": {
+    "MIA @ PHI": {
+      "verdict": "LOSS",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-7",
+      "headline": "Philadelphia shut out Miami 7-0; SKIP enforcement validated, model direction was wrong.",
+      "hypothesis": "Ryan Gusto (MIA away SP) faced Zack Wheeler (PHI), and the market's fair_prob=0.336 for MIA correctly flagged PHI as a massive home favorite. The model's claimed +22.22pp edge was a Soft Cap 6.5 calibration artifact — the calibrator's upper bucket is sparse and a +22pp edge is mathematically implausible in a Wheeler home start. PHI's 7-0 shutout confirms market pricing was accurate; Claude's SKIP enforcement was a process WIN even though the model direction was also wrong.",
+      "signals_to_recheck": "calibration_caution_18_25pp (Soft Cap 6.5), fair_prob=0.336 market rejection — SKIP enforcement validated; +22pp edge was a calibrator artifact; market correctly priced PHI as a heavy favorite with Wheeler on the mound."
+    },
+    "KC @ WSH": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-7",
+      "headline": "Washington beat Kansas City 7-3; PENDING_SP_DATA protocol correctly held no directional commitment.",
+      "hypothesis": "Mitch Spence (WSH home SP) had only 84 Statcast pitches season-to-date, below the 100-pitch minimum for xERA scoring. PENDING_SP_DATA hard stop correctly prevented a directional commitment. WSH won 7-3. No directional evaluation is possible.",
+      "signals_to_recheck": "small_sample_SP_True (PENDING_SP_DATA, 84 Statcast pitches < 100-pitch minimum) — protocol correctly applied; no directional lesson available."
+    },
+    "NYM @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-12",
+      "headline": "Cincinnati blew out New York 12-0; directional pick was correct in a decisive shutout, caps appropriately blocked staking.",
+      "hypothesis": "Chase Burns delivered a dominant shutout performance, validating the pre-cap A- signal stack: F3=2459.6, SP xERA +0.47 for Burns over Myers, Stage 1/2 agree (Δ=0.02). HARD CAP 1 (-0.59pp) and HARD CAP 10 (pick_prob=0.535) correctly blocked staking — the near-zero negative edge meant CIN's advantage was already priced into the market. The 12-0 blowout is a directional WIN; at -0.59pp the EV argument for not staking stands even in a shutout outcome, as the cap process is not invalidated by directional accuracy in a single game.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -0.59pp), [HARD CAP 10] bottom-bucket (pick_prob=0.535), confidence_downgrade_True — both caps fired correctly; Burns' shutout was directionally right but market had priced in the advantage; HARD CAP 1 protection validated even at near-zero negative edge."
+    },
+    "SD @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-3",
+      "headline": "St. Louis shut out San Diego 3-0; thin single-dimension SKIP confirmed and won cleanly.",
+      "hypothesis": "STL's SKIP tier was maintained correctly: the -4.87pp edge, single-dimension signal stack (Stage agree only, no F-signal or SP xERA), and reliever-as-SP uncertainty (Wandy Peralta) all justified SKIP. STL shutting out SD 3-0 is a variance WIN for direction but does not validate the thin signal stack — Peralta's performance in this game cannot be extrapolated to future reliever-deployed-as-SP decisions.",
+      "signals_to_recheck": "negative_edge_GOLD (edge -4.87pp), single-dimension signal stack (Stage agree only, no F-signal or SP xERA) — SKIP validated; reliever-as-SP uncertainty (Wandy Peralta) resolved favorably this game but remains a risk category to flag in future similar appearances."
+    },
+    "COL @ CHC": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-5",
+      "headline": "Chicago Cubs beat Colorado 5-4; HARD CAP 1 (-12.95pp) correctly blocked staking on a narrow 1-run win.",
+      "hypothesis": "Shota Imanaga's strong F1_xera_gap=2.87 + F3=4383.2 stack correctly identified CHC's advantage, but the -12.95pp negative edge showed the market had fully absorbed his dominance advantage. CHC won 5-4 by just 1 run — consistent with a market that priced in CHC as a significant but not overwhelming favorite. The narrow margin validates HARD CAP 1: at -12.95pp the EV was negative, and the actual win probability was high enough that even a correct pick produced a compressed outcome.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -12.95pp), F1_xera_gap=2.87, F3_swing_take_gap=4383.2 — cap correctly blocked; 1-run margin at -12.95pp confirms market absorbed Imanaga's advantage; this is the third consecutive HARD CAP 1 block on a CHC/large-SP-gap game that proved directionally correct but narrowly."
+    },
+    "DET @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-3",
+      "headline": "Detroit routed Houston 9-3; the slate's only staked pick lost, with f5_full_delta=0.3932 signaling DET's first-5-inning dominance that carried through the full game.",
+      "hypothesis": "HOU had grade B (F3=1208.9, SP edge +0.31 xERA for Teng over Melton, edge +9.86pp) — the only bet-eligible pick on the slate. However, f5_full_delta=0.3932 flagged that Stage 1 assigned HOU only 24.2% probability of winning the first five innings; DET was the heavy F5 favorite. The carry-thesis DOWNGRADE rule did not fire because |hl_bullpen_xwoba_gap|=0.0012 < 0.020 threshold. DET won 9-3 decisively — their F5 control translated directly into full-game control. This is a process failure: at f5_full_delta ≥ 0.35, the Stage 1/2 disagreement is so extreme that the bullpen gap threshold becomes the wrong gatekeeping condition; the 0.020 rule guards against marginal carry-thesis concerns but at this magnitude of Stage disagree, the issue is structural, not marginal.",
+      "signals_to_recheck": "f5_full_delta=0.3932 (carry-thesis, Stage 1 assigns HOU only 24.2% F5 win probability — most extreme seen on a staked pick this season), bullpen_fatigue=True, hl_bullpen_xwoba_gap=0.0012 (near-zero, DOWNGRADE blocked by gap threshold) — process failure: consider f5_full_delta ≥ 0.35 + bullpen_fatigue=True as a standalone DOWNGRADE trigger that overrides the hl_bullpen_xwoba_gap < 0.020 block."
+    },
+    "LAA @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "Arizona beat Los Angeles Angels 4-3; D-grade SKIP confirmed, ARI won narrowly despite dual adverse structural signals.",
+      "hypothesis": "ARI's grade D (-4: SP xERA 2.08 AGAINST pick, PQI -28.0 against ARI, Stage 1/2 disagree, confidence_downgrade=True) placed LAA as the structurally favored team across all measured dimensions. ARI won 4-3 in a 1-run game. This is a variance WIN — the structural read (LAA favored) was correct given the data; ARI's higher team quality (full_prob=0.761) overcame the matchup disadvantages in a single close game. SKIP was correct process; do not revise D-grade dual-opposing-signal filtering from a single 1-run variance outcome.",
+      "signals_to_recheck": "SP xERA AGAINST pick (2.08, Ureña/LAA >> Nelson/ARI), PQI AGAINST pick (Δ=-28.0), confidence_downgrade_True — D-grade variance WIN at ARI 4-3; full_prob=0.761 team quality overcame structural matchup disadvantage; no process recalibration warranted from this 1-run result."
+    },
+    "PIT @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "OAK ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-11",
+      "headline": "Oakland routed Pittsburgh 11-2; caps correctly blocked staking on a near-coin-flip pick that became a blowout.",
+      "hypothesis": "OAK's HARD CAP 1 (-3.35pp) and HARD CAP 10 (pick_prob=0.509, nearest coin-flip on the slate) both fired. Despite the 9-run blowout margin, the SKIP was correct process: at pick_prob=0.509 with a negative edge, structural uncertainty was genuine. Jared Jones (OAK) vs J.T. Ginn (PIT) — Jones significantly outperformed the xERA model's slim advantage reading. The blowout is a directional WIN; caps were sound given that coin-flip staking at negative EV is not justified by blowout outcomes in retrospect.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -3.35pp), [HARD CAP 10] bottom-bucket near-coin-flip (pick_prob=0.509), F5_bullpen_gap=+0.47 (sole F-signal, no SP xERA dimension) — both caps fired correctly; 11-2 blowout directionally right but coin-flip pick_prob and negative edge made staking unjustified regardless of outcome."
+    },
+    "TB @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "Los Angeles Dodgers edged Tampa Bay 4-3; edge below staking floor blocked stake correctly, extreme F3=12793.6 signaled LAD's structural advantage.",
+      "hypothesis": "LAD's edge=+1.92pp was below the 4pp staking floor, preventing any stake. The D-grade (-1: SP xERA 0.78 AGAINST LAD via Nick Martinez over Eric Lauer, PQI slightly against) was offset by F3=12793.6 — the largest F3 on this slate — and F2=0.049, both signaling LAD's lineup structurally punishes Martinez's pitch mix. LAD won 4-3 in a 1-run game. This is a directional WIN where extreme F-series signals proved more predictive than the SP xERA disadvantage, though the narrow 1-run margin may reflect variance rather than signal superiority; the edge-floor block was correct regardless.",
+      "signals_to_recheck": "edge_pp=+1.92pp (below 4pp staking floor → stake_mult=0), F3_swing_take_gap=12793.6 (largest on slate), SP xERA AGAINST pick (0.78, Martinez/TB >> Lauer/LAD) — extreme F3 correctly predicted LAD direction over modest SP xERA disadvantage (<1.0); worth monitoring whether F3 > 10000 deserves elevated weight when SP xERA disagreement is sub-1.0."
+    },
+    "MIN @ TEX": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-2",
+      "headline": "Minnesota beat Texas 4-2; PENDING_SP_DATA protocol correctly held no directional commitment.",
+      "hypothesis": "The MIN away SP was not announced at modeling time and lacked the required 100+ Statcast pitch sample, triggering the PENDING_SP_DATA hard stop. No directional commitment was possible. MIN won 4-2. No directional evaluation is applicable.",
+      "signals_to_recheck": "small_sample_SP_True (PENDING_SP_DATA, MIN probable SP not announced) — protocol correctly applied."
+    }
+  },
+  "patterns_observed": [
+    "f5_full_delta ≥ 0.35 on a staked pick should be a standalone carry-thesis DOWNGRADE trigger regardless of hl_bullpen_xwoba_gap: DET@HOU (f5_full_delta=0.3932, bullpen_fatigue=True, hl_bullpen_xwoba_gap=0.0012) was the slate's only staked pick and lost 9-3. The existing rule requires |hl_bullpen_xwoba_gap| > 0.020 before applying carry-thesis DOWNGRADE, but at f5_full_delta ≥ 0.35 the Stage 1 model gives the opposing team ~80% F5 win probability — a disagreement so extreme that bullpen configuration is secondary. Proposed rule: when f5_full_delta ≥ 0.35 AND bullpen_fatigue=True on a bet-eligible (grade B+) pick, apply carry-thesis DOWNGRADE regardless of hl_bullpen_xwoba_gap magnitude; the gap threshold should protect against marginal carry-thesis concerns, not block action at extreme Stage 1/2 divergence.",
+    "Negative-edge cap blocks (HARD CAP 1) were directionally correct across all four negative-edge picks on 6/15 but appropriately blocked: NYM@CIN (-0.59pp, CIN won 12-0), SD@STL (-4.87pp tier-SKIP, STL won 3-0), COL@CHC (-12.95pp, CHC won 5-4), PIT@OAK (-3.35pp, OAK won 11-2). None of these results should soften HARD CAP 1 — EV logic holds regardless of directional hit rate in a single slate. Notably, the two narrowest wins among negative-edge directional plays (COL@CHC 5-4, TB@LAD 4-3) confirm the market's compressed pricing was accurate: extreme negative edges correspond to compressed actual win margins, validating the cap's premise that market information is reliable.",
+    "The sole bet-eligible stake (DET@HOU GOLD, grade B, edge +9.86pp) was the only staked pick and it lost 9-3, while 6 of 8 directional SKIPped picks were correct: this slate demonstrates the cost asymmetry when the Grade-B staking threshold admits a carry-thesis-flagged pick. When f5_full_delta is extreme (≥ 0.35), grade B picks with bullpen_fatigue should be demoted to grade C or SKIP regardless of edge band — the single-pick exposure at Grade B means one carry-thesis miss wipes out the value of multiple correct directional calls that were appropriately blocked from staking."
+  ]
+}

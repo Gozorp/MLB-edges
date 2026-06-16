@@ -1,6 +1,6 @@
 {
  "date": "2026-06-16",
- "generated_utc": "2026-06-16T07:05:55+00:00",
+ "generated_utc": "2026-06-16T19:37:34+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
  "sps": {
@@ -152,6 +152,94 @@
    "mult": 1.44,
    "hr_per_start": 1.67,
    "era": 2.81,
+   "er_spike": false
+  },
+  "Dylan Cease": {
+   "id": 656302,
+   "opp": "BOS",
+   "opp_id": 111,
+   "season_era": 2.91,
+   "season_hr9": 0.66,
+   "season_kbb": 27.1,
+   "era_tier": "ACE",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 9.3,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 5.7,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 0,
+     "ip": 6.0,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 0.45,
+   "matchup_freq": "SMALL",
+   "matchup_basis": "vs BOS 3yr (2026:0HR/6IP,2025:0HR/6IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 4.6,
+   "l3_hr": 4,
+   "l3_hr_per_start": 1.33,
+   "l3_kbb": 34.9,
+   "trend": "DOWN",
+   "trend_down": false,
+   "trend_basis": "L3 ERA 4.60 vs season 2.91 (+1.69)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 0.6,
+   "hr_per_start": 1.33,
+   "era": 4.6,
+   "er_spike": false
+  },
+  "Payton Tolle": {
+   "id": 801139,
+   "opp": "TOR",
+   "opp_id": 141,
+   "season_era": 2.7,
+   "season_hr9": 0.51,
+   "season_kbb": 18.6,
+   "era_tier": "ACE",
+   "matchup_w_hr": 0.6,
+   "matchup_w_ip": 5.3,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 4.7,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 1,
+     "ip": 1.0,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 0.62,
+   "matchup_freq": "SMALL",
+   "matchup_basis": "vs TOR 3yr (2026:0HR/5IP,2025:1HR/1IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 3.24,
+   "l3_hr": 0,
+   "l3_hr_per_start": 0.0,
+   "l3_kbb": 13.3,
+   "trend": "DOWN",
+   "trend_down": false,
+   "trend_basis": "L3 K-BB% 13.3 vs season 18.6 (-5.3pp)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 0.6,
+   "hr_per_start": 0.0,
+   "era": 3.24,
    "er_spike": false
   },
   "Davis Martin": {

@@ -1,13 +1,10 @@
 {
- "generated_utc": "2026-06-16T07:09:09Z",
+ "generated_utc": "2026-06-16T19:40:55Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
  "movements": [
-  "WSH promoted: Average -> Above Average (eff +0.46, mmr +0.16)",
-  "MIA demoted: Above Average -> Average (eff +0.13, mmr +0.25)",
-  "MIN promoted: Poor -> Below Average (eff -0.58, mmr +0.09)",
-  "HOU demoted: Below Average -> Poor (eff -0.89, mmr -0.08)"
+  "PIT demoted: Average -> Below Average (eff -0.29, mmr -0.28)"
  ],
  "tier_order": [
   "Elite",
@@ -143,8 +140,6 @@
     "z": 0.302,
     "mmr": 0.16,
     "eff": 0.462,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs SF (06-10)"
     ]
@@ -223,25 +218,6 @@
     "eff": -0.075
    },
    {
-    "name": "Pittsburgh Pirates",
-    "abbr": "PIT",
-    "w": 36,
-    "l": 37,
-    "pct": 0.493,
-    "rd": 5,
-    "rationale": "36-37 (.493), +5 run differential -- a roughly even run margin. Results running below tier expectation (MMR -0.28).",
-    "z": -0.005,
-    "mmr": -0.28,
-    "eff": -0.285,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs LAD (06-10)"
-    ]
-   },
-   {
     "name": "Texas Rangers",
     "abbr": "TEX",
     "w": 35,
@@ -266,12 +242,27 @@
     "rationale": "36-37 (.493), -7 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.25).",
     "z": -0.119,
     "mmr": 0.254,
-    "eff": 0.135,
-    "movement": "demoted",
-    "moved_from": "Above Average"
+    "eff": 0.135
    }
   ],
   "Below Average": [
+   {
+    "name": "Pittsburgh Pirates",
+    "abbr": "PIT",
+    "w": 36,
+    "l": 37,
+    "pct": 0.493,
+    "rd": 5,
+    "rationale": "36-37 (.493), +5 run differential -- a roughly even run margin. Results running below tier expectation (MMR -0.28).",
+    "z": -0.005,
+    "mmr": -0.28,
+    "eff": -0.285,
+    "movement": "demoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs LAD (06-10)"
+    ]
+   },
    {
     "name": "Arizona Diamondbacks",
     "abbr": "AZ",
@@ -389,8 +380,6 @@
     "z": -0.668,
     "mmr": 0.092,
     "eff": -0.575,
-    "movement": "promoted",
-    "moved_from": "Poor",
     "upsets": [
      "upset W vs CWS (06-02)",
      "upset W vs STL (06-12)"
@@ -420,9 +409,7 @@
     "rationale": "33-41 (.446), -45 run differential -- a poor run margin.",
     "z": -0.805,
     "mmr": -0.084,
-    "eff": -0.889,
-    "movement": "demoted",
-    "moved_from": "Below Average"
+    "eff": -0.889
    },
    {
     "name": "Los Angeles Angels",
