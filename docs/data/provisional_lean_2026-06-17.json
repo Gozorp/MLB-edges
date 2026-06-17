@@ -1,9 +1,22 @@
 {
   "date": "2026-06-17",
-  "generated_utc": "2026-06-17T07:08:30.819520+00:00",
+  "generated_utc": "2026-06-17T19:37:57.401712+00:00",
   "method": "sp-independent-team-strength",
   "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
   "games": {
+    "SF @ ATL": {
+      "provisional_pick": "ATL",
+      "p_pick": 0.972,
+      "p_home": 0.972,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "SF",
+      "home": "ATL",
+      "away_strength": -1.2,
+      "home_strength": 2.03
+    },
     "COL @ CHC": {
       "provisional_pick": "CHC",
       "p_pick": 0.887,
@@ -16,32 +29,6 @@
       "home": "CHC",
       "away_strength": -1.66,
       "home_strength": 0.15
-    },
-    "SD @ STL": {
-      "provisional_pick": "STL",
-      "p_pick": 0.693,
-      "p_home": 0.693,
-      "basis": "team-strength(win%+runDiff)+home-field",
-      "confidence": "medium",
-      "is_provisional": true,
-      "no_sp": true,
-      "away": "SD",
-      "home": "STL",
-      "away_strength": -0.04,
-      "home_strength": 0.58
-    },
-    "SF @ ATL": {
-      "provisional_pick": "ATL",
-      "p_pick": 0.972,
-      "p_home": 0.972,
-      "basis": "team-strength(win%+runDiff)+home-field",
-      "confidence": "medium",
-      "is_provisional": true,
-      "no_sp": true,
-      "away": "SF",
-      "home": "ATL",
-      "away_strength": -1.2,
-      "home_strength": 2.04
     }
   }
 }

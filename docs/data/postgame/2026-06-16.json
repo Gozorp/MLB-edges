@@ -1,0 +1,150 @@
+{
+  "date": "2026-06-16",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-17T00:30:00Z",
+  "n_analyzed": 15,
+  "summary": "The 2026-06-16 slate produced 7W / 7L on 14 resolved directional calls (50% hit rate), with SF @ ATL suspended and all 15 games carrying stake_mult=0 — no actual bets were placed. Hard Cap 10 (marginal 0.50–0.55 favorites without CONFIRM) went 5L/1W (16.7%), further validating that bracket. Hard Cap 1 (negative_edge_GOLD) correctly filtered two directional losses. The headline learning: when Stage 1 gives the pick team less than 35% in the F5 model (f5_prob < 0.35), both instances today — TOR @ BOS and LAA @ ARI — resolved as losses, providing the clearest process signal of the slate.",
+  "by_matchup": {
+    "MIA @ PHI": {
+      "verdict": "LOSS",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "2-8",
+      "headline": "PHI dominated 8-2; both Stage 1 and Stage 2 agreed on MIA yet PHI won easily.",
+      "hypothesis": "Stage 1 (f5_prob=0.5919) and Stage 2 (p_model=0.5433) both pointed to MIA, making this a variance failure rather than a disagreement error. However, fair_prob=0.355 was well below the 0.42 cutoff and edge=+18.79pp triggered calibration_caution_18_25pp — the apparent edge was likely a sparse upper-bucket calibration artifact. [HARD CAP 10] correctly blocked action. PHI's 8-2 win confirms the market had correctly priced MIA as a meaningful underdog despite the model's directional lean.",
+      "signals_to_recheck": "calibration_caution_18_25pp combined with fair_prob=0.355 < 0.42 — when both fire together, the model edge claim is almost certainly artifactual; treat this combination as auto-SKIP"
+    },
+    "KC @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "4-6",
+      "headline": "WSH won 6-4; SKIP tier directional call was correct with strong Stage 1/2 agreement.",
+      "hypothesis": "Both stages agreed on WSH (f5_prob=0.6624, p_model=0.6181, f5_full_delta=0.044) and grade B- was well-supported. SKIP tier prevented action but the directional read was validated. Pure variance alignment — no process concern.",
+      "signals_to_recheck": "n/a — SKIP tier directional call validated; no signals to recheck"
+    },
+    "TOR @ BOS": {
+      "verdict": "LOSS",
+      "model_pick": "BOS ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "6-1",
+      "headline": "TOR blew out BOS 6-1; Stage 1 gave BOS only 28% and was correct to oppose the pick.",
+      "hypothesis": "Stage 1 (f5_prob=0.2812) gave BOS only 28.12% in the first-five model while Stage 2 (p_model=0.5326) picked BOS at 53.26% — f5_full_delta=0.2514 is a major disagreement. Dylan Cease dominated for TOR. [HARD CAP 10] correctly blocked the bet, but the directional pick itself was a process failure: when Stage 1 gives the pick less than 35%, Stage 2's override has a poor record. Note that grade_reasons logged 'Stage 1/2 agree (Δ=0.09)' despite f5_full_delta=0.2514 — this discrepancy warrants investigation into how the grade system computes the Stage agreement delta.",
+      "signals_to_recheck": "f5_full_delta (0.2514) — Stage 1 f5_prob=0.2812 strongly opposed BOS pick; reinforce auto-SKIP rule: f5_prob(pick) < 0.35 should override Stage 2 direction absent explicit Claude CONFIRM"
+    },
+    "CHW @ NYY": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "2-12",
+      "headline": "NYY demolished CWS 12-2 behind Gerrit Cole; pick correct despite [HARD CAP 7] bullpen flag.",
+      "hypothesis": "NYY won by 10 runs with Gerrit Cole dominant. [HARD CAP 7] fired on hl_bullpen_xwoba_gap=+0.0075 (tiny positive gap), reducing the pre-cap A- score from 4 to 1. The blowout suggests the sub-0.010 gap was noise against an elite SP — a threshold sensitivity issue rather than a process failure. F3_swing_take_gap=3533.9 correctly signaled lineup conviction.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap ([HARD CAP 7] fired at +0.0075 — pick won 12-2; when gap < 0.010 and pick-side SP has xERA < 3.0, consider soft-exempting Hard Cap 7 from full score reduction)"
+    },
+    "NYM @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "3-5",
+      "headline": "CIN won 5-3 despite grade D, confidence_downgrade, and SP xERA disadvantage.",
+      "hypothesis": "CIN prevailed despite grade D (-2 pre-cap), confidence_downgrade=True, bullpen_fatigue stress, and Brady Singer's xERA worse than Kodai Senga's. Stage 1 (f5_prob=0.7455) strongly favored CIN while Stage 2 was more cautious (0.5644), and the f5_full_delta=0.1811 correctly triggered a disagree penalty. The win is a variance event — the model's low-conviction read was correct in filtering to stake_mult=0. Do not relax confidence_downgrade caution from a single game.",
+      "signals_to_recheck": "confidence_downgrade_True — win is variance; cap correctly suppressed staking; no signal update warranted from a single directional win on a D-grade pick"
+    },
+    "SF @ ATL": {
+      "verdict": "NO_PICK",
+      "model_pick": "ATL ML PLATINUM",
+      "claude_decision": "NO_DECISION",
+      "final_score": null,
+      "headline": "SF @ ATL suspended with SF leading 3-2; game incomplete, no directional verdict possible.",
+      "hypothesis": "ATL had strong model support (F1*_xera_gap=0.99, F3_swing_take_gap=6153.4, PQI +23.2pp, grade B- post-cap) but the game was suspended with SF ahead 3-2. The acute_roster_True flag may indicate the lineup instability contributed to the suspension scenario. Game to be resumed; no directional accuracy can be assessed.",
+      "signals_to_recheck": "acute_roster_True on a PLATINUM pick — SF @ ATL suspended; track resumed result when available to assess whether acute roster flag correlated with underperformance"
+    },
+    "CLE @ MIL": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "1-2",
+      "headline": "MIL edged CLE 2-1; SP disadvantage and marginal pick_prob validated by narrow loss.",
+      "hypothesis": "CLE had pick_prob=0.526 (marginal, triggering [HARD CAP 10]) and an SP xERA edge against the pick (Robert Gasser, min_pa=87, worse xERA than Slade Cecconi). MIL won by a single run. [HARD CAP 10] correctly blocked action. This is a process alignment success — weak conviction signals matched a borderline outcome. Cannot separate process failure from variance in a one-run game.",
+      "signals_to_recheck": "small_sample_SP_True on Gasser (min_pa=87) combined with SP edge AGAINST pick — small-sample SP with negative xERA gap is a reliable SKIP indicator even when other signals fire"
+    },
+    "SD @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "2-3",
+      "headline": "STL won 3-2 as grade A- predicted; highest-conviction directional read on the slate went unbet.",
+      "hypothesis": "STL had the strongest alignment of the slate — grade A- (pre-cap score 4), SP xERA edge +0.68 (+2), PQI +10.6pp, f5_full_delta=0.009 (near-perfect Stage 1/2 agreement). Andre Pallante controlled the game. SKIP tier prevented action. The directional call was excellent and the outcome validated it. Whether SKIP tier is systematically suppressing high-conviction plays is worth investigating over a larger sample.",
+      "signals_to_recheck": "SKIP tier assignment on grade A- game with f5_full_delta=0.009 — if SKIP tier is a systematic cap rather than a signal issue, it may be excluding genuine value plays"
+    },
+    "COL @ CHC": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "5-2",
+      "headline": "COL upset CHC 5-2; [HARD CAP 1] negative edge correctly identified CHC as a losing bet.",
+      "hypothesis": "CHC had a large negative edge (−17.17pp), meaning the market strongly priced this game against CHC. [HARD CAP 1] correctly blocked action. COL's Edward Cabrera outpitched Ryan Feltner. Both Cap 1 and Cap 10 fired — double protection on a double-failure game. Process functioning as designed; no process failure here.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], −17.2pp < 0) — market correctly priced CHC as a dog; pick lost; cap validated"
+    },
+    "MIN @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "MIN ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "12-2",
+      "headline": "MIN blew out TEX 12-2; the one Hard Cap 10 game that won, Stage 1 opposed at 37%.",
+      "hypothesis": "MIN won by 10 runs despite [HARD CAP 10] correctly flagging low conviction (pick_prob=0.527). Stage 1 gave MIN only 37.25% (f5_prob=0.3725), while Stage 2 was cautiously positive (51.01%). The blowout is a variance WIN against a weak Stage 1 signal. This is the sole exception to the f5_prob < 0.35 LOSS pattern observed today — MIN's 37.25% is above the proposed 0.35 floor, consistent with the threshold. [HARD CAP 10] firing was justified; no cap adjustment warranted.",
+      "signals_to_recheck": "f5_full_delta (0.1175, near 0.12 threshold) with f5_prob=0.3725 — WIN here is consistent with proposed 0.35 floor for auto-SKIP; f5_prob was above 0.35 so pick proceeded and won"
+    },
+    "DET @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "2-4",
+      "headline": "HOU won 4-2 as strong Stage 1/2 agreement predicted; [HARD CAP 2] fired but pick was right.",
+      "hypothesis": "Both stages strongly agreed on HOU (f5_prob=0.7369, p_model=0.7592, f5_full_delta=0.022) and Hunter Brown dominated DET. [HARD CAP 2] fired (F3=1027>1000 + p_model>0.65 without elite opposing SP xERA=4.61), reducing score from 5 to 3. The pick was correct. Cap 2 correctly dampened confidence in a high-probability game lacking opposing SP elite quality; it did not over-fire in this instance.",
+      "signals_to_recheck": "[HARD CAP 2] F3_with_non_elite_opposing_SP — cap fired (score 5→3) and pick won; cap functioning correctly as a confidence reducer, not a blocker"
+    },
+    "LAA @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "7-0",
+      "headline": "LAA shut out ARI 7-0; Stage 1 gave ARI only 26% and was decisively correct.",
+      "hypothesis": "Stage 1 gave ARI a mere 25.89% chance (f5_prob=0.2589) while Stage 2 picked ARI at 61.56% — f5_full_delta=0.3567 is the largest Stage 1/2 split on the slate. LAA won 7-0. The grade D (-4 pre-cap) and SKIP tier correctly blocked any action, but Stage 1's read was the clearest directional warning today. This is a process failure at the Stage 2 level: when f5_prob(pick) < 0.30, Stage 2's confidence is unreliable and the pick should auto-SKIP.",
+      "signals_to_recheck": "f5_full_delta (0.3567 — largest of slate; Stage 1 f5_prob=0.2589 overwhelmingly opposed ARI; LAA won 7-0; strongest validation for f5_prob < 0.35 auto-SKIP rule)"
+    },
+    "PIT @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "6-5",
+      "headline": "PIT edged OAK 6-5; negative edge and [HARD CAP 1] correctly identified market's PIT lean.",
+      "hypothesis": "OAK had a negative edge (−6.80pp), meaning the market priced PIT as the better bet despite OAK's SP advantage (F5_bullpen_gap=+0.40 and positive SP xERA edge). [HARD CAP 1] correctly blocked action. PIT won a close game 6-5, validating the market's pricing. The F5_bullpen_gap signal was insufficient to overcome a negative-edge cap. Process worked correctly.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], −6.80pp) — market correctly priced PIT; pick lost; Hard Cap 1 validated even at modest negative edge magnitudes"
+    },
+    "BAL @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "1-3",
+      "headline": "SEA won 3-1 behind Logan Gilbert; market correctly priced BAL as an underdog.",
+      "hypothesis": "BAL had fair_prob=0.3965 below the 0.42 cutoff and edge=+17.52pp in the calibration_caution_18_25pp band — dual flags that the apparent edge was artifactual. Logan Gilbert (SEA) outpitched Brandon Young (BAL). SKIP tier and fair_prob filter correctly blocked action. The combination of calibration_caution_18_25pp + fair_prob < 0.40 is a reliable double-warning that the market has correctly priced the pick as an underdog.",
+      "signals_to_recheck": "calibration_caution_18_25pp combined with fair_prob=0.397 < 0.42 cutoff — identical combination as MIA @ PHI on this slate, both losses; treat this dual flag as auto-SKIP"
+    },
+    "TB @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "0-1",
+      "headline": "LAD won 1-0 in a pitcher's duel; SKIP grade D directional call was right but barely.",
+      "hypothesis": "LAD won the minimum possible margin (1-0) despite grade D (-2 pre-cap), SP xERA against pick, and f5_full_delta=0.1452 above the 0.12 disagree threshold. SKIP tier correctly blocked action on a weak-conviction read. A 1-0 outcome is maximum variance for a grade D pick — do not update SKIP thresholds from a one-run lucky win on a D-grade call.",
+      "signals_to_recheck": "f5_full_delta (0.1452 > 0.12 disagree threshold on a SKIP/grade D pick that won 1-0) — single-run variance, no signal update warranted"
+    }
+  },
+  "patterns_observed": [
+    "f5_prob(pick) < 0.35 is a reliable auto-SKIP signal: TOR @ BOS (f5_prob=0.2812, LOSS) and LAA @ ARI (f5_prob=0.2589, LOSS-SKIP) both lost when Stage 1 gave the pick below 35%; MIN @ TEX at f5_prob=0.3725 won, consistent with a 0.35 floor. Add as a hard Claude Brain heuristic: when f5_prob(pick) < 0.35, auto-SKIP regardless of Stage 2 direction unless explicit Claude CONFIRM with lineup-change justification.",
+    "Hard Cap 10 (pick_prob 0.50–0.55 without CONFIRM) went 5L/1W (16.7%) on this slate vs the 31.2% archive rate — bottom-bucket marginal favorites continue to underperform significantly without Claude validation; maintain strict no-stake enforcement and raise the CONFIRM threshold in this bracket.",
+    "Hard Cap 1 (negative_edge_GOLD) double-validated today: COL @ CHC (−17.2pp, LOSS) and PIT @ OAK (−6.8pp, LOSS) both confirmed the market had correctly priced the opposing side; cap functioning as intended at both large and moderate negative edge magnitudes.",
+    "calibration_caution_18_25pp combined with fair_prob < 0.40 fired on two games today (MIA @ PHI and BAL @ SEA), both losses — when the soft-cap caution band and the fair-prob cutoff both trigger simultaneously, treat as auto-SKIP: the dual flags indicate market pricing has correctly identified the pick as an underdog and the claimed edge is a calibration artifact."
+  ]
+}
