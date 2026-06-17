@@ -1,0 +1,134 @@
+# Daily Variance Report — 2026-06-17
+_Generated 2026-06-17T07:04:56Z · 14 games · significant deviations only_
+
+## 1 · Roster / Injury Delta
+- **NYM** [IL] — New York Mets placed RHP Christian Scott on the 15-day injured list retroactive to June 12, 2026. Right hip impingement.
+- **NYM** [IL] — New York Mets placed 1B Jorge Polanco on the 60-day injured list. Right wrist contusion.
+- **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Daniel Duarte to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
+- **NYM** [claimed] — New York Mets claimed SS Zack Short off waivers from Detroit Tigers.
+- **NYM** [activated] — New York Mets activated SS Zack Short.
+- **NYM** [DFA] — New York Mets designated SS Vidal Bruján for assignment.
+- **NYM** [activated] — New York Mets activated SS Zack Short.
+- **NYM** [signed] — New York Mets signed free agent OF Nick Lucky to a minor league contract.
+- **NYM** [IL] — New York Mets activated RHP Kodai Senga from the 15-day injured list.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **KC** [IL] — Kansas City Royals placed RHP Carlos Estévez on the 60-day injured list. Left foot contusion.
+- **KC** [TRADE] — Kansas City Royals traded RHP Denis Samudio and cash to Toronto Blue Jays for RHP Connor Seabold.
+- **KC** [recalled] — Kansas City Royals recalled RHP Mitch Spence from Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned RHP Eli Morgan to Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned RHP Eli Morgan to Omaha Storm Chasers.
+- **KC** [activated] — Kansas City Royals activated RHP Connor Seabold.
+- **KC** [optioned] — Kansas City Royals optioned RHP Mitch Spence to Omaha Storm Chasers.
+- **MIA** [optioned] — Miami Marlins optioned RHP William Kempner to Jacksonville Jumbo Shrimp.
+- **MIA** [recalled] — Miami Marlins recalled LHP Dax Fulton from Jacksonville Jumbo Shrimp.
+- **PHI** [activated] — Philadelphia Phillies activated RF Steward Berroa from the paternity list.
+- **PHI** [optioned] — Philadelphia Phillies optioned RF Steward Berroa to Lehigh Valley IronPigs.
+- **PHI** [signed] — Philadelphia Phillies signed free agent 3B Riley Tirotta to a minor league contract.
+- **PHI** [released] — Philadelphia Phillies released RHP Jackson Rutledge.
+- **PHI** [signed] — Philadelphia Phillies signed free agent TWP Lyle Miller-Green to a minor league contract.
+- **PHI** [IL] — Philadelphia Phillies placed RHP Brad Keller on the 15-day injured list retroactive to June 14, 2026. Right forearm tendinitis.
+- **PHI** [recalled] — Philadelphia Phillies recalled RHP Max Lazar from Lehigh Valley IronPigs.
+- **DET** [claimed] — New York Mets claimed SS Zack Short off waivers from Detroit Tigers.
+- **HOU** [optioned] — Houston Astros optioned RHP Alimber Santa to Sugar Land Space Cowboys.
+- **HOU** [recalled] — Houston Astros recalled RHP Jayden Murray from Sugar Land Space Cowboys.
+- **HOU** [IL] — Houston Astros activated RHP Hunter Brown from the 60-day injured list.
+- **HOU** [IL] — Houston Astros activated C Yainer Diaz from the 10-day injured list.
+- **HOU** [DFA] — Houston Astros designated RHP Jayden Murray for assignment.
+- **HOU** [optioned] — Houston Astros optioned C Collin Price to Sugar Land Space Cowboys.
+- **SD** [status] — San Diego Padres placed RHP Mason Miller on the bereavement list.
+- **SD** [outrighted] — San Diego Padres sent RF Bryce Johnson outright to El Paso Chihuahuas.
+- **SD** [recalled] — San Diego Padres recalled LHP Kyle Hart from El Paso Chihuahuas.
+- **LAD** [signed] — Los Angeles Dodgers signed free agent RHP Chase Adkins to a minor league contract.
+- **LAD** [DFA] — Los Angeles Dodgers designated 3B Santiago Espinal for assignment.
+- **LAD** [IL] — Los Angeles Dodgers activated 2B Tommy Edman from the 60-day injured list.
+- **LAA** [DFA] — Los Angeles Angels designated LHP Drew Pomeranz for assignment.
+- **LAA** [IL] — Los Angeles Angels placed RHP Grayson Rodriguez on the 15-day injured list. Low back inflammation.
+- **LAA** [selected] — Los Angeles Angels selected the contract of RHP Brett Kerry from Salt Lake Bees.
+- **LAA** [recalled] — Los Angeles Angels recalled RHP José Fermin from Salt Lake Bees.
+- **AZ** [IL] — Arizona Diamondbacks activated LF Lourdes Gurriel Jr. from the 10-day injured list.
+- **AZ** [optioned] — Arizona Diamondbacks optioned CF Ryan Waldschmidt to Reno Aces.
+- **TOR** [TRADE] — Kansas City Royals traded RHP Denis Samudio and cash to Toronto Blue Jays for RHP Connor Seabold.
+- **ATL** [IL] — Atlanta Braves activated C Drake Baldwin from the 10-day injured list.
+- **ATL** [outrighted] — Atlanta Braves sent C Austin Wynns outright to Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of CF Brewer Hicklen from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned CF Brewer Hicklen to Gwinnett Stripers.
+- **CLE** [IL] — Cleveland Guardians placed LF Angel Martínez on the 10-day injured list. Left foot non-displaced fracture.
+- **CLE** [recalled] — Cleveland Guardians recalled CF Petey Halpin from Columbus Clippers.
+- **MIL** [DFA] — Milwaukee Brewers designated 3B Luis Rengifo for assignment.
+- **MIL** [recalled] — Milwaukee Brewers recalled SS Cooper Pratt from Nashville Sounds.
+- **COL** [IL] — Colorado Rockies activated RHP Victor Vodnik from the 15-day injured list.
+- **COL** [optioned] — Colorado Rockies optioned RHP Eiberson Castellano to Albuquerque Isotopes.
+- **CHC** [DFA] — Chicago Cubs designated LHP Doug Nikhazy for assignment.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Yosver Zulueta to Iowa Cubs.
+- **CHC** [TRADE] — Seattle Mariners traded RHP Yosver Zulueta to Chicago Cubs for cash.
+- **CHC** [IL] — Chicago Cubs placed RHP Daniel Palencia on the 15-day injured list. Right elbow inflammation.
+- **CHC** [recalled] — Chicago Cubs recalled RHP Gavin Hollowell from Iowa Cubs.
+- **ATH** [recalled] — Athletics recalled RHP Luis Morales from Las Vegas Aviators.
+- **ATH** [optioned] — Athletics optioned LHP Brady Basso to Las Vegas Aviators.
+- **BAL** [IL] — Baltimore Orioles activated RHP Ryan Helsley from the 15-day injured list.
+- **BAL** [optioned] — Baltimore Orioles optioned RHP Anthony Nunez to Norfolk Tides.
+- **SEA** [optioned] — Seattle Mariners optioned 3B Patrick Wisdom to Tacoma Rainiers.
+- **SEA** [outrighted] — Seattle Mariners sent RHP Domingo Gonzalez outright to Tacoma Rainiers.
+- **SEA** [TRADE] — Seattle Mariners traded RHP Yosver Zulueta to Chicago Cubs for cash.
+- **SEA** [IL] — Seattle Mariners placed LF Randy Arozarena on the 10-day injured list retroactive to June 13, 2026. Left hamstring strain.
+- **SEA** [IL] — Seattle Mariners activated C Cal Raleigh from the 10-day injured list.
+- **SEA** [IL] — Seattle Mariners activated SS J.P. Crawford from the 10-day injured list.
+- **SEA** [IL] — Seattle Mariners placed 3B Will Wilson on the 60-day injured list.
+- **SEA** [optioned] — Seattle Mariners optioned C Jhonny Pereda to Tacoma Rainiers.
+- **SEA** [selected] — Seattle Mariners selected the contract of CF Curtis Washington Jr. from Everett AquaSox.
+
+_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+
+## 2 · Starting Pitcher Flags
+- **SD @ STL** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **TB @ LAD** (home SP Shohei Ohtani): very high K% (29.6% vs lg 22.0)
+- **SF @ ATL** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **CLE @ MIL** (away SP Gavin Williams): very high K% (28.7% vs lg 22.0)
+- **COL @ CHC** (away SP Sean Sullivan): thin sample / PENDING_SP_DATA — Sean Sullivan has only 49 Statcast pitches season-to-date; need 100+ to score
+
+## 3 · Bullpen Fatigue (last 3 games)
+- **NYM** Cionel Pérez — 2 apps / 46 pitches over last 3 games — monitor
+- **CIN** Sam Moll — 2 apps / 41 pitches over last 3 games — monitor
+- **CIN** Tejay Antone — 2 apps / 38 pitches over last 3 games — monitor
+- **KC** Daniel Lynch IV — 2 apps / 37 pitches over last 3 games — monitor
+- **WSH** Gus Varland — 2 apps / 43 pitches over last 3 games — monitor
+- **AZ** Paul Sewald — 2 apps / 37 pitches over last 3 games — monitor
+- **BOS** Tommy Kahnle — 2 apps / 39 pitches over last 3 games — monitor
+- **BOS** Ryan Watson — 2 apps / 57 pitches over last 3 games — monitor
+- **CWS** Joe Rock — threw 49 pitches last night — likely unavailable
+- **MIL** Aaron Ashby — 2 apps / 50 pitches over last 3 games — monitor
+- **MIL** Abner Uribe — 2 apps / 40 pitches over last 3 games — monitor
+- **COL** Blas Castaño — 2 apps / 36 pitches over last 3 games — monitor
+- **CHC** Phil Maton — 2 apps / 38 pitches over last 3 games — monitor
+- **ATH** Justin Sterner — 2 apps / 44 pitches over last 3 games — monitor
+
+## 4 · Lineup / Platoon
+- NYM @ CIN — CIN faces RHP (Nolan McLean)
+- NYM @ CIN — NYM faces LHP (Nick Lodolo)
+- KC @ WSH — WSH faces RHP (Luinder Avila)
+- KC @ WSH — KC faces RHP (Zack Littell)
+- MIA @ PHI — PHI faces RHP (Sandy Alcantara)
+- MIA @ PHI — MIA faces RHP (Andrew Painter)
+- DET @ HOU — HOU faces RHP (Casey Mize)
+- DET @ HOU — DET faces RHP (Peter Lambert)
+- SD @ STL — SD faces RHP (Kyle Leahy)
+- TB @ LAD — LAD faces LHP (Shane McClanahan)
+- TB @ LAD — TB faces RHP (Shohei Ohtani)
+- LAA @ AZ — AZ faces LHP (Sam Aldegheri)
+- LAA @ AZ — LAA faces LHP (Eduardo Rodriguez)
+- TOR @ BOS — BOS faces RHP (Max Scherzer)
+- TOR @ BOS — TOR faces LHP (Jake Bennett)
+- CWS @ NYY — NYY faces LHP (Anthony Kay)
+- CWS @ NYY — CWS faces LHP (Carlos Rodón)
+- SF @ ATL — SF faces RHP (JR Ritchie)
+- CLE @ MIL — MIL faces RHP (Gavin Williams)
+- CLE @ MIL — CLE faces RHP (Brandon Sproat)
+- COL @ CHC — CHC faces LHP (Sean Sullivan)
+- COL @ CHC — COL faces RHP (Javier Assad)
+- PIT @ ATH — ATH faces RHP (Braxton Ashcraft)
+- PIT @ ATH — PIT faces RHP (Aaron Civale)
+- BAL @ SEA — SEA faces RHP (Kyle Bradish)
+- BAL @ SEA — BAL faces RHP (George Kirby)
+
