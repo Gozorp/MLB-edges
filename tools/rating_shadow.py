@@ -104,6 +104,36 @@ def slate_games(date):
     return out
 
 
+def pred_totals(date):
+    """(away,home)->model predicted total runs (pred_runs from picks_totals_<date>.csv)."""
+    out={}
+    for p in ("docs/data/picks_totals_%s.csv"%date,"picks_totals_%s.csv"%date):
+        if not os.path.exists(p): continue
+        csv.field_size_limit(10**7)
+        for r in csv.DictReader(open(p,encoding="utf-8",errors="replace")):
+            h=cn(r.get("home_team") or ""); a=cn(r.get("away_team") or "")
+            pr=fnum(r.get("pred_runs")); ln=fnum(r.get("total_line"))
+            if h and a and pr is not None:
+                out[(a,h)]={"pred_total":round(pr,2),"total_line":ln}
+        break
+    return out
+
+
+def realized_totals(date):
+    """(away,home)->actual total runs for FINAL games (null until final)."""
+    out={}
+    try: j=get("%s/schedule?sportId=1&date=%s&hydrate=team"%(API,date))
+    except Exception: return out
+    for d in j.get("dates",[]):
+        for gm in d.get("games",[]):
+            if (gm.get("status") or {}).get("abstractGameState")!="Final": continue
+            tt=gm["teams"]; ha=cn(tt["home"]["team"].get("abbreviation") or ""); aa=cn(tt["away"]["team"].get("abbreviation") or "")
+            hs=tt["home"].get("score"); as_=tt["away"].get("score")
+            if hs is None or as_ is None: continue
+            out[(aa,ha)]=int(hs+as_)
+    return out
+
+
 def team_id_map(season):
     out={}
     for t in get("%s/teams?sportId=1&season=%d"%(API,season)).get("teams",[]):
@@ -253,14 +283,18 @@ def main(date):
     # decompression shadow per game
     scores=[v["ecosystem_score"]+v["interval_delta"] for v in eco.values()] or [50]
     em=statistics.mean(scores); es=statistics.pstdev(scores) or 1e-9
+    pt=pred_totals(date); rt=realized_totals(date)
     games_out=[]
     for g in games:
         he=eco.get(g["home"]); ae=eco.get(g["away"])
         rp=g["home_prob"]
+        _pt=pt.get((g["away"],g["home"]),{})
         row={"matchup":g["matchup"],"home":g["home"],"away":g["away"],
              "raw_home_prob":round(rp,4) if rp is not None else None,
              "home_eco":round((he["ecosystem_score"]+he["interval_delta"]),1) if he else None,
-             "away_eco":round((ae["ecosystem_score"]+ae["interval_delta"]),1) if ae else None}
+             "away_eco":round((ae["ecosystem_score"]+ae["interval_delta"]),1) if ae else None,
+             "pred_total":_pt.get("pred_total"),"total_line":_pt.get("total_line"),
+             "realized_total":rt.get((g["away"],g["home"]))}
         if rp is not None and he and ae:
             ediff_z=((he["ecosystem_score"]+he["interval_delta"])-(ae["ecosystem_score"]+ae["interval_delta"]))/es
             p=min(.9999,max(.0001,rp))
