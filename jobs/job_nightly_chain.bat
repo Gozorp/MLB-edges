@@ -59,6 +59,9 @@ REM 2.97) Provisional lean for TBD/no-SP games (display-only; side-only badge; s
 REM 2.98) SP Dominance / ceiling flags (display-only; statsapi-only K%/xFIP proxy; sandboxed)
 %PY% tools\dominance_engine.py %SLATE% >> "logs\midnight.log" 2>&1
 
+REM 2.99) 5-day ecosystem ratings + SHADOW decompression overlay (display/shadow-only; never feeds model; sandboxed)
+%PY% tools\rating_shadow.py %SLATE% >> "logs\midnight.log" 2>&1
+
 REM 3) calibrator refit (fits on rolling postgame outcomes; self-throttles)
 %PY% tools\refit_post_calibrator.py >> "logs\midnight.log" 2>&1
 
