@@ -39,4 +39,28 @@ Do **not** retrain production. In July, on a clone:
 
 **Why this ordering:** the prior micro-feature backtest returned NULL, so unproven rolling/correlated features into a live tree right before three unattended weeks = overfit + calibration-break risk for zero proven gain. Track 1 captures the edge immediately at zero risk; Track 2 decides the retrain on evidence.
 
+---
+
+## Track 2b — Shadow decompression γ-tuning protocol (PRE-REGISTERED 2026-06-17, before any July fitting)
+
+**Purpose:** decide the shadow's decompression strength γ (live v0 = 0.35, untuned) **and** whether it must scale with run environment — without falling into the regression trap of reading a global miscalibration as a localized `pred_total` interaction. Strict ordering: establish the main effect, *then* test for an interaction. Data = the accumulating `rating_shadow_<date>.json` logs (now carrying `raw_home_prob`, `shadow_decompressed_prob`, `pred_total`, `total_line`, `realized_total`/outcome).
+
+**Skeptical prior:** the SP-micro-feature backtest returned NULL. The overlay must *earn* a win before any second-order knob is tuned. If Phase 1 fails, the answer is "harvest via a properly-calibrated wrapper, or drop" — **not** "tune the interaction."
+
+### Phase 1 — Main-effect optimization (global γ)
+- Grid γ ∈ {0.0, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.45, 0.60} over the **walk-forward** folds (train-fold picks γ that minimizes train Brier; score the held-out fold only). **Never** minimize in-sample Brier on the full set (that overfits the single parameter — the same trap as the prior backtest).
+- γ=0 is the frozen baseline by construction, so it's the control arm.
+- **Gate (locked):** the OOS-selected γ* PASSES only if `Brier(frozen + Shadow(γ*))` strictly beats `Brier(frozen)` with a 1000-sample game-level bootstrap 95% CI on ΔBrier that **excludes 0**; report log-loss + a reliability/calibration curve alongside.
+- **If FAIL/NULL → STOP.** Do not proceed to Phase 2. Keep frozen prod; revisit the wrapper idea only under a fresh pre-reg.
+
+### Phase 2 — Residual diagnosis (only if Phase 1 PASSES)
+- Compute the **post-γ\* per-game calibration residual** (e.g., `outcome − shadow_decompressed_prob(γ*)`), NOT |Δ|. Regressing |Δ| on `pred_total` just re-derives the known logit shape and proves nothing.
+- Regress those residuals on `pred_total` (and check `total_line` as a robustness alt). 
+- **Add a dynamic γ(total) damping term ONLY IF** the residual-vs-total slope is (a) significant (95% CI excludes 0), (b) sign-stable across a fold split, and (c) practically meaningful. Otherwise keep global γ* — the data did not demand the interaction.
+- Any γ(total) form adopted is itself re-validated OOS before it could ever leave shadow status.
+
+**Promotion:** a tuned shadow only graduates from display-to-applied via a separate calibration-wrapper pre-reg; it never silently starts adjusting picks. Production XGBoost remains the Track-2 (Model-B) question, independent of this overlay.
+
+---
+
 *Read-only. Frozen model/weights/stake untouched. Thresholds frozen; changes require a dated amendment here.*
