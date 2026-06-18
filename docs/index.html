@@ -4375,18 +4375,36 @@ function _formatGamePreviewUpcoming(preview) {
         <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
         <ul>${fmtBullpen(preview.homeBullpen, "home", preview.awayName)}</ul>
         ${(function() {
-          // Phase 1+2 sprint: per-team fatigue table from bullpen_meta sidecar
+          // Per-team 7-day bullpen fatigue table from the bullpen_meta sidecar.
+          // Robust restore (2026-06-18): read window.__bullpenMeta live; resolve
+          // each team by abbr AND common variant spelling (statsapi AZ/CWS/ATH/
+          // WSH/SD/SF/TB/KC vs diag ARI/CHW/OAK/WSN/... ) so those games no longer
+          // blank; render each side independently; and emit an explicit note
+          // instead of a silent empty box when data truly isn't present.
           try {
-            const _matchup = `${preview.awayAbbr} @ ${preview.homeAbbr}`;
-            const _bp = _bullpenMetaForMatchup(_matchup);
-            if (!_bp || (!_bp.away && !_bp.home)) return "";
-            let _h = `<h5 style="margin-top:0.8rem;">Bullpen fatigue (7-day window)</h5>`;
+            const bm = window.__bullpenMeta;
+            const hdr = `<h5 style="margin-top:0.8rem;">Bullpen fatigue (7-day window)</h5>`;
+            if (!bm || !bm.teams) {
+              return hdr + `<div class="muted" style="font-size:0.82rem;">Bullpen fatigue not loaded for this date yet.</div>`;
+            }
+            const VAR = {CHW:"CWS",CWS:"CHW",ARI:"AZ",AZ:"ARI",OAK:"ATH",ATH:"OAK",WSN:"WSH",WSH:"WSN",SDP:"SD",SD:"SDP",SFG:"SF",SF:"SFG",TBR:"TB",TB:"TBR",KCR:"KC",KC:"KCR"};
+            const resolve = (abbr) => {
+              if (!abbr) return null;
+              const a = String(abbr).trim().toUpperCase();
+              return bm.teams[a] || bm.teams[VAR[a]] || null;
+            };
+            const aB = resolve(preview.awayAbbr);
+            const hB = resolve(preview.homeAbbr);
+            if (!aB && !hB) {
+              return hdr + `<div class="muted" style="font-size:0.82rem;">No bullpen-fatigue rows for this matchup yet.</div>`;
+            }
+            let _h = hdr;
             _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.4rem;">${preview.awayName}</div>`;
-            _h += _bullpenFatigueTable(_bp.away, preview.awayName);
+            _h += _bullpenFatigueTable(aB, preview.awayName);
             _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.5rem;">${preview.homeName}</div>`;
-            _h += _bullpenFatigueTable(_bp.home, preview.homeName);
+            _h += _bullpenFatigueTable(hB, preview.homeName);
             return _h;
-          } catch (_e_bp_panel) { return ""; }
+          } catch (_e_bp_panel) { return `<div class="muted" style="font-size:0.78rem;">bullpen fatigue unavailable</div>`; }
         })()}
       </div>
       ${renderLineupEdge(preview)}
