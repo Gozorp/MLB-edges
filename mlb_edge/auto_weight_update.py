@@ -182,8 +182,8 @@ def _outcomes_to_recursive_schema(outcomes_df, picks_df):
         m = match.iloc[0]
         rows.append({
             "game_id": p.get("game_id", m["game_pk"]),
-            "home_team": m["home_abbr"] if m["side"] == "home" else m["away_abbr"],
-            "away_team": m["away_abbr"] if m["side"] == "home" else m["home_abbr"],
+            "home_team": m["team"] if m["side"] == "home" else m["home_abbr"],
+            "away_team": m["away_abbr"] if m["side"] == "home" else m["team"],
             "home_R": int(m["home_R"]) if m["side"] == "home" else int(m["away_R"]),
             "away_R": int(m["away_R"]) if m["side"] == "home" else int(m["home_R"]),
         })

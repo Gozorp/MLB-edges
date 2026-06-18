@@ -54,7 +54,7 @@ def build_sp_features(pitcher_season: pd.DataFrame,
     We return a dict (not a Series) so the caller can build the per-game
     row by subtracting opposing-pitcher values directly.
     """
-    row = pitcher_season[pitcher_season.get("fg_id") == pitcher_id]
+    row = pitcher_season[pitcher_season["fg_id"] == pitcher_id] if "fg_id" in pitcher_season.columns else pitcher_season.iloc[0:0]
     if row.empty:
         return {c: np.nan for c in SP_FEATURE_COLS}
 
@@ -132,7 +132,7 @@ def build_offense_features(team_batting: pd.DataFrame,
 def aggregate_bullpen_xfip(pitcher_season: pd.DataFrame,
                            bullpen_ids: List[int]) -> float:
     """IP-weighted bullpen xFIP. Returns NaN if we have no data."""
-    bp = pitcher_season[pitcher_season.get("fg_id").isin(bullpen_ids)]
+    bp = pitcher_season[pitcher_season["fg_id"].isin(bullpen_ids)] if "fg_id" in pitcher_season.columns else pitcher_season.iloc[0:0]
     if bp.empty or "xfip" not in bp.columns or "ip" not in bp.columns:
         return np.nan
     bp = bp.dropna(subset=["xfip", "ip"])

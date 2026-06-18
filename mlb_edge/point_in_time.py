@@ -339,8 +339,10 @@ def _approximate_era(df: pd.DataFrame) -> float:
     }
     outs = df[df["events"].isin(outs_events)]
     n_outs = len(outs)
-    if "grounded_into_double_play" in df["events"].values:
-        n_outs += (df["events"] == "grounded_into_double_play").sum()
+    n_outs += (df["events"] == "grounded_into_double_play").sum()
+    n_outs += (df["events"] == "double_play").sum()
+    n_outs += (df["events"] == "strikeout_double_play").sum()
+    n_outs += (df["events"] == "triple_play").sum() * 2
     ip = n_outs / 3.0
     if ip < 5:
         return np.nan

@@ -1374,7 +1374,7 @@ def run(slate_date: date,
     sheet = recommend_slate(preds, odds_long, bankroll=bankroll) if not odds_long.empty \
         else pd.DataFrame()
 
-    if not sheet.empty and not ctx["bullpen"].pitch_log.empty:
+    if not sheet.empty and ctx.get("bullpen") is not None and not ctx["bullpen"].pitch_log.empty:
         try:
             sheet_for_ceiling = sheet.rename(
                 columns={"team": "pick_winner", "tier": "conv_tier"}

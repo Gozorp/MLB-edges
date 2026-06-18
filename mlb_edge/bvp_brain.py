@@ -235,14 +235,14 @@ def attach_bvp_to_diag(
             if game_pk and sp_ids:
                 home_sp = sp_ids.get("home_sp_id")
                 away_sp = sp_ids.get("away_sp_id")
-                if away_sp:
+                if home_sp:
                     away_lineup = _get_top_n_lineup(game_pk, "away", n=5)
                     away_payload = build_per_batter_bvp_payload(away_lineup, home_sp)
                     if away_payload:
                         away_json = json.dumps(away_payload)
                         filled_rows += 1
                         total_batters += len(away_payload)
-                if home_sp:
+                if away_sp:
                     home_lineup = _get_top_n_lineup(game_pk, "home", n=5)
                     home_payload = build_per_batter_bvp_payload(home_lineup, away_sp)
                     if home_payload:
