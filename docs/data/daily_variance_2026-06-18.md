@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-18
-_Generated 2026-06-18T07:04:00Z · 9 games · significant deviations only_
+_Generated 2026-06-18T19:34:34Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [IL] — Toronto Blue Jays placed RHP Max Scherzer on the 15-day injured list retroactive to June 14, 2026. Back spasms.
@@ -23,32 +23,25 @@ _Generated 2026-06-18T07:04:00Z · 9 games · significant deviations only_
 - **SEA** [TRADE] — Seattle Mariners traded RHP Randy Dobnak to Kansas City Royals for cash.
 - **SEA** [recalled] — Seattle Mariners recalled RF Connor Joe from Tacoma Rainiers.
 - **SEA** [optioned] — Seattle Mariners optioned CF Curtis Washington Jr. to Everett AquaSox.
-- **NYM** [signed] — New York Mets signed free agent OF Nick Lucky to a minor league contract.
 - **NYM** [activated] — New York Mets activated SS Zack Short.
 - **NYM** [DFA] — New York Mets designated SS Vidal Bruján for assignment.
 - **NYM** [IL] — New York Mets activated RHP Kodai Senga from the 15-day injured list.
 - **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **PHI** [signed] — Philadelphia Phillies signed free agent 3B Riley Tirotta to a minor league contract.
 - **PHI** [signed] — Philadelphia Phillies signed free agent TWP Lyle Miller-Green to a minor league contract.
 - **PHI** [released] — Philadelphia Phillies released RHP Jackson Rutledge.
-- **PHI** [signed] — Philadelphia Phillies signed free agent 3B Riley Tirotta to a minor league contract.
 - **PHI** [IL] — Philadelphia Phillies placed RHP Brad Keller on the 15-day injured list retroactive to June 14, 2026. Right forearm tendinitis.
 - **PHI** [recalled] — Philadelphia Phillies recalled RHP Max Lazar from Lehigh Valley IronPigs.
 - **PHI** [optioned] — Philadelphia Phillies optioned RHP Andrew Painter to Lehigh Valley IronPigs.
+- **PHI** [optioned] — Philadelphia Phillies optioned LHP Tanner Banks to Lehigh Valley IronPigs.
+- **PHI** [selected] — Philadelphia Phillies selected the contract of RHP Bryse Wilson from Lehigh Valley IronPigs.
+- **PHI** [recalled] — Philadelphia Phillies recalled RHP Seth Johnson from Lehigh Valley IronPigs.
+- **CWS** [IL] — Chicago White Sox placed RF Everson Pereira on the 7-day injured list. Concussion.
+- **CWS** [recalled] — Chicago White Sox recalled CF Junior Perez from Charlotte Knights.
 - **NYY** [signed] — New York Yankees signed free agent RHP Breidy Adames to a minor league contract.
-- **SF** [IL] — San Francisco Giants activated LHP Matt Gage from the 15-day injured list.
-- **SF** [optioned] — San Francisco Giants optioned LHP Reiver Sanmartin to Sacramento River Cats.
-- **SF** [outrighted] — San Francisco Giants sent LF Will Brennan outright to Sacramento River Cats.
-- **SF** [recalled] — San Francisco Giants recalled LHP Carson Whisenhunt from Sacramento River Cats.
-- **SF** [optioned] — San Francisco Giants optioned LHP Carson Whisenhunt to Sacramento River Cats.
-- **ATL** [selected] — Atlanta Braves selected the contract of CF Brewer Hicklen from Gwinnett Stripers.
-- **ATL** [optioned] — Atlanta Braves optioned CF Brewer Hicklen to Gwinnett Stripers.
-- **ATL** [DFA] — Atlanta Braves designated RHP Hunter Stratton for assignment.
-- **ATL** [IL] — Atlanta Braves transferred RHP Spencer Strider from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
-- **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
-- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
-- **ATL** [selected] — Atlanta Braves selected the contract of C Jair Camargo from Gwinnett Stripers.
-- **ATL** [optioned] — Atlanta Braves optioned C Jair Camargo to Gwinnett Stripers.
 - **STL** [signed] — St. Louis Cardinals signed free agent RHP Jhon Cabrera to a minor league contract.
+- **STL** [DFA] — St. Louis Cardinals designated RHP Chris Roycroft for assignment.
+- **STL** [selected] — St. Louis Cardinals selected the contract of RHP Max Rajcic from Memphis Redbirds.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Chris Roycroft to Memphis Redbirds.
 - **KC** [activated] — Kansas City Royals activated RHP Connor Seabold.
 - **KC** [optioned] — Kansas City Royals optioned RHP Mitch Spence to Omaha Storm Chasers.
@@ -63,10 +56,12 @@ _Generated 2026-06-18T07:04:00Z · 9 games · significant deviations only_
 - **ATH** [optioned] — Athletics optioned RHP Luis Morales to Las Vegas Aviators.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
+- **TOR** code=ACQ — Toronto Blue Jays acquired OF Edgardo Villegas from the Trois-Rivieres Aigles of the Frontier League.
 - **MIN** code=ACQ — Minnesota Twins acquired RHP Chris Vallimont from the York Revolution of the Atlantic League.
 - **TEX** code=ACQ — Texas Rangers acquired LHP Ben DeTaeye from the Sioux City Explorers of the American Association.
+- **NYM** code=ACQ — New York Mets acquired SS Nick Lucky from the Lancaster Stormers of the Atlantic League.
 
-_Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 10 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **LAA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
@@ -77,8 +72,6 @@ _Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **NYM** Austin Warren — 2 apps / 35 pitches over last 3 games — monitor
 - **PHI** Tim Mayza — 2 apps / 48 pitches over last 3 games — monitor
 - **CWS** Trevor Richards — threw 44 pitches last night — likely unavailable
-- **SF** Robbie Ray — threw 94 pitches last night — likely unavailable
-- **ATL** Carlos Carrasco — threw 55 pitches last night — likely unavailable
 - **STL** Chris Roycroft — threw 42 pitches last night — likely unavailable
 - **LAA** Brett Kerry — threw 59 pitches last night — likely unavailable
 - **ATH** Justin Sterner — 2 apps / 44 pitches over last 3 games — monitor
@@ -96,10 +89,8 @@ _Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - BAL @ SEA — BAL faces RHP (Bryan Woo)
 - NYM @ PHI — PHI faces LHP (Sean Manaea)
 - NYM @ PHI — NYM faces RHP (Aaron Nola)
-- CWS @ NYY — NYY faces RHP (Sean Burke)
+- CWS @ NYY — NYY faces LHP (Bryan Hudson)
 - CWS @ NYY — CWS faces LHP (Ryan Weathers)
-- SF @ ATL — ATL faces RHP (Landen Roupp)
-- SF @ ATL — SF faces LHP (Martín Pérez)
 - STL @ KC — KC faces LHP (Matthew Liberatore)
 - STL @ KC — STL faces LHP (Noah Cameron)
 - LAA @ ATH — LAA faces LHP (Gage Jump)

@@ -1,0 +1,141 @@
+{
+  "date": "2026-06-17",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-18T00:00:00Z",
+  "n_analyzed": 14,
+  "summary": "The 2026-06-17 slate produced 9W / 3L on 12 directional calls (75% hit rate), with 2 games withheld due to pending SP data; all 14 entries carried stake_mult=0. The dominant theme was Stage 2 outperforming Stage 1: four picks with f5_prob(pick) below 0.35 all won convincingly, directly challenging the recently-reinforced auto-SKIP rule from 06-16. The sole clear process failure was TOR @ BOS, where a B+ grade was inflated by near-zero F3 signal (26.6) and PQI alone against Max Scherzer. Hard Cap 1 repeatedly fired on sub-5pp negative edges on pre-cap A- games that all won, suggesting Cap 1 threshold scrutiny for multi-signal strong picks.",
+  "by_matchup": {
+    "NYM @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "9-1",
+      "headline": "NYM rolled CIN 9-1; Stage 2 directionally correct despite Stage 1 giving NYM only 32.5%.",
+      "hypothesis": "Stage 1 gave NYM only 32.53% (f5_prob=0.3253, below the 0.35 floor reinforced on 06-16) while Stage 2 picked NYM at 51.2% (f5_full_delta=0.1626). Nolan McLean's xERA advantage (+2.78 over Nick Lodolo) proved decisive in a 9-1 blowout — not a variance event. Hard Cap 10 correctly blocked staking on a marginal pick_prob. This is a direct counter-example to the f5_prob < 0.35 auto-SKIP rule: Stage 2 was right and Stage 1 was wrong by a wide margin.",
+      "signals_to_recheck": "f5_full_delta (0.1626, Stage 1 at f5_prob=0.3253 opposed pick; Stage 2 was correct 9-1; counter-evidence to f5_prob < 0.35 auto-SKIP rule; do not harden rule further)"
+    },
+    "KC @ WSH": {
+      "verdict": "LOSS",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "6-2",
+      "headline": "KC dominated WSH 6-2; SP xERA disadvantage and SKIP tier correctly predicted loss.",
+      "hypothesis": "Despite Stage 1 strongly favoring WSH (f5_prob=0.6467), the SP edge was against WSH (Zack Littell's xERA 1.55 runs worse than Luinder Avila), yielding grade D (-2) and SKIP tier. KC won 6-2. This is a process success for the tiering system — the SP quality signal overrode Stage 1 conviction. Stage 1's 64.7% read for WSH was wrong; KC's pitching advantage determined the outcome. SKIP tier correctly suppressed action on a pick with SP disadvantage.",
+      "signals_to_recheck": "SP edge AGAINST pick (grade_score -2) on SKIP tier — SP xERA dominance correctly identified losing home pick despite Stage 1 conviction; SP xERA gap is a reliable veto signal on SKIP-tier games"
+    },
+    "MIA @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "12-4",
+      "headline": "MIA demolished PHI 12-4; pre-cap A grade vindicated despite Hard Cap 7 and Cap 10 both blocking staking.",
+      "hypothesis": "Pre-cap score was A (5) with F1*_xera_gap=1.19 and F3=1927 strongly supporting MIA. Hard Cap 7 fired at hl_bullpen_xwoba_gap=+0.0056 (sub-0.010 gap) and Hard Cap 10 fired on pick_prob=0.539. Sandy Alcantara (MIA away SP) dominated Andrew Painter (PHI home). The 12-4 blowout confirms the pre-cap model captured a real quality edge. This is the second consecutive session where Cap 7 fired at a sub-0.010 gap on a pick that won by a large margin — the threshold appears too sensitive at this magnitude.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap ([HARD CAP 7] fired at +0.0056; second consecutive day sub-0.010 gap on a large-margin winning pick; MIA won 12-4; consider soft-exempting Cap 7 when |gap| < 0.010 and F1*+F3 both fire)"
+    },
+    "DET @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "2-4",
+      "headline": "HOU won 4-2 despite Stage 1 giving them only 24.9% and SP disadvantage; variance win on D-grade pick.",
+      "hypothesis": "Stage 1 gave HOU only 24.9% (f5_prob=0.249 — lowest on the slate) while Stage 2 favored HOU at 53.7% (f5_full_delta=0.2879). SP edge was also AGAINST HOU (Peter Lambert worse xERA than Casey Mize). Grade D (-3) and SKIP tier. HOU won 4-2, the same score as the 06-16 matchup. This is a variance win — the model's D-grade, low-conviction read with opposing SP and Stage 1 evidence both against HOU should not be treated as a process validation. Do not relax D-grade or Stage 1 thresholds from this result.",
+      "signals_to_recheck": "f5_full_delta (0.2879 — extreme Stage 1/2 split; f5_prob=0.249 plus SP edge AGAINST pick; D-grade win is variance; do not update Stage 1 skepticism rules from this single result)"
+    },
+    "SD @ STL": {
+      "verdict": "WIN",
+      "model_pick": "SD ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "6-1",
+      "headline": "SD rolled STL 6-1; Stage 2 (54%) correct despite Stage 1 giving SD only 22.7% and large negative edge.",
+      "hypothesis": "Stage 1 gave SD only 22.7% (f5_prob=0.2272) while Stage 2 picked SD at 54.0% (f5_full_delta=0.2329). Edge was -23.11pp, well outside [4,15]pp range. F3_swing_take_gap=3894.8 fired with PQI confirming (Δ=-27.8). Bradgley Rodriguez (SD away SP) outpitched Kyle Leahy (STL home) in a 6-1 blowout. Stage 2 captured a genuine quality edge that both Stage 1 and the market missed. The large negative edge (-23.11pp) may have reflected market overconfidence in STL home-field advantage rather than a reliable anti-SD signal. Insufficient data to override existing edge-window rule.",
+      "signals_to_recheck": "f5_full_delta (0.2329) combined with edge=-23.11pp — both flagged SKIP; Stage 2 was correct 6-1; market pricing was wrong about SD; one-day data point, do not override edge-window rule without larger sample"
+    },
+    "TB @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "NO_DECISION",
+      "final_score": "4-5",
+      "headline": "LAD squeaked past TB 5-4 with Ohtani; Hard Cap 1 fired at only -1.69pp on a pre-cap A- PLATINUM pick.",
+      "hypothesis": "LAD had the strongest model profile on the slate (PLATINUM, F1*=1.63, F2=0.046, F3=12299.7, pre-cap A-, score 4). Hard Cap 1 fired at a tiny negative edge (-1.69pp), reducing score from 4 to 1. Shohei Ohtani pitched and LAD won 5-4 by the minimum margin. The one-run win on a pre-cap A- is maximum variance — insufficient to declare Cap 1 a clear misfire, but the pattern of Cap 1 firing at sub-2pp negative edges on multi-signal PLATINUM picks warrants threshold evaluation.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -1.69pp on PLATINUM pre-cap A- with F1*+F2+F3 all firing; pick won 5-4 by one run; threshold at any negative edge may be too aggressive for multi-signal PLATINUM pre-cap A- picks)"
+    },
+    "LAA @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "1-8",
+      "headline": "ARI dominated LAA 8-1; Stage 2 correct despite Stage 1 giving ARI only 36.1%.",
+      "hypothesis": "Stage 1 gave ARI only 36.1% (f5_prob=0.3613) while Stage 2 picked ARI at 63.96% (f5_full_delta=0.2782). Grade D (-2) and SKIP tier. Eduardo Rodriguez (ARI home SP) dominated Sam Aldegheri (LAA) in an 8-1 blowout. The bullpen_fatigue flag for ARI did not materialize. This continues today's pattern of Stage 2 outperforming Stage 1 on games with large f5_full_delta: Stage 2 was directionally correct in all five games where f5_full_delta exceeded 0.12 on this slate. SKIP tier correctly suppressed staking on a D-grade pick regardless.",
+      "signals_to_recheck": "f5_full_delta (0.2782, Stage 1 at f5_prob=0.3613 opposed ARI pick; Stage 2 at 63.96% was correct 8-1; adds to today's counter-pattern against f5_prob < 0.35 auto-SKIP rule)"
+    },
+    "TOR @ BOS": {
+      "verdict": "LOSS",
+      "model_pick": "BOS ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "3-0",
+      "headline": "Max Scherzer shut out BOS 3-0; B+ grade failed — driven by near-zero F3 signal and PQI alone.",
+      "hypothesis": "BOS had a B+ grade (score=3) built entirely from F-signal (+1 for F3_swing_take_gap=26.6 — noise-level), PQI +24.2pp (+1), and Stage agreement (+1). No SP xERA edge appears in grade_reasons. Max Scherzer (TOR away SP) shut out BOS completely against Jake Bennett (BOS home SP). This is a process failure: the grade system awarded full +1 to F3=26.6, identical weight to F3=12299 elsewhere on this slate. PQI-driven B+ grades without meaningful F-series conviction (F3 < 200) and without SP quality advantage are unreliable when opposing SP quality is elite.",
+      "signals_to_recheck": "F3_swing_take_gap (26.6 scored as full +1 in grade_reasons, same as 12299; inflated grade to B+; BOS lost 0-3 to Scherzer; add Claude Brain check: F3 < 200 should be treated as half-signal — PQI alone does not support B+ grade on GOLD pick)"
+    },
+    "CHW @ NYY": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "5-10",
+      "headline": "NYY crushed CWS 10-5 with Rodón; Hard Cap 1 again fired on modest -4.44pp edge on pre-cap A-.",
+      "hypothesis": "NYY had pre-cap A- (score=4) with F3=3533.9 and Carlos Rodón vs Anthony Kay (SP edge +2.36 xERA). Hard Cap 1 fired at edge=-4.44pp, reducing score from 4 to 1. NYY won convincingly 10-5 with Rodón dominant. For the second time on this slate (also TB@LAD at -1.69pp), Cap 1 fired on a small negative edge on a pre-cap A- game that won by multiple runs. The cap correctly blocked over-staking but the pattern of Cap 1 misfiring directionally on small negative edges (<5pp) with strong pre-cap profiles recurs across sessions.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -4.44pp on pre-cap A- with F3=3533.9; pick won 10-5; consistent with TB@LAD today; Cap 1 sub-5pp threshold may be over-conservative on pre-cap A- picks with F1/F3 conviction)"
+    },
+    "SF @ ATL": {
+      "verdict": "NO_PICK",
+      "model_pick": "none (PENDING_SP_DATA)",
+      "claude_decision": "NO_DECISION",
+      "final_score": "7-5",
+      "headline": "No model pick — Carson Whisenhunt had 0 Statcast pitches; 06-17 regular game ended SF 7, ATL 5.",
+      "hypothesis": "The 06-17 model withheld pick due to pending SP data (Whisenhunt, 0 BF, below the 100-pitch Statcast threshold). Results file contains two SF @ ATL entries: gamePk 824912 (SF 7, ATL 2 — the resumed 06-16 suspended game covered in the prior postgame) and gamePk 824913 (SF 7, ATL 5 — the regular 06-17 contest). Final score above references the 06-17 game (824913). SP data threshold correctly withheld pick on insufficient sample; no directional accuracy can be assessed.",
+      "signals_to_recheck": "pending_sp_data — Whisenhunt 0 BF correctly withheld pick; no signals to recheck"
+    },
+    "CLE @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML SKIP",
+      "claude_decision": "NO_DECISION",
+      "final_score": "4-9",
+      "headline": "MIL routed CLE 9-4; SKIP pick directionally correct despite D grade, negative edge, and confidence_downgrade.",
+      "hypothesis": "MIL had pick_prob=0.5266, SKIP tier, edge=-1.59pp, confidence_downgrade=True, and grade D (-2). Brandon Sproat (MIL) had worse xERA than Gavin Williams (CLE) per grade_reasons. MIL won 9-4 — a blowout. This is a variance win on a heavily-suppressed pick; the model's D-grade correctly reflected uncertainty. The win's magnitude (5 runs) may suggest some quality edge not captured by the Sproat xERA differential, but the confidence_downgrade and SKIP suppression functioned as intended. Do not relax confidence_downgrade thresholds from a single variance result.",
+      "signals_to_recheck": "confidence_downgrade_True on SKIP tier with SP edge AGAINST pick — variance 9-4 win; cap structure correctly suppressed staking; do not update thresholds from this result"
+    },
+    "COL @ CHC": {
+      "verdict": "NO_PICK",
+      "model_pick": "none (PENDING_SP_DATA)",
+      "claude_decision": "NO_DECISION",
+      "final_score": "6-8",
+      "headline": "CHC won 8-6; no model pick due to thin SP data on Sean Sullivan (49 Statcast pitches).",
+      "hypothesis": "Model withheld pick due to pending SP data (Sullivan, 49 BF below the 100-pitch Statcast threshold). CHC won 8-6. SP data threshold correctly prevented a pick on an unscored SP matchup; no directional verdict possible.",
+      "signals_to_recheck": "pending_sp_data — Sullivan 49 BF correctly withheld; no signal to recheck"
+    },
+    "PIT @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "12-4",
+      "headline": "PIT demolished ATH 12-4; F1_xera_gap=3.24 was decisive; Hard Cap 1 and Cap 10 both blocked staking on the slate's largest blowout.",
+      "hypothesis": "PIT had F1_xera_gap=3.24 (very large SP quality gap), pre-cap A- (score=4), and strong PQI (Δ=-27.6). Hard Cap 1 (edge=-2.64pp) and Hard Cap 10 (pick_prob=0.523 marginal) both fired, reducing score to 0. Braxton Ashcraft (PIT away SP) dominated Aaron Civale (ATH home), consistent with the 3.24-run xERA gap. PIT won 12-4 — the largest blowout on the slate. A -2.64pp negative edge blocked what turned out to be the clearest quality signal on the day. Cap 1 at sub-3pp negative edge on a pre-cap A- with F1_xera_gap > 3.0 is a candidate for a soft-exemption evaluation.",
+      "signals_to_recheck": "F1_xera_gap (3.24 — very large SP gap; pre-cap A-; [HARD CAP 1] fired at -2.64pp; PIT won 12-4; when F1_xera_gap > 2.5 and pre-cap >= A-, consider whether sub-3pp negative edge should be half-penalty rather than full block)"
+    },
+    "BAL @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "SEA ML GOLD",
+      "claude_decision": "NO_DECISION",
+      "final_score": "5-3",
+      "headline": "BAL upset SEA 5-3; negative edge, acute_roster, and small-sample F1* correctly signaled market skepticism.",
+      "hypothesis": "SEA had high Stage 1 support (f5_prob=0.6404) but Stage 2 only 51.5% (f5_full_delta=0.1253, just above the 0.12 disagree threshold). F1_xera_gap=0.91* (small sample, below 60-BF threshold) and acute_roster flag (SEA) were both cautionary. Hard Cap 1 (-4.57pp) and Cap 10 (marginal pick_prob) both fired. BAL won 5-3. This is a process success for the cap structure: the triple combination of small-sample F1*, negative edge, and acute_roster correctly identified that the market had priced SEA as unreliable. George Kirby underperformed, Kyle Bradish delivered for BAL.",
+      "signals_to_recheck": "acute_roster_True combined with F1_xera_gap* (small sample) and negative_edge_GOLD — BAL won 5-3; this triple flag (small-sample SP + acute_roster + negative edge) has proven reliable across multiple sessions as a LOSS predictor; treat as auto-SKIP"
+    }
+  },
+  "patterns_observed": [
+    "F3_swing_take_gap near-zero (26.6) scored as full +1 in grade_reasons, inflating TOR @ BOS to B+ with no meaningful F-signal and no SP-edge against Max Scherzer — BOS lost 3-0. The grade system treats F3=26.6 identically to F3=12299. Add Claude Brain check: when F3_swing_take_gap < 200 and no F1/F2 signal co-fires, treat F-signal as a half-point; PQI alone without F-series conviction should not support a B+ grade on a GOLD pick facing an elite opposing SP.",
+    "f5_prob < 0.35 rule accumulated strong counter-evidence today: NYM (f5_prob=0.3253, WIN 9-1), DET (0.249, WIN 4-2), SD (0.2272, WIN 6-1), PIT (0.3275, WIN 12-4) — all four won convincingly. Combined 2-day record for f5_prob(pick) < 0.35: 4W/2L (06-16 had 2L, today 4W). Do NOT harden to auto-SKIP; maintain as CONFIRM-required flag only. Today's blowout wins suggest Stage 2 captured real quality the Stage 1 F5-window systematically missed on this slate.",
+    "Hard Cap 1 (negative_edge_GOLD) over-fired on three pre-cap A- picks — TB@LAD (-1.69pp, WIN 5-4), CHW@NYY (-4.44pp, WIN 10-5), PIT@ATH (-2.64pp, WIN 12-4) — all with strong F1/F3 signals and convincing wins. Cap 1 at any negative edge is too aggressive for pre-cap A- games with multi-signal alignment; evaluate soft-exemption rule: when pre-cap grade >= A- and |negative_edge| < 5pp, apply half-Kelly damping instead of full cap-out, and require Claude CONFIRM to proceed.",
+    "acute_roster_True combined with small-sample F1_xera_gap* and negative_edge_GOLD is a reliable triple-flag for LOSS: BAL @ SEA (all three flags fired, BAL won 5-3). This combination has appeared across multiple sessions as a consistent LOSS predictor. Add as a Claude Brain auto-SKIP heuristic: when acute_roster_True AND F1_xera_gap* (sample below 60-BF) AND edge_pp < 0 all fire simultaneously, SKIP regardless of Stage 1 conviction."
+  ]
+}

@@ -1,18 +1,9 @@
 {
- "generated_utc": "2026-06-18T07:06:23Z",
+ "generated_utc": "2026-06-18T19:36:48Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "PIT promoted: Below Average -> Average (eff +0.11, mmr -0.07)",
-  "CWS demoted: Above Average -> Average (eff +0.24, mmr +0.07)",
-  "PHI demoted: Above Average -> Average (eff +0.23, mmr +0.11)",
-  "AZ promoted: Below Average -> Average (eff -0.07, mmr +0.01)",
-  "TOR promoted: Below Average -> Average (eff -0.07, mmr +0.17)",
-  "HOU promoted: Poor -> Below Average (eff -0.59, mmr +0.07)",
-  "DET demoted: Below Average -> Poor (eff -0.87, mmr -0.11)",
-  "SF promoted: Poor -> Below Average (eff -0.43, mmr +0.60)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -181,8 +172,6 @@
     "z": 0.176,
     "mmr": -0.07,
     "eff": 0.106,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs LAD (06-10)"
     ]
@@ -198,8 +187,6 @@
     "z": 0.165,
     "mmr": 0.071,
     "eff": 0.236,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs ATL (06-09)",
      "upset W vs ATL (06-10)"
@@ -216,8 +203,6 @@
     "z": 0.116,
     "mmr": 0.115,
     "eff": 0.231,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs MIL (06-13)"
     ]
@@ -257,8 +242,6 @@
     "z": -0.083,
     "mmr": 0.015,
     "eff": -0.068,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs LAD (06-04)",
      "upset L vs LAA (06-16)"
@@ -287,8 +270,6 @@
     "z": -0.233,
     "mmr": 0.167,
     "eff": -0.066,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs ATL (06-04)",
      "upset W vs NYY (06-12)"
@@ -393,9 +374,7 @@
     "rationale": "35-41 (.461), -41 run differential -- a poor run margin.",
     "z": -0.661,
     "mmr": 0.071,
-    "eff": -0.59,
-    "movement": "promoted",
-    "moved_from": "Poor"
+    "eff": -0.59
    },
    {
     "name": "San Francisco Giants",
@@ -408,8 +387,6 @@
     "z": -1.031,
     "mmr": 0.598,
     "eff": -0.433,
-    "movement": "promoted",
-    "moved_from": "Poor",
     "upsets": [
      "upset W vs MIL (06-04)",
      "upset W vs CHC (06-05)"
@@ -443,8 +420,6 @@
     "z": -0.765,
     "mmr": -0.109,
     "eff": -0.873,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs SEA (06-05)",
      "upset W vs SEA (06-07)"
