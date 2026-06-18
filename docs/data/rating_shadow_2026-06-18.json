@@ -1,0 +1,352 @@
+{
+ "date": "2026-06-18",
+ "generated_utc": "2026-06-18T03:07:30+00:00",
+ "schema": "v1-shadow",
+ "scope": "DISPLAY/SHADOW ONLY -- never feeds model/picks/stake",
+ "weights": {
+  "batter": 0.45,
+  "sp": 0.35,
+  "bp": 0.2,
+  "K_delta": 2.5,
+  "delta_cap": 7.0,
+  "interval_days": 5,
+  "gamma": 0.35,
+  "lineup_n": 9
+ },
+ "method": "0-100 ecosystem = 0.45*batter(top9 OPS/K%) + 0.35*SP_today(K-BB/WHIP/HR9) + 0.20*BP(relief exec + bullpen_meta fatigue); Interval_Delta=clamp(2.5*(W-E),-7,7) trailing 5d; shadow decompress logit += 0.35*z(eco_diff). statsapi-only. Hard-Hit%/lineup-specific = July.",
+ "teams": {
+  "BOS": {
+   "batter": 44.5,
+   "sp_today": 62.6,
+   "sp_src": "named",
+   "bp_health": 79.1,
+   "ecosystem_score": 57.8,
+   "interval_delta": -3.84,
+   "interval_W_E": [
+    1.0,
+    2.54
+   ]
+  },
+  "TOR": {
+   "batter": 63.0,
+   "sp_today": 56.7,
+   "sp_src": "named",
+   "bp_health": 78.7,
+   "ecosystem_score": 63.9,
+   "interval_delta": 0.65,
+   "interval_W_E": [
+    2.0,
+    1.74
+   ]
+  },
+  "MIL": {
+   "batter": 60.9,
+   "sp_today": 63.5,
+   "sp_src": "staff_avg",
+   "bp_health": 69.6,
+   "ecosystem_score": 63.5,
+   "interval_delta": 2.07,
+   "interval_W_E": [
+    3.0,
+    2.17
+   ]
+  },
+  "CLE": {
+   "batter": 53.2,
+   "sp_today": 76.6,
+   "sp_src": "named",
+   "bp_health": 89.2,
+   "ecosystem_score": 68.6,
+   "interval_delta": -1.2,
+   "interval_W_E": [
+    1.0,
+    1.48
+   ]
+  },
+  "TEX": {
+   "batter": 49.4,
+   "sp_today": 49.0,
+   "sp_src": "named",
+   "bp_health": 54.9,
+   "ecosystem_score": 50.4,
+   "interval_delta": -0.36,
+   "interval_W_E": [
+    1.0,
+    1.14
+   ]
+  },
+  "MIN": {
+   "batter": 56.0,
+   "sp_today": 88.3,
+   "sp_src": "named",
+   "bp_health": 15.6,
+   "ecosystem_score": 59.2,
+   "interval_delta": 1.3,
+   "interval_W_E": [
+    2.0,
+    1.48
+   ]
+  },
+  "SEA": {
+   "batter": 54.1,
+   "sp_today": 80.8,
+   "sp_src": "named",
+   "bp_health": 59.3,
+   "ecosystem_score": 64.5,
+   "interval_delta": -0.68,
+   "interval_W_E": [
+    1.0,
+    1.27
+   ]
+  },
+  "BAL": {
+   "batter": 58.7,
+   "sp_today": 44.3,
+   "sp_src": "named",
+   "bp_health": 58.7,
+   "ecosystem_score": 53.7,
+   "interval_delta": -4.24,
+   "interval_W_E": [
+    0.0,
+    1.69
+   ]
+  },
+  "PHI": {
+   "batter": 50.8,
+   "sp_today": 47.5,
+   "sp_src": "named",
+   "bp_health": 95.9,
+   "ecosystem_score": 58.7,
+   "interval_delta": 2.04,
+   "interval_W_E": [
+    3.0,
+    2.18
+   ]
+  },
+  "NYM": {
+   "batter": 44.9,
+   "sp_today": 55.4,
+   "sp_src": "staff_avg",
+   "bp_health": 74.8,
+   "ecosystem_score": 54.6,
+   "interval_delta": -0.86,
+   "interval_W_E": [
+    2.0,
+    2.35
+   ]
+  },
+  "NYY": {
+   "batter": 64.1,
+   "sp_today": 69.5,
+   "sp_src": "named",
+   "bp_health": 75.0,
+   "ecosystem_score": 68.2,
+   "interval_delta": 4.23,
+   "interval_W_E": [
+    4.0,
+    2.31
+   ]
+  },
+  "CWS": {
+   "batter": 57.8,
+   "sp_today": 59.7,
+   "sp_src": "named",
+   "bp_health": 46.1,
+   "ecosystem_score": 56.1,
+   "interval_delta": -1.79,
+   "interval_W_E": [
+    1.0,
+    1.72
+   ]
+  },
+  "ATL": {
+   "batter": 68.6,
+   "sp_today": 64.4,
+   "sp_src": "named",
+   "bp_health": 82.4,
+   "ecosystem_score": 69.9,
+   "interval_delta": -1.74,
+   "interval_W_E": [
+    1.0,
+    1.69
+   ]
+  },
+  "SF": {
+   "batter": 66.4,
+   "sp_today": 69.6,
+   "sp_src": "named",
+   "bp_health": 14.6,
+   "ecosystem_score": 57.2,
+   "interval_delta": 1.7,
+   "interval_W_E": [
+    2.0,
+    1.32
+   ]
+  },
+  "KC": {
+   "batter": 48.3,
+   "sp_today": 66.5,
+   "sp_src": "named",
+   "bp_health": 11.3,
+   "ecosystem_score": 47.3,
+   "interval_delta": 0.81,
+   "interval_W_E": [
+    2.0,
+    1.68
+   ]
+  },
+  "STL": {
+   "batter": 52.1,
+   "sp_today": 36.9,
+   "sp_src": "named",
+   "bp_health": 16.6,
+   "ecosystem_score": 39.7,
+   "interval_delta": 0.89,
+   "interval_W_E": [
+    3.0,
+    2.64
+   ]
+  },
+  "ATH": {
+   "batter": 63.9,
+   "sp_today": 35.5,
+   "sp_src": "staff_avg",
+   "bp_health": 41.7,
+   "ecosystem_score": 49.5,
+   "interval_delta": -1.73,
+   "interval_W_E": [
+    1.0,
+    1.69
+   ]
+  },
+  "LAA": {
+   "batter": 49.1,
+   "sp_today": 42.6,
+   "sp_src": "staff_avg",
+   "bp_health": 9.5,
+   "ecosystem_score": 38.9,
+   "interval_delta": 1.05,
+   "interval_W_E": [
+    2.0,
+    1.58
+   ]
+  }
+ },
+ "games": [
+  {
+   "matchup": "TOR @ BOS",
+   "home": "BOS",
+   "away": "TOR",
+   "raw_home_prob": 0.6743,
+   "home_eco": 54.0,
+   "away_eco": 64.5,
+   "pred_total": 9.41,
+   "total_line": 8.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.5808,
+   "confidence_delta_pp": -9.4
+  },
+  {
+   "matchup": "CLE @ MIL",
+   "home": "MIL",
+   "away": "CLE",
+   "raw_home_prob": 0.5654,
+   "home_eco": 65.6,
+   "away_eco": 67.4,
+   "pred_total": 9.17,
+   "total_line": 7.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.5483,
+   "confidence_delta_pp": -1.7
+  },
+  {
+   "matchup": "MIN @ TEX",
+   "home": "TEX",
+   "away": "MIN",
+   "raw_home_prob": 0.5351,
+   "home_eco": 50.0,
+   "away_eco": 60.5,
+   "pred_total": 8.92,
+   "total_line": 8.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.4363,
+   "confidence_delta_pp": -9.9
+  },
+  {
+   "matchup": "BAL @ SEA",
+   "home": "SEA",
+   "away": "BAL",
+   "raw_home_prob": 0.4716,
+   "home_eco": 63.8,
+   "away_eco": 49.5,
+   "pred_total": 8.77,
+   "total_line": null,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.6061,
+   "confidence_delta_pp": 13.5
+  },
+  {
+   "matchup": "NYM @ PHI",
+   "home": "PHI",
+   "away": "NYM",
+   "raw_home_prob": 0.4687,
+   "home_eco": 60.7,
+   "away_eco": 53.7,
+   "pred_total": 9.15,
+   "total_line": 9.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.535,
+   "confidence_delta_pp": 6.6
+  },
+  {
+   "matchup": "CHW @ NYY",
+   "home": "NYY",
+   "away": "CWS",
+   "raw_home_prob": 0.6443,
+   "home_eco": 72.4,
+   "away_eco": 54.3,
+   "pred_total": 10.79,
+   "total_line": 9.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.7827,
+   "confidence_delta_pp": 13.8
+  },
+  {
+   "matchup": "SF @ ATL",
+   "home": "ATL",
+   "away": "SF",
+   "raw_home_prob": 0.4903,
+   "home_eco": 68.2,
+   "away_eco": 58.9,
+   "pred_total": 8.34,
+   "total_line": 8.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.5775,
+   "confidence_delta_pp": 8.7
+  },
+  {
+   "matchup": "STL @ KC",
+   "home": "KC",
+   "away": "STL",
+   "raw_home_prob": 0.5019,
+   "home_eco": 48.1,
+   "away_eco": 40.6,
+   "pred_total": 7.95,
+   "total_line": 9.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.5727,
+   "confidence_delta_pp": 7.1
+  },
+  {
+   "matchup": "LAA @ OAK",
+   "home": "ATH",
+   "away": "LAA",
+   "raw_home_prob": null,
+   "home_eco": 47.8,
+   "away_eco": 39.9,
+   "pred_total": null,
+   "total_line": null,
+   "realized_total": null
+  }
+ ]
+}
