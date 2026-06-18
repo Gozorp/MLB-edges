@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-18
-_Generated 2026-06-18T03:04:52Z · 9 games · significant deviations only_
+_Generated 2026-06-18T07:04:00Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [IL] — Toronto Blue Jays placed RHP Max Scherzer on the 15-day injured list retroactive to June 14, 2026. Back spasms.
@@ -36,16 +36,17 @@ _Generated 2026-06-18T03:04:52Z · 9 games · significant deviations only_
 - **PHI** [optioned] — Philadelphia Phillies optioned RHP Andrew Painter to Lehigh Valley IronPigs.
 - **NYY** [signed] — New York Yankees signed free agent RHP Breidy Adames to a minor league contract.
 - **SF** [IL] — San Francisco Giants activated LHP Matt Gage from the 15-day injured list.
+- **SF** [optioned] — San Francisco Giants optioned LHP Reiver Sanmartin to Sacramento River Cats.
 - **SF** [outrighted] — San Francisco Giants sent LF Will Brennan outright to Sacramento River Cats.
 - **SF** [recalled] — San Francisco Giants recalled LHP Carson Whisenhunt from Sacramento River Cats.
-- **SF** [optioned] — San Francisco Giants optioned LHP Reiver Sanmartin to Sacramento River Cats.
+- **SF** [optioned] — San Francisco Giants optioned LHP Carson Whisenhunt to Sacramento River Cats.
 - **ATL** [selected] — Atlanta Braves selected the contract of CF Brewer Hicklen from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned CF Brewer Hicklen to Gwinnett Stripers.
 - **ATL** [DFA] — Atlanta Braves designated RHP Hunter Stratton for assignment.
 - **ATL** [IL] — Atlanta Braves transferred RHP Spencer Strider from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
-- **ATL** [selected] — Atlanta Braves selected the contract of C Jair Camargo from Gwinnett Stripers.
-- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of C Jair Camargo from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned C Jair Camargo to Gwinnett Stripers.
 - **STL** [signed] — St. Louis Cardinals signed free agent RHP Jhon Cabrera to a minor league contract.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Chris Roycroft to Memphis Redbirds.
@@ -81,6 +82,8 @@ _Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **STL** Chris Roycroft — threw 42 pitches last night — likely unavailable
 - **LAA** Brett Kerry — threw 59 pitches last night — likely unavailable
 - **ATH** Justin Sterner — 2 apps / 44 pitches over last 3 games — monitor
+- **ATH** José Suarez — threw 43 pitches last night — likely unavailable
+- **ATH** Luis Medina — threw 45 pitches last night — likely unavailable
 
 ## 4 · Lineup / Platoon
 - TOR @ BOS — BOS faces RHP (Trey Yesavage)
