@@ -1,0 +1,87 @@
+{
+  "date": "2026-06-18",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-19T12:00:00Z",
+  "n_analyzed": 8,
+  "summary": "Went 2W / 5L directionally (28.6% hit rate) on 7 settled games, with 1 NO_PICK (LAA@OAK — pending SP at model run time) and 1 postponement (SF@ATL, not in picks CSV). All picks were SKIP-tier or GOLD-with-zero-stake so there was no financial exposure. The dominant theme: SP xERA AGAINST pick correctly called 4/4 directional losses today (TOR@BOS, MIN@TEX, BAL@SEA, CHW@NYY). HARD CAP 1 at -15.2pp correctly blocked the one game where the pre-cap stack looked strong but the market was right (CLE@MIL, MIL lost). The sole Claude-layer process failure was STL@KC — DOWNGRADing a pre-cap A stack on the 06-17 triple-flag rule, while KC won 14-6.",
+  "by_matchup": {
+    "TOR @ BOS": {
+      "verdict": "LOSS",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-3",
+      "headline": "TOR edged BOS 4-3; SP xERA AGAINST pick correctly signaled structural weakness on back-to-back days.",
+      "hypothesis": "Sonny Gray (BOS home SP) held a worse xERA than Trey Yesavage (TOR away SP) by 0.95 runs, and TOR won in a tight one-run game, consistent with that edge. For the second consecutive day (06-17: TOR shut out BOS 3-0 against Scherzer), the TOR@BOS matchup resolved against BOS when SP structural disadvantage was present. The narrow margin (one run) means variance could have reversed it, but the process read — D-grade, SKIP tier — was correct given available signals.",
+      "signals_to_recheck": "SP edge AGAINST pick (0.95 xERA gap, -2 grade penalty) — TOR@BOS now 0-2 over 06-17 and 06-18 when SP opposes BOS; recurring SP-quality veto in this series is reliable"
+    },
+    "CLE @ MIL": {
+      "verdict": "LOSS",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-2",
+      "headline": "CLE beat MIL 4-2; HARD CAP 1 at -15.2pp was essential despite SP, F3, and PQI all agreeing with MIL.",
+      "hypothesis": "MIL had positive SP xERA (+0.35 agrees with pick), F3 signal, PQI +4.7 confirmation, and Stage 1/2 agreement — a pre-cap B+ stack — but the market priced -15.2pp against MIL. CLE won 4-2. This is a process success for HARD CAP 1: extreme negative edges signal that the market has absorbed and exceeded the model's qualitative advantage. The directional signals were real but insufficient against the market's pricing of CLE's actual edge. HARD CAP 1 protection at this magnitude is non-negotiable.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1], -15.2pp) — market correctly priced CLE despite MIL's positive SP/F3/PQI alignment; negative edges exceeding 10pp are reliable market-veto signals even against strong pre-cap stacks"
+    },
+    "MIN @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-3",
+      "headline": "MIN blew out TEX 9-3; dual opposing signals (SP xERA 1.41 + PQI -20.4) both materialized.",
+      "hypothesis": "Joe Ryan (MIN) outperformed Jack Leiter (TEX) in a 9-3 blowout, directly consistent with the 1.41-run SP xERA gap and -20.4 PQI disadvantage that drove the D-grade. This is a process-correct read — both primary grade signals (SP and PQI) opposed the TEX pick and both proved accurate. SKIP tier correctly prevented exposure; the directional read was accurate. No process failure.",
+      "signals_to_recheck": "SP edge AGAINST pick (1.41 xERA gap) plus PQI AGAINST pick (Δ=-20.4) — dual opposing signals at this magnitude are reliable LOSS predictors; both materialized in a blowout"
+    },
+    "BAL @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "BAL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-3",
+      "headline": "Bryan Woo shut out BAL 3-0; SP xERA gap (1.45 AGAINST BAL) materialized as a complete shutout.",
+      "hypothesis": "BAL was held to zero runs against Bryan Woo, fully consistent with the 1.45-run SP xERA disadvantage (Woo vs Shane Baz) and PQI opposing (Δ=+20.9). The D-grade dual-opposing signal was process-correct; the shutout is not a variance event but a confirmation of directional accuracy. SKIP tier correctly prevented exposure on what the grade clearly labeled a structurally weak pick.",
+      "signals_to_recheck": "SP edge AGAINST pick (1.45 xERA gap) with PQI AGAINST — BAL shutout 0-3 confirms dual-opposing-signal D-grade is a reliable LOSS predictor; Bryan Woo vs lesser SPs is a strong directional anchor"
+    },
+    "NYM @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-4",
+      "headline": "NYM won 6-4 over PHI despite PHI home BvP advantages for Harper (OWNER) and Turner/Schwarber (MEANINGFUL) vs Manaea.",
+      "hypothesis": "NYM won despite Claude's noted PHI home BvP strength. No SP edge signal appeared in grade_reasons (Nola vs Manaea was neutral at the grade level). The WIN is difficult to attribute to process acuity — this was a marginal SKIP pick with Stage-agree-only support (no F-series, no SP edge), making it a likely variance WIN in a close game rather than a validated process signal. Home BvP OWNER/MEANINGFUL levels did not predict PHI's offense on this day.",
+      "signals_to_recheck": "Home BvP OWNER signal (Harper vs Manaea, shrunk 0.836) — did not materialize 4-6; OWNER-level home BvP in the absence of supporting SP or F-signal may be overstated as a directional predictor; track over larger sample"
+    },
+    "CWS @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-1",
+      "headline": "CWS dominated NYY 5-1; F3=4189.1 strong lineup signal failed completely against SP quality disadvantage.",
+      "hypothesis": "NYY had the largest F3 signal on the slate (4189.1) but SP edge was AGAINST NYY (Sean Burke xERA worse than Ryan Weathers by 0.37 runs), and the grade was D (-1 net). NYY lost by four runs, confirming the SP disadvantage was real and dominant. This is a process failure in signal weighting — F3's +1 grade contribution did not overcome the SP -2 penalty, but it inflated confidence enough to label this GOLD tier. F3 alone cannot rescue a pick when SP xERA opposes it; the SP signal was the correct directional veto.",
+      "signals_to_recheck": "F3_swing_take_gap (4189.1, strong signal) combined with SP edge AGAINST pick (-2 grade penalty) — NYY lost 1-5; F3 strong signal is an insufficient override when SP xERA opposes pick; second consecutive session confirming F3 alone cannot rescue an SP-opposing directional call"
+    },
+    "STL @ KC": {
+      "verdict": "WIN",
+      "model_pick": "KC ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "6-14",
+      "headline": "KC demolished STL 14-6; Claude's triple-flag DOWNGRADE was a process error on a pre-cap A (score=5) stack.",
+      "hypothesis": "Claude DOWNGRADEd KC from GOLD direction to no-direction-SKIP based on the 06-17 triple-flag rule (acute_roster + F1* + negative-edge → auto-SKIP). KC won 14-6. This is a Claude-layer process failure: the pre-cap A score (5) reflected genuine multi-signal alignment — F1_xera_gap=0.88* agreed with KC pick, SP xERA +1.25 for KC, PQI +14.1 confirming. HARD CAP 1 already blocked staking on the -0.99pp negative-edge GOLD, so the additional directional DOWNGRADE was unnecessary and proved incorrect. The 06-17 triple-flag rule was derived from a game with a lower pre-cap score; applying it to a pre-cap A stack over-fired.",
+      "signals_to_recheck": "acute_roster_True + F1_xera_gap* + negative_edge_GOLD triple-flag on pre-cap A (score=5) — Claude DOWNGRADE was wrong; KC won 14-6; triple-flag auto-DOWNGRADE should NOT apply when pre-cap score >= 4; HARD CAP 1 is sufficient protection at that level without additional directional DOWNGRADE"
+    },
+    "LAA @ OAK": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-5",
+      "headline": "OAK won 5-0; LAA SP not announced at model run time — PENDING_SP_DATA protocol correctly withheld pick.",
+      "hypothesis": "Protocol correctly withheld a directional call. OAK won 5-0 but without the LAA SP known at run time, no directional process learning is possible from this outcome.",
+      "signals_to_recheck": "pending_sp_data — no signal to recheck; protocol correctly applied"
+    }
+  },
+  "patterns_observed": [
+    "SP xERA AGAINST pick was a perfect loss predictor today: all 4 games where grade_reasons cited SP edge AGAINST pick resulted in directional losses (TOR@BOS 0.95 gap, MIN@TEX 1.41, BAL@SEA 1.45, CHW@NYY 0.37); no SP-opposing game won. When SP xERA gap opposes the pick at any magnitude, do not promote above SKIP tier — F3 signals and PQI alone are insufficient overrides. This validates the 06-17 KC@WSH lesson (SP xERA dominance correctly vetoed WSH despite Stage 1 conviction).",
+    "F3_swing_take_gap strong signal (4189.1) failed against SP quality disadvantage in CHW@NYY (NYY lost 1-5), repeating 06-17 TOR@BOS pattern (near-zero F3=26.6 inflated grade; BOS lost 3-0 to Scherzer). Two consecutive sessions confirm F3 alone does NOT override SP xERA opposition: F3 should only add a grade point when SP edge is neutral or pick-side; when SP is AGAINST pick, F3 should be noted but not grant a positive grade contribution.",
+    "Triple-flag auto-DOWNGRADE (acute_roster + F1* + negative_edge) over-fires when pre-cap score is >= 4: Claude applied the 06-17 BAL@SEA pattern to STL@KC (pre-cap A, score=5) and DOWNGRADEd KC; KC won 14-6. The 06-17 derivation came from a lower-conviction context. Revise rule: when pre-cap score >= 4, HARD CAP 1 blocking the negative-edge GOLD stake is sufficient — do NOT add a directional DOWNGRADE on top. Triple-flag DOWNGRADE should only apply when pre-cap score <= 3.",
+    "HARD CAP 1 at extreme negative edges (>10pp) remains essential even when pre-cap signals align positively: CLE@MIL had SP edge + F3 + PQI all agreeing with MIL but -15.2pp market rejection; MIL lost 4-2. Market knowledge at this magnitude correctly overrode the model's qualitative read. Maintain non-negotiable Cap 1 blocking for negative edges beyond 10pp regardless of F-signal or SP agreement."
+  ]
+}

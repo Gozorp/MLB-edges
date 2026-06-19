@@ -1,9 +1,11 @@
 {
- "generated_utc": "2026-06-19T07:08:18Z",
+ "generated_utc": "2026-06-19T19:40:00Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "CWS promoted: Average -> Above Average (eff +0.45, mmr +0.20)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -125,6 +127,24 @@
      "upset L vs SF (06-10)",
      "upset L vs KC (06-17)"
     ]
+   },
+   {
+    "name": "Chicago White Sox",
+    "abbr": "CWS",
+    "w": 39,
+    "l": 34,
+    "pct": 0.534,
+    "rd": 1,
+    "rationale": "39-34 (.534), +1 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.20).",
+    "z": 0.249,
+    "mmr": 0.197,
+    "eff": 0.446,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs ATL (06-09)",
+     "upset W vs ATL (06-10)"
+    ]
    }
   ],
   "Average": [
@@ -142,26 +162,6 @@
     "upsets": [
      "upset L vs DET (06-05)",
      "upset L vs DET (06-07)"
-    ]
-   },
-   {
-    "name": "Chicago White Sox",
-    "abbr": "CWS",
-    "w": 39,
-    "l": 34,
-    "pct": 0.534,
-    "rd": 1,
-    "rationale": "39-34 (.534), +1 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.20).",
-    "z": 0.249,
-    "mmr": 0.197,
-    "eff": 0.446,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs ATL (06-09)",
-     "upset W vs ATL (06-10)"
     ]
    },
    {
