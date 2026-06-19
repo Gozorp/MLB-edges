@@ -236,4 +236,10 @@ jobs:
               if git push origin main; then echo "pushed (attempt $i)"; break; fi
               echo "push rejected (attempt $i) - rebasing on origin/main and retrying..."
               git fetch origin main || true
-              git rebase -X theirs origin/main || git rebase 
+              git rebase -X theirs origin/main || git rebase --abort || true
+              sleep $((i * 2))
+              if [ "$i" = "5" ]; then
+                echo "::warning::push failed after 5 retries (race on main); next hourly run will re-bake"
+              fi
+            done
+          fi
