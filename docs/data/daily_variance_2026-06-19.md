@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-19
-_Generated 2026-06-19T22:13:59Z · 14 games · significant deviations only_
+_Generated 2026-06-19T22:48:45Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [IL] — Toronto Blue Jays placed RHP Max Scherzer on the 15-day injured list retroactive to June 14, 2026. Back spasms.

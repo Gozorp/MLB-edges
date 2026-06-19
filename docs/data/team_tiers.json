@@ -1,9 +1,12 @@
 {
- "generated_utc": "2026-06-19T22:14:12Z",
+ "generated_utc": "2026-06-19T22:48:58Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "CHC promoted: Average -> Above Average (eff +0.41, mmr +0.01)",
+  "TOR demoted: Average -> Below Average (eff -0.25, mmr +0.10)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -96,6 +99,24 @@
     ]
    },
    {
+    "name": "Chicago Cubs",
+    "abbr": "CHC",
+    "w": 40,
+    "l": 36,
+    "pct": 0.526,
+    "rd": 23,
+    "rationale": "40-36 (.526), +23 run differential -- a solidly positive run margin.",
+    "z": 0.399,
+    "mmr": 0.009,
+    "eff": 0.408,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset L vs SF (06-05)",
+     "upset L vs SF (06-07)"
+    ]
+   },
+   {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
     "w": 40,
@@ -144,26 +165,6 @@
    }
   ],
   "Average": [
-   {
-    "name": "Chicago Cubs",
-    "abbr": "CHC",
-    "w": 40,
-    "l": 36,
-    "pct": 0.526,
-    "rd": 23,
-    "rationale": "40-36 (.526), +23 run differential -- a solidly positive run margin.",
-    "z": 0.399,
-    "mmr": 0.009,
-    "eff": 0.408,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs SF (06-05)",
-     "upset L vs SF (06-07)"
-    ]
-   },
    {
     "name": "Seattle Mariners",
     "abbr": "SEA",
@@ -263,25 +264,6 @@
     "z": -0.1,
     "mmr": 0.161,
     "eff": 0.06
-   },
-   {
-    "name": "Toronto Blue Jays",
-    "abbr": "TOR",
-    "w": 37,
-    "l": 39,
-    "pct": 0.487,
-    "rd": -27,
-    "rationale": "37-39 (.487), -27 run differential -- a negative run margin.",
-    "z": -0.35,
-    "mmr": 0.101,
-    "eff": -0.249,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs NYY (06-12)"
-    ]
    }
   ],
   "Below Average": [
@@ -296,6 +278,23 @@
     "z": -0.309,
     "mmr": -0.198,
     "eff": -0.507
+   },
+   {
+    "name": "Toronto Blue Jays",
+    "abbr": "TOR",
+    "w": 37,
+    "l": 39,
+    "pct": 0.487,
+    "rd": -27,
+    "rationale": "37-39 (.487), -27 run differential -- a negative run margin.",
+    "z": -0.35,
+    "mmr": 0.101,
+    "eff": -0.249,
+    "movement": "demoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs NYY (06-12)"
+    ]
    },
    {
     "name": "Minnesota Twins",

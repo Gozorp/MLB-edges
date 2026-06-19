@@ -1,6 +1,6 @@
 {
  "date": "2026-06-19",
- "generated_utc": "2026-06-19T22:13:46+00:00",
+ "generated_utc": "2026-06-19T22:48:32+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
  "sps": {
@@ -127,13 +127,19 @@
    "id": 669373,
    "opp": "CWS",
    "opp_id": 145,
-   "season_era": 2.81,
-   "season_hr9": 0.56,
-   "season_kbb": 22.5,
+   "season_era": 2.94,
+   "season_hr9": 0.73,
+   "season_kbb": 23.6,
    "era_tier": "ACE",
-   "matchup_w_hr": 0.0,
-   "matchup_w_ip": 7.5,
+   "matchup_w_hr": 1.0,
+   "matchup_w_ip": 8.5,
    "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 1,
+     "ip": 1.0,
+     "w": 1.0
+    },
     {
      "season": 2025,
      "hr": 0,
@@ -147,9 +153,9 @@
      "w": 0.3
     }
    ],
-   "smoothed_matchup_hr9": 0.41,
+   "smoothed_matchup_hr9": 0.83,
    "matchup_freq": "SMALL",
-   "matchup_basis": "vs CWS 3yr (2025:0HR/7IP,2024:0HR/11IP)",
+   "matchup_basis": "vs CWS 3yr (2026:1HR/1IP,2025:0HR/7IP,2024:0HR/11IP)",
    "has_matchup": true,
    "starts": 3,
    "l3_era": 4.08,
@@ -158,11 +164,11 @@
    "l3_kbb": 21.7,
    "trend": "HOLD",
    "trend_down": false,
-   "trend_basis": "holding form (L3 ERA 4.08 vs season 2.81)",
+   "trend_basis": "holding form (L3 ERA 4.08 vs season 2.94)",
    "risk_level": 4,
    "risk_label": "Ace / Low",
    "flag": null,
-   "mult": 0.6,
+   "mult": 0.69,
    "hr_per_start": 0.67,
    "era": 4.08,
    "er_spike": false
