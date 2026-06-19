@@ -491,16 +491,17 @@ def _build_game_row(*, sc: pd.DataFrame, game_pk: int,
 
     # Bullpen aggregates (v11: pass multi-year sc_pitcher so the prior-year
     # team aggregate has data to anchor against, mirroring the v10 SP fix)
-    home_bp  = pit.bullpen_as_of(sc_pitcher or sc, home_team, game_date, starters_by_team)
-    away_bp  = pit.bullpen_as_of(sc_pitcher or sc, away_team, game_date, starters_by_team)
+    _bp_sc = sc_pitcher if sc_pitcher is not None else sc
+    home_bp  = pit.bullpen_as_of(_bp_sc, home_team, game_date, starters_by_team)
+    away_bp  = pit.bullpen_as_of(_bp_sc, away_team, game_date, starters_by_team)
     home_fat = pit.bullpen_fatigue_as_of(sc, home_team, game_date, starters_by_team)
     away_fat = pit.bullpen_fatigue_as_of(sc, away_team, game_date, starters_by_team)
     # v12: high-leverage bullpen — late-inning relievers only (proxies the
     # 7th/8th/9th-inning closer/setup corps). Aggregate bullpen xERA was
     # diluted by mop-up arms, missing the differential between teams' actual
     # late-game relief crews.
-    home_hl  = pit.high_leverage_bullpen_as_of(sc_pitcher or sc, home_team, game_date, starters_by_team)
-    away_hl  = pit.high_leverage_bullpen_as_of(sc_pitcher or sc, away_team, game_date, starters_by_team)
+    home_hl  = pit.high_leverage_bullpen_as_of(_bp_sc, home_team, game_date, starters_by_team)
+    away_hl  = pit.high_leverage_bullpen_as_of(_bp_sc, away_team, game_date, starters_by_team)
 
     # Park
     stadium = get_stadium(home_team)
