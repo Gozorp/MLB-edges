@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-19
-_Generated 2026-06-18T22:47:33Z · 14 games · significant deviations only_
+_Generated 2026-06-19T07:04:55Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [IL] — Toronto Blue Jays placed RHP Max Scherzer on the 15-day injured list retroactive to June 14, 2026. Back spasms.
@@ -11,8 +11,8 @@ _Generated 2026-06-18T22:47:33Z · 14 games · significant deviations only_
 - **CWS** [recalled] — Chicago White Sox recalled CF Junior Perez from Charlotte Knights.
 - **DET** [IL] — Detroit Tigers placed 2B Gleyber Torres on the 10-day injured list retroactive to June 16, 2026. Left oblique strain.
 - **DET** [IL] — Detroit Tigers activated RHP Casey Mize from the 15-day injured list.
-- **CIN** [optioned] — Cincinnati Reds optioned C Will Banfield to Louisville Bats.
 - **CIN** [outrighted] — Cincinnati Reds sent C P.J. Higgins outright to Louisville Bats.
+- **CIN** [optioned] — Cincinnati Reds optioned C Will Banfield to Louisville Bats.
 - **CIN** [selected] — Cincinnati Reds selected the contract of C Will Banfield from Louisville Bats.
 - **WSH** [released] — Washington Nationals released RHP Julian Fernández.
 - **SF** [IL] — San Francisco Giants activated LHP Matt Gage from the 15-day injured list.
@@ -20,13 +20,15 @@ _Generated 2026-06-18T22:47:33Z · 14 games · significant deviations only_
 - **SF** [recalled] — San Francisco Giants recalled LHP Carson Whisenhunt from Sacramento River Cats.
 - **SF** [optioned] — San Francisco Giants optioned LHP Reiver Sanmartin to Sacramento River Cats.
 - **SF** [optioned] — San Francisco Giants optioned LHP Carson Whisenhunt to Sacramento River Cats.
-- **ATL** [IL] — Atlanta Braves transferred RHP Spencer Strider from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
 - **ATL** [DFA] — Atlanta Braves designated RHP Hunter Stratton for assignment.
-- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
+- **ATL** [IL] — Atlanta Braves transferred RHP Spencer Strider from the 15-day injured list to the 60-day injured list. Right elbow inflammation.
 - **ATL** [selected] — Atlanta Braves selected the contract of C Jair Camargo from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
+- **ATL** [DFA] — Atlanta Braves designated C Sandy León for assignment.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Jarret Whorff to a minor league contract.
 - **ATL** [optioned] — Atlanta Braves optioned C Jair Camargo to Gwinnett Stripers.
+- **ATL** [TRADE] — Atlanta Braves traded RHP Hunter Stratton to Pittsburgh Pirates for C Joey Bart.
 - **SD** [outrighted] — San Diego Padres sent RHP Ty Adcock outright to El Paso Chihuahuas.
 - **TEX** [outrighted] — Texas Rangers sent RHP Michel Otañez outright to Round Rock Express.
 - **CLE** [IL] — Cleveland Guardians placed RF Chase DeLauter on the 10-day injured list retroactive to June 14, 2026. Right side rib fracture.
@@ -37,16 +39,20 @@ _Generated 2026-06-18T22:47:33Z · 14 games · significant deviations only_
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Chris Roycroft to Memphis Redbirds.
 - **KC** [IL] — Kansas City Royals placed LHP Cole Ragans on the 60-day injured list. Left elbow impingement.
 - **KC** [TRADE] — Seattle Mariners traded RHP Randy Dobnak to Kansas City Royals for cash.
+- **PIT** [TRADE] — Atlanta Braves traded RHP Hunter Stratton to Pittsburgh Pirates for C Joey Bart.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Hunter Stratton to Indianapolis Indians.
 - **COL** [IL] — Colorado Rockies activated RHP Jimmy Herget from the 15-day injured list.
 - **COL** [optioned] — Colorado Rockies optioned RHP Seth Halvorsen to Albuquerque Isotopes.
 - **LAA** [IL] — Los Angeles Angels activated 2B Vaughn Grissom from the 10-day injured list.
 - **LAA** [DFA] — Los Angeles Angels designated 1B Trey Mancini for assignment.
 - **LAA** [TRADE] — Toronto Blue Jays traded C Tyler Heineman to Los Angeles Angels for cash.
-- **LAA** [activated] — Los Angeles Angels activated C Tyler Heineman.
 - **LAA** [released] — Los Angeles Angels released LHP Drew Pomeranz.
-- **LAA** [recalled] — Los Angeles Angels recalled RHP Ryan Johnson from Rocket City Trash Pandas.
+- **LAA** [activated] — Los Angeles Angels activated C Tyler Heineman.
+- **LAA** [IL] — Los Angeles Angels placed CF Mike Trout on the 10-day injured list. Right hamstring strain.
 - **LAA** [optioned] — Los Angeles Angels optioned RHP Brett Kerry to Salt Lake Bees.
 - **LAA** [optioned] — Los Angeles Angels optioned C Logan Porter to Salt Lake Bees.
+- **LAA** [recalled] — Los Angeles Angels recalled RHP Ryan Johnson from Rocket City Trash Pandas.
+- **LAA** [recalled] — Los Angeles Angels recalled 2B Christian Moore from Salt Lake Bees.
 - **ATH** [IL] — Athletics activated RHP Aaron Civale from the 15-day injured list.
 - **ATH** [optioned] — Athletics optioned RHP Luis Morales to Las Vegas Aviators.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Camilo Made to a minor league contract.
@@ -63,24 +69,28 @@ _Generated 2026-06-18T22:47:33Z · 14 games · significant deviations only_
 - **SD** code=SU — RHP Ron Marinaccio suspended.
 - **TEX** code=ACQ — Texas Rangers acquired LHP Ben DeTaeye from the Sioux City Explorers of the American Association.
 
-_Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TOR @ CHC** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **SF @ MIA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIL @ ATL** (away SP Jacob Misiorowski): very high K% (37.9% vs lg 22.0)
 - **SD @ TEX** (home SP Jacob deGrom): very high K% (28.3% vs lg 22.0)
 - **STL @ KC** (away SP Michael McGreevy): very low K% (13.8% vs lg 22.0)
-- **LAA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
+- **CWS** Sean Burke — threw 88 pitches last night — likely unavailable
 - **MIL** Grant Anderson — 2 apps / 35 pitches over last 3 games — monitor
 - **TEX** Cal Quantrill — 2 apps / 56 pitches over last 3 games — monitor
+- **STL** Justin Bruihl — 2 apps / 51 pitches over last 3 games — monitor
+- **STL** Gordon Graceffo — threw 47 pitches last night — likely unavailable
+- **KC** Mason Black — threw 40 pitches last night — likely unavailable
+- **ATH** Hogan Harris — 2 apps / 50 pitches over last 3 games — monitor
 - **MIN** Cody Laweryson — 2 apps / 37 pitches over last 3 games — monitor
 - **SEA** Andrés Muñoz — 2 apps / 38 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
 - TOR @ CHC — CHC faces RHP (Kevin Gausman)
+- TOR @ CHC — TOR faces RHP (Ben Brown)
 - CWS @ DET — DET faces RHP (Erick Fedde)
 - CWS @ DET — CWS faces LHP (Tarik Skubal)
 - CIN @ NYY — NYY faces RHP (Rhett Lowder)
@@ -98,6 +108,7 @@ _Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> l
 - STL @ KC — STL faces RHP (Seth Lugo)
 - PIT @ COL — COL faces RHP (Bubba Chandler)
 - PIT @ COL — PIT faces LHP (Kyle Freeland)
+- LAA @ ATH — ATH faces RHP (José Soriano)
 - LAA @ ATH — LAA faces LHP (Jeffrey Springs)
 - MIN @ AZ — AZ faces LHP (Connor Prielipp)
 - MIN @ AZ — MIN faces RHP (Michael Soroka)
