@@ -1,9 +1,27 @@
 {
- "generated_utc": "2026-06-18T22:49:11Z",
+ "generated_utc": "2026-06-19T01:33:21Z",
  "date": "2026-06-19",
- "n_games": 11,
+ "n_games": 13,
  "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
  "games": {
+  "TOR @ CHC": {
+   "favored": "TOR",
+   "win_prob": 0.5312,
+   "spread": 0.2,
+   "proj_away": 5,
+   "proj_home": 4,
+   "proj_score": "TOR 5-4 CHC",
+   "components": {
+    "base": 0.19,
+    "scale": 0.984,
+    "rd_season_gap": -0.196,
+    "rd_recent_gap": 0.125,
+    "off_recent_gap": 0.042,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": -0.023,
+    "total_runs": 8.6
+   }
+  },
   "CHW @ DET": {
    "favored": "CHW",
    "win_prob": 0.5016,
@@ -96,13 +114,13 @@
   },
   "CLE @ HOU": {
    "favored": "HOU",
-   "win_prob": 0.5585,
-   "spread": 0.4,
+   "win_prob": 0.5735,
+   "spread": 0.5,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "CLE 4-5 HOU",
    "components": {
-    "base": 0.35,
+    "base": 0.44,
     "scale": 1.118,
     "rd_season_gap": -0.297,
     "rd_recent_gap": 0.508,
@@ -145,6 +163,24 @@
     "off_recent_gap": -0.75,
     "xwoba_gap": 0.0,
     "sp_k_gap": 0.437,
+    "total_runs": 8.6
+   }
+  },
+  "LAA @ OAK": {
+   "favored": "OAK",
+   "win_prob": 0.512,
+   "spread": 0.2,
+   "proj_away": 4,
+   "proj_home": 5,
+   "proj_score": "LAA 4-5 OAK",
+   "components": {
+    "base": 0.07,
+    "scale": 0.849,
+    "rd_season_gap": -0.113,
+    "rd_recent_gap": -1.0,
+    "off_recent_gap": 0.708,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": -0.619,
     "total_runs": 8.6
    }
   },
