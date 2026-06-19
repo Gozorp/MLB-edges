@@ -6408,24 +6408,32 @@ function _topHRProps(rows) {
   const out = [];
   for (const r of rows || []) {
     const matchup = (r.matchup || "").trim();
+    // diag has no away_team/home_team columns; derive abbrevs from matchup "AWY @ HOM"
+    const _mp = matchup.split("@");
+    const _awy = (_mp[0] || "").split("(")[0].trim();
+    const _hom = (_mp[1] || "").split("(")[0].trim();
     for (const side of ["away", "home"]) {
-      let bats = [];
-      try { bats = JSON.parse(r[side + "_top_5_batters_json"] || "[]") || []; }
-      catch (_) { bats = []; }
-      // diag has no away_team/home_team columns; derive abbrevs from matchup "AWY @ HOM"
-      const _mp = matchup.split("@");
-      const _awy = (_mp[0] || "").split("(")[0].trim();
-      const _hom = (_mp[1] || "").split("(")[0].trim();
       const team = side === "away" ? _awy : _hom;
       const oppTeam = side === "away" ? _hom : _awy;
       const oppSP = (side === "away" ? r.home_sp_name : r.away_sp_name) || "";
+      let bats = [];
+      try { bats = JSON.parse(r[side + "_top_5_batters_json"] || "[]") || []; }
+      catch (_) { bats = []; }
+      // Fallback to the PROJECTED lineup (same window.__ppProj bridge Perfect Pair
+      // uses) so the HR list populates on upcoming slates before posted lineups
+      // land (~2h pre-game).  Restores the list on today/tomorrow instead of the
+      // "populate once lineups posted" placeholder.  (2026-06-18)
+      let proj = false;
+      if (!bats.length && window.__ppProj && window.__ppProj[team] && Array.isArray(window.__ppProj[team].batters)) {
+        bats = window.__ppProj[team].batters; proj = true;
+      }
       for (const b of bats) {
         const hr = parseInt((b.season_HR != null ? b.season_HR : b.hr) || 0);
         const pa = parseInt((b.season_PA != null ? b.season_PA : b.pa) || 0);
         if (!(pa >= 30) || hr < 0) continue;
         const p = _hrProbability({ hr: hr, pa: pa }, { name: oppSP }, 4.3);
         if (p == null) continue;
-        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa, oppSP: oppSP, oppTeam: oppTeam, spHR: _spHRMult(oppSP), _row: r });
+        out.push({ name: b.name, team: team, matchup: matchup, prob: p, hr: hr, pa: pa, oppSP: oppSP, oppTeam: oppTeam, spHR: _spHRMult(oppSP), proj: proj, _row: r });
       }
     }
   }
@@ -6562,7 +6570,7 @@ function renderTopProbableOutcomes(rows, totalsByMatchup, results) {
   const hrs = _topHRProps(rows).slice(0, 10);
   if (hrs.length) {
     const hrStatuses = hrs.map(it => _hrPropStatus(it, results));
-    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span>${_sectionSummary(hrStatuses)}</h3>`;
+    html += `<h3 style="margin-top:0.8rem;color:var(--accent);">Home Run Props <span class="muted" style="font-size:0.78rem;font-weight:normal;">(ranked by single-game HR probability)</span>${hrs.some(h => h.proj) ? ' <span class="muted" style="font-size:0.72rem;font-weight:normal;">· projected lineups until posted</span>' : ''}${_sectionSummary(hrStatuses)}</h3>`;
     html += `<div class="muted" style="font-size:0.74rem;margin:0.1rem 0 0.5rem;line-height:1.4;">Model: P(&ge;1 HR) = 1 - (1 - season HR/PA)<sup>4.3</sup> &mdash; each hitter's season home-run rate compounded over ~4.3 expected plate appearances. Ranking applies an ERA-gated HR-risk tier for the opposing starter &mdash; aces (ERA &le;3.40) are capped and God-Tier arms (&le;2.50) are exempt; HR risk is driven by opponent-specific HR/9 (3yr, Bayesian-shrunk) plus a last-3-start trend. Flagged starters boost the hitters they face.</div>`;
     hrs.forEach((item, i) => {
       const pct = (item.prob * 100).toFixed(1);
