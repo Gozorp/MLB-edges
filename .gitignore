@@ -96,3 +96,9 @@ scratch/
 # =============================================================================
 # Sandbox / runtime cache directories that leaked from earlier env setups
 # =================
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
