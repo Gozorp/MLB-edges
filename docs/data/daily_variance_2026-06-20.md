@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-20
-_Generated 2026-06-20T02:39:03Z · 14 games · significant deviations only_
+_Generated 2026-06-20T07:00:35Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [IL] — Chicago White Sox placed RF Everson Pereira on the 7-day injured list. Concussion.
@@ -78,7 +78,6 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **NYM @ PHI** (home SP Cristopher Sánchez): very high K% (28.9% vs lg 22.0)
 - **PIT @ COL** (away SP Paul Skenes): very high K% (30.3% vs lg 22.0)
 - **PIT @ COL** (home SP Tomoyuki Sugano): very low K% (13.5% vs lg 22.0)
-- **LAA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **CWS** Erick Fedde — threw 78 pitches last night — likely unavailable
@@ -90,6 +89,10 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **TB** Kevin Kelly — 2 apps / 43 pitches over last 3 games — monitor
 - **MIA** John King — 2 apps / 35 pitches over last 3 games — monitor
 - **MIL** Grant Anderson — 2 apps / 35 pitches over last 3 games — monitor
+- **LAA** Mitch Farris — threw 41 pitches last night — likely unavailable
+- **ATH** José Suarez — 2 apps / 73 pitches over last 3 games — monitor
+- **SEA** Luis Castillo — threw 63 pitches last night — likely unavailable
+- **MIN** Travis Adams — threw 42 pitches last night — likely unavailable
 
 ## 4 · Lineup / Platoon
 - CWS @ DET — CWS faces RHP (Troy Melton)
@@ -111,6 +114,7 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - NYM @ PHI — NYM faces LHP (Cristopher Sánchez)
 - PIT @ COL — COL faces RHP (Paul Skenes)
 - PIT @ COL — PIT faces RHP (Tomoyuki Sugano)
+- LAA @ ATH — ATH faces RHP (Walbert Ureña)
 - LAA @ ATH — LAA faces RHP (J.T. Ginn)
 - BAL @ LAD — LAD faces LHP (Trevor Rogers)
 - BAL @ LAD — BAL faces RHP (Yoshinobu Yamamoto)

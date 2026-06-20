@@ -1,6 +1,6 @@
 {
  "date": "2026-06-20",
- "generated_utc": "2026-06-20T02:38:22+00:00",
+ "generated_utc": "2026-06-20T07:00:20+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
  "sps": {
@@ -674,6 +674,88 @@
    "hr_per_start": 0.67,
    "era": 6.6,
    "er_spike": true
+  },
+  "Walbert Ure\u00f1a": {
+   "id": 700712,
+   "opp": "ATH",
+   "opp_id": 133,
+   "season_era": 2.6,
+   "season_hr9": 0.72,
+   "season_kbb": 8.5,
+   "era_tier": "ACE",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 6.0,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 6.0,
+     "w": 1.0
+    }
+   ],
+   "smoothed_matchup_hr9": 0.55,
+   "matchup_freq": "SMALL",
+   "matchup_basis": "vs ATH 3yr (2026:0HR/6IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 3.0,
+   "l3_hr": 2,
+   "l3_hr_per_start": 0.67,
+   "l3_kbb": 9.0,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 3.00 vs season 2.60)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 0.6,
+   "hr_per_start": 0.67,
+   "era": 3.0,
+   "er_spike": false
+  },
+  "J.T. Ginn": {
+   "id": 669372,
+   "opp": "LAA",
+   "opp_id": 108,
+   "season_era": 2.91,
+   "season_hr9": 0.93,
+   "season_kbb": 11.4,
+   "era_tier": "ACE",
+   "matchup_w_hr": 2.2,
+   "matchup_w_ip": 13.4,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 1,
+     "ip": 8.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 2,
+     "ip": 9.0,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 1.15,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs LAA 3yr (2026:1HR/8IP,2025:2HR/9IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 3.06,
+   "l3_hr": 2,
+   "l3_hr_per_start": 0.67,
+   "l3_kbb": 13.3,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 3.06 vs season 2.91)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 0.96,
+   "hr_per_start": 0.67,
+   "era": 3.06,
+   "er_spike": false
   },
   "Trevor Rogers": {
    "id": 669432,
