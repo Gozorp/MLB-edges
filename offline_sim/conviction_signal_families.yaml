@@ -1,0 +1,53 @@
+# Conviction signal -> family map  (P5 prep, OFFLINE planning artifact)
+# Source: mlb_edge/edge_calculator.py score_conviction().  Read-only mapping for
+# the July P5 rework (DIAMOND >= 4-of-5 mutually-exclusive families).
+# Target families: pitching | offense | bullpen | rest_travel | market_movement
+
+families:
+  pitching:
+    - F1_xera_gap            # row.sp_xera_gap (+ adj_xera reliability), sample-gated
+    - F1_negative_veto       # opposing SP dominant -> SKIP
+    - sp_savant_gate         # HARD_VETO / THIN_SAMPLE (data-quality veto)
+    - F4_sp_luck             # DROPPED 2026-04-26 (weight ~0); still an XGB feature
+  offense:
+    - F2_xwoba_gap           # row.team_woba_gap
+    - F3_swing_take_gap      # row.swing_take_gap  (plate-discipline run value)
+  bullpen:
+    - F5_bullpen_gap         # row.bullpen_siera_gap (+ veto on severe disadvantage)
+  rest_travel:
+    - NONE                   # not currently a conviction signal
+  market_movement:
+    - NONE                   # not currently a signal; needs CLV (P2) before it can exist
+
+# ---- mutual-exclusivity VIOLATIONS to fix before P5 ----
+violations:
+  - id: offense_double_count
+    detail: >
+      F2 (team xwOBA) AND F3 (swing/take) are BOTH offense signals. Under today's
+      raw-count tiering they each add +1, so an F1+F2+F3 game scores 3 signals ->
+      DIAMOND while spanning only TWO distinct families (pitching + offense).
+      Fix: collapse F2+F3 into a single 'offense' family vote.
+  - id: pitching_internal_correlation
+    detail: >
+      If SIERA/FIP variants are later added as separate signals they must also
+      collapse into the single 'pitching' vote (xERA+SIERA+FIP are one pitcher).
+
+# ---- structural finding for P5 ----
+coverage:
+  distinct_families_currently_firing: 3   # pitching, offense, bullpen
+  families_missing: [rest_travel, market_movement]
+  implication: >
+    The proposed DIAMOND = >=4-of-5 families is IMPOSSIBLE today (only 3 families
+    exist). P5 therefore DEPENDS on first adding a rest/travel signal family and a
+    market-movement family (the latter = CLV from P2). Until then, cap DIAMOND at
+    '>=3 of the 3 available families' AND require they be 3 DISTINCT families
+    (not 3 raw signals), which already tightens today's inflated count.
+
+# ---- per-signal minimum effect-size (user §5: a 0.01 wOBA 'fire' shouldn't count)
+# Placeholders to be set from the holdout in July; effect-size floors, not just
+# the existing CONVICTION.*_gap_min trigger thresholds.
+effect_size_floors_TODO:
+  F1_xera_gap: from CONVICTION.xera_gap_min (review vs holdout)
+  F2_xwoba_gap: from CONVICTION.xwoba_gap_min (review vs holdout)
+  F3_swing_take_gap: from CONVICTION.swing_take_gap_min (review vs holdout)
+  F5_bullpen_gap: ">= 0.40 (current); review vs holdout"
