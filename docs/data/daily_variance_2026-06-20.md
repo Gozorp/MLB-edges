@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-20
-_Generated 2026-06-20T07:04:55Z · 14 games · significant deviations only_
+_Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [IL] — Chicago White Sox placed RF Everson Pereira on the 7-day injured list. Concussion.
