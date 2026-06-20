@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-21
-_Generated 2026-06-20T19:17:40Z · 15 games · significant deviations only_
+_Generated 2026-06-20T21:13:18Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [signed] — Atlanta Braves signed free agent C Mayobanex Rosa to a minor league contract.
@@ -30,6 +30,10 @@ _Generated 2026-06-20T19:17:40Z · 15 games · significant deviations only_
 - **PIT** [optioned] — Pittsburgh Pirates optioned RHP Hunter Stratton to Indianapolis Indians.
 - **AZ** [IL] — Arizona Diamondbacks placed RHP Ryne Nelson on the 15-day injured list retroactive to June 16, 2026. Strained right elbow.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Yilber Díaz from Reno Aces.
+- **AZ** [IL] — Arizona Diamondbacks placed LF Jordan Lawlar on the 10-day injured list. Right hamstring strain.
+- **AZ** [IL] — Arizona Diamondbacks placed RHP Michael Soroka on the 15-day injured list. Left glute strain.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
 - **ATH** [signed] — Athletics signed free agent RHP Andrew Bash to a minor league contract.
 - **SEA** [DFA] — Seattle Mariners designated 3B Miles Mastrobuoni for assignment.
 - **SEA** [selected] — Seattle Mariners selected the contract of 3B Weston Wilson from Tacoma Rainiers.
@@ -48,11 +52,12 @@ _Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **NYM @ PHI** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
-_None flagged._
+- **NYY** Jake Bird — 2 apps / 36 pitches over last 3 games — monitor
+- **CWS** Joe Rock — threw 47 pitches last night — likely unavailable
 
 ## 4 · Lineup / Platoon
 - CIN @ NYY — NYY faces RHP (Chase Burns)
-- CIN @ NYY — CIN faces RHP (Gerrit Cole)
+- CIN @ NYY — CIN faces RHP (Elmer Rodríguez)
 - MIL @ ATL — ATL faces LHP (Robert Gasser)
 - MIL @ ATL — MIL faces RHP (Bryce Elder)
 - WSH @ TB — TB faces LHP (Andrew Alvarez)
