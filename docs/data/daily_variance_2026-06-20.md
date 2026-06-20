@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-20
-_Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
+_Generated 2026-06-20T19:37:10Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [IL] — Chicago White Sox placed RF Everson Pereira on the 7-day injured list. Concussion.
@@ -12,14 +12,19 @@ _Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
 - **CIN** [selected] — Cincinnati Reds selected the contract of C Will Banfield from Louisville Bats.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Chad Dallas to Buffalo Bisons.
 - **TOR** [recalled] — Toronto Blue Jays recalled LHP Brendon Little from Buffalo Bisons.
+- **TOR** [IL] — Toronto Blue Jays activated RHP Lazaro Estrada from the 60-day injured list.
+- **TOR** [IL] — Toronto Blue Jays activated CF Daulton Varsho from the 10-day injured list.
+- **TOR** [optioned] — Toronto Blue Jays optioned 2B Charles McAdoo to Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned LHP Brendon Little to Buffalo Bisons.
 - **CHC** [optioned] — Chicago Cubs optioned DH Moisés Ballesteros to Iowa Cubs.
 - **CHC** [recalled] — Chicago Cubs recalled CF Justin Dean from Iowa Cubs.
-- **SD** [signed] — San Diego Padres signed free agent RHP Heiver Hernandez to a minor league contract.
-- **SD** [signed] — San Diego Padres signed free agent SS Yomar Maduro to a minor league contract.
 - **SD** [signed] — San Diego Padres signed free agent RHP Angel Gamarra to a minor league contract.
 - **SD** [signed] — San Diego Padres signed free agent SS Chrystian Herrero to a minor league contract.
+- **SD** [signed] — San Diego Padres signed free agent RHP Heiver Hernandez to a minor league contract.
+- **SD** [signed] — San Diego Padres signed free agent SS Yomar Maduro to a minor league contract.
 - **SD** [activated] — San Diego Padres activated RHP Mason Miller from the bereavement list.
 - **SD** [optioned] — San Diego Padres optioned RHP Bradgley Rodriguez to ACL Padres.
+- **SD** [activated] — San Diego Padres activated RHP Ron Marinaccio.
 - **TEX** [outrighted] — Texas Rangers sent RHP Michel Otañez outright to Round Rock Express.
 - **TEX** [IL] — Texas Rangers transferred CF Michael Helman from the 10-day injured list to the 60-day injured list. Right finger fracture.
 - **TEX** [optioned] — Texas Rangers optioned 2B Josh Smith to Round Rock Express.
@@ -27,6 +32,7 @@ _Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
 - **TB** [IL] — Tampa Bay Rays activated RF Jonny DeLuca from the 10-day injured list.
 - **TB** [DFA] — Tampa Bay Rays designated RF Austin Slater for assignment.
 - **SF** [optioned] — San Francisco Giants optioned LHP Carson Whisenhunt to Sacramento River Cats.
+- **SF** [DFA] — San Francisco Giants designated CF Jared Oliva for assignment.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Jarret Whorff to a minor league contract.
 - **ATL** [DFA] — Atlanta Braves designated C Sandy León for assignment.
 - **ATL** [optioned] — Atlanta Braves optioned C Jair Camargo to Gwinnett Stripers.
@@ -63,8 +69,8 @@ _Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **TOR** code=ACQ — Toronto Blue Jays acquired OF Edgardo Villegas from the Trois-Rivieres Aigles of the Frontier League.
-- **SF** code=ACQ — San Francisco Giants acquired RHP Nate Nabholz from the Tri-City ValleyCats of the Frontier League.
 - **SF** code=ACQ — San Francisco Giants acquired RHP Sam Knowlton from the Lexington Legends of the Atlantic League.
+- **SF** code=ACQ — San Francisco Giants acquired RHP Nate Nabholz from the Tri-City ValleyCats of the Frontier League.
 - **PHI** code=ACQ — Philadelphia Phillies acquired 1B Brandon Lewis from the York Revolution of the Atlantic League.
 - **PHI** code=ACQ — Philadelphia Phillies acquired 2B Daunte Stuart from the New Jersey Jackals of the Frontier League.
 - **PHI** code=ACQ — Philadelphia Phillies acquired 1B Tyler Miller from the Lancaster Stormers of the Atlantic League.
@@ -72,7 +78,6 @@ _Generated 2026-06-20T09:03:05Z · 14 games · significant deviations only_
 _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **CWS @ DET** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **NYM @ PHI** (home SP Cristopher Sánchez): very high K% (30.1% vs lg 22.0)
 - **PIT @ COL** (away SP Paul Skenes): very high K% (29.2% vs lg 22.0)
 - **PIT @ COL** (home SP Tomoyuki Sugano): very low K% (13.2% vs lg 22.0)
@@ -93,13 +98,14 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **MIN** Travis Adams — threw 42 pitches last night — likely unavailable
 
 ## 4 · Lineup / Platoon
+- CWS @ DET — DET faces LHP (Sean Newcomb)
 - CWS @ DET — CWS faces RHP (Troy Melton)
 - CIN @ NYY — NYY faces LHP (Andrew Abbott)
 - CIN @ NYY — CIN faces RHP (Will Warren)
 - TOR @ CHC — CHC faces LHP (Patrick Corbin)
 - TOR @ CHC — TOR faces RHP (Colin Rea)
 - SD @ TEX — TEX faces RHP (Walker Buehler)
-- SD @ TEX — SD faces RHP (Nathan Eovaldi)
+- SD @ TEX — SD faces LHP (MacKenzie Gore)
 - WSH @ TB — TB faces RHP (Cade Cavalli)
 - WSH @ TB — WSH faces LHP (Ian Seymour)
 - SF @ MIA — MIA faces RHP (Trevor McDonald)

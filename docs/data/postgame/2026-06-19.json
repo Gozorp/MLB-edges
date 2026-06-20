@@ -1,0 +1,141 @@
+{
+  "date": "2026-06-19",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-20T08:30:00Z",
+  "n_analyzed": 14,
+  "summary": "2026-06-19: Model went 10-4 directionally (71.4%) across 14 games. The only staking-eligible loss was SF @ MIA (GOLD, +10.44pp edge, 4-3 final). The other three losses (MIL, SD, STL) were pre-designated SKIP/D-grade with no bet placed. A critical process finding: Claude Brain mis-identified the model pick for 3 games (TOR@CHC, CHW@DET, PIT@COL) by reading F-signal direction rather than the CSV pick column; the model was correct in all three. A clean pattern emerged: f5_full_delta ≥ 0.12 without F-series support went 0/3 (all losses); all 7 low-delta picks won.",
+  "by_matchup": {
+    "TOR @ CHC": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML DIAMOND",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-16",
+      "headline": "CHC won 16-2; model's CSV pick was CHC but Claude Brain confirmed TOR (wrong team).",
+      "hypothesis": "Stage 2 correctly picked CHC at 51.89% despite Stage 1 heavily favoring TOR (75% F5 probability, f5_full_delta=0.2713); CHC validated Stage 2 with a blowout. This is a process failure by Claude Brain — it read TOR as the model pick based on Stage 1 F-signal direction (F2+F3 favoring Gausman) rather than the CSV pick column. The model was right; Claude's misread had no staking impact since HARD CAP 10 kept the grade at 0.",
+      "signals_to_recheck": "f5_full_delta=0.2713 (Stage 1/2 disagree large; Stage 2 was correct when F2+F3 supported the pick)"
+    },
+    "CHW @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "DET won 4-3 as the model's CSV pick; Claude Brain misread the pick as CHW and confirmed the wrong team.",
+      "hypothesis": "CSV pick column is unambiguously DET at 63.23% (GOLD tier, F5_bullpen_gap=+0.62, PQI confirming Δ=+13.7, Stage 1/2 agree Δ=0.08). Claude Brain appears to have confused the away team (CHW) with the model pick, citing model_prob=0.5 for CHW when the CSV showed DET at 63%. This is a repeat of the same pick-column misread pattern (process failure). HARD CAP 7 fired due to hl_bullpen_xwoba_gap=+0.0182, capping the grade to B-, but DET won comfortably. No staking impact since Claude's error was directional only.",
+      "signals_to_recheck": "F5_bullpen_gap (Claude read F5_bullpen_gap=+0.62 as CHW's signal rather than the pick-side DET signal; review signal direction conventions in future reads)"
+    },
+    "CIN @ NYY": {
+      "verdict": "WIN",
+      "model_pick": "NYY ML DIAMOND",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-5",
+      "headline": "NYY shut out CIN 5-0; F1+F3+F5 multi-signal stack delivered a decisive win.",
+      "hypothesis": "Cam Schlittler's 3.21 xERA gap over Rhett Lowder plus F3_swing_take_gap=3317.6 and F5_bullpen_gap=+0.89 drove a strong directional call confirmed by PQI (Δ=+37.7). HARD CAP 7 fired for hl_bullpen_xwoba_gap=+0.0259 and capped the grade, but the shutout result shows NYY's structural advantage was real and the cap over-penalized a clean signal stack. Variance-free process WIN — Claude and model fully aligned.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0259 (fired and capped grade despite a dominant outcome; monitor whether CAP 7 is over-firing on multi-F-signal DIAMOND stacks)"
+    },
+    "WSH @ TB": {
+      "verdict": "WIN",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-5",
+      "headline": "TB won 5-2 despite triple-flag risk; bullpen gap carried the game.",
+      "hypothesis": "Claude correctly designated this as SKIP for staking given acute_roster_True + confidence_downgrade_True + adverse SP (Griffin Jax 0.49 xERA worse than PJ Poulin). TB winning 5-2 suggests the F5_bullpen_gap=+0.91 was load-bearing. The 2026-06-17 BAL@SEA triple-flag pattern predicted a loss that did not materialize here — the bullpen gap signal may partially offset triple-flag risk. Borderline process vs variance; the SKIP designation was defensible but may be too conservative when a large bullpen gap accompanies the flags.",
+      "signals_to_recheck": "acute_roster_True, confidence_downgrade_True (triple-flag fired; outcome win suggests F5_bullpen_gap may partially cancel the flags — worth revisiting threshold)"
+    },
+    "SF @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "Sole staking-eligible loss of the day — SF fell 3-4 to MIA despite +10.44pp model edge.",
+      "hypothesis": "Stage 1 gave MIA home 60.52% F5 probability (f5_full_delta=0.2036), directly opposing Stage 2's SF pick; MIA's early-game advantage likely reflected Stage 1's read. No F-series signal independently confirmed SF for the full game — this matches today's emergent pattern: f5_full_delta ≥ 0.12 with no F-series support went 0/3 (SF@MIA, SD@TEX, STL@KC all lost). Process failure — should have applied SKIP when f5d=0.20 with no F-series fires for Stage 2's pick. Variance is a secondary factor given the 4-3 close final, but the pre-game signal was already unfavorable.",
+      "signals_to_recheck": "f5_full_delta=0.2036 (Stage 1 opposed the pick; no F-series corroborating Stage 2's SF call — this combination is now a documented loss predictor)"
+    },
+    "MIL @ ATL": {
+      "verdict": "LOSS",
+      "model_pick": "MIL ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "ATL upset MIL 3-2 as the market's 76% underdog; HARD CAP 1 correctly blocked the bet.",
+      "hypothesis": "Market priced MIL at 75.91% (edge=-20.91pp); ATL winning 3-2 means the market-favored side lost a close game — this is a variance failure, not a process failure. HARD CAP 1 correctly fired at -20.91pp and prevented any stake. Misiorowski's F1_xera_gap=3.53 and F3=3526.6 were genuine signals, but the market had fully absorbed and exceeded the SP quality advantage. No pattern adjustment needed — the cap system worked exactly as intended.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] at -20.91pp fired and blocked staking; directional PLATINUM model pick was wrong but the bet-blocking mechanism was correct)"
+    },
+    "SD @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "SD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-9",
+      "headline": "deGrom and Stage 1 (TEX 70% F5) were right; Stage 2's marginal SD call lost as expected.",
+      "hypothesis": "This is a prototypical D-grade SKIP loss: f5_full_delta=0.2217 with Stage 1 heavily favoring TEX (70.32% F5 probability), deGrom's 2.69 xERA advantage opposing SD, and no F-series signal for SD. TEX won 9-7 as Stage 1 predicted. No staking impact — SKIP designation was correct. This case reinforces the f5d≥0.12 + no-F-series rule: Stage 1's direction was authoritative.",
+      "signals_to_recheck": "f5_full_delta=0.2217 + SP xERA disadvantage (deGrom 2.69 xERA gap opposing the pick; both flags correctly predicted D-grade loss)"
+    },
+    "CLE @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-9",
+      "headline": "HOU dominated 9-3 in a low-delta, Stage-1/2-aligned pick (f5d=0.0086).",
+      "hypothesis": "Stage 1 and Stage 2 both agreed on HOU with minimal delta (f5d=0.0086), the clearest class of confident model pick. The 9-3 margin validates the directional read strongly. Note: the final diag CSV shows edge_pp=+13.5 and kelly_quarter=0.0758 — substantially higher than the +1.80pp Claude Brain cited pre-game, suggesting odds moved favorably after Claude's analysis. The confidence_downgrade flag was present but the structural signals overwhelmed it. Low-delta alignment was the key predictor.",
+      "signals_to_recheck": "confidence_downgrade_True (flag was present but the low-delta, Stage-1/2-aligned structure produced a dominant win; consider whether confidence_downgrade deserves less weight when f5d ≤ 0.01)"
+    },
+    "STL @ KC": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "KC edged STL 6-5; Stage 1 (KC 59% F5) was correct; no staking impact.",
+      "hypothesis": "Stage 1 gave KC 59% F5 probability (f5_full_delta=0.1246), directly opposing Stage 2's STL pick; Seth Lugo's k% edge over McGreevy and no F-series signal for STL made this a D-direction case. STL's marginal Stage 2 edge (53.43%, edge=-0.82pp) was insufficient to overcome Stage 1's KC lean. KC won 6-5. SKIP designation was correct; this is the third case of f5d≥0.12 + no F-series = loss today.",
+      "signals_to_recheck": "f5_full_delta=0.1246 (Stage 1 opposed Stage 2's STL pick; no F-series fired for STL — pattern match to today's f5d+no-F-series loss template)"
+    },
+    "PIT @ COL": {
+      "verdict": "WIN",
+      "model_pick": "COL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "COL won 4-3 as the model's CSV pick; Claude Brain misread the pick as PIT based on Chandler's F1 signal.",
+      "hypothesis": "The CSV pick column unambiguously shows COL at 50.66% full-game (SKIP tier), reflecting the model's Coors Field adjustment absorbing Bubba Chandler's F1_xera_gap=2.53 xERA advantage. Claude Brain read F1_xera_gap and F5_bullpen_gap=+1.62 for PIT and assumed PIT was the pick — the third case today of Claude inferring pick direction from away-SP signals rather than the CSV column. COL won 4-3. Process failure by Claude; the model correctly incorporated park factors and picked the home team. Kyle Freeland as a Coors specialist was likely the decisive model factor.",
+      "signals_to_recheck": "F1_xera_gap (Claude over-read Chandler's away-SP xERA gap as the model pick direction; Coors Field park adjustment flipped the model pick to COL — park factor overrides must be respected when reading the pick column)"
+    },
+    "LAA @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "OAK ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "11-12",
+      "headline": "OAK/ATH won 12-11 in a thriller; market had OAK as 61% favorite but model had 55.83% (negative edge).",
+      "hypothesis": "Market priced OAK at 61.57% while model had OAK at 55.83% (edge=-5.74pp); HARD CAP 1 correctly blocked staking. OAK winning 12-11 in a high-scoring game was directionally correct for the model but the negative edge meant no value in the bet. This is the pattern working as intended: market over-priced OAK slightly past the model, and while OAK won, the expected value was negative. No process adjustment needed.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] at -5.74pp correctly blocked staking; OAK winning doesn't change that the market edge was negative)"
+    },
+    "MIN @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-9",
+      "headline": "ARI won 9-5 convincingly; Claude's DOWNGRADE was unnecessary directionally but SKIP was correct for staking.",
+      "hypothesis": "ARI had Stage 1/2 agreement (f5d=0.0086) at 65.63% probability — the strongest class of model picks — but tier=SKIP and edge=+1.62pp (below the 4pp staking floor). Claude applied heuristic 1 (home-favorite over-confidence >65%) and DOWNGRADEd, but ARI won 9-5 showing the home-favorite over-confidence concern was unfounded here. The SKIP staking decision was correct (edge below floor), and the DOWNGRADE was probably unnecessary on a low-delta aligned pick. Watch for heuristic 1 over-firing on low-delta home favorites.",
+      "signals_to_recheck": "home-favorite over-confidence heuristic at full_prob > 0.65 (DOWNGRADE applied; ARI won by 4 runs — heuristic may be over-conservative on low-delta, Stage-1/2-agreed home favorites)"
+    },
+    "BAL @ LAD": {
+      "verdict": "WIN",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "LAD won 6-5 in a close game; F2+F3 multi-signal PLATINUM pick with HARD CAP 1 blocking stake.",
+      "hypothesis": "LAD had F2_xwoba_gap+F3_swing_take_gap=7617.2 plus PQI=+25.7 and Sasaki's 2.22 xERA advantage — broad multi-dimensional alignment. Market pricing LAD at 70.04% exceeded the model's 64.43% estimate (edge=-4.11pp); HARD CAP 1 correctly blocked staking. LAD won 6-5. Low f5d (0.0095) and multi-F corroboration confirmed direction. This is the ideal model profile: strong pre-cap signals with market already absorbing the edge (no value to bet, but correct directional read).",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] at -4.11pp correctly blocked staking on a pre-cap A- stack; market continues to price LAD past model on Sasaki-led games)"
+    },
+    "BOS @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-2",
+      "headline": "BOS won 6-2 despite Bryce Miller's SP advantage and large Stage 1/2 disagree (f5d=0.24).",
+      "hypothesis": "Stage 1 gave SEA 67.16% F5 probability (f5_full_delta=0.2419), strongly opposing Stage 2's BOS pick — yet BOS won 6-2. The critical difference from the three losing large-delta cases (SF@MIA, SD@TEX, STL@KC): F3_swing_take_gap fired for BOS. When F-series support accompanies a large Stage 1/2 disagree, Stage 2's pick proved correct. This is the confirmatory mirror case for today's key pattern. Edge=+7.63pp and kelly_quarter=0.037 suggest a legitimate positive-edge bet was available that Claude appropriately labeled D-grade SKIP due to SP concerns — a missed staking opportunity.",
+      "signals_to_recheck": "f5_full_delta=0.2419 + F3 fires (BOS won despite large delta because F3 corroborated Stage 2; contrast with SF@MIA/SD@TEX where no F-series fired and Stage 2 lost)"
+    }
+  },
+  "patterns_observed": [
+    "Claude Brain misread the model's pick column for 3/14 games (TOR@CHC→CHC, CHW@DET→DET, PIT@COL→COL) by inferring pick direction from F-signal dominance or away-SP xERA rather than the CSV pick column; all three CSV picks were correct (CHC won 16-2, DET won 4-3, COL won 4-3). Future Claude Brain: explicitly confirm the pick column value verbatim at the start of each game's reasoning before any other analysis.",
+    "When f5_full_delta ≥ 0.12 AND no F-series signal fires for Stage 2's pick, all three picks lost today (SF@MIA f5d=0.20 LOSS, SD@TEX f5d=0.22 LOSS, STL@KC f5d=0.12 LOSS); Stage 1's direction was correct in all three. Conversely, f5_full_delta ≥ 0.12 WITH F-series support went 3/3 (TOR@CHC F2+F3 WIN, CIN@NYY F1+F3 WIN, BOS@SEA F3 WIN). Rule going forward: when f5_full_delta ≥ 0.12 and no F-series signal fires for the Stage 2 pick, default to SKIP regardless of tier or edge.",
+    "All 7 low-delta picks (f5_full_delta ≤ 0.09) won today (CHW@DET 0.08, WSH@TB 0.09, CLE@HOU 0.01, PIT@COL 0.07, LAA@OAK 0.09, MIN@ARI 0.01, BAL@LAD 0.01 — 7/7). Stage 1/2 alignment is the single highest-confidence model signal, outweighing tier, edge, or bullpen caps in predictive value.",
+    "The sole staking-eligible loss (SF @ MIA, GOLD, +10.44pp edge, CONFIRM) matched the f5d ≥ 0.12 + no-F-series profile identified in pattern 2; had this pick been downgraded to SKIP under the new rule, the staking record would have been 0 losses for the day. Apply DOWNGRADE-to-SKIP on GOLD or higher picks that combine f5_full_delta ≥ 0.12 with no supporting F-series signal."
+  ]
+}
