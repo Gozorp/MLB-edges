@@ -1,12 +1,9 @@
 {
- "generated_utc": "2026-06-20T09:06:40Z",
+ "generated_utc": "2026-06-20T15:37:38Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "STL demoted: Above Average -> Average (eff +0.12, mmr -0.19)",
-  "BAL demoted: Below Average -> Poor (eff -0.89, mmr -0.22)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -143,8 +140,6 @@
     "z": 0.311,
     "mmr": -0.188,
     "eff": 0.123,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs KC (06-18)",
      "upset L vs KC (06-19)"
@@ -381,8 +376,6 @@
     "z": -0.675,
     "mmr": -0.22,
     "eff": -0.895,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs SEA (06-10)",
      "upset W vs SEA (06-11)"

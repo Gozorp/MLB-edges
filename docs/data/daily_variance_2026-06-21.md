@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-21
-_Generated 2026-06-20T09:06:35Z · 15 games · significant deviations only_
+_Generated 2026-06-20T15:37:19Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [signed] — Atlanta Braves signed free agent C Mayobanex Rosa to a minor league contract.
@@ -18,6 +18,7 @@ _Generated 2026-06-20T09:06:35Z · 15 games · significant deviations only_
 - **CHC** [recalled] — Chicago Cubs recalled CF Justin Dean from Iowa Cubs.
 - **SD** [activated] — San Diego Padres activated RHP Mason Miller from the bereavement list.
 - **SD** [optioned] — San Diego Padres optioned RHP Bradgley Rodriguez to ACL Padres.
+- **SD** [activated] — San Diego Padres activated RHP Ron Marinaccio.
 - **TEX** [IL] — Texas Rangers transferred CF Michael Helman from the 10-day injured list to the 60-day injured list. Right finger fracture.
 - **TEX** [optioned] — Texas Rangers optioned 2B Josh Smith to Round Rock Express.
 - **TEX** [selected] — Texas Rangers selected the contract of RF Jarred Kelenic from Round Rock Express.
@@ -28,7 +29,7 @@ _Generated 2026-06-20T09:06:35Z · 15 games · significant deviations only_
 - **SEA** [DFA] — Seattle Mariners designated 3B Miles Mastrobuoni for assignment.
 - **SEA** [selected] — Seattle Mariners selected the contract of 3B Weston Wilson from Tacoma Rainiers.
 
-_Suppressed 0 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **CIN @ NYY** (away SP Chase Burns): very high K% (30.2% vs lg 22.0)
