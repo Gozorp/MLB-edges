@@ -551,6 +551,29 @@ def _flip_perspective(r: pd.Series) -> pd.Series:
 #   check MLB status per game, and for any game whose state is
 #   past pre-game restore the LOCK_COLUMNS from the prior row.
 # =============================================================
+# Abbreviation canonicalization (2026-06-20 lock fix).
+#   statsapi's hydrated schedule returns CWS/ATH/AZ etc., while the model's
+#   diag matchups use CHW/OAK/ARI. Without normalizing, the started-game map
+#   keys never matched the diag keys and the lock silently froze 0 games.
+_ABBR_CANON = {
+    "CWS": "CHW", "CHA": "CHW", "CHN": "CHC",
+    "AZ": "ARI", "ATH": "OAK",
+    "WSN": "WSH", "SDP": "SD", "SFG": "SF", "TBR": "TB", "KCR": "KC",
+}
+
+
+def _canon_abbr(x):
+    x = str(x or "").strip().upper()
+    return _ABBR_CANON.get(x, x)
+
+
+def _canon_matchup(m):
+    parts = [p.strip() for p in str(m or "").split("@")]
+    if len(parts) == 2:
+        return f"{_canon_abbr(parts[0])} @ {_canon_abbr(parts[1])}"
+    return str(m or "").strip()
+
+
 _LOCK_COLUMNS = (
     "pick", "p_model", "pick_prob",
     "f5_prob", "full_prob", "fair_prob", "edge_pp",
@@ -591,7 +614,7 @@ def _games_started_map(slate_date):
         import json as _json
         url = (
             "https://statsapi.mlb.com/api/v1/schedule"
-            f"?sportId=1&date={slate_date.isoformat()}"
+            f"?sportId=1&date={slate_date.isoformat()}&hydrate=team"
         )
         with _ur.urlopen(url, timeout=10) as resp:
             j = _json.loads(resp.read().decode("utf-8"))
@@ -603,8 +626,8 @@ def _games_started_map(slate_date):
                 teams = g.get("teams") or {}
                 away = (teams.get("away") or {}).get("team") or {}
                 home = (teams.get("home") or {}).get("team") or {}
-                a = away.get("abbreviation") or ""
-                h = home.get("abbreviation") or ""
+                a = _canon_abbr(away.get("abbreviation") or "")
+                h = _canon_abbr(home.get("abbreviation") or "")
                 if a and h:
                     out[f"{a} @ {h}"] = started
     except Exception as e:
@@ -639,7 +662,10 @@ def _apply_started_game_lock(new_df, prior_df, started_map):
         # Strip any "(G2 of 3)" / "(G2)" suffix before matching the
         # MLB schedule (schedule keys are bare).
         bare = _re.sub(r"\s*\([^)]*\)\s*$", "", mk).strip()
-        started = started_map.get(bare, False) or started_map.get(mk, False)
+        bare_canon = _canon_matchup(bare)
+        started = (started_map.get(bare_canon, False)
+                   or started_map.get(bare, False)
+                   or started_map.get(mk, False))
         if not started:
             continue
         if mk not in prior_idx:

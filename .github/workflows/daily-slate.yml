@@ -32,7 +32,13 @@ on:
     - cron: "0 14 * * *"     # 10am ET — late-add games and SP swaps
     - cron: "0 17 * * *"     # 1pm ET  — pre-afternoon-game lineup cards
     - cron: "0 21 * * *"     # 5pm ET  — pre-evening-game lineup cards + odds refresh
-    - cron: "0 * * * *"      # hourly catch-all for late lineup updates
+    # 2026-06-20: REMOVED the "0 * * * *" hourly catch-all. It re-scored the
+    # FULL slate every hour — including games already started/finished — and the
+    # commit step's `git rebase -X theirs` force-overwrote prior publishes,
+    # corrupting decided picks with post-game odds collapse (e.g. edge -> +49pp).
+    # The 5 scheduled runs above cover lineup/SP firming; the now-working
+    # started-game lock (main_predict hydrate=team + abbr canon) protects any
+    # game past first pitch.
   workflow_dispatch:
     inputs:
       slate_date:
