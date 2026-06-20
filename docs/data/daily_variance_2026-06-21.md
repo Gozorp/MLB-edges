@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-21
-_Generated 2026-06-20T15:37:19Z · 15 games · significant deviations only_
+_Generated 2026-06-20T17:22:41Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [signed] — Atlanta Braves signed free agent C Mayobanex Rosa to a minor league contract.
@@ -15,6 +15,10 @@ _Generated 2026-06-20T15:37:19Z · 15 games · significant deviations only_
 - **KC** [optioned] — Kansas City Royals optioned RHP Mason Black to Omaha Storm Chasers.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Chad Dallas to Buffalo Bisons.
 - **TOR** [recalled] — Toronto Blue Jays recalled LHP Brendon Little from Buffalo Bisons.
+- **TOR** [IL] — Toronto Blue Jays activated RHP Lazaro Estrada from the 60-day injured list.
+- **TOR** [IL] — Toronto Blue Jays activated CF Daulton Varsho from the 10-day injured list.
+- **TOR** [optioned] — Toronto Blue Jays optioned 2B Charles McAdoo to Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned LHP Brendon Little to Buffalo Bisons.
 - **CHC** [recalled] — Chicago Cubs recalled CF Justin Dean from Iowa Cubs.
 - **SD** [activated] — San Diego Padres activated RHP Mason Miller from the bereavement list.
 - **SD** [optioned] — San Diego Padres optioned RHP Bradgley Rodriguez to ACL Padres.
@@ -36,6 +40,7 @@ _Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **WSH @ TB** (home SP Nick Martinez): very low K% (13.7% vs lg 22.0)
 - **TOR @ CHC** (away SP Dylan Cease): very high K% (35.5% vs lg 22.0)
 - **SD @ TEX** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **SD @ TEX** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIN @ AZ** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIN @ AZ** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **LAA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
@@ -61,7 +66,6 @@ _None flagged._
 - STL @ KC — STL faces RHP (Stephen Kolek)
 - TOR @ CHC — CHC faces RHP (Dylan Cease)
 - TOR @ CHC — TOR faces LHP (Shota Imanaga)
-- SD @ TEX — SD faces LHP (MacKenzie Gore)
 - PIT @ COL — COL faces RHP (Jared Jones)
 - PIT @ COL — PIT faces RHP (Michael Lorenzen)
 - LAA @ ATH — LAA faces RHP (Jack Perkins)
