@@ -1440,6 +1440,12 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     font-variant-numeric: tabular-nums;
   }
   .adv-split-tbl th:first-child, .adv-split-tbl td:first-child{ text-align: left; }
+  /* Conditional Risk Factor block (2026-06-21) */
+  .risk-cond{ border-left:3px solid var(--orange,#db6d28); background:rgba(219,109,40,0.09);
+    border-radius:4px; padding:0.55rem 0.85rem; margin:0.2rem 0 0.7rem; }
+  .risk-cond p{ margin:0.25rem 0; line-height:1.5; }
+  .risk-cond em{ color:var(--orange,#db6d28); font-style:normal; font-weight:700; letter-spacing:0.02em; }
+  .risk-cond .risk-basis{ font-size:0.8rem; color:var(--text); }
 
   /* ===== Slate game OVERLAY drawer — native <dialog>, browser top layer (2026-06-21).
      Top-layer rendering is immune to ancestor transform/overflow/stacking, so the
@@ -4987,6 +4993,72 @@ function _renderProjectedLineupTable(r){
   '</div>';
 }
 
+// ===== Conditional Risk Factor (2026-06-21) — display-only annotation over the
+// FROZEN model's existing signals (bullpen fatigue, edge band, stress dims). It
+// states the pick + the model's most-probable failure mode as IF-AND-ONLY-IF
+// conditional logic. NOT a separate prediction and NOT a model change. =====
+function _penWorstReliever(abbr){
+  try{
+    var bm = window.__bullpenMeta; if(!bm || !bm.teams) return null;
+    var VAR = {CHW:"CWS",CWS:"CHW",ARI:"AZ",AZ:"ARI",OAK:"ATH",ATH:"OAK",WSN:"WSH",WSH:"WSN",SDP:"SD",SD:"SDP",SFG:"SF",SF:"SFG",TBR:"TB",TB:"TBR",KCR:"KC",KC:"KCR"};
+    var a = String(abbr||"").toUpperCase().trim();
+    var t = bm.teams[a] || bm.teams[VAR[a]]; if(!t || !t.top_relievers) return null;
+    var rank = {OVERWORKED:3, B2B2B:3, B2B:2, NORMAL:1, FRESH:0};
+    var worst = null;
+    t.top_relievers.forEach(function(x){
+      var sc = rank[x.fatigue_flag] || 0;
+      if (sc >= 2 && (!worst || sc > worst._sc || (sc === worst._sc && (x.rest_days||9) < (worst.rest_days||9))))
+        worst = {name:x.name, flag:x.fatigue_flag, rest_days:x.rest_days, _sc:sc};
+    });
+    return worst;
+  }catch(_){ return null; }
+}
+function _conditionalRiskFactor(r){
+  var pick = (r.pick || "").trim();
+  if (!pick || pick.toUpperCase() === "TBD") return "";
+  var edge = parseFloat(r.edge_pp);
+  var dims = (r.stress_warnings || "").split(/[;,]/).map(function(s){return s.trim();}).filter(Boolean);
+  var pen  = _penWorstReliever(pick);
+  var parts = (r.matchup || "").split(/\s*@\s*/);
+  var homeAb = (parts[1] || "").replace(/\s*\(.*$/, "").trim();
+  var oppSP = (pick.toUpperCase() === homeAb.toUpperCase()) ? (r.away_sp_name||"") : (r.home_sp_name||"");
+  var failure, trigger, basis;
+  if (dims.indexOf("bullpen_fatigue") >= 0 || (pen && (pen.flag === "OVERWORKED" || pen.flag === "B2B2B"))){
+    failure = pick + " coughs up a late lead and loses a one-run game";
+    trigger = "the game is within one run entering the 7th inning <strong>and</strong> " +
+              (pen ? ("<strong>" + pen.name + "</strong> (" + pen.flag + ")") : "a depleted high-leverage arm") +
+              " is forced into a high-leverage inning";
+    basis   = "the frozen model prices season-long bullpen quality, not tonight's acute fatigue — that gap is where late leads evaporate.";
+  } else if (!isNaN(edge) && Math.abs(edge) < 4){
+    failure = "the pick fails to separate from a coin-flip";
+    trigger = "the game turns into a low-scoring, &le;6-run run environment";
+    basis   = "the " + edge.toFixed(1) + "pp edge sits inside the ±3.5pp statistical-noise band, so at this magnitude the lean is not separable from variance.";
+  } else if (!isNaN(edge) && edge > 12){
+    failure = pick + " loses outright as a heavy favorite";
+    trigger = "the market's number is the right one and the model is mis-pricing a single input (a late SP scratch, a stale projected lineup, or weather)";
+    basis   = "edges this large (" + edge.toFixed(1) + "pp) are historically “fool’s gold” — the >15pp bucket returned negative ROI in backtests, so an outsized gap usually flags a blind spot, not a bargain.";
+  } else if (dims.indexOf("acute_roster") >= 0){
+    failure = pick + "'s projected edge disappears";
+    trigger = "a confirmed lineup posts without a key bat <strong>or</strong> the listed starter is scratched";
+    basis   = "the acute_roster flag means the model scored a roster that has since changed — the projection is built on stale inputs.";
+  } else if (dims.indexOf("short_term_skill") >= 0){
+    failure = pick + " underperforms its season-long projection";
+    trigger = "recent form (last-14-day xwOBA) is the truth and the season line the model leans on is stale";
+    basis   = "the short_term_skill flag means recent performance diverges from the season stats the model weights.";
+  } else {
+    failure = pick + " fails to convert the edge";
+    trigger = "the opposing starter" + (oppSP ? (" (<strong>" + oppSP + "</strong>)") : "") +
+              " delivers an above-projection outing <strong>and</strong> the game stays close into the bullpen";
+    basis   = "no acute red flags fired, so the residual risk is ordinary variance: a strong opposing-SP start plus a tight late game is the usual path for a sound pick to still lose.";
+  }
+  return `<h4>Conditional Risk Factor</h4>`
+       + `<div class="risk-cond">`
+       +   `<p><strong>Prediction:</strong> ${pick}.</p>`
+       +   `<p><strong>Risk:</strong> ${failure}. This is the model’s most-probable failure mode for this pick — highly probable <em>IF AND ONLY IF</em> ${trigger}.</p>`
+       +   `<p class="risk-basis">Why: ${basis} <span class="muted">Display-only risk annotation over the frozen model’s signals — not a separate prediction.</span></p>`
+       + `</div>`;
+}
+
 function formatNarrative(r, gradeInfo, result) {
   const pick      = (r.pick    || "").trim();
   const matchup   = (r.matchup || "").trim();
@@ -5068,6 +5140,9 @@ function formatNarrative(r, gradeInfo, result) {
     html += `Grade not assigned — likely filtered before reaching the grader.`;
   }
   html += `</p>`;
+
+  // ----- 1a. Conditional Risk Factor (display-only, over frozen-model signals) -----
+  html += _conditionalRiskFactor(r);
 
   // ----- 1b. Win-probability chart placeholder -----
   html += `<div class="winprob-card">
