@@ -1,9 +1,12 @@
 # Daily Variance Report — 2026-06-22
-_Generated 2026-06-21T13:15:29Z · 13 games · significant deviations only_
+_Generated 2026-06-21T16:14:56Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
+- **NYY** [IL] — New York Yankees activated C Austin Wells from the 10-day injured list.
+- **NYY** [recalled] — New York Yankees recalled RHP Elmer Rodríguez from Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned RHP Jake Bird to Scranton/Wilkes-Barre RailRiders.
+- **WSH** [TRADE] — Washington Nationals traded RHP Tyler Schoff to Atlanta Braves.
 - **HOU** [TRADE] — Houston Astros traded RHP Jayden Murray to Chicago Cubs for 1B Cameron Sisneros.
 - **TOR** [IL] — Toronto Blue Jays activated CF Daulton Varsho from the 10-day injured list.
 - **TOR** [IL] — Toronto Blue Jays activated RHP Lazaro Estrada from the 60-day injured list.
@@ -14,6 +17,10 @@ _Generated 2026-06-21T13:15:29Z · 13 games · significant deviations only_
 - **CHC** [TRADE] — Houston Astros traded RHP Jayden Murray to Chicago Cubs for 1B Cameron Sisneros.
 - **LAD** [IL] — Los Angeles Dodgers placed RHP Blake Treinen on the 15-day injured list. Right elbow inflammation.
 - **LAD** [recalled] — Los Angeles Dodgers recalled RHP Chayce McDermott from Oklahoma City Comets.
+- **MIN** [DFA] — Minnesota Twins designated RHP Justin Lawrence for assignment.
+- **MIN** [IL] — Minnesota Twins activated LHP Kendry Rojas from the 15-day injured list.
+- **CWS** [IL] — Chicago White Sox activated RHP Jordan Hicks from the 15-day injured list.
+- **CWS** [optioned] — Chicago White Sox optioned RHP Tyler Davis to Charlotte Knights.
 - **AZ** [IL] — Arizona Diamondbacks placed LF Jordan Lawlar on the 10-day injured list. Right hamstring strain.
 - **AZ** [IL] — Arizona Diamondbacks placed RHP Michael Soroka on the 15-day injured list. Left glute strain.
 - **AZ** [TRADE] — Arizona Diamondbacks traded SS Luis Urías to Toronto Blue Jays for cash.
@@ -23,12 +30,14 @@ _Generated 2026-06-21T13:15:29Z · 13 games · significant deviations only_
 - **BOS** [recalled] — Boston Red Sox recalled 2B Anthony Seigler from Worcester Red Sox.
 - **BAL** [IL] — Baltimore Orioles placed C Adley Rutschman on the 7-day injured list retroactive to June 19, 2026. Concussion.
 - **BAL** [recalled] — Baltimore Orioles recalled CF Michael Siani from Norfolk Tides.
+- **ATL** [TRADE] — Washington Nationals traded RHP Tyler Schoff to Atlanta Braves.
 - **SD** [activated] — San Diego Padres activated RHP Ron Marinaccio.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **HOU** code=ACQ — Houston Astros acquired 3B Brandon Nigh from the Boise Hawks of the Pioneer League.
+- **NYM** code=ACQ — New York Mets acquired 2B Taylor Darden from the Southern Maryland Blue Crabs of the Atlantic League.
 
-_Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 7 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **NYY @ DET** (home SP TBD): NOT CONFIRMED — probable SP not posted
