@@ -1,9 +1,13 @@
 {
- "generated_utc": "2026-06-21T07:11:43Z",
+ "generated_utc": "2026-06-21T09:56:04Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "PIT demoted: Average -> Below Average (eff -0.22, mmr -0.28)",
+  "BAL promoted: Poor -> Below Average (eff -0.62, mmr +0.01)",
+  "SF demoted: Below Average -> Poor (eff -0.95, mmr +0.25)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -205,26 +209,6 @@
     ]
    },
    {
-    "name": "Pittsburgh Pirates",
-    "abbr": "PIT",
-    "w": 38,
-    "l": 39,
-    "pct": 0.494,
-    "rd": 12,
-    "rationale": "38-39 (.494), +12 run differential -- a solidly positive run margin. Results running below tier expectation (MMR -0.28).",
-    "z": 0.066,
-    "mmr": -0.283,
-    "eff": -0.217,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs LAD (06-10)",
-     "upset L vs COL (06-19)"
-    ]
-   },
-   {
     "name": "San Diego Padres",
     "abbr": "SD",
     "w": 39,
@@ -265,6 +249,24 @@
    }
   ],
   "Below Average": [
+   {
+    "name": "Pittsburgh Pirates",
+    "abbr": "PIT",
+    "w": 38,
+    "l": 39,
+    "pct": 0.494,
+    "rd": 12,
+    "rationale": "38-39 (.494), +12 run differential -- a solidly positive run margin. Results running below tier expectation (MMR -0.28).",
+    "z": 0.066,
+    "mmr": -0.283,
+    "eff": -0.217,
+    "movement": "demoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs LAD (06-10)",
+     "upset L vs COL (06-19)"
+    ]
+   },
    {
     "name": "Toronto Blue Jays",
     "abbr": "TOR",
@@ -336,6 +338,23 @@
     ]
    },
    {
+    "name": "Baltimore Orioles",
+    "abbr": "BAL",
+    "w": 36,
+    "l": 42,
+    "pct": 0.462,
+    "rd": -36,
+    "rationale": "36-42 (.462), -36 run differential -- a poor run margin.",
+    "z": -0.631,
+    "mmr": 0.007,
+    "eff": -0.624,
+    "movement": "promoted",
+    "moved_from": "Poor",
+    "upsets": [
+     "upset W vs LAD (06-20)"
+    ]
+   },
+   {
     "name": "Detroit Tigers",
     "abbr": "DET",
     "w": 32,
@@ -374,48 +393,9 @@
     "z": -0.688,
     "mmr": 0.042,
     "eff": -0.646
-   },
-   {
-    "name": "San Francisco Giants",
-    "abbr": "SF",
-    "w": 31,
-    "l": 45,
-    "pct": 0.408,
-    "rd": -53,
-    "rationale": "31-45 (.408), -53 run differential -- a poor run margin. Results running above tier expectation (MMR +0.25).",
-    "z": -1.199,
-    "mmr": 0.252,
-    "eff": -0.946,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs CHC (06-07)",
-     "upset W vs WSH (06-10)"
-    ]
    }
   ],
   "Poor": [
-   {
-    "name": "Baltimore Orioles",
-    "abbr": "BAL",
-    "w": 36,
-    "l": 42,
-    "pct": 0.462,
-    "rd": -36,
-    "rationale": "36-42 (.462), -36 run differential -- a poor run margin.",
-    "z": -0.631,
-    "mmr": 0.007,
-    "eff": -0.624,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs LAD (06-20)"
-    ]
-   },
    {
     "name": "Boston Red Sox",
     "abbr": "BOS",
@@ -458,6 +438,24 @@
     "upsets": [
      "upset W vs LAD (06-07)",
      "upset W vs TB (06-12)"
+    ]
+   },
+   {
+    "name": "San Francisco Giants",
+    "abbr": "SF",
+    "w": 31,
+    "l": 45,
+    "pct": 0.408,
+    "rd": -53,
+    "rationale": "31-45 (.408), -53 run differential -- a poor run margin. Results running above tier expectation (MMR +0.25).",
+    "z": -1.199,
+    "mmr": 0.252,
+    "eff": -0.946,
+    "movement": "demoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset W vs CHC (06-07)",
+     "upset W vs WSH (06-10)"
     ]
    },
    {

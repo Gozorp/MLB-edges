@@ -1,0 +1,83 @@
+{
+ "date": "2026-06-22",
+ "generated_utc": "2026-06-21T09:55:48+00:00",
+ "schema": "v2-era-gated-cascade",
+ "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
+ "sps": {
+  "Gavin Williams": {
+   "id": 668909,
+   "opp": "CWS",
+   "opp_id": 145,
+   "season_era": 3.83,
+   "season_hr9": 1.47,
+   "season_kbb": 19.8,
+   "era_tier": "AVERAGE",
+   "matchup_w_hr": 1.2,
+   "matchup_w_ip": 7.2,
+   "matchup_seasons": [
+    {
+     "season": 2025,
+     "hr": 2,
+     "ip": 10.0,
+     "w": 0.6
+    },
+    {
+     "season": 2024,
+     "hr": 0,
+     "ip": 4.0,
+     "w": 0.3
+    }
+   ],
+   "smoothed_matchup_hr9": 1.48,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs CWS 3yr (2025:2HR/10IP,2024:0HR/4IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 7.63,
+   "l3_hr": 6,
+   "l3_hr_per_start": 2.0,
+   "l3_kbb": 13.6,
+   "trend": "DOWN",
+   "trend_down": true,
+   "trend_basis": "L3 ERA 7.63 vs season 3.83 (+3.80); L3 K-BB% 13.6 vs season 19.8 (-6.1pp)",
+   "risk_level": 4,
+   "risk_label": "Watch",
+   "flag": "SMALL",
+   "mult": 1.42,
+   "hr_per_start": 2.0,
+   "era": 7.63,
+   "er_spike": false
+  },
+  "Anthony Kay": {
+   "id": 641743,
+   "opp": "CLE",
+   "opp_id": 114,
+   "season_era": 4.61,
+   "season_hr9": 1.41,
+   "season_kbb": 8.4,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 0.0,
+   "matchup_seasons": [],
+   "smoothed_matchup_hr9": 1.41,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "no vs-CLE history -> season HR/9 fallback",
+   "has_matchup": false,
+   "starts": 3,
+   "l3_era": 8.31,
+   "l3_hr": 3,
+   "l3_hr_per_start": 1.0,
+   "l3_kbb": 14.1,
+   "trend": "DOWN",
+   "trend_down": true,
+   "trend_basis": "L3 ERA 8.31 vs season 4.61 (+3.70)",
+   "risk_level": 2,
+   "risk_label": "Moderate Risk",
+   "flag": "HEAVY",
+   "mult": 1.35,
+   "hr_per_start": 1.0,
+   "era": 8.31,
+   "er_spike": true
+  }
+ }
+}
