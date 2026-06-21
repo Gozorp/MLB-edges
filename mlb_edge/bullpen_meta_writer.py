@@ -80,8 +80,12 @@ import pandas as pd
 log = logging.getLogger(__name__)
 
 SCHEMA_VERSION = 2  # bumped from 1: added `name` field on each reliever
-DEFAULT_TOP_N_RELIEVERS = 8
+DEFAULT_TOP_N_RELIEVERS = 12   # full active pen (was 8); cap only trims call-up churn
 RECENT_APPEARANCES_LOOKBACK_DAYS = 7
+# Wider lookback used ONLY for the display sidecar's reliever LIST so the whole
+# bullpen shows (a full pen turns over within ~2 weeks). The frozen model's own
+# bullpen snapshot is built separately and is NOT affected by this.
+META_LIST_LOOKBACK_DAYS = 14
 HIGH_LEVERAGE_THRESHOLD = 1.5  # mirrors bullpen_fatigue_blocker default
 STATSAPI_PEOPLE_URL = "https://statsapi.mlb.com/api/v1/people"
 
@@ -251,8 +255,13 @@ def _per_team_block(team: str,
             else:
                 merged[col] = merged[col].fillna(default)
 
-        # Rank by 72h workload; take top N
-        merged = (merged.sort_values("pitches_72h", ascending=False)
+        # Show the full pen: sort most-recently-active first (rest_days asc),
+        # 72h workload as the tiebreak. head(top_n) only caps very large lists.
+        # The old "pitches_72h desc" sort dropped FRESH (0-pitch, fully rested)
+        # arms first — exactly the available relievers a reader cares about — so
+        # with the wider meta lookback we sort by rest instead and keep them.
+        merged = (merged.sort_values(["rest_days", "pitches_72h"],
+                                     ascending=[True, False])
                   .head(top_n).reset_index(drop=True))
 
         # Per-reliever dict (name resolved from name_map if available;
@@ -437,12 +446,14 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__.splitlines()[1])
     p.add_argument("--date", required=True, help="Slate date YYYY-MM-DD")
     p.add_argument("--top-n", type=int, default=DEFAULT_TOP_N_RELIEVERS)
+    p.add_argument("--lookback", type=int, default=META_LIST_LOOKBACK_DAYS,
+                   help="reliever-list lookback window in days (display only)")
     p.add_argument("--out-dir", default="docs/data")
     args = p.parse_args()
     sd = datetime.strptime(args.date, "%Y-%m-%d").date()
 
     from .bullpen_tracker import snapshot as bullpen_snapshot
-    snap = bullpen_snapshot(sd, persist=False)
+    snap = bullpen_snapshot(sd, lookback_days=args.lookback, persist=False)
     path = write_bullpen_meta(sd, snap, top_n_relievers=args.top_n,
                               out_dir=args.out_dir)
     print(f"wrote: {path}")

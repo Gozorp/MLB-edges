@@ -766,10 +766,28 @@ def run(slate_date: date,
     try:
         teams_on_slate = sorted(set(games["home_team"].dropna().tolist()
                                     + games["away_team"].dropna().tolist()))
-        from .bullpen_meta_writer import write_bullpen_meta
+        from .bullpen_meta_writer import (write_bullpen_meta,
+                                          META_LIST_LOOKBACK_DAYS)
+        # Build a DEDICATED wider-lookback snapshot for the display sidecar so the
+        # full bullpen shows (the model's ctx["bullpen"] uses a short ~3d window
+        # that only surfaces a couple of recently-used arms). This snapshot is
+        # display-only and never feeds the frozen model. Falls back to the model
+        # snapshot if the wider build fails/empties.
+        _meta_snap = ctx.get("bullpen")
+        try:
+            from . import bullpen_tracker as _bptrack
+            _wide = _bptrack.snapshot(slate_date,
+                                      lookback_days=META_LIST_LOOKBACK_DAYS,
+                                      persist=False)
+            _wpl = getattr(_wide, "pitch_log", None)
+            if _wide is not None and _wpl is not None and not _wpl.empty:
+                _meta_snap = _wide
+        except Exception as _e_wide:
+            log.warning("[bullpen_meta] wide snapshot failed, using model "
+                        "snapshot: %s", _e_wide)
         meta_path = write_bullpen_meta(
             slate_date=slate_date,
-            snapshot=ctx.get("bullpen"),
+            snapshot=_meta_snap,
             teams_on_slate=teams_on_slate,
             out_dir="docs/data",
         )
