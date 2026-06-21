@@ -1,0 +1,141 @@
+{
+  "date": "2026-06-20",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-21T00:00:00Z",
+  "n_analyzed": 14,
+  "summary": "2026-06-20: Model went 5-9 directionally (35.7%) across 14 games — the worst single-day hit rate in the tracked window. Four Claude-designated GOLD staking picks (CIN@NYY, TOR@CHC, WSH@TB, CLE@HOU) all lost; the highest-conviction pre-cap-A stacks failed simultaneously. The sole staking WIN came from Claude's OVERRIDE of NYM→PHI (15-3 blowout). Key learnings: multi-F DIAMOND stacks are vulnerable to single-day variance clusters; f5d≥0.18+single-F is insufficient to rescue Stage 2 over Stage 1; the CAP-9 DOWNGRADE on pick_prob>0.80 continues to save exposure; and the pick-column misread pattern (CHW@DET) persisted into day 2.",
+  "by_matchup": {
+    "CHW @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-4",
+      "headline": "DET won 4-1 as the CSV model pick; Claude Brain misread the pick as CHW for the second consecutive day.",
+      "hypothesis": "The CSV pick column is unambiguously DET (GOLD, f5d=0.1475, F5_bullpen_gap=+0.61), but Claude confirmed CHW at 0.55 confidence — repeating the exact misread pattern flagged in the 06-19 postgame. DET won comfortably 4-1. Process failure by Claude Brain; no staking impact since grade=D/SKIP.",
+      "signals_to_recheck": "pick column misread pattern (Claude confirmed CHW despite CSV pick=DET; the 06-19 explicit warning about reading the pick column verbatim was not retained — this is the second occurrence in as many days)"
+    },
+    "CIN @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML DIAMOND",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-2",
+      "headline": "CIN blew out NYY 10-2; the strongest pre-cap-A signal stack on the slate was demolished.",
+      "hypothesis": "NYY had triple-F signals (F1_xera_gap=1.73, F3=3951.8, F5_bullpen_gap=+0.90), low f5d=0.0074, and pre-cap grade A — the highest-confidence model profile. Will Warren imploded and CIN scored 10 runs against one of the best structural NYY setups of the season. This is a variance failure: a 64% pick loses 36% of the time, and catastrophic pitcher performance is not predictable from xERA signals. The process was sound; the outcome was bad luck.",
+      "signals_to_recheck": "[HARD CAP 7] hl_bullpen_xwoba_gap=+0.0263 (fired and capped grade from A to C; despite the cap, the structural outcome was a 10-2 blowout — Warren's actual performance diverged completely from his xERA profile; monitor whether F1_xera_gap reliability degrades mid-season as pitcher fatigue accumulates)"
+    },
+    "TOR @ CHC": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML DIAMOND",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-6",
+      "headline": "TOR won 8-6 despite CHC's F2+F3+F5 stack and dual-OWNER BvP advantage vs Corbin.",
+      "hypothesis": "CHC had F2_xwoba_gap=0.024, F3=7379.2, F5=+0.44, and BvP OWNER status for five CHC batters vs Corbin (26 PA, shrunk OPS 0.959). f5d=0.162 with F-series support was the canonical 06-19 rescue pattern. Corbin outperformed his xERA and TOR's offense scored 8 runs. This is borderline process/variance: the signals genuinely supported CHC, but f5d=0.162 is well above 0.12 and the single-stage disagreement remained substantial.",
+      "signals_to_recheck": "F3_swing_take_gap=7379.2 + BvP-OWNER (F3+F2+OWNER-BvP stack failed; consider whether aging LHP like Corbin with low k% can sustain OWNER-BvP suppression when actually pitching in-game — xERA may lag for declining SPs)"
+    },
+    "SD @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "SD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-4",
+      "headline": "SD won 6-4 as the model's Stage 2 pick despite grade D and SP edge against.",
+      "hypothesis": "SD was a D-grade SKIP with SP edge AGAINST (Buehler vs Gore, 0.53 xERA gap), negative edge (-9.39pp), and f5d=0.2065. F3=1152.9 fired weakly. Claude confirmed SKIP; no stake. SD winning 6-4 is variance-favorable noise — do not revise any rules based on a no-stake D-grade win.",
+      "signals_to_recheck": "F3_swing_take_gap=1152.9 (weak F3 + SP against + high delta; SD won as variance outlier — insufficient evidence to update the f5d≥0.12+no-strong-F=SKIP rule)"
+    },
+    "WSH @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-3",
+      "headline": "WSH edged TB 4-3; identical structural TB setup to 06-19 win flipped in a coin-toss game.",
+      "hypothesis": "TB had pre-cap A (F5_bullpen_gap=+0.89, SP edge 0.83 xERA Seymour>Cavalli, PQI +15.4, Stage 1/2 agree). Exact same WSH@TB setup won 5-2 on 06-19. WSH winning 4-3 in a one-run game is variance: the structural TB edge was real, the game was decided by one run. This is a variance failure, not a process failure.",
+      "signals_to_recheck": "F5_bullpen_gap=+0.89 (large bullpen advantage for TB; 4-3 loss in a one-run game suggests bullpen gap is structural but not deterministic at the 89% level — consecutive-day same-matchup flip from WIN to LOSS is expected variance)"
+    },
+    "SF @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-6",
+      "headline": "MIA won 6-3; SF's D-grade f5d=0.2668+no-F-series pick lost as the pattern predicts.",
+      "hypothesis": "SF was grade D with f5d=0.2668, no F-series signals, SP edge AGAINST (Max Meyer 0.48 xERA advantage over McDonald). Claude confirmed SKIP. MIA won 6-3. This is a textbook D-grade SKIP loss — the pattern from 06-19 (f5d≥0.12+no F-series=SKIP) was confirmed again. No stake, no process failure.",
+      "signals_to_recheck": "f5_full_delta=0.2668 (no F-series; correct D-SKIP designation confirmed by MIA 6-3 win — this is the third consecutive day SF@MIA has matched the f5d+no-F loss pattern)"
+    },
+    "MIL @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "ATL won 4-3 as the model's directional pick; HARD CAP 10 correctly blocked staking on the marginal 53.5% probability.",
+      "hypothesis": "ATL had F3=3305.7 and Stage 1/2 agree (f5d=0.1035), but pick_prob=0.532 triggered HARD CAP 10 (marginal band) plus acute_roster flag. Claude confirmed SKIP with no stake. ATL winning 4-3 validates the directional call but not the stake — the cap system correctly managed a marginal-probability pick to zero exposure. Process success.",
+      "signals_to_recheck": "[HARD CAP 10] pick_prob in (0.50, 0.55] band (correctly capped; ATL directional win doesn't mean HARD CAP 10 over-fired — 53.5% picks win ~53% of the time, which is below the breakeven for most staking strategies)"
+    },
+    "CLE @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-1",
+      "headline": "CLE dominated HOU 8-1; Stage 1's 58% CLE F5 probability was definitively right over Stage 2's HOU pick.",
+      "hypothesis": "HOU was picked with F3=4674.7 and f5d=0.2237 — Claude applied the 06-19 'F3 rescues large-delta picks' rule. But only F3 fired (no F1 or F2), and f5d=0.2237 is well above the 0.12 threshold. CLE winning 8-1 shows Stage 1 (CLE at 58.23% F5) was correct by a wide margin. This is a process failure: the rescue rule requires re-calibration for high-delta (≥0.18) cases where only a single F-signal fires.",
+      "signals_to_recheck": "f5_full_delta=0.2237 + F3_swing_take_gap=4674.7 (single-F rescue failed at high delta; f5d≥0.18 + one-F-only should be treated as equivalent to no-F-series — Stage 1 dominant when delta is large and only F3 corroborates)"
+    },
+    "NYM @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "3-15",
+      "headline": "Claude's OVERRIDE from NYM to PHI was validated by a 15-3 PHI blowout; all override signals aligned.",
+      "hypothesis": "The model picked NYM at D-grade SKIP with every structural signal opposing the pick: SP edge 0.78 xERA (Sanchez>Peralta), market at 66.4% for PHI, Schwarber OWNER (20 PA, shrunk OPS 0.859) and Harper OWNER (16 PA, shrunk OPS 0.827) vs Peralta. PHI winning 15-3 was the most decisive outcome on the slate. Process success: OVERRIDE when market+SP+dual-OWNER BvP all contradict the model is correct.",
+      "signals_to_recheck": "calibration_caution_18_25pp (fired on +19.94pp edge; correctly identified as artifact — actual PHI advantage was structural, not edge-based; this is a clean confirmation that the override heuristic outperforms the model on D-grade SP-contradicted picks)"
+    },
+    "PIT @ COL": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-2",
+      "headline": "COL won 2-1 at Coors; Claude's CAP-9-spirit DOWNGRADE saved exposure despite Paul Skenes' extreme xERA advantage.",
+      "hypothesis": "PIT had pick_prob=0.8218 with Skenes (F1=6.16, SP edge 4.72 xERA) — the strongest individual SP signal on the slate. Claude DOWNGRADED to SKIP citing CAP 9 spirit (top-bucket calibrator at 33% actual hit rate). COL won 2-1. Coors Field park effect overrode elite SP quality even at an extreme F1 magnitude. Process success by Claude; the pipeline's failure to fire HARD CAP 9 was correctly patched manually.",
+      "signals_to_recheck": "[HARD CAP 9 spirit] pick_prob=0.8218 + Coors Field (top calibration bucket + Coors = mandatory DOWNGRADE to SKIP; F1_xera_gap=6.16 does not override park factor at altitude — continue flagging any pick_prob>0.80 at COL for DOWNGRADE regardless of SP quality)"
+    },
+    "LAA @ OAK": {
+      "verdict": "LOSS",
+      "model_pick": "OAK ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-0",
+      "headline": "LAA dominated OAK 7-0; the D-grade model pick lost as signaled.",
+      "hypothesis": "OAK was grade D with SP edge AGAINST pick (Ginn vs Ureña, 0.54 xERA), negative edge (-10.21pp), and no F-series signals. Claude confirmed SKIP with no stake. LAA winning 7-0 is a clean D-grade SKIP loss — the grading system correctly flagged zero confidence. No process or staking impact.",
+      "signals_to_recheck": "negative_edge_GOLD + SP edge AGAINST (both flags correctly predicted D-grade directional loss; LAA 7-0 blowout is a prototypical no-stake negative-edge outcome)"
+    },
+    "BAL @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "BAL won 3-2; market's skepticism of LAD validated despite Yamamoto's triple-F stack.",
+      "hypothesis": "LAD had triple-F (F1*=1.56, F2=0.026, F3=8373.6), Yamamoto's 1.06 xERA advantage, PQI +20.7, pre-cap A-. HARD CAP 1 fired at -7.87pp (market priced LAD at 72.3% vs model 64.43%), blocking staking. BAL winning 3-2 validates the market: the market was right to price LAD well past the model and still have BAL win. CAP 1 correctly protected exposure; triple-F alone did not guarantee the outcome.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] at -7.87pp correctly blocked staking; BAL 3-2 win on a triple-F Yamamoto slate is a sobering data point — market continues to absorb Yamamoto's advantage to a level where model edge is negative)"
+    },
+    "BOS @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-1",
+      "headline": "BOS won 5-1 on a massive f5d=0.495 Stage 1/2 disagreement; F3 + HARD CAP 6 (no stake) outcome.",
+      "hypothesis": "BOS had f5d=0.4949 (Stage 1 gave SEA 70.89% F5) and F3=6355.6 corroborating Stage 2's BOS pick. HARD CAP 6 fired (edge=+32.85pp hallucination), and GOLD tier blocked staking. Claude confirmed SKIP. BOS winning 5-1 shows Stage 2 with strong F3 support can overcome extreme Stage 1 disagreement. CAP 6 correctly prevented a bet on a hallucinated edge. No stake, correct direction.",
+      "signals_to_recheck": "[HARD CAP 6] edge_pp=+32.9pp (correctly identified as calibrator artifact and blocked staking; BOS won but the edge claim was not the reason — F3+Stage2 alignment was the real signal, not the +33pp fantasy edge)"
+    },
+    "MIN @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "16-8",
+      "headline": "MIN blew out ARI 16-8; Stage 1's extreme MIN lean (f5d=0.431) was exactly right.",
+      "hypothesis": "ARI was grade D with SP edge 1.22 xERA AGAINST pick (Taj Bradley>Zac Gallen), f5d=0.4314 (Stage 1 gave ARI only 22.49% F5 probability), and PQI strongly against (-15.8). MIN winning 16-8 is the most lopsided outcome on the slate for a SKIP pick. Stage 1's structural signal was dominant. No stake, correct SKIP designation.",
+      "signals_to_recheck": "f5_full_delta=0.4314 + SP edge AGAINST (extreme delta + SP gap; Stage 1 at 22% ARI F5 was prescient — MIN 16-8 blowout reinforces that f5d≥0.35+SP-against is a D-grade hard stop regardless of model full_prob)"
+    }
+  },
+  "patterns_observed": [
+    "Multi-F DIAMOND/GOLD stacks went 0/4 in staking picks today (CIN@NYY F1+F3+F5 pre-cap-A LOSS 10-2; TOR@CHC F2+F3+F5 pre-cap-B- LOSS 8-6; BAL@LAD F1+F2+F3 pre-cap-A- LOSS 3-2; CLE@HOU F3-only LOSS 8-1). This is a single-day variance cluster, not a signal revision — do not permanently down-weight F-signals. Apply one-tier caution downgrade on DIAMOND/GOLD multi-F picks for the next 3 days while the variance cluster resets.",
+    "f5_full_delta >= 0.18 + single F-signal (F3 only) is an insufficient Stage-2 rescue: CLE@HOU (f5d=0.22, F3=4674, CLE won 8-1) is the clearest example. Stage 1's 58% CLE F5 probability was correct. Rule refinement going forward: when f5d >= 0.18 and only one F-signal fires, treat as equivalent to no-F-series for SKIP/CONFIRM decisions — require at least two F-signals (F1+F3, F2+F3, or F3+F5) for a valid Stage-2 rescue at high delta.",
+    "Claude OVERRIDE from model pick NYM to PHI (SP edge 0.78 xERA, market 66.4% PHI, Schwarber+Harper OWNER BvP vs Peralta) was validated by a 15-3 PHI blowout — the most decisive result on the slate. The OVERRIDE heuristic of 'market + SP + dual-OWNER BvP all contradicting a D-grade model pick' remains the strongest actionable lever Claude Brain has. Apply this confidently when all three signals align.",
+    "Claude Brain misread the CSV pick column for CHW@DET (confirmed CHW, actual pick=DET) for the second consecutive day despite the explicit 06-19 postgame warning. This is a persistent session-boundary failure: the corrective instruction does not carry across runs. Future Claude Brain must treat the pick-column verbatim read as the first action for every matchup before analyzing any other signal."
+  ]
+}
