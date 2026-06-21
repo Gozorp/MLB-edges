@@ -32,13 +32,24 @@ on:
     - cron: "0 14 * * *"     # 10am ET — late-add games and SP swaps
     - cron: "0 17 * * *"     # 1pm ET  — pre-afternoon-game lineup cards
     - cron: "0 21 * * *"     # 5pm ET  — pre-evening-game lineup cards + odds refresh
+    # 2026-06-21: "T-60 before FIRST pitch" checkpoints. GitHub cron can't target
+    # first pitch (it varies daily), so we fire hourly checkpoints across the
+    # afternoon/evening and the `gate` job lets ONLY the one ~1h before the day's
+    # first game proceed (30–90 min before first pitch); all others exit in
+    # seconds. The 5 fixed crons above ALWAYS run (gate passes them through).
+    - cron: "0 15 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 16 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 18 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 19 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 20 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 22 * * *"     # T-60 checkpoint (gated)
+    - cron: "0 23 * * *"     # T-60 checkpoint (gated)
     # 2026-06-20: REMOVED the "0 * * * *" hourly catch-all. It re-scored the
     # FULL slate every hour — including games already started/finished — and the
     # commit step's `git rebase -X theirs` force-overwrote prior publishes,
     # corrupting decided picks with post-game odds collapse (e.g. edge -> +49pp).
-    # The 5 scheduled runs above cover lineup/SP firming; the now-working
-    # started-game lock (main_predict hydrate=team + abbr canon) protects any
-    # game past first pitch.
+    # The started-game lock (main_predict hydrate=team + abbr canon) now protects
+    # any game past first pitch, so the gated checkpoints can't corrupt picks.
   workflow_dispatch:
     inputs:
       slate_date:
@@ -50,7 +61,51 @@ permissions:
   contents: write
 
 jobs:
+  gate:
+    # Decide whether this trigger runs the full slate. The 5 fixed crons and
+    # manual dispatch always pass; the T-60 checkpoint crons pass ONLY in the
+    # ~1h window before the day's first pitch (30-90 min). Cheap: one statsapi
+    # schedule read, no checkout / no model.
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.g.outputs.go }}
+    steps:
+      - name: T-60 / fixed-cron gate
+        id: g
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"; echo "manual dispatch -> go"; exit 0
+          fi
+          case "${{ github.event.schedule }}" in
+            "0 6 * * *"|"0 11 * * *"|"0 14 * * *"|"0 17 * * *"|"0 21 * * *")
+              echo "go=true" >> "$GITHUB_OUTPUT"; echo "fixed cron -> go"; exit 0;;
+          esac
+          python3 - <<'PY'
+          import json, urllib.request, datetime, os
+          now = datetime.datetime.now(datetime.timezone.utc)
+          d = now.strftime('%Y-%m-%d')
+          go = False
+          try:
+              url = 'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=%s' % d
+              j = json.load(urllib.request.urlopen(url, timeout=15))
+              ts = [g['gameDate'] for dd in j.get('dates', [])
+                    for g in dd.get('games', []) if g.get('gameDate')]
+              if ts:
+                  fp = min(datetime.datetime.fromisoformat(t.replace('Z', '+00:00')) for t in ts)
+                  mins = (fp - now).total_seconds() / 60.0
+                  go = 30 <= mins <= 90
+                  print('first_pitch=%s  mins_to_fp=%.0f  in_T60_window=%s' % (fp.isoformat(), mins, go))
+              else:
+                  print('no games today -> skip')
+          except Exception as e:
+              print('gate error (skip):', e)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              fh.write('go=%s\n' % ('true' if go else 'false'))
+          PY
+
   predict:
+    needs: gate
+    if: needs.gate.outputs.go == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
