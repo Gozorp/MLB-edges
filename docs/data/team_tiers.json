@@ -1,13 +1,9 @@
 {
- "generated_utc": "2026-06-21T09:56:04Z",
+ "generated_utc": "2026-06-21T13:15:46Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "PIT demoted: Average -> Below Average (eff -0.22, mmr -0.28)",
-  "BAL promoted: Poor -> Below Average (eff -0.62, mmr +0.01)",
-  "SF demoted: Below Average -> Poor (eff -0.95, mmr +0.25)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -260,8 +256,6 @@
     "z": 0.066,
     "mmr": -0.283,
     "eff": -0.217,
-    "movement": "demoted",
-    "moved_from": "Average",
     "upsets": [
      "upset W vs LAD (06-10)",
      "upset L vs COL (06-19)"
@@ -348,8 +342,6 @@
     "z": -0.631,
     "mmr": 0.007,
     "eff": -0.624,
-    "movement": "promoted",
-    "moved_from": "Poor",
     "upsets": [
      "upset W vs LAD (06-20)"
     ]
@@ -451,8 +443,6 @@
     "z": -1.199,
     "mmr": 0.252,
     "eff": -0.946,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CHC (06-07)",
      "upset W vs WSH (06-10)"

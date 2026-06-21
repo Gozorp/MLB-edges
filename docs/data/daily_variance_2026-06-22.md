@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-22
-_Generated 2026-06-21T09:55:54Z · 13 games · significant deviations only_
+_Generated 2026-06-21T13:15:29Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
@@ -7,18 +7,18 @@ _Generated 2026-06-21T09:55:54Z · 13 games · significant deviations only_
 - **HOU** [TRADE] — Houston Astros traded RHP Jayden Murray to Chicago Cubs for 1B Cameron Sisneros.
 - **TOR** [IL] — Toronto Blue Jays activated CF Daulton Varsho from the 10-day injured list.
 - **TOR** [IL] — Toronto Blue Jays activated RHP Lazaro Estrada from the 60-day injured list.
-- **TOR** [optioned] — Toronto Blue Jays optioned 2B Charles McAdoo to Buffalo Bisons.
 - **TOR** [TRADE] — Arizona Diamondbacks traded SS Luis Urías to Toronto Blue Jays for cash.
 - **TOR** [optioned] — Toronto Blue Jays optioned LHP Brendon Little to Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned 2B Charles McAdoo to Buffalo Bisons.
 - **CHC** [DFA] — Chicago Cubs designated LHP Luis Peralta for assignment.
 - **CHC** [TRADE] — Houston Astros traded RHP Jayden Murray to Chicago Cubs for 1B Cameron Sisneros.
 - **LAD** [IL] — Los Angeles Dodgers placed RHP Blake Treinen on the 15-day injured list. Right elbow inflammation.
 - **LAD** [recalled] — Los Angeles Dodgers recalled RHP Chayce McDermott from Oklahoma City Comets.
 - **AZ** [IL] — Arizona Diamondbacks placed LF Jordan Lawlar on the 10-day injured list. Right hamstring strain.
 - **AZ** [IL] — Arizona Diamondbacks placed RHP Michael Soroka on the 15-day injured list. Left glute strain.
-- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
-- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
 - **AZ** [TRADE] — Arizona Diamondbacks traded SS Luis Urías to Toronto Blue Jays for cash.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Philip Abner from Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
 - **BOS** [IL] — Boston Red Sox placed 2B Isiah Kiner-Falefa on the 10-day injured list retroactive to June 19, 2026. Left forearm inflammation.
 - **BOS** [recalled] — Boston Red Sox recalled 2B Anthony Seigler from Worcester Red Sox.
 - **BAL** [IL] — Baltimore Orioles placed C Adley Rutschman on the 7-day injured list retroactive to June 19, 2026. Concussion.
