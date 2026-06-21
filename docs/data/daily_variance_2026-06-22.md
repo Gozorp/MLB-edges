@@ -1,11 +1,12 @@
 # Daily Variance Report — 2026-06-22
-_Generated 2026-06-21T18:28:04Z · 13 games · significant deviations only_
+_Generated 2026-06-21T22:16:34Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **NYY** [IL] — New York Yankees activated C Austin Wells from the 10-day injured list.
-- **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [recalled] — New York Yankees recalled RHP Elmer Rodríguez from Scranton/Wilkes-Barre RailRiders.
+- **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned RHP Jake Bird to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [optioned] — New York Yankees optioned RHP Elmer Rodríguez to Scranton/Wilkes-Barre RailRiders.
 - **TB** [IL] — Tampa Bay Rays activated RHP Michael Grove from the 60-day injured list.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Michael Grove to Durham Bulls.
 - **TEX** [IL] — Texas Rangers placed RHP Jack Leiter on the 15-day injured list retroactive to June 19, 2026. Right ankle posterior impingement.
@@ -28,6 +29,7 @@ _Generated 2026-06-21T18:28:04Z · 13 games · significant deviations only_
 - **LAD** [recalled] — Los Angeles Dodgers recalled RHP Chayce McDermott from Oklahoma City Comets.
 - **MIN** [IL] — Minnesota Twins activated LHP Kendry Rojas from the 15-day injured list.
 - **MIN** [DFA] — Minnesota Twins designated RHP Justin Lawrence for assignment.
+- **CLE** [outrighted] — Cleveland Guardians sent LF George Valera outright to Columbus Clippers.
 - **CWS** [IL] — Chicago White Sox activated RHP Jordan Hicks from the 15-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned RHP Tyler Davis to Charlotte Knights.
 - **AZ** [IL] — Arizona Diamondbacks placed LF Jordan Lawlar on the 10-day injured list. Right hamstring strain.
@@ -46,7 +48,9 @@ _Generated 2026-06-21T18:28:04Z · 13 games · significant deviations only_
 - **COL** [selected] — Colorado Rockies selected the contract of RHP John Brebbia from Albuquerque Isotopes.
 - **BAL** [IL] — Baltimore Orioles placed C Adley Rutschman on the 7-day injured list retroactive to June 19, 2026. Concussion.
 - **BAL** [recalled] — Baltimore Orioles recalled CF Michael Siani from Norfolk Tides.
+- **LAA** [outrighted] — Los Angeles Angels sent 1B Trey Mancini outright to Salt Lake Bees.
 - **ATL** [TRADE] — Washington Nationals traded RHP Tyler Schoff to Atlanta Braves.
+- **ATL** [outrighted] — Atlanta Braves sent C Sandy León outright to Gwinnett Stripers.
 - **SD** [activated] — San Diego Padres activated RHP Ron Marinaccio.
 - **SD** [DFA] — San Diego Padres designated 1B Nick Solak for assignment.
 - **SD** [IL] — San Diego Padres activated DH Miguel Andujar from the 10-day injured list.
@@ -58,20 +62,26 @@ _Generated 2026-06-21T18:28:04Z · 13 games · significant deviations only_
 _Suppressed 9 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TEX @ MIA** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **PHI @ WSH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **HOU @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIL @ CIN** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAD @ MIN** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **AZ @ STL** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **BOS @ COL** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **BAL @ LAA** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **BAL @ LAA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **ATL @ SD** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **NYY** Jake Bird — 2 apps / 36 pitches over last 3 games — monitor
+- **DET** Will Vest — 2 apps / 36 pitches over last 3 games — monitor
+- **KC** Matt Strahm — 2 apps / 38 pitches over last 3 games — monitor
+- **TEX** Jakob Junis — 2 apps / 46 pitches over last 3 games — monitor
 - **MIA** Cade Gibson — 2 apps / 46 pitches over last 3 games — monitor
+- **HOU** Steven Okert — 2 apps / 46 pitches over last 3 games — monitor
+- **MIL** Chad Patrick — threw 40 pitches last night — likely unavailable
+- **CWS** Seranthony Domínguez — 2 apps / 45 pitches over last 3 games — monitor
+- **AZ** Kevin Ginkel — 2 apps / 41 pitches over last 3 games — monitor
+- **AZ** Ryan Thompson — 2 apps / 36 pitches over last 3 games — monitor
+- **STL** Matt Svanson — 2 apps / 40 pitches over last 3 games — monitor
+- **ATL** Reynaldo López — threw 58 pitches last night — likely unavailable
+- **SD** Lucas Giolito — threw 66 pitches last night — likely unavailable
+- **SD** Yuki Matsui — 2 apps / 51 pitches over last 3 games — monitor
 - **SD** Jason Adam — 2 apps / 39 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
@@ -79,16 +89,22 @@ _Suppressed 9 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - NYY @ DET — NYY faces LHP (Framber Valdez)
 - KC @ TB — TB faces RHP (Michael Wacha)
 - KC @ TB — KC faces RHP (Drew Rasmussen)
+- TEX @ MIA — MIA faces RHP (Kumar Rocker)
 - TEX @ MIA — TEX faces RHP (Tyler Phillips)
 - PHI @ WSH — PHI faces LHP (Foster Griffin)
 - HOU @ TOR — TOR faces RHP (Hunter Brown)
 - CHC @ NYM — NYM faces LHP (Shota Imanaga)
 - CHC @ NYM — CHC faces RHP (Kodai Senga)
 - MIL @ CIN — MIL faces RHP (Brady Singer)
+- LAD @ MIN — MIN faces LHP (Eric Lauer)
 - LAD @ MIN — LAD faces RHP (Zebby Matthews)
 - CLE @ CWS — CWS faces RHP (Gavin Williams)
 - CLE @ CWS — CLE faces LHP (Anthony Kay)
+- AZ @ STL — STL faces RHP (Merrill Kelly)
 - AZ @ STL — AZ faces RHP (Andre Pallante)
+- BOS @ COL — COL faces LHP (Jake Bennett)
 - BOS @ COL — BOS faces RHP (Ryan Feltner)
+- BAL @ LAA — LAA faces RHP (Kyle Bradish)
+- BAL @ LAA — BAL faces LHP (Sam Aldegheri)
 - ATL @ SD — SD faces RHP (Grant Holmes)
 
