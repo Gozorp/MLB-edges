@@ -2128,7 +2128,8 @@ async function _advPitcherFill(el, pid, name){
       window.__advSplits[pid] = out;
     }
     var d = window.__advSplits[pid];
-    el.innerHTML = '<span class="adv-k">SEASON PLATOON SPLITS (statsapi &middot; traditional &mdash; per-split Statcast is the July ticket)</span>'
+    el.innerHTML = _bpRichBlock(pid)
+      + '<span class="adv-k">SEASON PLATOON SPLITS (statsapi &middot; traditional &mdash; per-split Statcast is the July ticket)</span>'
       + '<table class="adv-split-tbl"><thead><tr><th></th><th>BAA</th><th>OBP</th><th>SLG</th><th>OPS</th><th>K%</th><th>BB%</th><th>TBF</th></tr></thead><tbody>'
       + _advSplitRow("vs LHB", d.vl) + _advSplitRow("vs RHB", d.vr)
       + '</tbody></table>';
@@ -2205,6 +2206,95 @@ function _bpFadeChip(pid){
     + ", reaches 20+ pitches " + Math.round(p.deep_rate * 100) + "% of the time. Offline shadow feature \u2014 NOT a model input.";
   return '<span title="' + tip.replace(/"/g, "&quot;") + '" style="border:1px solid ' + col + ';border-radius:3px;color:' + col
     + ';padding:0 5px;font-size:0.6rem;font-weight:700;letter-spacing:.3px;">' + lab + '</span>';
+}
+
+// --- Bullpen reliever: headshot, workload-by-pid lookup, availability tier,
+//     and a rich profile drawer mirroring the batter Statcast profile. ---
+function _mlbHeadshot(pid, size){
+  if (!pid) return '';
+  var s = size || 48;
+  return '<img src="https://midfield.mlbstatic.com/v1/people/' + pid + '/spots/' + s + '" '
+    + 'width="' + s + '" height="' + s + '" loading="lazy" '
+    + 'onerror="this.style.visibility=\'hidden\';" '
+    + 'style="border-radius:50%;vertical-align:middle;background:rgba(255,255,255,0.06);object-fit:cover;" alt="">';
+}
+function _bpReliever(pid){
+  // Find a reliever's live workload record (rest/consec/p72h/LI/flag) by pid
+  // across all teams in the bullpen_meta sidecar.
+  try {
+    var bm = window.__bullpenMeta;
+    if (!bm || !bm.teams || pid == null) return null;
+    var want = String(pid);
+    for (var k in bm.teams){
+      var rs = (bm.teams[k] && bm.teams[k].top_relievers) || [];
+      for (var i=0;i<rs.length;i++){ if (String(rs[i].pitcher_id) === want) return rs[i]; }
+    }
+  } catch(_e){}
+  return null;
+}
+function _bpArmTier(r){
+  // Availability/fatigue roll-up per reliever (display-only; NOT a model input).
+  if (!r) return "NORMAL";
+  var fl = r.fatigue_flag || "";
+  if (r.available_today === false || fl === "B2B2B" || fl === "OVERWORKED"
+      || (r.consecutive_days||0) >= 3) return "GASSED";
+  if (fl === "B2B" || (r.consecutive_days||0) >= 2
+      || (r.pitches_72h||0) >= 45 || (r.rest_days||0) === 0) return "STRAINED";
+  if ((r.rest_days||0) >= 3 && (r.pitches_72h||0) <= 15) return "FRESH";
+  return "NORMAL";
+}
+function _bpArmTierColor(t){
+  if (t === "FRESH") return "#2ea043";
+  if (t === "STRAINED") return "#b76b00";
+  if (t === "GASSED") return "#b02a2a";
+  return "#888";
+}
+function _bpArmTierChip(r){
+  var t = _bpArmTier(r);
+  var c = _bpArmTierColor(t);
+  var tip = "Availability tier — rest " + (r&&r.rest_days!=null?r.rest_days+"d":"?")
+    + ", consec " + (r&&r.consecutive_days!=null?r.consecutive_days:"?")
+    + ", " + (r&&r.pitches_72h!=null?r.pitches_72h:"?") + "p/72h. Display-only roll-up, not a model input.";
+  return '<span title="' + tip.replace(/"/g,"&quot;") + '" style="border:1px solid ' + c
+    + ';border-radius:3px;color:' + c + ';padding:0 5px;font-size:0.6rem;font-weight:700;letter-spacing:.3px;white-space:nowrap;">'
+    + t + '</span>';
+}
+function _bpRichBlock(pid){
+  // Rich reliever profile (headshot + live workload + durability), shown in the
+  // click-drawer above the splits. Returns '' for non-tracked pitchers (e.g. SP).
+  var rel = _bpReliever(pid);
+  var prof = _bpProfile(pid);
+  if (!rel && !prof) return '';
+  var head = _mlbHeadshot(pid, 56);
+  var name = (rel && rel.name) || (prof && prof.name) || '';
+  var tierChip = rel ? _bpArmTierChip(rel) : '';
+  var rows = '';
+  if (rel){
+    rows += '<div class="adv-grid">'
+      + _advCell("REST", (rel.rest_days!=null?rel.rest_days+"d":"&mdash;"))
+      + _advCell("CONSEC", (rel.consecutive_days!=null?rel.consecutive_days:"&mdash;"))
+      + _advCell("P/72H", (rel.pitches_72h!=null?rel.pitches_72h:"&mdash;"))
+      + _advCell("LAST APP", (rel.pitches_last_appearance!=null?rel.pitches_last_appearance+"p":"&mdash;"))
+      + _advCell("LI (L3)", (rel.avg_leverage_last_3!=null?Number(rel.avg_leverage_last_3).toFixed(2):"&mdash;"))
+      + _advCell("FLAG", _advEsc(rel.fatigue_flag||"&mdash;"))
+      + '</div>';
+  }
+  if (prof){
+    rows += '<div class="adv-grid" style="margin-top:4px;">'
+      + _advCell("DURABILITY", _advEsc(prof.susceptibility||"&mdash;"))
+      + _advCell("OUTINGS", (prof.n_app!=null?prof.n_app:"&mdash;"))
+      + _advCell("OUT-OF-BREATH", (prof.oob_rate!=null?Math.round(prof.oob_rate*100)+"%":"&mdash;"))
+      + _advCell("20+ PITCH", (prof.deep_rate!=null?Math.round(prof.deep_rate*100)+"%":"&mdash;"))
+      + _advCell("LATE VELO LOSS", (prof.velo_late!=null?Number(prof.velo_late).toFixed(1)+" mph":"&mdash;"))
+      + '</div>'
+      + '<div class="muted" style="font-size:0.6rem;margin-top:3px;">Within-appearance durability (offline shadow feature — NOT a model input).</div>';
+  }
+  return '<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:6px;">'
+    + (head ? '<div style="flex:0 0 auto;">' + head + '</div>' : '')
+    + '<div style="flex:1 1 auto;min-width:0;">'
+    +   '<div style="font-weight:700;margin-bottom:3px;">' + _advEsc(name) + ' ' + tierChip + '</div>'
+    +   rows
+    + '</div></div>';
 }
 
 function gradeClass(g) {
@@ -6040,9 +6130,13 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
   if (!relievers.length) {
     return `<div class="muted" style="font-size:0.82rem;">${teamLabel}: bullpen list empty.</div>`;
   }
-  let html = `<table style="width:100%;font-size:0.82rem;border-collapse:collapse;margin-top:0.3rem;">` +
+  const _ct = (teamBlock.team_summary && teamBlock.team_summary.ceiling_tier) || "NORMAL";
+  const _ctColor = _bullpenTierColor(_ct);
+  let html = `<div style="margin:0.2rem 0 0.15rem;"><span title="Team bullpen ceiling tier (7-day workload roll-up)" style="border:1px solid ${_ctColor};color:${_ctColor};border-radius:3px;padding:0.05rem 0.45rem;font-size:0.66rem;font-weight:700;letter-spacing:0.05em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">PEN: ${_ct}</span></div>` +
+             `<table style="width:100%;font-size:0.82rem;border-collapse:collapse;margin-top:0.3rem;">` +
              `<thead><tr style="border-bottom:1px solid var(--border,#444);">` +
              `<th style="text-align:left;padding:0.2rem 0.3rem;">Pitcher</th>` +
+             `<th style="text-align:left;padding:0.2rem 0.3rem;">Tier</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">Rest</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">Consec</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">P/72h</th>` +
@@ -6054,7 +6148,8 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
     const availStyle = r.available_today ? "" : "opacity:0.55;text-decoration:line-through;";
     const displayName = r.name || `#${r.pitcher_id}`;
     html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);${availStyle}">` +
-            `<td style="padding:0.2rem 0.3rem;"><span class="adv-name-p" data-pid="${r.pitcher_id || ""}" data-pn="${r.name || ""}">${displayName}</span></td>` +
+            `<td style="padding:0.2rem 0.3rem;white-space:nowrap;">${_mlbHeadshot(r.pitcher_id, 22)} <span class="adv-name-p" data-pid="${r.pitcher_id || ""}" data-pn="${r.name || ""}">${displayName}</span></td>` +
+            `<td style="padding:0.2rem 0.3rem;">${_bpArmTierChip(r)}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.rest_days}d</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.consecutive_days}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
