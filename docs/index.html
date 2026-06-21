@@ -1440,6 +1440,43 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     font-variant-numeric: tabular-nums;
   }
   .adv-split-tbl th:first-child, .adv-split-tbl td:first-child{ text-align: left; }
+
+  /* ===== Slate game OVERLAY drawer — native <dialog>, browser top layer (2026-06-21).
+     Top-layer rendering is immune to ancestor transform/overflow/stacking, so the
+     right-side slide-out anchors to the viewport reliably (desktop ≈33%, mobile full). */
+  #game-dialog{
+    position:fixed; inset:0 0 0 auto; margin:0;
+    width:clamp(360px,33vw,720px); max-width:100vw;
+    height:100vh; max-height:100vh;
+    border:none; border-left:1px solid var(--border);
+    background:var(--bg); color:var(--text);
+    padding:2.7rem 1.1rem 2rem 1.1rem;
+    overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;
+    box-shadow:-12px 0 44px rgba(0,0,0,.55);
+  }
+  #game-dialog::backdrop{ background:rgba(0,0,0,.55); -webkit-backdrop-filter:blur(1.5px); backdrop-filter:blur(1.5px); }
+  #game-dialog[open]{ animation:gdSlideIn .26s cubic-bezier(.4,0,.2,1); }
+  @keyframes gdSlideIn{ from{ transform:translateX(100%); } to{ transform:translateX(0); } }
+  @media (max-width:720px){ #game-dialog{ width:100vw; padding-top:3rem; } }
+  .drawer-close{
+    position:fixed; top:.5rem; right:.6rem; z-index:5;
+    width:2.1rem; height:2.1rem; line-height:1; text-align:center;
+    border:1px solid var(--border); border-radius:8px; cursor:pointer;
+    background:var(--bg-elev); color:var(--text); font-size:1.3rem; font-weight:700;
+  }
+  .drawer-close:hover{ color:var(--accent); border-color:var(--accent); }
+  /* In-drawer responsive fallbacks: stack the two-column layouts + scroll wide tables */
+  #game-dialog .gp-grid{ grid-template-columns:1fr !important; }
+  #game-dialog .gp-team{ border-right:none !important; border-bottom:1px solid var(--border); }
+  #game-dialog table{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
+  #game-dialog .gp-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  /* Mobile Statcast profile + dense tables */
+  @media (max-width:720px){
+    .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
+    .adv-drawer{ font-size:.78rem; padding:8px 9px; }
+    .adv-split-tbl{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; white-space:nowrap; }
+    .adv-split-tbl th, .adv-split-tbl td{ padding:3px 7px; }
+  }
   </style>
 </head>
 <body>
@@ -7444,24 +7481,76 @@ function _theoChances(r){
 }
 // ===== end Theoretical chances =============================================
 
+// ===== Slate game OVERLAY — native <dialog> in the browser top layer =====
+// 2026-06-21: replaces the inline drop-down with a right-side slide-out drawer.
+// Using <dialog>.showModal() puts the panel in the TOP LAYER, which is immune to
+// ancestor `transform`/overflow/stacking issues (the bug that broke the first
+// attempt). Each game's already-rendered content is MOVED into the dialog on
+// open and moved back on close, so all existing fill/live-tracker/chart logic
+// keeps working (the chart is found by global id, the tracker by global
+// attribute selector, the rest is queried against the dialog `host`).
+function _getGameDialog() {
+  var d = document.getElementById("game-dialog");
+  if (!d) {
+    d = document.createElement("dialog");
+    d.id = "game-dialog";
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "drawer-close";
+    btn.setAttribute("aria-label", "Close"); btn.innerHTML = "&times;";
+    btn.addEventListener("click", function () { _closeGameDrawer(); });
+    var body = document.createElement("div"); body.className = "drawer-body";
+    d.appendChild(btn); d.appendChild(body);
+    document.body.appendChild(d);
+    d.addEventListener("cancel", function (e) { e.preventDefault(); _closeGameDrawer(); }); // ESC
+    d.addEventListener("click", function (e) { if (e.target === d) _closeGameDrawer(); });   // backdrop
+  }
+  return d;
+}
+function _openGameDrawer(i) {
+  var row = document.getElementById("details-" + i);
+  var td = row && row.querySelector(":scope > td");
+  if (!td) return null;
+  var dlg = _getGameDialog();
+  var body = dlg.querySelector(".drawer-body");
+  while (body.firstChild) body.removeChild(body.firstChild);
+  while (td.firstChild) body.appendChild(td.firstChild);   // move content into the top layer
+  row.classList.add("open");
+  window.__openDrawerRow = i;
+  if (!dlg.open) { try { dlg.showModal(); } catch (_) { dlg.setAttribute("open", ""); } }
+  body.scrollTop = 0;
+  return body;
+}
+function _closeGameDrawer() {
+  var dlg = document.getElementById("game-dialog");
+  var i = window.__openDrawerRow;
+  if (i != null) {
+    var row = document.getElementById("details-" + i);
+    var td = row && row.querySelector(":scope > td");
+    var body = dlg && dlg.querySelector(".drawer-body");
+    if (td && body) { while (body.firstChild) td.appendChild(body.firstChild); } // move back
+    if (row) row.classList.remove("open");
+    var chev = document.getElementById("chev-" + i);
+    if (chev) { chev.classList.remove("open"); chev.textContent = "▸"; }
+    try { _ltStopPoller(i); } catch (_) {}
+  }
+  window.__openDrawerRow = null;
+  if (dlg && dlg.open) { try { dlg.close(); } catch (_) { dlg.removeAttribute("open"); } }
+}
+
 async function toggleNarrative(i) {
   const row  = document.getElementById("details-" + i);
   const chev = document.getElementById("chev-" + i);
   if (!row || !chev) return;
-  const open = row.classList.toggle("open");
-  chev.classList.toggle("open", open);
-  chev.textContent = open ? "▾" : "▸";
+  // Tapping the already-open game closes it; otherwise close any other open one.
+  if (window.__openDrawerRow === i) { _closeGameDrawer(); return; }
+  if (window.__openDrawerRow != null) _closeGameDrawer();
+  chev.classList.add("open"); chev.textContent = "▾";
 
-  if (!open) {
-    // Stop the live poller for this row when collapsed — saves bandwidth and
-    // request budget against the MLB Stats API.
-    try { _ltStopPoller(i); } catch (_) {}
-    return;
-  }
+  // Move this game's content into the top-layer drawer; query it via `host`.
+  const host = _openGameDrawer(i) || row;
 
-  // Assign a unique ID to the canvas in this row's expanded panel and kick off
-  // chart rendering — fires in parallel with the preview fetch.
-  const canvasEl = row.querySelector("[data-winprob-canvas]");
+  // Assign a unique ID to the canvas and kick off chart rendering.
+  const canvasEl = host.querySelector("[data-winprob-canvas]");
   if (canvasEl && !canvasEl.id) {
     canvasEl.id = "winprob-canvas-" + i;
     const r = (window.__slate.rows || [])[i];
@@ -7471,7 +7560,7 @@ async function toggleNarrative(i) {
 
   // Theoretical chances (HYPOTHETICAL) — compute once per game on expand.
   try {
-    const _ts = row.querySelector("[data-theo-slot] .theo-body");
+    const _ts = host.querySelector("[data-theo-slot] .theo-body");
     if (_ts && _ts.dataset.filled !== "1") {
       const _tr = (window.__slate.rows || [])[i];
       const _tp = (_tr && _tr.matchup ? _tr.matchup : "").split(/\s*@\s*/);
@@ -7493,7 +7582,7 @@ async function toggleNarrative(i) {
   } catch (e) { console.warn("live tracker start failed:", e); }
 
   // Lazy-load the game preview if we haven't already
-  const placeholder = row.querySelector(".preview-placeholder");
+  const placeholder = host.querySelector(".preview-placeholder");
   if (!placeholder || placeholder.dataset.loaded === "1") return;
   const r = (window.__slate.rows || [])[i];
   if (!r) return;
