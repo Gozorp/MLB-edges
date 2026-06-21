@@ -7508,6 +7508,36 @@ function _theoChances(r){
 // ===== end Theoretical chances =============================================
 
 // ===== Slate drawer helpers (2026-06-21) — slide-out overlay, not inline =====
+// A position:fixed drawer is anchored to the nearest TRANSFORMED ancestor, not
+// the viewport. The slate sits inside .accordion-body-inner whose reveal
+// animation leaves a transform (translateY) that even `!important` CSS can't
+// beat (running animations win). So neutralize ancestor transforms inline (incl.
+// animation/filter/perspective) on open and restore them on close.
+var _txKilled = [];
+function _killAncestorTransforms(el){
+  var p = el && el.parentElement;
+  while (p && p !== document.body && p !== document.documentElement){
+    var cs = getComputedStyle(p);
+    if ((cs.transform && cs.transform !== "none") || cs.perspective !== "none" ||
+        (cs.filter && cs.filter !== "none") || (cs.willChange || "").indexOf("transform") >= 0){
+      p.style.setProperty("transform", "none", "important");
+      p.style.setProperty("animation", "none", "important");
+      p.style.setProperty("perspective", "none", "important");
+      p.style.setProperty("filter", "none", "important");
+      _txKilled.push(p);
+    }
+    p = p.parentElement;
+  }
+}
+function _restoreAncestorTransforms(){
+  _txKilled.forEach(function(p){
+    p.style.removeProperty("transform");
+    p.style.removeProperty("animation");
+    p.style.removeProperty("perspective");
+    p.style.removeProperty("filter");
+  });
+  _txKilled = [];
+}
 function _closeAllDrawers(){
   document.querySelectorAll(".details-row.open").forEach(function(dr){
     var j = (dr.id || "").replace("details-", "");
@@ -7517,10 +7547,13 @@ function _closeAllDrawers(){
     try { _ltStopPoller(j); } catch (_) {}
   });
   document.body.classList.remove("drawer-open");
+  _restoreAncestorTransforms();
 }
 function _ensureDrawerChrome(row){
   var td = row.querySelector(":scope > td");
   if (!td) return;
+  _restoreAncestorTransforms();      // reset any prior kill (e.g. switching games)
+  _killAncestorTransforms(td);       // anchor THIS drawer to the viewport
   if (!td.querySelector(".drawer-close")){
     var x = document.createElement("button");
     x.type = "button"; x.className = "drawer-close"; x.setAttribute("aria-label", "Close");
