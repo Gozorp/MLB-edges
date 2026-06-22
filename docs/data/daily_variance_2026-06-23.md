@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-23
-_Generated 2026-06-22T16:00:25Z · 15 games · significant deviations only_
+_Generated 2026-06-22T18:26:01Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TB** [IL] — Tampa Bay Rays activated RHP Michael Grove from the 60-day injured list.
