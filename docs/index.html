@@ -4552,9 +4552,9 @@ function _formatGamePreviewUpcoming(preview) {
             }
             let _h = hdr;
             _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.4rem;">${preview.awayName}</div>`;
-            _h += _bullpenFatigueTable(aB, preview.awayName);
+            _h += _bullpenFatigueTable(aB, preview.awayName, preview.awayBullpenFull || preview.awayBullpen);
             _h += `<div style="font-size:0.8rem;font-weight:bold;margin-top:0.5rem;">${preview.homeName}</div>`;
-            _h += _bullpenFatigueTable(hB, preview.homeName);
+            _h += _bullpenFatigueTable(hB, preview.homeName, preview.homeBullpenFull || preview.homeBullpen);
             return _h;
           } catch (_e_bp_panel) { return `<div class="muted" style="font-size:0.78rem;">bullpen fatigue unavailable</div>`; }
         })()}
@@ -6253,7 +6253,7 @@ function _bullpenTeamNarrative(teamBlock, teamLabel) {
   return html;
 }
 
-function _bullpenFatigueTable(teamBlock, teamLabel) {
+function _bullpenFatigueTable(teamBlock, teamLabel, rosterArms) {
   if (!teamBlock || teamBlock.unavailable) {
     return `<div class="muted" style="font-size:0.82rem;">${teamLabel}: no recent bullpen activity in the lookback window.</div>`;
   }
@@ -6261,6 +6261,19 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
   if (!relievers.length) {
     return `<div class="muted" style="font-size:0.82rem;">${teamLabel}: bullpen list empty.</div>`;
   }
+  // Season ERA per reliever, cross-referenced by name from the roster fetch
+  // (bullpen_meta has no ERA; the statsapi roster arms do — {name, era, k9}).
+  const _norm = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z ]/g, "").trim();
+  const _eraByName = {};
+  (rosterArms || []).forEach(function (a) {
+    if (a && a.name) { const e = parseFloat(a.era); if (isFinite(e)) _eraByName[_norm(a.name)] = e; }
+  });
+  const _eraCell = (name) => {
+    const e = _eraByName[_norm(name)];
+    if (e == null || !isFinite(e)) return `<span class="muted">—</span>`;
+    const c = e < 3.0 ? "#2ea043" : (e <= 4.5 ? "var(--text)" : "#f85149");
+    return `<span style="color:${c};font-variant-numeric:tabular-nums;">${e.toFixed(2)}</span>`;
+  };
   const _ct = (teamBlock.team_summary && teamBlock.team_summary.ceiling_tier) || "NORMAL";
   const _ctColor = _bullpenTierColor(_ct);
   let html = `<div style="margin:0.2rem 0 0.15rem;"><span title="Team bullpen ceiling tier (7-day workload roll-up)" style="border:1px solid ${_ctColor};color:${_ctColor};border-radius:3px;padding:0.05rem 0.45rem;font-size:0.66rem;font-weight:700;letter-spacing:0.05em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">PEN: ${_ct}</span></div>` +
@@ -6268,6 +6281,7 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
              `<thead><tr style="border-bottom:1px solid var(--border,#444);">` +
              `<th style="text-align:left;padding:0.2rem 0.3rem;">Pitcher</th>` +
              `<th style="text-align:left;padding:0.2rem 0.3rem;">Tier</th>` +
+             `<th style="text-align:right;padding:0.2rem 0.3rem;" title="Season ERA">ERA</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">Rest</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">Consec</th>` +
              `<th style="text-align:right;padding:0.2rem 0.3rem;">P/72h</th>` +
@@ -6281,6 +6295,7 @@ function _bullpenFatigueTable(teamBlock, teamLabel) {
     html += `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);${availStyle}">` +
             `<td style="padding:0.2rem 0.3rem;white-space:nowrap;">${_mlbHeadshot(r.pitcher_id, 22)} <span class="adv-name-p" data-pid="${r.pitcher_id || ""}" data-pn="${r.name || ""}">${displayName}</span></td>` +
             `<td style="padding:0.2rem 0.3rem;">${_bpArmTierChip(r)}</td>` +
+            `<td style="padding:0.2rem 0.3rem;text-align:right;">${_eraCell(r.name)}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.rest_days}d</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.consecutive_days}</td>` +
             `<td style="padding:0.2rem 0.3rem;text-align:right;">${r.pitches_72h}</td>` +
