@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-23
-_Generated 2026-06-22T21:00:36Z · 15 games · significant deviations only_
+_Generated 2026-06-22T21:44:17Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **HOU** [status] — Houston Astros placed RHP Bryan Abreu on the restricted list.
@@ -56,6 +56,7 @@ _Generated 2026-06-22T21:00:36Z · 15 games · significant deviations only_
 - **LAA** [DFA] — Los Angeles Angels designated 3B Nick Madrigal for assignment.
 - **LAA** [IL] — Los Angeles Angels activated DH Jorge Soler from the 10-day injured list.
 - **ATL** [outrighted] — Atlanta Braves sent C Sandy León outright to Gwinnett Stripers.
+- **ATL** [signed] — Atlanta Braves signed free agent C Sandy León to a minor league contract.
 - **SD** [DFA] — San Diego Padres designated 1B Nick Solak for assignment.
 - **SD** [IL] — San Diego Padres activated DH Miguel Andujar from the 10-day injured list.
 - **ATH** [DFA] — Athletics designated RHP Scott Barlow for assignment.
@@ -70,11 +71,9 @@ _Generated 2026-06-22T21:00:36Z · 15 games · significant deviations only_
 _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **HOU @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TEX @ MIA** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **PHI @ WSH** (home SP Zack Littell): very low K% (13.1% vs lg 22.0)
 - **CHC @ NYM** (home SP Nolan McLean): very high K% (28.1% vs lg 22.0)
-- **BAL @ LAA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **ATL @ SD** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
@@ -82,6 +81,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 
 ## 4 · Lineup / Platoon
 - HOU @ TOR — TOR faces RHP (Peter Lambert)
+- HOU @ TOR — HOU faces RHP (Shane Bieber)
 - SEA @ PIT — PIT faces RHP (George Kirby)
 - SEA @ PIT — SEA faces RHP (Mitch Keller)
 - KC @ TB — TB faces RHP (Luinder Avila)
@@ -104,6 +104,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - BOS @ COL — COL faces RHP (Sonny Gray)
 - BOS @ COL — BOS faces LHP (Sean Sullivan)
 - BAL @ LAA — LAA faces RHP (Shane Baz)
+- BAL @ LAA — BAL faces RHP (Ryan Johnson)
 - ATL @ SD — SD faces RHP (JR Ritchie)
 - ATH @ SF — SF faces RHP (Aaron Civale)
 - ATH @ SF — ATH faces LHP (Robbie Ray)
