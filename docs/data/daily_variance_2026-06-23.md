@@ -1,26 +1,28 @@
 # Daily Variance Report — 2026-06-23
-_Generated 2026-06-22T12:02:33Z · 15 games · significant deviations only_
+_Generated 2026-06-22T16:00:25Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TB** [IL] — Tampa Bay Rays activated RHP Michael Grove from the 60-day injured list.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Michael Grove to Durham Bulls.
 - **TEX** [IL] — Texas Rangers placed RHP Jack Leiter on the 15-day injured list retroactive to June 19, 2026. Right ankle posterior impingement.
 - **TEX** [recalled] — Texas Rangers recalled RHP Jose Corniell from Round Rock Express.
-- **MIA** [IL] — Miami Marlins activated LF Griffin Conine from the 60-day injured list.
-- **MIA** [IL] — Miami Marlins transferred RHP Josh Ekness from the 15-day injured list to the 60-day injured list. Right calf strain.
-- **MIA** [DFA] — Miami Marlins designated 1B Christopher Morel for assignment.
 - **MIA** [IL] — Miami Marlins placed C Liam Hicks on the 10-day injured list retroactive to June 20, 2026. Low back strain.
+- **MIA** [IL] — Miami Marlins activated LF Griffin Conine from the 60-day injured list.
+- **MIA** [DFA] — Miami Marlins designated 1B Christopher Morel for assignment.
+- **MIA** [IL] — Miami Marlins transferred RHP Josh Ekness from the 15-day injured list to the 60-day injured list. Right calf strain.
 - **MIA** [selected] — Miami Marlins selected the contract of C Brian Navarreto from Jacksonville Jumbo Shrimp.
 - **NYY** [IL] — New York Yankees activated C Austin Wells from the 10-day injured list.
-- **NYY** [recalled] — New York Yankees recalled RHP Elmer Rodríguez from Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned RHP Jake Bird to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [recalled] — New York Yankees recalled RHP Elmer Rodríguez from Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned RHP Elmer Rodríguez to Scranton/Wilkes-Barre RailRiders.
-- **MIN** [IL] — Minnesota Twins activated LHP Kendry Rojas from the 15-day injured list.
 - **MIN** [DFA] — Minnesota Twins designated RHP Justin Lawrence for assignment.
+- **MIN** [IL] — Minnesota Twins activated LHP Kendry Rojas from the 15-day injured list.
 - **CLE** [outrighted] — Cleveland Guardians sent LF George Valera outright to Columbus Clippers.
 - **CWS** [IL] — Chicago White Sox activated RHP Jordan Hicks from the 15-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned RHP Tyler Davis to Charlotte Knights.
+- **CWS** [IL] — Chicago White Sox activated C Kyle Teel from the 60-day injured list.
+- **CWS** [optioned] — Chicago White Sox optioned C Edgar Quero to Charlotte Knights.
 - **AZ** [DFA] — Arizona Diamondbacks designated RHP Yilber Díaz for assignment.
 - **AZ** [selected] — Arizona Diamondbacks selected the contract of RHP Jose Cabrera from Reno Aces.
 - **AZ** [selected] — Arizona Diamondbacks selected the contract of LHP Kohl Drake from Reno Aces.
@@ -32,11 +34,11 @@ _Generated 2026-06-22T12:02:33Z · 15 games · significant deviations only_
 - **ATL** [outrighted] — Atlanta Braves sent C Sandy León outright to Gwinnett Stripers.
 - **SD** [DFA] — San Diego Padres designated 1B Nick Solak for assignment.
 - **SD** [IL] — San Diego Padres activated DH Miguel Andujar from the 10-day injured list.
-- **ATH** [IL] — Athletics transferred RHP Luis Severino from the 15-day injured list to the 60-day injured list. Right shoulder strain.
 - **ATH** [DFA] — Athletics designated RHP Scott Barlow for assignment.
+- **ATH** [IL] — Athletics transferred RHP Luis Severino from the 15-day injured list to the 60-day injured list. Right shoulder strain.
 - **ATH** [optioned] — Athletics optioned SS Alika Williams to Las Vegas Aviators.
-- **ATH** [selected] — Athletics selected the contract of 1B Joey Meneses from Las Vegas Aviators.
 - **ATH** [selected] — Athletics selected the contract of LHP Matt Krook from Las Vegas Aviators.
+- **ATH** [selected] — Athletics selected the contract of 1B Joey Meneses from Las Vegas Aviators.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **NYM** code=ACQ — New York Mets acquired 2B Taylor Darden from the Southern Maryland Blue Crabs of the Atlantic League.
