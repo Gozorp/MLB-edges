@@ -1,6 +1,6 @@
 {
  "date": "2026-06-23",
- "generated_utc": "2026-06-22T21:44:39+00:00",
+ "generated_utc": "2026-06-22T22:51:02+00:00",
  "schema": "v1-statsapi-proxy",
  "method": "CEILING flags (DISPLAY-ONLY): rolling-3-start K%% (CSW proxy) gated vs opponent team K%%. ULTRA>=30%%+whiff-prone opp; ACE>=28%%+K-BB%%>=20; LEAN>=28%%. MatchupNightmare(kill-pitch/Savant)=July. statsapi-only, no new feed.",
  "sps": {
@@ -82,11 +82,11 @@
    "k9": 10.25,
    "xfip": 3.99,
    "opp_k_pct": 23.0,
-   "opp_k_high": false,
+   "opp_k_high": true,
    "league_k_mean": 22.0,
-   "dom_flag": "LEAN",
-   "dom_label": "High-K Lean",
-   "edge": "bat-missing arm; ceiling present, opponent not as whiff-prone",
+   "dom_flag": "ULTRA",
+   "dom_label": "Ultra-Dominant",
+   "edge": "10+ K / 7+ IP lean; hammer K-prop over; high-value DFS captain",
    "csw_proxy": "rolling-3-start K% (~0.85 corr w/ CSW%); statsapi-only Phase 1"
   },
   "Casey Mize": {
@@ -98,7 +98,7 @@
    "season_kbb": 18.9,
    "k9": 8.94,
    "xfip": 3.84,
-   "opp_k_pct": 22.8,
+   "opp_k_pct": 22.7,
    "opp_k_high": false,
    "league_k_mean": 22.0,
    "dom_flag": null,
