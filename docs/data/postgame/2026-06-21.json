@@ -1,0 +1,150 @@
+{
+  "date": "2026-06-21",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-06-22T12:00:00Z",
+  "n_analyzed": 14,
+  "summary": "2026-06-21 delivered 3 wins and 3 losses on 6 staked picks (50% hit rate); the model was directionally correct on 8 of 13 graded games (62%). Critical burns: BAL crushed LAD 12-1 despite a pre-cap A- PLATINUM CONFIRM while HARD CAP 1 was live (negative edge), and BOS fell 1-3 as the pre-cap A CAP-10 exception failed for the second consecutive time. The NYM@PHI OVERRIDE (PHI 6-2) validated Wheeler+triple-OWNER for a second straight day. Key learning: CAP 1 must force SKIP on any tier, and the pre-cap A rescue of CAP-10 has now failed twice and should be retired without an additional OWNER BvP anchor.",
+  "by_matchup": {
+    "CIN @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-1",
+      "headline": "CIN upset NYY 4-1; model and market both wrong on NYY despite HARD CAP 1 correctly flagging negative edge.",
+      "hypothesis": "HARD CAP 1 fired at -2.86pp (edge outside the [4,15]pp valid range) and HARD CAP 7 collapsed the grade from A- (pre-cap 5) to C (score=1), both pointing away from a stake. Claude correctly SKIPPED. The model direction was also wrong — CIN's Chase Burns dominated NYY's lineup despite F3_swing_take_gap and F5_bullpen_gap signals. The combination of negative edge and directional miss confirms market-absorption was real, not just edge efficiency. Variance vs process is unclear: the signal stack was plausible, but the negative edge was a clean warning.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] fired; model direction also wrong — reinforce that negative-edge PLATINUM picks should be SKIP not just grade-reduction)"
+    },
+    "MIL @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-4",
+      "headline": "MIL won 9-4 convincingly; Claude correctly SKIPped a marginal 53% pick under CAP-10 even though the direction was right.",
+      "hypothesis": "HARD CAP 10 fired on pick_prob=0.528 (bottom bucket) and only F3_swing_take_gap=3006.5 fired — no F1, F2, or SP edge signal. CAP-10 reduced the grade to C (score=0) and Claude skipped. MIL won 9-4, a decisive margin. This is the system working correctly: a single-F bottom-bucket pick that happened to win big, but a 53% model probability doesn't justify staking. Variance on a low-confidence pick happening to win is not a learning event. No process failure.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite; F3_swing_take_gap (single signal fired — CAP-10 correctly blocked despite directionally correct outcome)"
+    },
+    "WSH @ TB": {
+      "verdict": "WIN",
+      "model_pick": "TB ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "TB edged WSH 4-3 in the third consecutive WSH@TB matchup; Claude CONFIRMed GOLD and it delivered.",
+      "hypothesis": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0238, reducing the pre-cap B+ to B- (score=1). Claude noted the consecutive-day coin-flip pattern but still CONFIRMed as a low-stake GOLD on a positive edge (+9.56pp), Stage 1/2 agree, and F5_bullpen_gap=+0.87. TB won 4-3 in a 1-run game. The CAP 7 dampened exposure appropriately. Process-correct WIN; the bullpen gap signal held despite the cap firing. No pattern change warranted.",
+      "signals_to_recheck": "hl_bullpen_xwoba_gap ([HARD CAP 7] fired but TB won — CAP 7 correctly reduced stake, not eliminated direction; positive edge + Stage agree was sufficient)"
+    },
+    "CHW @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-5",
+      "headline": "DET won 5-4 in another close matchup; Claude CONFIRMed GOLD correctly as OWNER BvP for Carpenter and Greene vs Davis Martin delivered.",
+      "hypothesis": "Stage 1/2 disagree (f5_full_delta=0.1815, Δ=0.18) applied the disagree penalty (-1) but the final grade was B- (score=1) with F5_bullpen_gap=+0.70 and PQI Δ=+3.0. Claude CONFIRMed citing DET OWNERs Carpenter (14PA MEANINGFUL) and Greene (15PA OWNER) vs Davis Martin. DET won 5-4. The Stage 1/2 disagree penalty was conservative but not wrong — DET still won by 1 run, consistent with the reduced-confidence grade. Process-correct WIN; disagree penalty appropriately reduced stake.",
+      "signals_to_recheck": "f5_full_delta (Stage 1/2 disagree Δ=0.18 applied correctly; DET won but by 1 run — disagree penalty calibrated appropriately for a tight result)"
+    },
+    "SF @ MIA": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "MIA edged SF 2-1; Logan Webb pitched well but MIA's 2-run offense was enough to beat SF's staked GOLD pick.",
+      "hypothesis": "The signal stack was positive — F5_bullpen_gap=+0.65, f5_full_delta=0.090 (Stage 1/2 agree), elite SP Logan Webb, hl_bullpen_xwoba_gap=-0.0196 (SF pen better). MIA BvP vs Webb showed all SMALL_SAMPLE with low shrunk OPS. Yet MIA won 2-1 in a low-scoring pitcher's duel. The marginal offensive output on both sides makes this a variance loss: the signals supported SF, the game was a coin-flip 1-run affair where MIA's offense barely cleared the bar. No process failure identifiable — closest to a correct read with a bad dice roll.",
+      "signals_to_recheck": "pen_strain_pick_side (SF had bullpen advantage per hl_gap=-0.0196, but examine if MIA's offense in low-leverage early innings limited the pen-strain signal's effectiveness)"
+    },
+    "CLE @ HOU": {
+      "verdict": "WIN",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "HOU won 2-1 but Claude correctly SKIPped a D-grade pick with extreme f5d=0.348 and single F-signal — the lesson from 06-20 held.",
+      "hypothesis": "This was an exact repeat of 06-20 CLE@HOU (lost 8-1 to Stage 1). Today Stage 1 gave HOU only 20.02% in F5 (f5_full_delta=0.348, largest on slate), PQI AGAINST pick (Δ=-7.5), negative edge (-6.70pp), and grade D. Only F3=4343.4 fired. Claude correctly applied the 06-20 lesson: f5d≥0.18 + single F-signal = SKIP regardless of Stage-2 probability. HOU did win 2-1, but the grade correctly reflected very low model conviction. The skip was right — the win was a 1-run outcome consistent with near-coin-flip territory.",
+      "signals_to_recheck": "f5_full_delta (extreme Δ=0.348 correctly identified as D grade; 06-20 pattern validated again — extreme f5d + single F-signal is structural SKIP signal regardless of direction)"
+    },
+    "STL @ KC": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "12-10",
+      "headline": "STL won 12-10 in a wild high-scoring game; Claude correctly SKIPped a CAP-10 bottom-bucket pick despite directionally correct model.",
+      "hypothesis": "HARD CAP 10 fired on pick_prob=0.549 (bottom bucket), reducing pre-cap B- (score=1) to grade C. The model tier was already SKIP. Only one F-signal (implicitly) and confidence_downgrade=True. Claude SKIPped. STL won 12-10 in an extremely high-variance run-fest. The model direction was correct but a 12-10 game is exactly the type of outcome where marginal 54.9% model probability can flip either way — the SKIP was justified. No process failure.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite (correct skip; 12-10 outcome illustrates the high variance on marginal favorites)"
+    },
+    "SD @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "SD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "TEX won 4-3; HARD CAP 6 correctly flagged edge=+32.2pp as a calibrator hallucination and Claude SKIPped the SD PLATINUM pick.",
+      "hypothesis": "HARD CAP 6 fired at edge=+32.2pp — the calibrator's upper bucket is sparse and claimed +32pp edges are mathematically implausible in MLB closing-line markets. The market priced TEX at 79.4% (fair_prob=0.206 for SD). Stage 1 gave TEX 67.98% in F5 (f5_full_delta=0.208). Claude correctly SKIPped. SD lost 3-4. Both the CAP 6 trigger and the market consensus correctly identified TEX as the heavy directional favorite. Process-correct SKIP; model direction wrong.",
+      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (cap fired correctly; SD lost confirming market was right to price TEX heavily — calibrator upper bucket remains unreliable)"
+    },
+    "PIT @ COL": {
+      "verdict": "WIN",
+      "model_pick": "PIT ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "8-6",
+      "headline": "PIT won 8-6 at Coors Field; Claude's DOWNGRADE to SKIP based on the Coors pattern was directionally wrong for the first time.",
+      "hypothesis": "Model PIT B+ (score=2, F5_bullpen_gap=+1.67). Claude DOWNGRADED to SKIP citing the 06-20 Coors pattern (Skenes lost 2-1 despite F1=6.16). PIT won 8-6. The high-scoring result is exactly what the Coors pattern predicts — but the directional pick still held. Process failure: the Coors pattern was applied as a directional veto rather than a stake-reduction signal. Coors inflates run scoring on BOTH sides; it doesn't reliably flip the direction. Recalibration needed: at Coors with a single-F signal, SKIP is too aggressive — apply 0.5x stake damping instead of a full DOWNGRADE.",
+      "signals_to_recheck": "F5_bullpen_gap (single F-signal at Coors; Coors DOWNGRADE protocol needs recalibration to 0.5x stake-reduce rather than SKIP — directional veto over-fired here)"
+    },
+    "MIN @ ARI": {
+      "verdict": "NO_PICK",
+      "model_pick": "PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-2",
+      "headline": "MIN won 4-2; no pick possible — ARI SP Jose Cabrera had 0 Statcast pitches and failed the 100-pitch xERA minimum.",
+      "hypothesis": "PENDING_SP_DATA hard stop correctly withheld direction. MIN won 4-2 but the absence of Statcast data on Cabrera made any pick structurally unreliable. No pattern change — the data-quality hold is working as designed. MIN would have been the correct directional call in hindsight, but a coinflip on missing data is not a learnable signal.",
+      "signals_to_recheck": "small_sample_SP_True / pending_sp_data (no pick; ARI's Cabrera at 0 Statcast — MIN won, reinforcing that debut/unknown SPs should remain a hard stop)"
+    },
+    "LAA @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "LAA ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-7",
+      "headline": "LAA won 9-7 but Claude correctly SKIPped a dual-cap (CAP 7 + CAP 10) pick with extreme f5d=0.304.",
+      "hypothesis": "Stage 1 gave OAK 77.72% in F5 (f5_full_delta=0.304, second-largest on slate). HARD CAP 7 fired on hl_gap=+0.0022 and HARD CAP 10 on pick_prob=0.527 — dual-cap fire with F1_xera_gap=2.26* (asterisk, thin sample). Claude correctly SKIPped per the extreme f5d + dual-cap rule. LAA won 9-7, a high-scoring game consistent with the Stage 1 divergence from Stage 2. The model direction happened to be right but the caps correctly identified this as structurally too uncertain to stake. Process-correct SKIP.",
+      "signals_to_recheck": "f5_full_delta + [HARD CAP 7] + [HARD CAP 10] (dual-cap correctly fired; LAA won but confidence was too low — dual-cap on high f5d is the right structural block)"
+    },
+    "BAL @ LAD": {
+      "verdict": "LOSS",
+      "model_pick": "LAD ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "12-1",
+      "headline": "BAL demolished LAD 12-1; Claude CONFIRMed PLATINUM despite HARD CAP 1 firing (-4.27pp negative edge) and the market pricing LAD at 72.3%.",
+      "hypothesis": "The model had LAD PLATINUM with pre-cap A- (score=4): F2+F3=7809.5, SP edge (Sheehan), PQI Δ=+16.8, Stage agree — every signal fired. But HARD CAP 1 triggered at -4.27pp negative edge, showing the market had already absorbed all of LAD's modeled advantage. Claude CONFIRMed PLATINUM anyway, reasoning the direction was still correct. BAL won 12-1 in a total blowout. Process failure: HARD CAP 1 on a PLATINUM pick — regardless of the pre-cap score — means the market is confident in the direction AND has priced past the model's edge. The market was right. HARD CAP 1 must be a hard SKIP on any tier.",
+      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] fired; Claude CONFIRMed PLATINUM regardless; LAD lost 12-1 — tighten: CAP 1 = hard SKIP on any tier including PLATINUM; no pre-cap score override)"
+    },
+    "BOS @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "BOS ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-3",
+      "headline": "SEA won 3-1; Claude's pre-cap A exception to HARD CAP-10 failed for the second consecutive time.",
+      "hypothesis": "Pre-cap A (score=5, maximum): F3=3614+SP edge 1.36+PQI Δ=-19.5+Stage agree Δ=0.05+edge=+10.17pp. HARD CAP 10 fired on pick_prob=0.546 (bottom bucket). Claude made an exception citing 'full signal alignment at maximum pre-cap score.' BOS lost 1-3. The exception has now failed twice. The issue: pre-cap score reflects model agreement, but a 54.6% win probability is still a coin-flip, and the market at that level has already absorbed the edge. Process failure: the pre-cap A rescue of CAP-10 is over-firing. It needs an additional anchor (OWNER BvP with meaningful sample, or SP edge ≥1.0 xERA gap) before rescuing.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite (second consecutive CAP-10 rescue attempt that lost; retire pre-cap A exception without OWNER BvP anchor)"
+    },
+    "NYM @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "2-6",
+      "headline": "PHI won 6-2; Claude's OVERRIDE to PHI GOLD on Wheeler+triple-OWNER validated for the second consecutive day.",
+      "hypothesis": "Model had D-grade NYM SKIP (pre_cap=-4, worst on slate). Claude overrode to PHI GOLD citing Zack Wheeler (1.78 xERA gap over Peterson, larger than 06-20's 0.78) + market pricing PHI at 64.46% + three PHI OWNERs vs Peterson (Harper 28PA shrunk 0.886, Bohm 27PA shrunk 0.864, Sosa 11PA shrunk 0.986). PHI won 6-2. Process-correct WIN. This is the Wheeler+OWNER OVERRIDE pattern firing correctly for the second consecutive day against an identical structural setup. The thesis is validated and should be formalized as a standing OVERRIDE trigger.",
+      "signals_to_recheck": "F1_xera_gap (Wheeler xERA advantage 1.78 validated as reliable OVERRIDE anchor for second consecutive day — formalize as standing trigger when combined with market >60% and ≥2 OWNER BvP)"
+    },
+    "TOR @ CHC": {
+      "verdict": "NO_PICK",
+      "model_pick": "N/A",
+      "claude_decision": "NO_DECISION",
+      "final_score": null,
+      "headline": "Game postponed; no analysis possible.",
+      "hypothesis": "TOR@CHC was postponed before first pitch. No model pick was generated and no result is available.",
+      "signals_to_recheck": "N/A (postponed)"
+    }
+  },
+  "patterns_observed": [
+    "HARD CAP 1 (negative_edge_GOLD) must force SKIP on any tier including PLATINUM — BAL@LAD lost 12-1 despite a pre-cap A- PLATINUM CONFIRM with CAP 1 live; the market pricing past the model's edge is a direct signal the advantage has been absorbed. No pre-cap score or tier elevation should override CAP 1.",
+    "Pre-cap A exception to HARD CAP-10 has failed twice (BOS@SEA 06-20 and 06-21): retire the exception unless the game also has an OWNER BvP signal (meaningful sample, shrunk OPS ≥0.800) or a clear SP edge (xERA gap ≥1.0); otherwise pre-cap A is insufficient to rescue a 54-55% bottom-bucket pick.",
+    "Coors Field DOWNGRADE protocol is over-firing as a directional veto — PIT won 8-6 after Claude DOWNGRADED to SKIP; the park inflated both teams' run scoring as expected but did not flip the direction. Recalibrate: at Coors with a single-F signal, apply 0.5x stake damping rather than a full SKIP; reserve the full SKIP for Coors games with pick_prob ≤0.60 AND no secondary F-signal.",
+    "Wheeler+triple-OWNER OVERRIDE pattern validated 2-for-2 (PHI 6-2 on 06-20 and 06-21): formalize as a standing OVERRIDE trigger when home SP has xERA gap ≥1.5 over opposing SP AND market prices home team ≥60% AND ≥2 home OWNER/MEANINGFUL BvP signals vs opposing SP; model D/F-grade on the away team is a confirming signal."
+  ]
+}
