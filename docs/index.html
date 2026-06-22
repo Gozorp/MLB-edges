@@ -1471,11 +1471,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     background:var(--bg-elev); color:var(--text); font-size:1.3rem; font-weight:700;
   }
   .drawer-close:hover{ color:var(--accent); border-color:var(--accent); }
-  /* In-drawer responsive fallbacks: stack the two-column layouts + scroll wide tables */
-  #game-dialog .gp-grid{ grid-template-columns:1fr !important; }
+  /* In-drawer FLUID layout — adapts to the DRAWER's own width (not the viewport),
+     so it fits any display automatically: multi-column on a wide desktop drawer,
+     auto-collapsing to a single column on a phone-width drawer. Nothing may exceed
+     the drawer width; wide tables/charts scroll or scale instead of clipping. */
+  #game-dialog *{ max-width:100%; box-sizing:border-box; }
+  #game-dialog .preview-grid{ grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)) !important; }
+  #game-dialog .gp-grid{ grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)) !important; }
   #game-dialog .gp-team{ border-right:none !important; border-bottom:1px solid var(--border); }
   #game-dialog table{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
-  #game-dialog .gp-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #game-dialog .gp-scroll, #game-dialog .canvas-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
+  #game-dialog canvas{ max-width:100% !important; height:auto !important; }
   /* Mobile Statcast profile + dense tables */
   @media (max-width:720px){
     .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
