@@ -3958,6 +3958,25 @@ function _topBullpenArm(bullpen) {
   return bullpen[0];
 }
 
+// Lineup resolver for the Edge panels: use the posted/live-projected lineup if
+// present, else fall back to the baked window.__ppProj sidecar (same source HR
+// props use). Maps __ppProj fields (season_PA + k_pct) to the pa/so that
+// _batterKProb needs, so the K% lists/matrix render even when the live statsapi
+// projected fetch came back empty for a team (2026-06-22 fix: CHC showed blank).
+function _lineupOrProj(lineup, teamAbbr){
+  if (lineup && lineup.length) return lineup;
+  try{
+    var pp = window.__ppProj && window.__ppProj[teamAbbr];
+    if (!pp || !pp.batters || !pp.batters.length) return lineup || [];
+    return pp.batters.map(function(b){
+      var pa = parseInt(b.season_PA || b.pa || 0) || 0;
+      var kp = parseFloat(b.k_pct);
+      var so = (isFinite(kp) && pa) ? Math.round(kp / 100 * pa) : (parseInt(b.so || 0) || 0);
+      return { name: b.name, pos: b.pos, pa: pa, so: so, k_pct: b.k_pct, _proj: true };
+    });
+  }catch(_){ return lineup || []; }
+}
+
 function renderBullpenEdge(preview) {
   if (!preview) return "";
   // Full opposing bullpens (every tracked arm, leverage-sorted closer-first).
@@ -4027,8 +4046,8 @@ function renderBullpenEdge(preview) {
   return `<div class="preview-card" style="grid-column: 1 / -1;">`
        + `<h5>Bullpen edge <span class="muted" style="font-size:0.78rem;font-weight:normal;">— each hitter's K% vs every opposing reliever (Log5; red = high-K / pitcher edge)</span></h5>`
        + `<div style="display:flex;flex-direction:column;gap:0.9rem;">`
-       +   matrix(preview.awayLineup, homePen, preview.awayName, preview.awayAbbr)
-       +   matrix(preview.homeLineup, awayPen, preview.homeName, preview.homeAbbr)
+       +   matrix(_lineupOrProj(preview.awayLineup, preview.awayAbbr), homePen, preview.awayName, preview.awayAbbr)
+       +   matrix(_lineupOrProj(preview.homeLineup, preview.homeAbbr), awayPen, preview.homeName, preview.homeAbbr)
        + `</div></div>`;
 }
 
@@ -4175,8 +4194,8 @@ function renderLineupEdge(preview) {
        + `<h5>Lineup edge <span class="muted" style="font-size:0.78rem;font-weight:normal;">— composite advantage + per-batter K vs opposing SP</span></h5>`
        + banner
        + `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;">`
-       +   kList(preview.awayLineup, preview.homePitcher, preview.awayName, preview.awayAbbr)
-       +   kList(preview.homeLineup, preview.awayPitcher, preview.homeName, preview.homeAbbr)
+       +   kList(_lineupOrProj(preview.awayLineup, preview.awayAbbr), preview.homePitcher, preview.awayName, preview.awayAbbr)
+       +   kList(_lineupOrProj(preview.homeLineup, preview.homeAbbr), preview.awayPitcher, preview.homeName, preview.homeAbbr)
        + `</div></div>`;
 }
 
