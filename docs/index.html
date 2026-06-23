@@ -1503,8 +1503,14 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
      edge. min-width:0 across the drawer lets items shrink so wide tables scroll internally
      (overflow-x:auto) and text wraps to the drawer width. Harmless on desktop (already fits). */
   #game-dialog *{ min-width:0; }
-  /* Long unbroken tokens (URLs, long names) wrap instead of overflowing. */
-  #game-dialog .narrative, #game-dialog .preview-card, #game-dialog p, #game-dialog li, #game-dialog div{ overflow-wrap:anywhere; }
+  /* Data tables keep their NATURAL width and scroll horizontally (swipe) instead of
+     compressing columns into char-by-char stacks. nowrap cells force the intrinsic
+     width so the table's own overflow-x:auto kicks in within the shrunk card. */
+  #game-dialog table{ width:max-content; }
+  #game-dialog th, #game-dialog td{ white-space:nowrap; }
+  /* Wrap long tokens in PROSE ONLY — never inside table cells (that shreds chips
+     like NORMAL / HOLDS into vertical stacks). */
+  #game-dialog .preview-impact, #game-dialog .narrative > div, #game-dialog li, #game-dialog p{ overflow-wrap:break-word; }
   /* Mobile Statcast profile + dense tables */
   @media (max-width:720px){
     .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
