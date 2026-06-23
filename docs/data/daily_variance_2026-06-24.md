@@ -1,12 +1,14 @@
 # Daily Variance Report — 2026-06-24
-_Generated 2026-06-23T09:47:40Z · 16 games · significant deviations only_
+_Generated 2026-06-23T13:51:30Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIA** [status] — Miami Marlins placed RHP Max Meyer on the bereavement list.
 - **MIA** [recalled] — Miami Marlins recalled RHP Zach Brzykcy from Jacksonville Jumbo Shrimp.
+- **MIA** [signed] — Miami Marlins signed free agent RHP Davidxon Lara to a minor league contract.
 - **CHC** [signed] — Chicago Cubs signed free agent RHP Jhon Cabral to a minor league contract.
 - **CWS** [IL] — Chicago White Sox activated C Kyle Teel from the 60-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned C Edgar Quero to Charlotte Knights.
+- **CWS** [signed] — Chicago White Sox signed free agent C Josiel Veras to a minor league contract.
 - **COL** [signed] — Colorado Rockies signed free agent IF Parker Coddou to a minor league contract.
 - **COL** [IL] — Colorado Rockies activated LF Mickey Moniak from the 10-day injured list.
 - **COL** [optioned] — Colorado Rockies optioned RF Sterlin Thompson to Albuquerque Isotopes.
@@ -29,8 +31,8 @@ _Generated 2026-06-23T09:47:40Z · 16 games · significant deviations only_
 - **MIL** [optioned] — Milwaukee Brewers optioned LHP Drew Rom to Nashville Sounds.
 - **CIN** [IL] — Cincinnati Reds activated RHP Pierce Johnson from the 15-day injured list.
 - **CIN** [DFA] — Cincinnati Reds designated RHP Chris Paddack for assignment.
-- **CIN** [optioned] — Cincinnati Reds optioned RHP Zach Maxwell to Louisville Bats.
 - **CIN** [selected] — Cincinnati Reds selected the contract of RHP Julian Garcia from Louisville Bats.
+- **CIN** [optioned] — Cincinnati Reds optioned RHP Zach Maxwell to Louisville Bats.
 - **LAD** [IL] — Los Angeles Dodgers activated RHP Brock Stewart from the 15-day injured list.
 - **LAD** [optioned] — Los Angeles Dodgers optioned RHP Chayce McDermott to Oklahoma City Comets.
 - **ATL** [signed] — Atlanta Braves signed free agent C Sandy León to a minor league contract.

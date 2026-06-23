@@ -1,15 +1,9 @@
 {
- "generated_utc": "2026-06-23T09:47:52Z",
+ "generated_utc": "2026-06-23T13:51:51Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "STL promoted: Average -> Above Average (eff +0.44, mmr -0.02)",
-  "WSH promoted: Average -> Above Average (eff +0.35, mmr +0.06)",
-  "PHI demoted: Above Average -> Average (eff +0.24, mmr +0.01)",
-  "TOR promoted: Below Average -> Average (eff +0.01, mmr +0.24)",
-  "MIN demoted: Average -> Below Average (eff -0.22, mmr +0.17)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -112,8 +106,6 @@
     "z": 0.457,
     "mmr": -0.021,
     "eff": 0.436,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs NYM (06-11)",
      "upset L vs KC (06-18)"
@@ -146,8 +138,6 @@
     "z": 0.291,
     "mmr": 0.063,
     "eff": 0.353,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs SF (06-10)",
      "upset L vs KC (06-17)"
@@ -178,8 +168,6 @@
     "z": 0.224,
     "mmr": 0.013,
     "eff": 0.238,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs MIL (06-13)",
      "upset L vs NYM (06-18)"
@@ -274,8 +262,6 @@
     "z": -0.226,
     "mmr": 0.237,
     "eff": 0.012,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs NYY (06-12)"
     ]
@@ -319,9 +305,7 @@
     "rationale": "38-42 (.475), -19 run differential -- a negative run margin. Results running above tier expectation (MMR +0.17).",
     "z": -0.381,
     "mmr": 0.165,
-    "eff": -0.215,
-    "movement": "demoted",
-    "moved_from": "Average"
+    "eff": -0.215
    },
    {
     "name": "Baltimore Orioles",
