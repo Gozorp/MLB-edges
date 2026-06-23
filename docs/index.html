@@ -1482,6 +1482,13 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   #game-dialog table{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
   #game-dialog .gp-scroll, #game-dialog .canvas-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
   #game-dialog canvas{ max-width:100% !important; height:auto !important; }
+  /* MC incoherence chip (2026-06-22, display-only) */
+  .mc-chip{ display:inline-block; margin-left:6px; padding:1px 6px; border-radius:9px;
+    font-size:0.64rem; font-weight:600; font-family:ui-monospace,Menlo,monospace;
+    vertical-align:middle; white-space:nowrap; border:1px solid transparent; cursor:help; }
+  .mc-neutral{ color:#8b98a5; border-color:#2a313a; background:rgba(139,152,165,0.08); }
+  .mc-amber{ color:#d9a23a; border-color:#5a4620; background:rgba(217,162,58,0.13); }
+  .mc-red{ color:#e06666; border-color:#5a2727; background:rgba(224,102,102,0.15); }
   /* Mobile Statcast profile + dense tables */
   @media (max-width:720px){
     .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
@@ -2405,6 +2412,31 @@ function favTeamProb(matchup, homeSideProb) {
   const favTeam = f >= 0.5 ? home : away;
   const favProb = f >= 0.5 ? f : (1 - f);
   return `<strong>${favTeam}</strong> ${(favProb * 100).toFixed(1)}%`;
+}
+
+// _mcChip (2026-06-22, DISPLAY-ONLY / freeze-safe): surfaces the gap between the
+// headline pick-side probability (pick_prob/p_model) and the Monte-Carlo engine's
+// pick-side probability (pred_winp_mc — already pick-perspective, convention
+// verified against the OOS ledger 2026-06-22). Purely informational so an operator
+// is never blind to extreme internal disagreements (e.g. a 91% headline hiding a
+// 51% MC coin-flip, as in BOS@COL on 6/22). Backtest note: disagreement is NOT a
+// danger signal (it historically wins MORE), so this NEVER touches staking, tiers,
+// grades, predictions, or the ledger — it is a confidence cross-check only.
+function _mcChip(r){
+  try{
+    var pp = parseFloat(r.pick_prob || r.p_model);
+    var mc = parseFloat(r.pred_winp_mc);
+    if (!isFinite(pp) || !isFinite(mc)) return "";
+    var gap = Math.abs(pp - mc);
+    var gapPP = Math.round(gap * 100);
+    var cls = gap > 0.25 ? "mc-chip mc-red" : (gap > 0.12 ? "mc-chip mc-amber" : "mc-chip mc-neutral");
+    var tip = "Monte-Carlo engine: " + (mc*100).toFixed(1) + "% for the pick (10K sims) · "
+            + "headline " + (pp*100).toFixed(1) + "% · gap " + gapPP + "pp. "
+            + "Display-only cross-check — does NOT affect the pick, tier, grade or stake. "
+            + (gap > 0.12 ? "Large internal disagreement — expect higher variance." : "Engines broadly agree.");
+    return ' <span class="' + cls + '" title="' + tip + '">MC ' + Math.round(mc*100) + '%'
+         + (gap > 0.12 ? ' Δ' + gapPP : '') + '</span>';
+  }catch(_e){ return ""; }
 }
 
 // Format "<PICK> NN.N%" from the pick string and the pick-side probability
@@ -7495,7 +7527,7 @@ function renderSlate(rows, gradeMap, results) {
       <td><strong>${matchupKey || "—"}</strong>${_tierChips(matchupKey)}${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
       <td>${_pickOrTossup(r)}${_spreadChip(matchupKey)}${_provLeanChip(matchupKey)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
-      <td>${favTeamProb(matchupKey, r.full_prob)}</td>
+      <td>${favTeamProb(matchupKey, r.full_prob)}${_mcChip(r)}</td>
       <td class="col-fair">${fairFmt}</td>
       <td class="col-edge">${edgeFmt}</td>
       <td class="pred-score col-pred">${_formatPredScore(r)}</td>
