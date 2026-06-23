@@ -1,19 +1,23 @@
 # Daily Variance Report — 2026-06-24
-_Generated 2026-06-23T19:14:42Z · 16 games · significant deviations only_
+_Generated 2026-06-23T22:18:41Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
-- **TEX** [signed] — Texas Rangers signed free agent LHP Marco Gonzales to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent C Austin Wynns to a minor league contract.
+- **TEX** [signed] — Texas Rangers signed free agent LHP Marco Gonzales to a minor league contract.
 - **MIA** [status] — Miami Marlins placed RHP Max Meyer on the bereavement list.
 - **MIA** [recalled] — Miami Marlins recalled RHP Zach Brzykcy from Jacksonville Jumbo Shrimp.
 - **MIA** [signed] — Miami Marlins signed free agent RHP Davidxon Lara to a minor league contract.
 - **CHC** [signed] — Chicago Cubs signed free agent RHP Jhon Cabral to a minor league contract.
+- **CHC** [activated] — Chicago Cubs activated RHP Jayden Murray.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
+- **NYM** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
+- **NYM** [optioned] — New York Mets optioned CF Jared Oliva to Syracuse Mets.
 - **CWS** [IL] — Chicago White Sox activated C Kyle Teel from the 60-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned C Edgar Quero to Charlotte Knights.
 - **CWS** [signed] — Chicago White Sox signed free agent C Josiel Veras to a minor league contract.
 - **BOS** [signed] — Boston Red Sox signed free agent C Andrew Knizner to a minor league contract.
-- **COL** [signed] — Colorado Rockies signed free agent IF Parker Coddou to a minor league contract.
 - **COL** [IL] — Colorado Rockies activated LF Mickey Moniak from the 10-day injured list.
+- **COL** [signed] — Colorado Rockies signed free agent IF Parker Coddou to a minor league contract.
 - **COL** [optioned] — Colorado Rockies optioned RF Sterlin Thompson to Albuquerque Isotopes.
 - **BAL** [DFA] — Baltimore Orioles designated CF Michael Siani for assignment.
 - **BAL** [selected] — Baltimore Orioles selected the contract of C Chadwick Tromp from Norfolk Tides.
@@ -24,28 +28,34 @@ _Generated 2026-06-23T19:14:42Z · 16 games · significant deviations only_
 - **KC** [IL] — Kansas City Royals placed 3B Maikel Garcia on the 10-day injured list. Left hand muscle strain.
 - **KC** [recalled] — Kansas City Royals recalled 3B Josh Rojas from Omaha Storm Chasers.
 - **TB** [outrighted] — Tampa Bay Rays sent RF Austin Slater outright to Durham Bulls.
-- **NYY** [recalled] — New York Yankees recalled RHP Yerry De los Santos from Scranton/Wilkes-Barre RailRiders.
+- **TB** [DFA] — Tampa Bay Rays designated C Dom Keegan for assignment.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Chris Roycroft to Durham Bulls.
+- **TB** [TRADE] — St. Louis Cardinals traded RHP Chris Roycroft to Tampa Bay Rays for Player To Be Named Later.
 - **NYY** [optioned] — New York Yankees optioned RHP Elmer Rodríguez to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [recalled] — New York Yankees recalled RHP Yerry De los Santos from Scranton/Wilkes-Barre RailRiders.
+- **NYY** [signed] — New York Yankees signed free agent Chien-Fan Lai to a minor league contract.
 - **NYY** [status] — New York Yankees placed C Ali Sánchez on the paternity list.
 - **NYY** [recalled] — New York Yankees recalled C J.C. Escarra from Scranton/Wilkes-Barre RailRiders.
 - **DET** [IL] — Detroit Tigers transferred RHP Burch Smith from the 15-day injured list to the 60-day injured list. Right shoulder inflammation.
-- **DET** [optioned] — Detroit Tigers optioned CF Trei Cruz to Toledo Mud Hens.
 - **DET** [selected] — Detroit Tigers selected the contract of CF Ben Malgeri from Toledo Mud Hens.
+- **DET** [optioned] — Detroit Tigers optioned CF Trei Cruz to Toledo Mud Hens.
 - **PHI** [DFA] — Philadelphia Phillies designated RHP Bryse Wilson for assignment.
 - **PHI** [IL] — Philadelphia Phillies activated LHP Kyle Backhus from the 15-day injured list.
 - **PHI** [optioned] — Philadelphia Phillies optioned RHP Max Lazar to Lehigh Valley IronPigs.
 - **PHI** [recalled] — Philadelphia Phillies recalled RHP Alan Rangel from Lehigh Valley IronPigs.
+- **PHI** [signed] — Philadelphia Phillies signed free agent RHP Jackson Rutledge to a minor league contract.
 - **HOU** [status] — Houston Astros placed RHP Bryan Abreu on the restricted list.
 - **HOU** [recalled] — Houston Astros recalled RHP Logan VanWey from Sugar Land Space Cowboys.
 - **TOR** [selected] — Toronto Blue Jays selected the contract of SS Luis Urías from Buffalo Bisons.
 - **TOR** [optioned] — Toronto Blue Jays optioned LF Yohendrick Piñango to Buffalo Bisons.
-- **TOR** [IL] — Toronto Blue Jays activated RHP Shane Bieber from the 60-day injured list.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Hayden Juenger for assignment.
+- **TOR** [IL] — Toronto Blue Jays activated RHP Shane Bieber from the 60-day injured list.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Lazaro Estrada to Buffalo Bisons.
 - **MIL** [IL] — Milwaukee Brewers activated RHP Brandon Woodruff from the 15-day injured list.
 - **MIL** [optioned] — Milwaukee Brewers optioned LHP Drew Rom to Nashville Sounds.
-- **CIN** [DFA] — Cincinnati Reds designated RHP Chris Paddack for assignment.
+- **MIL** [released] — Milwaukee Brewers released 3B Luis Rengifo.
 - **CIN** [IL] — Cincinnati Reds activated RHP Pierce Johnson from the 15-day injured list.
+- **CIN** [DFA] — Cincinnati Reds designated RHP Chris Paddack for assignment.
 - **CIN** [selected] — Cincinnati Reds selected the contract of RHP Julian Garcia from Louisville Bats.
 - **CIN** [optioned] — Cincinnati Reds optioned RHP Zach Maxwell to Louisville Bats.
 - **CIN** [IL] — Cincinnati Reds activated SS Elly De La Cruz from the 10-day injured list.
@@ -54,12 +64,14 @@ _Generated 2026-06-23T19:14:42Z · 16 games · significant deviations only_
 - **LAD** [optioned] — Los Angeles Dodgers optioned RHP Chayce McDermott to Oklahoma City Comets.
 - **MIN** [optioned] — Minnesota Twins optioned RHP Cody Laweryson to St. Paul Saints.
 - **MIN** [selected] — Minnesota Twins selected the contract of RHP Austin Voth from St. Paul Saints.
+- **STL** [TRADE] — St. Louis Cardinals traded RHP Chris Roycroft to Tampa Bay Rays for Player To Be Named Later.
 - **ATL** [signed] — Atlanta Braves signed free agent C Sandy León to a minor league contract.
+- **SD** [recalled] — San Diego Padres recalled LHP JP Sears from El Paso Chihuahuas.
+- **SF** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
 
 _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TEX @ MIA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **CHC @ NYM** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **CHC @ NYM** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **CHC @ NYM** (away SP TBD): NOT CONFIRMED — probable SP not posted
@@ -76,6 +88,7 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 
 ## 4 · Lineup / Platoon
 - TEX @ MIA — MIA faces RHP (Jacob deGrom)
+- TEX @ MIA — TEX faces RHP (Eury Pérez)
 - CLE @ CWS — CWS faces RHP (Tanner Bibee)
 - CLE @ CWS — CLE faces RHP (Erick Fedde)
 - BOS @ COL — COL faces LHP (Ranger Suarez)
