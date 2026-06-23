@@ -1,19 +1,41 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-06-22T12:00:29.502381Z",
+  "generated_at": "2026-06-23T07:06:37.351530Z",
   "slate_date": "2026-06-23",
   "lookback_days": 7,
   "teams": {
     "ARI": {
       "team_summary": {
-        "top3_pitch_total_72h": 41,
+        "top3_pitch_total_72h": 45,
         "ceiling_tier": "NORMAL",
         "n_relievers_back_to_back": 0,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.4,
-        "n_relievers_tracked": 7
+        "avg_rest_days": 2.1,
+        "n_relievers_tracked": 9
       },
       "top_relievers": [
+        {
+          "pitcher_id": 664199,
+          "name": "Taylor Clarke",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 27,
+          "pitches_last_appearance": 27,
+          "avg_leverage_last_3": 1.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 642528,
+          "name": "Jonathan Lo\u00e1isiga",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 4,
+          "pitches_last_appearance": 4,
+          "avg_leverage_last_3": 1.57,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 656464,
           "name": "Kevin Ginkel",
@@ -93,16 +115,116 @@
         }
       ]
     },
-    "BOS": {
+    "BAL": {
       "team_summary": {
-        "top3_pitch_total_72h": 12,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 1,
+        "top3_pitch_total_72h": 36,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 3,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.5,
-        "n_relievers_tracked": 4
+        "avg_rest_days": 2.2,
+        "n_relievers_tracked": 5
       },
       "top_relievers": [
+        {
+          "pitcher_id": 670329,
+          "name": "Rico Garcia",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 20,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 1.63,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669211,
+          "name": "Keegan Akin",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 37,
+          "pitches_last_appearance": 37,
+          "avg_leverage_last_3": 1.2,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 664991,
+          "name": "Grant Wolfram",
+          "rest_days": 2,
+          "consecutive_days": 2,
+          "pitches_72h": 17,
+          "pitches_last_appearance": 14,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 666974,
+          "name": "Yennier Cano",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 15,
+          "pitches_last_appearance": 15,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 552640,
+          "name": "Andrew Kittredge",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 10,
+          "pitches_last_appearance": 10,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        }
+      ]
+    },
+    "BOS": {
+      "team_summary": {
+        "top3_pitch_total_72h": 31,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 1,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 1.4,
+        "n_relievers_tracked": 5
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 676477,
+          "name": "Garrett Whitlock",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 26,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.43,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 594027,
+          "name": "Tyron Guerrero",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 8,
+          "avg_leverage_last_3": 1.2,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 547973,
+          "name": "Aroldis Chapman",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 8,
+          "pitches_last_appearance": 8,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 543056,
           "name": "Danny Coulombe",
@@ -123,28 +245,6 @@
           "pitches_last_appearance": 12,
           "avg_leverage_last_3": 1.43,
           "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 676477,
-          "name": "Garrett Whitlock",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 15,
-          "pitches_last_appearance": 15,
-          "avg_leverage_last_3": 1.43,
-          "fatigue_flag": "FRESH",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 594027,
-          "name": "Tyron Guerrero",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 14,
-          "pitches_last_appearance": 14,
-          "avg_leverage_last_3": 1.4,
-          "fatigue_flag": "FRESH",
           "available_today": true
         }
       ]
@@ -218,33 +318,55 @@
     },
     "CHW": {
       "team_summary": {
-        "top3_pitch_total_72h": 63,
-        "ceiling_tier": "STRAINED",
-        "n_relievers_back_to_back": 1,
+        "top3_pitch_total_72h": 91,
+        "ceiling_tier": "OVERWORKED",
+        "n_relievers_back_to_back": 3,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.4,
+        "avg_rest_days": 1.9,
         "n_relievers_tracked": 9
       },
       "top_relievers": [
         {
-          "pitcher_id": 622554,
-          "name": "Seranthony Dom\u00ednguez",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 27,
-          "pitches_last_appearance": 27,
-          "avg_leverage_last_3": 2.33,
-          "fatigue_flag": "NORMAL",
+          "pitcher_id": 691799,
+          "name": "Grant Taylor",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 50,
+          "pitches_last_appearance": 30,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
           "available_today": true
         },
         {
-          "pitcher_id": 691799,
-          "name": "Grant Taylor",
-          "rest_days": 2,
+          "pitcher_id": 622554,
+          "name": "Seranthony Dom\u00ednguez",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 49,
+          "pitches_last_appearance": 22,
+          "avg_leverage_last_3": 2.33,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 663542,
+          "name": "Bryan Hudson",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 33,
+          "pitches_last_appearance": 23,
+          "avg_leverage_last_3": 1.2,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669684,
+          "name": "Chris Murphy",
+          "rest_days": 1,
           "consecutive_days": 1,
-          "pitches_72h": 20,
-          "pitches_last_appearance": 20,
-          "avg_leverage_last_3": 1.6,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 6,
+          "avg_leverage_last_3": 1.8,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -256,17 +378,6 @@
           "pitches_72h": 14,
           "pitches_last_appearance": 14,
           "avg_leverage_last_3": 1.57,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 663542,
-          "name": "Bryan Hudson",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 10,
-          "pitches_last_appearance": 10,
-          "avg_leverage_last_3": 1.4,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -304,17 +415,6 @@
           "available_today": true
         },
         {
-          "pitcher_id": 669684,
-          "name": "Chris Murphy",
-          "rest_days": 3,
-          "consecutive_days": 2,
-          "pitches_72h": 16,
-          "pitches_last_appearance": 16,
-          "avg_leverage_last_3": 1.37,
-          "fatigue_flag": "B2B",
-          "available_today": true
-        },
-        {
           "pitcher_id": 670950,
           "name": "Trevor Richards",
           "rest_days": 3,
@@ -329,33 +429,55 @@
     },
     "CIN": {
       "team_summary": {
-        "top3_pitch_total_72h": 16,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 0,
+        "top3_pitch_total_72h": 52,
+        "ceiling_tier": "STRAINED",
+        "n_relievers_back_to_back": 2,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.5,
+        "avg_rest_days": 1.5,
         "n_relievers_tracked": 6
       },
       "top_relievers": [
         {
+          "pitcher_id": 622088,
+          "name": "Tejay Antone",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 34,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
           "pitcher_id": 594580,
           "name": "Sam Moll",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 21,
-          "pitches_last_appearance": 21,
-          "avg_leverage_last_3": 1.2,
-          "fatigue_flag": "NORMAL",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 33,
+          "pitches_last_appearance": 12,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
           "available_today": true
         },
         {
           "pitcher_id": 663574,
           "name": "Tony Santillan",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 16,
-          "pitches_last_appearance": 16,
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 29,
+          "pitches_last_appearance": 13,
           "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656271,
+          "name": "Brock Burke",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 19,
+          "pitches_last_appearance": 6,
+          "avg_leverage_last_3": 1.43,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -371,17 +493,6 @@
           "available_today": true
         },
         {
-          "pitcher_id": 622088,
-          "name": "Tejay Antone",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 23,
-          "pitches_last_appearance": 23,
-          "avg_leverage_last_3": 1.4,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
           "pitcher_id": 695534,
           "name": "Chase Petty",
           "rest_days": 3,
@@ -391,30 +502,52 @@
           "avg_leverage_last_3": 1.03,
           "fatigue_flag": "NORMAL",
           "available_today": true
-        },
-        {
-          "pitcher_id": 656271,
-          "name": "Brock Burke",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 13,
-          "pitches_last_appearance": 13,
-          "avg_leverage_last_3": 1.03,
-          "fatigue_flag": "FRESH",
-          "available_today": true
         }
       ]
     },
     "CLE": {
       "team_summary": {
-        "top3_pitch_total_72h": 14,
-        "ceiling_tier": "FRESH",
+        "top3_pitch_total_72h": 42,
+        "ceiling_tier": "NORMAL",
         "n_relievers_back_to_back": 1,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.3,
-        "n_relievers_tracked": 3
+        "avg_rest_days": 1.7,
+        "n_relievers_tracked": 6
       },
       "top_relievers": [
+        {
+          "pitcher_id": 671922,
+          "name": "Cade Smith",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 28,
+          "pitches_last_appearance": 28,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 682120,
+          "name": "Tim Herrin",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 16,
+          "pitches_last_appearance": 16,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 542888,
+          "name": "Shawn Armstrong",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 14,
+          "pitches_last_appearance": 14,
+          "avg_leverage_last_3": 1.23,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 683769,
           "name": "Hunter Gaddis",
@@ -452,14 +585,36 @@
     },
     "COL": {
       "team_summary": {
-        "top3_pitch_total_72h": 34,
-        "ceiling_tier": "NORMAL",
+        "top3_pitch_total_72h": 64,
+        "ceiling_tier": "STRAINED",
         "n_relievers_back_to_back": 1,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.6,
-        "n_relievers_tracked": 5
+        "avg_rest_days": 2.0,
+        "n_relievers_tracked": 6
       },
       "top_relievers": [
+        {
+          "pitcher_id": 657514,
+          "name": "Brennan Bernardino",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 39,
+          "pitches_last_appearance": 18,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 680767,
+          "name": "Victor Vodnik",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 30,
+          "pitches_last_appearance": 30,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 675848,
           "name": "Juan Mejia",
@@ -479,17 +634,6 @@
           "pitches_72h": 24,
           "pitches_last_appearance": 24,
           "avg_leverage_last_3": 0.9,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 657514,
-          "name": "Brennan Bernardino",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 21,
-          "pitches_last_appearance": 21,
-          "avg_leverage_last_3": 1.6,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -519,33 +663,44 @@
     },
     "DET": {
       "team_summary": {
-        "top3_pitch_total_72h": 46,
-        "ceiling_tier": "NORMAL",
-        "n_relievers_back_to_back": 1,
+        "top3_pitch_total_72h": 64,
+        "ceiling_tier": "STRAINED",
+        "n_relievers_back_to_back": 3,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.4,
-        "n_relievers_tracked": 5
+        "avg_rest_days": 1.8,
+        "n_relievers_tracked": 6
       },
       "top_relievers": [
         {
-          "pitcher_id": 805427,
-          "name": "Drew Sommers",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 17,
-          "pitches_last_appearance": 17,
-          "avg_leverage_last_3": 1.6,
-          "fatigue_flag": "NORMAL",
+          "pitcher_id": 676684,
+          "name": "Will Vest",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 28,
+          "pitches_last_appearance": 12,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
           "available_today": true
         },
         {
-          "pitcher_id": 676684,
-          "name": "Will Vest",
-          "rest_days": 2,
+          "pitcher_id": 805427,
+          "name": "Drew Sommers",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 23,
+          "pitches_last_appearance": 6,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 623454,
+          "name": "Drew Anderson",
+          "rest_days": 1,
           "consecutive_days": 1,
-          "pitches_72h": 16,
-          "pitches_last_appearance": 16,
-          "avg_leverage_last_3": 2.0,
+          "pitches_72h": 19,
+          "pitches_last_appearance": 19,
+          "avg_leverage_last_3": 1.2,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -584,16 +739,138 @@
         }
       ]
     },
-    "KC": {
+    "HOU": {
       "team_summary": {
-        "top3_pitch_total_72h": 0,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 0,
+        "top3_pitch_total_72h": 36,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 1,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.0,
-        "n_relievers_tracked": 5
+        "avg_rest_days": 1.8,
+        "n_relievers_tracked": 8
       },
       "top_relievers": [
+        {
+          "pitcher_id": 805123,
+          "name": "AJ Blubaugh",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 54,
+          "pitches_last_appearance": 38,
+          "avg_leverage_last_3": 0.77,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 687911,
+          "name": "Bryan King",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.8,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 660853,
+          "name": "Enyel De Los Santos",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 19,
+          "pitches_last_appearance": 19,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 701121,
+          "name": "Logan VanWey",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 16,
+          "pitches_last_appearance": 16,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 595345,
+          "name": "Steven Okert",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 21,
+          "pitches_last_appearance": 21,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 623352,
+          "name": "Josh Hader",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 9,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 663878,
+          "name": "Nate Pearson",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 24,
+          "pitches_last_appearance": 24,
+          "avg_leverage_last_3": 0.83,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 650556,
+          "name": "Bryan Abreu",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "FRESH",
+          "available_today": true
+        }
+      ]
+    },
+    "KC": {
+      "team_summary": {
+        "top3_pitch_total_72h": 33,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 0,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 1.7,
+        "n_relievers_tracked": 7
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 670167,
+          "name": "John Schreiber",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 18,
+          "pitches_last_appearance": 18,
+          "avg_leverage_last_3": 1.23,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656638,
+          "name": "Alex Lange",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 15,
+          "pitches_last_appearance": 15,
+          "avg_leverage_last_3": 1.97,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 674444,
           "name": "Steven Cruz",
@@ -651,16 +928,138 @@
         }
       ]
     },
-    "LAD": {
+    "LAA": {
       "team_summary": {
-        "top3_pitch_total_72h": 34,
+        "top3_pitch_total_72h": 35,
         "ceiling_tier": "NORMAL",
         "n_relievers_back_to_back": 2,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.2,
-        "n_relievers_tracked": 6
+        "avg_rest_days": 1.9,
+        "n_relievers_tracked": 7
       },
       "top_relievers": [
+        {
+          "pitcher_id": 608718,
+          "name": "Brent Suter",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 55,
+          "pitches_last_appearance": 35,
+          "avg_leverage_last_3": 1.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 489446,
+          "name": "Kirby Yates",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 28,
+          "pitches_last_appearance": 13,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 820862,
+          "name": "Jos\u00e9 Fermin",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 26,
+          "pitches_last_appearance": 26,
+          "avg_leverage_last_3": 1.13,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 681217,
+          "name": "Chase Silseth",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 24,
+          "pitches_last_appearance": 24,
+          "avg_leverage_last_3": 1.27,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 696147,
+          "name": "Sam Bachman",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 696519,
+          "name": "Samy Natera Jr.",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 28,
+          "pitches_last_appearance": 28,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 666171,
+          "name": "Ryan Zeferjahn",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 24,
+          "pitches_last_appearance": 24,
+          "avg_leverage_last_3": 0.87,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        }
+      ]
+    },
+    "LAD": {
+      "team_summary": {
+        "top3_pitch_total_72h": 45,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 2,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 1.8,
+        "n_relievers_tracked": 9
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 641778,
+          "name": "Eric Lauer",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 84,
+          "pitches_last_appearance": 84,
+          "avg_leverage_last_3": 0.7,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656945,
+          "name": "Tanner Scott",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 2.33,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669165,
+          "name": "Kyle Hurt",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 642546,
           "name": "Jonathan Hern\u00e1ndez",
@@ -729,16 +1128,171 @@
         }
       ]
     },
-    "MIL": {
+    "MIA": {
       "team_summary": {
-        "top3_pitch_total_72h": 22,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 1,
+        "top3_pitch_total_72h": 56,
+        "ceiling_tier": "STRAINED",
+        "n_relievers_back_to_back": 5,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.8,
-        "n_relievers_tracked": 4
+        "avg_rest_days": 1.9,
+        "n_relievers_tracked": 9
       },
       "top_relievers": [
+        {
+          "pitcher_id": 676534,
+          "name": "Calvin Faucher",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 36,
+          "pitches_last_appearance": 24,
+          "avg_leverage_last_3": 1.8,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656848,
+          "name": "Michael Petersen",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 29,
+          "pitches_last_appearance": 13,
+          "avg_leverage_last_3": 1.37,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669622,
+          "name": "Anthony Bender",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 20,
+          "pitches_last_appearance": 7,
+          "avg_leverage_last_3": 1.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 690978,
+          "name": "Dax Fulton",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 16,
+          "pitches_last_appearance": 16,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669199,
+          "name": "Lake Bachar",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 11,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.13,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 667463,
+          "name": "John King",
+          "rest_days": 2,
+          "consecutive_days": 1,
+          "pitches_72h": 10,
+          "pitches_last_appearance": 10,
+          "avg_leverage_last_3": 0.77,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 806188,
+          "name": "Cade Gibson",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 25,
+          "pitches_last_appearance": 25,
+          "avg_leverage_last_3": 1.03,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 676604,
+          "name": "Tyler Zuber",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 22,
+          "avg_leverage_last_3": 1.03,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 664126,
+          "name": "Pete Fairbanks",
+          "rest_days": 3,
+          "consecutive_days": 2,
+          "pitches_72h": 15,
+          "pitches_last_appearance": 15,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        }
+      ]
+    },
+    "MIL": {
+      "team_summary": {
+        "top3_pitch_total_72h": 44,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 0,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 1.2,
+        "n_relievers_tracked": 5
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 676879,
+          "name": "Aaron Ashby",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 31,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 2.13,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656730,
+          "name": "Trevor Megill",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 20,
+          "pitches_last_appearance": 12,
+          "avg_leverage_last_3": 2.33,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 682842,
+          "name": "Abner Uribe",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 18,
+          "pitches_last_appearance": 10,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 669270,
+          "name": "Joel Kuhnel",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 10,
+          "pitches_last_appearance": 10,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 694477,
           "name": "Chad Patrick",
@@ -749,52 +1303,52 @@
           "avg_leverage_last_3": 0.97,
           "fatigue_flag": "NORMAL",
           "available_today": true
-        },
-        {
-          "pitcher_id": 676879,
-          "name": "Aaron Ashby",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 14,
-          "pitches_last_appearance": 14,
-          "avg_leverage_last_3": 2.13,
-          "fatigue_flag": "FRESH",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 656730,
-          "name": "Trevor Megill",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 8,
-          "pitches_last_appearance": 8,
-          "avg_leverage_last_3": 2.0,
-          "fatigue_flag": "FRESH",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 682842,
-          "name": "Abner Uribe",
-          "rest_days": 3,
-          "consecutive_days": 2,
-          "pitches_72h": 8,
-          "pitches_last_appearance": 8,
-          "avg_leverage_last_3": 1.6,
-          "fatigue_flag": "B2B",
-          "available_today": true
         }
       ]
     },
     "MIN": {
       "team_summary": {
-        "top3_pitch_total_72h": 30,
+        "top3_pitch_total_72h": 46,
         "ceiling_tier": "NORMAL",
-        "n_relievers_back_to_back": 2,
+        "n_relievers_back_to_back": 3,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.3,
-        "n_relievers_tracked": 6
+        "avg_rest_days": 1.7,
+        "n_relievers_tracked": 7
       },
       "top_relievers": [
+        {
+          "pitcher_id": 679358,
+          "name": "Eric Orze",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 35,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.23,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 702193,
+          "name": "Andrew Morris",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 32,
+          "pitches_last_appearance": 15,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 573124,
+          "name": "Taylor Rogers",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 17,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 0.97,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 672782,
           "name": "Yoendrys G\u00f3mez",
@@ -818,17 +1372,6 @@
           "available_today": true
         },
         {
-          "pitcher_id": 702193,
-          "name": "Andrew Morris",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 17,
-          "pitches_last_appearance": 17,
-          "avg_leverage_last_3": 1.2,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
           "pitcher_id": 689520,
           "name": "Cody Laweryson",
           "rest_days": 2,
@@ -847,17 +1390,6 @@
           "pitches_72h": 40,
           "pitches_last_appearance": 40,
           "avg_leverage_last_3": 1.0,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 679358,
-          "name": "Eric Orze",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 24,
-          "pitches_last_appearance": 24,
-          "avg_leverage_last_3": 1.03,
           "fatigue_flag": "NORMAL",
           "available_today": true
         }
@@ -945,12 +1477,34 @@
       "team_summary": {
         "top3_pitch_total_72h": 41,
         "ceiling_tier": "NORMAL",
-        "n_relievers_back_to_back": 2,
+        "n_relievers_back_to_back": 3,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.4,
+        "avg_rest_days": 2.0,
         "n_relievers_tracked": 8
       },
       "top_relievers": [
+        {
+          "pitcher_id": 642232,
+          "name": "Ryan Yarbrough",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 60,
+          "pitches_last_appearance": 31,
+          "avg_leverage_last_3": 1.03,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 621112,
+          "name": "Paul Blackburn",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 25,
+          "pitches_last_appearance": 18,
+          "avg_leverage_last_3": 0.97,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
         {
           "pitcher_id": 666808,
           "name": "Camilo Doval",
@@ -992,28 +1546,6 @@
           "pitches_72h": 11,
           "pitches_last_appearance": 11,
           "avg_leverage_last_3": 1.07,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 621112,
-          "name": "Paul Blackburn",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 7,
-          "pitches_last_appearance": 7,
-          "avg_leverage_last_3": 0.97,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 642232,
-          "name": "Ryan Yarbrough",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 29,
-          "pitches_last_appearance": 29,
-          "avg_leverage_last_3": 0.87,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
@@ -1121,14 +1653,47 @@
     },
     "PHI": {
       "team_summary": {
-        "top3_pitch_total_72h": 0,
+        "top3_pitch_total_72h": 24,
         "ceiling_tier": "FRESH",
         "n_relievers_back_to_back": 1,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.2,
-        "n_relievers_tracked": 5
+        "avg_rest_days": 1.8,
+        "n_relievers_tracked": 8
       },
       "top_relievers": [
+        {
+          "pitcher_id": 660604,
+          "name": "Alan Rangel",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 72,
+          "pitches_last_appearance": 72,
+          "avg_leverage_last_3": 0.7,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 663767,
+          "name": "Chase Shugart",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 24,
+          "pitches_last_appearance": 24,
+          "avg_leverage_last_3": 1.27,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 686751,
+          "name": "Seth Johnson",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 17,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 661395,
           "name": "Jhoan Duran",
@@ -1389,14 +1954,58 @@
     },
     "STL": {
       "team_summary": {
-        "top3_pitch_total_72h": 12,
-        "ceiling_tier": "FRESH",
-        "n_relievers_back_to_back": 0,
+        "top3_pitch_total_72h": 34,
+        "ceiling_tier": "NORMAL",
+        "n_relievers_back_to_back": 4,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.0,
+        "avg_rest_days": 1.4,
         "n_relievers_tracked": 7
       },
       "top_relievers": [
+        {
+          "pitcher_id": 676617,
+          "name": "Riley O'Brien",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 29,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 668941,
+          "name": "JoJo Romero",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 23,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 1.2,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 592773,
+          "name": "Ryne Stanek",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 666277,
+          "name": "George Soriano",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 19,
+          "pitches_last_appearance": 5,
+          "avg_leverage_last_3": 1.43,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
         {
           "pitcher_id": 691008,
           "name": "Max Rajcic",
@@ -1420,50 +2029,6 @@
           "available_today": true
         },
         {
-          "pitcher_id": 666277,
-          "name": "George Soriano",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 14,
-          "pitches_last_appearance": 14,
-          "avg_leverage_last_3": 1.23,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 668941,
-          "name": "JoJo Romero",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 14,
-          "pitches_last_appearance": 14,
-          "avg_leverage_last_3": 1.03,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 676617,
-          "name": "Riley O'Brien",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 12,
-          "pitches_last_appearance": 12,
-          "avg_leverage_last_3": 1.63,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 592773,
-          "name": "Ryne Stanek",
-          "rest_days": 2,
-          "consecutive_days": 1,
-          "pitches_72h": 11,
-          "pitches_last_appearance": 11,
-          "avg_leverage_last_3": 1.2,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
           "pitcher_id": 700669,
           "name": "Gordon Graceffo",
           "rest_days": 2,
@@ -1482,10 +2047,43 @@
         "ceiling_tier": "STRAINED",
         "n_relievers_back_to_back": 0,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.5,
+        "avg_rest_days": 1.5,
         "n_relievers_tracked": 6
       },
       "top_relievers": [
+        {
+          "pitcher_id": 642121,
+          "name": "Cole Sulser",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 38,
+          "pitches_last_appearance": 13,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 592155,
+          "name": "Cam Booser",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 33,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 1.8,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 518886,
+          "name": "Craig Kimbrel",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 25,
+          "pitches_last_appearance": 14,
+          "avg_leverage_last_3": 1.43,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 641329,
           "name": "Bryan Baker",
@@ -1518,37 +2116,182 @@
           "avg_leverage_last_3": 1.6,
           "fatigue_flag": "NORMAL",
           "available_today": true
+        }
+      ]
+    },
+    "TEX": {
+      "team_summary": {
+        "top3_pitch_total_72h": 97,
+        "ceiling_tier": "OVERWORKED",
+        "n_relievers_back_to_back": 3,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 1.9,
+        "n_relievers_tracked": 8
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 677958,
+          "name": "Kumar Rocker",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 76,
+          "pitches_last_appearance": 76,
+          "avg_leverage_last_3": 0.7,
+          "fatigue_flag": "OVERWORKED",
+          "available_today": true
         },
         {
-          "pitcher_id": 642121,
-          "name": "Cole Sulser",
+          "pitcher_id": 656641,
+          "name": "Jacob Latz",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 44,
+          "pitches_last_appearance": 31,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 596001,
+          "name": "Jakob Junis",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 32,
+          "pitches_last_appearance": 17,
+          "avg_leverage_last_3": 1.8,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 695239,
+          "name": "Robby Ahlstrom",
+          "rest_days": 1,
+          "consecutive_days": 2,
+          "pitches_72h": 20,
+          "pitches_last_appearance": 8,
+          "avg_leverage_last_3": 1.4,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 682608,
+          "name": "Peyton Gray",
+          "rest_days": 2,
+          "consecutive_days": 2,
+          "pitches_72h": 26,
+          "pitches_last_appearance": 11,
+          "avg_leverage_last_3": 1.17,
+          "fatigue_flag": "B2B",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 605452,
+          "name": "Joe Ross",
           "rest_days": 3,
           "consecutive_days": 1,
-          "pitches_72h": 25,
-          "pitches_last_appearance": 25,
+          "pitches_72h": 21,
+          "pitches_last_appearance": 21,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 668390,
+          "name": "Cole Winn",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 14,
+          "pitches_last_appearance": 14,
+          "avg_leverage_last_3": 1.43,
+          "fatigue_flag": "FRESH",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 641302,
+          "name": "Tyler Alexander",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 9,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 1.37,
+          "fatigue_flag": "FRESH",
+          "available_today": true
+        }
+      ]
+    },
+    "TOR": {
+      "team_summary": {
+        "top3_pitch_total_72h": 70,
+        "ceiling_tier": "STRAINED",
+        "n_relievers_back_to_back": 0,
+        "n_relievers_three_consecutive": 0,
+        "avg_rest_days": 2.0,
+        "n_relievers_tracked": 6
+      },
+      "top_relievers": [
+        {
+          "pitcher_id": 686973,
+          "name": "Louis Varland",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 40,
+          "pitches_last_appearance": 12,
+          "avg_leverage_last_3": 2.0,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 643511,
+          "name": "Tyler Rogers",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 19,
+          "pitches_last_appearance": 19,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 680755,
+          "name": "Braydon Fisher",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 6,
+          "pitches_last_appearance": 6,
+          "avg_leverage_last_3": 1.37,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 681751,
+          "name": "Lazaro Estrada",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 32,
+          "pitches_last_appearance": 32,
+          "avg_leverage_last_3": 0.7,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 656546,
+          "name": "Jeff Hoffman",
+          "rest_days": 3,
+          "consecutive_days": 1,
+          "pitches_72h": 22,
+          "pitches_last_appearance": 22,
           "avg_leverage_last_3": 1.2,
           "fatigue_flag": "NORMAL",
           "available_today": true
         },
         {
-          "pitcher_id": 592155,
-          "name": "Cam Booser",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 24,
-          "pitches_last_appearance": 24,
-          "avg_leverage_last_3": 1.8,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 518886,
-          "name": "Craig Kimbrel",
+          "pitcher_id": 689254,
+          "name": "Mason Fluharty",
           "rest_days": 3,
           "consecutive_days": 1,
           "pitches_72h": 11,
           "pitches_last_appearance": 11,
-          "avg_leverage_last_3": 1.23,
+          "avg_leverage_last_3": 1.9,
           "fatigue_flag": "FRESH",
           "available_today": true
         }
@@ -1556,14 +2299,36 @@
     },
     "WSH": {
       "team_summary": {
-        "top3_pitch_total_72h": 37,
-        "ceiling_tier": "NORMAL",
+        "top3_pitch_total_72h": 52,
+        "ceiling_tier": "STRAINED",
         "n_relievers_back_to_back": 0,
         "n_relievers_three_consecutive": 0,
-        "avg_rest_days": 2.5,
-        "n_relievers_tracked": 6
+        "avg_rest_days": 2.0,
+        "n_relievers_tracked": 7
       },
       "top_relievers": [
+        {
+          "pitcher_id": 690925,
+          "name": "Clayton Beeter",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 27,
+          "pitches_last_appearance": 6,
+          "avg_leverage_last_3": 1.63,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
+        {
+          "pitcher_id": 663992,
+          "name": "Richard Lovelady",
+          "rest_days": 1,
+          "consecutive_days": 1,
+          "pitches_72h": 9,
+          "pitches_last_appearance": 9,
+          "avg_leverage_last_3": 1.6,
+          "fatigue_flag": "NORMAL",
+          "available_today": true
+        },
         {
           "pitcher_id": 681402,
           "name": "Gus Varland",
@@ -1616,17 +2381,6 @@
           "pitches_72h": 32,
           "pitches_last_appearance": 32,
           "avg_leverage_last_3": 1.17,
-          "fatigue_flag": "NORMAL",
-          "available_today": true
-        },
-        {
-          "pitcher_id": 690925,
-          "name": "Clayton Beeter",
-          "rest_days": 3,
-          "consecutive_days": 1,
-          "pitches_72h": 21,
-          "pitches_last_appearance": 21,
-          "avg_leverage_last_3": 1.27,
           "fatigue_flag": "NORMAL",
           "available_today": true
         }
