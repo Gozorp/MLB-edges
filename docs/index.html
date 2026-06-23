@@ -1494,8 +1494,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
      bullpen card; then lay narrow inner sections (SP write-ups, bullpen leverage lists)
      side-by-side so they fill the drawer width. Display-only. */
   .preview-grid.np-stack, #game-dialog .preview-grid.np-stack{ grid-template-columns:1fr !important; }
-  .np-2col{ display:grid; grid-template-columns:1fr 1fr; gap:0.2rem 1.6rem; align-items:start; }
-  @media (max-width:680px){ .np-2col{ grid-template-columns:1fr; } }
+  /* np-2col adapts to the AVAILABLE width (auto-fit), so it goes 2-up on a wide drawer
+     and 1-up on a phone automatically — no viewport breakpoint needed. */
+  .np-2col{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:0.2rem 1.6rem; align-items:start; }
+  /* CRITICAL mobile fix: grid/flex items default to min-width:auto, which refuses to
+     shrink below their content's intrinsic width. A wide table inside a card then forces
+     the whole grid (and every sibling) wider than the phone, clipping text at the screen
+     edge. min-width:0 across the drawer lets items shrink so wide tables scroll internally
+     (overflow-x:auto) and text wraps to the drawer width. Harmless on desktop (already fits). */
+  #game-dialog *{ min-width:0; }
+  /* Long unbroken tokens (URLs, long names) wrap instead of overflowing. */
+  #game-dialog .narrative, #game-dialog .preview-card, #game-dialog p, #game-dialog li, #game-dialog div{ overflow-wrap:anywhere; }
   /* Mobile Statcast profile + dense tables */
   @media (max-width:720px){
     .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
