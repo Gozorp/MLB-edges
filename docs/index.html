@@ -1489,6 +1489,13 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   .mc-neutral{ color:#8b98a5; border-color:#2a313a; background:rgba(139,152,165,0.08); }
   .mc-amber{ color:#d9a23a; border-color:#5a4620; background:rgba(217,162,58,0.13); }
   .mc-red{ color:#e06666; border-color:#5a2727; background:rgba(224,102,102,0.15); }
+  /* "Fitted full" named-players preview (2026-06-22): stack the two unequal cards so
+     the short Probable-starters card no longer leaves a dead column beside the tall
+     bullpen card; then lay narrow inner sections (SP write-ups, bullpen leverage lists)
+     side-by-side so they fill the drawer width. Display-only. */
+  .preview-grid.np-stack, #game-dialog .preview-grid.np-stack{ grid-template-columns:1fr !important; }
+  .np-2col{ display:grid; grid-template-columns:1fr 1fr; gap:0.2rem 1.6rem; align-items:start; }
+  @media (max-width:680px){ .np-2col{ grid-template-columns:1fr; } }
   /* Mobile Statcast profile + dense tables */
   @media (max-width:720px){
     .adv-grid{ grid-template-columns:repeat(auto-fit, minmax(70px,1fr)); gap:3px 8px; }
@@ -4548,22 +4555,30 @@ function _formatGamePreviewUpcoming(preview) {
 
   return `
     <h4>Game preview — named players & impact</h4>
-    <div class="preview-grid">
+    <div class="preview-grid np-stack">
       <div class="preview-card">
         <h5>Probable starters</h5>
         ${_gpPitcherTable(preview.awayPitcher, preview.homePitcher, preview.awayAbbr || "Away", preview.homeAbbr || "Home")}
-        <div class="preview-impact" style="margin-bottom:0.9em;">
-          ${preview.awayPitcher ? `<div><strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}</div>` : ""}
-        </div>
-        <div class="preview-impact">
-          ${preview.homePitcher ? `<div><strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}</div>` : ""}
+        <div class="np-2col">
+          <div class="preview-impact">
+            ${preview.awayPitcher ? `<div><strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}</div>` : ""}
+          </div>
+          <div class="preview-impact">
+            ${preview.homePitcher ? `<div><strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}</div>` : ""}
+          </div>
         </div>
       </div>
       <div class="preview-card">
-        <h5>${preview.awayName} bullpen — three highest-leverage arms</h5>
-        <ul>${fmtBullpen(preview.awayBullpen, "away", preview.homeName)}</ul>
-        <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
-        <ul>${fmtBullpen(preview.homeBullpen, "home", preview.awayName)}</ul>
+        <div class="np-2col">
+          <div>
+            <h5>${preview.awayName} bullpen — three highest-leverage arms</h5>
+            <ul>${fmtBullpen(preview.awayBullpen, "away", preview.homeName)}</ul>
+          </div>
+          <div>
+            <h5>${preview.homeName} bullpen — three highest-leverage arms</h5>
+            <ul>${fmtBullpen(preview.homeBullpen, "home", preview.awayName)}</ul>
+          </div>
+        </div>
         ${(function() {
           // Per-team 7-day bullpen fatigue table from the bullpen_meta sidecar.
           // Robust restore (2026-06-18): read window.__bullpenMeta live; resolve
