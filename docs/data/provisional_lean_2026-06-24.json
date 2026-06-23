@@ -1,0 +1,47 @@
+{
+  "date": "2026-06-24",
+  "generated_utc": "2026-06-23T09:47:53.011175+00:00",
+  "method": "sp-independent-team-strength",
+  "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
+  "games": {
+    "TEX @ MIA": {
+      "provisional_pick": "MIA",
+      "p_pick": 0.6,
+      "p_home": 0.6,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "TEX",
+      "home": "MIA",
+      "away_strength": -0.2,
+      "home_strength": 0.03
+    },
+    "CHC @ NYM": {
+      "provisional_pick": "CHC",
+      "p_pick": 0.732,
+      "p_home": 0.268,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "CHC",
+      "home": "NYM",
+      "away_strength": 0.35,
+      "home_strength": -0.76
+    },
+    "ARI @ STL": {
+      "provisional_pick": "STL",
+      "p_pick": 0.713,
+      "p_home": 0.713,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "AZ",
+      "home": "STL",
+      "away_strength": -0.26,
+      "home_strength": 0.46
+    }
+  }
+}
