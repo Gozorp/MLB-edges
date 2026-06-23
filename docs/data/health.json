@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-23T21:15:17.298970+00:00",
+  "checked_at": "2026-06-23T22:49:15.765000+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 2.0h ago",
+      "message": "last slate publish 0.5h ago",
       "detail": {
-        "last_run_iso": "2026-06-23T19:15:01+00:00",
-        "age_hours": 2.0
+        "last_run_iso": "2026-06-23T22:19:00+00:00",
+        "age_hours": 0.5
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.5d ago",
+      "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:36:20Z",
-        "age_hours": 60.65,
+        "age_hours": 62.22,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.5d ago",
+      "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:55:41Z",
-        "age_hours": 60.33,
+        "age_hours": 61.89,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 20.0 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 20.1 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 480.08,
+        "age_hours": 481.64,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -65,14 +65,14 @@
     {
       "name": "kalshi_coverage_rate",
       "severity": "green",
-      "message": "13/15 rows have market odds",
+      "message": "14/15 rows have market odds",
       "detail": {
         "total_rows": 15,
-        "ok_rows": 13,
-        "non_ok_pct": 13.3,
+        "ok_rows": 14,
+        "non_ok_pct": 6.7,
         "status_distribution": {
-          "pending_sp_data": 2,
-          "fetched": 13
+          "pending_sp_data": 1,
+          "fetched": 14
         }
       },
       "category": "data_flow"
@@ -80,11 +80,11 @@
     {
       "name": "pending_sp_data_rate",
       "severity": "green",
-      "message": "2/15 rows PENDING_SP_DATA",
+      "message": "1/15 rows PENDING_SP_DATA",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 2,
-        "pct_of_slate": 13.3
+        "pending_sp_data_count": 1,
+        "pct_of_slate": 6.7
       },
       "category": "data_flow"
     },
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-23T21:15:17.399Z",
+          "timestamp": "2026-06-23T22:49:15.930Z",
           "commit": "unknown",
-          "region": "SJC"
+          "region": "DFW"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 480.5h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 482.1h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 480.5,
+        "age_hours": 482.06,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -138,11 +138,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "2/15 rows stress-warned",
+      "message": "3/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 2,
-        "pct_of_slate": 13.3
+        "stress_warned_count": 3,
+        "pct_of_slate": 20.0
       },
       "category": "model"
     }
