@@ -1,0 +1,30 @@
+name: gold-tripwire
+
+# Read-only GOLD-tier performance tripwire (freeze-safe; touches no model state).
+# Spec: GOLD_TRIPWIRE_PREREG.md. Pings the existing Discord health webhook only
+# when trailing-30d GOLD win% breaches the variance-aware floor on n>=45.
+
+on:
+  schedule:
+    - cron: "0 15 * * *"   # daily 15:00 UTC (~8am PT), after overnight games finalize + score
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gold-tripwire
+  cancel-in-progress: false
+
+jobs:
+  tripwire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run GOLD tripwire
+        env:
+          DISCORD_HEALTH_WEBHOOK: ${{ secrets.DISCORD_HEALTH_WEBHOOK }}
+        run: python tools/gold_tripwire.py
