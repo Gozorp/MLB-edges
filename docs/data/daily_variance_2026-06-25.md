@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-25
-_Generated 2026-06-24T13:24:33Z · 9 games · significant deviations only_
+_Generated 2026-06-24T16:35:53Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **KC** [IL] — Kansas City Royals placed 3B Maikel Garcia on the 10-day injured list. Left hand muscle strain.
@@ -9,13 +9,20 @@ _Generated 2026-06-24T13:24:33Z · 9 games · significant deviations only_
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Chris Roycroft to Durham Bulls.
 - **SEA** [IL] — Seattle Mariners activated LF Randy Arozarena from the 10-day injured list.
 - **SEA** [optioned] — Seattle Mariners optioned RF Connor Joe to Tacoma Rainiers.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent OF Enmanuel Rosas to a minor league contract.
+- **SF** [signed] — San Francisco Giants signed free agent SS Jeremi Rodriguez to a minor league contract.
 - **SF** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
+- **HOU** [signed] — Houston Astros signed free agent RHP Ronieel Cabreja to a minor league contract.
 - **DET** [IL] — Detroit Tigers transferred RHP Burch Smith from the 15-day injured list to the 60-day injured list. Right shoulder inflammation.
 - **DET** [optioned] — Detroit Tigers optioned CF Trei Cruz to Toledo Mud Hens.
 - **DET** [selected] — Detroit Tigers selected the contract of CF Ben Malgeri from Toledo Mud Hens.
+- **PHI** [signed] — Philadelphia Phillies signed free agent SS Yohali Geraldo to a minor league contract.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Jackson Rutledge to a minor league contract.
+- **WSH** [signed] — Washington Nationals signed free agent RHP Blake Brown to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent LHP Marco Gonzales to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent C Austin Wynns to a minor league contract.
+- **TEX** [optioned] — Texas Rangers optioned RHP Jose Corniell to Round Rock Express.
+- **TEX** [recalled] — Texas Rangers recalled RHP Winston Santos from Frisco RoughRiders.
 - **TOR** [IL] — Toronto Blue Jays activated RHP Shane Bieber from the 60-day injured list.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Hayden Juenger for assignment.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Lazaro Estrada to Buffalo Bisons.
@@ -23,6 +30,7 @@ _Generated 2026-06-24T13:24:33Z · 9 games · significant deviations only_
 - **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
 - **NYM** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
 - **NYM** [optioned] — New York Mets optioned CF Jared Oliva to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
 - **NYY** [signed] — New York Yankees signed free agent Chien-Fan Lai to a minor league contract.
 - **NYY** [status] — New York Yankees placed C Ali Sánchez on the paternity list.
 - **NYY** [recalled] — New York Yankees recalled C J.C. Escarra from Scranton/Wilkes-Barre RailRiders.
@@ -31,6 +39,7 @@ _Generated 2026-06-24T13:24:33Z · 9 games · significant deviations only_
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **ATH** code=ACQ — Athletics acquired OF Jake Reinisch from the Tri-City ValleyCats of the Frontier League.
+- **TEX** code=ACQ — Texas Rangers acquired RHP Spencer Adams from the Gastonia Ghost Peppers of the Atlantic League.
 
 _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
@@ -39,9 +48,7 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **HOU @ DET** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **HOU @ DET** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **PHI @ WSH** (away SP Cristopher Sánchez): very high K% (28.4% vs lg 22.0)
-- **TEX @ TOR** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **TEX @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **CHC @ NYM** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **NYY @ BOS** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **NYY @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
@@ -60,6 +67,8 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - ATH @ SF — ATH faces RHP (Landen Roupp)
 - PHI @ WSH — WSH faces LHP (Cristopher Sánchez)
 - PHI @ WSH — PHI faces RHP (Cade Cavalli)
+- TEX @ TOR — TOR faces LHP (MacKenzie Gore)
+- CHC @ NYM — NYM faces LHP (Matthew Boyd)
 - CHC @ NYM — CHC faces RHP (Freddy Peralta)
 - AZ @ STL — STL faces RHP (Zac Gallen)
 - AZ @ STL — AZ faces RHP (Michael McGreevy)

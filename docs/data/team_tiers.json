@@ -1,17 +1,9 @@
 {
- "generated_utc": "2026-06-24T13:24:47Z",
+ "generated_utc": "2026-06-24T16:36:01Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "TB demoted: Above Average -> Average (eff +0.15, mmr -0.36)",
-  "STL demoted: Above Average -> Average (eff +0.25, mmr -0.13)",
-  "PHI promoted: Average -> Above Average (eff +0.43, mmr +0.11)",
-  "WSH demoted: Above Average -> Average (eff +0.15, mmr -0.04)",
-  "CLE demoted: Average -> Below Average (eff -0.20, mmr -0.22)",
-  "NYM demoted: Below Average -> Poor (eff -0.91, mmr -0.09)",
-  "KC promoted: Poor -> Below Average (eff -0.69, mmr +0.23)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -114,8 +106,6 @@
     "z": 0.319,
     "mmr": 0.114,
     "eff": 0.433,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset W vs MIL (06-13)",
      "upset L vs NYM (06-18)"
@@ -146,8 +136,6 @@
     "z": 0.509,
     "mmr": -0.361,
     "eff": 0.148,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs LAA (06-12)",
      "upset L vs LAA (06-13)"
@@ -164,8 +152,6 @@
     "z": 0.384,
     "mmr": -0.134,
     "eff": 0.25,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs NYM (06-11)",
      "upset L vs MIN (06-12)"
@@ -198,8 +184,6 @@
     "z": 0.193,
     "mmr": -0.04,
     "eff": 0.153,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs SF (06-10)",
      "upset L vs KC (06-17)"
@@ -281,8 +265,6 @@
     "z": 0.012,
     "mmr": -0.216,
     "eff": -0.204,
-    "movement": "demoted",
-    "moved_from": "Average",
     "upsets": [
      "upset W vs MIL (06-18)"
     ]
@@ -416,8 +398,6 @@
     "z": -0.928,
     "mmr": 0.235,
     "eff": -0.693,
-    "movement": "promoted",
-    "moved_from": "Poor",
     "upsets": [
      "upset W vs WSH (06-17)",
      "upset W vs STL (06-18)"
@@ -452,8 +432,6 @@
     "z": -0.823,
     "mmr": -0.087,
     "eff": -0.911,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs STL (06-11)",
      "upset W vs ATL (06-12)"
