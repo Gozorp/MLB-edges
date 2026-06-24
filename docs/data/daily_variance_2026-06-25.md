@@ -1,23 +1,23 @@
 # Daily Variance Report — 2026-06-25
-_Generated 2026-06-24T09:35:51Z · 9 games · significant deviations only_
+_Generated 2026-06-24T13:24:33Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **KC** [IL] — Kansas City Royals placed 3B Maikel Garcia on the 10-day injured list. Left hand muscle strain.
 - **KC** [recalled] — Kansas City Royals recalled 3B Josh Rojas from Omaha Storm Chasers.
 - **TB** [DFA] — Tampa Bay Rays designated C Dom Keegan for assignment.
-- **TB** [optioned] — Tampa Bay Rays optioned RHP Chris Roycroft to Durham Bulls.
 - **TB** [TRADE] — St. Louis Cardinals traded RHP Chris Roycroft to Tampa Bay Rays for Player To Be Named Later.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Chris Roycroft to Durham Bulls.
 - **SEA** [IL] — Seattle Mariners activated LF Randy Arozarena from the 10-day injured list.
 - **SEA** [optioned] — Seattle Mariners optioned RF Connor Joe to Tacoma Rainiers.
 - **SF** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
 - **DET** [IL] — Detroit Tigers transferred RHP Burch Smith from the 15-day injured list to the 60-day injured list. Right shoulder inflammation.
-- **DET** [selected] — Detroit Tigers selected the contract of CF Ben Malgeri from Toledo Mud Hens.
 - **DET** [optioned] — Detroit Tigers optioned CF Trei Cruz to Toledo Mud Hens.
+- **DET** [selected] — Detroit Tigers selected the contract of CF Ben Malgeri from Toledo Mud Hens.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Jackson Rutledge to a minor league contract.
-- **TEX** [signed] — Texas Rangers signed free agent C Austin Wynns to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent LHP Marco Gonzales to a minor league contract.
-- **TOR** [DFA] — Toronto Blue Jays designated RHP Hayden Juenger for assignment.
+- **TEX** [signed] — Texas Rangers signed free agent C Austin Wynns to a minor league contract.
 - **TOR** [IL] — Toronto Blue Jays activated RHP Shane Bieber from the 60-day injured list.
+- **TOR** [DFA] — Toronto Blue Jays designated RHP Hayden Juenger for assignment.
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Lazaro Estrada to Buffalo Bisons.
 - **CHC** [activated] — Chicago Cubs activated RHP Jayden Murray.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
