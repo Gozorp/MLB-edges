@@ -1,0 +1,4414 @@
+{
+ "date": "2026-06-25",
+ "generated_utc": "2026-06-24T09:35:41+00:00",
+ "method": "win0.45+dom0.55; dom=mean(cappedMargin/5,medMargin/5,2*cappedPythag-1); cap5; exp1.83",
+ "teams": {
+  "MIA": {
+   "14d": {
+    "H": 0.21,
+    "bucket": "WARM",
+    "games": 11,
+    "w": 7,
+    "l": 4,
+    "win_pct": 0.636,
+    "capped_margin": 0.64,
+    "median_margin": 1,
+    "pythag": 0.575
+   },
+   "7d": {
+    "H": 0.405,
+    "bucket": "HOT",
+    "games": 5,
+    "w": 4,
+    "l": 1,
+    "win_pct": 0.8,
+    "capped_margin": 1.2,
+    "median_margin": 1,
+    "pythag": 0.649
+   }
+  },
+  "PIT": {
+   "14d": {
+    "H": -0.173,
+    "bucket": "COOL",
+    "games": 10,
+    "w": 4,
+    "l": 6,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -1.0,
+    "pythag": 0.435
+   },
+   "7d": {
+    "H": -0.282,
+    "bucket": "COOL",
+    "games": 4,
+    "w": 1,
+    "l": 3,
+    "win_pct": 0.25,
+    "capped_margin": -0.25,
+    "median_margin": -1.0,
+    "pythag": 0.468
+   }
+  },
+  "SEA": {
+   "14d": {
+    "H": -0.08,
+    "bucket": "NEUTRAL",
+    "games": 10,
+    "w": 5,
+    "l": 5,
+    "win_pct": 0.5,
+    "capped_margin": -0.7,
+    "median_margin": -0.5,
+    "pythag": 0.402
+   },
+   "7d": {
+    "H": -0.171,
+    "bucket": "COOL",
+    "games": 4,
+    "w": 2,
+    "l": 2,
+    "win_pct": 0.5,
+    "capped_margin": -1.25,
+    "median_margin": -1.5,
+    "pythag": 0.308
+   }
+  },
+  "WSH": {
+   "14d": {
+    "H": 0.091,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.18,
+    "median_margin": 1,
+    "pythag": 0.518
+   },
+   "7d": {
+    "H": -0.197,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -1.0,
+    "median_margin": -1,
+    "pythag": 0.407
+   }
+  },
+  "SD": {
+   "14d": {
+    "H": 0.12,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.55,
+    "median_margin": 1,
+    "pythag": 0.561
+   },
+   "7d": {
+    "H": 0.141,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 0.2,
+    "median_margin": 1,
+    "pythag": 0.519
+   }
+  },
+  "BAL": {
+   "14d": {
+    "H": -0.085,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.09,
+    "median_margin": -1,
+    "pythag": 0.488
+   },
+   "7d": {
+    "H": 0.225,
+    "bucket": "WARM",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 1.2,
+    "median_margin": 1,
+    "pythag": 0.649
+   }
+  },
+  "DET": {
+   "14d": {
+    "H": 0.034,
+    "bucket": "NEUTRAL",
+    "games": 10,
+    "w": 5,
+    "l": 5,
+    "win_pct": 0.5,
+    "capped_margin": 0.4,
+    "median_margin": 0.0,
+    "pythag": 0.554
+   },
+   "7d": {
+    "H": 0.405,
+    "bucket": "HOT",
+    "games": 5,
+    "w": 4,
+    "l": 1,
+    "win_pct": 0.8,
+    "capped_margin": 1.2,
+    "median_margin": 1,
+    "pythag": 0.649
+   }
+  },
+  "CLE": {
+   "14d": {
+    "H": -0.162,
+    "bucket": "COOL",
+    "games": 10,
+    "w": 4,
+    "l": 6,
+    "win_pct": 0.4,
+    "capped_margin": -0.4,
+    "median_margin": -1.0,
+    "pythag": 0.445
+   },
+   "7d": {
+    "H": -0.357,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 1,
+    "l": 4,
+    "win_pct": 0.2,
+    "capped_margin": -0.6,
+    "median_margin": -1,
+    "pythag": 0.422
+   }
+  },
+  "TEX": {
+   "14d": {
+    "H": -0.314,
+    "bucket": "COOL",
+    "games": 11,
+    "w": 4,
+    "l": 7,
+    "win_pct": 0.364,
+    "capped_margin": -1.64,
+    "median_margin": -2,
+    "pythag": 0.342
+   },
+   "7d": {
+    "H": 0.127,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 0.0,
+    "median_margin": 1,
+    "pythag": 0.5
+   }
+  },
+  "BOS": {
+   "14d": {
+    "H": -0.038,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": 0.45,
+    "median_margin": -1,
+    "pythag": 0.562
+   },
+   "7d": {
+    "H": 0.343,
+    "bucket": "WARM",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 1.6,
+    "median_margin": 3,
+    "pythag": 0.731
+   }
+  },
+  "AZ": {
+   "14d": {
+    "H": 0.092,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.18,
+    "median_margin": 1,
+    "pythag": 0.52
+   },
+   "7d": {
+    "H": -0.168,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -1,
+    "pythag": 0.448
+   }
+  },
+  "CIN": {
+   "14d": {
+    "H": -0.095,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.18,
+    "median_margin": -1,
+    "pythag": 0.471
+   },
+   "7d": {
+    "H": -0.127,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": 0.0,
+    "median_margin": -1,
+    "pythag": 0.5
+   }
+  },
+  "ATL": {
+   "14d": {
+    "H": -0.428,
+    "bucket": "COLD",
+    "games": 11,
+    "w": 3,
+    "l": 8,
+    "win_pct": 0.273,
+    "capped_margin": -2.0,
+    "median_margin": -2,
+    "pythag": 0.291
+   },
+   "7d": {
+    "H": -0.206,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -1.0,
+    "median_margin": -1,
+    "pythag": 0.384
+   }
+  },
+  "NYM": {
+   "14d": {
+    "H": -0.216,
+    "bucket": "COOL",
+    "games": 10,
+    "w": 4,
+    "l": 6,
+    "win_pct": 0.4,
+    "capped_margin": -0.7,
+    "median_margin": -2.0,
+    "pythag": 0.427
+   },
+   "7d": {
+    "bucket": "INSUFF",
+    "games": 3
+   }
+  },
+  "NYY": {
+   "14d": {
+    "H": 0.119,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.55,
+    "median_margin": 1,
+    "pythag": 0.559
+   },
+   "7d": {
+    "H": -0.232,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.8,
+    "median_margin": -2,
+    "pythag": 0.394
+   }
+  },
+  "TOR": {
+   "14d": {
+    "H": 0.16,
+    "bucket": "WARM",
+    "games": 10,
+    "w": 6,
+    "l": 4,
+    "win_pct": 0.6,
+    "capped_margin": 0.2,
+    "median_margin": 1.5,
+    "pythag": 0.52
+   },
+   "7d": {
+    "H": -0.05,
+    "bucket": "NEUTRAL",
+    "games": 4,
+    "w": 2,
+    "l": 2,
+    "win_pct": 0.5,
+    "capped_margin": -0.75,
+    "median_margin": 0.0,
+    "pythag": 0.439
+   }
+  },
+  "LAD": {
+   "14d": {
+    "H": 0.174,
+    "bucket": "WARM",
+    "games": 11,
+    "w": 7,
+    "l": 4,
+    "win_pct": 0.636,
+    "capped_margin": 0.18,
+    "median_margin": 1,
+    "pythag": 0.523
+   },
+   "7d": {
+    "H": 0.143,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 0.2,
+    "median_margin": 1,
+    "pythag": 0.525
+   }
+  },
+  "CWS": {
+   "14d": {
+    "H": -0.127,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.64,
+    "median_margin": -1,
+    "pythag": 0.43
+   },
+   "7d": {
+    "H": -0.177,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -1,
+    "pythag": 0.422
+   }
+  },
+  "PHI": {
+   "14d": {
+    "H": 0.116,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.55,
+    "median_margin": 1,
+    "pythag": 0.55
+   },
+   "7d": {
+    "H": 0.566,
+    "bucket": "HOT",
+    "games": 4,
+    "w": 3,
+    "l": 1,
+    "win_pct": 0.75,
+    "capped_margin": 2.75,
+    "median_margin": 4.5,
+    "pythag": 0.705
+   }
+  },
+  "MIL": {
+   "14d": {
+    "H": 0.294,
+    "bucket": "WARM",
+    "games": 11,
+    "w": 7,
+    "l": 4,
+    "win_pct": 0.636,
+    "capped_margin": 1.64,
+    "median_margin": 1,
+    "pythag": 0.703
+   },
+   "7d": {
+    "H": 0.236,
+    "bucket": "WARM",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 1.2,
+    "median_margin": 1,
+    "pythag": 0.677
+   }
+  },
+  "HOU": {
+   "14d": {
+    "H": 0.153,
+    "bucket": "WARM",
+    "games": 11,
+    "w": 7,
+    "l": 4,
+    "win_pct": 0.636,
+    "capped_margin": -0.09,
+    "median_margin": 1,
+    "pythag": 0.491
+   },
+   "7d": {
+    "H": 0.142,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": 0.2,
+    "median_margin": 1,
+    "pythag": 0.521
+   }
+  },
+  "KC": {
+   "14d": {
+    "H": 0.13,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 6,
+    "l": 5,
+    "win_pct": 0.545,
+    "capped_margin": 0.82,
+    "median_margin": 1,
+    "pythag": 0.562
+   },
+   "7d": {
+    "H": 0.34,
+    "bucket": "WARM",
+    "games": 4,
+    "w": 3,
+    "l": 1,
+    "win_pct": 0.75,
+    "capped_margin": 1.25,
+    "median_margin": 1.0,
+    "pythag": 0.589
+   }
+  },
+  "STL": {
+   "14d": {
+    "H": -0.102,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.36,
+    "median_margin": -1,
+    "pythag": 0.469
+   },
+   "7d": {
+    "H": 0.017,
+    "bucket": "NEUTRAL",
+    "games": 4,
+    "w": 2,
+    "l": 2,
+    "win_pct": 0.5,
+    "capped_margin": 0.25,
+    "median_margin": 0.0,
+    "pythag": 0.52
+   }
+  },
+  "MIN": {
+   "14d": {
+    "H": 0.208,
+    "bucket": "WARM",
+    "games": 11,
+    "w": 7,
+    "l": 4,
+    "win_pct": 0.636,
+    "capped_margin": 0.73,
+    "median_margin": 1,
+    "pythag": 0.56
+   },
+   "7d": {
+    "H": -0.167,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -1,
+    "pythag": 0.45
+   }
+  },
+  "TB": {
+   "14d": {
+    "H": -0.294,
+    "bucket": "COOL",
+    "games": 11,
+    "w": 3,
+    "l": 8,
+    "win_pct": 0.273,
+    "capped_margin": -0.64,
+    "median_margin": -1,
+    "pythag": 0.419
+   },
+   "7d": {
+    "H": -0.174,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -1,
+    "pythag": 0.43
+   }
+  },
+  "LAA": {
+   "14d": {
+    "H": 0.0,
+    "bucket": "NEUTRAL",
+    "games": 12,
+    "w": 6,
+    "l": 6,
+    "win_pct": 0.5,
+    "capped_margin": 0.0,
+    "median_margin": 0.0,
+    "pythag": 0.5
+   },
+   "7d": {
+    "H": 0.018,
+    "bucket": "NEUTRAL",
+    "games": 6,
+    "w": 3,
+    "l": 3,
+    "win_pct": 0.5,
+    "capped_margin": 0.0,
+    "median_margin": 0.5,
+    "pythag": 0.5
+   }
+  },
+  "COL": {
+   "14d": {
+    "H": -0.084,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.09,
+    "median_margin": -1,
+    "pythag": 0.492
+   },
+   "7d": {
+    "H": 0.093,
+    "bucket": "NEUTRAL",
+    "games": 5,
+    "w": 3,
+    "l": 2,
+    "win_pct": 0.6,
+    "capped_margin": -0.4,
+    "median_margin": 1,
+    "pythag": 0.449
+   }
+  },
+  "ATH": {
+   "14d": {
+    "H": -0.107,
+    "bucket": "NEUTRAL",
+    "games": 11,
+    "w": 5,
+    "l": 6,
+    "win_pct": 0.455,
+    "capped_margin": -0.45,
+    "median_margin": -1,
+    "pythag": 0.465
+   },
+   "7d": {
+    "H": -0.204,
+    "bucket": "COOL",
+    "games": 5,
+    "w": 2,
+    "l": 3,
+    "win_pct": 0.4,
+    "capped_margin": -0.6,
+    "median_margin": -2,
+    "pythag": 0.448
+   }
+  },
+  "CHC": {
+   "14d": {
+    "H": 0.31,
+    "bucket": "WARM",
+    "games": 9,
+    "w": 6,
+    "l": 3,
+    "win_pct": 0.667,
+    "capped_margin": 1.22,
+    "median_margin": 2,
+    "pythag": 0.614
+   },
+   "7d": {
+    "bucket": "INSUFF",
+    "games": 3
+   }
+  },
+  "SF": {
+   "14d": {
+    "H": 0.052,
+    "bucket": "NEUTRAL",
+    "games": 10,
+    "w": 5,
+    "l": 5,
+    "win_pct": 0.5,
+    "capped_margin": 0.4,
+    "median_margin": 0.5,
+    "pythag": 0.551
+   },
+   "7d": {
+    "H": -0.332,
+    "bucket": "COOL",
+    "games": 4,
+    "w": 1,
+    "l": 3,
+    "win_pct": 0.25,
+    "capped_margin": -0.75,
+    "median_margin": -1.0,
+    "pythag": 0.382
+   }
+  }
+ },
+ "players": {
+  "Bobby Witt Jr.": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 0
+   },
+   "14d": {
+    "H": 0.593,
+    "bucket": "HOT",
+    "pa": 30,
+    "obp": ".533",
+    "slg": ".654",
+    "ops": "1.187",
+    "hr": 1
+   }
+  },
+  "Carter Jensen": {
+   "team": "KC",
+   "7d": {
+    "H": 0.528,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".444",
+    "slg": ".533",
+    "ops": ".977",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.565,
+    "bucket": "HOT",
+    "pa": 46,
+    "obp": ".457",
+    "slg": ".659",
+    "ops": "1.116",
+    "hr": 2
+   }
+  },
+  "Isaac Collins": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "H": 0.242,
+    "bucket": "WARM",
+    "pa": 37,
+    "obp": ".378",
+    "slg": ".394",
+    "ops": ".772",
+    "hr": 0
+   }
+  },
+  "Jac Caglianone": {
+   "team": "KC",
+   "7d": {
+    "H": 0.883,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".500",
+    "slg": "1.375",
+    "ops": "1.875",
+    "hr": 5
+   },
+   "14d": {
+    "H": 0.431,
+    "bucket": "HOT",
+    "pa": 50,
+    "obp": ".340",
+    "slg": ".689",
+    "ops": "1.029",
+    "hr": 6
+   }
+  },
+  "John Rave": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   }
+  },
+  "Josh Rojas": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   }
+  },
+  "Kameron Misner": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 23
+   }
+  },
+  "Lane Thomas": {
+   "team": "KC",
+   "7d": {
+    "H": -0.566,
+    "bucket": "COLD",
+    "pa": 18,
+    "obp": ".167",
+    "slg": ".278",
+    "ops": ".445",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.135,
+    "bucket": "NEUTRAL",
+    "pa": 46,
+    "obp": ".283",
+    "slg": ".500",
+    "ops": ".783",
+    "hr": 3
+   }
+  },
+  "Michael Massey": {
+   "team": "KC",
+   "7d": {
+    "H": 0.024,
+    "bucket": "NEUTRAL",
+    "pa": 17,
+    "obp": ".353",
+    "slg": ".375",
+    "ops": ".728",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.109,
+    "bucket": "NEUTRAL",
+    "pa": 38,
+    "obp": ".324",
+    "slg": ".457",
+    "ops": ".781",
+    "hr": 1
+   }
+  },
+  "Nick Loftin": {
+   "team": "KC",
+   "7d": {
+    "H": 0.601,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".438",
+    "slg": ".800",
+    "ops": "1.238",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.552,
+    "bucket": "HOT",
+    "pa": 34,
+    "obp": ".441",
+    "slg": ".710",
+    "ops": "1.151",
+    "hr": 2
+   }
+  },
+  "Salvador Perez": {
+   "team": "KC",
+   "7d": {
+    "H": -0.218,
+    "bucket": "COOL",
+    "pa": 17,
+    "obp": ".235",
+    "slg": ".313",
+    "ops": ".548",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.022,
+    "bucket": "NEUTRAL",
+    "pa": 48,
+    "obp": ".271",
+    "slg": ".383",
+    "ops": ".654",
+    "hr": 1
+   }
+  },
+  "Starling Marte": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Tyler Tolbert": {
+   "team": "KC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   }
+  },
+  "Ben Williamson": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Cedric Mullins": {
+   "team": "TB",
+   "7d": {
+    "H": -0.324,
+    "bucket": "COOL",
+    "pa": 15,
+    "obp": ".267",
+    "slg": ".214",
+    "ops": ".481",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.011,
+    "bucket": "NEUTRAL",
+    "pa": 34,
+    "obp": ".353",
+    "slg": ".267",
+    "ops": ".620",
+    "hr": 0
+   }
+  },
+  "Chandler Simpson": {
+   "team": "TB",
+   "7d": {
+    "H": 0.347,
+    "bucket": "WARM",
+    "pa": 20,
+    "obp": ".400",
+    "slg": ".389",
+    "ops": ".789",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.279,
+    "bucket": "COOL",
+    "pa": 40,
+    "obp": ".275",
+    "slg": ".243",
+    "ops": ".518",
+    "hr": 0
+   }
+  },
+  "Hunter Feduccia": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 19
+   }
+  },
+  "Jonathan Aranda": {
+   "team": "TB",
+   "7d": {
+    "H": 0.241,
+    "bucket": "WARM",
+    "pa": 22,
+    "obp": ".409",
+    "slg": ".474",
+    "ops": ".883",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.104,
+    "bucket": "NEUTRAL",
+    "pa": 49,
+    "obp": ".408",
+    "slg": ".419",
+    "ops": ".827",
+    "hr": 1
+   }
+  },
+  "Jonny DeLuca": {
+   "team": "TB",
+   "7d": {
+    "H": 0.651,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".333",
+    "slg": ".786",
+    "ops": "1.119",
+    "hr": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 15
+   }
+  },
+  "Junior Caminero": {
+   "team": "TB",
+   "7d": {
+    "H": 0.27,
+    "bucket": "WARM",
+    "pa": 22,
+    "obp": ".409",
+    "slg": ".550",
+    "ops": ".959",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.016,
+    "bucket": "NEUTRAL",
+    "pa": 47,
+    "obp": ".340",
+    "slg": ".465",
+    "ops": ".805",
+    "hr": 2
+   }
+  },
+  "Nick Fortes": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 21
+   }
+  },
+  "Richie Palacios": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 24
+   }
+  },
+  "Ryan Vilade": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 20
+   }
+  },
+  "Taylor Walls": {
+   "team": "TB",
+   "7d": {
+    "H": 0.52,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".467",
+    "slg": ".500",
+    "ops": ".967",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.2,
+    "bucket": "WARM",
+    "pa": 33,
+    "obp": ".375",
+    "slg": ".346",
+    "ops": ".721",
+    "hr": 0
+   }
+  },
+  "Victor Mesa Jr.": {
+   "team": "TB",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 16
+   }
+  },
+  "Yandy D\u00edaz": {
+   "team": "TB",
+   "7d": {
+    "H": 0.511,
+    "bucket": "HOT",
+    "pa": 21,
+    "obp": ".571",
+    "slg": ".563",
+    "ops": "1.134",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.112,
+    "bucket": "NEUTRAL",
+    "pa": 49,
+    "obp": ".429",
+    "slg": ".333",
+    "ops": ".762",
+    "hr": 0
+   }
+  },
+  "Cal Raleigh": {
+   "team": "SEA",
+   "7d": {
+    "H": 0.384,
+    "bucket": "WARM",
+    "pa": 16,
+    "obp": ".375",
+    "slg": ".417",
+    "ops": ".792",
+    "hr": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 28
+   }
+  },
+  "Cole Young": {
+   "team": "SEA",
+   "7d": {
+    "H": 0.116,
+    "bucket": "NEUTRAL",
+    "pa": 15,
+    "obp": ".333",
+    "slg": ".417",
+    "ops": ".750",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.054,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".300",
+    "slg": ".432",
+    "ops": ".732",
+    "hr": 2
+   }
+  },
+  "Colt Emerson": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "H": -0.357,
+    "bucket": "COOL",
+    "pa": 32,
+    "obp": ".219",
+    "slg": ".387",
+    "ops": ".606",
+    "hr": 2
+   }
+  },
+  "Dominic Canzone": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "H": 0.585,
+    "bucket": "HOT",
+    "pa": 31,
+    "obp": ".419",
+    "slg": ".731",
+    "ops": "1.150",
+    "hr": 3
+   }
+  },
+  "J.P. Crawford": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Josh Naylor": {
+   "team": "SEA",
+   "7d": {
+    "H": -0.097,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".333",
+    "ops": ".646",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.163,
+    "bucket": "COOL",
+    "pa": 32,
+    "obp": ".250",
+    "slg": ".387",
+    "ops": ".637",
+    "hr": 1
+   }
+  },
+  "Julio Rodr\u00edguez": {
+   "team": "SEA",
+   "7d": {
+    "H": -0.29,
+    "bucket": "COOL",
+    "pa": 16,
+    "obp": ".250",
+    "slg": ".357",
+    "ops": ".607",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.425,
+    "bucket": "COLD",
+    "pa": 36,
+    "obp": ".250",
+    "slg": ".281",
+    "ops": ".531",
+    "hr": 1
+   }
+  },
+  "Luke Raley": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 16
+   }
+  },
+  "Mitch Garver": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "Randy Arozarena": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   }
+  },
+  "Rob Refsnyder": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 17
+   }
+  },
+  "Victor Robles": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "H": -0.441,
+    "bucket": "COLD",
+    "pa": 30,
+    "obp": ".233",
+    "slg": ".148",
+    "ops": ".381",
+    "hr": 0
+   }
+  },
+  "Weston Wilson": {
+   "team": "SEA",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   }
+  },
+  "Billy Cook": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   }
+  },
+  "Brandon Lowe": {
+   "team": "PIT",
+   "7d": {
+    "H": 0.057,
+    "bucket": "NEUTRAL",
+    "pa": 18,
+    "obp": ".333",
+    "slg": ".500",
+    "ops": ".833",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.201,
+    "bucket": "COOL",
+    "pa": 47,
+    "obp": ".277",
+    "slg": ".442",
+    "ops": ".719",
+    "hr": 2
+   }
+  },
+  "Bryan Reynolds": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": 0.635,
+    "bucket": "HOT",
+    "pa": 41,
+    "obp": ".488",
+    "slg": ".865",
+    "ops": "1.353",
+    "hr": 4
+   }
+  },
+  "Endy Rodr\u00edguez": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.48,
+    "bucket": "HOT",
+    "pa": 30,
+    "obp": ".400",
+    "slg": ".615",
+    "ops": "1.015",
+    "hr": 2
+   }
+  },
+  "Esmerlyn Valdez": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "Henry Davis": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   }
+  },
+  "Jake Mangum": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "H": 0.002,
+    "bucket": "NEUTRAL",
+    "pa": 36,
+    "obp": ".333",
+    "slg": ".371",
+    "ops": ".704",
+    "hr": 0
+   }
+  },
+  "Jared Triolo": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": 0.114,
+    "bucket": "NEUTRAL",
+    "pa": 34,
+    "obp": ".353",
+    "slg": ".310",
+    "ops": ".663",
+    "hr": 0
+   }
+  },
+  "Marcell Ozuna": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   }
+  },
+  "Nick Gonzales": {
+   "team": "PIT",
+   "7d": {
+    "H": 0.483,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".375",
+    "slg": ".667",
+    "ops": "1.042",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.105,
+    "bucket": "NEUTRAL",
+    "pa": 41,
+    "obp": ".293",
+    "slg": ".385",
+    "ops": ".678",
+    "hr": 1
+   }
+  },
+  "Ryan O'Hearn": {
+   "team": "PIT",
+   "7d": {
+    "H": -0.808,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".063",
+    "slg": ".063",
+    "ops": ".126",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.408,
+    "bucket": "COLD",
+    "pa": 43,
+    "obp": ".233",
+    "slg": ".349",
+    "ops": ".582",
+    "hr": 1
+   }
+  },
+  "Spencer Horwitz": {
+   "team": "PIT",
+   "7d": {
+    "H": 0.004,
+    "bucket": "NEUTRAL",
+    "pa": 18,
+    "obp": ".333",
+    "slg": ".471",
+    "ops": ".804",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.053,
+    "bucket": "NEUTRAL",
+    "pa": 48,
+    "obp": ".375",
+    "slg": ".385",
+    "ops": ".760",
+    "hr": 1
+   }
+  },
+  "Tyler Callihan": {
+   "team": "PIT",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "H": -0.641,
+    "bucket": "COLD",
+    "pa": 30,
+    "obp": ".267",
+    "slg": ".214",
+    "ops": ".481",
+    "hr": 0
+   }
+  },
+  "Carlos Cortes": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 24
+   }
+  },
+  "Colby Thomas": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 16
+   }
+  },
+  "Henry Bolte": {
+   "team": "OAK",
+   "7d": {
+    "H": -0.18,
+    "bucket": "COOL",
+    "pa": 17,
+    "obp": ".412",
+    "slg": ".231",
+    "ops": ".643",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.228,
+    "bucket": "WARM",
+    "pa": 42,
+    "obp": ".429",
+    "slg": ".441",
+    "ops": ".870",
+    "hr": 1
+   }
+  },
+  "Jacob Wilson": {
+   "team": "OAK",
+   "7d": {
+    "H": -0.004,
+    "bucket": "NEUTRAL",
+    "pa": 18,
+    "obp": ".278",
+    "slg": ".438",
+    "ops": ".716",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.131,
+    "bucket": "NEUTRAL",
+    "pa": 43,
+    "obp": ".302",
+    "slg": ".342",
+    "ops": ".644",
+    "hr": 1
+   }
+  },
+  "Jeff McNeil": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 24
+   }
+  },
+  "Joey Meneses": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   }
+  },
+  "Jonah Heim": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 28
+   }
+  },
+  "Lawrence Butler": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "Max Muncy": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Nick Kurtz": {
+   "team": "OAK",
+   "7d": {
+    "H": -0.109,
+    "bucket": "NEUTRAL",
+    "pa": 19,
+    "obp": ".368",
+    "slg": ".467",
+    "ops": ".835",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.297,
+    "bucket": "WARM",
+    "pa": 51,
+    "obp": ".412",
+    "slg": ".651",
+    "ops": "1.063",
+    "hr": 4
+   }
+  },
+  "Shea Langeliers": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": -0.415,
+    "bucket": "COLD",
+    "pa": 41,
+    "obp": ".244",
+    "slg": ".378",
+    "ops": ".622",
+    "hr": 2
+   }
+  },
+  "Tyler Soderstrom": {
+   "team": "OAK",
+   "7d": {
+    "H": 0.57,
+    "bucket": "HOT",
+    "pa": 17,
+    "obp": ".588",
+    "slg": ".538",
+    "ops": "1.126",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.359,
+    "bucket": "WARM",
+    "pa": 46,
+    "obp": ".413",
+    "slg": ".526",
+    "ops": ".939",
+    "hr": 2
+   }
+  },
+  "Zack Gelof": {
+   "team": "OAK",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "H": 0.491,
+    "bucket": "HOT",
+    "pa": 41,
+    "obp": ".439",
+    "slg": ".667",
+    "ops": "1.106",
+    "hr": 3
+   }
+  },
+  "Bryce Eldridge": {
+   "team": "SF",
+   "7d": {
+    "H": -0.709,
+    "bucket": "COLD",
+    "pa": 17,
+    "obp": ".235",
+    "slg": ".071",
+    "ops": ".306",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.05,
+    "bucket": "NEUTRAL",
+    "pa": 39,
+    "obp": ".385",
+    "slg": ".455",
+    "ops": ".840",
+    "hr": 2
+   }
+  },
+  "Buddy Kennedy": {
+   "team": "SF",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 0
+   }
+  },
+  "Casey Schmitt": {
+   "team": "SF",
+   "7d": {
+    "H": 0.664,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".563",
+    "slg": ".875",
+    "ops": "1.438",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.481,
+    "bucket": "HOT",
+    "pa": 36,
+    "obp": ".472",
+    "slg": ".629",
+    "ops": "1.101",
+    "hr": 1
+   }
+  },
+  "Daniel Susac": {
+   "team": "SF",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 22
+   }
+  },
+  "Drew Gilbert": {
+   "team": "SF",
+   "7d": {
+    "H": 0.554,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".533",
+    "slg": ".500",
+    "ops": "1.033",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.327,
+    "bucket": "WARM",
+    "pa": 34,
+    "obp": ".471",
+    "slg": ".333",
+    "ops": ".804",
+    "hr": 0
+   }
+  },
+  "Eric Haase": {
+   "team": "SF",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   }
+  },
+  "Jonah Cox": {
+   "team": "SF",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   }
+  },
+  "Jung Hoo Lee": {
+   "team": "SF",
+   "7d": {
+    "H": 0.638,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".500",
+    "slg": ".857",
+    "ops": "1.357",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.148,
+    "bucket": "NEUTRAL",
+    "pa": 35,
+    "obp": ".314",
+    "slg": ".563",
+    "ops": ".877",
+    "hr": 2
+   }
+  },
+  "Luis Arraez": {
+   "team": "SF",
+   "7d": {
+    "H": -0.354,
+    "bucket": "COOL",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".286",
+    "ops": ".599",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.064,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".333",
+    "slg": ".472",
+    "ops": ".805",
+    "hr": 1
+   }
+  },
+  "Matt Chapman": {
+   "team": "SF",
+   "7d": {
+    "H": -0.739,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".188",
+    "slg": ".071",
+    "ops": ".259",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.62,
+    "bucket": "COLD",
+    "pa": 38,
+    "obp": ".211",
+    "slg": ".188",
+    "ops": ".399",
+    "hr": 1
+   }
+  },
+  "Rafael Devers": {
+   "team": "SF",
+   "7d": {
+    "H": 0.026,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".429",
+    "ops": ".742",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.448,
+    "bucket": "HOT",
+    "pa": 37,
+    "obp": ".378",
+    "slg": ".563",
+    "ops": ".941",
+    "hr": 2
+   }
+  },
+  "Victor Bericoto": {
+   "team": "SF",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   }
+  },
+  "Willy Adames": {
+   "team": "SF",
+   "7d": {
+    "H": -0.561,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".188",
+    "slg": ".250",
+    "ops": ".438",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.41,
+    "bucket": "COLD",
+    "pa": 35,
+    "obp": ".171",
+    "slg": ".371",
+    "ops": ".542",
+    "hr": 2
+   }
+  },
+  "Alec Bohm": {
+   "team": "PHI",
+   "7d": {
+    "H": -0.356,
+    "bucket": "COOL",
+    "pa": 17,
+    "obp": ".294",
+    "slg": ".200",
+    "ops": ".494",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.071,
+    "bucket": "NEUTRAL",
+    "pa": 42,
+    "obp": ".286",
+    "slg": ".359",
+    "ops": ".645",
+    "hr": 1
+   }
+  },
+  "Brandon Marsh": {
+   "team": "PHI",
+   "7d": {
+    "H": 0.232,
+    "bucket": "WARM",
+    "pa": 18,
+    "obp": ".278",
+    "slg": ".667",
+    "ops": ".945",
+    "hr": 2
+   },
+   "14d": {
+    "H": -0.106,
+    "bucket": "NEUTRAL",
+    "pa": 47,
+    "obp": ".277",
+    "slg": ".500",
+    "ops": ".777",
+    "hr": 3
+   }
+  },
+  "Bryce Harper": {
+   "team": "PHI",
+   "7d": {
+    "H": 0.692,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".556",
+    "slg": "1.111",
+    "ops": "1.667",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.066,
+    "bucket": "NEUTRAL",
+    "pa": 47,
+    "obp": ".340",
+    "slg": ".525",
+    "ops": ".865",
+    "hr": 2
+   }
+  },
+  "Bryson Stott": {
+   "team": "PHI",
+   "7d": {
+    "H": 0.426,
+    "bucket": "HOT",
+    "pa": 17,
+    "obp": ".353",
+    "slg": ".563",
+    "ops": ".916",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.343,
+    "bucket": "WARM",
+    "pa": 44,
+    "obp": ".364",
+    "slg": ".500",
+    "ops": ".864",
+    "hr": 1
+   }
+  },
+  "Derek Hill": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 20
+   }
+  },
+  "Edmundo Sosa": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "Gabriel Rincones Jr.": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 24
+   }
+  },
+  "Garrett Stubbs": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   }
+  },
+  "J.T. Realmuto": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.362,
+    "bucket": "WARM",
+    "pa": 33,
+    "obp": ".303",
+    "slg": ".533",
+    "ops": ".836",
+    "hr": 2
+   }
+  },
+  "Justin Crawford": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "H": 0.187,
+    "bucket": "WARM",
+    "pa": 30,
+    "obp": ".367",
+    "slg": ".393",
+    "ops": ".760",
+    "hr": 0
+   }
+  },
+  "Kyle Schwarber": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.401,
+    "bucket": "HOT",
+    "pa": 44,
+    "obp": ".409",
+    "slg": ".718",
+    "ops": "1.127",
+    "hr": 5
+   }
+  },
+  "Rafael March\u00e1n": {
+   "team": "PHI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   }
+  },
+  "Trea Turner": {
+   "team": "PHI",
+   "7d": {
+    "H": -0.094,
+    "bucket": "NEUTRAL",
+    "pa": 19,
+    "obp": ".316",
+    "slg": ".278",
+    "ops": ".594",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.22,
+    "bucket": "COOL",
+    "pa": 42,
+    "obp": ".286",
+    "slg": ".256",
+    "ops": ".542",
+    "hr": 0
+   }
+  },
+  "Andr\u00e9s Chaparro": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "CJ Abrams": {
+   "team": "WSH",
+   "7d": {
+    "H": 0.675,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".938",
+    "ops": "1.251",
+    "hr": 3
+   },
+   "14d": {
+    "H": -0.076,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".275",
+    "slg": ".550",
+    "ops": ".825",
+    "hr": 3
+   }
+  },
+  "Curtis Mead": {
+   "team": "WSH",
+   "7d": {
+    "H": -0.74,
+    "bucket": "COLD",
+    "pa": 19,
+    "obp": ".105",
+    "slg": ".263",
+    "ops": ".368",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.54,
+    "bucket": "COLD",
+    "pa": 38,
+    "obp": ".211",
+    "slg": ".294",
+    "ops": ".505",
+    "hr": 2
+   }
+  },
+  "Daylen Lile": {
+   "team": "WSH",
+   "7d": {
+    "H": -0.771,
+    "bucket": "COLD",
+    "pa": 15,
+    "obp": ".133",
+    "slg": ".071",
+    "ops": ".204",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.646,
+    "bucket": "COLD",
+    "pa": 38,
+    "obp": ".184",
+    "slg": ".200",
+    "ops": ".384",
+    "hr": 0
+   }
+  },
+  "Drew Millas": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   }
+  },
+  "Dylan Crews": {
+   "team": "WSH",
+   "7d": {
+    "H": 0.536,
+    "bucket": "HOT",
+    "pa": 20,
+    "obp": ".400",
+    "slg": ".632",
+    "ops": "1.032",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.35,
+    "bucket": "WARM",
+    "pa": 44,
+    "obp": ".295",
+    "slg": ".558",
+    "ops": ".853",
+    "hr": 3
+   }
+  },
+  "Jacob Young": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "James Wood": {
+   "team": "WSH",
+   "7d": {
+    "H": -0.668,
+    "bucket": "COLD",
+    "pa": 23,
+    "obp": ".217",
+    "slg": ".250",
+    "ops": ".467",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.114,
+    "bucket": "NEUTRAL",
+    "pa": 50,
+    "obp": ".320",
+    "slg": ".488",
+    "ops": ".808",
+    "hr": 2
+   }
+  },
+  "Jorbit Vivas": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 15
+   }
+  },
+  "Jos\u00e9 Tena": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Keibert Ruiz": {
+   "team": "WSH",
+   "7d": {
+    "H": -0.037,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".375",
+    "slg": ".357",
+    "ops": ".732",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.157,
+    "bucket": "WARM",
+    "pa": 30,
+    "obp": ".367",
+    "slg": ".464",
+    "ops": ".831",
+    "hr": 1
+   }
+  },
+  "Luis Garc\u00eda Jr.": {
+   "team": "WSH",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": 0.159,
+    "bucket": "WARM",
+    "pa": 37,
+    "obp": ".270",
+    "slg": ".583",
+    "ops": ".853",
+    "hr": 4
+   }
+  },
+  "Nasim Nu\u00f1ez": {
+   "team": "WSH",
+   "7d": {
+    "H": 0.575,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".500",
+    "slg": ".529",
+    "ops": "1.029",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.624,
+    "bucket": "HOT",
+    "pa": 36,
+    "obp": ".556",
+    "slg": ".645",
+    "ops": "1.201",
+    "hr": 0
+   }
+  },
+  "Adrian Del Castillo": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 16
+   }
+  },
+  "Corbin Carroll": {
+   "team": "ARI",
+   "7d": {
+    "H": 0.298,
+    "bucket": "WARM",
+    "pa": 19,
+    "obp": ".421",
+    "slg": ".588",
+    "ops": "1.009",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.009,
+    "bucket": "NEUTRAL",
+    "pa": 47,
+    "obp": ".340",
+    "slg": ".512",
+    "ops": ".852",
+    "hr": 2
+   }
+  },
+  "Gabriel Moreno": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.401,
+    "bucket": "HOT",
+    "pa": 36,
+    "obp": ".417",
+    "slg": ".531",
+    "ops": ".948",
+    "hr": 1
+   }
+  },
+  "Geraldo Perdomo": {
+   "team": "ARI",
+   "7d": {
+    "H": -0.601,
+    "bucket": "COLD",
+    "pa": 23,
+    "obp": ".304",
+    "slg": ".059",
+    "ops": ".363",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.025,
+    "bucket": "NEUTRAL",
+    "pa": 49,
+    "obp": ".388",
+    "slg": ".297",
+    "ops": ".685",
+    "hr": 1
+   }
+  },
+  "Ildemaro Vargas": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 28
+   }
+  },
+  "Jorge Barrosa": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "Ketel Marte": {
+   "team": "ARI",
+   "7d": {
+    "H": 0.582,
+    "bucket": "HOT",
+    "pa": 21,
+    "obp": ".429",
+    "slg": ".611",
+    "ops": "1.040",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.434,
+    "bucket": "HOT",
+    "pa": 49,
+    "obp": ".429",
+    "slg": ".512",
+    "ops": ".941",
+    "hr": 1
+   }
+  },
+  "Lourdes Gurriel Jr.": {
+   "team": "ARI",
+   "7d": {
+    "H": -0.287,
+    "bucket": "COOL",
+    "pa": 17,
+    "obp": ".235",
+    "slg": ".250",
+    "ops": ".485",
+    "hr": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 25
+   }
+  },
+  "LuJames Groover": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 25
+   }
+  },
+  "Nolan Arenado": {
+   "team": "ARI",
+   "7d": {
+    "H": -0.027,
+    "bucket": "NEUTRAL",
+    "pa": 18,
+    "obp": ".333",
+    "slg": ".353",
+    "ops": ".686",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.61,
+    "bucket": "COLD",
+    "pa": 44,
+    "obp": ".205",
+    "slg": ".195",
+    "ops": ".400",
+    "hr": 0
+   }
+  },
+  "Pavin Smith": {
+   "team": "ARI",
+   "7d": {
+    "H": -0.186,
+    "bucket": "COOL",
+    "pa": 17,
+    "obp": ".294",
+    "slg": ".200",
+    "ops": ".494",
+    "hr": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Tim Tawa": {
+   "team": "ARI",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   }
+  },
+  "Tommy Troy": {
+   "team": "ARI",
+   "7d": {
+    "H": 0.049,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".429",
+    "ops": ".742",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.065,
+    "bucket": "NEUTRAL",
+    "pa": 30,
+    "obp": ".267",
+    "slg": ".500",
+    "ops": ".767",
+    "hr": 2
+   }
+  },
+  "Alec Burleson": {
+   "team": "STL",
+   "7d": {
+    "H": 0.561,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".500",
+    "slg": ".667",
+    "ops": "1.167",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.126,
+    "bucket": "NEUTRAL",
+    "pa": 50,
+    "obp": ".340",
+    "slg": ".523",
+    "ops": ".863",
+    "hr": 2
+   }
+  },
+  "Blaze Jordan": {
+   "team": "STL",
+   "7d": {
+    "H": -0.697,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".188",
+    "slg": ".154",
+    "ops": ".342",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.032,
+    "bucket": "NEUTRAL",
+    "pa": 43,
+    "obp": ".279",
+    "slg": ".436",
+    "ops": ".715",
+    "hr": 1
+   }
+  },
+  "Bryan Torres": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   }
+  },
+  "Iv\u00e1n Herrera": {
+   "team": "STL",
+   "7d": {
+    "H": 0.59,
+    "bucket": "HOT",
+    "pa": 18,
+    "obp": ".556",
+    "slg": ".615",
+    "ops": "1.171",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.463,
+    "bucket": "HOT",
+    "pa": 51,
+    "obp": ".471",
+    "slg": ".514",
+    "ops": ".985",
+    "hr": 3
+   }
+  },
+  "JJ Wetherholt": {
+   "team": "STL",
+   "7d": {
+    "H": 0.312,
+    "bucket": "WARM",
+    "pa": 19,
+    "obp": ".316",
+    "slg": ".611",
+    "ops": ".927",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.459,
+    "bucket": "HOT",
+    "pa": 48,
+    "obp": ".438",
+    "slg": ".605",
+    "ops": "1.043",
+    "hr": 3
+   }
+  },
+  "Jimmy Crooks": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Jordan Walker": {
+   "team": "STL",
+   "7d": {
+    "H": -0.504,
+    "bucket": "COLD",
+    "pa": 17,
+    "obp": ".294",
+    "slg": ".267",
+    "ops": ".561",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.529,
+    "bucket": "COLD",
+    "pa": 48,
+    "obp": ".250",
+    "slg": ".311",
+    "ops": ".561",
+    "hr": 1
+   }
+  },
+  "Jos\u00e9 Ferm\u00edn": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 21
+   }
+  },
+  "Lars Nootbaar": {
+   "team": "STL",
+   "7d": {
+    "H": 0.315,
+    "bucket": "WARM",
+    "pa": 17,
+    "obp": ".471",
+    "slg": ".500",
+    "ops": ".971",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.057,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".425",
+    "slg": ".394",
+    "ops": ".819",
+    "hr": 0
+   }
+  },
+  "Masyn Winn": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.328,
+    "bucket": "WARM",
+    "pa": 41,
+    "obp": ".366",
+    "slg": ".459",
+    "ops": ".825",
+    "hr": 1
+   }
+  },
+  "Nathan Church": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "H": 0.415,
+    "bucket": "HOT",
+    "pa": 30,
+    "obp": ".467",
+    "slg": ".480",
+    "ops": ".947",
+    "hr": 0
+   }
+  },
+  "Nelson Vel\u00e1zquez": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   }
+  },
+  "Pedro Pag\u00e9s": {
+   "team": "STL",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   }
+  },
+  "Brice Matthews": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Cam Smith": {
+   "team": "HOU",
+   "7d": {
+    "H": -0.057,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".250",
+    "slg": ".429",
+    "ops": ".679",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.18,
+    "bucket": "COOL",
+    "pa": 40,
+    "obp": ".250",
+    "slg": ".368",
+    "ops": ".618",
+    "hr": 1
+   }
+  },
+  "Christian V\u00e1zquez": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Christian Walker": {
+   "team": "HOU",
+   "7d": {
+    "H": -0.747,
+    "bucket": "COLD",
+    "pa": 22,
+    "obp": ".182",
+    "slg": ".053",
+    "ops": ".235",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.485,
+    "bucket": "COLD",
+    "pa": 48,
+    "obp": ".229",
+    "slg": ".302",
+    "ops": ".531",
+    "hr": 2
+   }
+  },
+  "Isaac Paredes": {
+   "team": "HOU",
+   "7d": {
+    "H": 0.287,
+    "bucket": "WARM",
+    "pa": 22,
+    "obp": ".455",
+    "slg": ".429",
+    "ops": ".884",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.346,
+    "bucket": "WARM",
+    "pa": 44,
+    "obp": ".455",
+    "slg": ".472",
+    "ops": ".927",
+    "hr": 1
+   }
+  },
+  "Jake Meyers": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 24
+   }
+  },
+  "Jeremy Pe\u00f1a": {
+   "team": "HOU",
+   "7d": {
+    "H": 0.696,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".375",
+    "slg": ".800",
+    "ops": "1.175",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.27,
+    "bucket": "WARM",
+    "pa": 44,
+    "obp": ".341",
+    "slg": ".561",
+    "ops": ".902",
+    "hr": 3
+   }
+  },
+  "Joey Loperfido": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Jose Altuve": {
+   "team": "HOU",
+   "7d": {
+    "H": 0.482,
+    "bucket": "HOT",
+    "pa": 22,
+    "obp": ".409",
+    "slg": ".619",
+    "ops": "1.028",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.333,
+    "bucket": "WARM",
+    "pa": 43,
+    "obp": ".326",
+    "slg": ".561",
+    "ops": ".887",
+    "hr": 3
+   }
+  },
+  "Raynel Delgado": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Taylor Trammell": {
+   "team": "HOU",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   }
+  },
+  "Yainer Diaz": {
+   "team": "HOU",
+   "7d": {
+    "H": 0.46,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".333",
+    "slg": ".571",
+    "ops": ".904",
+    "hr": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 19
+   }
+  },
+  "Yordan Alvarez": {
+   "team": "HOU",
+   "7d": {
+    "H": 0.479,
+    "bucket": "HOT",
+    "pa": 22,
+    "obp": ".545",
+    "slg": ".600",
+    "ops": "1.145",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.334,
+    "bucket": "WARM",
+    "pa": 49,
+    "obp": ".469",
+    "slg": ".667",
+    "ops": "1.136",
+    "hr": 3
+   }
+  },
+  "Ben Malgeri": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 3
+   }
+  },
+  "Colt Keith": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 25
+   }
+  },
+  "Dillon Dingler": {
+   "team": "DET",
+   "7d": {
+    "H": 0.62,
+    "bucket": "HOT",
+    "pa": 21,
+    "obp": ".476",
+    "slg": ".810",
+    "ops": "1.286",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.333,
+    "bucket": "WARM",
+    "pa": 42,
+    "obp": ".381",
+    "slg": ".650",
+    "ops": "1.031",
+    "hr": 2
+   }
+  },
+  "Hao-Yu  Lee": {
+   "team": "DET",
+   "7d": {
+    "H": -0.038,
+    "bucket": "NEUTRAL",
+    "pa": 15,
+    "obp": ".286",
+    "slg": ".357",
+    "ops": ".643",
+    "hr": 0
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Jahmai Jones": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   }
+  },
+  "Jake Rogers": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   }
+  },
+  "James Outman": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Kerry Carpenter": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Kevin McGonigle": {
+   "team": "DET",
+   "7d": {
+    "H": -0.074,
+    "bucket": "NEUTRAL",
+    "pa": 22,
+    "obp": ".364",
+    "slg": ".368",
+    "ops": ".732",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.14,
+    "bucket": "NEUTRAL",
+    "pa": 44,
+    "obp": ".364",
+    "slg": ".474",
+    "ops": ".838",
+    "hr": 2
+   }
+  },
+  "Matt Vierling": {
+   "team": "DET",
+   "7d": {
+    "H": 0.113,
+    "bucket": "NEUTRAL",
+    "pa": 16,
+    "obp": ".250",
+    "slg": ".467",
+    "ops": ".717",
+    "hr": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 25
+   }
+  },
+  "Riley Greene": {
+   "team": "DET",
+   "7d": {
+    "H": 0.149,
+    "bucket": "NEUTRAL",
+    "pa": 21,
+    "obp": ".429",
+    "slg": ".400",
+    "ops": ".829",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.262,
+    "bucket": "COOL",
+    "pa": 42,
+    "obp": ".357",
+    "slg": ".294",
+    "ops": ".651",
+    "hr": 1
+   }
+  },
+  "Spencer Torkelson": {
+   "team": "DET",
+   "7d": {
+    "H": 0.167,
+    "bucket": "WARM",
+    "pa": 20,
+    "obp": ".368",
+    "slg": ".412",
+    "ops": ".780",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.039,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".282",
+    "slg": ".429",
+    "ops": ".711",
+    "hr": 2
+   }
+  },
+  "Zach McKinstry": {
+   "team": "DET",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Alejandro Osuna": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Brandon Nimmo": {
+   "team": "TEX",
+   "7d": {
+    "H": 0.622,
+    "bucket": "HOT",
+    "pa": 23,
+    "obp": ".478",
+    "slg": ".818",
+    "ops": "1.296",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.315,
+    "bucket": "WARM",
+    "pa": 45,
+    "obp": ".356",
+    "slg": ".591",
+    "ops": ".947",
+    "hr": 1
+   }
+  },
+  "Cody Freeman": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 16
+   }
+  },
+  "Elias D\u00edaz": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 17
+   }
+  },
+  "Ezequiel Duran": {
+   "team": "TEX",
+   "7d": {
+    "H": -0.272,
+    "bucket": "COOL",
+    "pa": 21,
+    "obp": ".286",
+    "slg": ".333",
+    "ops": ".619",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.516,
+    "bucket": "COLD",
+    "pa": 42,
+    "obp": ".214",
+    "slg": ".289",
+    "ops": ".503",
+    "hr": 2
+   }
+  },
+  "Jake Burger": {
+   "team": "TEX",
+   "7d": {
+    "H": 0.619,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".438",
+    "slg": ".615",
+    "ops": "1.053",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.209,
+    "bucket": "WARM",
+    "pa": 40,
+    "obp": ".350",
+    "slg": ".486",
+    "ops": ".836",
+    "hr": 2
+   }
+  },
+  "Jarred Kelenic": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   }
+  },
+  "Joc Pederson": {
+   "team": "TEX",
+   "7d": {
+    "H": -0.17,
+    "bucket": "COOL",
+    "pa": 23,
+    "obp": ".304",
+    "slg": ".381",
+    "ops": ".685",
+    "hr": 1
+   },
+   "14d": {
+    "H": -0.009,
+    "bucket": "NEUTRAL",
+    "pa": 40,
+    "obp": ".325",
+    "slg": ".432",
+    "ops": ".757",
+    "hr": 2
+   }
+  },
+  "Josh Jung": {
+   "team": "TEX",
+   "7d": {
+    "H": -0.1,
+    "bucket": "NEUTRAL",
+    "pa": 24,
+    "obp": ".375",
+    "slg": ".333",
+    "ops": ".708",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.31,
+    "bucket": "COOL",
+    "pa": 50,
+    "obp": ".340",
+    "slg": ".273",
+    "ops": ".613",
+    "hr": 0
+   }
+  },
+  "Justin Foscue": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 15
+   }
+  },
+  "Kyle Higashioka": {
+   "team": "TEX",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 23
+   }
+  },
+  "Nicky Lopez": {
+   "team": "TEX",
+   "7d": {
+    "H": -0.018,
+    "bucket": "NEUTRAL",
+    "pa": 18,
+    "obp": ".353",
+    "slg": ".313",
+    "ops": ".666",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.028,
+    "bucket": "NEUTRAL",
+    "pa": 32,
+    "obp": ".355",
+    "slg": ".333",
+    "ops": ".688",
+    "hr": 0
+   }
+  },
+  "Wyatt Langford": {
+   "team": "TEX",
+   "7d": {
+    "H": 0.603,
+    "bucket": "HOT",
+    "pa": 24,
+    "obp": ".458",
+    "slg": ".762",
+    "ops": "1.220",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.571,
+    "bucket": "HOT",
+    "pa": 50,
+    "obp": ".440",
+    "slg": ".711",
+    "ops": "1.151",
+    "hr": 4
+   }
+  },
+  "Alejandro Kirk": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Andr\u00e9s Gim\u00e9nez": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": 0.368,
+    "bucket": "WARM",
+    "pa": 34,
+    "obp": ".364",
+    "slg": ".533",
+    "ops": ".897",
+    "hr": 1
+   }
+  },
+  "Brandon Valenzuela": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Daulton Varsho": {
+   "team": "TOR",
+   "7d": {
+    "H": 0.761,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".400",
+    "slg": ".929",
+    "ops": "1.329",
+    "hr": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 15
+   }
+  },
+  "Davis Schneider": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 22
+   }
+  },
+  "Ernie Clement": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "H": -0.594,
+    "bucket": "COLD",
+    "pa": 32,
+    "obp": ".219",
+    "slg": ".226",
+    "ops": ".445",
+    "hr": 0
+   }
+  },
+  "George Springer": {
+   "team": "TOR",
+   "7d": {
+    "H": 0.34,
+    "bucket": "WARM",
+    "pa": 20,
+    "obp": ".400",
+    "slg": ".500",
+    "ops": ".900",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.631,
+    "bucket": "HOT",
+    "pa": 48,
+    "obp": ".438",
+    "slg": ".590",
+    "ops": "1.028",
+    "hr": 3
+   }
+  },
+  "Jes\u00fas S\u00e1nchez": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Kazuma Okamoto": {
+   "team": "TOR",
+   "7d": {
+    "H": 0.688,
+    "bucket": "HOT",
+    "pa": 17,
+    "obp": ".588",
+    "slg": "1.000",
+    "ops": "1.588",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.743,
+    "bucket": "HOT",
+    "pa": 41,
+    "obp": ".439",
+    "slg": ".765",
+    "ops": "1.204",
+    "hr": 4
+   }
+  },
+  "Luis Ur\u00edas": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   }
+  },
+  "Myles Straw": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 21
+   }
+  },
+  "Nathan Lukes": {
+   "team": "TOR",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": -0.103,
+    "bucket": "NEUTRAL",
+    "pa": 36,
+    "obp": ".286",
+    "slg": ".412",
+    "ops": ".698",
+    "hr": 1
+   }
+  },
+  "Vladimir Guerrero Jr.": {
+   "team": "TOR",
+   "7d": {
+    "H": -0.331,
+    "bucket": "COOL",
+    "pa": 18,
+    "obp": ".278",
+    "slg": ".294",
+    "ops": ".572",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.22,
+    "bucket": "COOL",
+    "pa": 35,
+    "obp": ".257",
+    "slg": ".382",
+    "ops": ".639",
+    "hr": 1
+   }
+  },
+  "Alex Bregman": {
+   "team": "CHC",
+   "7d": {
+    "H": -0.531,
+    "bucket": "COLD",
+    "pa": 15,
+    "obp": ".267",
+    "slg": ".154",
+    "ops": ".421",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.028,
+    "bucket": "NEUTRAL",
+    "pa": 42,
+    "obp": ".381",
+    "slg": ".273",
+    "ops": ".654",
+    "hr": 0
+   }
+  },
+  "Carson Kelly": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 10
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 21
+   }
+  },
+  "Dansby Swanson": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": 0.516,
+    "bucket": "HOT",
+    "pa": 35,
+    "obp": ".371",
+    "slg": ".552",
+    "ops": ".923",
+    "hr": 2
+   }
+  },
+  "Ian Happ": {
+   "team": "CHC",
+   "7d": {
+    "H": -0.073,
+    "bucket": "NEUTRAL",
+    "pa": 15,
+    "obp": ".400",
+    "slg": ".308",
+    "ops": ".708",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.472,
+    "bucket": "COLD",
+    "pa": 41,
+    "obp": ".244",
+    "slg": ".308",
+    "ops": ".552",
+    "hr": 1
+   }
+  },
+  "Justin Dean": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   }
+  },
+  "Matt Shaw": {
+   "team": "CHC",
+   "7d": {
+    "H": -0.213,
+    "bucket": "COOL",
+    "pa": 15,
+    "obp": ".267",
+    "slg": ".385",
+    "ops": ".652",
+    "hr": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "Michael Busch": {
+   "team": "CHC",
+   "7d": {
+    "H": -0.525,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".154",
+    "ops": ".467",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.068,
+    "bucket": "NEUTRAL",
+    "pa": 42,
+    "obp": ".381",
+    "slg": ".313",
+    "ops": ".694",
+    "hr": 1
+   }
+  },
+  "Michael Conforto": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 1
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   }
+  },
+  "Miguel Amaya": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   }
+  },
+  "Nico Hoerner": {
+   "team": "CHC",
+   "7d": {
+    "H": 0.209,
+    "bucket": "WARM",
+    "pa": 15,
+    "obp": ".333",
+    "slg": ".429",
+    "ops": ".762",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.587,
+    "bucket": "COLD",
+    "pa": 38,
+    "obp": ".184",
+    "slg": ".200",
+    "ops": ".384",
+    "hr": 0
+   }
+  },
+  "Pedro Ram\u00edrez": {
+   "team": "CHC",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   }
+  },
+  "Pete Crow-Armstrong": {
+   "team": "CHC",
+   "7d": {
+    "H": 0.738,
+    "bucket": "HOT",
+    "pa": 15,
+    "obp": ".733",
+    "slg": "1.200",
+    "ops": "1.933",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.696,
+    "bucket": "HOT",
+    "pa": 43,
+    "obp": ".558",
+    "slg": "1.139",
+    "ops": "1.697",
+    "hr": 6
+   }
+  },
+  "Seiya Suzuki": {
+   "team": "CHC",
+   "7d": {
+    "H": 0.515,
+    "bucket": "HOT",
+    "pa": 16,
+    "obp": ".563",
+    "slg": ".500",
+    "ops": "1.063",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.597,
+    "bucket": "HOT",
+    "pa": 36,
+    "obp": ".556",
+    "slg": ".607",
+    "ops": "1.163",
+    "hr": 0
+   }
+  },
+  "A.J. Ewing": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "H": 0.131,
+    "bucket": "NEUTRAL",
+    "pa": 36,
+    "obp": ".333",
+    "slg": ".438",
+    "ops": ".771",
+    "hr": 1
+   }
+  },
+  "Bo Bichette": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "H": 0.57,
+    "bucket": "HOT",
+    "pa": 45,
+    "obp": ".422",
+    "slg": ".690",
+    "ops": "1.112",
+    "hr": 3
+   }
+  },
+  "Brett Baty": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 27
+   }
+  },
+  "Carson Benge": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 13
+   },
+   "14d": {
+    "H": 0.097,
+    "bucket": "NEUTRAL",
+    "pa": 46,
+    "obp": ".326",
+    "slg": ".439",
+    "ops": ".765",
+    "hr": 2
+   }
+  },
+  "Eric Wagaman": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   }
+  },
+  "Francisco Alvarez": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "H": 0.046,
+    "bucket": "NEUTRAL",
+    "pa": 32,
+    "obp": ".344",
+    "slg": ".400",
+    "ops": ".744",
+    "hr": 1
+   }
+  },
+  "Jared Young": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 26
+   }
+  },
+  "Juan Soto": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "H": 0.604,
+    "bucket": "HOT",
+    "pa": 41,
+    "obp": ".537",
+    "slg": ".758",
+    "ops": "1.295",
+    "hr": 3
+   }
+  },
+  "Luis Torrens": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 19
+   }
+  },
+  "MJ Melendez": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 25
+   }
+  },
+  "Marcus Semien": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "H": -0.02,
+    "bucket": "NEUTRAL",
+    "pa": 42,
+    "obp": ".310",
+    "slg": ".333",
+    "ops": ".643",
+    "hr": 1
+   }
+  },
+  "Mark Vientos": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 22
+   }
+  },
+  "Zack Short": {
+   "team": "NYM",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 4
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "Amed Rosario": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Anthony Volpe": {
+   "team": "NYY",
+   "7d": {
+    "H": 0.352,
+    "bucket": "WARM",
+    "pa": 20,
+    "obp": ".500",
+    "slg": ".412",
+    "ops": ".912",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.576,
+    "bucket": "HOT",
+    "pa": 35,
+    "obp": ".543",
+    "slg": ".567",
+    "ops": "1.110",
+    "hr": 0
+   }
+  },
+  "Austin Wells": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   }
+  },
+  "Ben Rice": {
+   "team": "NYY",
+   "7d": {
+    "H": -0.441,
+    "bucket": "COLD",
+    "pa": 22,
+    "obp": ".227",
+    "slg": ".476",
+    "ops": ".703",
+    "hr": 2
+   },
+   "14d": {
+    "H": -0.2,
+    "bucket": "COOL",
+    "pa": 51,
+    "obp": ".314",
+    "slg": ".489",
+    "ops": ".803",
+    "hr": 4
+   }
+  },
+  "Cody Bellinger": {
+   "team": "NYY",
+   "7d": {
+    "H": -0.333,
+    "bucket": "COOL",
+    "pa": 20,
+    "obp": ".400",
+    "slg": ".200",
+    "ops": ".600",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.034,
+    "bucket": "NEUTRAL",
+    "pa": 47,
+    "obp": ".362",
+    "slg": ".439",
+    "ops": ".801",
+    "hr": 2
+   }
+  },
+  "J.C. Escarra": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 5
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 18
+   }
+  },
+  "Jasson Dom\u00ednguez": {
+   "team": "NYY",
+   "7d": {
+    "H": 0.086,
+    "bucket": "NEUTRAL",
+    "pa": 20,
+    "obp": ".316",
+    "slg": ".421",
+    "ops": ".737",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.025,
+    "bucket": "NEUTRAL",
+    "pa": 38,
+    "obp": ".270",
+    "slg": ".444",
+    "ops": ".714",
+    "hr": 1
+   }
+  },
+  "Jazz Chisholm Jr.": {
+   "team": "NYY",
+   "7d": {
+    "H": 0.287,
+    "bucket": "WARM",
+    "pa": 20,
+    "obp": ".300",
+    "slg": ".579",
+    "ops": ".879",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.212,
+    "bucket": "WARM",
+    "pa": 43,
+    "obp": ".349",
+    "slg": ".472",
+    "ops": ".821",
+    "hr": 3
+   }
+  },
+  "Jos\u00e9 Caballero": {
+   "team": "NYY",
+   "7d": {
+    "H": -0.475,
+    "bucket": "COLD",
+    "pa": 16,
+    "obp": ".313",
+    "slg": ".154",
+    "ops": ".467",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.177,
+    "bucket": "WARM",
+    "pa": 41,
+    "obp": ".341",
+    "slg": ".457",
+    "ops": ".798",
+    "hr": 2
+   }
+  },
+  "Max Schuemann": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 2
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   }
+  },
+  "Paul Goldschmidt": {
+   "team": "NYY",
+   "7d": {
+    "H": -0.496,
+    "bucket": "COLD",
+    "pa": 18,
+    "obp": ".222",
+    "slg": ".389",
+    "ops": ".611",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.071,
+    "bucket": "NEUTRAL",
+    "pa": 46,
+    "obp": ".304",
+    "slg": ".578",
+    "ops": ".882",
+    "hr": 4
+   }
+  },
+  "Ryan McMahon": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 6
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 22
+   }
+  },
+  "Spencer Jones": {
+   "team": "NYY",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "Andruw Monasterio": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 20
+   }
+  },
+  "Anthony Seigler": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   }
+  },
+  "Caleb Durbin": {
+   "team": "BOS",
+   "7d": {
+    "H": 0.655,
+    "bucket": "HOT",
+    "pa": 20,
+    "obp": ".550",
+    "slg": ".842",
+    "ops": "1.392",
+    "hr": 1
+   },
+   "14d": {
+    "H": 0.44,
+    "bucket": "HOT",
+    "pa": 39,
+    "obp": ".333",
+    "slg": ".556",
+    "ops": ".889",
+    "hr": 2
+   }
+  },
+  "Carlos Narv\u00e1ez": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 8
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   }
+  },
+  "Ceddanne Rafaela": {
+   "team": "BOS",
+   "7d": {
+    "H": -0.668,
+    "bucket": "COLD",
+    "pa": 17,
+    "obp": ".176",
+    "slg": ".235",
+    "ops": ".411",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.049,
+    "bucket": "NEUTRAL",
+    "pa": 44,
+    "obp": ".279",
+    "slg": ".465",
+    "ops": ".744",
+    "hr": 1
+   }
+  },
+  "Connor Wong": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 7
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 17
+   }
+  },
+  "Jarren Duran": {
+   "team": "BOS",
+   "7d": {
+    "H": -0.796,
+    "bucket": "COLD",
+    "pa": 21,
+    "obp": ".095",
+    "slg": ".050",
+    "ops": ".145",
+    "hr": 0
+   },
+   "14d": {
+    "H": -0.445,
+    "bucket": "COLD",
+    "pa": 47,
+    "obp": ".191",
+    "slg": ".273",
+    "ops": ".464",
+    "hr": 2
+   }
+  },
+  "Marcelo Mayer": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   },
+   "14d": {
+    "H": -0.117,
+    "bucket": "NEUTRAL",
+    "pa": 33,
+    "obp": ".303",
+    "slg": ".276",
+    "ops": ".579",
+    "hr": 0
+   }
+  },
+  "Masataka Yoshida": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 9
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 20
+   }
+  },
+  "Mickey Gasper": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 11
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 29
+   }
+  },
+  "Nate Eaton": {
+   "team": "BOS",
+   "7d": {
+    "bucket": "INSUFF",
+    "pa": 12
+   },
+   "14d": {
+    "bucket": "INSUFF",
+    "pa": 14
+   }
+  },
+  "Willson Contreras": {
+   "team": "BOS",
+   "7d": {
+    "H": -0.614,
+    "bucket": "COLD",
+    "pa": 21,
+    "obp": ".286",
+    "slg": ".222",
+    "ops": ".508",
+    "hr": 0
+   },
+   "14d": {
+    "H": 0.138,
+    "bucket": "NEUTRAL",
+    "pa": 48,
+    "obp": ".354",
+    "slg": ".548",
+    "ops": ".902",
+    "hr": 3
+   }
+  },
+  "Wilyer Abreu": {
+   "team": "BOS",
+   "7d": {
+    "H": 0.838,
+    "bucket": "HOT",
+    "pa": 17,
+    "obp": ".529",
+    "slg": "1.000",
+    "ops": "1.529",
+    "hr": 2
+   },
+   "14d": {
+    "H": 0.64,
+    "bucket": "HOT",
+    "pa": 44,
+    "obp": ".409",
+    "slg": ".703",
+    "ops": "1.112",
+    "hr": 3
+   }
+  }
+ },
+ "windows": {
+  "7d": {
+   "start": "2026-06-19",
+   "end": "2026-06-25"
+  },
+  "14d": {
+   "start": "2026-06-12",
+   "end": "2026-06-25"
+  }
+ }
+}

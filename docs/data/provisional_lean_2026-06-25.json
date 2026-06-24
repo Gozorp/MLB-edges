@@ -1,0 +1,60 @@
+{
+  "date": "2026-06-25",
+  "generated_utc": "2026-06-24T09:36:02.668300+00:00",
+  "method": "sp-independent-team-strength",
+  "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
+  "games": {
+    "HOU @ DET": {
+      "provisional_pick": "DET",
+      "p_pick": 0.55,
+      "p_home": 0.55,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "low",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "HOU",
+      "home": "DET",
+      "away_strength": -0.63,
+      "home_strength": -0.59
+    },
+    "TEX @ TOR": {
+      "provisional_pick": "TOR",
+      "p_pick": 0.534,
+      "p_home": 0.534,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "low",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "TEX",
+      "home": "TOR",
+      "away_strength": -0.27,
+      "home_strength": -0.29
+    },
+    "CHC @ NYM": {
+      "provisional_pick": "CHC",
+      "p_pick": 0.761,
+      "p_home": 0.239,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "CHC",
+      "home": "NYM",
+      "away_strength": 0.43,
+      "home_strength": -0.83
+    },
+    "NYY @ BOS": {
+      "provisional_pick": "NYY",
+      "p_pick": 0.926,
+      "p_home": 0.074,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "NYY",
+      "home": "BOS",
+      "away_strength": 1.86,
+      "home_strength": -0.71
+    }
+  }
+}
