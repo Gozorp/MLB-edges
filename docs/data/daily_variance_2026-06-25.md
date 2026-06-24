@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-25
-_Generated 2026-06-24T16:35:53Z · 9 games · significant deviations only_
+_Generated 2026-06-24T18:59:26Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **KC** [IL] — Kansas City Royals placed 3B Maikel Garcia on the 10-day injured list. Left hand muscle strain.
@@ -19,6 +19,8 @@ _Generated 2026-06-24T16:35:53Z · 9 games · significant deviations only_
 - **PHI** [signed] — Philadelphia Phillies signed free agent SS Yohali Geraldo to a minor league contract.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Jackson Rutledge to a minor league contract.
 - **WSH** [signed] — Washington Nationals signed free agent RHP Blake Brown to a minor league contract.
+- **WSH** [optioned] — Washington Nationals optioned RHP Paxton Schultz to Rochester Red Wings.
+- **WSH** [recalled] — Washington Nationals recalled LHP Carson Palmquist from Rochester Red Wings.
 - **TEX** [signed] — Texas Rangers signed free agent LHP Marco Gonzales to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent C Austin Wynns to a minor league contract.
 - **TEX** [optioned] — Texas Rangers optioned RHP Jose Corniell to Round Rock Express.
@@ -28,6 +30,12 @@ _Generated 2026-06-24T16:35:53Z · 9 games · significant deviations only_
 - **TOR** [optioned] — Toronto Blue Jays optioned RHP Lazaro Estrada to Buffalo Bisons.
 - **CHC** [activated] — Chicago Cubs activated RHP Jayden Murray.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
+- **CHC** [DFA] — Chicago Cubs designated RHP Eduarniel Núñez for assignment.
+- **CHC** [IL] — Chicago Cubs placed RHP Ben Brown on the 15-day injured list retroactive to June 21, 2026. Neck strain.
+- **CHC** [IL] — Chicago Cubs placed RHP Edward Cabrera on the 15-day injured list. Left hamstring strain.
+- **CHC** [selected] — Chicago Cubs selected the contract of RHP Vince Velasquez from Iowa Cubs.
+- **CHC** [recalled] — Chicago Cubs recalled RHP Gavin Hollowell from Iowa Cubs.
+- **CHC** [recalled] — Chicago Cubs recalled RHP Tyler Ferguson from Iowa Cubs.
 - **NYM** [claimed] — New York Mets claimed CF Jared Oliva off waivers from San Francisco Giants.
 - **NYM** [optioned] — New York Mets optioned CF Jared Oliva to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Jonathan Pintaro from Syracuse Mets.
@@ -35,6 +43,9 @@ _Generated 2026-06-24T16:35:53Z · 9 games · significant deviations only_
 - **NYY** [status] — New York Yankees placed C Ali Sánchez on the paternity list.
 - **NYY** [recalled] — New York Yankees recalled C J.C. Escarra from Scranton/Wilkes-Barre RailRiders.
 - **BOS** [signed] — Boston Red Sox signed free agent C Andrew Knizner to a minor league contract.
+- **AZ** [DFA] — Arizona Diamondbacks designated 1B Carlos Santana for assignment.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Mitch Bratt from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned LHP Kohl Drake to Reno Aces.
 - **STL** [TRADE] — St. Louis Cardinals traded RHP Chris Roycroft to Tampa Bay Rays for Player To Be Named Later.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
@@ -50,7 +61,6 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **PHI @ WSH** (away SP Cristopher Sánchez): very high K% (28.4% vs lg 22.0)
 - **TEX @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **NYY @ BOS** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **NYY @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **HOU** Enyel De Los Santos — 2 apps / 45 pitches over last 3 games — monitor
@@ -70,6 +80,7 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - TEX @ TOR — TOR faces LHP (MacKenzie Gore)
 - CHC @ NYM — NYM faces LHP (Matthew Boyd)
 - CHC @ NYM — CHC faces RHP (Freddy Peralta)
+- NYY @ BOS — NYY faces LHP (Payton Tolle)
 - AZ @ STL — STL faces RHP (Zac Gallen)
 - AZ @ STL — AZ faces RHP (Michael McGreevy)
 
