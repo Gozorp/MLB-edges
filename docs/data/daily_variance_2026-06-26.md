@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-26
-_Generated 2026-06-25T09:34:07Z · 15 games · significant deviations only_
+_Generated 2026-06-25T13:20:44Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **HOU** [recalled] — Houston Astros recalled LHP Colton Gordon from Sugar Land Space Cowboys.
