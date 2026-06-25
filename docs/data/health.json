@@ -1,31 +1,31 @@
 {
   "version": 2,
-  "checked_at": "2026-06-25T15:26:05.630036+00:00",
+  "checked_at": "2026-06-25T17:32:08.547123+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
     "data_flow": "green",
     "deployment": "green",
-    "model": "frozen"
+    "model": "yellow"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 2.1h ago",
+      "message": "last slate publish 0.9h ago",
       "detail": {
-        "last_run_iso": "2026-06-25T13:21:12+00:00",
-        "age_hours": 2.08
+        "last_run_iso": "2026-06-25T16:37:21+00:00",
+        "age_hours": 0.91
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 4.3d ago",
+      "message": "last fired 4.4d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:36:20Z",
-        "age_hours": 102.83,
+        "age_hours": 104.93,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 4.3d ago",
+      "message": "last fired 4.4d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:55:41Z",
-        "age_hours": 102.51,
+        "age_hours": 104.61,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -47,7 +47,7 @@
       "message": "daily Claude Brain review hasn't fired in 21.8 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 522.26,
+        "age_hours": 524.36,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -96,9 +96,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-25T15:26:05.789Z",
+          "timestamp": "2026-06-25T17:32:08.754Z",
           "commit": "unknown",
-          "region": "LAX"
+          "region": "IAD"
         }
       },
       "category": "deployment"
@@ -106,10 +106,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 522.7h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 524.8h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 522.68,
+        "age_hours": 524.78,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -136,12 +136,12 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "green",
-      "message": "3/9 rows stress-warned",
+      "severity": "yellow",
+      "message": "56% of slate stress-warned (5/9)",
       "detail": {
         "total_rows": 9,
-        "stress_warned_count": 3,
-        "pct_of_slate": 33.3
+        "stress_warned_count": 5,
+        "pct_of_slate": 55.6
       },
       "category": "model"
     }
