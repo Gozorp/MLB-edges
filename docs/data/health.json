@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "checked_at": "2026-06-26T08:33:53.549811+00:00",
+  "checked_at": "2026-06-26T11:26:55.471917+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
-    "data_flow": "red",
+    "data_flow": "green",
     "deployment": "green",
     "model": "frozen"
   },
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 10.1h ago",
+      "message": "last slate publish 1.8h ago",
       "detail": {
-        "last_run_iso": "2026-06-25T22:25:32+00:00",
-        "age_hours": 10.14
+        "last_run_iso": "2026-06-26T09:39:05+00:00",
+        "age_hours": 1.8
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 5.0d ago",
+      "message": "last fired 5.1d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:36:20Z",
-        "age_hours": 119.96,
+        "age_hours": 122.84,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 5.0d ago",
+      "message": "last fired 5.1d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:55:41Z",
-        "age_hours": 119.64,
+        "age_hours": 122.52,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 22.5 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 22.6 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 539.39,
+        "age_hours": 542.27,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -64,27 +64,27 @@
     },
     {
       "name": "kalshi_coverage_rate",
-      "severity": "yellow",
-      "message": "60% of slate has no Kalshi moneyline",
+      "severity": "green",
+      "message": "12/15 rows have market odds",
       "detail": {
         "total_rows": 15,
-        "ok_rows": 6,
-        "non_ok_pct": 60.0,
+        "ok_rows": 12,
+        "non_ok_pct": 20.0,
         "status_distribution": {
-          "fetched": 6,
-          "pending_sp_data": 9
+          "fetched": 12,
+          "pending_sp_data": 3
         }
       },
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "red",
-      "message": "60% PENDING_SP_DATA (9/15)",
+      "severity": "green",
+      "message": "3/15 rows PENDING_SP_DATA",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 9,
-        "pct_of_slate": 60.0
+        "pending_sp_data_count": 3,
+        "pct_of_slate": 20.0
       },
       "category": "data_flow"
     },
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-26T08:33:53.701Z",
+          "timestamp": "2026-06-26T11:26:55.607Z",
           "commit": "unknown",
-          "region": "SEA"
+          "region": "IAD"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 539.8h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 542.7h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 539.81,
+        "age_hours": 542.69,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -138,11 +138,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "green",
-      "message": "2/15 rows stress-warned",
+      "message": "4/15 rows stress-warned",
       "detail": {
         "total_rows": 15,
-        "stress_warned_count": 2,
-        "pct_of_slate": 13.3
+        "stress_warned_count": 4,
+        "pct_of_slate": 26.7
       },
       "category": "model"
     }
