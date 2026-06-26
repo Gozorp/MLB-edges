@@ -1,13 +1,16 @@
 # Daily Variance Report — 2026-06-27
-_Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
+_Generated 2026-06-26T22:15:50Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **HOU** [activated] — Houston Astros activated RHP Bryan Abreu from the restricted list.
 - **HOU** [optioned] — Houston Astros optioned LHP Colton Gordon to Sugar Land Space Cowboys.
+- **DET** [IL] — Detroit Tigers transferred RF Wenceel Pérez from the 10-day injured list to the 60-day injured list. Left orbital fracture.
 - **DET** [claimed] — Detroit Tigers claimed RHP Yilber Díaz off waivers from Arizona Diamondbacks.
 - **NYY** [signed] — New York Yankees signed free agent RHP Braulio Jaquez to a minor league contract.
 - **NYY** [activated] — New York Yankees activated C Ali Sánchez from the paternity list.
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
+- **BOS** [IL] — Boston Red Sox placed 2B Marcelo Mayer on the 10-day injured list. Bone stress reaction to the left ulna.
+- **BOS** [recalled] — Boston Red Sox recalled SS Tsung-Che Cheng from Worcester Red Sox.
 - **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 7-day injured list.
 - **TEX** [IL] — Texas Rangers placed 3B Cody Freeman on the 10-day injured list retroactive to June 22, 2026. Herniated disc.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Simeon Woods Richardson for assignment.
@@ -23,13 +26,13 @@ _Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
 - **PHI** [IL] — Philadelphia Phillies placed CF Johan Rojas on the 60-day injured list. Right elbow UCL repair.
 - **PHI** [signed] — Philadelphia Phillies signed free agent C Scott Mudler to a minor league contract.
 - **NYM** [IL] — New York Mets placed 2B Marcus Semien on the 10-day injured list. Left hip flexor strain.
-- **NYM** [recalled] — New York Mets recalled SS Ronny Mauricio from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
 - **NYM** [TRADE] — New York Mets traded LHP David Peterson to Chicago Cubs for 3B Cole Mathis.
 - **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
-- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled SS Ronny Mauricio from Syracuse Mets.
 - **NYM** [IL] — New York Mets activated CF Tyrone Taylor from the 10-day injured list.
-- **NYM** [recalled] — New York Mets recalled LHP Zach Thornton from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned DH MJ Melendez to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled LHP Zach Thornton from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned RHP Daniel Duarte to Syracuse Mets.
 - **KC** [status] — Kansas City Royals placed RHP Stephen Kolek on the paternity list.
 - **KC** [recalled] — Kansas City Royals recalled RHP Mitch Spence from Omaha Storm Chasers.
@@ -37,9 +40,10 @@ _Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
 - **CWS** [recalled] — Chicago White Sox recalled RHP David Sandlin from Charlotte Knights.
 - **AZ** [activated] — Arizona Diamondbacks activated LF Max Kepler.
 - **AZ** [IL] — Arizona Diamondbacks transferred RHP Ryne Nelson from the 15-day injured list to the 60-day injured list. Strained right elbow.
+- **AZ** [optioned] — Arizona Diamondbacks optioned LHP Mitch Bratt to Reno Aces.
 - **AZ** [optioned] — Arizona Diamondbacks optioned LF Tim Tawa to Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Juan Burgos from Reno Aces.
-- **AZ** [optioned] — Arizona Diamondbacks optioned LHP Mitch Bratt to Reno Aces.
+- **AZ** [released] — Arizona Diamondbacks released 1B Carlos Santana.
 - **AZ** [claimed] — Detroit Tigers claimed RHP Yilber Díaz off waivers from Arizona Diamondbacks.
 - **TB** [IL] — Tampa Bay Rays placed LHP Steven Matz on the 15-day injured list retroactive to June 24, 2026. Left ankle sprain.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Michael Grove from Durham Bulls.
@@ -54,6 +58,7 @@ _Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
 - **CLE** [selected] — Cleveland Guardians selected the contract of C Cooper Ingle from Columbus Clippers.
 - **COL** [outrighted] — Colorado Rockies sent LHP Sammy Peralta outright to Albuquerque Isotopes.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Arthur De La Cruz to a minor league contract.
+- **MIN** [outrighted] — Minnesota Twins sent RHP Austin Voth outright to St. Paul Saints.
 - **CHC** [IL] — Chicago Cubs activated LHP Matthew Boyd from the 15-day injured list.
 - **CHC** [DFA] — Chicago Cubs designated RHP Yosver Zulueta for assignment.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
@@ -69,6 +74,9 @@ _Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
 - **MIA** [outrighted] — Miami Marlins sent 1B Christopher Morel outright to Jacksonville Jumbo Shrimp.
 - **MIA** [recalled] — Miami Marlins recalled 3B Graham Pauley from Jacksonville Jumbo Shrimp.
 - **SD** [outrighted] — San Diego Padres sent 1B Nick Solak outright to El Paso Chihuahuas.
+- **ATL** [IL] — Atlanta Braves placed RHP Robert Suarez on the 15-day injured list retroactive to June 23, 2026. Right forearm tightness.
+- **ATL** [outrighted] — Atlanta Braves sent RHP Carlos Carrasco outright to Gwinnett Stripers.
+- **ATL** [recalled] — Atlanta Braves recalled RHP Hurston Waldrep from Gwinnett Stripers.
 - **ATH** [IL] — Athletics placed 3B Zack Gelof on the 10-day injured list retroactive to June 24, 2026. Right hand contusion.
 - **ATH** [recalled] — Athletics recalled SS Alika Williams from Las Vegas Aviators.
 - **LAA** [outrighted] — Los Angeles Angels sent 3B Nick Madrigal outright to Salt Lake Bees.
@@ -76,7 +84,7 @@ _Generated 2026-06-26T21:27:44Z · 15 games · significant deviations only_
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **DET** code=ACQ — Detroit Tigers acquired RHP Connor Fenlong from the Lake Country DockHounds of the American Association.
 
-_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **TEX @ TOR** (away SP TBD): NOT CONFIRMED — probable SP not posted
