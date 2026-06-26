@@ -1,42 +1,58 @@
 # Daily Variance Report — 2026-06-27
-_Generated 2026-06-26T09:38:21Z · 15 games · significant deviations only_
+_Generated 2026-06-26T18:40:12Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **HOU** [activated] — Houston Astros activated RHP Bryan Abreu from the restricted list.
 - **HOU** [optioned] — Houston Astros optioned LHP Colton Gordon to Sugar Land Space Cowboys.
+- **NYY** [signed] — New York Yankees signed free agent RHP Braulio Jaquez to a minor league contract.
+- **NYY** [activated] — New York Yankees activated C Ali Sánchez from the paternity list.
 - **NYY** [optioned] — New York Yankees optioned C J.C. Escarra to Scranton/Wilkes-Barre RailRiders.
 - **TEX** [IL] — Texas Rangers activated SS Corey Seager from the 7-day injured list.
 - **TEX** [IL] — Texas Rangers placed 3B Cody Freeman on the 10-day injured list retroactive to June 22, 2026. Herniated disc.
+- **CIN** [IL] — Cincinnati Reds placed RHP Tony Santillan on the 15-day injured list retroactive to June 23, 2026. Left oblique strain.
+- **CIN** [recalled] — Cincinnati Reds recalled RHP Zach McCambley from Louisville Bats.
 - **PIT** [IL] — Pittsburgh Pirates placed 1B Spencer Horwitz on the 10-day injured list. Left hamstring strain.
 - **PIT** [recalled] — Pittsburgh Pirates recalled SS Jack Brannigan from Altoona Curve.
+- **PIT** [IL] — Pittsburgh Pirates activated SS Konnor Griffin from the 10-day injured list.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent RHP Leuris Paulino to a minor league contract.
+- **PIT** [optioned] — Pittsburgh Pirates optioned SS Jack Brannigan to Altoona Curve.
 - **PHI** [activated] — Philadelphia Phillies activated CF Johan Rojas from the restricted list.
 - **PHI** [IL] — Philadelphia Phillies placed CF Johan Rojas on the 60-day injured list. Right elbow UCL repair.
+- **PHI** [signed] — Philadelphia Phillies signed free agent C Scott Mudler to a minor league contract.
 - **NYM** [IL] — New York Mets placed 2B Marcus Semien on the 10-day injured list. Left hip flexor strain.
-- **NYM** [TRADE] — New York Mets traded LHP David Peterson to Chicago Cubs for 3B Cole Mathis.
-- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled SS Ronny Mauricio from Syracuse Mets.
+- **NYM** [TRADE] — New York Mets traded LHP David Peterson to Chicago Cubs for 3B Cole Mathis.
 - **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Jonathan Pintaro to Syracuse Mets.
+- **NYM** [IL] — New York Mets activated CF Tyrone Taylor from the 10-day injured list.
+- **NYM** [recalled] — New York Mets recalled LHP Zach Thornton from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned DH MJ Melendez to Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Daniel Duarte to Syracuse Mets.
 - **CWS** [optioned] — Chicago White Sox optioned LHP Joe Rock to Charlotte Knights.
+- **CWS** [recalled] — Chicago White Sox recalled RHP David Sandlin from Charlotte Knights.
 - **AZ** [activated] — Arizona Diamondbacks activated LF Max Kepler.
 - **AZ** [IL] — Arizona Diamondbacks transferred RHP Ryne Nelson from the 15-day injured list to the 60-day injured list. Strained right elbow.
+- **AZ** [optioned] — Arizona Diamondbacks optioned LF Tim Tawa to Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Juan Burgos from Reno Aces.
 - **AZ** [optioned] — Arizona Diamondbacks optioned LHP Mitch Bratt to Reno Aces.
-- **AZ** [optioned] — Arizona Diamondbacks optioned LF Tim Tawa to Reno Aces.
 - **TB** [IL] — Tampa Bay Rays placed LHP Steven Matz on the 15-day injured list retroactive to June 24, 2026. Left ankle sprain.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Michael Grove from Durham Bulls.
 - **WSH** [activated] — Washington Nationals activated RHP Justin Lawrence.
 - **WSH** [optioned] — Washington Nationals optioned LHP Carson Palmquist to Rochester Red Wings.
+- **BAL** [signed] — Baltimore Orioles signed free agent IF Jesus Gomez to a minor league contract.
 - **BAL** [outrighted] — Baltimore Orioles sent CF Michael Siani outright to Norfolk Tides.
 - **SEA** [outrighted] — Seattle Mariners sent 3B Miles Mastrobuoni outright to Tacoma Rainiers.
 - **COL** [outrighted] — Colorado Rockies sent LHP Sammy Peralta outright to Albuquerque Isotopes.
-- **CHC** [DFA] — Chicago Cubs designated RHP Yosver Zulueta for assignment.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Arthur De La Cruz to a minor league contract.
 - **CHC** [IL] — Chicago Cubs activated LHP Matthew Boyd from the 15-day injured list.
-- **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
+- **CHC** [DFA] — Chicago Cubs designated RHP Yosver Zulueta for assignment.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Gavin Hollowell to Iowa Cubs.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Tyler Ferguson to Iowa Cubs.
 - **CHC** [TRADE] — New York Mets traded LHP David Peterson to Chicago Cubs for 3B Cole Mathis.
 - **MIL** [activated] — Milwaukee Brewers activated RHP Abner Uribe.
 - **MIL** [optioned] — Milwaukee Brewers optioned RHP Craig Yoho to Nashville Sounds.
 - **MIA** [activated] — Miami Marlins activated RHP Max Meyer from the bereavement list.
+- **MIA** [signed] — Miami Marlins signed free agent RHP Carlos Guerrero to a minor league contract.
 - **MIA** [optioned] — Miami Marlins optioned 1B Connor Norby to Jacksonville Jumbo Shrimp.
 - **MIA** [optioned] — Miami Marlins optioned RHP Zach Brzykcy to Jacksonville Jumbo Shrimp.
 - **MIA** [outrighted] — Miami Marlins sent 1B Christopher Morel outright to Jacksonville Jumbo Shrimp.
@@ -45,7 +61,7 @@ _Generated 2026-06-26T09:38:21Z · 15 games · significant deviations only_
 - **ATH** [recalled] — Athletics recalled SS Alika Williams from Las Vegas Aviators.
 - **LAA** [outrighted] — Los Angeles Angels sent 3B Nick Madrigal outright to Salt Lake Bees.
 
-_Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **HOU @ DET** (away SP TBD): NOT CONFIRMED — probable SP not posted
