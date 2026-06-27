@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-06-27T14:00:30.370815+00:00",
+  "checked_at": "2026-06-27T15:20:54.804456+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 1.6h ago",
+      "message": "last slate publish 3.0h ago",
       "detail": {
         "last_run_iso": "2026-06-27T12:21:54+00:00",
-        "age_hours": 1.64
+        "age_hours": 2.98
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 6.2d ago",
+      "message": "last fired 6.3d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:36:20Z",
-        "age_hours": 149.4,
+        "age_hours": 150.74,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 6.2d ago",
+      "message": "last fired 6.3d ago",
       "detail": {
         "last_run_iso": "2026-06-21T08:55:41Z",
-        "age_hours": 149.08,
+        "age_hours": 150.42,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 23.7 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 23.8 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 568.83,
+        "age_hours": 570.17,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-06-27T14:00:30.485Z",
+          "timestamp": "2026-06-27T15:20:54.995Z",
           "commit": "unknown",
-          "region": "ORD"
+          "region": "DFW"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 569.2h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 570.6h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 569.25,
+        "age_hours": 570.59,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
