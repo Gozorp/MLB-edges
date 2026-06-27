@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-28
-_Generated 2026-06-27T16:07:29Z · 15 games · significant deviations only_
+_Generated 2026-06-27T18:05:28Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **WSH** [recalled] — Washington Nationals recalled RHP Zak Kent from Rochester Red Wings.
@@ -11,8 +11,13 @@ _Generated 2026-06-27T16:07:29Z · 15 games · significant deviations only_
 - **PIT** [optioned] — Pittsburgh Pirates optioned SS Jack Brannigan to Altoona Curve.
 - **TOR** [DFA] — Toronto Blue Jays designated RHP Simeon Woods Richardson for assignment.
 - **TOR** [recalled] — Toronto Blue Jays recalled LHP Adam Macko from Buffalo Bisons.
+- **TOR** [IL] — Toronto Blue Jays placed RF Jesús Sánchez on the 10-day injured list. Right ankle sprain.
+- **TOR** [recalled] — Toronto Blue Jays recalled LF Yohendrick Piñango from Buffalo Bisons.
+- **TOR** [selected] — Toronto Blue Jays selected the contract of 3B Sean Keys from Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned LF Davis Schneider to Buffalo Bisons.
 - **DET** [IL] — Detroit Tigers transferred RF Wenceel Pérez from the 10-day injured list to the 60-day injured list. Left orbital fracture.
 - **DET** [claimed] — Detroit Tigers claimed RHP Yilber Díaz off waivers from Arizona Diamondbacks.
+- **DET** [optioned] — Detroit Tigers optioned RHP Yilber Díaz to Toledo Mud Hens.
 - **CLE** [DFA] — Cleveland Guardians designated RF Stuart Fairchild for assignment.
 - **CLE** [selected] — Cleveland Guardians selected the contract of C Cooper Ingle from Columbus Clippers.
 - **AZ** [released] — Arizona Diamondbacks released 1B Carlos Santana.
@@ -23,12 +28,15 @@ _Generated 2026-06-27T16:07:29Z · 15 games · significant deviations only_
 - **NYM** [optioned] — New York Mets optioned DH MJ Melendez to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled LHP Zach Thornton from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned RHP Daniel Duarte to Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned LHP Zach Thornton to Syracuse Mets.
 - **MIN** [outrighted] — Minnesota Twins sent RHP Austin Voth outright to St. Paul Saints.
 - **KC** [signed] — Kansas City Royals signed free agent SS Franniel De Los Santos to a minor league contract.
-- **KC** [status] — Kansas City Royals placed RHP Stephen Kolek on the paternity list.
 - **KC** [signed] — Kansas City Royals signed free agent RHP Luis Lora to a minor league contract.
 - **KC** [signed] — Kansas City Royals signed free agent LHP Matt Moore to a minor league contract.
+- **KC** [status] — Kansas City Royals placed RHP Stephen Kolek on the paternity list.
 - **KC** [recalled] — Kansas City Royals recalled RHP Mitch Spence from Omaha Storm Chasers.
+- **KC** [recalled] — Kansas City Royals recalled RHP Eric Cerantola from Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned RHP Mitch Spence to Omaha Storm Chasers.
 - **CWS** [recalled] — Chicago White Sox recalled RHP David Sandlin from Charlotte Knights.
 - **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
 - **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
@@ -38,10 +46,11 @@ _Generated 2026-06-27T16:07:29Z · 15 games · significant deviations only_
 - **MIA** [signed] — Miami Marlins signed free agent RHP Anderson Perez to a minor league contract.
 - **MIA** [recalled] — Miami Marlins recalled 3B Graham Pauley from Jacksonville Jumbo Shrimp.
 - **LAA** [signed] — Los Angeles Angels signed free agent RHP Dillon Tate to a minor league contract.
-- **ATL** [IL] — Atlanta Braves placed RHP Robert Suarez on the 15-day injured list retroactive to June 23, 2026. Right forearm tightness.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Michael Castillo to a minor league contract.
-- **ATL** [outrighted] — Atlanta Braves sent RHP Carlos Carrasco outright to Gwinnett Stripers.
+- **ATL** [IL] — Atlanta Braves placed RHP Robert Suarez on the 15-day injured list retroactive to June 23, 2026. Right forearm tightness.
 - **ATL** [recalled] — Atlanta Braves recalled RHP Hurston Waldrep from Gwinnett Stripers.
+- **ATL** [outrighted] — Atlanta Braves sent RHP Carlos Carrasco outright to Gwinnett Stripers.
+- **ATL** [signed] — Atlanta Braves signed free agent RHP Carlos Carrasco to a minor league contract.
 - **SF** [DFA] — San Francisco Giants designated RHP Wilkin Ramos for assignment.
 - **SF** [IL] — San Francisco Giants placed C Daniel Susac on the 10-day injured list. Low back strain.
 - **SF** [selected] — San Francisco Giants selected the contract of C Drew Cavanaugh from Sacramento River Cats.
@@ -78,7 +87,7 @@ _Suppressed 0 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - TEX @ TOR — TEX faces RHP (Shane Bieber)
 - HOU @ DET — DET faces RHP (Hunter Brown)
 - HOU @ DET — HOU faces RHP (Jack Flaherty)
-- SEA @ CLE — CLE faces RHP (George Kirby)
+- SEA @ CLE — CLE faces RHP (Emerson Hancock)
 - SEA @ CLE — SEA faces RHP (Gavin Williams)
 - AZ @ TB — TB faces RHP (Merrill Kelly)
 - AZ @ TB — AZ faces RHP (Drew Rasmussen)
