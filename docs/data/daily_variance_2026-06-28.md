@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-28
-_Generated 2026-06-27T12:16:01Z · 15 games · significant deviations only_
+_Generated 2026-06-27T12:21:39Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **WSH** [optioned] — Washington Nationals optioned RHP Gus Varland to Rochester Red Wings.
