@@ -1,6 +1,6 @@
 {
  "date": "2026-06-29",
- "generated": "2026-06-28T15:34:32Z",
+ "generated": "2026-06-28T16:19:32Z",
  "n_games": 13,
  "roster_delta": [
   {
@@ -230,6 +230,14 @@
   {
    "team": "CHC",
    "date": "2026-06-27",
+   "code": "CU",
+   "type": "Recalled",
+   "cat": "recalled",
+   "desc": "Chicago Cubs recalled RHP Tyler Ferguson from Iowa Cubs."
+  },
+  {
+   "team": "CHC",
+   "date": "2026-06-27",
    "code": "OPT",
    "type": "Optioned",
    "cat": "optioned",
@@ -237,27 +245,19 @@
   },
   {
    "team": "CHC",
-   "date": "2026-06-27",
+   "date": "2026-06-28",
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Chicago Cubs designated RHP Vince Velasquez for assignment."
+  },
+  {
+   "team": "CHC",
+   "date": "2026-06-28",
    "code": "CU",
    "type": "Recalled",
    "cat": "recalled",
-   "desc": "Chicago Cubs recalled RHP Tyler Ferguson from Iowa Cubs."
-  },
-  {
-   "team": "HOU",
-   "date": "2026-06-28",
-   "code": "OPT",
-   "type": "Optioned",
-   "cat": "optioned",
-   "desc": "Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys."
-  },
-  {
-   "team": "HOU",
-   "date": "2026-06-28",
-   "code": "OPT",
-   "type": "Optioned",
-   "cat": "optioned",
-   "desc": "Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys."
+   "desc": "Chicago Cubs recalled LHP Jordan Wicks from Iowa Cubs."
   },
   {
    "team": "HOU",
@@ -266,6 +266,14 @@
    "type": "Recalled",
    "cat": "recalled",
    "desc": "Houston Astros recalled RHP Miguel Ullola from Sugar Land Space Cowboys."
+  },
+  {
+   "team": "HOU",
+   "date": "2026-06-28",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys."
   },
   {
    "team": "ATH",
@@ -330,12 +338,6 @@
  "unknown_tx_codes": {},
  "sp_flags": [
   {
-   "game": "CWS @ BAL",
-   "side": "away",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
    "game": "PIT @ PHI",
    "side": "home",
    "sp": "TBD",
@@ -344,18 +346,6 @@
   {
    "game": "DET @ NYY",
    "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
-   "game": "NYM @ TOR",
-   "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
-   "game": "WSH @ BOS",
-   "side": "away",
    "sp": "TBD",
    "flag": "NOT CONFIRMED \u2014 probable SP not posted"
   },
@@ -433,6 +423,11 @@
  "platoon": [
   {
    "game": "CWS @ BAL",
+   "team": "BAL",
+   "note": "faces RHP (Sean Burke)"
+  },
+  {
+   "game": "CWS @ BAL",
    "team": "CWS",
    "note": "faces RHP (Shane Baz)"
   },
@@ -450,6 +445,16 @@
    "game": "NYM @ TOR",
    "team": "TOR",
    "note": "faces LHP (Sean Manaea)"
+  },
+  {
+   "game": "NYM @ TOR",
+   "team": "NYM",
+   "note": "faces RHP (Trey Yesavage)"
+  },
+  {
+   "game": "WSH @ BOS",
+   "team": "BOS",
+   "note": "faces RHP (Miles Mikolas)"
   },
   {
    "game": "TEX @ CLE",

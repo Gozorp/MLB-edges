@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-29
-_Generated 2026-06-28T15:34:32Z · 13 games · significant deviations only_
+_Generated 2026-06-28T16:19:32Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
@@ -30,11 +30,12 @@ _Generated 2026-06-28T15:34:32Z · 13 games · significant deviations only_
 - **CIN** [recalled] — Cincinnati Reds recalled CF TJ Friedl from Louisville Bats.
 - **CHC** [activated] — Chicago Cubs activated RHP Bryse Wilson.
 - **CHC** [IL] — Chicago Cubs placed LHP Hoby Milner on the 15-day injured list retroactive to June 26, 2026. Appendicitis.
-- **CHC** [optioned] — Chicago Cubs optioned RHP Jayden Murray to Iowa Cubs.
 - **CHC** [recalled] — Chicago Cubs recalled RHP Tyler Ferguson from Iowa Cubs.
-- **HOU** [optioned] — Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys.
-- **HOU** [optioned] — Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys.
+- **CHC** [optioned] — Chicago Cubs optioned RHP Jayden Murray to Iowa Cubs.
+- **CHC** [DFA] — Chicago Cubs designated RHP Vince Velasquez for assignment.
+- **CHC** [recalled] — Chicago Cubs recalled LHP Jordan Wicks from Iowa Cubs.
 - **HOU** [recalled] — Houston Astros recalled RHP Miguel Ullola from Sugar Land Space Cowboys.
+- **HOU** [optioned] — Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys.
 - **ATH** [DFA] — Athletics designated 3B Brett Harris for assignment.
 - **ATH** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
 - **LAA** [activated] — Los Angeles Angels activated LF Jose Siri from the paternity list.
@@ -46,11 +47,8 @@ _Generated 2026-06-28T15:34:32Z · 13 games · significant deviations only_
 _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **CWS @ BAL** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **PIT @ PHI** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **DET @ NYY** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **NYM @ TOR** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **WSH @ BOS** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **WSH @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TEX @ CLE** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SD @ CHC** (away SP TBD): NOT CONFIRMED — probable SP not posted
@@ -66,10 +64,13 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **MIN** Kody Funderburk — 2 apps / 45 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
+- CWS @ BAL — BAL faces RHP (Sean Burke)
 - CWS @ BAL — CWS faces RHP (Shane Baz)
 - PIT @ PHI — PHI faces RHP (Braxton Ashcraft)
 - DET @ NYY — NYY faces RHP (Casey Mize)
 - NYM @ TOR — TOR faces LHP (Sean Manaea)
+- NYM @ TOR — NYM faces RHP (Trey Yesavage)
+- WSH @ BOS — BOS faces RHP (Miles Mikolas)
 - TEX @ CLE — TEX faces LHP (Parker Messick)
 - CIN @ MIL — MIL faces LHP (Nick Lodolo)
 - CIN @ MIL — CIN faces LHP (Robert Gasser)
