@@ -1,39 +1,41 @@
 # Daily Variance Report — 2026-06-29
-_Generated 2026-06-28T17:16:38Z · 13 games · significant deviations only_
+_Generated 2026-06-28T18:13:57Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
-- **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
 - **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
+- **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
 - **BAL** [DFA] — Baltimore Orioles designated RHP Kyle Nicolas for assignment.
 - **BAL** [IL] — Baltimore Orioles activated LHP Cade Povich from the 15-day injured list.
-- **BAL** [optioned] — Baltimore Orioles optioned C Dom Keegan to Chesapeake Baysox.
 - **BAL** [claimed] — Baltimore Orioles claimed C Dom Keegan off waivers from Tampa Bay Rays.
+- **BAL** [optioned] — Baltimore Orioles optioned C Dom Keegan to Chesapeake Baysox.
 - **BAL** [optioned] — Baltimore Orioles optioned LHP Cade Povich to Chesapeake Baysox.
-- **BAL** [IL] — Baltimore Orioles activated C Adley Rutschman from the 7-day injured list.
-- **BAL** [IL] — Baltimore Orioles activated RF Dylan Beavers from the 10-day injured list.
 - **BAL** [DFA] — Baltimore Orioles designated C Sam Huff for assignment.
+- **BAL** [IL] — Baltimore Orioles activated RF Dylan Beavers from the 10-day injured list.
+- **BAL** [IL] — Baltimore Orioles activated C Adley Rutschman from the 7-day injured list.
 - **BAL** [optioned] — Baltimore Orioles optioned 2B Jeremiah Jackson to Norfolk Tides.
+- **BAL** [optioned] — Baltimore Orioles optioned RHP Yosver Zulueta to Norfolk Tides.
+- **BAL** [claimed] — Baltimore Orioles claimed RHP Yosver Zulueta off waivers from Chicago Cubs.
 - **DET** [optioned] — Detroit Tigers optioned RHP Yilber Díaz to Toledo Mud Hens.
 - **DET** [IL] — Detroit Tigers activated RHP Jack Flaherty from the 15-day injured list.
 - **DET** [optioned] — Detroit Tigers optioned LHP Enmanuel De Jesus to Toledo Mud Hens.
-- **NYM** [outrighted] — New York Mets sent SS Zack Short outright to Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned LHP Zach Thornton to Syracuse Mets.
+- **NYM** [outrighted] — New York Mets sent SS Zack Short outright to Syracuse Mets.
 - **TOR** [IL] — Toronto Blue Jays placed RF Jesús Sánchez on the 10-day injured list. Right ankle sprain.
-- **TOR** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
-- **TOR** [optioned] — Toronto Blue Jays optioned LF Davis Schneider to Buffalo Bisons.
-- **TOR** [selected] — Toronto Blue Jays selected the contract of 3B Sean Keys from Buffalo Bisons.
 - **TOR** [recalled] — Toronto Blue Jays recalled LF Yohendrick Piñango from Buffalo Bisons.
-- **TEX** [IL] — Texas Rangers activated CF Evan Carter from the 10-day injured list.
+- **TOR** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
+- **TOR** [selected] — Toronto Blue Jays selected the contract of 3B Sean Keys from Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned LF Davis Schneider to Buffalo Bisons.
 - **TEX** [IL] — Texas Rangers placed LF Wyatt Langford on the 10-day injured list. Left hamstring strain.
+- **TEX** [IL] — Texas Rangers activated CF Evan Carter from the 10-day injured list.
 - **CLE** [IL] — Cleveland Guardians activated RF Chase DeLauter from the 10-day injured list.
 - **CLE** [optioned] — Cleveland Guardians optioned CF Petey Halpin to Columbus Clippers.
 - **CIN** [IL] — Cincinnati Reds placed CF Blake Dunn on the 10-day injured list retroactive to June 27, 2026. Right elbow sprain.
 - **CIN** [recalled] — Cincinnati Reds recalled CF TJ Friedl from Louisville Bats.
-- **CHC** [activated] — Chicago Cubs activated RHP Bryse Wilson.
 - **CHC** [IL] — Chicago Cubs placed LHP Hoby Milner on the 15-day injured list retroactive to June 26, 2026. Appendicitis.
 - **CHC** [recalled] — Chicago Cubs recalled RHP Tyler Ferguson from Iowa Cubs.
 - **CHC** [optioned] — Chicago Cubs optioned RHP Jayden Murray to Iowa Cubs.
 - **CHC** [DFA] — Chicago Cubs designated RHP Vince Velasquez for assignment.
+- **CHC** [claimed] — Baltimore Orioles claimed RHP Yosver Zulueta off waivers from Chicago Cubs.
 - **CHC** [recalled] — Chicago Cubs recalled LHP Jordan Wicks from Iowa Cubs.
 - **HOU** [recalled] — Houston Astros recalled RHP Miguel Ullola from Sugar Land Space Cowboys.
 - **HOU** [optioned] — Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys.
@@ -41,15 +43,15 @@ _Generated 2026-06-28T17:16:38Z · 13 games · significant deviations only_
 - **COL** [optioned] — Colorado Rockies optioned LF Jordan Beck to Albuquerque Isotopes.
 - **ATH** [DFA] — Athletics designated 3B Brett Harris for assignment.
 - **ATH** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
-- **LAA** [activated] — Los Angeles Angels activated LF Jose Siri from the paternity list.
 - **LAA** [signed] — Los Angeles Angels signed free agent LHP Sammy Peralta to a minor league contract.
+- **LAA** [activated] — Los Angeles Angels activated LF Jose Siri from the paternity list.
 - **LAA** [optioned] — Los Angeles Angels optioned 2B Christian Moore to Salt Lake Bees.
 - **SEA** [optioned] — Seattle Mariners optioned RHP Alex Hoppe to Tacoma Rainiers.
 - **SEA** [recalled] — Seattle Mariners recalled LHP Josh Simpson from Tacoma Rainiers.
-- **SF** [IL] — San Francisco Giants activated LF Heliot Ramos from the 10-day injured list.
 - **SF** [DFA] — San Francisco Giants designated 1B Buddy Kennedy for assignment.
+- **SF** [IL] — San Francisco Giants activated LF Heliot Ramos from the 10-day injured list.
 
-_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **WSH @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
