@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-29
-_Generated 2026-06-28T16:19:32Z · 13 games · significant deviations only_
+_Generated 2026-06-28T17:16:38Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
@@ -15,6 +15,7 @@ _Generated 2026-06-28T16:19:32Z · 13 games · significant deviations only_
 - **BAL** [optioned] — Baltimore Orioles optioned 2B Jeremiah Jackson to Norfolk Tides.
 - **DET** [optioned] — Detroit Tigers optioned RHP Yilber Díaz to Toledo Mud Hens.
 - **DET** [IL] — Detroit Tigers activated RHP Jack Flaherty from the 15-day injured list.
+- **DET** [optioned] — Detroit Tigers optioned LHP Enmanuel De Jesus to Toledo Mud Hens.
 - **NYM** [outrighted] — New York Mets sent SS Zack Short outright to Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned LHP Zach Thornton to Syracuse Mets.
 - **TOR** [IL] — Toronto Blue Jays placed RF Jesús Sánchez on the 10-day injured list. Right ankle sprain.
@@ -36,6 +37,8 @@ _Generated 2026-06-28T16:19:32Z · 13 games · significant deviations only_
 - **CHC** [recalled] — Chicago Cubs recalled LHP Jordan Wicks from Iowa Cubs.
 - **HOU** [recalled] — Houston Astros recalled RHP Miguel Ullola from Sugar Land Space Cowboys.
 - **HOU** [optioned] — Houston Astros optioned RHP Kai-Wei Teng to Sugar Land Space Cowboys.
+- **COL** [IL] — Colorado Rockies activated LF Jordan Beck from the 10-day injured list.
+- **COL** [optioned] — Colorado Rockies optioned LF Jordan Beck to Albuquerque Isotopes.
 - **ATH** [DFA] — Athletics designated 3B Brett Harris for assignment.
 - **ATH** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
 - **LAA** [activated] — Los Angeles Angels activated LF Jose Siri from the paternity list.
@@ -43,22 +46,17 @@ _Generated 2026-06-28T16:19:32Z · 13 games · significant deviations only_
 - **LAA** [optioned] — Los Angeles Angels optioned 2B Christian Moore to Salt Lake Bees.
 - **SEA** [optioned] — Seattle Mariners optioned RHP Alex Hoppe to Tacoma Rainiers.
 - **SEA** [recalled] — Seattle Mariners recalled LHP Josh Simpson from Tacoma Rainiers.
+- **SF** [IL] — San Francisco Giants activated LF Heliot Ramos from the 10-day injured list.
+- **SF** [DFA] — San Francisco Giants designated 1B Buddy Kennedy for assignment.
 
 _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **PIT @ PHI** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **DET @ NYY** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **WSH @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TEX @ CLE** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SD @ CHC** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SD @ CHC** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **MIN @ HOU** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIA @ COL** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAD @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAD @ ATH** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAA @ SEA** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **SF @ AZ** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **MIN** Kody Funderburk — 2 apps / 45 pitches over last 3 games — monitor
@@ -67,7 +65,9 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - CWS @ BAL — BAL faces RHP (Sean Burke)
 - CWS @ BAL — CWS faces RHP (Shane Baz)
 - PIT @ PHI — PHI faces RHP (Braxton Ashcraft)
+- PIT @ PHI — PIT faces RHP (Aaron Nola)
 - DET @ NYY — NYY faces RHP (Casey Mize)
+- DET @ NYY — DET faces LHP (Ryan Weathers)
 - NYM @ TOR — TOR faces LHP (Sean Manaea)
 - NYM @ TOR — NYM faces RHP (Trey Yesavage)
 - WSH @ BOS — BOS faces RHP (Miles Mikolas)
@@ -75,7 +75,12 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - CIN @ MIL — MIL faces LHP (Nick Lodolo)
 - CIN @ MIL — CIN faces LHP (Robert Gasser)
 - MIN @ HOU — HOU faces RHP (Zebby Matthews)
+- MIN @ HOU — MIN faces RHP (Peter Lambert)
 - MIA @ COL — COL faces RHP (Sandy Alcantara)
+- LAD @ ATH — ATH faces LHP (Eric Lauer)
+- LAD @ ATH — LAD faces LHP (Gage Jump)
+- LAA @ SEA — SEA faces RHP (Ryan Johnson)
 - LAA @ SEA — LAA faces RHP (George Kirby)
+- SF @ AZ — AZ faces RHP (Tyler Mahle)
 - SF @ AZ — SF faces LHP (Eduardo Rodriguez)
 
