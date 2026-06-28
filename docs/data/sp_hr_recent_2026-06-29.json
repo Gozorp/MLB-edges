@@ -1,0 +1,96 @@
+{
+ "date": "2026-06-29",
+ "generated_utc": "2026-06-28T08:56:33+00:00",
+ "schema": "v2-era-gated-cascade",
+ "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
+ "sps": {
+  "Nick Lodolo": {
+   "id": 666157,
+   "opp": "MIL",
+   "opp_id": 158,
+   "season_era": 5.59,
+   "season_hr9": 1.54,
+   "season_kbb": 9.5,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 0.3,
+   "matchup_w_ip": 10.2,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 4.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 0,
+     "ip": 7.7,
+     "w": 0.6
+    },
+    {
+     "season": 2024,
+     "hr": 1,
+     "ip": 5.3,
+     "w": 0.3
+    }
+   ],
+   "smoothed_matchup_hr9": 1.11,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs MIL 3yr (2026:0HR/4IP,2025:0HR/8IP,2024:1HR/5IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 5.79,
+   "l3_hr": 0,
+   "l3_hr_per_start": 0.0,
+   "l3_kbb": 13.6,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 5.79 vs season 5.59)",
+   "risk_level": 2,
+   "risk_label": "Moderate Risk",
+   "flag": "HEAVY",
+   "mult": 0.92,
+   "hr_per_start": 0.0,
+   "era": 5.79,
+   "er_spike": false
+  },
+  "Robert Gasser": {
+   "id": 688107,
+   "opp": "CIN",
+   "opp_id": 113,
+   "season_era": 4.5,
+   "season_hr9": 1.8,
+   "season_kbb": 14.6,
+   "era_tier": "AVERAGE",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 1.6,
+   "matchup_seasons": [
+    {
+     "season": 2025,
+     "hr": 0,
+     "ip": 2.7,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 1.67,
+   "matchup_freq": "FREQUENT",
+   "matchup_basis": "vs CIN 3yr (2025:0HR/3IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 4.32,
+   "l3_hr": 4,
+   "l3_hr_per_start": 1.33,
+   "l3_kbb": 20.6,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 4.32 vs season 4.50)",
+   "risk_level": 3,
+   "risk_label": "Regression Warning",
+   "flag": "MODERATE",
+   "mult": 1.39,
+   "hr_per_start": 1.33,
+   "era": 4.32,
+   "er_spike": false
+  }
+ }
+}
