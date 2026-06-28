@@ -1,6 +1,6 @@
 {
  "date": "2026-06-29",
- "generated": "2026-06-28T18:13:57Z",
+ "generated": "2026-06-28T22:03:14Z",
  "n_games": 13,
  "roster_delta": [
   {
@@ -186,6 +186,30 @@
    "type": "Optioned",
    "cat": "optioned",
    "desc": "Toronto Blue Jays optioned LF Davis Schneider to Buffalo Bisons."
+  },
+  {
+   "team": "BOS",
+   "date": "2026-06-28",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Boston Red Sox transferred LF Roman Anthony from the 10-day injured list to the 60-day injured list."
+  },
+  {
+   "team": "BOS",
+   "date": "2026-06-28",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Boston Red Sox activated 1B Romy Gonzalez from the 60-day injured list."
+  },
+  {
+   "team": "BOS",
+   "date": "2026-06-28",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Boston Red Sox optioned C Mickey Gasper to Worcester Red Sox."
   },
   {
    "team": "TEX",
@@ -394,12 +418,6 @@
  "unknown_tx_codes": {},
  "sp_flags": [
   {
-   "game": "WSH @ BOS",
-   "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
    "game": "TEX @ CLE",
    "side": "away",
    "sp": "TBD",
@@ -412,12 +430,6 @@
    "flag": "NOT CONFIRMED \u2014 probable SP not posted"
   },
   {
-   "game": "SD @ CHC",
-   "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
    "game": "MIA @ COL",
    "side": "home",
    "sp": "TBD",
@@ -426,12 +438,180 @@
  ],
  "bullpen_fatigue": [
   {
+   "team": "PIT",
+   "reliever": "Carmen Mlodzinski",
+   "appearances_3d": 1,
+   "pitches_3d": 42,
+   "last": "2026-06-28",
+   "flag": "threw 42 pitches last night \u2014 likely unavailable"
+  },
+  {
+   "team": "PIT",
+   "reliever": "Dennis Santana",
+   "appearances_3d": 2,
+   "pitches_3d": 37,
+   "last": "2026-06-28",
+   "flag": "2 apps / 37 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "PHI",
+   "reliever": "Kyle Backhus",
+   "appearances_3d": 2,
+   "pitches_3d": 35,
+   "last": "2026-06-28",
+   "flag": "2 apps / 35 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "PHI",
+   "reliever": "Orion Kerkering",
+   "appearances_3d": 2,
+   "pitches_3d": 38,
+   "last": "2026-06-28",
+   "flag": "2 apps / 38 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "PHI",
+   "reliever": "Jhoan Duran",
+   "appearances_3d": 2,
+   "pitches_3d": 37,
+   "last": "2026-06-28",
+   "flag": "2 apps / 37 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "NYM",
+   "reliever": "Tobias Myers",
+   "appearances_3d": 1,
+   "pitches_3d": 59,
+   "last": "2026-06-28",
+   "flag": "threw 59 pitches last night \u2014 likely unavailable"
+  },
+  {
+   "team": "NYM",
+   "reliever": "Kodai Senga",
+   "appearances_3d": 1,
+   "pitches_3d": 80,
+   "last": "2026-06-28",
+   "flag": "threw 80 pitches last night \u2014 likely unavailable"
+  },
+  {
+   "team": "TOR",
+   "reliever": "Jeff Hoffman",
+   "appearances_3d": 2,
+   "pitches_3d": 44,
+   "last": "2026-06-28",
+   "flag": "2 apps / 44 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "TOR",
+   "reliever": "Adam Macko",
+   "appearances_3d": 2,
+   "pitches_3d": 56,
+   "last": "2026-06-28",
+   "flag": "2 apps / 56 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "WSH",
+   "reliever": "PJ Poulin",
+   "appearances_3d": 2,
+   "pitches_3d": 36,
+   "last": "2026-06-28",
+   "flag": "2 apps / 36 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CLE",
+   "reliever": "Cade Smith",
+   "appearances_3d": 2,
+   "pitches_3d": 35,
+   "last": "2026-06-28",
+   "flag": "2 apps / 35 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CLE",
+   "reliever": "Tim Herrin",
+   "appearances_3d": 2,
+   "pitches_3d": 39,
+   "last": "2026-06-28",
+   "flag": "2 apps / 39 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CLE",
+   "reliever": "Matt Festa",
+   "appearances_3d": 2,
+   "pitches_3d": 38,
+   "last": "2026-06-28",
+   "flag": "2 apps / 38 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CIN",
+   "reliever": "Pierce Johnson",
+   "appearances_3d": 2,
+   "pitches_3d": 40,
+   "last": "2026-06-28",
+   "flag": "2 apps / 40 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "MIL",
+   "reliever": "Aaron Ashby",
+   "appearances_3d": 2,
+   "pitches_3d": 39,
+   "last": "2026-06-28",
+   "flag": "2 apps / 39 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "MIL",
+   "reliever": "Trevor Megill",
+   "appearances_3d": 2,
+   "pitches_3d": 45,
+   "last": "2026-06-28",
+   "flag": "2 apps / 45 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "MIL",
+   "reliever": "Joel Kuhnel",
+   "appearances_3d": 2,
+   "pitches_3d": 44,
+   "last": "2026-06-28",
+   "flag": "2 apps / 44 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CHC",
+   "reliever": "Bryse Wilson",
+   "appearances_3d": 1,
+   "pitches_3d": 61,
+   "last": "2026-06-28",
+   "flag": "threw 61 pitches last night \u2014 likely unavailable"
+  },
+  {
    "team": "MIN",
    "reliever": "Kody Funderburk",
    "appearances_3d": 2,
    "pitches_3d": 45,
    "last": "2026-06-27",
    "flag": "2 apps / 45 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "HOU",
+   "reliever": "Josh Hader",
+   "appearances_3d": 2,
+   "pitches_3d": 40,
+   "last": "2026-06-28",
+   "flag": "2 apps / 40 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "LAA",
+   "reliever": "Jos\u00e9 Fermin",
+   "appearances_3d": 2,
+   "pitches_3d": 40,
+   "last": "2026-06-28",
+   "flag": "2 apps / 40 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "LAA",
+   "reliever": "Ryan Zeferjahn",
+   "appearances_3d": 2,
+   "pitches_3d": 35,
+   "last": "2026-06-28",
+   "flag": "2 apps / 35 pitches over last 3 games \u2014 monitor"
   }
  ],
  "platoon": [
@@ -481,6 +661,11 @@
    "note": "faces RHP (Miles Mikolas)"
   },
   {
+   "game": "WSH @ BOS",
+   "team": "WSH",
+   "note": "faces LHP (Ranger Suarez)"
+  },
+  {
    "game": "TEX @ CLE",
    "team": "TEX",
    "note": "faces LHP (Parker Messick)"
@@ -494,6 +679,11 @@
    "game": "CIN @ MIL",
    "team": "CIN",
    "note": "faces LHP (Robert Gasser)"
+  },
+  {
+   "game": "SD @ CHC",
+   "team": "SD",
+   "note": "faces LHP (Shota Imanaga)"
   },
   {
    "game": "MIN @ HOU",
