@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-29
-_Generated 2026-06-28T08:56:40Z · 13 games · significant deviations only_
+_Generated 2026-06-28T12:20:42Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
