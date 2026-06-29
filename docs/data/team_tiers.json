@@ -1,13 +1,9 @@
 {
- "generated_utc": "2026-06-29T11:14:33Z",
+ "generated_utc": "2026-06-29T19:07:58Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "CWS demoted: Above Average -> Average (eff +0.24, mmr -0.11)",
-  "SD demoted: Above Average -> Average (eff +0.20, mmr +0.14)",
-  "BOS promoted: Below Average -> Average (eff -0.06, mmr +0.38)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -156,8 +152,6 @@
     "z": 0.35,
     "mmr": -0.109,
     "eff": 0.241,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs NYY (06-18)",
      "upset L vs DET (06-19)"
@@ -236,8 +230,6 @@
     "z": 0.065,
     "mmr": 0.137,
     "eff": 0.202,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset W vs ATL (06-22)",
      "upset W vs ATL (06-23)"
@@ -278,8 +270,6 @@
     "z": -0.438,
     "mmr": 0.375,
     "eff": -0.062,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset L vs COL (06-22)",
      "upset L vs COL (06-24)"
