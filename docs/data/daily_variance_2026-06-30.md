@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-30
-_Generated 2026-06-29T21:28:45Z · 15 games · significant deviations only_
+_Generated 2026-06-29T22:19:50Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BAL** [IL] — Baltimore Orioles activated C Adley Rutschman from the 7-day injured list.
