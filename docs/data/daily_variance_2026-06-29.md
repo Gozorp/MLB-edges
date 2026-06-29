@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-06-29
-_Generated 2026-06-28T22:03:14Z · 13 games · significant deviations only_
+_Generated 2026-06-29T03:20:17Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [optioned] — Chicago White Sox optioned RHP David Sandlin to Charlotte Knights.
@@ -21,9 +21,9 @@ _Generated 2026-06-28T22:03:14Z · 13 games · significant deviations only_
 - **NYM** [optioned] — New York Mets optioned LHP Zach Thornton to Syracuse Mets.
 - **NYM** [outrighted] — New York Mets sent SS Zack Short outright to Syracuse Mets.
 - **TOR** [IL] — Toronto Blue Jays placed RF Jesús Sánchez on the 10-day injured list. Right ankle sprain.
+- **TOR** [selected] — Toronto Blue Jays selected the contract of 3B Sean Keys from Buffalo Bisons.
 - **TOR** [recalled] — Toronto Blue Jays recalled LF Yohendrick Piñango from Buffalo Bisons.
 - **TOR** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
-- **TOR** [selected] — Toronto Blue Jays selected the contract of 3B Sean Keys from Buffalo Bisons.
 - **TOR** [optioned] — Toronto Blue Jays optioned LF Davis Schneider to Buffalo Bisons.
 - **BOS** [IL] — Boston Red Sox transferred LF Roman Anthony from the 10-day injured list to the 60-day injured list.
 - **BOS** [IL] — Boston Red Sox activated 1B Romy Gonzalez from the 60-day injured list.
@@ -45,6 +45,7 @@ _Generated 2026-06-28T22:03:14Z · 13 games · significant deviations only_
 - **COL** [IL] — Colorado Rockies activated LF Jordan Beck from the 10-day injured list.
 - **COL** [optioned] — Colorado Rockies optioned LF Jordan Beck to Albuquerque Isotopes.
 - **ATH** [DFA] — Athletics designated 3B Brett Harris for assignment.
+- **ATH** [optioned] — Athletics optioned RHP Hayden Juenger to Las Vegas Aviators.
 - **ATH** [TRADE] — Toronto Blue Jays traded RHP Hayden Juenger to Athletics for C Owen Carapellotti.
 - **LAA** [signed] — Los Angeles Angels signed free agent LHP Sammy Peralta to a minor league contract.
 - **LAA** [activated] — Los Angeles Angels activated LF Jose Siri from the paternity list.
@@ -57,7 +58,7 @@ _Generated 2026-06-28T22:03:14Z · 13 games · significant deviations only_
 _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TEX @ CLE** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **WSH @ BOS** (away SP Miles Mikolas): very low K% (13.4% vs lg 22.0)
 - **SD @ CHC** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIA @ COL** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
@@ -72,6 +73,7 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **TOR** Jeff Hoffman — 2 apps / 44 pitches over last 3 games — monitor
 - **TOR** Adam Macko — 2 apps / 56 pitches over last 3 games — monitor
 - **WSH** PJ Poulin — 2 apps / 36 pitches over last 3 games — monitor
+- **BOS** Aroldis Chapman — 2 apps / 43 pitches over last 3 games — monitor
 - **CLE** Cade Smith — 2 apps / 35 pitches over last 3 games — monitor
 - **CLE** Tim Herrin — 2 apps / 39 pitches over last 3 games — monitor
 - **CLE** Matt Festa — 2 apps / 38 pitches over last 3 games — monitor
@@ -79,6 +81,7 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **MIL** Aaron Ashby — 2 apps / 39 pitches over last 3 games — monitor
 - **MIL** Trevor Megill — 2 apps / 45 pitches over last 3 games — monitor
 - **MIL** Joel Kuhnel — 2 apps / 44 pitches over last 3 games — monitor
+- **SD** Yuki Matsui — 2 apps / 39 pitches over last 3 games — monitor
 - **CHC** Bryse Wilson — threw 61 pitches last night — likely unavailable
 - **MIN** Kody Funderburk — 2 apps / 45 pitches over last 3 games — monitor
 - **HOU** Josh Hader — 2 apps / 40 pitches over last 3 games — monitor
@@ -96,6 +99,7 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - NYM @ TOR — NYM faces RHP (Trey Yesavage)
 - WSH @ BOS — BOS faces RHP (Miles Mikolas)
 - WSH @ BOS — WSH faces LHP (Ranger Suarez)
+- TEX @ CLE — CLE faces LHP (Tyler Alexander)
 - TEX @ CLE — TEX faces LHP (Parker Messick)
 - CIN @ MIL — MIL faces LHP (Nick Lodolo)
 - CIN @ MIL — CIN faces LHP (Robert Gasser)
