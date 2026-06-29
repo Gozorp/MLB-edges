@@ -1,15 +1,12 @@
 {
- "generated_utc": "2026-06-29T03:20:33Z",
+ "generated_utc": "2026-06-29T11:14:33Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
  "movements": [
-  "TB promoted: Above Average -> Elite (eff +1.09, mmr +0.14)",
-  "CHC promoted: Above Average -> Elite (eff +1.14, mmr +0.40)",
-  "STL promoted: Below Average -> Average (eff -0.01, mmr -0.17)",
-  "WSH promoted: Below Average -> Average (eff +0.03, mmr -0.06)",
-  "TOR demoted: Below Average -> Poor (eff -0.84, mmr -0.25)",
-  "ATH demoted: Below Average -> Poor (eff -0.89, mmr -0.20)"
+  "CWS demoted: Above Average -> Average (eff +0.24, mmr -0.11)",
+  "SD demoted: Above Average -> Average (eff +0.20, mmr +0.14)",
+  "BOS promoted: Below Average -> Average (eff -0.06, mmr +0.38)"
  ],
  "tier_order": [
   "Elite",
@@ -95,8 +92,6 @@
     "z": 0.947,
     "mmr": 0.145,
     "eff": 1.092,
-    "movement": "promoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs KC (06-22)",
      "upset L vs KC (06-23)"
@@ -113,8 +108,6 @@
     "z": 0.741,
     "mmr": 0.402,
     "eff": 1.143,
-    "movement": "promoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs COL (06-16)",
      "upset L vs TOR (06-20)"
@@ -139,26 +132,6 @@
     ]
    },
    {
-    "name": "Chicago White Sox",
-    "abbr": "CWS",
-    "w": 43,
-    "l": 39,
-    "pct": 0.524,
-    "rd": 18,
-    "rationale": "43-39 (.524), +18 run differential -- a solidly positive run margin.",
-    "z": 0.35,
-    "mmr": -0.109,
-    "eff": 0.241,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs NYY (06-18)",
-     "upset L vs DET (06-19)"
-    ]
-   },
-   {
     "name": "Miami Marlins",
     "abbr": "MIA",
     "w": 44,
@@ -169,29 +142,27 @@
     "z": 0.276,
     "mmr": 0.223,
     "eff": 0.499
-   },
-   {
-    "name": "San Diego Padres",
-    "abbr": "SD",
-    "w": 43,
-    "l": 39,
-    "pct": 0.524,
-    "rd": -13,
-    "rationale": "43-39 (.524), -13 run differential -- a negative run margin, winning above what that margin implies.",
-    "z": 0.065,
-    "mmr": 0.137,
-    "eff": 0.202,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs ATL (06-22)",
-     "upset W vs ATL (06-23)"
-    ]
    }
   ],
   "Average": [
+   {
+    "name": "Chicago White Sox",
+    "abbr": "CWS",
+    "w": 43,
+    "l": 39,
+    "pct": 0.524,
+    "rd": 18,
+    "rationale": "43-39 (.524), +18 run differential -- a solidly positive run margin.",
+    "z": 0.35,
+    "mmr": -0.109,
+    "eff": 0.241,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset W vs NYY (06-18)",
+     "upset L vs DET (06-19)"
+    ]
+   },
    {
     "name": "Pittsburgh Pirates",
     "abbr": "PIT",
@@ -219,8 +190,6 @@
     "z": 0.166,
     "mmr": -0.171,
     "eff": -0.005,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset L vs KC (06-18)",
      "upset L vs KC (06-19)"
@@ -252,10 +221,26 @@
     "z": 0.089,
     "mmr": -0.059,
     "eff": 0.029,
-    "movement": "promoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset L vs KC (06-17)"
+    ]
+   },
+   {
+    "name": "San Diego Padres",
+    "abbr": "SD",
+    "w": 43,
+    "l": 39,
+    "pct": 0.524,
+    "rd": -13,
+    "rationale": "43-39 (.524), -13 run differential -- a negative run margin, winning above what that margin implies.",
+    "z": 0.065,
+    "mmr": 0.137,
+    "eff": 0.202,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset W vs ATL (06-22)",
+     "upset W vs ATL (06-23)"
     ]
    },
    {
@@ -281,6 +266,24 @@
     "z": -0.078,
     "mmr": 0.192,
     "eff": 0.115
+   },
+   {
+    "name": "Boston Red Sox",
+    "abbr": "BOS",
+    "w": 36,
+    "l": 46,
+    "pct": 0.439,
+    "rd": 5,
+    "rationale": "36-46 (.439), +5 run differential -- a roughly even run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.38).",
+    "z": -0.438,
+    "mmr": 0.375,
+    "eff": -0.062,
+    "movement": "promoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset L vs COL (06-22)",
+     "upset L vs COL (06-24)"
+    ]
    }
   ],
   "Below Average": [
@@ -295,26 +298,6 @@
     "z": -0.336,
     "mmr": -0.199,
     "eff": -0.535
-   },
-   {
-    "name": "Boston Red Sox",
-    "abbr": "BOS",
-    "w": 36,
-    "l": 46,
-    "pct": 0.439,
-    "rd": 5,
-    "rationale": "36-46 (.439), +5 run differential -- a roughly even run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.38).",
-    "z": -0.438,
-    "mmr": 0.375,
-    "eff": -0.062,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs COL (06-22)",
-     "upset L vs COL (06-24)"
-    ]
    },
    {
     "name": "Houston Astros",
@@ -404,8 +387,6 @@
     "z": -0.59,
     "mmr": -0.253,
     "eff": -0.844,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CHC (06-20)"
     ]
@@ -421,8 +402,6 @@
     "z": -0.689,
     "mmr": -0.203,
     "eff": -0.892,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs PIT (06-15)"
     ]

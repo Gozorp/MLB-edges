@@ -1,0 +1,34 @@
+{
+  "date": "2026-06-30",
+  "generated_utc": "2026-06-29T11:14:34.800006+00:00",
+  "method": "sp-independent-team-strength",
+  "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
+  "games": {
+    "SD @ CHC": {
+      "provisional_pick": "CHC",
+      "p_pick": 0.704,
+      "p_home": 0.704,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "SD",
+      "home": "CHC",
+      "away_strength": 0.06,
+      "home_strength": 0.73
+    },
+    "SF @ ARI": {
+      "provisional_pick": "AZ",
+      "p_pick": 0.719,
+      "p_home": 0.719,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "SF",
+      "home": "AZ",
+      "away_strength": -1.08,
+      "home_strength": -0.34
+    }
+  }
+}
