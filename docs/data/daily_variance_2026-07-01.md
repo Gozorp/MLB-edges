@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-01
-_Generated 2026-06-30T09:46:59Z · 14 games · significant deviations only_
+_Generated 2026-06-30T11:48:43Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **BAL** [IL] — Baltimore Orioles placed LHP Keegan Akin on the 15-day injured list retroactive to June 28, 2026. left elbow discomfort.

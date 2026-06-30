@@ -1,9 +1,14 @@
 {
- "generated_utc": "2026-06-30T09:47:26Z",
+ "generated_utc": "2026-06-30T11:48:55Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "NYY demoted: Elite -> Above Average (eff +0.82, mmr -0.60)",
+  "CWS promoted: Average -> Above Average (eff +0.43, mmr -0.01)",
+  "PIT promoted: Average -> Above Average (eff +0.35, mmr +0.02)",
+  "TOR promoted: Poor -> Below Average (eff -0.66, mmr -0.14)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -62,26 +67,6 @@
     ]
    },
    {
-    "name": "New York Yankees",
-    "abbr": "NYY",
-    "w": 48,
-    "l": 36,
-    "pct": 0.571,
-    "rd": 97,
-    "rationale": "48-36 (.571), +97 run differential -- a dominant run margin, winning below what that margin implies. Results running below tier expectation (MMR -0.60).",
-    "z": 1.418,
-    "mmr": -0.6,
-    "eff": 0.818,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs CWS (06-18)",
-     "upset L vs CIN (06-20)"
-    ]
-   },
-   {
     "name": "Tampa Bay Rays",
     "abbr": "TB",
     "w": 48,
@@ -116,6 +101,42 @@
   ],
   "Above Average": [
    {
+    "name": "New York Yankees",
+    "abbr": "NYY",
+    "w": 48,
+    "l": 36,
+    "pct": 0.571,
+    "rd": 97,
+    "rationale": "48-36 (.571), +97 run differential -- a dominant run margin, winning below what that margin implies. Results running below tier expectation (MMR -0.60).",
+    "z": 1.418,
+    "mmr": -0.6,
+    "eff": 0.818,
+    "movement": "demoted",
+    "moved_from": "Elite",
+    "upsets": [
+     "upset L vs CWS (06-18)",
+     "upset L vs CIN (06-20)"
+    ]
+   },
+   {
+    "name": "Chicago White Sox",
+    "abbr": "CWS",
+    "w": 44,
+    "l": 39,
+    "pct": 0.53,
+    "rd": 24,
+    "rationale": "44-39 (.530), +24 run differential -- a solidly positive run margin.",
+    "z": 0.444,
+    "mmr": -0.013,
+    "eff": 0.431,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset W vs NYY (06-18)",
+     "upset L vs DET (06-19)"
+    ]
+   },
+   {
     "name": "Philadelphia Phillies",
     "abbr": "PHI",
     "w": 47,
@@ -142,28 +163,6 @@
     "z": 0.337,
     "mmr": 0.316,
     "eff": 0.653
-   }
-  ],
-  "Average": [
-   {
-    "name": "Chicago White Sox",
-    "abbr": "CWS",
-    "w": 44,
-    "l": 39,
-    "pct": 0.53,
-    "rd": 24,
-    "rationale": "44-39 (.530), +24 run differential -- a solidly positive run margin.",
-    "z": 0.444,
-    "mmr": -0.013,
-    "eff": 0.431,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs NYY (06-18)",
-     "upset L vs DET (06-19)"
-    ]
    },
    {
     "name": "Pittsburgh Pirates",
@@ -176,15 +175,15 @@
     "z": 0.329,
     "mmr": 0.021,
     "eff": 0.351,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
+    "movement": "promoted",
+    "moved_from": "Average",
     "upsets": [
      "upset L vs COL (06-19)",
      "upset L vs COL (06-20)"
     ]
-   },
+   }
+  ],
+  "Average": [
    {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
@@ -318,6 +317,23 @@
     ]
    },
    {
+    "name": "Toronto Blue Jays",
+    "abbr": "TOR",
+    "w": 40,
+    "l": 45,
+    "pct": 0.471,
+    "rd": -32,
+    "rationale": "40-45 (.471), -32 run differential -- a poor run margin.",
+    "z": -0.517,
+    "mmr": -0.143,
+    "eff": -0.66,
+    "movement": "promoted",
+    "moved_from": "Poor",
+    "upsets": [
+     "upset W vs CHC (06-20)"
+    ]
+   },
+   {
     "name": "Houston Astros",
     "abbr": "HOU",
     "w": 42,
@@ -379,25 +395,6 @@
    }
   ],
   "Poor": [
-   {
-    "name": "Toronto Blue Jays",
-    "abbr": "TOR",
-    "w": 40,
-    "l": 45,
-    "pct": 0.471,
-    "rd": -32,
-    "rationale": "40-45 (.471), -32 run differential -- a poor run margin.",
-    "z": -0.517,
-    "mmr": -0.143,
-    "eff": -0.66,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs CHC (06-20)"
-    ]
-   },
    {
     "name": "Athletics",
     "abbr": "ATH",
