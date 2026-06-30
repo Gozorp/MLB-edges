@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-01
-_Generated 2026-06-30T21:33:50Z · 14 games · significant deviations only_
+_Generated 2026-06-30T21:34:36Z · 14 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CWS** [signed] — Chicago White Sox signed free agent RHP Erick Rosso to a minor league contract.
@@ -11,12 +11,12 @@ _Generated 2026-06-30T21:33:50Z · 14 games · significant deviations only_
 - **TEX** [selected] — Texas Rangers selected the contract of SS Cameron Cauley from Round Rock Express.
 - **TEX** [DFA] — Texas Rangers designated RHP Chris Paddack for assignment.
 - **TEX** [recalled] — Texas Rangers recalled RHP Gavin Collyer from Round Rock Express.
+- **WSH** [IL] — Washington Nationals placed LHP Richard Lovelady on the 15-day injured list. Left triceps strain.
 - **WSH** [IL] — Washington Nationals placed LHP Mitchell Parker on the 15-day injured list. Left elbow inflammation.
 - **WSH** [signed] — Washington Nationals signed free agent LHP Kai Peterson to a minor league contract.
-- **WSH** [IL] — Washington Nationals placed LHP Richard Lovelady on the 15-day injured list. Left triceps strain.
-- **WSH** [recalled] — Washington Nationals recalled RHP Riley Cornelio from Rochester Red Wings.
-- **WSH** [outrighted] — Washington Nationals sent RHP Jhancarlos Lara outright to Harrisburg Senators.
 - **WSH** [recalled] — Washington Nationals recalled LHP Carson Palmquist from Rochester Red Wings.
+- **WSH** [outrighted] — Washington Nationals sent RHP Jhancarlos Lara outright to Harrisburg Senators.
+- **WSH** [recalled] — Washington Nationals recalled RHP Riley Cornelio from Rochester Red Wings.
 - **WSH** [signed] — Washington Nationals signed free agent RHP Edinson Hernandez to a minor league contract.
 - **NYY** [status] — New York Yankees placed RHP David Bednar on the paternity list.
 - **NYY** [recalled] — New York Yankees recalled RHP Jake Bird from Scranton/Wilkes-Barre RailRiders.
@@ -24,22 +24,23 @@ _Generated 2026-06-30T21:33:50Z · 14 games · significant deviations only_
 - **NYY** [optioned] — New York Yankees optioned RHP Yerry De los Santos to Scranton/Wilkes-Barre RailRiders.
 - **SD** [signed] — San Diego Padres signed free agent 3B Luis Rengifo to a minor league contract.
 - **SD** [IL] — San Diego Padres placed RHP David Morgan on the 15-day injured list retroactive to June 28, 2026. Left knee inflammation.
-- **SD** [IL] — San Diego Padres activated 2B Jake Cronenworth from the 7-day injured list.
-- **SD** [optioned] — San Diego Padres optioned DH Will Wagner to El Paso Chihuahuas.
+- **SD** [signed] — San Diego Padres signed free agent 3B Luis Rengifo to a minor league contract.
 - **SD** [recalled] — San Diego Padres recalled RHP Bradgley Rodriguez from San Antonio Missions.
-- **CHC** [IL] — Chicago Cubs placed RHP Ethan Roberts on the 15-day injured list. right forearm inflammation.
+- **SD** [optioned] — San Diego Padres optioned DH Will Wagner to El Paso Chihuahuas.
 - **CHC** [IL] — Chicago Cubs placed RF Matt Shaw on the 10-day injured list. left-hand sprain.
+- **CHC** [IL] — Chicago Cubs placed RHP Ethan Roberts on the 15-day injured list. right forearm inflammation.
 - **CHC** [recalled] — Chicago Cubs recalled DH Kevin Alcántara from Iowa Cubs.
 - **CHC** [recalled] — Chicago Cubs recalled RHP Gavin Hollowell from Iowa Cubs.
 - **NYM** [optioned] — New York Mets optioned RHP Tobias Myers to Syracuse Mets.
 - **NYM** [recalled] — New York Mets recalled RHP Joey Gerber from Syracuse Mets.
-- **PHI** [selected] — Philadelphia Phillies selected the contract of RHP Lou Trivino from Lehigh Valley IronPigs.
 - **PHI** [optioned] — Philadelphia Phillies optioned RHP Chase Shugart to Lehigh Valley IronPigs.
-- **STL** [IL] — St. Louis Cardinals activated RHP Ryan Fernandez from the 15-day injured list.
+- **PHI** [selected] — Philadelphia Phillies selected the contract of RHP Lou Trivino from Lehigh Valley IronPigs.
 - **STL** [status] — St. Louis Cardinals placed RHP Ryne Stanek on the paternity list.
+- **STL** [IL] — St. Louis Cardinals activated RHP Ryan Fernandez from the 15-day injured list.
 - **ATL** [signed] — Atlanta Braves signed free agent OF Cardell Thibodeaux to a minor league contract.
 - **ATL** [signed] — Atlanta Braves signed free agent SS Junior Tilien to a minor league contract.
 - **ATL** [signed] — Atlanta Braves signed free agent OF Matt Scannell to a minor league contract.
+- **TB** [signed] — Tampa Bay Rays signed free agent SS Lissandro Peralta to a minor league contract.
 - **TB** [signed] — Tampa Bay Rays signed free agent RF Austin Slater to a minor league contract.
 - **TB** [signed] — Tampa Bay Rays signed free agent SS Lissandro Peralta to a minor league contract.
 - **MIN** [IL] — Minnesota Twins placed LHP Anthony Banda on the 15-day injured list. Left lat strain.
@@ -53,18 +54,18 @@ _Generated 2026-06-30T21:33:50Z · 14 games · significant deviations only_
 - **CIN** [IL] — Cincinnati Reds placed CF Dane Myers on the 10-day injured list. Left shoulder contusion.
 - **CIN** [selected] — Cincinnati Reds selected the contract of 2B Ivan Johnson from Louisville Bats.
 - **CIN** [optioned] — Cincinnati Reds optioned RHP Zach McCambley to Louisville Bats.
-- **MIL** [selected] — Milwaukee Brewers selected the contract of RHP Garrett Stallings from Nashville Sounds.
 - **MIL** [optioned] — Milwaukee Brewers optioned LHP Robert Gasser to ACL Brewers.
+- **MIL** [selected] — Milwaukee Brewers selected the contract of RHP Garrett Stallings from Nashville Sounds.
 - **LAD** [signed] — Los Angeles Dodgers signed free agent SS Brayan Holguin to a minor league contract.
 - **LAD** [IL] — Los Angeles Dodgers activated LF Teoscar Hernández from the 10-day injured list.
 - **LAD** [optioned] — Los Angeles Dodgers optioned LF Ryan Ward to Oklahoma City Comets.
-- **ATH** [status] — Athletics placed LHP José Suarez on the paternity list.
 - **ATH** [IL] — Athletics placed LF Tyler Soderstrom on the 10-day injured list retroactive to June 28, 2026. Left hip impingement.
-- **ATH** [DFA] — Athletics designated RHP Michael Kelly for assignment.
 - **ATH** [IL] — Athletics placed SS Jacob Wilson on the 10-day injured list retroactive to June 26, 2026. Right thumb inflammation.
+- **ATH** [DFA] — Athletics designated RHP Michael Kelly for assignment.
+- **ATH** [status] — Athletics placed LHP José Suarez on the paternity list.
+- **ATH** [recalled] — Athletics recalled RHP Kade Morris from Las Vegas Aviators.
 - **ATH** [selected] — Athletics selected the contract of SS Joshua Kuroda-Grauer from Las Vegas Aviators.
 - **ATH** [recalled] — Athletics recalled SS Darell Hernaiz from Las Vegas Aviators.
-- **ATH** [recalled] — Athletics recalled RHP Kade Morris from Las Vegas Aviators.
 - **SF** [TRADE] — San Francisco Giants traded 1B Buddy Kennedy to Seattle Mariners for cash.
 - **AZ** [optioned] — Arizona Diamondbacks optioned RHP Juan Burgos to Reno Aces.
 - **AZ** [recalled] — Arizona Diamondbacks recalled RHP Brandon Pfaadt from Reno Aces.
