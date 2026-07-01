@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-01T21:09:30.221121+00:00",
+  "checked_at": "2026-07-01T22:49:09.477913+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 2.0h ago",
+      "message": "last slate publish 0.4h ago",
       "detail": {
-        "last_run_iso": "2026-07-01T19:08:52+00:00",
-        "age_hours": 2.01
+        "last_run_iso": "2026-07-01T22:22:39+00:00",
+        "age_hours": 0.44
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 3.6d ago",
       "detail": {
         "last_run_iso": "2026-06-28T07:52:57Z",
-        "age_hours": 85.28,
+        "age_hours": 86.94,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 3.5d ago",
+      "message": "last fired 3.6d ago",
       "detail": {
         "last_run_iso": "2026-06-28T08:18:44Z",
-        "age_hours": 84.85,
+        "age_hours": 86.51,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 28.0 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 28.1 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 671.98,
+        "age_hours": 673.64,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,8 +71,8 @@
         "ok_rows": 13,
         "non_ok_pct": 7.1,
         "status_distribution": {
-          "fetched_capped": 4,
-          "fetched": 9,
+          "fetched_capped": 6,
+          "fetched": 7,
           "pending_sp_data": 1
         }
       },
@@ -98,9 +98,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-01T21:09:30.324Z",
+          "timestamp": "2026-07-01T22:49:09.659Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "DFW"
         }
       },
       "category": "deployment"
@@ -108,10 +108,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 672.4h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 674.1h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 672.4,
+        "age_hours": 674.06,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
