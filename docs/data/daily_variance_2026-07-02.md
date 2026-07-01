@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-02
-_Generated 2026-07-01T16:43:22Z · 9 games · significant deviations only_
+_Generated 2026-07-01T19:08:35Z · 9 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PIT** [signed] — Pittsburgh Pirates signed free agent SS Ryan McCarty to a minor league contract.
@@ -23,6 +23,7 @@ _Generated 2026-07-01T16:43:22Z · 9 games · significant deviations only_
 - **STL** [status] — St. Louis Cardinals placed RHP Ryne Stanek on the paternity list.
 - **STL** [IL] — St. Louis Cardinals activated RHP Ryan Fernandez from the 15-day injured list.
 - **ATL** [signed] — Atlanta Braves signed free agent OF Matt Scannell to a minor league contract.
+- **ATL** [signed] — Atlanta Braves signed free agent OF Luis Consoro to a minor league contract.
 - **DET** [IL] — Detroit Tigers placed RHP Will Vest on the 15-day injured list retroactive to June 28, 2026. Right posterior elbow inflammation.
 - **DET** [recalled] — Detroit Tigers recalled RHP Beau Brieske from Toledo Mud Hens.
 - **TEX** [DFA] — Texas Rangers designated RHP Chris Paddack for assignment.
