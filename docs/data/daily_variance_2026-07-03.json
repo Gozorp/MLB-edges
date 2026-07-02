@@ -1,6 +1,6 @@
 {
  "date": "2026-07-03",
- "generated": "2026-07-02T09:05:15Z",
+ "generated": "2026-07-02T16:17:28Z",
  "n_games": 13,
  "roster_delta": [
   {
@@ -18,6 +18,14 @@
    "type": "Outrighted",
    "cat": "outrighted",
    "desc": "Chicago Cubs sent RHP Eduarniel N\u00fa\u00f1ez outright to Iowa Cubs."
+  },
+  {
+   "team": "CHC",
+   "date": "2026-07-02",
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Chicago Cubs signed free agent SS Luis Abreu to a minor league contract."
   },
   {
    "team": "PIT",
@@ -54,18 +62,18 @@
   {
    "team": "NYY",
    "date": "2026-07-02",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "activated",
+   "desc": "New York Yankees activated RHP David Bednar from the paternity list."
+  },
+  {
+   "team": "NYY",
+   "date": "2026-07-02",
    "code": "OPT",
    "type": "Optioned",
    "cat": "optioned",
    "desc": "New York Yankees optioned RHP Yovanny Cruz to Scranton/Wilkes-Barre RailRiders."
-  },
-  {
-   "team": "BAL",
-   "date": "2026-07-01",
-   "code": "SC",
-   "type": "Status Change",
-   "cat": "IL",
-   "desc": "Baltimore Orioles activated RHP Dean Kremer from the 60-day injured list."
   },
   {
    "team": "BAL",
@@ -78,6 +86,14 @@
   {
    "team": "BAL",
    "date": "2026-07-01",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Baltimore Orioles activated RHP Dean Kremer from the 60-day injured list."
+  },
+  {
+   "team": "BAL",
+   "date": "2026-07-01",
    "code": "OPT",
    "type": "Optioned",
    "cat": "optioned",
@@ -86,18 +102,18 @@
   {
    "team": "BAL",
    "date": "2026-07-01",
-   "code": "OPT",
-   "type": "Optioned",
-   "cat": "optioned",
-   "desc": "Baltimore Orioles optioned LHP Josh Walker to Norfolk Tides."
-  },
-  {
-   "team": "BAL",
-   "date": "2026-07-01",
    "code": "TR",
    "type": "Trade",
    "cat": "TRADE",
    "desc": "Baltimore Orioles traded RHP Kyle Nicolas to Washington Nationals for SS Randal Diaz."
+  },
+  {
+   "team": "BAL",
+   "date": "2026-07-01",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Baltimore Orioles optioned LHP Josh Walker to Norfolk Tides."
   },
   {
    "team": "BAL",
@@ -132,12 +148,44 @@
    "desc": "New York Mets signed free agent 1B Christopher Morel to a minor league contract."
   },
   {
+   "team": "NYM",
+   "date": "2026-07-02",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "New York Mets optioned LHP Jefry Yan to Syracuse Mets."
+  },
+  {
+   "team": "NYM",
+   "date": "2026-07-02",
+   "code": "SE",
+   "type": "Selected",
+   "cat": "selected",
+   "desc": "New York Mets selected the contract of LHP Jefry Yan from Syracuse Mets."
+  },
+  {
    "team": "ATL",
    "date": "2026-07-01",
    "code": "SFA",
    "type": "Signed as Free Agent",
    "cat": "signed",
    "desc": "Atlanta Braves signed free agent OF Luis Consoro to a minor league contract."
+  },
+  {
+   "team": "ATL",
+   "date": "2026-07-02",
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Atlanta Braves designated 1B Rowdy Tellez for assignment."
+  },
+  {
+   "team": "ATL",
+   "date": "2026-07-02",
+   "code": "CU",
+   "type": "Recalled",
+   "cat": "recalled",
+   "desc": "Atlanta Braves recalled SS Jim Jarvis from Gwinnett Stripers."
   },
   {
    "team": "SF",
@@ -271,17 +319,11 @@
   }
  ],
  "roster_leaks": [],
- "roster_suppressed": 0,
+ "roster_suppressed": 1,
  "unknown_tx_codes": {
   "ACQ": 1
  },
  "sp_flags": [
-  {
-   "game": "PIT @ WSH",
-   "side": "away",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
   {
    "game": "SF @ COL",
    "side": "away",
@@ -308,12 +350,6 @@
   },
   {
    "game": "MIA @ ATH",
-   "side": "away",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
-   "game": "MIL @ AZ",
    "side": "away",
    "sp": "TBD",
    "flag": "NOT CONFIRMED \u2014 probable SP not posted"
@@ -359,6 +395,11 @@
    "game": "STL @ CHC",
    "team": "STL",
    "note": "faces LHP (David Peterson)"
+  },
+  {
+   "game": "PIT @ WSH",
+   "team": "WSH",
+   "note": "faces RHP (Mitch Keller)"
   },
   {
    "game": "PIT @ WSH",
@@ -419,6 +460,11 @@
    "game": "MIA @ ATH",
    "team": "MIA",
    "note": "faces RHP (Jack Perkins)"
+  },
+  {
+   "game": "MIL @ AZ",
+   "team": "AZ",
+   "note": "faces LHP (Kyle Harrison)"
   },
   {
    "game": "MIL @ AZ",

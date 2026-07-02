@@ -1,24 +1,30 @@
 # Daily Variance Report — 2026-07-03
-_Generated 2026-07-02T09:05:15Z · 13 games · significant deviations only_
+_Generated 2026-07-02T16:17:28Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CHC** [DFA] — RHP Christian Roa elected free agency.
 - **CHC** [outrighted] — Chicago Cubs sent RHP Eduarniel Núñez outright to Iowa Cubs.
+- **CHC** [signed] — Chicago Cubs signed free agent SS Luis Abreu to a minor league contract.
 - **PIT** [signed] — Pittsburgh Pirates signed free agent SS Ryan McCarty to a minor league contract.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Cam Sanders from Indianapolis Indians.
 - **PIT** [optioned] — Pittsburgh Pirates optioned RHP Brandan Bidois to Indianapolis Indians.
 - **WSH** [TRADE] — Baltimore Orioles traded RHP Kyle Nicolas to Washington Nationals for SS Randal Diaz.
+- **NYY** [activated] — New York Yankees activated RHP David Bednar from the paternity list.
 - **NYY** [optioned] — New York Yankees optioned RHP Yovanny Cruz to Scranton/Wilkes-Barre RailRiders.
-- **BAL** [IL] — Baltimore Orioles activated RHP Dean Kremer from the 60-day injured list.
 - **BAL** [DFA] — Baltimore Orioles designated C Dom Keegan for assignment.
+- **BAL** [IL] — Baltimore Orioles activated RHP Dean Kremer from the 60-day injured list.
 - **BAL** [optioned] — Baltimore Orioles optioned RHP Trey Gibson to Norfolk Tides.
-- **BAL** [optioned] — Baltimore Orioles optioned LHP Josh Walker to Norfolk Tides.
 - **BAL** [TRADE] — Baltimore Orioles traded RHP Kyle Nicolas to Washington Nationals for SS Randal Diaz.
+- **BAL** [optioned] — Baltimore Orioles optioned LHP Josh Walker to Norfolk Tides.
 - **BAL** [recalled] — Baltimore Orioles recalled RHP Cameron Weston from Norfolk Tides.
 - **CWS** [IL] — Chicago White Sox activated LHP Noah Schultz from the 15-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned LHP Tyler Schweitzer to Charlotte Knights.
 - **NYM** [signed] — New York Mets signed free agent 1B Christopher Morel to a minor league contract.
+- **NYM** [optioned] — New York Mets optioned LHP Jefry Yan to Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of LHP Jefry Yan from Syracuse Mets.
 - **ATL** [signed] — Atlanta Braves signed free agent OF Luis Consoro to a minor league contract.
+- **ATL** [DFA] — Atlanta Braves designated 1B Rowdy Tellez for assignment.
+- **ATL** [recalled] — Atlanta Braves recalled SS Jim Jarvis from Gwinnett Stripers.
 - **SF** [IL] — San Francisco Giants placed 3B Matt Chapman on the 10-day injured list. Abdominal strain.
 - **SF** [recalled] — San Francisco Giants recalled 2B Christian Koss from Sacramento River Cats.
 - **COL** [DFA] — Colorado Rockies designated RHP John Brebbia for assignment.
@@ -38,16 +44,14 @@ _Generated 2026-07-02T09:05:15Z · 13 games · significant deviations only_
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **CHC** code=ACQ — Chicago Cubs acquired 3B Michael Hallquist from the Milwaukee Milkmen of the American Association.
 
-_Suppressed 0 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **PIT @ WSH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SF @ COL** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SF @ COL** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TB @ HOU** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **BOS @ LAA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **MIL @ AZ** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SD @ LAD** (home SP Shohei Ohtani): very high K% (29.3% vs lg 22.0)
 - **TOR @ SEA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
@@ -58,6 +62,7 @@ _Suppressed 0 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 ## 4 · Lineup / Platoon
 - STL @ CHC — CHC faces RHP (Andre Pallante)
 - STL @ CHC — STL faces LHP (David Peterson)
+- PIT @ WSH — WSH faces RHP (Mitch Keller)
 - PIT @ WSH — PIT faces LHP (Foster Griffin)
 - MIN @ NYY — NYY faces RHP (Mike Paredes)
 - MIN @ NYY — MIN faces RHP (Gerrit Cole)
@@ -70,6 +75,7 @@ _Suppressed 0 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - TB @ HOU — TB faces RHP (Spencer Arrighetti)
 - BOS @ LAA — LAA faces LHP (Jake Bennett)
 - MIA @ ATH — MIA faces RHP (Jack Perkins)
+- MIL @ AZ — AZ faces LHP (Kyle Harrison)
 - MIL @ AZ — MIL faces RHP (Jose Cabrera)
 - SD @ LAD — LAD faces RHP (Michael King)
 - SD @ LAD — SD faces RHP (Shohei Ohtani)
