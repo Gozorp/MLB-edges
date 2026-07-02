@@ -1,31 +1,31 @@
 {
   "version": 2,
-  "checked_at": "2026-07-01T22:49:09.477913+00:00",
+  "checked_at": "2026-07-02T00:16:36.471476+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
-    "data_flow": "green",
+    "data_flow": "red",
     "deployment": "green",
-    "model": "yellow"
+    "model": "frozen"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 0.4h ago",
+      "message": "last slate publish 1.9h ago",
       "detail": {
         "last_run_iso": "2026-07-01T22:22:39+00:00",
-        "age_hours": 0.44
+        "age_hours": 1.9
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 3.6d ago",
+      "message": "last fired 3.7d ago",
       "detail": {
         "last_run_iso": "2026-06-28T07:52:57Z",
-        "age_hours": 86.94,
+        "age_hours": 88.39,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 3.6d ago",
+      "message": "last fired 3.7d ago",
       "detail": {
         "last_run_iso": "2026-06-28T08:18:44Z",
-        "age_hours": 86.51,
+        "age_hours": 87.96,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -47,7 +47,7 @@
       "message": "daily Claude Brain review hasn't fired in 28.1 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 673.64,
+        "age_hours": 675.1,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -57,35 +57,34 @@
       "severity": "green",
       "message": "written 0.0h ago",
       "detail": {
-        "path": "docs/data/bullpen_meta_2026-07-01.json",
+        "path": "docs/data/bullpen_meta_2026-07-02.json",
         "mtime_age_hours": 0.0
       },
       "category": "data_flow"
     },
     {
       "name": "kalshi_coverage_rate",
-      "severity": "green",
-      "message": "13/14 rows have market odds",
+      "severity": "yellow",
+      "message": "56% of slate has no Kalshi moneyline",
       "detail": {
-        "total_rows": 14,
-        "ok_rows": 13,
-        "non_ok_pct": 7.1,
+        "total_rows": 9,
+        "ok_rows": 4,
+        "non_ok_pct": 55.6,
         "status_distribution": {
-          "fetched_capped": 6,
-          "fetched": 7,
-          "pending_sp_data": 1
+          "fetched": 4,
+          "pending_sp_data": 5
         }
       },
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "green",
-      "message": "1/14 rows PENDING_SP_DATA",
+      "severity": "red",
+      "message": "56% PENDING_SP_DATA (5/9)",
       "detail": {
-        "total_rows": 14,
-        "pending_sp_data_count": 1,
-        "pct_of_slate": 7.1
+        "total_rows": 9,
+        "pending_sp_data_count": 5,
+        "pct_of_slate": 55.6
       },
       "category": "data_flow"
     },
@@ -98,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-01T22:49:09.659Z",
+          "timestamp": "2026-07-02T00:16:36.564Z",
           "commit": "unknown",
-          "region": "DFW"
+          "region": "ORD"
         }
       },
       "category": "deployment"
@@ -108,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 674.1h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 675.5h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 674.06,
+        "age_hours": 675.52,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -138,12 +137,12 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "yellow",
-      "message": "64% of slate stress-warned (9/14)",
+      "severity": "green",
+      "message": "1/9 rows stress-warned",
       "detail": {
-        "total_rows": 14,
-        "stress_warned_count": 9,
-        "pct_of_slate": 64.3
+        "total_rows": 9,
+        "stress_warned_count": 1,
+        "pct_of_slate": 11.1
       },
       "category": "model"
     }
