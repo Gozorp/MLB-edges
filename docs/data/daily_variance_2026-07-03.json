@@ -1,6 +1,6 @@
 {
  "date": "2026-07-03",
- "generated": "2026-07-02T18:30:59Z",
+ "generated": "2026-07-02T22:09:22Z",
  "n_games": 13,
  "roster_delta": [
   {
@@ -58,6 +58,14 @@
    "type": "Trade",
    "cat": "TRADE",
    "desc": "Baltimore Orioles traded RHP Kyle Nicolas to Washington Nationals for SS Randal Diaz."
+  },
+  {
+   "team": "WSH",
+   "date": "2026-07-02",
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Washington Nationals signed free agent LHP Konnor Pilkington to a minor league contract."
   },
   {
    "team": "NYY",
@@ -204,6 +212,14 @@
    "desc": "San Francisco Giants recalled 2B Christian Koss from Sacramento River Cats."
   },
   {
+   "team": "SF",
+   "date": "2026-07-02",
+   "code": "OUT",
+   "type": "Outrighted",
+   "cat": "outrighted",
+   "desc": "San Francisco Giants sent RHP Wilkin Ramos outright to Sacramento River Cats."
+  },
+  {
    "team": "COL",
    "date": "2026-07-01",
    "code": "DES",
@@ -225,6 +241,14 @@
    "code": "SC",
    "type": "Status Change",
    "cat": "IL",
+   "desc": "Boston Red Sox placed LHP Connelly Early on the 15-day injured list. Left elbow inflammation."
+  },
+  {
+   "team": "BOS",
+   "date": "2026-07-01",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
    "desc": "Boston Red Sox activated LHP Jovani Mor\u00e1n from the 15-day injured list."
   },
   {
@@ -234,14 +258,6 @@
    "type": "Designated for Assignment",
    "cat": "DFA",
    "desc": "Boston Red Sox designated RHP Tommy Kahnle for assignment."
-  },
-  {
-   "team": "BOS",
-   "date": "2026-07-01",
-   "code": "SC",
-   "type": "Status Change",
-   "cat": "IL",
-   "desc": "Boston Red Sox placed LHP Connelly Early on the 15-day injured list. Left elbow inflammation."
   },
   {
    "team": "BOS",
@@ -260,12 +276,28 @@
    "desc": "Boston Red Sox recalled LHP Alec Gamboa from Worcester Red Sox."
   },
   {
+   "team": "BOS",
+   "date": "2026-07-02",
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Boston Red Sox signed free agent RHP Sam McWilliams to a minor league contract."
+  },
+  {
    "team": "ATH",
    "date": "2026-07-01",
    "code": "TR",
    "type": "Trade",
    "cat": "TRADE",
    "desc": "Athletics traded 3B Brett Harris to Boston Red Sox for RHP Ben Hansen."
+  },
+  {
+   "team": "LAD",
+   "date": "2026-07-01",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Los Angeles Dodgers optioned RHP Wyatt Mills to Oklahoma City Comets."
   },
   {
    "team": "LAD",
@@ -277,11 +309,19 @@
   },
   {
    "team": "LAD",
-   "date": "2026-07-01",
+   "date": "2026-07-02",
+   "code": "CU",
+   "type": "Recalled",
+   "cat": "recalled",
+   "desc": "Los Angeles Dodgers recalled RHP Paul Gervase from Oklahoma City Comets."
+  },
+  {
+   "team": "LAD",
+   "date": "2026-07-02",
    "code": "OPT",
    "type": "Optioned",
    "cat": "optioned",
-   "desc": "Los Angeles Dodgers optioned RHP Wyatt Mills to Oklahoma City Comets."
+   "desc": "Los Angeles Dodgers optioned LHP Charlie Barnes to Oklahoma City Comets."
   },
   {
    "team": "TOR",
@@ -319,7 +359,7 @@
   }
  ],
  "roster_leaks": [],
- "roster_suppressed": 1,
+ "roster_suppressed": 2,
  "unknown_tx_codes": {
   "ACQ": 1
  },
@@ -347,15 +387,17 @@
    "side": "home",
    "sp": "Shohei Ohtani",
    "flag": "very high K% (29.3% vs lg 22.0)"
-  },
-  {
-   "game": "TOR @ SEA",
-   "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
   }
  ],
  "bullpen_fatigue": [
+  {
+   "team": "CIN",
+   "reliever": "Brock Burke",
+   "appearances_3d": 2,
+   "pitches_3d": 37,
+   "last": "2026-07-02",
+   "flag": "2 apps / 37 pitches over last 3 games \u2014 monitor"
+  },
   {
    "team": "BOS",
    "reliever": "Ryan Watson",
@@ -363,6 +405,22 @@
    "pitches_3d": 42,
    "last": "2026-07-01",
    "flag": "2 apps / 42 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "MIA",
+   "reliever": "Cade Gibson",
+   "appearances_3d": 2,
+   "pitches_3d": 54,
+   "last": "2026-07-02",
+   "flag": "2 apps / 54 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "MIL",
+   "reliever": "Jared Koenig",
+   "appearances_3d": 2,
+   "pitches_3d": 37,
+   "last": "2026-07-02",
+   "flag": "2 apps / 37 pitches over last 3 games \u2014 monitor"
   },
   {
    "team": "AZ",
@@ -483,6 +541,11 @@
    "game": "TOR @ SEA",
    "team": "SEA",
    "note": "faces RHP (Dylan Cease)"
+  },
+  {
+   "game": "TOR @ SEA",
+   "team": "TOR",
+   "note": "faces RHP (Luis Castillo)"
   }
  ]
 }
