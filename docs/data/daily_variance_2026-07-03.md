@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-03
-_Generated 2026-07-02T16:17:28Z · 13 games · significant deviations only_
+_Generated 2026-07-02T18:30:59Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **CHC** [DFA] — RHP Christian Roa elected free agency.
@@ -48,10 +48,8 @@ _Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 
 ## 2 · Starting Pitcher Flags
 - **SF @ COL** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **SF @ COL** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TB @ HOU** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **BOS @ LAA** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **MIA @ ATH** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SD @ LAD** (home SP Shohei Ohtani): very high K% (29.3% vs lg 22.0)
 - **TOR @ SEA** (home SP TBD): NOT CONFIRMED — probable SP not posted
 
@@ -72,8 +70,10 @@ _Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - CWS @ CLE — CWS faces RHP (Gavin Williams)
 - NYM @ ATL — ATL faces RHP (Christian Scott)
 - NYM @ ATL — NYM faces RHP (Grant Holmes)
+- SF @ COL — SF faces RHP (Ryan Feltner)
 - TB @ HOU — TB faces RHP (Spencer Arrighetti)
 - BOS @ LAA — LAA faces LHP (Jake Bennett)
+- MIA @ ATH — ATH faces RHP (Tyler Phillips)
 - MIA @ ATH — MIA faces RHP (Jack Perkins)
 - MIL @ AZ — AZ faces LHP (Kyle Harrison)
 - MIL @ AZ — MIL faces RHP (Jose Cabrera)
