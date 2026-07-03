@@ -1,10 +1,14 @@
 # Daily Variance Report — 2026-07-04
-_Generated 2026-07-03T18:15:48Z · 15 games · significant deviations only_
+_Generated 2026-07-03T19:25:50Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **WSH** [signed] — Washington Nationals signed free agent LHP Konnor Pilkington to a minor league contract.
 - **NYY** [activated] — New York Yankees activated RHP David Bednar from the paternity list.
 - **NYY** [optioned] — New York Yankees optioned RHP Yovanny Cruz to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [IL] — New York Yankees placed LHP Carlos Rodón on the 15-day injured list retroactive to June 30, 2026. Left elbow inflammation.
+- **NYY** [IL] — New York Yankees activated CF Trent Grisham from the 10-day injured list.
+- **NYY** [IL] — New York Yankees activated 3B Ryan McMahon from the 10-day injured list.
+- **NYY** [optioned] — New York Yankees optioned 3B Oswaldo Cabrera to Scranton/Wilkes-Barre RailRiders.
 - **TEX** [signed] — Texas Rangers signed free agent 3B Santiago Espinal to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent RHP Austin Voth to a minor league contract.
 - **TEX** [optioned] — Texas Rangers optioned RHP Winston Santos to Round Rock Express.

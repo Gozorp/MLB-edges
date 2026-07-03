@@ -1,12 +1,9 @@
 {
- "generated_utc": "2026-07-03T18:15:59Z",
+ "generated_utc": "2026-07-03T19:26:02Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "TEX promoted: Average -> Above Average (eff +0.39, mmr +0.33)",
-  "DET demoted: Average -> Below Average (eff -0.26, mmr +0.22)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -171,9 +168,7 @@
     "rationale": "45-43 (.511), -2 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.33).",
     "z": 0.064,
     "mmr": 0.329,
-    "eff": 0.393,
-    "movement": "promoted",
-    "moved_from": "Average"
+    "eff": 0.393
    }
   ],
   "Average": [
@@ -322,8 +317,6 @@
     "z": -0.48,
     "mmr": 0.221,
     "eff": -0.259,
-    "movement": "demoted",
-    "moved_from": "Average",
     "upsets": [
      "upset W vs NYY (06-22)",
      "upset W vs NYY (06-29)"
