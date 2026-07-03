@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-04
-_Generated 2026-07-03T09:31:54Z · 15 games · significant deviations only_
+_Generated 2026-07-03T18:15:48Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **WSH** [signed] — Washington Nationals signed free agent LHP Konnor Pilkington to a minor league contract.
@@ -11,30 +11,35 @@ _Generated 2026-07-03T09:31:54Z · 15 games · significant deviations only_
 - **TEX** [outrighted] — Texas Rangers sent RHP Chris Paddack outright to Round Rock Express.
 - **TEX** [selected] — Texas Rangers selected the contract of RHP Ben Peoples from Round Rock Express.
 - **HOU** [optioned] — Houston Astros optioned RHP Miguel Ullola to Sugar Land Space Cowboys.
-- **CHC** [signed] — Chicago Cubs signed free agent SS Luis Abreu to a minor league contract.
-- **CHC** [status] — RHP Jacob Wallace roster status changed by Chicago Cubs.
 - **CHC** [signed] — Chicago Cubs signed free agent RHP Jacob Wallace to a minor league contract.
+- **CHC** [signed] — Chicago Cubs signed free agent SS Luis Abreu to a minor league contract.
 - **CHC** [optioned] — Chicago Cubs optioned LHP Jordan Wicks to Iowa Cubs.
+- **CHC** [selected] — Chicago Cubs selected the contract of LHP Drew Pomeranz from Iowa Cubs.
 - **NYM** [optioned] — New York Mets optioned LHP Jefry Yan to Syracuse Mets.
 - **NYM** [selected] — New York Mets selected the contract of LHP Jefry Yan from Syracuse Mets.
-- **ATL** [signed] — Atlanta Braves signed free agent DH Andrew McCutchen to a minor league contract.
 - **ATL** [DFA] — Atlanta Braves designated 1B Rowdy Tellez for assignment.
+- **ATL** [signed] — Atlanta Braves signed free agent DH Andrew McCutchen to a minor league contract.
 - **ATL** [recalled] — Atlanta Braves recalled SS Jim Jarvis from Gwinnett Stripers.
+- **ATL** [DFA] — Atlanta Braves designated RHP Ian Hamilton for assignment.
+- **ATL** [IL] — Atlanta Braves activated LHP Danny Young from the 60-day injured list.
+- **ATL** [recalled] — Atlanta Braves recalled RHP Anthony Molina from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned RHP James Karinchak to Gwinnett Stripers.
 - **SF** [outrighted] — San Francisco Giants sent RHP Wilkin Ramos outright to Sacramento River Cats.
 - **PHI** [optioned] — Philadelphia Phillies optioned RHP Alan Rangel to Lehigh Valley IronPigs.
 - **KC** [activated] — Kansas City Royals activated RHP Stephen Kolek from the bereavement list.
 - **KC** [DFA] — Kansas City Royals designated RHP Eric Cerantola for assignment.
 - **KC** [optioned] — Kansas City Royals optioned RF John Rave to Omaha Storm Chasers.
-- **KC** [selected] — Kansas City Royals selected the contract of C Luke Maile from Omaha Storm Chasers.
 - **KC** [optioned] — Kansas City Royals optioned RHP Jose Cuas to Omaha Storm Chasers.
+- **KC** [selected] — Kansas City Royals selected the contract of C Luke Maile from Omaha Storm Chasers.
 - **BOS** [signed] — Boston Red Sox signed free agent RHP Sam McWilliams to a minor league contract.
-- **ATH** [DFA] — Athletics designated LHP Matt Krook for assignment.
+- **MIA** [signed] — Miami Marlins signed free agent C Daniel Pena to a minor league contract.
 - **ATH** [activated] — Athletics activated LHP José Suarez from the paternity list.
-- **SD** [IL] — San Diego Padres activated RHP Germán Márquez from the 15-day injured list.
+- **ATH** [DFA] — Athletics designated LHP Matt Krook for assignment.
 - **SD** [IL] — San Diego Padres placed RHP Jason Adam on the 15-day injured list retroactive to June 30, 2026. Right shoulder strain.
+- **SD** [IL] — San Diego Padres activated RHP Germán Márquez from the 15-day injured list.
 - **LAD** [outrighted] — Los Angeles Dodgers sent RHP Jonathan Hernández outright to Oklahoma City Comets.
-- **LAD** [optioned] — Los Angeles Dodgers optioned LHP Charlie Barnes to Oklahoma City Comets.
 - **LAD** [recalled] — Los Angeles Dodgers recalled RHP Paul Gervase from Oklahoma City Comets.
+- **LAD** [optioned] — Los Angeles Dodgers optioned LHP Charlie Barnes to Oklahoma City Comets.
 
 _Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
