@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-07-02T22:09:49Z",
+ "generated_utc": "2026-07-03T02:03:18Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
@@ -21,9 +21,9 @@
     "pct": 0.644,
     "rd": 157,
     "rationale": "56-31 (.644), +157 run differential -- a dominant run margin.",
-    "z": 2.488,
+    "z": 2.475,
     "mmr": 0.013,
-    "eff": 2.501,
+    "eff": 2.488,
     "upsets": [
      "upset L vs BAL (06-20)",
      "upset L vs BAL (06-21)"
@@ -37,12 +37,12 @@
     "pct": 0.624,
     "rd": 124,
     "rationale": "53-32 (.624), +124 run differential -- a dominant run margin.",
-    "z": 2.044,
-    "mmr": 0.012,
-    "eff": 2.056,
+    "z": 2.033,
+    "mmr": 0.049,
+    "eff": 2.082,
     "upsets": [
-     "upset L vs CLE (06-18)",
-     "upset L vs CHC (06-27)"
+     "upset L vs CHC (06-27)",
+     "upset L vs CHC (06-28)"
     ]
    },
    {
@@ -52,10 +52,10 @@
     "l": 34,
     "pct": 0.595,
     "rd": 90,
-    "rationale": "50-34 (.595), +90 run differential -- a dominant run margin. Results running below tier expectation (MMR -0.38).",
-    "z": 1.522,
-    "mmr": -0.375,
-    "eff": 1.146,
+    "rationale": "50-34 (.595), +90 run differential -- a dominant run margin. Results running below tier expectation (MMR -0.34).",
+    "z": 1.514,
+    "mmr": -0.339,
+    "eff": 1.175,
     "upsets": [
      "upset L vs SD (06-22)",
      "upset L vs SD (06-23)"
@@ -64,17 +64,17 @@
    {
     "name": "Tampa Bay Rays",
     "abbr": "TB",
-    "w": 50,
+    "w": 51,
     "l": 33,
-    "pct": 0.602,
-    "rd": 34,
-    "rationale": "50-33 (.602), +34 run differential -- a strong run margin, winning above what that margin implies. Results running above tier expectation (MMR +0.34).",
-    "z": 1.087,
-    "mmr": 0.344,
-    "eff": 1.431,
+    "pct": 0.607,
+    "rd": 37,
+    "rationale": "51-33 (.607), +37 run differential -- a strong run margin, winning above what that margin implies. Results running above tier expectation (MMR +0.40).",
+    "z": 1.145,
+    "mmr": 0.404,
+    "eff": 1.549,
     "upsets": [
-     "upset L vs KC (06-22)",
-     "upset L vs KC (06-23)"
+     "upset L vs WSH (06-20)",
+     "upset L vs KC (06-22)"
     ]
    },
    {
@@ -84,10 +84,10 @@
     "l": 38,
     "pct": 0.563,
     "rd": 63,
-    "rationale": "49-38 (.563), +63 run differential -- a strong run margin. Results running above tier expectation (MMR +0.53).",
-    "z": 1.037,
-    "mmr": 0.531,
-    "eff": 1.568,
+    "rationale": "49-38 (.563), +63 run differential -- a strong run margin. Results running above tier expectation (MMR +0.48).",
+    "z": 1.031,
+    "mmr": 0.481,
+    "eff": 1.512,
     "upsets": [
      "upset L vs TOR (06-20)",
      "upset W vs MIL (06-27)"
@@ -103,9 +103,9 @@
     "pct": 0.558,
     "rd": 87,
     "rationale": "48-38 (.558), +87 run differential -- a dominant run margin, winning below what that margin implies. Results running below tier expectation (MMR -0.60).",
-    "z": 1.208,
+    "z": 1.202,
     "mmr": -0.6,
-    "eff": 0.608,
+    "eff": 0.602,
     "upsets": [
      "upset L vs CIN (06-20)",
      "upset L vs CIN (06-21)"
@@ -118,12 +118,11 @@
     "l": 39,
     "pct": 0.557,
     "rd": 5,
-    "rationale": "49-39 (.557), +5 run differential -- a roughly even run margin, winning above what that margin implies.",
-    "z": 0.484,
-    "mmr": 0.143,
-    "eff": 0.626,
+    "rationale": "49-39 (.557), +5 run differential -- a roughly even run margin, winning above what that margin implies. Results running above tier expectation (MMR +0.16).",
+    "z": 0.48,
+    "mmr": 0.163,
+    "eff": 0.643,
     "upsets": [
-     "upset L vs NYM (06-18)",
      "upset L vs NYM (06-27)"
     ]
    },
@@ -131,13 +130,13 @@
     "name": "Chicago White Sox",
     "abbr": "CWS",
     "w": 45,
-    "l": 40,
-    "pct": 0.529,
-    "rd": 25,
-    "rationale": "45-40 (.529), +25 run differential -- a solidly positive run margin.",
-    "z": 0.441,
-    "mmr": -0.001,
-    "eff": 0.44,
+    "l": 41,
+    "pct": 0.523,
+    "rd": 24,
+    "rationale": "45-41 (.523), +24 run differential -- a solidly positive run margin.",
+    "z": 0.383,
+    "mmr": -0.113,
+    "eff": 0.271,
     "upsets": [
      "upset L vs KC (06-28)",
      "upset L vs BAL (07-01)"
@@ -151,9 +150,9 @@
     "pct": 0.523,
     "rd": 11,
     "rationale": "46-42 (.523), +11 run differential -- a solidly positive run margin.",
-    "z": 0.272,
-    "mmr": 0.039,
-    "eff": 0.31,
+    "z": 0.27,
+    "mmr": 0.036,
+    "eff": 0.306,
     "upsets": [
      "upset L vs COL (07-01)",
      "upset L vs COL (07-02)"
@@ -169,11 +168,11 @@
     "pct": 0.511,
     "rd": 17,
     "rationale": "45-43 (.511), +17 run differential -- a solidly positive run margin.",
-    "z": 0.231,
-    "mmr": 0.028,
-    "eff": 0.259,
+    "z": 0.23,
+    "mmr": 0.026,
+    "eff": 0.255,
     "upsets": [
-     "upset L vs BAL (06-26)"
+     "upset W vs TB (06-20)"
     ]
    },
    {
@@ -184,9 +183,9 @@
     "pct": 0.5,
     "rd": 25,
     "rationale": "44-44 (.500), +25 run differential -- a solidly positive run margin.",
-    "z": 0.215,
-    "mmr": -0.073,
-    "eff": 0.142,
+    "z": 0.214,
+    "mmr": -0.066,
+    "eff": 0.148,
     "upsets": [
      "upset L vs COL (06-19)",
      "upset L vs COL (06-20)"
@@ -200,9 +199,9 @@
     "pct": 0.506,
     "rd": 13,
     "rationale": "44-43 (.506), +13 run differential -- a solidly positive run margin.",
-    "z": 0.157,
-    "mmr": 0.03,
-    "eff": 0.188
+    "z": 0.156,
+    "mmr": 0.007,
+    "eff": 0.163
    },
    {
     "name": "St. Louis Cardinals",
@@ -212,28 +211,25 @@
     "pct": 0.53,
     "rd": -10,
     "rationale": "44-39 (.530), -10 run differential -- a roughly even run margin, winning above what that margin implies.",
-    "z": 0.143,
-    "mmr": -0.118,
-    "eff": 0.025,
+    "z": 0.141,
+    "mmr": -0.073,
+    "eff": 0.068,
     "upsets": [
-     "upset L vs KC (06-18)",
-     "upset L vs KC (06-19)"
+     "upset L vs KC (06-19)",
+     "upset W vs ATL (06-30)"
     ]
    },
    {
     "name": "Cleveland Guardians",
     "abbr": "CLE",
-    "w": 45,
+    "w": 46,
     "l": 42,
-    "pct": 0.517,
-    "rd": -8,
-    "rationale": "45-42 (.517), -8 run differential -- a roughly even run margin.",
-    "z": 0.059,
-    "mmr": -0.018,
-    "eff": 0.041,
-    "upsets": [
-     "upset W vs MIL (06-18)"
-    ]
+    "pct": 0.523,
+    "rd": -7,
+    "rationale": "46-42 (.523), -7 run differential -- a roughly even run margin.",
+    "z": 0.113,
+    "mmr": 0.031,
+    "eff": 0.144
    },
    {
     "name": "Texas Rangers",
@@ -243,9 +239,9 @@
     "pct": 0.506,
     "rd": -8,
     "rationale": "44-43 (.506), -8 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.24).",
-    "z": -0.026,
-    "mmr": 0.242,
-    "eff": 0.216
+    "z": -0.027,
+    "mmr": 0.245,
+    "eff": 0.218
    },
    {
     "name": "Detroit Tigers",
@@ -254,10 +250,10 @@
     "l": 49,
     "pct": 0.437,
     "rd": 11,
-    "rationale": "38-49 (.437), +11 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.33).",
-    "z": -0.397,
-    "mmr": 0.326,
-    "eff": -0.071,
+    "rationale": "38-49 (.437), +11 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.29).",
+    "z": -0.394,
+    "mmr": 0.292,
+    "eff": -0.101,
     "upsets": [
      "upset W vs NYY (06-22)",
      "upset W vs NYY (06-29)"
@@ -274,8 +270,8 @@
     "rd": -26,
     "rationale": "43-43 (.500), -26 run differential -- a negative run margin.",
     "z": -0.23,
-    "mmr": -0.124,
-    "eff": -0.355,
+    "mmr": -0.113,
+    "eff": -0.343,
     "upsets": [
      "upset L vs SF (07-01)"
     ]
@@ -289,8 +285,8 @@
     "rd": -36,
     "rationale": "43-42 (.506), -36 run differential -- a poor run margin, winning above what that margin implies.",
     "z": -0.271,
-    "mmr": -0.109,
-    "eff": -0.38,
+    "mmr": -0.1,
+    "eff": -0.37,
     "upsets": [
      "upset W vs ATL (06-22)",
      "upset W vs ATL (06-23)"
@@ -304,9 +300,9 @@
     "pct": 0.477,
     "rd": -26,
     "rationale": "42-46 (.477), -26 run differential -- a negative run margin.",
-    "z": -0.409,
-    "mmr": 0.048,
-    "eff": -0.361,
+    "z": -0.407,
+    "mmr": 0.021,
+    "eff": -0.387,
     "upsets": [
      "upset L vs COL (06-27)"
     ]
@@ -318,10 +314,10 @@
     "l": 46,
     "pct": 0.471,
     "rd": -29,
-    "rationale": "41-46 (.471), -29 run differential -- a negative run margin. Results running below tier expectation (MMR -0.16).",
-    "z": -0.482,
-    "mmr": -0.161,
-    "eff": -0.643,
+    "rationale": "41-46 (.471), -29 run differential -- a negative run margin. Results running below tier expectation (MMR -0.17).",
+    "z": -0.48,
+    "mmr": -0.166,
+    "eff": -0.646,
     "upsets": [
      "upset W vs CHC (06-20)"
     ]
@@ -334,9 +330,9 @@
     "pct": 0.483,
     "rd": -46,
     "rationale": "43-46 (.483), -46 run differential -- a poor run margin.",
-    "z": -0.537,
-    "mmr": 0.128,
-    "eff": -0.409
+    "z": -0.535,
+    "mmr": 0.117,
+    "eff": -0.418
    },
    {
     "name": "Boston Red Sox",
@@ -346,9 +342,9 @@
     "pct": 0.435,
     "rd": -7,
     "rationale": "37-48 (.435), -7 run differential -- a roughly even run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.23).",
-    "z": -0.569,
-    "mmr": 0.231,
-    "eff": -0.338,
+    "z": -0.566,
+    "mmr": 0.229,
+    "eff": -0.336,
     "upsets": [
      "upset L vs COL (06-22)",
      "upset L vs COL (06-24)"
@@ -364,9 +360,13 @@
     "pct": 0.455,
     "rd": -33,
     "rationale": "40-48 (.455), -33 run differential -- a poor run margin.",
-    "z": -0.641,
-    "mmr": -0.072,
-    "eff": -0.713,
+    "z": -0.638,
+    "mmr": -0.045,
+    "eff": -0.683,
+    "pending": {
+     "dir": "up",
+     "runs": 1
+    },
     "upsets": [
      "upset W vs LAD (06-20)",
      "upset W vs LAD (06-21)"
@@ -380,9 +380,9 @@
     "pct": 0.471,
     "rd": -59,
     "rationale": "41-46 (.471), -59 run differential -- a poor run margin.",
-    "z": -0.744,
-    "mmr": -0.1,
-    "eff": -0.844,
+    "z": -0.741,
+    "mmr": -0.112,
+    "eff": -0.853,
     "upsets": [
      "upset W vs LAD (07-01)"
     ]
@@ -395,9 +395,9 @@
     "pct": 0.465,
     "rd": -55,
     "rationale": "40-46 (.465), -55 run differential -- a poor run margin.",
-    "z": -0.756,
-    "mmr": -0.036,
-    "eff": -0.791,
+    "z": -0.752,
+    "mmr": -0.033,
+    "eff": -0.786,
     "upsets": [
      "upset W vs NYY (06-20)",
      "upset W vs NYY (06-21)"
@@ -411,9 +411,9 @@
     "pct": 0.414,
     "rd": -45,
     "rationale": "36-51 (.414), -45 run differential -- a poor run margin.",
-    "z": -1.065,
-    "mmr": -0.01,
-    "eff": -1.075
+    "z": -1.059,
+    "mmr": 0.012,
+    "eff": -1.047
    },
    {
     "name": "New York Mets",
@@ -422,12 +422,11 @@
     "l": 51,
     "pct": 0.414,
     "rd": -49,
-    "rationale": "36-51 (.414), -49 run differential -- a poor run margin. Results running below tier expectation (MMR -0.32).",
-    "z": -1.1,
-    "mmr": -0.323,
-    "eff": -1.422,
+    "rationale": "36-51 (.414), -49 run differential -- a poor run margin. Results running below tier expectation (MMR -0.33).",
+    "z": -1.094,
+    "mmr": -0.326,
+    "eff": -1.42,
     "upsets": [
-     "upset W vs PHI (06-18)",
      "upset W vs PHI (06-27)"
     ]
    },
@@ -439,9 +438,9 @@
     "pct": 0.419,
     "rd": -55,
     "rationale": "36-50 (.419), -55 run differential -- a poor run margin.",
-    "z": -1.113,
-    "mmr": 0.093,
-    "eff": -1.02,
+    "z": -1.107,
+    "mmr": 0.083,
+    "eff": -1.024,
     "upsets": [
      "upset W vs ATL (06-27)",
      "upset W vs ATL (06-28)"
@@ -451,16 +450,16 @@
     "name": "Kansas City Royals",
     "abbr": "KC",
     "w": 35,
-    "l": 52,
-    "pct": 0.402,
-    "rd": -80,
-    "rationale": "35-52 (.402), -80 run differential -- a worst-in-class run margin.",
-    "z": -1.464,
-    "mmr": -0.103,
-    "eff": -1.566,
+    "l": 53,
+    "pct": 0.398,
+    "rd": -83,
+    "rationale": "35-53 (.398), -83 run differential -- a worst-in-class run margin. Results running below tier expectation (MMR -0.22).",
+    "z": -1.513,
+    "mmr": -0.218,
+    "eff": -1.732,
     "upsets": [
-     "upset W vs STL (06-18)",
-     "upset W vs STL (06-19)"
+     "upset W vs STL (06-19)",
+     "upset W vs TB (06-22)"
     ]
    },
    {
@@ -470,10 +469,10 @@
     "l": 53,
     "pct": 0.398,
     "rd": -90,
-    "rationale": "35-53 (.398), -90 run differential -- a worst-in-class run margin. Results running above tier expectation (MMR +0.22).",
-    "z": -1.582,
-    "mmr": 0.217,
-    "eff": -1.365,
+    "rationale": "35-53 (.398), -90 run differential -- a worst-in-class run margin. Results running above tier expectation (MMR +0.20).",
+    "z": -1.574,
+    "mmr": 0.196,
+    "eff": -1.378,
     "upsets": [
      "upset W vs PIT (06-19)",
      "upset W vs PIT (06-20)"

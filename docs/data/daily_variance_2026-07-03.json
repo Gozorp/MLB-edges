@@ -1,6 +1,6 @@
 {
  "date": "2026-07-03",
- "generated": "2026-07-02T22:09:22Z",
+ "generated": "2026-07-03T02:02:49Z",
  "n_games": 13,
  "roster_delta": [
   {
@@ -28,6 +28,14 @@
    "desc": "Chicago Cubs signed free agent SS Luis Abreu to a minor league contract."
   },
   {
+   "team": "CHC",
+   "date": "2026-07-02",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Chicago Cubs optioned LHP Jordan Wicks to Iowa Cubs."
+  },
+  {
    "team": "PIT",
    "date": "2026-07-01",
    "code": "SFA",
@@ -50,6 +58,14 @@
    "type": "Optioned",
    "cat": "optioned",
    "desc": "Pittsburgh Pirates optioned RHP Brandan Bidois to Indianapolis Indians."
+  },
+  {
+   "team": "WSH",
+   "date": "2026-07-01",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Washington Nationals transferred LHP Mitchell Parker from the 15-day injured list to the 60-day injured list. Left elbow inflammation."
   },
   {
    "team": "WSH",
@@ -236,6 +252,14 @@
    "desc": "Colorado Rockies recalled RHP Gabriel Hughes from Albuquerque Isotopes."
   },
   {
+   "team": "HOU",
+   "date": "2026-07-02",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Houston Astros optioned RHP Miguel Ullola to Sugar Land Space Cowboys."
+  },
+  {
    "team": "BOS",
    "date": "2026-07-01",
    "code": "SC",
@@ -292,12 +316,36 @@
    "desc": "Athletics traded 3B Brett Harris to Boston Red Sox for RHP Ben Hansen."
   },
   {
-   "team": "LAD",
-   "date": "2026-07-01",
-   "code": "OPT",
-   "type": "Optioned",
-   "cat": "optioned",
-   "desc": "Los Angeles Dodgers optioned RHP Wyatt Mills to Oklahoma City Comets."
+   "team": "ATH",
+   "date": "2026-07-02",
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Athletics designated LHP Matt Krook for assignment."
+  },
+  {
+   "team": "ATH",
+   "date": "2026-07-02",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "activated",
+   "desc": "Athletics activated LHP Jos\u00e9 Suarez from the paternity list."
+  },
+  {
+   "team": "SD",
+   "date": "2026-07-02",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "San Diego Padres activated RHP Germ\u00e1n M\u00e1rquez from the 15-day injured list."
+  },
+  {
+   "team": "SD",
+   "date": "2026-06-30",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "San Diego Padres placed RHP Jason Adam on the 15-day injured list retroactive to June 30, 2026. Right shoulder strain."
   },
   {
    "team": "LAD",
@@ -309,11 +357,19 @@
   },
   {
    "team": "LAD",
+   "date": "2026-07-01",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Los Angeles Dodgers optioned RHP Wyatt Mills to Oklahoma City Comets."
+  },
+  {
+   "team": "LAD",
    "date": "2026-07-02",
-   "code": "CU",
-   "type": "Recalled",
-   "cat": "recalled",
-   "desc": "Los Angeles Dodgers recalled RHP Paul Gervase from Oklahoma City Comets."
+   "code": "OUT",
+   "type": "Outrighted",
+   "cat": "outrighted",
+   "desc": "Los Angeles Dodgers sent RHP Jonathan Hern\u00e1ndez outright to Oklahoma City Comets."
   },
   {
    "team": "LAD",
@@ -322,6 +378,14 @@
    "type": "Optioned",
    "cat": "optioned",
    "desc": "Los Angeles Dodgers optioned LHP Charlie Barnes to Oklahoma City Comets."
+  },
+  {
+   "team": "LAD",
+   "date": "2026-07-02",
+   "code": "CU",
+   "type": "Recalled",
+   "cat": "recalled",
+   "desc": "Los Angeles Dodgers recalled RHP Paul Gervase from Oklahoma City Comets."
   },
   {
    "team": "TOR",
@@ -359,7 +423,7 @@
   }
  ],
  "roster_leaks": [],
- "roster_suppressed": 2,
+ "roster_suppressed": 3,
  "unknown_tx_codes": {
   "ACQ": 1
  },
@@ -373,20 +437,20 @@
   {
    "game": "TB @ HOU",
    "side": "away",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
-   "game": "BOS @ LAA",
-   "side": "home",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
+   "sp": "Nick Martinez",
+   "flag": "very low K% (14.1% vs lg 22.0)"
   },
   {
    "game": "SD @ LAD",
    "side": "home",
    "sp": "Shohei Ohtani",
    "flag": "very high K% (29.3% vs lg 22.0)"
+  },
+  {
+   "game": "TOR @ SEA",
+   "side": "away",
+   "sp": "Dylan Cease",
+   "flag": "very high K% (36.0% vs lg 22.0)"
   }
  ],
  "bullpen_fatigue": [
@@ -397,6 +461,22 @@
    "pitches_3d": 37,
    "last": "2026-07-02",
    "flag": "2 apps / 37 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "CLE",
+   "reliever": "Daniel Espino",
+   "appearances_3d": 2,
+   "pitches_3d": 51,
+   "last": "2026-07-02",
+   "flag": "2 apps / 51 pitches over last 3 games \u2014 monitor"
+  },
+  {
+   "team": "TB",
+   "reliever": "Cam Booser",
+   "appearances_3d": 2,
+   "pitches_3d": 36,
+   "last": "2026-07-02",
+   "flag": "2 apps / 36 pitches over last 3 games \u2014 monitor"
   },
   {
    "team": "BOS",
@@ -499,6 +579,11 @@
   },
   {
    "game": "TB @ HOU",
+   "team": "HOU",
+   "note": "faces RHP (Nick Martinez)"
+  },
+  {
+   "game": "TB @ HOU",
    "team": "TB",
    "note": "faces RHP (Spencer Arrighetti)"
   },
@@ -506,6 +591,11 @@
    "game": "BOS @ LAA",
    "team": "LAA",
    "note": "faces LHP (Jake Bennett)"
+  },
+  {
+   "game": "BOS @ LAA",
+   "team": "BOS",
+   "note": "faces LHP (Reid Detmers)"
   },
   {
    "game": "MIA @ ATH",
