@@ -1,11 +1,14 @@
 # Daily Variance Report — 2026-07-05
-_Generated 2026-07-04T08:44:54Z · 15 games · significant deviations only_
+_Generated 2026-07-04T15:26:10Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
-- **ATL** [DFA] — Atlanta Braves designated RHP Ian Hamilton for assignment.
 - **ATL** [IL] — Atlanta Braves activated LHP Danny Young from the 60-day injured list.
+- **ATL** [DFA] — Atlanta Braves designated RHP Ian Hamilton for assignment.
 - **ATL** [recalled] — Atlanta Braves recalled RHP Anthony Molina from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP James Karinchak to Gwinnett Stripers.
+- **PIT** [IL] — Pittsburgh Pirates placed LHP Evan Sisk on the 15-day injured list retroactive to July 1, 2026. Left elbow inflammation.
+- **PIT** [activated] — Pittsburgh Pirates activated RHP Hunter Stratton.
+- **PIT** [recalled] — Pittsburgh Pirates recalled RHP Hunter Stratton from Indianapolis Indians.
 - **WSH** [TRADE] — Houston Astros traded LHP Tom Cosgrove to Washington Nationals for cash.
 - **BAL** [DFA] — Baltimore Orioles designated C Chadwick Tromp for assignment.
 - **BAL** [signed] — Baltimore Orioles signed free agent C Sam Huff to a minor league contract.
@@ -13,10 +16,11 @@ _Generated 2026-07-04T08:44:54Z · 15 games · significant deviations only_
 - **BAL** [recalled] — Baltimore Orioles recalled 2B Jeremiah Jackson from Norfolk Tides.
 - **BAL** [recalled] — Baltimore Orioles recalled RHP Anthony Nunez from Norfolk Tides.
 - **NYY** [IL] — New York Yankees placed LHP Carlos Rodón on the 15-day injured list retroactive to June 30, 2026. Left elbow inflammation.
-- **NYY** [IL] — New York Yankees activated CF Trent Grisham from the 10-day injured list.
 - **NYY** [IL] — New York Yankees activated 3B Ryan McMahon from the 10-day injured list.
+- **NYY** [IL] — New York Yankees activated CF Trent Grisham from the 10-day injured list.
 - **NYY** [optioned] — New York Yankees optioned 3B Oswaldo Cabrera to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned CF Spencer Jones to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [recalled] — New York Yankees recalled RHP Brendan Beck from Scranton/Wilkes-Barre RailRiders.
 - **CLE** [outrighted] — Cleveland Guardians sent RF Stuart Fairchild outright to Columbus Clippers.
 - **CLE** [optioned] — Cleveland Guardians optioned RHP Daniel Espino to Columbus Clippers.
 - **CLE** [recalled] — Cleveland Guardians recalled RHP Franco Aleman from Columbus Clippers.

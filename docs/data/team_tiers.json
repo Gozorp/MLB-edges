@@ -1,13 +1,9 @@
 {
- "generated_utc": "2026-07-04T08:45:06Z",
+ "generated_utc": "2026-07-04T15:26:35Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "STL promoted: Average -> Above Average (eff +0.56, mmr +0.15)",
-  "CWS demoted: Above Average -> Average (eff +0.17, mmr -0.15)",
-  "WSH promoted: Average -> Above Average (eff +0.43, mmr +0.13)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -141,8 +137,6 @@
     "z": 0.408,
     "mmr": 0.149,
     "eff": 0.557,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset W vs ATL (06-30)",
      "upset W vs ATL (07-02)"
@@ -174,9 +168,7 @@
     "rationale": "46-43 (.517), +21 run differential -- a solidly positive run margin.",
     "z": 0.305,
     "mmr": 0.129,
-    "eff": 0.435,
-    "movement": "promoted",
-    "moved_from": "Average"
+    "eff": 0.435
    },
    {
     "name": "Texas Rangers",
@@ -203,8 +195,6 @@
     "z": 0.323,
     "mmr": -0.154,
     "eff": 0.168,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs KC (06-28)",
      "upset L vs BAL (07-01)"
