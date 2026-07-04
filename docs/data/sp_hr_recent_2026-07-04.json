@@ -1,6 +1,6 @@
 {
  "date": "2026-07-04",
- "generated_utc": "2026-07-03T22:04:11+00:00",
+ "generated_utc": "2026-07-04T06:34:54+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
  "sps": {
@@ -79,88 +79,6 @@
    "hr_per_start": 2.0,
    "era": 8.49,
    "er_spike": true
-  },
-  "Zebby Matthews": {
-   "id": 805673,
-   "opp": "NYY",
-   "opp_id": 147,
-   "season_era": 4.15,
-   "season_hr9": 1.76,
-   "season_kbb": 14.8,
-   "era_tier": "AVERAGE",
-   "matchup_w_hr": 2.4,
-   "matchup_w_ip": 5.2,
-   "matchup_seasons": [
-    {
-     "season": 2025,
-     "hr": 4,
-     "ip": 8.7,
-     "w": 0.6
-    }
-   ],
-   "smoothed_matchup_hr9": 2.25,
-   "matchup_freq": "FREQUENT",
-   "matchup_basis": "vs NYY 3yr (2025:4HR/9IP)",
-   "has_matchup": true,
-   "starts": 3,
-   "l3_era": 2.25,
-   "l3_hr": 3,
-   "l3_hr_per_start": 1.0,
-   "l3_kbb": 16.5,
-   "trend": "HOLD",
-   "trend_down": false,
-   "trend_basis": "holding form (L3 ERA 2.25 vs season 4.15)",
-   "risk_level": 3,
-   "risk_label": "Regression Warning",
-   "flag": "MODERATE",
-   "mult": 1.88,
-   "hr_per_start": 1.0,
-   "era": 2.25,
-   "er_spike": false
-  },
-  "Carlos Rod\u00f3n": {
-   "id": 607074,
-   "opp": "MIN",
-   "opp_id": 142,
-   "season_era": 3.3,
-   "season_hr9": 0.58,
-   "season_kbb": 13.4,
-   "era_tier": "ACE",
-   "matchup_w_hr": 1.2,
-   "matchup_w_ip": 11.4,
-   "matchup_seasons": [
-    {
-     "season": 2025,
-     "hr": 1,
-     "ip": 13.0,
-     "w": 0.6
-    },
-    {
-     "season": 2024,
-     "hr": 2,
-     "ip": 12.0,
-     "w": 0.3
-    }
-   ],
-   "smoothed_matchup_hr9": 0.71,
-   "matchup_freq": "SMALL",
-   "matchup_basis": "vs MIN 3yr (2025:1HR/13IP,2024:2HR/12IP)",
-   "has_matchup": true,
-   "starts": 3,
-   "l3_era": 3.52,
-   "l3_hr": 1,
-   "l3_hr_per_start": 0.33,
-   "l3_kbb": 16.9,
-   "trend": "HOLD",
-   "trend_down": false,
-   "trend_basis": "holding form (L3 ERA 3.52 vs season 3.30)",
-   "risk_level": 4,
-   "risk_label": "Ace / Low",
-   "flag": null,
-   "mult": 0.6,
-   "hr_per_start": 0.33,
-   "era": 3.52,
-   "er_spike": false
   },
   "Jack Flaherty": {
    "id": 656427,
@@ -662,6 +580,88 @@
    "hr_per_start": null,
    "era": null,
    "er_spike": false
+  },
+  "Robbie Ray": {
+   "id": 592662,
+   "opp": "COL",
+   "opp_id": 115,
+   "season_era": 3.39,
+   "season_hr9": 1.32,
+   "season_kbb": 9.8,
+   "era_tier": "ACE",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 13.4,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 4.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 0,
+     "ip": 15.7,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 0.79,
+   "matchup_freq": "SMALL",
+   "matchup_basis": "vs COL 3yr (2026:0HR/4IP,2025:0HR/16IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 2.08,
+   "l3_hr": 1,
+   "l3_hr_per_start": 0.33,
+   "l3_kbb": 7.2,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 2.08 vs season 3.39)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 0.66,
+   "hr_per_start": 0.33,
+   "era": 2.08,
+   "er_spike": false
+  },
+  "Tomoyuki Sugano": {
+   "id": 608372,
+   "opp": "SF",
+   "opp_id": 137,
+   "season_era": 4.8,
+   "season_hr9": 1.71,
+   "season_kbb": 7.0,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 0.6,
+   "matchup_w_ip": 2.0,
+   "matchup_seasons": [
+    {
+     "season": 2025,
+     "hr": 1,
+     "ip": 3.3,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 1.8,
+   "matchup_freq": "FREQUENT",
+   "matchup_basis": "vs SF 3yr (2025:1HR/3IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 7.88,
+   "l3_hr": 4,
+   "l3_hr_per_start": 1.33,
+   "l3_kbb": 8.5,
+   "trend": "DOWN",
+   "trend_down": true,
+   "trend_basis": "L3 ERA 7.88 vs season 4.80 (+3.08)",
+   "risk_level": 1,
+   "risk_label": "Severe Risk",
+   "flag": "EXTREME",
+   "mult": 1.72,
+   "hr_per_start": 1.33,
+   "era": 7.88,
+   "er_spike": true
   },
   "Jes\u00fas Luzardo": {
    "id": 666200,
