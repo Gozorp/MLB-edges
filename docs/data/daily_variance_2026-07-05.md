@@ -1,11 +1,15 @@
 # Daily Variance Report — 2026-07-05
-_Generated 2026-07-04T18:12:16Z · 15 games · significant deviations only_
+_Generated 2026-07-04T21:58:55Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [IL] — Atlanta Braves activated LHP Danny Young from the 60-day injured list.
 - **ATL** [DFA] — Atlanta Braves designated RHP Ian Hamilton for assignment.
 - **ATL** [recalled] — Atlanta Braves recalled RHP Anthony Molina from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP James Karinchak to Gwinnett Stripers.
+- **ATL** [IL] — Atlanta Braves placed SS Ha-Seong Kim on the 10-day injured list retroactive to July 1, 2026. Right middle finger inflammation.
+- **ATL** [IL] — Atlanta Braves activated DH Kyle Farmer from the 10-day injured list.
+- **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
+- **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **PIT** [IL] — Pittsburgh Pirates placed LHP Evan Sisk on the 15-day injured list retroactive to July 1, 2026. Left elbow inflammation.
 - **PIT** [activated] — Pittsburgh Pirates activated RHP Hunter Stratton.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Hunter Stratton from Indianapolis Indians.
@@ -33,19 +37,32 @@ _Generated 2026-07-04T18:12:16Z · 15 games · significant deviations only_
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Gordon Graceffo to Memphis Redbirds.
 - **CHC** [selected] — Chicago Cubs selected the contract of LHP Drew Pomeranz from Iowa Cubs.
 - **PHI** [TRADE] — Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash.
-- **HOU** [IL] — Houston Astros transferred LHP Bennett Sousa from the 15-day injured list to the 60-day injured list. Left elbow inflammation.
+- **PHI** [recalled] — Philadelphia Phillies recalled LHP Tanner Banks from Lehigh Valley IronPigs.
+- **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
+- **KC** [recalled] — Kansas City Royals recalled RHP Jose Cuas from Omaha Storm Chasers.
 - **HOU** [IL] — Houston Astros activated RHP Cristian Javier from the 60-day injured list.
+- **HOU** [IL] — Houston Astros transferred LHP Bennett Sousa from the 15-day injured list to the 60-day injured list. Left elbow inflammation.
 - **HOU** [TRADE] — Houston Astros traded LHP Tom Cosgrove to Washington Nationals for cash.
+- **HOU** [IL] — Houston Astros activated 1B LaMonte Wade Jr. from the 10-day injured list.
+- **HOU** [optioned] — Houston Astros optioned CF Jake Meyers to Sugar Land Space Cowboys.
+- **HOU** [recalled] — Houston Astros recalled LF Zach Dezenzo from Sugar Land Space Cowboys.
+- **HOU** [optioned] — Houston Astros optioned LF Joey Loperfido to Sugar Land Space Cowboys.
 - **TEX** [signed] — Texas Rangers signed free agent RF Jarred Kelenic to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent RHP Joe Ross to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent C Cooper Johnson to a minor league contract.
 - **TEX** [IL] — Texas Rangers placed RHP Jakob Junis on the 15-day injured list retroactive to July 1, 2026. Left hip impingement.
 - **TEX** [IL] — Texas Rangers activated RHP Chris Martin from the 15-day injured list.
+- **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list. Left embow strain.
+- **SF** [recalled] — San Francisco Giants recalled RHP Spencer Bivens from Sacramento River Cats.
 - **COL** [outrighted] — Colorado Rockies sent RHP John Brebbia outright to Albuquerque Isotopes.
 - **MIA** [optioned] — Miami Marlins optioned RHP Ryan Gusto to Jacksonville Jumbo Shrimp.
 - **MIA** [recalled] — Miami Marlins recalled RHP William Kempner from Jacksonville Jumbo Shrimp.
-- **ATH** [DFA] — Athletics designated RHP Geoff Hartlieb for assignment.
 - **ATH** [IL] — Athletics activated RHP Mark Leiter Jr. from the 15-day injured list.
+- **ATH** [DFA] — Athletics designated RHP Geoff Hartlieb for assignment.
+- **ATH** [IL] — Athletics activated 3B Zack Gelof from the 10-day injured list.
+- **ATH** [selected] — Athletics selected the contract of C Brian Serven from Las Vegas Aviators.
+- **ATH** [optioned] — Athletics optioned 1B Joey Meneses to Las Vegas Aviators.
+- **ATH** [optioned] — Athletics optioned SS Darell Hernaiz to Las Vegas Aviators.
 - **SEA** [IL] — Seattle Mariners placed CF Julio Rodríguez on the 7-day injured list. Concussion.
 - **SEA** [IL] — Seattle Mariners transferred RHP Cooper Criswell from the 15-day injured list to the 60-day injured list. Right shoulder strain.
 - **SEA** [selected] — Seattle Mariners selected the contract of 3B Miles Mastrobuoni from Tacoma Rainiers.
@@ -55,11 +72,11 @@ _Generated 2026-07-04T18:12:16Z · 15 games · significant deviations only_
 - **SD** [recalled] — San Diego Padres recalled RHP Alek Jacob from El Paso Chihuahuas.
 - **BOS** [outrighted] — Boston Red Sox sent RHP Tommy Kahnle outright to Worcester Red Sox.
 
-_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 5 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **NYM @ ATL** (away SP Nolan McLean): very high K% (28.4% vs lg 22.0)
-- **PIT @ WSH** (home SP Miles Mikolas): very low K% (13.1% vs lg 22.0)
+- **PIT @ WSH** (home SP Cade Cavalli): very low K% (13.1% vs lg 22.0)
 - **TB @ HOU** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **SF @ COL** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
@@ -72,7 +89,7 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - NYM @ ATL — ATL faces RHP (Nolan McLean)
 - NYM @ ATL — NYM faces LHP (Martín Pérez)
 - PIT @ WSH — WSH faces RHP (Bubba Chandler)
-- PIT @ WSH — PIT faces RHP (Miles Mikolas)
+- PIT @ WSH — PIT faces RHP (Cade Cavalli)
 - BAL @ CIN — CIN faces RHP (Kyle Bradish)
 - BAL @ CIN — BAL faces LHP (Nick Lodolo)
 - MIN @ NYY — NYY faces RHP (Joe Ryan)
@@ -92,7 +109,7 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - MIA @ ATH — ATH faces RHP (Eury Pérez)
 - MIA @ ATH — MIA faces LHP (Gage Jump)
 - TOR @ SEA — SEA faces RHP (Trey Yesavage)
-- TOR @ SEA — TOR faces RHP (George Kirby)
+- TOR @ SEA — TOR faces RHP (Emerson Hancock)
 - SD @ LAD — LAD faces LHP (JP Sears)
 - SD @ LAD — SD faces RHP (Emmet Sheehan)
 - BOS @ LAA — LAA faces LHP (Ranger Suarez)
