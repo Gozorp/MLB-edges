@@ -1,0 +1,34 @@
+{
+  "date": "2026-07-05",
+  "generated_utc": "2026-07-04T08:45:07.378116+00:00",
+  "method": "sp-independent-team-strength",
+  "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
+  "games": {
+    "TB @ HOU": {
+      "provisional_pick": "TB",
+      "p_pick": 0.843,
+      "p_home": 0.157,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "TB",
+      "home": "HOU",
+      "away_strength": 1.18,
+      "home_strength": -0.57
+    },
+    "SF @ COL": {
+      "provisional_pick": "SF",
+      "p_pick": 0.501,
+      "p_home": 0.499,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "low",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "SF",
+      "home": "COL",
+      "away_strength": -1.23,
+      "home_strength": -1.38
+    }
+  }
+}
