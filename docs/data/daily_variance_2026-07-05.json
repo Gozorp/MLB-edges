@@ -1,6 +1,6 @@
 {
  "date": "2026-07-05",
- "generated": "2026-07-04T15:26:10Z",
+ "generated": "2026-07-04T18:12:16Z",
  "n_games": 15,
  "roster_delta": [
   {
@@ -70,18 +70,18 @@
   {
    "team": "BAL",
    "date": "2026-07-03",
-   "code": "DES",
-   "type": "Designated for Assignment",
-   "cat": "DFA",
-   "desc": "Baltimore Orioles designated C Chadwick Tromp for assignment."
-  },
-  {
-   "team": "BAL",
-   "date": "2026-07-03",
    "code": "SFA",
    "type": "Signed as Free Agent",
    "cat": "signed",
    "desc": "Baltimore Orioles signed free agent C Sam Huff to a minor league contract."
+  },
+  {
+   "team": "BAL",
+   "date": "2026-07-03",
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Baltimore Orioles designated C Chadwick Tromp for assignment."
   },
   {
    "team": "BAL",
@@ -97,7 +97,7 @@
    "code": "CU",
    "type": "Recalled",
    "cat": "recalled",
-   "desc": "Baltimore Orioles recalled 2B Jeremiah Jackson from Norfolk Tides."
+   "desc": "Baltimore Orioles recalled RHP Anthony Nunez from Norfolk Tides."
   },
   {
    "team": "BAL",
@@ -105,7 +105,39 @@
    "code": "CU",
    "type": "Recalled",
    "cat": "recalled",
-   "desc": "Baltimore Orioles recalled RHP Anthony Nunez from Norfolk Tides."
+   "desc": "Baltimore Orioles recalled 2B Jeremiah Jackson from Norfolk Tides."
+  },
+  {
+   "team": "BAL",
+   "date": "2026-07-04",
+   "code": "OUT",
+   "type": "Outrighted",
+   "cat": "outrighted",
+   "desc": "Baltimore Orioles sent C Dom Keegan outright to Chesapeake Baysox."
+  },
+  {
+   "team": "CIN",
+   "date": "2026-07-04",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Cincinnati Reds activated RHP Hunter Greene from the 60-day injured list."
+  },
+  {
+   "team": "CIN",
+   "date": "2026-07-04",
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Cincinnati Reds designated RF Will Benson for assignment."
+  },
+  {
+   "team": "CIN",
+   "date": "2026-07-04",
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Cincinnati Reds optioned RHP Chase Petty to Louisville Bats."
   },
   {
    "team": "NYY",
@@ -180,6 +212,14 @@
    "desc": "Cleveland Guardians recalled RHP Franco Aleman from Columbus Clippers."
   },
   {
+   "team": "CLE",
+   "date": "2026-07-04",
+   "code": "TR",
+   "type": "Trade",
+   "cat": "TRADE",
+   "desc": "Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash."
+  },
+  {
    "team": "STL",
    "date": "2026-07-03",
    "code": "SC",
@@ -202,6 +242,14 @@
    "type": "Selected",
    "cat": "selected",
    "desc": "Chicago Cubs selected the contract of LHP Drew Pomeranz from Iowa Cubs."
+  },
+  {
+   "team": "PHI",
+   "date": "2026-07-04",
+   "code": "TR",
+   "type": "Trade",
+   "cat": "TRADE",
+   "desc": "Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash."
   },
   {
    "team": "HOU",
@@ -233,14 +281,6 @@
    "code": "SFA",
    "type": "Signed as Free Agent",
    "cat": "signed",
-   "desc": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract."
-  },
-  {
-   "team": "TEX",
-   "date": "2026-07-03",
-   "code": "SFA",
-   "type": "Signed as Free Agent",
-   "cat": "signed",
    "desc": "Texas Rangers signed free agent RF Jarred Kelenic to a minor league contract."
   },
   {
@@ -250,6 +290,30 @@
    "type": "Signed as Free Agent",
    "cat": "signed",
    "desc": "Texas Rangers signed free agent RHP Joe Ross to a minor league contract."
+  },
+  {
+   "team": "TEX",
+   "date": "2026-07-03",
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Texas Rangers signed free agent C Cooper Johnson to a minor league contract."
+  },
+  {
+   "team": "TEX",
+   "date": "2026-07-01",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Texas Rangers placed RHP Jakob Junis on the 15-day injured list retroactive to July 1, 2026. Left hip impingement."
+  },
+  {
+   "team": "TEX",
+   "date": "2026-07-04",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "IL",
+   "desc": "Texas Rangers activated RHP Chris Martin from the 15-day injured list."
   },
   {
    "team": "COL",
@@ -358,7 +422,7 @@
  ],
  "roster_review": [],
  "roster_leaks": [],
- "roster_suppressed": 2,
+ "roster_suppressed": 4,
  "unknown_tx_codes": {},
  "sp_flags": [
   {
@@ -387,6 +451,14 @@
   }
  ],
  "bullpen_fatigue": [
+  {
+   "team": "WSH",
+   "reliever": "Zack Littell",
+   "appearances_3d": 1,
+   "pitches_3d": 87,
+   "last": "2026-07-04",
+   "flag": "threw 87 pitches last night \u2014 likely unavailable"
+  },
   {
    "team": "CWS",
    "reliever": "Sean Newcomb",
@@ -488,7 +560,7 @@
   {
    "game": "DET @ TEX",
    "team": "DET",
-   "note": "faces RHP (Cal Quantrill)"
+   "note": "faces RHP (Kumar Rocker)"
   },
   {
    "game": "SF @ COL",

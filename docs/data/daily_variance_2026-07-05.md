@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-05
-_Generated 2026-07-04T15:26:10Z · 15 games · significant deviations only_
+_Generated 2026-07-04T18:12:16Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [IL] — Atlanta Braves activated LHP Danny Young from the 60-day injured list.
@@ -10,11 +10,15 @@ _Generated 2026-07-04T15:26:10Z · 15 games · significant deviations only_
 - **PIT** [activated] — Pittsburgh Pirates activated RHP Hunter Stratton.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Hunter Stratton from Indianapolis Indians.
 - **WSH** [TRADE] — Houston Astros traded LHP Tom Cosgrove to Washington Nationals for cash.
-- **BAL** [DFA] — Baltimore Orioles designated C Chadwick Tromp for assignment.
 - **BAL** [signed] — Baltimore Orioles signed free agent C Sam Huff to a minor league contract.
+- **BAL** [DFA] — Baltimore Orioles designated C Chadwick Tromp for assignment.
 - **BAL** [IL] — Baltimore Orioles placed RHP Ryan Helsley on the 15-day injured list retroactive to June 30, 2026. Right elbow discomfort.
-- **BAL** [recalled] — Baltimore Orioles recalled 2B Jeremiah Jackson from Norfolk Tides.
 - **BAL** [recalled] — Baltimore Orioles recalled RHP Anthony Nunez from Norfolk Tides.
+- **BAL** [recalled] — Baltimore Orioles recalled 2B Jeremiah Jackson from Norfolk Tides.
+- **BAL** [outrighted] — Baltimore Orioles sent C Dom Keegan outright to Chesapeake Baysox.
+- **CIN** [IL] — Cincinnati Reds activated RHP Hunter Greene from the 60-day injured list.
+- **CIN** [DFA] — Cincinnati Reds designated RF Will Benson for assignment.
+- **CIN** [optioned] — Cincinnati Reds optioned RHP Chase Petty to Louisville Bats.
 - **NYY** [IL] — New York Yankees placed LHP Carlos Rodón on the 15-day injured list retroactive to June 30, 2026. Left elbow inflammation.
 - **NYY** [IL] — New York Yankees activated 3B Ryan McMahon from the 10-day injured list.
 - **NYY** [IL] — New York Yankees activated CF Trent Grisham from the 10-day injured list.
@@ -24,15 +28,19 @@ _Generated 2026-07-04T15:26:10Z · 15 games · significant deviations only_
 - **CLE** [outrighted] — Cleveland Guardians sent RF Stuart Fairchild outright to Columbus Clippers.
 - **CLE** [optioned] — Cleveland Guardians optioned RHP Daniel Espino to Columbus Clippers.
 - **CLE** [recalled] — Cleveland Guardians recalled RHP Franco Aleman from Columbus Clippers.
+- **CLE** [TRADE] — Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash.
 - **STL** [activated] — St. Louis Cardinals activated RHP Ryne Stanek from the paternity list.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Gordon Graceffo to Memphis Redbirds.
 - **CHC** [selected] — Chicago Cubs selected the contract of LHP Drew Pomeranz from Iowa Cubs.
+- **PHI** [TRADE] — Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash.
 - **HOU** [IL] — Houston Astros transferred LHP Bennett Sousa from the 15-day injured list to the 60-day injured list. Left elbow inflammation.
 - **HOU** [IL] — Houston Astros activated RHP Cristian Javier from the 60-day injured list.
 - **HOU** [TRADE] — Houston Astros traded LHP Tom Cosgrove to Washington Nationals for cash.
-- **TEX** [signed] — Texas Rangers signed free agent C Cooper Johnson to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent RF Jarred Kelenic to a minor league contract.
 - **TEX** [signed] — Texas Rangers signed free agent RHP Joe Ross to a minor league contract.
+- **TEX** [signed] — Texas Rangers signed free agent C Cooper Johnson to a minor league contract.
+- **TEX** [IL] — Texas Rangers placed RHP Jakob Junis on the 15-day injured list retroactive to July 1, 2026. Left hip impingement.
+- **TEX** [IL] — Texas Rangers activated RHP Chris Martin from the 15-day injured list.
 - **COL** [outrighted] — Colorado Rockies sent RHP John Brebbia outright to Albuquerque Isotopes.
 - **MIA** [optioned] — Miami Marlins optioned RHP Ryan Gusto to Jacksonville Jumbo Shrimp.
 - **MIA** [recalled] — Miami Marlins recalled RHP William Kempner from Jacksonville Jumbo Shrimp.
@@ -47,7 +55,7 @@ _Generated 2026-07-04T15:26:10Z · 15 games · significant deviations only_
 - **SD** [recalled] — San Diego Padres recalled RHP Alek Jacob from El Paso Chihuahuas.
 - **BOS** [outrighted] — Boston Red Sox sent RHP Tommy Kahnle outright to Worcester Red Sox.
 
-_Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **NYM @ ATL** (away SP Nolan McLean): very high K% (28.4% vs lg 22.0)
@@ -56,6 +64,7 @@ _Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - **SF @ COL** (away SP TBD): NOT CONFIRMED — probable SP not posted
 
 ## 3 · Bullpen Fatigue (last 3 games)
+- **WSH** Zack Littell — threw 87 pitches last night — likely unavailable
 - **CWS** Sean Newcomb — 2 apps / 36 pitches over last 3 games — monitor
 - **MIL** Grant Anderson — 2 apps / 40 pitches over last 3 games — monitor
 
@@ -76,7 +85,7 @@ _Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 - PHI @ KC — PHI faces RHP (Luinder Avila)
 - TB @ HOU — TB faces RHP (Peter Lambert)
 - DET @ TEX — TEX faces RHP (Casey Mize)
-- DET @ TEX — DET faces RHP (Cal Quantrill)
+- DET @ TEX — DET faces RHP (Kumar Rocker)
 - SF @ COL — SF faces RHP (Tanner Gordon)
 - MIL @ AZ — AZ faces RHP (Brandon Sproat)
 - MIL @ AZ — MIL faces LHP (Eduardo Rodriguez)
