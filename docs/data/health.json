@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-04T17:14:52.218888+00:00",
+  "checked_at": "2026-07-04T18:34:26.808772+00:00",
   "overall": "red",
   "categories": {
     "workflows": "red",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 1.8h ago",
+      "message": "last slate publish 0.4h ago",
       "detail": {
-        "last_run_iso": "2026-07-04T15:26:45+00:00",
-        "age_hours": 1.8
+        "last_run_iso": "2026-07-04T18:12:53+00:00",
+        "age_hours": 0.36
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 6.4d ago",
       "detail": {
         "last_run_iso": "2026-06-28T07:52:57Z",
-        "age_hours": 153.37,
+        "age_hours": 154.69,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -36,7 +36,7 @@
       "message": "last fired 6.4d ago",
       "detail": {
         "last_run_iso": "2026-06-28T08:18:44Z",
-        "age_hours": 152.94,
+        "age_hours": 154.26,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "red",
-      "message": "daily Claude Brain review hasn't fired in 30.8 days (threshold 3d)",
+      "message": "daily Claude Brain review hasn't fired in 30.9 days (threshold 3d)",
       "detail": {
         "last_run_iso": "2026-06-03T21:10:37Z",
-        "age_hours": 740.07,
+        "age_hours": 741.4,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -97,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-04T17:14:52.317Z",
+          "timestamp": "2026-07-04T18:34:26.972Z",
           "commit": "unknown",
-          "region": "SJC"
+          "region": "DFW"
         }
       },
       "category": "deployment"
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 740.5h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 741.8h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 740.49,
+        "age_hours": 741.82,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
