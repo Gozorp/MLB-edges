@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-06
-_Generated 2026-07-05T08:57:26Z · 8 games · significant deviations only_
+_Generated 2026-07-05T15:29:03Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [signed] — Philadelphia Phillies signed free agent C Payton Henry to a minor league contract.
@@ -7,9 +7,12 @@ _Generated 2026-07-05T08:57:26Z · 8 games · significant deviations only_
 - **PHI** [recalled] — Philadelphia Phillies recalled LHP Tanner Banks from Lehigh Valley IronPigs.
 - **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
 - **KC** [recalled] — Kansas City Royals recalled RHP Jose Cuas from Omaha Storm Chasers.
-- **NYY** [optioned] — New York Yankees optioned CF Spencer Jones to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [recalled] — New York Yankees recalled RHP Brendan Beck from Scranton/Wilkes-Barre RailRiders.
+- **NYY** [optioned] — New York Yankees optioned CF Spencer Jones to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [optioned] — New York Yankees optioned RHP Brendan Beck to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [recalled] — New York Yankees recalled RHP Angel Chivilli from Scranton/Wilkes-Barre RailRiders.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Trevor Martin to Durham Bulls.
+- **TB** [recalled] — Tampa Bay Rays recalled RHP Mason Englert from Durham Bulls.
 - **HOU** [IL] — Houston Astros activated 1B LaMonte Wade Jr. from the 10-day injured list.
 - **HOU** [optioned] — Houston Astros optioned CF Jake Meyers to Sugar Land Space Cowboys.
 - **HOU** [optioned] — Houston Astros optioned LF Joey Loperfido to Sugar Land Space Cowboys.
@@ -17,11 +20,15 @@ _Generated 2026-07-05T08:57:26Z · 8 games · significant deviations only_
 - **WSH** [DFA] — Washington Nationals designated RHP Andre Granillo for assignment.
 - **WSH** [claimed] — Washington Nationals claimed LHP Matt Krook off waivers from Athletics.
 - **WSH** [optioned] — Washington Nationals optioned RHP Zak Kent to Rochester Red Wings.
+- **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of RHP Guillo Zuñiga from Syracuse Mets.
 - **ATL** [IL] — Atlanta Braves activated DH Kyle Farmer from the 10-day injured list.
 - **ATL** [IL] — Atlanta Braves placed SS Ha-Seong Kim on the 10-day injured list retroactive to July 1, 2026. Right middle finger inflammation.
-- **ATL** [outrighted] — Atlanta Braves sent 1B Rowdy Tellez outright to Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP Anthony Molina to Gwinnett Stripers.
+- **ATL** [outrighted] — Atlanta Braves sent 1B Rowdy Tellez outright to Gwinnett Stripers.
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
+- **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
+- **ATL** [optioned] — Atlanta Braves optioned RHP JR Ritchie to Gwinnett Stripers.
 - **MIL** [recalled] — Milwaukee Brewers recalled RHP Craig Yoho from Nashville Sounds.
 - **TOR** [status] — Toronto Blue Jays placed DH George Springer on the bereavement list.
 - **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list. Left embow strain.
