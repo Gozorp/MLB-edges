@@ -1,10 +1,13 @@
 # Daily Variance Report — 2026-07-06
-_Generated 2026-07-05T15:29:03Z · 8 games · significant deviations only_
+_Generated 2026-07-05T18:05:48Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [signed] — Philadelphia Phillies signed free agent C Payton Henry to a minor league contract.
 - **PHI** [TRADE] — Philadelphia Phillies traded RHP Ryan Degges to Cleveland Guardians for cash.
 - **PHI** [recalled] — Philadelphia Phillies recalled LHP Tanner Banks from Lehigh Valley IronPigs.
+- **PHI** [DFA] — Philadelphia Phillies designated RHP Jean Cabrera for assignment.
+- **PHI** [signed] — Philadelphia Phillies signed free agent OF Bryan De La Cruz.
+- **PHI** [optioned] — Philadelphia Phillies optioned OF Bryan De La Cruz to Lehigh Valley IronPigs.
 - **KC** [status] — RHP Stephen Kolek roster status changed by Kansas City Royals.
 - **KC** [recalled] — Kansas City Royals recalled RHP Jose Cuas from Omaha Storm Chasers.
 - **NYY** [recalled] — New York Yankees recalled RHP Brendan Beck from Scranton/Wilkes-Barre RailRiders.
@@ -19,6 +22,10 @@ _Generated 2026-07-05T15:29:03Z · 8 games · significant deviations only_
 - **HOU** [recalled] — Houston Astros recalled LF Zach Dezenzo from Sugar Land Space Cowboys.
 - **WSH** [DFA] — Washington Nationals designated RHP Andre Granillo for assignment.
 - **WSH** [claimed] — Washington Nationals claimed LHP Matt Krook off waivers from Athletics.
+- **WSH** [activated] — Washington Nationals activated RHP Eddy Yean.
+- **WSH** [DFA] — Washington Nationals designated CF Robert Hassell III for assignment.
+- **WSH** [activated] — Washington Nationals activated RHP Eddy Yean.
+- **WSH** [selected] — Washington Nationals selected the contract of RHP Eddy Yean from Rochester Red Wings.
 - **WSH** [optioned] — Washington Nationals optioned RHP Zak Kent to Rochester Red Wings.
 - **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
 - **NYM** [selected] — New York Mets selected the contract of RHP Guillo Zuñiga from Syracuse Mets.
@@ -30,8 +37,12 @@ _Generated 2026-07-05T15:29:03Z · 8 games · significant deviations only_
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP JR Ritchie to Gwinnett Stripers.
 - **MIL** [recalled] — Milwaukee Brewers recalled RHP Craig Yoho from Nashville Sounds.
+- **MIL** [IL] — Milwaukee Brewers placed RHP Brandon Woodruff on the 15-day injured list. Right shoulder inflammation.
+- **MIL** [recalled] — Milwaukee Brewers recalled LHP Drew Rom from Nashville Sounds.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned 1B LuJames Groover to Reno Aces.
 - **TOR** [status] — Toronto Blue Jays placed DH George Springer on the bereavement list.
-- **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list. Left embow strain.
+- **SF** [IL] — San Francisco Giants placed LHP Matt Gage on the 15-day injured list. Left elbow strain.
 - **SF** [recalled] — San Francisco Giants recalled RHP Spencer Bivens from Sacramento River Cats.
 - **COL** [IL] — Colorado Rockies placed RHP Seth Halvorsen on the 15-day injured list retroactive to July 1, 2026. Right shoulder inflammation.
 - **COL** [IL] — Colorado Rockies placed RHP Tomoyuki Sugano on the 15-day injured list retroactive to July 1, 2026. Back spasms.
@@ -40,14 +51,11 @@ _Generated 2026-07-05T15:29:03Z · 8 games · significant deviations only_
 - **LAD** [selected] — Los Angeles Dodgers selected the contract of C Eliezer Alfonzo from Oklahoma City Comets.
 - **LAD** [optioned] — Los Angeles Dodgers optioned C Chuckie Robinson to Oklahoma City Comets.
 
-_Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **PHI @ KC** (away SP Cristopher Sánchez): very high K% (28.5% vs lg 22.0)
-- **NYY @ TB** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **NYY @ TB** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **HOU @ WSH** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **HOU @ WSH** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **AZ @ SD** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **AZ @ SD** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **TOR @ SF** (away SP TBD): NOT CONFIRMED — probable SP not posted
@@ -61,8 +69,11 @@ _Suppressed 2 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> l
 ## 4 · Lineup / Platoon
 - PHI @ KC — KC faces LHP (Cristopher Sánchez)
 - PHI @ KC — PHI faces LHP (Noah Cameron)
+- NYY @ TB — TB faces RHP (Cam Schlittler)
+- HOU @ WSH — WSH faces RHP (Mike Burrows)
+- HOU @ WSH — HOU faces RHP (Miles Mikolas)
 - NYM @ ATL — ATL faces RHP (Freddy Peralta)
 - NYM @ ATL — NYM faces RHP (Reynaldo López)
 - MIL @ STL — STL faces LHP (Shane Drohan)
-- MIL @ STL — MIL faces RHP (Michael McGreevy)
+- MIL @ STL — MIL faces RHP (Dustin May)
 
