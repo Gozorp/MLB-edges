@@ -1,9 +1,14 @@
 {
- "generated_utc": "2026-07-05T07:03:25Z",
+ "generated_utc": "2026-07-05T08:57:33Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "SEA promoted: Average -> Above Average (eff +0.39, mmr +0.12)",
+  "WSH demoted: Above Average -> Average (eff +0.21, mmr +0.01)",
+  "TEX demoted: Above Average -> Average (eff +0.18, mmr +0.18)",
+  "BOS promoted: Below Average -> Average (eff -0.08, mmr +0.29)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -159,36 +164,18 @@
     ]
    },
    {
-    "name": "Washington Nationals",
-    "abbr": "WSH",
+    "name": "Seattle Mariners",
+    "abbr": "SEA",
     "w": 46,
     "l": 44,
     "pct": 0.511,
-    "rd": 15,
-    "rationale": "46-44 (.511), +15 run differential -- a solidly positive run margin.",
-    "z": 0.204,
-    "mmr": 0.01,
-    "eff": 0.214,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    }
-   },
-   {
-    "name": "Texas Rangers",
-    "abbr": "TEX",
-    "w": 45,
-    "l": 44,
-    "pct": 0.506,
-    "rd": -5,
-    "rationale": "45-44 (.506), -5 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.18).",
-    "z": 0.0,
-    "mmr": 0.181,
-    "eff": 0.181,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    }
+    "rd": 23,
+    "rationale": "46-44 (.511), +23 run differential -- a solidly positive run margin.",
+    "z": 0.271,
+    "mmr": 0.121,
+    "eff": 0.392,
+    "movement": "promoted",
+    "moved_from": "Average"
    }
   ],
   "Average": [
@@ -208,22 +195,6 @@
     ]
    },
    {
-    "name": "Seattle Mariners",
-    "abbr": "SEA",
-    "w": 46,
-    "l": 44,
-    "pct": 0.511,
-    "rd": 23,
-    "rationale": "46-44 (.511), +23 run differential -- a solidly positive run margin.",
-    "z": 0.271,
-    "mmr": 0.121,
-    "eff": 0.392,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    }
-   },
-   {
     "name": "Pittsburgh Pirates",
     "abbr": "PIT",
     "w": 45,
@@ -240,6 +211,20 @@
     ]
    },
    {
+    "name": "Washington Nationals",
+    "abbr": "WSH",
+    "w": 46,
+    "l": 44,
+    "pct": 0.511,
+    "rd": 15,
+    "rationale": "46-44 (.511), +15 run differential -- a solidly positive run margin.",
+    "z": 0.204,
+    "mmr": 0.01,
+    "eff": 0.214,
+    "movement": "demoted",
+    "moved_from": "Above Average"
+   },
+   {
     "name": "Cleveland Guardians",
     "abbr": "CLE",
     "w": 47,
@@ -250,6 +235,38 @@
     "z": 0.095,
     "mmr": 0.029,
     "eff": 0.125
+   },
+   {
+    "name": "Texas Rangers",
+    "abbr": "TEX",
+    "w": 45,
+    "l": 44,
+    "pct": 0.506,
+    "rd": -5,
+    "rationale": "45-44 (.506), -5 run differential -- a roughly even run margin. Results running above tier expectation (MMR +0.18).",
+    "z": 0.0,
+    "mmr": 0.181,
+    "eff": 0.181,
+    "movement": "demoted",
+    "moved_from": "Above Average"
+   },
+   {
+    "name": "Boston Red Sox",
+    "abbr": "BOS",
+    "w": 39,
+    "l": 48,
+    "pct": 0.448,
+    "rd": 3,
+    "rationale": "39-48 (.448), +3 run differential -- a roughly even run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.29).",
+    "z": -0.367,
+    "mmr": 0.286,
+    "eff": -0.082,
+    "movement": "promoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset L vs COL (06-22)",
+     "upset L vs COL (06-24)"
+    ]
    }
   ],
   "Below Average": [
@@ -283,26 +300,6 @@
     "upsets": [
      "upset L vs COL (06-27)",
      "upset W vs NYY (07-04)"
-    ]
-   },
-   {
-    "name": "Boston Red Sox",
-    "abbr": "BOS",
-    "w": 39,
-    "l": 48,
-    "pct": 0.448,
-    "rd": 3,
-    "rationale": "39-48 (.448), +3 run differential -- a roughly even run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.29).",
-    "z": -0.367,
-    "mmr": 0.286,
-    "eff": -0.082,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs COL (06-22)",
-     "upset L vs COL (06-24)"
     ]
    },
    {

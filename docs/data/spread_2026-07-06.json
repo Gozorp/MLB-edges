@@ -1,0 +1,62 @@
+{
+ "generated_utc": "2026-07-05T08:57:33Z",
+ "date": "2026-07-06",
+ "n_games": 3,
+ "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
+ "games": {
+  "PHI @ KC": {
+   "favored": "KC",
+   "win_prob": 0.5319,
+   "spread": 0.2,
+   "proj_away": 4,
+   "proj_home": 5,
+   "proj_score": "PHI 4-5 KC",
+   "components": {
+    "base": 0.19,
+    "scale": 0.65,
+    "rd_season_gap": -0.734,
+    "rd_recent_gap": -1.0,
+    "off_recent_gap": -1.0,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": -0.824,
+    "total_runs": 8.6
+   }
+  },
+  "NYM @ ATL": {
+   "favored": "ATL",
+   "win_prob": 0.5335,
+   "spread": 0.3,
+   "proj_away": 4,
+   "proj_home": 5,
+   "proj_score": "NYM 4-5 ATL",
+   "components": {
+    "base": 0.2,
+    "scale": 1.333,
+    "rd_season_gap": 1.0,
+    "rd_recent_gap": 1.0,
+    "off_recent_gap": 0.337,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": -0.205,
+    "total_runs": 8.6
+   }
+  },
+  "MIL @ STL": {
+   "favored": "MIL",
+   "win_prob": 0.5342,
+   "spread": 0.2,
+   "proj_away": 5,
+   "proj_home": 4,
+   "proj_score": "MIL 5-4 STL",
+   "components": {
+    "base": 0.21,
+    "scale": 1.18,
+    "rd_season_gap": 0.849,
+    "rd_recent_gap": -0.208,
+    "off_recent_gap": -0.231,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": 0.798,
+    "total_runs": 8.6
+   }
+  }
+ }
+}
