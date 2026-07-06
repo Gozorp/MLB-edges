@@ -1,10 +1,11 @@
 {
- "generated_utc": "2026-07-06T04:53:20Z",
+ "generated_utc": "2026-07-06T07:13:47Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
  "movements": [
-  "PIT promoted: Average -> Above Average (eff +0.38, mmr +0.07)"
+  "CWS promoted: Average -> Above Average (eff +0.51, mmr +0.07)",
+  "TOR demoted: Below Average -> Poor (eff -0.82, mmr -0.21)"
  ],
  "tier_order": [
   "Elite",
@@ -146,6 +147,24 @@
     ]
    },
    {
+    "name": "Chicago White Sox",
+    "abbr": "CWS",
+    "w": 47,
+    "l": 42,
+    "pct": 0.528,
+    "rd": 26,
+    "rationale": "47-42 (.528), +26 run differential -- a solidly positive run margin.",
+    "z": 0.433,
+    "mmr": 0.072,
+    "eff": 0.505,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset L vs KC (06-28)",
+     "upset L vs BAL (07-01)"
+    ]
+   },
+   {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
     "w": 47,
@@ -187,8 +206,6 @@
     "z": 0.314,
     "mmr": 0.07,
     "eff": 0.384,
-    "movement": "promoted",
-    "moved_from": "Average",
     "upsets": [
      "upset L vs CIN (06-26)",
      "upset L vs CIN (06-27)"
@@ -196,26 +213,6 @@
    }
   ],
   "Average": [
-   {
-    "name": "Chicago White Sox",
-    "abbr": "CWS",
-    "w": 47,
-    "l": 42,
-    "pct": 0.528,
-    "rd": 26,
-    "rationale": "47-42 (.528), +26 run differential -- a solidly positive run margin.",
-    "z": 0.433,
-    "mmr": 0.072,
-    "eff": 0.505,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs KC (06-28)",
-     "upset L vs BAL (07-01)"
-    ]
-   },
    {
     "name": "Washington Nationals",
     "abbr": "WSH",
@@ -364,7 +361,9 @@
     "upsets": [
      "upset W vs CWS (07-01)"
     ]
-   },
+   }
+  ],
+  "Poor": [
    {
     "name": "Toronto Blue Jays",
     "abbr": "TOR",
@@ -376,16 +375,12 @@
     "z": -0.611,
     "mmr": -0.214,
     "eff": -0.825,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
+    "movement": "demoted",
+    "moved_from": "Below Average",
     "upsets": [
      "upset W vs SEA (07-03)"
     ]
-   }
-  ],
-  "Poor": [
+   },
    {
     "name": "Cincinnati Reds",
     "abbr": "CIN",

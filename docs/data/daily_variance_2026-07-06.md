@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-06
-_Generated 2026-07-06T04:53:09Z · 8 games · significant deviations only_
+_Generated 2026-07-06T07:11:34Z · 8 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [signed] — Philadelphia Phillies signed free agent C Payton Henry to a minor league contract.
@@ -57,10 +57,10 @@ _Generated 2026-07-06T04:53:09Z · 8 games · significant deviations only_
 _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **PHI @ KC** (away SP Cristopher Sánchez): very high K% (28.5% vs lg 22.0)
-- **NYY @ TB** (away SP Cam Schlittler): very high K% (28.7% vs lg 22.0)
-- **HOU @ WSH** (home SP Miles Mikolas): very low K% (13.1% vs lg 22.0)
-- **COL @ LAD** (home SP Eric Lauer): very low K% (14.7% vs lg 22.0)
+- **PHI @ KC** (away SP Cristopher Sánchez): very high K% (29.5% vs lg 22.0)
+- **NYY @ TB** (away SP Cam Schlittler): very high K% (29.6% vs lg 22.0)
+- **HOU @ WSH** (home SP Miles Mikolas): very low K% (13.4% vs lg 22.0)
+- **COL @ LAD** (home SP Eric Lauer): very low K% (14.9% vs lg 22.0)
 
 ## 3 · Bullpen Fatigue (last 3 games)
 - **NYY** Camilo Doval — 2 apps / 47 pitches over last 3 games — monitor
