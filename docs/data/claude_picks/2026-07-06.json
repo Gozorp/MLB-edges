@@ -1,14 +1,14 @@
 {
   "date": "2026-07-06",
-  "fit_at": "2026-07-06T19:34:05Z",
+  "fit_at": "2026-07-06T23:43:32Z",
   "model_version": "claude-brain-v1",
   "n_games": 8,
   "patterns_recognized": [
-    "7 of 8 games today are neutralized to effective SKIP by hard caps already firing correctly (CAP1, CAP7, CAP10) or by natural D-grade dual-opposing signals — consistent with the archive's overall ~53.6% hit rate where caps preserve capital far more often than they cost it.",
-    "COL @ LAD (pick_prob=0.8671) crosses the HARD CAP 9 threshold (>0.80, validated 3-for-3 on 5/10-5/12 ATL@LAD/SF@LAD/SF@LAD and again 6/20 PIT@COL Skenes 82.2% loss) but grade_reasons shows only CAP 4 fired for this row (score 3->1) with no CAP 9 mention — the rule engine appears to have missed it. Applying CAP 9's intent manually as a DOWNGRADE.",
-    "TOR @ SF (SF) repeats the CAP 7 pick-side-bullpen-disadvantage pattern (0-for-7 backtest incl. 5/10 PIT@SF) on an otherwise elite pre-cap A/8 score. Archive shows overriding caps like this has been costly (TOR@ATL 6/4, BAL@LAD 6/21 both blew up after re-elevation) — confirming the cap despite the strong underlying stack.",
-    "Several SKIP rows carry bullpen_fatigue/acute_roster/confidence_downgrade stress flags (HOU@WSH, NYM@ATL, ARI@SD) — archive explicitly disconfirmed these as directional triggers (5/25: 3-of-4 stress-flag DOWNGRADEs missed real winners), so none were used to flip a pick today.",
-    "Postgame archive has a 15-day gap: last available file is 2026-06-21, none for 06-22 through 07-05, so cap-performance monitoring is running on data that is now roughly two weeks stale."
+    "7 of 8 games today collapse to an effective SKIP through hard caps (CAP1, CAP7, CAP10) or a clean natural D-grade dual-opposing-signal pattern; only COL @ LAD required manual intervention beyond confirming the pipeline's own caps.",
+    "COL @ LAD (pick_prob=0.8766) clears HARD CAP 9's >0.80 threshold, but grade_reasons shows only CAP 4 fired (Stage1/2 delta 0.24, score 3->1) — CAP 9 never applied. This is the same rule-engine miss the postgame archive flagged on 2026-06-03 (TOR@ATL). Applying CAP 9 manually as a DOWNGRADE, backed by its 3-for-3 May validation (ATL@LAD, SF@LAD x2) plus 2026-06-20 PIT@COL (Skenes 82.2%, lost).",
+    "TOR @ SF repeats the CAP 7 pick-side-bullpen-disadvantage pattern (0-for-7 backtest, incl. 2026-05-10 PIT@SF) on an otherwise elite pre-cap A/8 stack (Roupp -0.34 xERA edge over Gausman). Archive shows re-elevating capped PLATINUM/DIAMOND picks has blown up repeatedly this season (2026-06-04 TOR@ATL, 2026-06-20/21 BAL@LAD both lost after being played past a cap) — confirming the cap rather than trusting the strong underlying signal.",
+    "Internal grade_reasons text on two rows quotes a pick_prob that doesn't match today's CSV column (HOU@WSH logged 0.527 vs actual 0.5067; TOR@SF logged 0.535 vs actual 0.5642) — the cap firings themselves are still treated as authoritative per standing instructions, but the drift suggests the grading pass ran on a slightly earlier data snapshot than the final CSV, worth a pipeline check outside this review.",
+    "The postgame archive has a 15-day gap (last file 2026-06-21, none 2026-06-22 through 2026-07-05), so every June lesson cited here — CAP1's tightening trend, the recurring CAP9 pipeline miss, and CAP10's contested CONFIRM-exception being retired — is running on data now roughly two weeks stale."
   ],
   "by_matchup": {
     "PHI @ KC": {
@@ -20,68 +20,68 @@
       "claude_pick": "PHI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "HARD CAP 1 (edge -18.1pp on a PLATINUM pick) and HARD CAP 10 (pick_prob 0.507 in the bottom bucket, no CONFIRM) already collapse this to score 0. Archive validates CAP 1 4-for-5 live, and shows re-elevating a CAP-1-capped pick has blown up twice (TOR@ATL 6/4, BAL@LAD 6/21). Sánchez's real xERA edge is already priced past the model by the market (fair_prob 0.688 vs model 0.507) — an 18pp gap this large is the calibrator lagging an efficient market, not a market inefficiency. Confirming the double cap.",
-      "lessons_applied": ["CAP1 re-elevation losses (TOR@ATL 6/4, BAL@LAD 6/21)", "CAP10 bottom-bucket non-CONFIRM SKIP"]
+      "reasoning": "HARD CAP 1 fires on a -18.13pp negative edge on a PLATINUM pick (score 3->1), then HARD CAP 10 stacks (pick_prob 0.5067 in the bottom bucket, no CONFIRM) forcing score to 0. Archive shows CAP1 has only tightened this season -- 2026-06-04 TOR@ATL and 2026-06-20/21 BAL@LAD both blew up when a CAP1-capped tier was allowed to play at full strength. Sanchez's fair_prob (0.688) vs model (0.507) suggests the market already prices Philly's edge -- this reads as calibrator lag, not opportunity. Confirming the double cap.",
+      "lessons_applied": ["CAP1 permanent demotion (TOR@ATL 06-04, BAL@LAD 06-20/21)", "CAP10 bottom-bucket SKIP"]
     },
     "NYY @ TB": {
       "model_pick": "TB ML SKIP",
-      "model_prob": 0.5716,
+      "model_prob": 0.5995,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "Clean D-grade: TB's own Griffin Jax grades 2.23 xERA worse than Schlittler and PQI opposes TB (Δ=-26.2), while Stage 1/2 agree tightly (Δ=0.02). Archive explicitly tested treating this dual-opposing D-grade pattern as an anti-directional fade signal and found it uninformative (oscillated near coin-flip, e.g. 5/25 0-for-4 then 2-for-2) — so I'm not fading toward NYY, just confirming no edge exists on either side. No rookie SP or lineup anomaly changes that.",
-      "lessons_applied": ["D-grade dual-opposing-signal is uninformative, not anti-directional"]
+      "reasoning": "Clean natural D-grade with no cap needed: Jax's 2.23-xERA disadvantage vs Schlittler and PQI both oppose TB while Stage 1/2 agree tightly. pick_prob (0.5995) sits well outside CAP10's (0.50,0.55] band, so this is the model's own stack rejecting the pick, not a forced cap. Archive treats this dual-opposing D pattern as a coin-flip rather than a fade cue, so no override toward NYY either. Confirming SKIP on both sides.",
+      "lessons_applied": ["dual-opposing D-grade is uninformative, not a fade signal"]
     },
     "HOU @ WSH": {
-      "model_pick": "HOU ML PLATINUM",
-      "model_prob": 0.5061,
-      "model_tier": "PLATINUM",
+      "model_pick": "WSH ML SKIP",
+      "model_prob": 0.5067,
+      "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "HOU",
+      "claude_pick": "WSH",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.51,
-      "reasoning": "Pre-cap this was a solid B+/3 (F-signal fires, PQI confirms Δ=-4.4, Stage 1/2 agree Δ=0.10), but HARD CAP 10 fires (pick_prob 0.506, bottom bucket, no CONFIRM boost) forcing score to 0. The bullpen_fatigue stress flag is present but archive shows stress flags are stake-size signals, not directional (5/25: 3-of-4 stress-flag DOWNGRADEs missed real winners) — doesn't change the call. Confirming the cap.",
-      "lessons_applied": ["CAP10 bottom-bucket SKIP", "stress flags non-directional (5/25)"]
+      "claude_confidence": 0.50,
+      "reasoning": "Modest pre-cap signal (PQI against WSH, Delta=-5.1; Stage1/2 agree Delta=0.10) gets held at score 0 by HARD CAP 10 (pick_prob 0.5067, bottom bucket, no CONFIRM). bullpen_fatigue/confidence_downgrade flags are present but archive precedent treats stress flags as stake-size signals, not directional. Platoon/BvP top-3 on both sides is mostly SMALL_SAMPLE or NO_DATA with no collective OWNER/WEAK_VS pattern. Confirming SKIP.",
+      "lessons_applied": ["CAP10 bottom-bucket SKIP", "stress flags non-directional"]
     },
     "NYM @ ATL": {
       "model_pick": "ATL ML SKIP",
+      "model_prob": 0.5951,
       "model_tier": "SKIP",
-      "model_prob": 0.6009,
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "ATL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "Peralta (NYM) grades 0.84 xERA better than López and PQI opposes ATL (Δ=-9.9) despite Stage 1/2 agreeing (Δ=0.07). Same clean dual-opposing D-grade pattern as NYY@TB — archive shows this combination is a coin-flip, not a fade trigger, so confirming SKIP rather than flipping to NYM. acute_roster/bullpen_fatigue flags present but treated as stake-size only per archive, not directional.",
-      "lessons_applied": ["D-grade dual-opposing-signal is uninformative", "stress flags non-directional"]
+      "reasoning": "Naturally graded D/-3, no cap needed: Lopez (ATL) grades 0.84 xERA worse than Peralta and PQI opposes ATL (Delta=-9.9) despite Stage1/2 agreeing closely. acute_roster/bullpen_fatigue flags present but treated as stake-size-only per archive, not directional. BvP shows only one collective note -- Lindor (NYM) is WEAK_VS today's SP at 27 PA -- which if anything mildly reinforces fading NYM rather than flipping the pick. Confirming SKIP.",
+      "lessons_applied": ["dual-opposing D-grade uninformative", "stress flags non-directional"]
     },
     "MIL @ STL": {
       "model_pick": "STL ML SKIP",
-      "model_prob": 0.5366,
+      "model_prob": 0.5284,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "No hard cap needed here — edge_pp is +4.26 (positive, CAP1 doesn't apply). SP edge (Dustin May) and PQI both oppose STL (Δ=-6.0) while Stage 1/2 agree tightly. Straightforward D-grade. Consistent with the archive finding that this signal combination is directionally uninformative rather than a fade signal, so I'm confirming SKIP rather than flipping to MIL.",
-      "lessons_applied": ["D-grade dual-opposing-signal is uninformative"]
+      "reasoning": "No hard cap needed -- edge_pp is +4.62, inside the normal band. SP edge (Dustin May, MIL) 0.52 xERA against STL and PQI also opposes STL (Delta=-7.4) while Stage1/2 agree almost exactly (Delta=0.00). Clean natural D/-2. Archive treats this signal combination as a coin-flip rather than a directional fade, so not flipping to MIL. Confirming SKIP.",
+      "lessons_applied": ["dual-opposing D-grade uninformative"]
     },
     "ARI @ SD": {
       "model_pick": "ARI ML SKIP",
+      "model_prob": 0.5164,
       "model_tier": "SKIP",
-      "model_prob": 0.5172,
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "SP edge (Buehler, SD) and PQI both oppose ARI, with Stage 1/2 agreeing exactly (Δ=0.00). Naturally grades D/-2 with no hard cap needed. bullpen_fatigue and confidence_downgrade flags are present but archive shows these are non-directional stake-size signals only, not directional overrides. Confirming SKIP.",
-      "lessons_applied": ["D-grade dual-opposing-signal is uninformative", "stress flags non-directional"]
+      "reasoning": "SP edge (Buehler, SD) 0.48 xERA against ARI and PQI also opposes ARI (Delta=+8.9), with Stage1/2 agreeing exactly (Delta=0.00). Natural D/-2, no hard cap needed. Archive shows Buehler's June results with SD were mixed (contributor in a win 06-08, on the losing side 06-20/21), not a clear override signal. bullpen_fatigue/confidence_downgrade flags present but non-directional per archive. Confirming SKIP.",
+      "lessons_applied": ["dual-opposing D-grade uninformative", "stress flags non-directional", "Buehler/SD mixed June track record"]
     },
     "TOR @ SF": {
       "model_pick": "SF ML PLATINUM",
@@ -92,20 +92,20 @@
       "claude_pick": "SF",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "Pre-cap this was an elite A/8 (Roupp's 0.34 xERA edge over Gausman, F-signal fires, Stage 1/2 agree Δ=0.01), but HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0063 (SF's high-leverage pen is the worse one), then CAP 10 (pick_prob 0.564, bottom bucket, no CONFIRM) — score collapses 8→1→0. CAP 7's validating backtest is 0-for-7, including a prior SF loss (5/10 PIT@SF, 6-7). The gap is barely positive but CAP 7 is a validated bright-line rule, not magnitude-scaled — confirming both caps rather than re-litigating a strong pre-cap stack.",
-      "lessons_applied": ["CAP7 pick-side bullpen disadvantage, 0-for-7 incl. PIT@SF 5/10", "CAP10 bottom-bucket SKIP"]
+      "reasoning": "Pre-cap this was an elite A/8 (Roupp's 0.34-xERA edge over Gausman, who now pitches for TOR per the away_sp_name field; F-signal fires; Stage1/2 agree Delta=0.01), but HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0063 (SF's high-leverage pen is the worse one), then CAP 10 stacks -- score collapses 8->1->0. CAP7's backtest is 0-for-7 including a prior SF loss (2026-05-10 PIT@SF, 6-7); it's a validated bright-line rule, not magnitude-scaled. Confirming both caps over a strong pre-cap stack.",
+      "lessons_applied": ["CAP7 pick-side bullpen disadvantage 0-for-7 incl. PIT@SF 05-10", "CAP10 bottom-bucket SKIP"]
     },
     "COL @ LAD": {
       "model_pick": "LAD ML DIAMOND",
-      "model_prob": 0.8671,
+      "model_prob": 0.8766,
       "model_tier": "DIAMOND",
       "model_grade": "B-",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "LAD",
       "claude_tier": "SKIP",
       "claude_confidence": 0.55,
-      "reasoning": "pick_prob=0.8671 clears the HARD CAP 9 threshold (>0.80), a bucket that historically hits only 33.3% actual vs 87.3% predicted — validated 3-for-3 on 5/10-5/12 (ATL@LAD, SF@LAD x2) and again 6/20 PIT@COL (Skenes 82.2%, lost). But grade_reasons only shows HARD CAP 4 firing on this row (Stage 1/2 Δ=0.22, confidence_downgrade=True, score 3→1); CAP 9 never applied despite clearly exceeding 0.80. This looks like a rule-engine miss. Downgrading to SKIP to apply CAP 9's intent, which the pipeline itself failed to enforce here.",
-      "lessons_applied": ["HARD CAP9 top-bucket hallucination applied manually (0.867>0.80; not triggered in grade_reasons)", "5/10-5/12 ATL@LAD/SF@LAD 3-for-3, 6/20 PIT@COL Skenes"]
+      "reasoning": "pick_prob=0.8766 clears the HARD CAP 9 threshold (>0.80), a bucket validated 3-for-3 in May (ATL@LAD, SF@LAD x2) plus 2026-06-20 PIT@COL (Skenes 82.2%, lost). But grade_reasons here shows only CAP 4 firing (Stage1/2 Delta=0.24 + confidence_downgrade=True, score 3->1) -- CAP 9 never applied despite clearly exceeding 0.80, the same rule-engine miss the archive flagged 2026-06-03 on TOR@ATL. Downgrading to SKIP to apply CAP 9's intent manually since the pipeline itself did not enforce it here.",
+      "lessons_applied": ["CAP9 top-bucket hallucination applied manually (0.877>0.80; not triggered in grade_reasons)", "recurring CAP9 pipeline miss (06-03 TOR@ATL)"]
     }
   }
 }
