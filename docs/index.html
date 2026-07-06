@@ -1519,6 +1519,190 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     .adv-split-tbl th, .adv-split-tbl td{ padding:3px 7px; }
   }
   </style>
+  <style id="responsive-v2">
+  /* ==========================================================
+     responsive-v2 (2026-07-05) -- tablet band + touch ergonomics.
+     The site had phone rules (<=768) and desktop (>768); iPad-
+     portrait widths (~769-1099) got desktop layout with the slate
+     table crushed into wrapping cells and no scrollport. This
+     layer fills that band with the SAME treatments the phone
+     layer uses, extends SIMPLE cards to a 2-col grid, contains
+     every accordion table <=1099, and bumps touch targets under
+     (pointer:coarse). Additive, cascade-last, display-only.
+     Revert: delete this whole style block.
+     ========================================================== */
+
+  /* ---------- universal hygiene (desktop-inert) ---------- */
+  html{ -webkit-text-size-adjust: 100%; }
+  #help-panel{ width: min(92vw, 440px); }
+  button, .q-chip, .accordion-header, summary, tr.row-clickable{
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(88,166,255,0.12);
+  }
+
+  /* ---------- <=1099: contained scroll everywhere ---------- */
+  @media (max-width: 1099px){
+    body{
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    pre{
+      max-width: 100%; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+    }
+    img, svg, video, canvas{ max-width: 100%; }
+
+    /* every non-slate accordion data table gets its own scrollport
+       (slate table handled per-mode below / by the <=768 layer) */
+    .accordion-body-inner table:not(:has(tr.row-clickable)){
+      display: block; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+      max-width: 100%;
+    }
+    .accordion-body-inner table:not(:has(tr.row-clickable)) td,
+    .accordion-body-inner table:not(:has(tr.row-clickable)) th{
+      white-space: nowrap;
+    }
+    .accordion-body-inner table::-webkit-scrollbar,
+    pre::-webkit-scrollbar{ height: 8px; }
+    .accordion-body-inner table::-webkit-scrollbar-thumb,
+    pre::-webkit-scrollbar-thumb{
+      background: rgba(88,166,255,0.28); border-radius: 4px;
+    }
+  }
+
+  /* ---------- 769-1099: the tablet band ---------- */
+  @media (min-width: 769px) and (max-width: 1099px){
+    /* sticky controls card, same as phones */
+    .picker{
+      position: sticky; top: 0; z-index: 60;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ADVANCED slate: own scrollport + pinned matchup column
+       (mirrors the <=768 treatment so behavior is continuous) */
+    body:not(.simple-mode) table:has(tr.row-clickable){
+      display: block; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable)::-webkit-scrollbar{ height: 8px; }
+    body:not(.simple-mode) table:has(tr.row-clickable)::-webkit-scrollbar-thumb{
+      background: rgba(88,166,255,0.28); border-radius: 4px;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable) th:nth-child(1),
+    body:not(.simple-mode) table:has(tr.row-clickable) td:nth-child(1){
+      display: none;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable) th:nth-child(2),
+    body:not(.simple-mode) table:has(tr.row-clickable) tr.row-clickable td:nth-child(2){
+      position: sticky; left: 0; z-index: 5;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border);
+    }
+    /* stop the crushed multi-line cells: data cells stay on one
+       line and pan; matchup cell + details drawer keep wrapping */
+    body:not(.simple-mode) table:has(tr.row-clickable) thead th{ white-space: nowrap; }
+    body:not(.simple-mode) table:has(tr.row-clickable) tr.row-clickable > td:not(:nth-child(2)){
+      white-space: nowrap;
+    }
+    body:not(.simple-mode) table:has(tr.row-clickable) tr.row-clickable td:nth-child(2){
+      max-width: 42vw;
+    }
+    body:not(.simple-mode) tr.details-row td,
+    body:not(.simple-mode) tr.details-row td *{ white-space: normal; }
+
+    /* SIMPLE slate: the phone card feed, upgraded to a 2-col grid */
+    body.simple-mode table:has(tr.row-clickable),
+    body.simple-mode table:has(tr.row-clickable) tbody{ display: block; }
+    body.simple-mode table:has(tr.row-clickable) thead{ display: none; }
+    body.simple-mode table:has(tr.row-clickable) tbody{
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sp-2);
+    }
+    body.simple-mode tr.row-clickable{
+      display: block; position: relative; margin: 0;
+      padding: var(--sp-2) var(--sp-3);
+      background: var(--bg-elev);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-left: 3px solid var(--border); border-radius: 10px;
+    }
+    body.simple-mode tr.row-clickable td{
+      display: block; padding: 0; border: none; white-space: normal;
+    }
+    body.simple-mode tr.row-clickable:has(.grade-A),
+    body.simple-mode tr.row-clickable:has(.grade-A-){ border-left-color: var(--green); }
+    body.simple-mode tr.row-clickable:has(.grade-Bp),
+    body.simple-mode tr.row-clickable:has(.grade-B),
+    body.simple-mode tr.row-clickable:has(.grade-Bm){ border-left-color: var(--yellow); }
+    body.simple-mode tr.row-clickable td:nth-child(1){
+      position: absolute; right: var(--sp-3); bottom: var(--sp-2);
+    }
+    body.simple-mode tr.row-clickable td:nth-child(2){
+      font-size: 0.95rem; margin-bottom: 4px; padding-right: 3.2rem;
+    }
+    body.simple-mode tr.row-clickable td:has(.grade){
+      position: absolute; top: var(--sp-2); right: var(--sp-3);
+    }
+    body.simple-mode tr.row-clickable td:nth-child(3),
+    body.simple-mode tr.row-clickable td:nth-child(5),
+    body.simple-mode tr.row-clickable td:nth-child(10){
+      display: inline-block; margin-right: var(--sp-3); font-size: 0.82rem;
+    }
+    body.simple-mode tr.row-clickable td.col-edge{
+      display: inline-block; margin-right: var(--sp-3);
+      font-size: 0.82rem; font-weight: 700;
+    }
+    body.simple-mode tr.row-clickable td:nth-child(3)::before{ content: "PICK "; }
+    body.simple-mode tr.row-clickable td:nth-child(5)::before{ content: "FULL "; }
+    body.simple-mode tr.row-clickable td.col-edge::before{ content: "EDGE "; }
+    body.simple-mode tr.row-clickable td:nth-child(3)::before,
+    body.simple-mode tr.row-clickable td:nth-child(5)::before,
+    body.simple-mode tr.row-clickable td.col-edge::before{
+      color: var(--muted); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    body.simple-mode tr.row-clickable td:nth-child(11),
+    body.simple-mode tr.row-clickable td:nth-child(13){
+      font-size: 0.72rem; color: var(--muted); margin-top: 2px;
+    }
+    body.simple-mode tr.details-row{ display: none; }
+    body.simple-mode tr.details-row.open{
+      display: block; grid-column: 1 / -1;
+      margin: calc(-1 * var(--sp-2)) 0 0;
+      border: 1px solid rgba(255, 255, 255, 0.06); border-top: none;
+      border-radius: 0 0 10px 10px; background: var(--bg);
+    }
+    body.simple-mode tr.details-row.open td{
+      display: block; padding: var(--sp-3);
+    }
+  }
+
+  /* ---------- touch ergonomics (any width, touch devices) ---------- */
+  @media (pointer: coarse){
+    button{ min-height: 36px; }
+    #mode-simple-btn, #mode-advanced-btn{
+      min-height: 40px; padding: 8px 14px;
+    }
+    .q-chip{
+      min-height: 40px; padding: 9px 14px;
+      display: inline-flex; align-items: center;
+    }
+    .accordion-header{ min-height: 52px; }
+    .picker button, .picker input[type="date"]{ min-height: 40px; }
+    input, select, textarea{ font-size: 16px; }   /* stop iOS zoom-on-focus */
+    tr.row-clickable td{ padding-top: 9px; padding-bottom: 9px; }
+  }
+
+  /* ---------- small-phone polish ---------- */
+  @media (max-width: 480px){
+    pre{ font-size: 11px; line-height: 1.45; }
+  }
+  </style>
 </head>
 <body>
 
