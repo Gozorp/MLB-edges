@@ -1,0 +1,110 @@
+{
+  "date": "2026-07-06",
+  "fit_at": "2026-07-06T07:25:45Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 8,
+  "patterns_recognized": [
+    "Every game on today's 8-game slate is neutralized to effective SKIP by a hard cap: 4 by CAP10 bottom-bucket marginal-favorite (PHI@KC, HOU@WSH, MIL@STL, ARI@SD), 2 of those compounded by CAP1 negative edge (MIL@STL, ARI@SD), 1 by CAP7 pick-side bullpen disadvantage (TOR@SF, and SF is a repeat name from the original CAP7 backtest sample), 1 by CAP9 top-bucket calibration hallucination (COL@LAD, echoing the 5/10-5/12 ATL@LAD/SF@LAD trio). No CONFIRM-boost anchor exists to rescue any pick out of its cap today.",
+    "HOU @ WSH is a direct prospective test of the retired pre-cap-A CAP10 rescue: pre-cap score is a maximal 7 (A) but there is no OWNER BvP anchor (BvP JSON columns are empty) or SP edge >=1.0 xERA (SP edge explicitly flagged 'unconfirmed'), so per the 06-20/06-21 BOS@SEA 0-for-2 lesson we hold the SKIP rather than rescue it back to PLATINUM.",
+    "The postgame archive has a ~15-day gap (last file is 2026-06-21, today is 2026-07-06) — no fresh live grading of cap performance exists for the most recent two weeks, so treat cap-firing confidence as informed by data that is now somewhat stale.",
+    "statsapi confirms all 8 probable pitchers match the diag CSV exactly and every game is in 'Scheduled' status with no postponements or TBD pitchers — no live lineup/pitcher instability to layer on top of the caps today."
+  ],
+  "by_matchup": {
+    "PHI @ KC": {
+      "model_pick": "PHI ML PLATINUM",
+      "model_prob": 0.5179,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PHI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 10 fires on pick_prob=0.518 (bottom bucket, no CONFIRM boost), collapsing score 1->0. Sánchez's F1_xera_gap=3.48 is genuine and the market agrees hard (fair_prob 66.4% for PHI vs the model's 51.8%) — the negative edge here means the market has already priced Sánchez's advantage past the model, not that the market disagrees on direction. Stage 1/2 also disagree (Δ=0.27, F5 favors KC). No anchor exists to rescue a bottom-bucket pick with that disagreement.",
+      "lessons_applied": ["CAP10 bottom-bucket rescue retired absent anchor (06-20/06-21 BOS@SEA)", "negative edge = market already priced the SP advantage"]
+    },
+    "NYY @ TB": {
+      "model_pick": "TB ML SKIP",
+      "model_prob": 0.5538,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "TB's own starter Griffin Jax grades 2.23 xERA worse than Schlittler, and PQI opposes the pick (late-game-degradation Δ=-26.2). Stage 1/2 agree tightly (Δ=0.02) but both structural grading dimensions point away from TB. Clean D-grade dual-opposing-signal SKIP with nothing in today's lineups to override it.",
+      "lessons_applied": ["D-grade SP-against + PQI-against SKIP validation"]
+    },
+    "HOU @ WSH": {
+      "model_pick": "HOU ML PLATINUM",
+      "model_prob": 0.5223,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Pre-cap score is a maximal 7 (A): F3=4997.9, F5_bullpen_gap=+1.54, Stage 1/2 agree tightly (Δ=0.10), PQI confirms (Δ=-4.4) — but HARD CAP 10 fires on pick_prob=0.522 (bottom bucket, no CONFIRM boost), forcing score to 0. Per the 06-20/06-21 lesson, a maximal pre-cap score alone failed twice to rescue this exact cap (BOS@SEA); rescue now requires an OWNER BvP anchor or SP edge >=1.0 xERA, and neither exists here (SP edge explicitly 'unconfirmed', BvP JSON columns empty). Confirming the cap, not rescuing.",
+      "lessons_applied": ["pre-cap-A CAP10 rescue retired absent OWNER BvP/SP>=1.0 anchor (BOS@SEA 06-20/06-21, 0-for-2)"]
+    },
+    "NYM @ ATL": {
+      "model_pick": "ATL ML SKIP",
+      "model_prob": 0.6087,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ATL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Peralta grades 0.84 xERA better than López, and PQI opposes the pick (Δ=-11.1) despite Stage 1/2 agreeing closely (Δ=0.07). Both grading dimensions point away from ATL. Clean D-grade dual-opposing-signal SKIP; no override basis.",
+      "lessons_applied": ["D-grade SP-against + PQI-against SKIP validation"]
+    },
+    "MIL @ STL": {
+      "model_pick": "MIL ML PLATINUM",
+      "model_prob": 0.5043,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 fires on -2.74pp negative edge (score 4->1), then HARD CAP 10 fires on pick_prob=0.525 (bottom bucket, 1->0). Per the 06-21 lesson, CAP 1 must force SKIP on any tier including PLATINUM regardless of pre-cap score — the underlying signal stack (SP edge 0.52 xERA, F5_bullpen_gap=+0.65) is real but the market has already absorbed it. Confirming the double cap.",
+      "lessons_applied": ["HARD CAP1 forces SKIP on any tier, no pre-cap override (06-21 BAL@LAD)", "CAP10 bottom-bucket block"]
+    },
+    "ARI @ SD": {
+      "model_pick": "SD ML PLATINUM",
+      "model_prob": 0.5041,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Same double-cap pattern as MIL@STL: HARD CAP 1 (-1.37pp edge) then HARD CAP 10 (pick_prob=0.525) collapse the score to 0. F1_xera_gap=0.83* also carries a thin-sample asterisk, so even absent the other caps this SP signal alone couldn't independently support a GOLD-or-higher tier per HARD CAP 5. No qualitative override available.",
+      "lessons_applied": ["HARD CAP1+CAP10 double-cap SKIP", "F1* thin-sample discount (HARD CAP5)"]
+    },
+    "TOR @ SF": {
+      "model_pick": "SF ML PLATINUM",
+      "model_prob": 0.6129,
+      "model_tier": "PLATINUM",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SF",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "Pre-cap score is elite (8, A): F3=2489.2, Roupp's 0.34 xERA edge over Gausman, Stage 1/2 agree (Δ=0.04) — but HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0111 (SF's high-leverage relief is the worse pen), forcing score to 1 (B-). CAP 7's validating backtest is 0-for-7 and specifically includes a prior SF loss (5/10 PIT@SF, 6-7). Confirming the cap; do not treat this as parlay-eligible despite the strong pre-cap stack.",
+      "lessons_applied": ["HARD CAP7 pick-side bullpen disadvantage, 0-for-7 backtest incl. prior PIT@SF loss"]
+    },
+    "COL @ LAD": {
+      "model_pick": "LAD ML DIAMOND",
+      "model_prob": 0.9326,
+      "model_tier": "DIAMOND",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "Classic calibration artifact: pick_prob=0.846 exceeds the HARD CAP 9 threshold of 0.80 (the top bucket has hit only 33.3% actual vs 87.3% predicted historically), and Stage 1/2 majorly disagree (Δ=0.47 — F5 is a near coin-flip at 46% while full-game claims 93%). This is the same signature validated 3-for-3 on 5/10-5/12 (ATL@LAD, SF@LAD x2). Freeland's SP edge and PQI both genuinely favor LAD directionally, but the extreme probability claim itself is not trustworthy. Confirming the SKIP.",
+      "lessons_applied": ["HARD CAP9 top-bucket calibration hallucination, validated 3-for-3 (ATL@LAD, SF@LAD x2)"]
+    }
+  }
+}
