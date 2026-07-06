@@ -1,51 +1,70 @@
 # Daily Variance Report — 2026-07-07
-_Generated 2026-07-06T19:00:15Z · 16 games · significant deviations only_
+_Generated 2026-07-06T22:14:02Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIL** [IL] — Milwaukee Brewers placed RHP Brandon Woodruff on the 15-day injured list. Right shoulder inflammation.
 - **MIL** [recalled] — Milwaukee Brewers recalled LHP Drew Rom from Nashville Sounds.
+- **STL** [IL] — St. Louis Cardinals placed RHP Max Rajcic on the 15-day injured list retroactive to July 4, 2026. Right elbow soreness.
+- **STL** [recalled] — St. Louis Cardinals recalled RHP Gordon Graceffo from Memphis Redbirds.
 - **ATH** [released] — Athletics released RHP Michael Kelly.
+- **ATH** [optioned] — Athletics optioned RHP Kade Morris to Las Vegas Aviators.
 - **DET** [TRADE] — Detroit Tigers traded RHP Matt Seelinger to New York Mets for cash.
 - **DET** [TRADE] — Detroit Tigers traded RHP Woo-Suk Go to Minnesota Twins for cash.
 - **DET** [signed] — Detroit Tigers signed free agent OF Raylin Castillo to a minor league contract.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Carlos Carrasco from Gwinnett Stripers.
-- **ATL** [outrighted] — Atlanta Braves sent RHP Ian Hamilton outright to Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP JR Ritchie to Gwinnett Stripers.
-- **ATL** [IL] — Atlanta Braves placed LHP Martín Pérez on the 15-day injured list. Left forearm contusion.
+- **ATL** [outrighted] — Atlanta Braves sent RHP Ian Hamilton outright to Gwinnett Stripers.
+- **ATL** [status] — Atlanta Braves placed RF Eli White on the paternity list.
+- **ATL** [DFA] — Atlanta Braves designated C Jair Camargo for assignment.
 - **ATL** [DFA] — Atlanta Braves designated RHP Carlos Carrasco for assignment.
+- **ATL** [IL] — Atlanta Braves placed LHP Martín Pérez on the 15-day injured list. Left forearm contusion.
+- **ATL** [selected] — Atlanta Braves selected the contract of RF José Azócar from Gwinnett Stripers.
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Owen Murphy from Gwinnett Stripers.
 - **PIT** [released] — Pittsburgh Pirates released 3B Davis Wendzel.
 - **PIT** [DFA] — Pittsburgh Pirates designated 3B Davis Wendzel for assignment.
-- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Noah Murdock to Indianapolis Indians.
 - **PIT** [selected] — Pittsburgh Pirates selected the contract of RHP Noah Murdock from Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Noah Murdock to Indianapolis Indians.
 - **NYY** [optioned] — New York Yankees optioned RHP Brendan Beck to Scranton/Wilkes-Barre RailRiders.
 - **NYY** [recalled] — New York Yankees recalled RHP Angel Chivilli from Scranton/Wilkes-Barre RailRiders.
-- **TB** [optioned] — Tampa Bay Rays optioned RHP Trevor Martin to Durham Bulls.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Mason Englert from Durham Bulls.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Trevor Martin to Durham Bulls.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Mason Englert to Durham Bulls.
+- **TB** [recalled] — Tampa Bay Rays recalled RHP Chris Roycroft from Durham Bulls.
+- **HOU** [IL] — Houston Astros activated SS Braden Shewmake from the 10-day injured list.
+- **HOU** [optioned] — Houston Astros optioned 2B Raynel Delgado to Sugar Land Space Cowboys.
 - **WSH** [activated] — Washington Nationals activated RHP Eddy Yean.
 - **WSH** [DFA] — Washington Nationals designated CF Robert Hassell III for assignment.
 - **WSH** [activated] — Washington Nationals activated RHP Eddy Yean.
-- **WSH** [selected] — Washington Nationals selected the contract of RHP Eddy Yean from Rochester Red Wings.
 - **WSH** [optioned] — Washington Nationals optioned RHP Zak Kent to Rochester Red Wings.
-- **NYM** [selected] — New York Mets selected the contract of RHP Guillo Zuñiga from Syracuse Mets.
+- **WSH** [selected] — Washington Nationals selected the contract of RHP Eddy Yean from Rochester Red Wings.
+- **WSH** [recalled] — Washington Nationals recalled RHP Cole Henry from Rochester Red Wings.
+- **WSH** [optioned] — Washington Nationals optioned RHP Eddy Yean to Rochester Red Wings.
 - **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of RHP Guillo Zuñiga from Syracuse Mets.
 - **NYM** [TRADE] — Detroit Tigers traded RHP Matt Seelinger to New York Mets for cash.
 - **PHI** [DFA] — Philadelphia Phillies designated RHP Jean Cabrera for assignment.
 - **PHI** [signed] — Philadelphia Phillies signed free agent OF Bryan De La Cruz.
 - **PHI** [optioned] — Philadelphia Phillies optioned OF Bryan De La Cruz to Lehigh Valley IronPigs.
+- **PHI** [signed] — Philadelphia Phillies signed free agent RHP Hua Ho to a minor league contract.
 - **MIN** [TRADE] — Detroit Tigers traded RHP Woo-Suk Go to Minnesota Twins for cash.
-- **LAA** [optioned] — Los Angeles Angels optioned LHP Sam Aldegheri to Salt Lake Bees.
+- **BOS** [DFA] — Boston Red Sox designated RHP Jack Anderson for assignment.
+- **BOS** [IL] — Boston Red Sox activated LHP Patrick Sandoval from the 60-day injured list.
+- **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
 - **LAA** [recalled] — Los Angeles Angels recalled LHP Tayler Saucedo from Salt Lake Bees.
-- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
+- **LAA** [optioned] — Los Angeles Angels optioned LHP Sam Aldegheri to Salt Lake Bees.
 - **AZ** [optioned] — Arizona Diamondbacks optioned 1B LuJames Groover to Reno Aces.
-- **COL** [optioned] — Colorado Rockies optioned LHP Sean Sullivan to Albuquerque Isotopes.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
+- **AZ** [IL] — Arizona Diamondbacks activated C James McCann from the 10-day injured list.
+- **AZ** [optioned] — Arizona Diamondbacks optioned DH Adrian Del Castillo to Reno Aces.
 - **COL** [recalled] — Colorado Rockies recalled RHP TJ Shook from Albuquerque Isotopes.
+- **COL** [optioned] — Colorado Rockies optioned LHP Sean Sullivan to Albuquerque Isotopes.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
+- **WSH** code=SU — RHP Cade Cavalli suspended.
 - **TEX** code=ACQ — Texas Rangers acquired C Arturo De Freitas from the Quebec Capitales of the.
 
-_Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **MIL @ STL** (home SP TBD): NOT CONFIRMED — probable SP not posted
@@ -66,6 +85,8 @@ _Suppressed 1 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **NYY** Camilo Doval — 2 apps / 47 pitches over last 3 games — monitor
 - **NYY** Jake Bird — 2 apps / 38 pitches over last 3 games — monitor
 - **HOU** Josh Hader — 2 apps / 38 pitches over last 3 games — monitor
+- **KC** Beck Way — 2 apps / 43 pitches over last 3 games — monitor
+- **KC** Jose Cuas — 2 apps / 53 pitches over last 3 games — monitor
 - **CLE** Shawn Armstrong — 2 apps / 35 pitches over last 3 games — monitor
 - **LAA** Chase Silseth — 2 apps / 41 pitches over last 3 games — monitor
 - **SF** Dylan Smith — 2 apps / 36 pitches over last 3 games — monitor
