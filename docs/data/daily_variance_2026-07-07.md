@@ -1,11 +1,12 @@
 # Daily Variance Report — 2026-07-07
-_Generated 2026-07-06T22:14:02Z · 16 games · significant deviations only_
+_Generated 2026-07-07T01:53:49Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIL** [IL] — Milwaukee Brewers placed RHP Brandon Woodruff on the 15-day injured list. Right shoulder inflammation.
 - **MIL** [recalled] — Milwaukee Brewers recalled LHP Drew Rom from Nashville Sounds.
 - **STL** [IL] — St. Louis Cardinals placed RHP Max Rajcic on the 15-day injured list retroactive to July 4, 2026. Right elbow soreness.
 - **STL** [recalled] — St. Louis Cardinals recalled RHP Gordon Graceffo from Memphis Redbirds.
+- **BAL** [optioned] — Baltimore Orioles optioned RHP Cameron Weston to Norfolk Tides.
 - **ATH** [released] — Athletics released RHP Michael Kelly.
 - **ATH** [optioned] — Athletics optioned RHP Kade Morris to Las Vegas Aviators.
 - **DET** [TRADE] — Detroit Tigers traded RHP Matt Seelinger to New York Mets for cash.
@@ -40,6 +41,7 @@ _Generated 2026-07-06T22:14:02Z · 16 games · significant deviations only_
 - **WSH** [selected] — Washington Nationals selected the contract of RHP Eddy Yean from Rochester Red Wings.
 - **WSH** [recalled] — Washington Nationals recalled RHP Cole Henry from Rochester Red Wings.
 - **WSH** [optioned] — Washington Nationals optioned RHP Eddy Yean to Rochester Red Wings.
+- **KC** [claimed] — San Francisco Giants claimed RHP Eric Cerantola off waivers from Kansas City Royals.
 - **NYM** [optioned] — New York Mets optioned RHP Joey Gerber to Syracuse Mets.
 - **NYM** [selected] — New York Mets selected the contract of RHP Guillo Zuñiga from Syracuse Mets.
 - **NYM** [TRADE] — Detroit Tigers traded RHP Matt Seelinger to New York Mets for cash.
@@ -48,6 +50,7 @@ _Generated 2026-07-06T22:14:02Z · 16 games · significant deviations only_
 - **PHI** [optioned] — Philadelphia Phillies optioned OF Bryan De La Cruz to Lehigh Valley IronPigs.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Hua Ho to a minor league contract.
 - **MIN** [TRADE] — Detroit Tigers traded RHP Woo-Suk Go to Minnesota Twins for cash.
+- **MIN** [optioned] — Minnesota Twins optioned RHP Cody Laweryson to St. Paul Saints.
 - **BOS** [DFA] — Boston Red Sox designated RHP Jack Anderson for assignment.
 - **BOS** [IL] — Boston Red Sox activated LHP Patrick Sandoval from the 60-day injured list.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
@@ -57,22 +60,30 @@ _Generated 2026-07-06T22:14:02Z · 16 games · significant deviations only_
 - **AZ** [recalled] — Arizona Diamondbacks recalled LF Tim Tawa from Reno Aces.
 - **AZ** [IL] — Arizona Diamondbacks activated C James McCann from the 10-day injured list.
 - **AZ** [optioned] — Arizona Diamondbacks optioned DH Adrian Del Castillo to Reno Aces.
+- **TOR** [activated] — Toronto Blue Jays activated DH George Springer from the bereavement list.
+- **TOR** [status] — Toronto Blue Jays placed RHP Braydon Fisher on the bereavement list.
+- **SF** [claimed] — San Francisco Giants claimed RHP Eric Cerantola off waivers from Kansas City Royals.
+- **SF** [outrighted] — San Francisco Giants sent RHP Gregory Santos outright to Sacramento River Cats.
 - **COL** [recalled] — Colorado Rockies recalled RHP TJ Shook from Albuquerque Isotopes.
 - **COL** [optioned] — Colorado Rockies optioned LHP Sean Sullivan to Albuquerque Isotopes.
+- **LAD** [DFA] — Los Angeles Dodgers designated C Chuckie Robinson for assignment.
+- **LAD** [IL] — Los Angeles Dodgers activated RHP Evan Phillips from the 60-day injured list.
+- **LAD** [released] — Los Angeles Dodgers released LHP Jake Eder.
+- **LAD** [optioned] — Los Angeles Dodgers optioned RHP Paul Gervase to Oklahoma City Comets.
+- **LAD** [selected] — Los Angeles Dodgers selected the contract of RHP Carlos Duran from Oklahoma City Comets.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **WSH** code=SU — RHP Cade Cavalli suspended.
 - **TEX** code=ACQ — Texas Rangers acquired C Arturo De Freitas from the Quebec Capitales of the.
 
-_Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
 - **MIL @ STL** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIL @ STL** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **MIL @ STL** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **ATL @ PIT** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **ATL @ PIT** (home SP Paul Skenes): very high K% (30.1% vs lg 22.0)
 - **SEA @ MIA** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **NYY @ TB** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **KC @ NYM** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **PHI @ CIN** (away SP TBD): NOT CONFIRMED — probable SP not posted
 - **LAA @ TEX** (home SP Jacob deGrom): very high K% (30.0% vs lg 22.0)
@@ -85,6 +96,7 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> l
 - **NYY** Camilo Doval — 2 apps / 47 pitches over last 3 games — monitor
 - **NYY** Jake Bird — 2 apps / 38 pitches over last 3 games — monitor
 - **HOU** Josh Hader — 2 apps / 38 pitches over last 3 games — monitor
+- **WSH** Cole Henry — threw 44 pitches last night — likely unavailable
 - **KC** Beck Way — 2 apps / 43 pitches over last 3 games — monitor
 - **KC** Jose Cuas — 2 apps / 53 pitches over last 3 games — monitor
 - **CLE** Shawn Armstrong — 2 apps / 35 pitches over last 3 games — monitor
@@ -97,9 +109,11 @@ _Suppressed 3 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> l
 - CHC @ BAL — CHC faces RHP (Shane Baz)
 - ATH @ DET — DET faces RHP (J.T. Ginn)
 - ATH @ DET — ATH faces LHP (Tarik Skubal)
+- ATL @ PIT — PIT faces RHP (Hurston Waldrep)
 - ATL @ PIT — ATL faces RHP (Paul Skenes)
 - SEA @ MIA — SEA faces RHP (Max Meyer)
 - NYY @ TB — TB faces RHP (Will Warren)
+- NYY @ TB — NYY faces LHP (Ian Seymour)
 - HOU @ WSH — WSH faces RHP (Tatsuya Imai)
 - HOU @ WSH — HOU faces LHP (Andrew Alvarez)
 - KC @ NYM — NYM faces RHP (Seth Lugo)
