@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-07T12:32:14.700724+00:00",
+  "checked_at": "2026-07-07T15:28:23.934744+00:00",
   "overall": "yellow",
   "categories": {
     "workflows": "green",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 2.7h ago",
+      "message": "last slate publish 0.3h ago",
       "detail": {
-        "last_run_iso": "2026-07-07T09:52:08+00:00",
-        "age_hours": 2.67
+        "last_run_iso": "2026-07-07T15:11:52+00:00",
+        "age_hours": 0.28
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.2d ago",
+      "message": "last fired 2.3d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:28:18Z",
-        "age_hours": 53.07,
+        "age_hours": 56.0,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.2d ago",
+      "message": "last fired 2.3d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:54:08Z",
-        "age_hours": 52.64,
+        "age_hours": 55.57,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.2h ago",
+      "message": "last fired 5.1h ago",
       "detail": {
         "last_run_iso": "2026-07-07T10:21:27Z",
-        "age_hours": 2.18,
+        "age_hours": 5.12,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,8 +71,9 @@
         "ok_rows": 10,
         "non_ok_pct": 33.3,
         "status_distribution": {
+          "no_match": 1,
           "fetched": 10,
-          "pending_sp_data": 5
+          "pending_sp_data": 4
         }
       },
       "category": "data_flow"
@@ -80,11 +81,11 @@
     {
       "name": "pending_sp_data_rate",
       "severity": "yellow",
-      "message": "33% PENDING_SP_DATA (5/15)",
+      "message": "27% PENDING_SP_DATA (4/15)",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 5,
-        "pct_of_slate": 33.3
+        "pending_sp_data_count": 4,
+        "pct_of_slate": 26.7
       },
       "category": "data_flow"
     },
@@ -97,7 +98,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-07T12:32:14.802Z",
+          "timestamp": "2026-07-07T15:28:24.056Z",
           "commit": "unknown",
           "region": "IAD"
         }
@@ -107,10 +108,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 807.8h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 810.7h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 807.78,
+        "age_hours": 810.71,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
