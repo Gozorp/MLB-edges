@@ -1,6 +1,6 @@
 {
  "date": "2026-07-07",
- "generated_utc": "2026-07-07T01:53:10+00:00",
+ "generated_utc": "2026-07-07T08:32:14+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
  "sps": {
@@ -617,6 +617,94 @@
    "mult": 1.74,
    "hr_per_start": 1.0,
    "era": 4.74,
+   "er_spike": false
+  },
+  "Zac Gallen": {
+   "id": 668678,
+   "opp": "SD",
+   "opp_id": 135,
+   "season_era": 6.36,
+   "season_hr9": 1.66,
+   "season_kbb": 6.8,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 1.2,
+   "matchup_w_ip": 13.0,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 0,
+     "ip": 3.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 2,
+     "ip": 16.7,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 1.33,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs SD 3yr (2026:0HR/3IP,2025:2HR/17IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 11.02,
+   "l3_hr": 4,
+   "l3_hr_per_start": 1.33,
+   "l3_kbb": 1.3,
+   "trend": "DOWN",
+   "trend_down": true,
+   "trend_basis": "L3 ERA 11.02 vs season 6.36 (+4.66); L3 K-BB% 1.3 vs season 6.8 (-5.5pp)",
+   "risk_level": 2,
+   "risk_label": "Moderate Risk",
+   "flag": "HEAVY",
+   "mult": 1.28,
+   "hr_per_start": 1.33,
+   "era": 11.02,
+   "er_spike": true
+  },
+  "Germ\u00e1n M\u00e1rquez": {
+   "id": 608566,
+   "opp": "AZ",
+   "opp_id": 109,
+   "season_era": 5.79,
+   "season_hr9": 2.2,
+   "season_kbb": 3.5,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 1.0,
+   "matchup_w_ip": 7.8,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 1,
+     "ip": 6.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 0,
+     "ip": 3.0,
+     "w": 0.6
+    }
+   ],
+   "smoothed_matchup_hr9": 1.91,
+   "matchup_freq": "FREQUENT",
+   "matchup_basis": "vs AZ 3yr (2026:1HR/6IP,2025:0HR/3IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 5.94,
+   "l3_hr": 3,
+   "l3_hr_per_start": 1.0,
+   "l3_kbb": 1.4,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 5.94 vs season 5.79)",
+   "risk_level": 1,
+   "risk_label": "Severe Risk",
+   "flag": "EXTREME",
+   "mult": 1.59,
+   "hr_per_start": 1.0,
+   "era": 5.94,
    "er_spike": false
   },
   "Michael Lorenzen": {

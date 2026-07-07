@@ -1,7 +1,7 @@
 {
- "generated_utc": "2026-07-07T01:54:03Z",
+ "generated_utc": "2026-07-07T08:33:11Z",
  "date": "2026-07-07",
- "n_games": 9,
+ "n_games": 10,
  "basis": "Display-only projected run differential: win-prob logit base x production scale (season + last-14d run diff, rolling runs, lineup xwOBA, SP K%). Decoupled overlay, not a model output.",
  "games": {
   "CHC @ BAL": {
@@ -24,13 +24,13 @@
   },
   "OAK @ DET": {
    "favored": "DET",
-   "win_prob": 0.5416,
-   "spread": 0.3,
+   "win_prob": 0.5472,
+   "spread": 0.4,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "OAK 4-5 DET",
    "components": {
-    "base": 0.25,
+    "base": 0.28,
     "scale": 1.366,
     "rd_season_gap": 0.615,
     "rd_recent_gap": 1.0,
@@ -42,17 +42,17 @@
   },
   "ATL @ PIT": {
    "favored": "PIT",
-   "win_prob": 0.5071,
+   "win_prob": 0.5275,
    "spread": 0.2,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "ATL 4-5 PIT",
    "components": {
-    "base": 0.04,
-    "scale": 1.172,
-    "rd_season_gap": -0.486,
-    "rd_recent_gap": 0.731,
-    "off_recent_gap": 0.776,
+    "base": 0.17,
+    "scale": 1.176,
+    "rd_season_gap": -0.47,
+    "rd_recent_gap": 0.772,
+    "off_recent_gap": 0.731,
     "xwoba_gap": 0.0,
     "sp_k_gap": 0.791,
     "total_runs": 8.6
@@ -60,13 +60,13 @@
   },
   "NYY @ TB": {
    "favored": "TB",
-   "win_prob": 0.6354,
-   "spread": 1.0,
+   "win_prob": 0.6533,
+   "spread": 1.1,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "NYY 4-5 TB",
    "components": {
-    "base": 0.83,
+    "base": 0.95,
     "scale": 1.195,
     "rd_season_gap": -0.373,
     "rd_recent_gap": 1.0,
@@ -78,13 +78,13 @@
   },
   "HOU @ WSH": {
    "favored": "WSH",
-   "win_prob": 0.5465,
-   "spread": 0.3,
+   "win_prob": 0.5286,
+   "spread": 0.2,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "HOU 4-5 WSH",
    "components": {
-    "base": 0.28,
+    "base": 0.17,
     "scale": 1.092,
     "rd_season_gap": 0.395,
     "rd_recent_gap": -0.115,
@@ -96,13 +96,13 @@
   },
   "CLE @ MIN": {
    "favored": "MIN",
-   "win_prob": 0.5193,
+   "win_prob": 0.5136,
    "spread": 0.2,
    "proj_away": 4,
    "proj_home": 5,
    "proj_score": "CLE 4-5 MIN",
    "components": {
-    "base": 0.12,
+    "base": 0.08,
     "scale": 1.113,
     "rd_season_gap": -0.059,
     "rd_recent_gap": 0.133,
@@ -132,13 +132,13 @@
   },
   "LAA @ TEX": {
    "favored": "TEX",
-   "win_prob": 0.7276,
-   "spread": 1.9,
+   "win_prob": 0.781,
+   "spread": 2.4,
    "proj_away": 3,
-   "proj_home": 5,
-   "proj_score": "LAA 3-5 TEX",
+   "proj_home": 6,
+   "proj_score": "LAA 3-6 TEX",
    "components": {
-    "base": 1.47,
+    "base": 1.91,
     "scale": 1.283,
     "rd_season_gap": 0.366,
     "rd_recent_gap": 0.856,
@@ -148,19 +148,37 @@
     "total_runs": 8.6
    }
   },
+  "ARI @ SD": {
+   "favored": "ARI",
+   "win_prob": 0.5613,
+   "spread": 0.4,
+   "proj_away": 5,
+   "proj_home": 4,
+   "proj_score": "ARI 5-4 SD",
+   "components": {
+    "base": 0.37,
+    "scale": 1.144,
+    "rd_season_gap": 0.215,
+    "rd_recent_gap": 1.0,
+    "off_recent_gap": 0.205,
+    "xwoba_gap": 0.0,
+    "sp_k_gap": -0.547,
+    "total_runs": 8.6
+   }
+  },
   "COL @ LAD": {
    "favored": "LAD",
-   "win_prob": 0.8847,
-   "spread": 3.9,
+   "win_prob": 0.8681,
+   "spread": 3.6,
    "proj_away": 2,
    "proj_home": 6,
    "proj_score": "COL 2-6 LAD",
    "components": {
-    "base": 3.06,
-    "scale": 1.276,
+    "base": 2.83,
+    "scale": 1.285,
     "rd_season_gap": 1.0,
-    "rd_recent_gap": 0.792,
-    "off_recent_gap": -0.333,
+    "rd_recent_gap": 0.808,
+    "off_recent_gap": -0.269,
     "xwoba_gap": 0.0,
     "sp_k_gap": 0.188,
     "total_runs": 8.6

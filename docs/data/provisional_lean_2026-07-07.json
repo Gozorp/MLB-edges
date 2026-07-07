@@ -1,21 +1,21 @@
 {
   "date": "2026-07-07",
-  "generated_utc": "2026-07-07T01:54:03.944005+00:00",
+  "generated_utc": "2026-07-07T08:33:12.648786+00:00",
   "method": "sp-independent-team-strength",
   "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
   "games": {
     "MIL @ STL": {
       "provisional_pick": "MIL",
-      "p_pick": 0.828,
-      "p_home": 0.172,
+      "p_pick": 0.842,
+      "p_home": 0.158,
       "basis": "team-strength(win%+runDiff)+home-field",
       "confidence": "medium",
       "is_provisional": true,
       "no_sp": true,
       "away": "MIL",
       "home": "STL",
-      "away_strength": 2.08,
-      "home_strength": 0.42
+      "away_strength": 2.11,
+      "home_strength": 0.37
     },
     "SEA @ MIA": {
       "provisional_pick": "MIA",
@@ -28,12 +28,12 @@
       "away": "SEA",
       "home": "MIA",
       "away_strength": 0.35,
-      "home_strength": 0.49
+      "home_strength": 0.5
     },
     "KC @ NYM": {
       "provisional_pick": "NYM",
-      "p_pick": 0.568,
-      "p_home": 0.568,
+      "p_pick": 0.586,
+      "p_home": 0.586,
       "basis": "team-strength(win%+runDiff)+home-field",
       "confidence": "medium",
       "is_provisional": true,
@@ -41,12 +41,12 @@
       "away": "KC",
       "home": "NYM",
       "away_strength": -1.33,
-      "home_strength": -1.22
+      "home_strength": -1.15
     },
     "PHI @ CIN": {
       "provisional_pick": "PHI",
-      "p_pick": 0.739,
-      "p_home": 0.261,
+      "p_pick": 0.74,
+      "p_home": 0.26,
       "basis": "team-strength(win%+runDiff)+home-field",
       "confidence": "medium",
       "is_provisional": true,
@@ -54,33 +54,20 @@
       "away": "PHI",
       "home": "CIN",
       "away_strength": 0.32,
-      "home_strength": -0.82
+      "home_strength": -0.83
     },
-    "ARI @ SD": {
-      "provisional_pick": "SD",
-      "p_pick": 0.511,
-      "p_home": 0.511,
+    "TOR @ SF": {
+      "provisional_pick": "TOR",
+      "p_pick": 0.557,
+      "p_home": 0.443,
       "basis": "team-strength(win%+runDiff)+home-field",
       "confidence": "low",
       "is_provisional": true,
       "no_sp": true,
-      "away": "AZ",
-      "home": "SD",
-      "away_strength": -0.3,
-      "home_strength": -0.41
-    },
-    "TOR @ SF": {
-      "provisional_pick": "TOR",
-      "p_pick": 0.618,
-      "p_home": 0.382,
-      "basis": "team-strength(win%+runDiff)+home-field",
-      "confidence": "medium",
-      "is_provisional": true,
-      "no_sp": true,
       "away": "TOR",
       "home": "SF",
-      "away_strength": -0.62,
-      "home_strength": -1.23
+      "away_strength": -0.73,
+      "home_strength": -1.1
     }
   }
 }
