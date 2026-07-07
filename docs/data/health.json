@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "checked_at": "2026-07-07T01:18:57.593232+00:00",
-  "overall": "red",
+  "checked_at": "2026-07-07T05:46:35.363306+00:00",
+  "overall": "yellow",
   "categories": {
     "workflows": "green",
-    "data_flow": "red",
+    "data_flow": "yellow",
     "deployment": "green",
     "model": "frozen"
   },
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 3.1h ago",
+      "message": "last slate publish 3.9h ago",
       "detail": {
-        "last_run_iso": "2026-07-06T22:14:29+00:00",
-        "age_hours": 3.07
+        "last_run_iso": "2026-07-07T01:54:07+00:00",
+        "age_hours": 3.87
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 1.7d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:28:18Z",
-        "age_hours": 41.84,
+        "age_hours": 46.3,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 1.7d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:54:08Z",
-        "age_hours": 41.41,
+        "age_hours": 45.87,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 1.6h ago",
+      "message": "last fired 6.0h ago",
       "detail": {
         "last_run_iso": "2026-07-06T23:44:40Z",
-        "age_hours": 1.57,
+        "age_hours": 6.03,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -65,26 +65,26 @@
     {
       "name": "kalshi_coverage_rate",
       "severity": "yellow",
-      "message": "53% of slate has no Kalshi moneyline",
+      "message": "40% of slate has no Kalshi moneyline",
       "detail": {
         "total_rows": 15,
-        "ok_rows": 7,
-        "non_ok_pct": 53.3,
+        "ok_rows": 9,
+        "non_ok_pct": 40.0,
         "status_distribution": {
-          "fetched": 7,
-          "pending_sp_data": 8
+          "fetched": 9,
+          "pending_sp_data": 6
         }
       },
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "red",
-      "message": "53% PENDING_SP_DATA (8/15)",
+      "severity": "yellow",
+      "message": "40% PENDING_SP_DATA (6/15)",
       "detail": {
         "total_rows": 15,
-        "pending_sp_data_count": 8,
-        "pct_of_slate": 53.3
+        "pending_sp_data_count": 6,
+        "pct_of_slate": 40.0
       },
       "category": "data_flow"
     },
@@ -97,7 +97,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-07T01:18:57.685Z",
+          "timestamp": "2026-07-07T05:46:35.486Z",
           "commit": "unknown",
           "region": "IAD"
         }
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 796.6h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 801.0h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 796.56,
+        "age_hours": 801.02,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
