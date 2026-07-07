@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-08
-_Generated 2026-07-07T09:51:46Z · 15 games · significant deviations only_
+_Generated 2026-07-07T15:11:32Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [status] — Toronto Blue Jays placed RHP Braydon Fisher on the bereavement list.
@@ -18,6 +18,7 @@ _Generated 2026-07-07T09:51:46Z · 15 games · significant deviations only_
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Mason Englert to Durham Bulls.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Chris Roycroft from Durham Bulls.
+- **HOU** [signed] — Houston Astros signed free agent C John Rodriguez.
 - **HOU** [IL] — Houston Astros activated SS Braden Shewmake from the 10-day injured list.
 - **HOU** [optioned] — Houston Astros optioned 2B Raynel Delgado to Sugar Land Space Cowboys.
 - **WSH** [optioned] — Washington Nationals optioned RHP Eddy Yean to Rochester Red Wings.
@@ -28,8 +29,15 @@ _Generated 2026-07-07T09:51:46Z · 15 games · significant deviations only_
 - **BOS** [IL] — Boston Red Sox activated LHP Patrick Sandoval from the 60-day injured list.
 - **BOS** [DFA] — Boston Red Sox designated RHP Jack Anderson for assignment.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
+- **MIL** [recalled] — Milwaukee Brewers recalled LHP Robert Gasser from ACL Brewers.
+- **MIL** [recalled] — Milwaukee Brewers recalled CF Luis Lara from Nashville Sounds.
+- **MIL** [optioned] — Milwaukee Brewers optioned CF Blake Perkins to Nashville Sounds.
 - **STL** [IL] — St. Louis Cardinals placed RHP Max Rajcic on the 15-day injured list retroactive to July 4, 2026. Right elbow soreness.
 - **STL** [recalled] — St. Louis Cardinals recalled RHP Gordon Graceffo from Memphis Redbirds.
+- **STL** [IL] — St. Louis Cardinals transferred RHP Max Rajcic from the 15-day injured list to the 60-day injured list. Right elbow soreness.
+- **STL** [selected] — St. Louis Cardinals selected the contract of LHP Bruce Zimmermann from Memphis Redbirds.
+- **STL** [recalled] — St. Louis Cardinals recalled RHP Hunter Dobbins from Memphis Redbirds.
+- **STL** [optioned] — St. Louis Cardinals optioned RHP Ryan Fernandez to Memphis Redbirds.
 - **LAD** [DFA] — Los Angeles Dodgers designated C Chuckie Robinson for assignment.
 - **LAD** [released] — Los Angeles Dodgers released LHP Jake Eder.
 - **LAD** [IL] — Los Angeles Dodgers activated RHP Evan Phillips from the 60-day injured list.
