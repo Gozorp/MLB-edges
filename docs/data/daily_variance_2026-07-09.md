@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-09
-_Generated 2026-07-08T08:36:41Z · 13 games · significant deviations only_
+_Generated 2026-07-08T11:35:00Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [status] — Atlanta Braves placed RHP Tyler Kinley on the paternity list.
