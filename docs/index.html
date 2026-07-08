@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 <title>Gozorp's MLB edge — daily slate</title>
 <style>
   :root {
@@ -1757,6 +1760,90 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     #top-outcomes :not(.result-chip){ white-space: normal; }
     #top-outcomes .result-chip{ white-space: nowrap; }
 
+  }
+  </style>
+  <style id="command-center">
+  /* ==========================================================
+     command-center polish (2026-07-08, user-directed) -- leans
+     the Quant Terminal identity harder into a high-performance
+     gauge-cluster feel: real webfonts (JetBrains Mono was
+     declared but never loaded), deeper matte canvas, neon
+     conviction accents, dimmed noise rows, edge heat, tactile
+     panel edges, desktop breathing room. Additive cascade-last;
+     revert: delete this block + the fonts <link> + #edge-heat.
+     ========================================================== */
+
+  :root{
+    --bg: #07090d;             /* deeper matte canvas */
+    --bg-elev: #10151d;        /* panels ride slightly higher */
+    --neon: #b7ff2e;           /* conviction chartreuse */
+    --amber: #ffb454;
+  }
+
+  /* ---- typography: structured sans for headers, tracked ---- */
+  h1, h2, h3, .accordion-header span, .accordion-eyebrow{
+    font-family: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  }
+  h1{ font-weight: 700; letter-spacing: 0.01em; }
+  h2, h3{ font-weight: 600; letter-spacing: 0.015em; }
+  .accordion-header span{ font-weight: 600; letter-spacing: 0.03em; }
+  .accordion-eyebrow{ letter-spacing: 0.14em; }
+
+  /* ---- conviction accents: A-tier pops neon ---- */
+  .grade-A, .grade-A-{
+    color: var(--neon) !important;
+    border-color: rgba(183, 255, 46, 0.55) !important;
+    background: rgba(183, 255, 46, 0.08) !important;
+    text-shadow: 0 0 12px rgba(183, 255, 46, 0.28);
+  }
+  /* ---- de-emphasize the noise: D-grade rows recede ---- */
+  tbody tr.row-clickable:has(.grade-D){
+    opacity: 0.58;
+    transition: opacity 0.18s ease-out;
+  }
+  tbody tr.row-clickable:has(.grade-D):hover,
+  tbody tr.row-clickable:has(.grade-D):focus-within{ opacity: 1; }
+
+  /* ---- micro-viz: edge cell heat (tint + bottom bar) ----
+     --eh (0..1) + eh-pos/eh-neg set by the #edge-heat script */
+  td.col-edge.eh-pos, td.col-edge.eh-neg{
+    background-repeat: no-repeat, no-repeat;
+    background-position: 0 0, left calc(100% - 3px);
+  }
+  td.col-edge.eh-pos{
+    background-image:
+      linear-gradient(rgba(63,185,80, calc(var(--eh, 0) * 0.15)),
+                      rgba(63,185,80, calc(var(--eh, 0) * 0.15))),
+      linear-gradient(90deg, rgba(183,255,46,0.85), rgba(63,185,80,0.25));
+    background-size: 100% 100%, calc(var(--eh, 0) * 82%) 2px;
+  }
+  td.col-edge.eh-neg{
+    background-image:
+      linear-gradient(rgba(248,81,73, calc(var(--eh, 0) * 0.13)),
+                      rgba(248,81,73, calc(var(--eh, 0) * 0.13))),
+      linear-gradient(90deg, rgba(248,81,73,0.8), rgba(248,81,73,0.2));
+    background-size: 100% 100%, calc(var(--eh, 0) * 82%) 2px;
+  }
+
+  /* ---- depth: raised, tactile panels on the matte canvas ---- */
+  .card, .accordion, .picker{
+    border-color: #272d36;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 1px 0 rgba(0, 0, 0, 0.5),
+      0 12px 32px rgba(0, 0, 0, 0.42);
+  }
+  #help-panel{
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), -18px 0 48px rgba(0,0,0,0.5);
+  }
+
+  /* ---- breathing room (desktop only; touch density tuned in v2/v3) ---- */
+  @media (min-width: 1100px){
+    .accordion{ margin-bottom: 1.4rem; }
+    .accordion-body-inner{ padding: 1.15rem 1.3rem 1.4rem; }
+    .accordion-header{ padding-top: 1.05rem; padding-bottom: 1.05rem; }
+    #slate td, #top-outcomes td{ padding-top: 0.42rem; padding-bottom: 0.42rem; }
+    .picker{ margin-bottom: 1.2rem; }
   }
   </style>
 </head>
@@ -9440,6 +9527,34 @@ document.addEventListener("click", function (e) {
 </aside>
 
 <script defer src="js/weather.js"></script>
+  <script id="edge-heat">
+  /* command-center micro-viz: map each rendered edge value to --eh (0..1)
+     on its td.col-edge so CSS can tint + bar it. Display-only, defensive,
+     re-applies after any slate re-render via MutationObserver. */
+  (function () {
+    function applyHeat() {
+      try {
+        document.querySelectorAll("td.col-edge").forEach(function (td) {
+          var m = (td.textContent || "").match(/-?\d+(?:\.\d+)?/);
+          if (!m) return;
+          var v = parseFloat(m[0]);
+          if (!isFinite(v) || v === 0) return;
+          var h = Math.min(Math.abs(v) / 15, 1);
+          td.style.setProperty("--eh", h.toFixed(3));
+          td.classList.toggle("eh-pos", v > 0);
+          td.classList.toggle("eh-neg", v < 0);
+        });
+      } catch (e) { /* display-only: never break the page */ }
+    }
+    var t;
+    function debounced() { clearTimeout(t); t = setTimeout(applyHeat, 350); }
+    try {
+      new MutationObserver(debounced).observe(document.body, { childList: true, subtree: true });
+    } catch (e) {}
+    if (document.readyState !== "loading") debounced();
+    else document.addEventListener("DOMContentLoaded", debounced);
+  })();
+  </script>
 </body>
 </html>
 
