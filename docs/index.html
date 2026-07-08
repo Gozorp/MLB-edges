@@ -2005,6 +2005,108 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   #slate table thead th.sort-asc::after{ content: " ▲"; color: var(--accent); font-size: 0.72em; }
   #slate table thead th.sort-desc::after{ content: " ▼"; color: var(--accent); font-size: 0.72em; }
   </style>
+  <style id="responsive-v4">
+  /* ==========================================================
+     responsive-v4 (2026-07-08) -- DESKTOP slate data-grid.
+     Fixes the clipped right columns the user reported: at
+     >=1100px the table had no scrollport, so TIER/GRADE/CLAUDE/
+     RESULT silently cut off at the panel edge (worse once the
+     340px rail landed). The slate is now its own grid viewport:
+     pans horizontally (thin visible scrollbar), matchup column
+     pinned left, column headers pinned top INSIDE the grid.
+     Cascade-last, display-only. Revert: delete this block.
+     ========================================================== */
+  @media (min-width: 1100px){
+    body:not(.simple-mode) #slate table:has(tr.row-clickable){
+      display: block;
+      overflow: auto;
+      max-height: 82vh;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable)::-webkit-scrollbar{
+      height: 10px; width: 10px;
+    }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable)::-webkit-scrollbar-thumb{
+      background: rgba(88,166,255,0.3); border-radius: 5px;
+    }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable)::-webkit-scrollbar-track{
+      background: rgba(255,255,255,0.03);
+    }
+
+    /* matchup column pinned left (chev col stays visible on desktop) */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th:nth-child(2),
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable td:nth-child(2){
+      position: sticky; left: 0; z-index: 6;
+      background: var(--bg-elev);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-right: 1px solid var(--border);
+    }
+    /* zebra rows keep their stripe under the pinned cell */
+    body:not(.simple-mode) #slate tbody tr.row-clickable:nth-child(4n+3) td:nth-child(2){
+      background: var(--zebra);
+    }
+    body:not(.simple-mode) #slate tbody tr.row-clickable:hover td:nth-child(2){
+      background: var(--row-hover);
+    }
+    /* header row pins to the grid top; corner cell above everything */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th{
+      z-index: 7;
+    }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th:nth-child(2){
+      z-index: 8;
+    }
+    /* keep data cells one-line so the grid pans instead of wrapping */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th{ white-space: nowrap; }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable > td:not(:nth-child(2)){
+      white-space: nowrap;
+    }
+    body:not(.simple-mode) #slate tr.details-row td,
+    body:not(.simple-mode) #slate tr.details-row td *{ white-space: normal; }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable td:nth-child(2){
+      max-width: 30vw;
+    }
+  }
+  /* 1100-1450px: slim the rail so the grid gets more room */
+  @media (min-width: 1100px) and (max-width: 1450px){
+    #side-drawer{ width: 300px; }
+    body{ padding-left: 300px; }
+  }
+
+  /* ==========================================================
+     drawer containment (ALL widths): the relocated modules were
+     built for the wide main column -- H2H cards / bullpen tables
+     clipped inside the rail. Anything wider than the drawer now
+     pans inside its own thin scrollport instead of cutting off.
+     (Overrides the v3 overflow-x:clip backstop within the drawer.)
+     ========================================================== */
+  #side-drawer .accordion-body-inner{
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  #side-drawer table, #side-drawer pre{
+    display: block; max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  #side-drawer .card{ max-width: 100%; overflow-x: auto; scrollbar-width: thin; }
+  #side-drawer .accordion-body-inner::-webkit-scrollbar,
+  #side-drawer table::-webkit-scrollbar,
+  #side-drawer pre::-webkit-scrollbar,
+  #side-drawer .card::-webkit-scrollbar{ height: 8px; }
+  #side-drawer .accordion-body-inner::-webkit-scrollbar-thumb,
+  #side-drawer table::-webkit-scrollbar-thumb,
+  #side-drawer pre::-webkit-scrollbar-thumb,
+  #side-drawer .card::-webkit-scrollbar-thumb{
+    background: rgba(88,166,255,0.28); border-radius: 4px;
+  }
+  /* inline 2-col grids inside the drawer always stack (rail is narrow) */
+  #side-drawer [style*="grid-template-columns"]{ grid-template-columns: 1fr !important; }
+  #side-drawer [style*="display:grid"] > *, #side-drawer [style*="display:flex"] > *{ min-width: 0; }
+  </style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
