@@ -2262,6 +2262,46 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   body[data-theme="garfield"] h1{ color: #111; text-shadow: none; }
   body[data-theme="garfield"] #site-logo circle{ fill: #FFF8EE; }
   </style>
+  <style id="mobile-header">
+  /* ==========================================================
+     mobile header polish (user: 'looks clunky'). Two tidy rows:
+     logo+title, then a normalized 34px control strip. Subtitle
+     hidden on phones; controls share height/typography.
+     ========================================================== */
+  @media (max-width: 768px){
+    header{
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 8px 8px;
+      padding: 0.75rem 0.9rem 0.7rem 3.3rem;   /* clears the hamburger */
+    }
+    header h1{ font-size: 1.18rem; line-height: 1.25; margin: 0; }
+    #site-logo{ width: 24px; height: 24px; vertical-align: -5px; margin-right: 7px; }
+    header .meta{ display: none; }
+
+    /* one consistent control strip */
+    .visit-pill, #theme-toggle,
+    header .wx-chip, header .wx-user-chip{
+      height: 34px; box-sizing: border-box;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 11px; margin: 0;
+      font-size: 0.62rem; border-radius: 9px;
+    }
+    header .wx-chip *, header .wx-user-chip *{
+      font-size: inherit; line-height: 1;
+    }
+    header .wx-chip button, header .wx-user-chip button,
+    header .wx-chip [class*="unit"], header .wx-user-chip [class*="unit"]{
+      border: none; background: transparent; padding: 0 0 0 4px; margin: 0;
+      min-height: 0; height: auto; color: var(--muted);
+    }
+    #help-btn{
+      width: 34px; height: 34px; min-height: 34px;
+      font-size: 0.8rem; padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    #theme-toggle{ letter-spacing: 0.06em; }
+  }
+  </style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
@@ -2372,11 +2412,11 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 
 <header>
   <svg id="site-logo" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true">
-  <circle cx="24" cy="24" r="20" fill="#ffffff" stroke="#111111" stroke-width="3.5"/>
-  <path d="M13 7 C 20 16, 20 32, 13 41" fill="none" stroke="#F57C00" stroke-width="2.6" stroke-linecap="round"/>
-  <path d="M35 7 C 28 16, 28 32, 35 41" fill="none" stroke="#F57C00" stroke-width="2.6" stroke-linecap="round"/>
-  <path d="M14.5 12 l3.4 1.1 M13.2 17 l3.6 0.6 M12.8 22 l3.7 0.1 M13 27 l3.7 -0.4 M13.9 32 l3.5 -0.9 M15.5 37 l3.2 -1.4" stroke="#F57C00" stroke-width="1.7" stroke-linecap="round"/>
-  <path d="M33.5 12 l-3.4 1.1 M34.8 17 l-3.6 0.6 M35.2 22 l-3.7 0.1 M35 27 l-3.7 -0.4 M34.1 32 l-3.5 -0.9 M32.5 37 l-3.2 -1.4" stroke="#F57C00" stroke-width="1.7" stroke-linecap="round"/>
+  <circle cx="24" cy="24" r="20" fill="#ffffff" stroke="#111111" stroke-width="3"/>
+  <path d="M14.5 8 C 23 15.5, 23 32.5, 14.5 40" fill="none" stroke="#E8590C" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M33.5 8 C 25 15.5, 25 32.5, 33.5 40" fill="none" stroke="#E8590C" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M16.6 13.2 l5 1.6 M18.8 18.6 l5.2 0.9 M19.5 24 l5.3 0 M18.8 29.4 l5.2 -0.9 M16.6 34.8 l5 -1.6" stroke="#E8590C" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M31.4 13.2 l-5 1.6 M29.2 18.6 l-5.2 0.9 M28.5 24 l-5.3 0 M29.2 29.4 l-5.2 -0.9 M31.4 34.8 l-5 -1.6" stroke="#E8590C" stroke-width="1.8" stroke-linecap="round"/>
 </svg>
 <h1>Gozorp's MLB edge</h1>
   <div class="meta">Daily MLB slate predictions with multi-rule grading</div>
