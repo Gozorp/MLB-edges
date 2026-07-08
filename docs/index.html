@@ -2132,8 +2132,8 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
       padding-left: 0.45rem; padding-right: 0.45rem;
     }
 
-    /* collapsible rail */
-    body{ transition: padding-left 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    /* collapsible rail -- INSTANT (a padding transition freezes in
+       occluded tabs, wedging the layout at its start value) */
     body.rail-collapsed{ padding-left: 0 !important; }
     body.rail-collapsed #side-drawer{ transform: translateX(-102%); }
     #rail-reopen{
@@ -2148,6 +2148,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   }
   @media (max-width: 1099px){
     #rail-reopen{ display: none !important; }
+  }
+
+  /* v5b density band: make the full column set FIT on common desktop
+     widths instead of panning -- slightly smaller slate type + the
+     decorative chev column hidden (same as mobile; rows still click). */
+  @media (min-width: 1100px) and (max-width: 1700px){
+    body:not(.simple-mode) #slate table:has(tr.row-clickable){ font-size: 0.875em; }
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th:nth-child(1),
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable td:nth-child(1){
+      display: none;
+    }
   }
   </style>
 </head>
