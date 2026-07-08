@@ -1,24 +1,33 @@
 # Daily Variance Report — 2026-07-08
-_Generated 2026-07-07T22:13:41Z · 15 games · significant deviations only_
+_Generated 2026-07-08T19:38:42Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **TOR** [activated] — Toronto Blue Jays activated DH George Springer from the bereavement list.
 - **TOR** [status] — Toronto Blue Jays placed RHP Braydon Fisher on the bereavement list.
-- **SF** [claimed] — San Francisco Giants claimed RHP Eric Cerantola off waivers from Kansas City Royals.
+- **TOR** [optioned] — Toronto Blue Jays optioned LF Yohendrick Piñango to Buffalo Bisons.
+- **TOR** [recalled] — Toronto Blue Jays recalled RHP Chad Dallas from Buffalo Bisons.
 - **SF** [outrighted] — San Francisco Giants sent RHP Gregory Santos outright to Sacramento River Cats.
+- **SF** [claimed] — San Francisco Giants claimed RHP Eric Cerantola off waivers from Kansas City Royals.
+- **SF** [IL] — San Francisco Giants placed CF Jonah Cox on the 10-day injured list retroactive to July 6, 2026. Left oblique strain.
+- **SF** [recalled] — San Francisco Giants recalled C Jesus Rodriguez from Sacramento River Cats.
+- **CHC** [signed] — Chicago Cubs signed free agent LF Chas McCormick to a minor league contract.
 - **CHC** [outrighted] — Chicago Cubs sent RHP Bryse Wilson outright to Iowa Cubs.
 - **BAL** [optioned] — Baltimore Orioles optioned RHP Cameron Weston to Norfolk Tides.
+- **BAL** [signed] — Baltimore Orioles signed free agent LHP Eduin Rodriguez to a minor league contract.
+- **BAL** [signed] — Baltimore Orioles signed free agent RHP Kelvin Cadet to a minor league contract.
 - **BAL** [recalled] — Baltimore Orioles recalled LHP Nick Raquet from Norfolk Tides.
 - **ATH** [optioned] — Athletics optioned RHP Kade Morris to Las Vegas Aviators.
 - **ATH** [IL] — Athletics activated SS Jacob Wilson from the 10-day injured list.
 - **ATH** [optioned] — Athletics optioned C Brian Serven to Las Vegas Aviators.
-- **ATH** [optioned] — Athletics optioned RHP Kade Morris to Las Vegas Aviators.
 - **ATH** [recalled] — Athletics recalled LHP Jacob Lopez from Las Vegas Aviators.
+- **ATH** [optioned] — Athletics optioned RHP Kade Morris to Las Vegas Aviators.
+- **ATH** [IL] — Athletics activated LF Tyler Soderstrom from the 10-day injured list.
+- **ATH** [optioned] — Athletics optioned 3B Max Muncy to Las Vegas Aviators.
 - **DET** [signed] — Detroit Tigers signed free agent OF Raylin Castillo to a minor league contract.
 - **ATL** [DFA] — Atlanta Braves designated C Jair Camargo for assignment.
 - **ATL** [IL] — Atlanta Braves placed LHP Martín Pérez on the 15-day injured list. Left forearm contusion.
-- **ATL** [status] — Atlanta Braves placed RF Eli White on the paternity list.
 - **ATL** [DFA] — Atlanta Braves designated RHP Carlos Carrasco for assignment.
+- **ATL** [status] — Atlanta Braves placed RF Eli White on the paternity list.
 - **ATL** [recalled] — Atlanta Braves recalled RHP JR Ritchie from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RF José Azócar from Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of RHP Owen Murphy from Gwinnett Stripers.
@@ -27,10 +36,13 @@ _Generated 2026-07-07T22:13:41Z · 15 games · significant deviations only_
 - **ATL** [recalled] — Atlanta Braves recalled RHP James Karinchak from Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned RHP Owen Murphy to Gwinnett Stripers.
 - **ATL** [selected] — Atlanta Braves selected the contract of LHP Connor Thomas from Gwinnett Stripers.
-- **PIT** [signed] — Pittsburgh Pirates signed free agent RF Joshua Palacios to a minor league contract.
+- **ATL** [optioned] — Atlanta Braves optioned LHP Connor Thomas to Gwinnett Stripers.
+- **ATL** [recalled] — Atlanta Braves recalled RHP Victor Mederos from Gwinnett Stripers.
 - **PIT** [signed] — Pittsburgh Pirates signed free agent C Cameron Barstad to a minor league contract.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent RF Joshua Palacios to a minor league contract.
 - **PIT** [IL] — Pittsburgh Pirates placed SS Konnor Griffin on the 10-day injured list retroactive to July 6, 2026. Left ring finger sagittal back injury.
 - **PIT** [recalled] — Pittsburgh Pirates recalled SS Jack Brannigan from Indianapolis Indians.
+- **SEA** [signed] — Seattle Mariners signed free agent RHP Mario Vasquez to a minor league contract.
 - **TB** [optioned] — Tampa Bay Rays optioned RHP Mason Englert to Durham Bulls.
 - **TB** [recalled] — Tampa Bay Rays recalled RHP Chris Roycroft from Durham Bulls.
 - **HOU** [signed] — Houston Astros signed free agent C John Rodriguez.
@@ -38,43 +50,50 @@ _Generated 2026-07-07T22:13:41Z · 15 games · significant deviations only_
 - **HOU** [optioned] — Houston Astros optioned 2B Raynel Delgado to Sugar Land Space Cowboys.
 - **HOU** [recalled] — Houston Astros recalled RHP Alimber Santa from Sugar Land Space Cowboys.
 - **HOU** [optioned] — Houston Astros optioned RHP Mike Burrows to Sugar Land Space Cowboys.
-- **WSH** [recalled] — Washington Nationals recalled RHP Cole Henry from Rochester Red Wings.
 - **WSH** [optioned] — Washington Nationals optioned RHP Eddy Yean to Rochester Red Wings.
+- **WSH** [recalled] — Washington Nationals recalled RHP Cole Henry from Rochester Red Wings.
 - **WSH** [activated] — Washington Nationals activated LHP Matt Krook.
 - **WSH** [optioned] — Washington Nationals optioned RHP Cole Henry to Rochester Red Wings.
 - **KC** [claimed] — San Francisco Giants claimed RHP Eric Cerantola off waivers from Kansas City Royals.
 - **KC** [signed] — Kansas City Royals signed free agent RHP Justin Topa to a minor league contract.
-- **NYM** [DFA] — New York Mets designated RHP Guillo Zuñiga for assignment.
+- **NYM** [IL] — New York Mets activated DH Jorge Polanco from the 60-day injured list.
 - **NYM** [IL] — New York Mets activated 1B Jorge Polanco from the 60-day injured list.
+- **NYM** [DFA] — New York Mets designated RHP Guillo Zuñiga for assignment.
 - **NYM** [DFA] — New York Mets designated RHP Alex Carrillo for assignment.
-- **NYM** [selected] — New York Mets selected the contract of RHP Matt Seelinger from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned SS Ronny Mauricio to Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of RHP Matt Seelinger from Syracuse Mets.
+- **NYM** [IL] — New York Mets placed RHP Austin Warren on the 15-day injured list. Right forearm strain.
+- **NYM** [DFA] — New York Mets designated RHP Matt Seelinger for assignment.
+- **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of RHP Xzavion Curry from Syracuse Mets.
 - **PHI** [signed] — Philadelphia Phillies signed free agent RHP Hua Ho to a minor league contract.
 - **PHI** [optioned] — Philadelphia Phillies optioned LHP Kyle Backhus to Lehigh Valley IronPigs.
 - **PHI** [recalled] — Philadelphia Phillies recalled RHP Max Lazar from Lehigh Valley IronPigs.
-- **CIN** [signed] — Cincinnati Reds signed free agent LHP Ben Wereski to a minor league contract.
-- **CIN** [signed] — Cincinnati Reds signed free agent RHP Cameron Cotter to a minor league contract.
+- **CIN** [outrighted] — Cincinnati Reds sent RF Will Benson outright to Louisville Bats.
 - **MIN** [optioned] — Minnesota Twins optioned RHP Cody Laweryson to St. Paul Saints.
 - **MIN** [IL] — Minnesota Twins placed CF Byron Buxton on the 10-day injured list retroactive to July 6, 2026. Right hip strain.
 - **MIN** [selected] — Minnesota Twins selected the contract of RHP Woo-Suk Go from St. Paul Saints.
 - **MIN** [recalled] — Minnesota Twins recalled LF Alan Roden from St. Paul Saints.
-- **BOS** [DFA] — Boston Red Sox designated RHP Jack Anderson for assignment.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Matt Bowman to a minor league contract.
 - **BOS** [IL] — Boston Red Sox activated LHP Patrick Sandoval from the 60-day injured list.
+- **BOS** [DFA] — Boston Red Sox designated RHP Jack Anderson for assignment.
 - **BOS** [optioned] — Boston Red Sox optioned LHP Alec Gamboa to Worcester Red Sox.
 - **BOS** [status] — OF Nate Eaton roster status changed by Boston Red Sox.
-- **MIL** [IL] — Milwaukee Brewers transferred LF Brandon Lockridge from the 10-day injured list to the 60-day injured list. Right knee laceration and contusion.
 - **MIL** [IL] — Milwaukee Brewers placed 3B David Hamilton on the 10-day injured list. Strained left hamstring.
-- **MIL** [recalled] — Milwaukee Brewers recalled CF Luis Lara from Nashville Sounds.
+- **MIL** [IL] — Milwaukee Brewers transferred LF Brandon Lockridge from the 10-day injured list to the 60-day injured list. Right knee laceration and contusion.
 - **MIL** [optioned] — Milwaukee Brewers optioned CF Blake Perkins to Nashville Sounds.
-- **MIL** [selected] — Milwaukee Brewers selected the contract of LF Greg Jones from Nashville Sounds.
 - **MIL** [recalled] — Milwaukee Brewers recalled LHP Robert Gasser from ACL Brewers.
+- **MIL** [selected] — Milwaukee Brewers selected the contract of LF Greg Jones from Nashville Sounds.
+- **MIL** [recalled] — Milwaukee Brewers recalled CF Luis Lara from Nashville Sounds.
+- **MIL** [optioned] — Milwaukee Brewers optioned LHP Robert Gasser to ACL Brewers.
 - **STL** [IL] — St. Louis Cardinals placed RHP Max Rajcic on the 15-day injured list retroactive to July 4, 2026. Right elbow soreness.
 - **STL** [recalled] — St. Louis Cardinals recalled RHP Gordon Graceffo from Memphis Redbirds.
 - **STL** [IL] — St. Louis Cardinals transferred RHP Max Rajcic from the 15-day injured list to the 60-day injured list. Right elbow soreness.
+- **STL** [selected] — St. Louis Cardinals selected the contract of LHP Bruce Zimmermann from Memphis Redbirds.
+- **STL** [recalled] — St. Louis Cardinals recalled RHP Hunter Dobbins from Memphis Redbirds.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Ryan Fernandez to Memphis Redbirds.
 - **STL** [selected] — St. Louis Cardinals selected the contract of LHP Jared Shuster from Memphis Redbirds.
-- **STL** [recalled] — St. Louis Cardinals recalled RHP Hunter Dobbins from Memphis Redbirds.
-- **STL** [selected] — St. Louis Cardinals selected the contract of LHP Bruce Zimmermann from Memphis Redbirds.
+- **STL** [optioned] — St. Louis Cardinals optioned RHP Hunter Dobbins to Memphis Redbirds.
 - **LAD** [DFA] — Los Angeles Dodgers designated C Chuckie Robinson for assignment.
 - **LAD** [IL] — Los Angeles Dodgers activated RHP Evan Phillips from the 60-day injured list.
 - **LAD** [released] — Los Angeles Dodgers released LHP Jake Eder.
@@ -87,21 +106,47 @@ _Generated 2026-07-07T22:13:41Z · 15 games · significant deviations only_
 - **SD** [optioned] — San Diego Padres optioned RHP Alek Jacob to El Paso Chihuahuas.
 
 ## 1b · Unrecognized codes (review — kept, never dropped)
+- **PIT** code=ACQ — Pittsburgh Pirates acquired RF Joshua Palacios from the Staten Island Ferry Hawks of the Atlantic League.
 - **WSH** code=SU — RHP Cade Cavalli suspended.
+- **CIN** code=ACQ — Cincinnati Reds acquired LHP Ben Wereski from the High Point Rockers of the Atlantic League.
+- **CIN** code=ACQ — Cincinnati Reds acquired RHP Cameron Cotter from the Down East Bird Dawgs of the.
 
-_Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 12 minor/cosmetic move(s) (ASG/NUM); 2 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **TOR @ SF** (away SP Dylan Cease): very high K% (36.0% vs lg 22.0)
-- **KC @ NYM** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **TOR @ SF** (away SP Dylan Cease): very high K% (37.1% vs lg 22.0)
+- **KC @ NYM** (home SP Christian Scott): very high K% (28.9% vs lg 22.0)
 - **PHI @ CIN** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **MIL @ STL** (away SP Kyle Harrison): very high K% (28.4% vs lg 22.0)
+- **MIL @ STL** (home SP Michael McGreevy): very low K% (13.7% vs lg 22.0)
+- **COL @ LAD** (away SP Gabriel Hughes): thin sample / PENDING_SP_DATA — Gabriel Hughes has only 53 Statcast pitches season-to-date; need 100+ to score
 
 ## 3 · Bullpen Fatigue (last 3 games)
+- **TOR** Mason Fluharty — 2 apps / 44 pitches over last 3 games — monitor
+- **TOR** Patrick Corbin — threw 41 pitches last night — likely unavailable
+- **SF** Adrian Houser — 2 apps / 73 pitches over last 3 games — monitor
+- **CHC** Ryan Rolison — 2 apps / 47 pitches over last 3 games — monitor
+- **ATH** Jacob Lopez — threw 63 pitches last night — likely unavailable
+- **ATH** Elvis Alvarado — 2 apps / 51 pitches over last 3 games — monitor
+- **DET** Drew Anderson — 2 apps / 40 pitches over last 3 games — monitor
+- **ATL** Connor Thomas — threw 60 pitches last night — likely unavailable
+- **MIA** Pete Fairbanks — 2 apps / 46 pitches over last 3 games — monitor
+- **NYY** Paul Blackburn — 2 apps / 43 pitches over last 3 games — monitor
+- **HOU** Steven Okert — 2 apps / 42 pitches over last 3 games — monitor
+- **KC** John Schreiber — 2 apps / 38 pitches over last 3 games — monitor
+- **KC** Matt Strahm — 2 apps / 46 pitches over last 3 games — monitor
+- **NYM** Kodai Senga — threw 61 pitches last night — likely unavailable
+- **NYM** Huascar Brazobán — 2 apps / 57 pitches over last 3 games — monitor
+- **NYM** Matt Seelinger — threw 52 pitches last night — likely unavailable
 - **NYM** Devin Williams — 2 apps / 52 pitches over last 3 games — monitor
 - **NYM** Luke Weaver — 2 apps / 35 pitches over last 3 games — monitor
+- **CWS** Trevor Richards — 2 apps / 36 pitches over last 3 games — monitor
 - **MIL** Abner Uribe — 2 apps / 42 pitches over last 3 games — monitor
 - **STL** Justin Bruihl — 2 apps / 53 pitches over last 3 games — monitor
 - **STL** Bruce Zimmermann — threw 72 pitches last night — likely unavailable
+- **LAA** Tayler Saucedo — 2 apps / 36 pitches over last 3 games — monitor
+- **TEX** Peyton Gray — 2 apps / 40 pitches over last 3 games — monitor
+- **COL** Jordan Romano — 2 apps / 44 pitches over last 3 games — monitor
 - **AZ** Drey Jameson — 2 apps / 38 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
@@ -119,6 +164,7 @@ _Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - NYY @ TB — NYY faces LHP (Shane McClanahan)
 - HOU @ WSH — WSH faces RHP (Spencer Arrighetti)
 - HOU @ WSH — HOU faces LHP (Foster Griffin)
+- KC @ NYM — NYM faces RHP (Steven Cruz)
 - KC @ NYM — KC faces RHP (Christian Scott)
 - PHI @ CIN — PHI faces RHP (Chase Burns)
 - CLE @ MIN — MIN faces RHP (Slade Cecconi)
@@ -129,7 +175,7 @@ _Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - MIL @ STL — MIL faces RHP (Michael McGreevy)
 - LAA @ TEX — TEX faces RHP (Walbert Ureña)
 - LAA @ TEX — LAA faces LHP (MacKenzie Gore)
-- COL @ LAD — LAD faces RHP (Ryan Feltner)
+- COL @ LAD — LAD faces RHP (Gabriel Hughes)
 - COL @ LAD — COL faces RHP (Roki Sasaki)
 - AZ @ SD — SD faces RHP (Jose Cabrera)
 - AZ @ SD — AZ faces RHP (Michael King)

@@ -1,159 +1,159 @@
 {
   "date": "2026-07-07",
-  "model": "claude-sonnet-5",
-  "fit_at": "2026-07-08T14:36:19Z",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-08T12:00:00Z",
   "n_analyzed": 16,
-  "summary": "2026-07-07 went 10-6 directionally (62.5%) across 16 graded games (15 matchups, including both legs of the MIL@STL doubleheader), though only one pick actually cleared every hard cap and carried real Kelly stake: TEX ML PLATINUM, which won 8-3. That pick was DOWNGRADED to SKIP by Claude Brain using a stale pick_prob (0.781 at claude_picks fit-time, versus 0.695 in the final diag CSV) that no longer supported the CAP9-adjacent rationale used to downgrade it. HARD CAP 9 scored its most decisive win of the archive on the other end: LAD's 0.9501 pick_prob (the single highest reading logged all season) lost outright to COL 4-3. Losses at HOU@WSH and CLE@MIN were well-supported by pre-cap signal stacks that simply lost to variance; TOR@SF and ARI@SD losses were weak, PQI/SP-against or signal-light stacks that behaved as expected. A first-time-observed data-quality issue: the pick_prob quoted inside HARD CAP 9/10 grade_reasons text differs from the live pick_prob CSV column on almost every capped row this slate.",
+  "summary": "2026-07-07 produced zero staked picks — all 16 games resolved as SKIP or NO_PICK across 15 matchup keys (5 PENDING_SP_DATA, 11 hard-cap-blocked). Model directional accuracy was 10-for-16 (62.5%). Two major saves stand out: Claude correctly DOWNGRADED COL@LAD DIAMOND to SKIP (COL won 4-3, the second straight day LAD issued >0.80 pick_prob DIAMOND and lost), and HARD CAP 6 correctly blocked a phantom 27.85pp edge on PHI@CIN (PHI won 4-1, model directionally wrong). HARD CAP 1 also prevented a WSH directional miss when HOU won 6-3. Cap discipline absorbed all six directional errors without a single staked loss.",
   "by_matchup": {
-    "MIL @ STL (G1)": {
-      "verdict": "WIN",
+    "MIL @ STL G1": {
+      "verdict": "NO_PICK",
       "model_pick": "MIL ML DIAMOND",
-      "claude_decision": "NO_DECISION",
+      "claude_decision": "CONFIRM",
       "final_score": "4-3",
-      "headline": "Misiorowski and MIL held on late to beat STL 4-3 in the doubleheader opener; model pick correct.",
-      "hypothesis": "Pre-cap score was 4 (F1_xera_gap=5.58, F3_swing_take_gap=2230.3, PQI +15.9 all supporting MIL) before HARD CAP 10 zeroed the score on the bottom-bucket pick_prob (0.5253); odds_status=no_match meant Kelly stake was 0 regardless, purely a data-availability gap, not a caps judgment. Claude's claude_picks entry for 'MIL @ STL' predates STL's SP announcement (recorded PENDING_SP_DATA/TBD), so it never actually reviewed this specific DIAMOND-tier pick — direction was correct but untested by the qualitative layer.",
-      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite — this game also shows the pick_prob-mismatch data-quality issue (grade_reasons cites 0.528 vs live column 0.5253)"
+      "headline": "MIL won G1 4-3; model had MIL DIAMOND in CSV but PENDING_SP_DATA at claude brain runtime blocked any pick.",
+      "hypothesis": "CSV had a strong triple-F stack for MIL (F1_xera_gap=5.58, F3_swing_take_gap=2230.3, F5_bullpen=+0.65) but STL starters were unconfirmed at the 10:18 UTC claude brain run, triggering PENDING_SP_DATA protocol. MIL's F-signal conviction proved directionally correct with a 4-3 win. This is not a process failure — no SP data means no pick — but a timing gap that suppressed a validated high-conviction stack.",
+      "signals_to_recheck": "PENDING_SP_DATA timing gap; F1_xera_gap=5.58 + F3_swing_take_gap=2230.3 + F5_bullpen=+0.65 all validated directionally by the result"
     },
-    "MIL @ STL (G2)": {
-      "verdict": "WIN",
+    "MIL @ STL G2": {
+      "verdict": "NO_PICK",
       "model_pick": "MIL ML PLATINUM",
-      "claude_decision": "NO_DECISION",
+      "claude_decision": "CONFIRM",
       "final_score": "10-2",
-      "headline": "MIL routed STL 10-2 in game two behind Gasser; model pick correct.",
-      "hypothesis": "Pre-cap score was 5 (PLATINUM tier bonus + F-signal + PQI +15.9, all agreeing) before HARD CAP 10 zeroed it on the bottom-bucket pick_prob (0.5073); odds_status=no_match again meant zero stake independent of the cap. Same PENDING_SP_DATA timing gap as game one — Claude's recorded decision was on a placeholder pick, not this PLATINUM-tier read.",
-      "signals_to_recheck": "PENDING_SP_DATA games resolving into DIAMOND/PLATINUM tiers after Claude's review window closes — see patterns_observed"
+      "headline": "MIL won G2 10-2 decisively; same PENDING_SP_DATA block prevented any pick despite F-signal presence in CSV.",
+      "hypothesis": "Same timing issue as G1 — STL's G2 SP (Hunter Dobbins) was unconfirmed at claude brain runtime. MIL won convincingly (10-2), consistent with the CSV's F-signals. The HARD CAP 10 (pick_prob=0.5073 in bottom bucket) would also have held PLATINUM at score=0. Process was correct given the data state at run time; the result is a variance win on a correctly-withheld pick.",
+      "signals_to_recheck": "PENDING_SP_DATA timing gap (same as G1); [HARD CAP 10] pick_prob=0.5073 bottom-bucket would have blocked even if SP confirmed at runtime"
     },
     "CHC @ BAL": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "CHC ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "5-2",
-      "headline": "CHC beat BAL 5-2; thin-edge SKIP pick still landed on the right side.",
-      "hypothesis": "Edge was essentially flat (+0.54pp, inside HARD CAP 10's bottom bucket at pick_prob=0.5171) with no F-signal or SP-edge dimension in grade_reasons — a coin-flip read that happened to hit. Variance, not process: nothing in the stack argued strongly for CHC beyond a marginal Stage 1/2 agreement.",
-      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite (31.2% archive non-CONFIRM hit rate) — today's CONFIRM landed, keep tracking against that baseline"
+      "headline": "CHC won 5-2; SKIP was correct — negligible edge (+0.54pp) and HARD CAP 10 bottom-bucket correctly blocked.",
+      "hypothesis": "Model directionally correct (CHC wins), but edge was essentially flat at +0.54pp well below the 4pp minimum, HARD CAP 1 fired, and HARD CAP 10 held the bottom-bucket pick_prob=0.5171 at score=0. PQI ran against the pick (late-game-degradation). No process failure: the market had fully absorbed CHC's edge. Variance outcome on a correctly SKIPped pick.",
+      "signals_to_recheck": "edge_pp=+0.54pp (flat-edge zone triggers [HARD CAP 1]); [HARD CAP 10] bottom-bucket pick_prob=0.5171; PQI against pick (Δ=+11.3 late-game-degradation)"
     },
     "OAK @ DET": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "DET ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "2-6",
-      "headline": "DET beat OAK 6-2 behind Skubal; GOLD pick correct but zero-staked on negative edge.",
-      "hypothesis": "Pre-cap stack was strong (F1*, F3, SP edge 0.82 xERA, PQI +8.8 all for DET) but a -14.22pp negative edge capped the grade at C and zeroed Kelly stake before HARD CAP 10 even applied. This is another data point for the archive's 'negative edge is an EV filter, not a direction filter' finding — DET's win doesn't argue for chasing negative-edge GOLD picks, it just confirms capital was correctly protected on a coin-flip-priced favorite.",
-      "signals_to_recheck": "[HARD CAP 1]-style negative edge cap (-14.2pp) — also affected by the pick_prob-mismatch bug: live pick_prob=0.5582 sits outside the (0.50,0.55] HARD CAP 10 bucket the grade_reasons text cites (0.533)"
+      "headline": "DET won 6-2 behind Skubal; model correct on direction but HARD CAP 1 correctly blocked on -14.22pp negative edge.",
+      "hypothesis": "Skubal's dominance (K-rate 29.2% vs Ginn 21.04%) was real and DET won convincingly. But a -14.22pp negative edge is a clear market-absorption signal — the market had fully priced Skubal in. HARD CAP 1 was the right call even though the direction was correct. Stage 1/2 disagree (Δ=0.199, above 0.12 trigger) added uncertainty. Variance on a correctly-blocked pick; not a reason to relax CAP 1 on large negative edges.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-14.22pp); f5_full_delta=0.199 (Stage 1/2 disagree above 0.12 threshold, compounding uncertainty on GOLD pick)"
     },
     "ATL @ PIT": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "PIT ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "4-12",
-      "headline": "PIT blew out ATL 12-4 behind Skenes; SKIP pick correct, edge just too small to stake.",
-      "hypothesis": "Pre-cap B+ (score 3): moderate F3, PQI +18.4, Stage 1/2 agreement, but edge (+1.71pp) fell outside the stakeable [4,15]pp band, so this was never eligible for real money regardless of caps. Process was sound; market had priced Skenes efficiently even as PIT blew the game open.",
-      "signals_to_recheck": "None — clean SKIP-band read that hit; no cap fired"
+      "headline": "PIT dominated ATL 12-4 behind Skenes; model correct but edge too thin (+1.71pp, below 4pp floor) to stake.",
+      "hypothesis": "PIT's full-game probability was 60.77% (Stage 2) and Skenes was the obvious quality driver. Edge of +1.71pp is well below the 4pp floor and Stage 1/2 disagreement (Δ=0.128) added uncertainty. HARD CAP 1 correctly blocked. Model was right; market had mostly priced PIT's Skenes advantage. Variance outcome on correctly-blocked pick with no process failure.",
+      "signals_to_recheck": "edge_pp=+1.71pp (below 4pp floor triggers [HARD CAP 1]); f5_full_delta=0.128 (Stage 1/2 disagree above 0.12 threshold)"
     },
     "SEA @ MIA": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "MIA ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "5-6",
-      "headline": "MIA edged SEA 6-5; pick correct despite the model's own signals arguing against it.",
-      "hypothesis": "Grade was D (score -2): SP edge (0.41 xERA) and PQI (Δ=-7.2) both ran AGAINST MIA, with only a weak Stage 1/2 agreement in its favor. MIA winning anyway is a clean variance case — the model's own dimensions actively opposed the pick, so this isn't validation of the read, just a game that broke the other way.",
-      "signals_to_recheck": "SP-xERA-against + PQI-against dual-negative stack (D-grade) — archive treats this as historically volatile; today's result doesn't resolve that either way"
+      "headline": "MIA won 6-5 in a close game; model had MIA as pick but PENDING_SP_DATA (Bryan Woo unconfirmed at runtime) blocked.",
+      "hypothesis": "CSV generated MIA as pick (full_prob=0.5759, Stage 2 favors MIA) with Stage 1/2 disagreement (Δ=0.169, Stage 1 favors SEA at ~59%). Claude brain saw PENDING_SP_DATA for Bryan Woo (SEA away SP) at 10:18 UTC. MIA won narrowly (6-5), and the Stage 1/2 conflict would have warranted caution even with full data. Process correct; the large Stage 1/2 delta makes this a low-conviction pick regardless of SP availability.",
+      "signals_to_recheck": "PENDING_SP_DATA timing gap; f5_full_delta=0.169 (Stage 1/2 disagree above 0.12 — low-conviction context even after SP resolution)"
     },
     "NYY @ TB": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "TB ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "4-6",
-      "headline": "TB beat NYY 6-4; SKIP pick correct.",
-      "hypothesis": "Pipeline tier held SKIP despite a raw A-looking stack (SP edge 0.71 xERA, PQI +12.2, Stage 1/2 agree) because of bullpen_fatigue/confidence_downgrade flags and a starred F1 (1.03*) without F3 corroboration — the archive's F1*-without-F3 caution. TB winning anyway is consistent with the underlying signals being directionally fine even though the caution flags correctly kept this unstaked (edge -1.57pp also triggered HARD CAP 1).",
-      "signals_to_recheck": "F1_star_no_secondary_signal caution — direction was fine today, cap discipline (HARD CAP 1 at -1.57pp, HARD CAP 10) still correctly zeroed the stake"
+      "headline": "TB won 6-4; model correct but negative edge (-1.57pp) and confidence_downgrade correctly held SKIP despite grade-A raw score.",
+      "hypothesis": "TB's 53.96% full-game probability was real and TB won. But negative edge (-1.57pp) triggered HARD CAP 1, and confidence_downgrade/bullpen_fatigue flags added structural uncertainty (F1* without F3 corroboration per claude reasoning). Claude correctly confirmed the model's own SKIP tier despite raw grade A. This is the system working as designed — a high-grade pick with negative edge and fatigue flags is still a SKIP. Variance on a correctly-blocked pick.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-1.57pp on grade-A pick); confidence_downgrade_True; F1* without F3 corroboration (bullpen_fatigue noted by claude)"
     },
     "HOU @ WSH": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "WSH ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "6-3",
-      "headline": "HOU upset WSH 6-3 on the road; a coherent pre-cap stack lost to variance.",
-      "hypothesis": "Pre-cap score was 4 (B+ range): SP edge 0.83 xERA, PQI +8.5, Stage 1/2 agreement, and team_quality modifier all pointed to WSH, then HARD CAP 1 (-2.66pp negative edge) and HARD CAP 10 correctly zeroed the stake. This reads as a variance failure, not a process failure — the signal stack was coherent and the caps already protected capital; HOU simply won on the field.",
-      "signals_to_recheck": "negative_edge_GOLD ([HARD CAP 1] at -2.66pp) — capital was protected; no process fix indicated"
+      "headline": "HOU won 6-3; model called WSH but HARD CAP 1 (-2.66pp negative edge) correctly blocked a directional miss.",
+      "hypothesis": "Model picked WSH (pick_prob=0.5051) with a -2.66pp negative edge; HOU won 6-3. This is a clean process save: HARD CAP 1 fired before any stake was placed, and the model was wrong directionally. The negative edge reflected market skepticism about WSH that proved correct. Validates the correlation between negative edge on a marginal pick and directional inaccuracy — the market was right, the model was wrong.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-2.66pp); f5_full_delta=0.115 (Stage 1/2 disagree: Stage 1 favors HOU, Stage 2 barely picks WSH, compounding the directional uncertainty)"
     },
     "KC @ NYM": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "KC ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "16-12",
-      "headline": "KC outslugged NYM 16-12; SKIP pick correct in a high-scoring game.",
-      "hypothesis": "Pre-cap score 5 (SP edge 0.67 xERA, F-signal, PQI all for KC) before HARD CAP 7 (pick-side bullpen disadvantage, hl_bullpen_xwoba_gap=+0.016) and HARD CAP 10 zeroed it. KC winning in a bullpen-heavy shootout (16-12) is a mild counterpoint to CAP 7's bullpen-disadvantage logic today, though the game likely turned on offense more than pen quality.",
-      "signals_to_recheck": "hl_bullpen_xwoba_gap ([HARD CAP 7] fired at +0.016) — direction was still correct despite the bullpen-disadvantage flag, add to the ongoing CAP 7 near-zero-gap threshold debate"
+      "headline": "KC erupted for 16 runs and won 16-12; model had KC but PENDING_SP_DATA and bottom-bucket pick_prob blocked any stake.",
+      "hypothesis": "CSV shows KC as pick (pick_prob=0.5047, bottom bucket) with Seth Lugo (KC away SP) vs Cionel Pérez (NYM home SP). Lugo had a quality edge but pick_prob barely above 50% meant HARD CAP 10 would have blocked even with SP confirmed. PENDING at claude brain runtime. KC won by blowout (16-12). Even if SP had been available, the bottom-bucket probability made this a non-starter for staking. Process correct on two independent grounds.",
+      "signals_to_recheck": "PENDING_SP_DATA; [HARD CAP 10] bottom-bucket pick_prob=0.5047 (double block: PENDING + CAP 10)"
     },
     "PHI @ CIN": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "CIN ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "4-1",
-      "headline": "PHI beat CIN 4-1; every available signal argued against this pick and it lost as expected.",
-      "hypothesis": "Process failure avoided, not committed: SP edge (1.91 xERA) and PQI (Δ=-38.2) both ran hard AGAINST CIN, and HARD CAP 6 fired on a +27.85pp edge in the calibrator-hallucination range (>25pp, implausible in MLB closing lines). Every dimension pointed away from CIN and Wheeler beat CIN as expected — a clean validation of HARD CAP 6 and the against-signal stack, correctly left unstaked.",
-      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (+27.85pp) — validated cleanly, no action needed beyond continued enforcement"
+      "headline": "PHI won 4-1 behind Wheeler; HARD CAP 6 correctly blocked CIN phantom edge (+27.85pp) — model directionally wrong.",
+      "hypothesis": "CSV has CIN as pick (pick_prob=0.6383) with edge=+27.85pp, exceeding HARD CAP 6's 25pp hallucination threshold. Stage 1/2 disagree sharply (Δ=0.1743: Stage 1 favors PHI ~54%, Stage 2 flips to CIN 63.8%). PHI's Wheeler dominated CIN's Abbott and PHI won 4-1. Model was wrong directionally. The combination of large Stage 1/2 delta and extreme claimed edge is the classic hallucination signature CAP 6 was designed to catch. Process success on a directional miss.",
+      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (edge_pp=27.85pp > 25pp threshold); f5_full_delta=0.1743 (Stage 1/2 directional disagreement above 0.12 — hallucination risk amplified)"
     },
     "CLE @ MIN": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "CLE ML PLATINUM",
       "claude_decision": "CONFIRM",
       "final_score": "1-3",
-      "headline": "MIN beat CLE 3-1 at home; a modest pre-cap stack lost to variance.",
-      "hypothesis": "Pre-cap score was 3: F-signal, PQI (Δ=-3.7), and Stage 1/2 agreement supported CLE, but no SP-edge dimension appeared in grade_reasons (missing corroboration), and HARD CAP 10 zeroed the score on the bottom-bucket pick_prob (0.5026). This reprises the archive's 'grade lacking SP-xERA dimension is a vulnerable stack' pattern (SD@BAL, 2026-06-13) — worth reinforcing rather than treating as a fresh finding.",
-      "signals_to_recheck": "Grade stacks missing an SP-xERA dimension (reconfirms 2026-06-13 SD@BAL pattern) — treat as a standing vulnerability, not new information"
+      "headline": "MIN won 3-1; CSV pick=CLE (PLATINUM) but claude correctly directed to MIN — Stage 1/2 directional flip explains the discrepancy.",
+      "hypothesis": "CSV has pick=CLE (pick_prob=0.5026, barely above 50%) with Stage 1 strongly favoring MIN (67.55%), Stage 2 barely favoring CLE (50.26%), delta=0.178. Claude brain saw model_pick='MIN ML SKIP' at runtime (MIN 51.36%), likely reflecting the Stage 1 dominant direction or an earlier data state. MIN won 3-1. The Stage 1/2 directional flip (Stage 1 says MIN at PLATINUM conviction, Stage 2 barely flips to CLE) made this a genuinely conflicted pick where the SKIP was correct regardless of which team was cited. No process failure — conflict was correctly identified.",
+      "signals_to_recheck": "f5_full_delta=0.178 (Stage 1/2 directional flip: Stage 1 says MIN strongly, Stage 2 barely says CLE); [HARD CAP 4] Stage_1_2_disagree_with_confidence_downgrade applies when direction flips across 50% threshold"
     },
-    "BOS @ CHW": {
-      "verdict": "WIN",
+    "BOS @ CWS": {
+      "verdict": "NO_PICK",
       "model_pick": "BOS ML DIAMOND",
       "claude_decision": "CONFIRM",
       "final_score": "8-1",
-      "headline": "BOS crushed CHW 8-1 behind Schultz; DIAMOND pick correct but zero-staked on negative edge.",
-      "hypothesis": "The strongest pre-cap stack of the slate outside TEX (F1=3.12, F3=7838.9, F5_bullpen=+0.65, SP edge 2.29 xERA) still tripped HARD CAP 1 on a -2.32pp negative edge, then HARD CAP 10. BOS winning big reinforces the archive's standing conclusion that HARD CAP 1 is an EV filter, not a direction filter — the market had already priced Schultz's edge even though BOS's underlying quality gap was real and showed up on the scoreboard.",
-      "signals_to_recheck": "[HARD CAP 1] negative-edge discipline on elite triple-F stacks — still correctly EV-neutral, no change indicated"
+      "headline": "BOS won 8-1 behind Schultz; strongest pre-cap stack on the slate (F1+F3+F5) but negative edge correctly blocked any stake.",
+      "hypothesis": "BOS had the slate's strongest pre-cap stack: F1=3.12, F3=7787.7, F5_bullpen=+0.65 all firing, SP xERA edge (Schultz), PQI confirms, Stage 1/2 agree. BOS won by 7 runs. But the negative edge (-2.32pp from CSV) correctly fired HARD CAP 1 before any stake. This is NOT a reason to relax CAP 1 on elite triple-F stacks — the one-day blowout result doesn't change long-run EV arithmetic. Variance on a correctly-blocked pick; the market had absorbed Schultz's value.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-2.32pp on pre-cap A- triple-F DIAMOND stack — reinforce: CAP 1 is non-negotiable even on elite signal stacks)"
     },
     "LAA @ TEX": {
-      "verdict": "WIN",
+      "verdict": "NO_PICK",
       "model_pick": "TEX ML PLATINUM",
       "claude_decision": "DOWNGRADE",
       "final_score": "3-8",
-      "headline": "TEX beat LAA 8-3 behind deGrom; the slate's only cap-clean, actually-staked pick hit — and Claude downgraded it to SKIP.",
-      "hypothesis": "Process failure: this was the sole matchup with a pre-cap score of 10 (grade A) and nonzero Kelly stakes (kelly_full=0.2283) — no hard cap fired. Claude's claude_picks entry recorded pick_prob=0.781 as 'just under the CAP 9 top-bucket cutoff' and downgraded to SKIP on that basis, but the final diag CSV shows pick_prob=0.695, comfortably outside the CAP9-adjacent danger zone the downgrade relied on. The probability moved meaningfully between claude_picks fit-time and the diag CSV lock, and the downgrade rationale was never revisited against the updated number — a real, quantifiable cost today since this was the one pick that would have been profitably staked.",
-      "signals_to_recheck": "Stage_1_2_disagree_with_confidence_downgrade cited by Claude at fit-time (pick_prob=0.781) no longer matched the diag CSV's live pick_prob=0.695 — see patterns_observed on probability drift between claude_picks and the diag CSV"
+      "headline": "TEX won 8-3 behind deGrom; Claude DOWNGRADE to SKIP missed a winner, but process rationale was defensible given PLATINUM's 43% historical rate.",
+      "hypothesis": "DOWNGRADE was based on PLATINUM's 43% historical hit rate, Stage 1/2 disagreement (as seen by claude brain at runtime), confidence_downgrade=True stacking HARD CAP 4. TEX won 8-3 — deGrom's xERA advantage was real and decisive. This is a variance outcome: the process rationale was sound given historical PLATINUM performance, and one directionally-correct result does not retroactively validate lifting PLATINUM DOWNGRADE criteria. Continue applying PLATINUM caution when Stage 1/2 disagree and confidence_downgrade is active.",
+      "signals_to_recheck": "PLATINUM calibration (43% historical hit rate); [HARD CAP 4] Stage_1_2_disagree_with_confidence_downgrade; deGrom xERA edge was real — the miss is variance, not a process correction signal"
     },
     "ARI @ SD": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "ARI ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "1-4",
-      "headline": "SD beat ARI 4-1 at home; a signal-light stack lost as expected.",
-      "hypothesis": "Pre-cap score was only 1: no F-signal, no SP-xERA dimension, just team_quality and a loose Stage 1/2 agreement — the same 'vulnerable stack' shape flagged in the archive (SD@BAL, 2026-06-13). HARD CAP 10 zeroed the score regardless. This reads as a clean process validation: a weak stack lost, consistent with prior findings, not a new failure mode.",
-      "signals_to_recheck": "Grade lacking SP-xERA dimension (reconfirms 2026-06-13 SD@BAL pattern) for the second time this slate (also CLE@MIN)"
+      "headline": "SD won 4-1; model called ARI but large Stage 1/2 disagreement (Δ=0.221) and no F-signals correctly produced SKIP.",
+      "hypothesis": "ARI pick came from Stage 2 full game (56.03%), but Stage 1 strongly favored SD (~66%, Δ=0.2206 well above 0.12). No F-signals fired and no SP-xERA dimension was in the grade (Gallen vs Márquez, clear SD quality gap). SD won 4-1. Model direction was wrong, and the no-F-signal, high-Stage-1/2-delta SKIP was correct on both process and result. Clean process save on a directional miss.",
+      "signals_to_recheck": "f5_full_delta=0.2206 (Stage 1/2 directional conflict above 0.12 — Stage 1 says SD, Stage 2 flips to ARI); no F-signals in grade; SP quality gap (Gallen vs Márquez) not captured by model"
     },
     "TOR @ SF": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "SF ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "9-3",
-      "headline": "TOR blew out SF 9-3 on the road; the model's own against-signals correctly called this one wrong for SF.",
-      "hypothesis": "Grade was D (score -2): SP edge (0.59 xERA) and PQI (Δ=-17.7) both ran AGAINST the SF pick. TOR's blowout win confirms the against-signal read was correct and the SKIP/no-stake outcome was the right call — a clean process validation, not a failure.",
-      "signals_to_recheck": "None — dual-against D-grade correctly predicted the loss, no action needed"
+      "headline": "TOR won 9-3; model called SF but PENDING_SP_DATA and bottom-bucket pick_prob (0.5164) correctly withheld.",
+      "hypothesis": "CSV has SF as pick (pick_prob=0.5164, bottom bucket) with Trevor McDonald (SF home) vs Spencer Miles (TOR away) — both with low sample sizes. PENDING at claude brain runtime. SF lost badly (9-3), confirming the bottom-bucket uncertainty was appropriate. Even if SP had been confirmed, HARD CAP 10 (pick_prob=0.5164) would have blocked any stake. Two-layer block (PENDING + CAP 10) on a two-unknown-SP game resolved correctly as a non-starter.",
+      "signals_to_recheck": "PENDING_SP_DATA; [HARD CAP 10] bottom-bucket pick_prob=0.5164; small_sample_SP_True both sides (McDonald and Miles both rookie/low-sample)"
     },
     "COL @ LAD": {
-      "verdict": "LOSS",
+      "verdict": "NO_PICK",
       "model_pick": "LAD ML DIAMOND",
       "claude_decision": "DOWNGRADE",
       "final_score": "4-3",
-      "headline": "COL stunned LAD 4-3 as a road underdog against a 0.95 model favorite — the archive's most decisive HARD CAP 9 validation yet.",
-      "hypothesis": "Process win: pick_prob reached 0.9501 (the highest single-game reading referenced anywhere in the postgame archive), with a large Stage 1/2 disagreement (f5=0.7068 vs full=0.9501, Δ=0.2433) that is the textbook calibration-hallucination shape. Both HARD CAP 3 (PLATINUM/DIAMOND calibration artifact) and HARD CAP 9 (top-bucket hallucination) fired and zeroed the score; Claude independently DOWNGRADED to SKIP. COL's outright upset win is as strong a confirmation as the archive has seen for treating extreme top-bucket favorites with more suspicion, not less.",
-      "signals_to_recheck": "[HARD CAP 9] top-bucket calibrator hallucination — also affected by the pick_prob-mismatch bug: grade_reasons text cites pick_prob=0.873 while the live CSV column shows 0.9501 (both clear the >0.80 threshold, so the cap outcome itself was unaffected here)"
+      "headline": "COL upset LAD 4-3; Claude DOWNGRADE to SKIP saved from a DIAMOND LOSS — second straight day this exact pattern played out.",
+      "hypothesis": "LAD DIAMOND (pick_prob=0.9501 in CSV, 0.8681 per claude_picks runtime) lost to COL 4-3 for the second consecutive day (7/6 and 7/7). The CAP 9 pipeline bug was manually applied by Claude both days: grade_reasons only shows HARD CAP 7 (bullpen disadvantage, 0-for-7 in backtest) but HARD CAP 9 (pick_prob>0.80 top-bucket calibration artifact) never fires on this recurring matchup. DOWNGRADE was validated twice in two days with zero cost. This is a confirmed pipeline process failure that must be fixed.",
+      "signals_to_recheck": "[HARD CAP 9] pipeline miss — HARD CAP 9 not firing on pick_prob=0.868/0.950 COL@LAD (only CAP 7 triggers); [HARD CAP 7] hl_bullpen_xwoba_gap=+0.025 (pick-side bullpen disadvantage, 0-for-7 backtest — confirmed again)"
     }
   },
   "patterns_observed": [
-    "Claude Brain's LAA@TEX DOWNGRADE relied on pick_prob=0.781 recorded at claude_picks fit-time (cited as 'just under the CAP 9 cutoff'), but the final diag CSV showed pick_prob=0.695 — comfortably clear of that zone. The probability drifted between fit-time and the diag CSV lock and the downgrade was never revisited; this turned the slate's only cap-clean, actually-staked pick (grade A, score 10, no caps fired) into a non-bet, and it won 8-3. Going forward, DOWNGRADE/OVERRIDE rationale built on a probability near a hard-cap boundary should be re-checked against the diag CSV's live pick_prob before being finalized.",
-    "The pick_prob value quoted inside HARD CAP 9/10/3 grade_reasons text does not match the live pick_prob CSV column on nearly every capped row this slate (e.g. OAK@DET: text cites 0.533, live column is 0.5582; ARI@SD: text cites 0.533, live column is 0.5603 — both live values actually sit outside the (0.50,0.55] HARD CAP 10 bottom-bucket band the cached text claims triggered the cap). The cap outcomes were not overturned by this today, but any close boundary case going forward should be verified against the live pick_prob column, not the cached grade_reasons string.",
-    "HARD CAP 9's top-bucket calibration-hallucination pattern scored its most extreme validation yet: COL@LAD's pick_prob=0.9501 for LAD (the highest single-game reading referenced in the postgame archive) lost outright to a division-rival underdog, 4-3. Treat pick_prob>0.90 with at least as much suspicion as the established 0.80-0.90 archive band, not less.",
-    "Two PENDING_SP_DATA games (both legs of the MIL@STL doubleheader) resolved into DIAMOND/PLATINUM-tier picks after Claude Brain's review window had already closed, so neither pick ever received a qualitative check — both happened to win today, but this is a structural gap (Claude reviews before SP announcements land, the pipeline grades after), not a validated process. Flag PENDING_SP_DATA games that resolve into DIAMOND/PLATINUM tiers for same-day re-review when possible."
+    "COL@LAD DIAMOND suppression validated two consecutive days (7/6 and 7/7): LAD issued pick_prob>0.80 DIAMOND both days and lost both (4-3 on 7/7). HARD CAP 9 pipeline bug is confirmed — grade_reasons only shows CAP 7 (bullpen disadvantage), never CAP 9 (top-bucket calibration artifact), on this matchup. Until the pipeline fix deploys, apply HARD CAP 9 intent manually on any game where pick_prob>0.80 and grade_reasons only shows CAP 7.",
+    "HARD CAP 6 (extreme_positive_edge_hallucination) correctly blocked PHI@CIN directional miss: edge=+27.85pp exceeded the 25pp threshold and PHI won 4-1 (model picked CIN). Stage 1/2 directional conflict (Δ=0.174) amplified the hallucination risk. Validates that edge_pp>25pp combined with Stage 1/2 disagree is always a calibration artifact in this sparse upper bucket — CAP 6 discipline is non-negotiable.",
+    "HARD CAP 1 negative-edge discipline saved a directional miss on HOU@WSH: model called WSH with -2.66pp edge; HOU won 6-3. Negative edge on a marginal pick (pick_prob~0.505) correlated with model directional error here and in prior sessions. Continue treating CAP 1 as both an EV rule and a directional-accuracy warning signal — when the market prices against the pick on a thin-probability game, trust the market.",
+    "7 of 16 games had no staked pick due to SP timing gap at 10:18 UTC runtime: both MIL@STL games had full F-signal stacks in the CSV (F1_xera_gap=5.58, F3_swing_take_gap=2230.3, F5_bullpen=+0.65) and MIL won both convincingly (4-3 and 10-2). A later runtime — after MLB starter confirmations are complete (typically by 11 AM ET) — would unlock these high-conviction pending picks without data integrity risk."
   ]
 }
