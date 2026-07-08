@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-02T16:51:13.084406Z",
+  "generated_at": "2026-07-08T14:37:56.157902Z",
   "verdict": {
     "state": "inconclusive",
-    "reason": "out-of-sample n=0 below floor 10; keep current OVERRIDE behavior, re-run when more postgame data accumulates",
-    "n_out_of_sample": 0,
+    "reason": "out-of-sample n=9 below floor 10; keep current OVERRIDE behavior, re-run when more postgame data accumulates",
+    "n_out_of_sample": 9,
     "n_in_sample": 6,
     "precision_pct": null,
     "wins_flipped": null,
@@ -15,8 +15,90 @@
       "wins_flipped_limit": 2
     }
   },
-  "n_fires_total": 6,
-  "out_of_sample_fires": [],
+  "n_fires_total": 15,
+  "out_of_sample_fires": [
+    {
+      "date": "2026-06-08",
+      "matchup": "PHI @ TOR",
+      "decision": "OVERRIDE",
+      "verdict": "WIN",
+      "final_score": "5-2",
+      "model_pick": "TOR ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-08",
+      "matchup": "WSH @ SF",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "4-3",
+      "model_pick": "WSH ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-10",
+      "matchup": "SEA @ BAL",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "2-7",
+      "model_pick": "BAL ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-10",
+      "matchup": "PHI @ TOR",
+      "decision": "OVERRIDE",
+      "verdict": "WIN",
+      "final_score": "7-4",
+      "model_pick": "TOR ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-11",
+      "matchup": "TEX @ KC",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "4-2",
+      "model_pick": "TEX ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-13",
+      "matchup": "ATL @ NYM",
+      "decision": "OVERRIDE",
+      "verdict": "WIN",
+      "final_score": "3-1",
+      "model_pick": "ATL ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-13",
+      "matchup": "TB @ LAA",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "0-8",
+      "model_pick": "TB ML GOLD",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-20",
+      "matchup": "NYM @ PHI",
+      "decision": "OVERRIDE",
+      "verdict": "WIN",
+      "final_score": "3-15",
+      "model_pick": "NYM ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-06-21",
+      "matchup": "NYM @ PHI",
+      "decision": "OVERRIDE",
+      "verdict": "WIN",
+      "final_score": "2-6",
+      "model_pick": "NYM ML SKIP",
+      "in_sample": false
+    }
+  ],
   "in_sample_fires": [
     {
       "date": "2026-05-11",
