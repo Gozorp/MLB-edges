@@ -1858,8 +1858,161 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     .picker{ margin-bottom: 1.2rem; }
   }
   </style>
+  <style id="drawer-css">
+  /* ===== Phase-1 sidebar drawer (2026-07-08, user-directed) =====
+     Mobile/tablet: slide-in from the left (hamburger). Desktop
+     >=1100px: permanently anchored left rail; content shifts right. */
+  #side-drawer{
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 200;
+    width: min(88vw, 360px);
+    background: var(--bg-elev);
+    border-right: 1px solid var(--border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 18px 0 48px rgba(0,0,0,0.45);
+    overflow-y: auto; overflow-x: hidden;
+    padding: 0.9rem 0.9rem 2rem;
+    transform: translateX(-102%);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #side-drawer.open{ transform: translateX(0); }
+  #side-drawer .drawer-head{
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
+    color: var(--muted); padding: 0.2rem 0.2rem 0.8rem;
+  }
+  #side-drawer .drawer-head button{
+    background: transparent; border: 1px solid var(--border); border-radius: 8px;
+    color: var(--muted); font-size: 1rem; line-height: 1; padding: 4px 9px; cursor: pointer;
+  }
+  #side-drawer > .card, #side-drawer .accordion{ margin: 0 0 1rem; }
+  #drawer-toggle{
+    position: fixed; top: 0.7rem; left: 0.7rem; z-index: 190;
+    background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 1.05rem; padding: 7px 11px; cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  }
+  #drawer-backdrop{
+    position: fixed; inset: 0; z-index: 195;
+    background: rgba(0, 0, 0, 0.55); display: none;
+  }
+  #drawer-backdrop.open{ display: block; }
+  @media (min-width: 1100px){
+    #side-drawer{ transform: none; width: 340px; }
+    #drawer-toggle, #drawer-backdrop{ display: none !important; }
+    body{ padding-left: 340px; }
+    header{ padding-left: 1rem; }
+  }
+  @media (max-width: 1099px){
+    header{ padding-left: 3.4rem; }   /* clear the hamburger */
+  }
+  </style>
 </head>
 <body>
+<button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
+<div id="drawer-backdrop"></div>
+<nav id="side-drawer" aria-label="Tools &amp; context">
+  <div class="drawer-head">
+    <span>TOOLS &amp; CONTEXT</span>
+    <button id="drawer-close" aria-label="Close drawer">×</button>
+  </div>
+<div class="card" id="mlb-intro-card" style="display:none;">
+    <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
+    <h2>First time here? Here is what this dashboard does.</h2>
+    <p style="margin:0.3rem 0 0.6rem 0;font-size:0.92rem;color:var(--muted);line-height:1.55;">
+      mlb_edge predicts every MLB game on today's slate and grades how confident the model is in each pick. It uses a rule-based system trained on historical results, not a crystal ball — read it as <em>where the model thinks the market is wrong</em>, not as guaranteed winners.
+    </p>
+    <div class="intro-grid">
+      <div class="intro-step"><span class="num">1.</span> <strong>Pick the date</strong> with the date picker above. Today's slate auto-refreshes during games.</div>
+      <div class="intro-step"><span class="num">2.</span> <strong>Each row is one game.</strong> The <code>Pick</code> column is the team the model favors, with its win probability.</div>
+      <div class="intro-step"><span class="num">3.</span> <strong>Grade tells you conviction:</strong> A = strong, B = moderate, C/D = skip. Click any row for the full reasoning.</div>
+      <div class="intro-step"><span class="num">4.</span> <strong>Need more detail?</strong> Toggle <code>Advanced</code> mode below to show all columns. Click the <strong>?</strong> button in the header any time for the glossary.</div>
+    </div>
+  </div>
+  <div class="accordion drawer-accordion" role="tablist">
+<div class="accordion-item" data-acc="bullpen-outlook">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Bullpen Outlook</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="bullpen-outlook"></div>
+          </div>
+        </div>
+      </div>
+<div class="accordion-item" data-acc="h2h-history">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Head-to-Head History</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="h2h-history">Open to scan up to 30 days of historical picks for the current matchups.</div>
+          </div>
+        </div>
+      </div>
+<div class="accordion-item" data-acc="edge-calc">
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+          <span>Edge Calculator</span>
+          <span class="chev" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div id="edge-calc" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;flex-wrap:wrap;">
+                <label for="ec-mp" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Model win prob</label>
+                <input type="range" id="ec-mp" min="1" max="99" value="60" step="1" style="flex:1;min-width:140px;">
+                <input type="number" id="ec-mpn" min="1" max="99" value="60" step="1" style="width:58px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+                <span style="color:var(--muted);font-size:0.8rem;">%</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:0.8rem;">
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Fair</div>
+                  <div id="ec-fair" style="font-size:1.3rem;font-weight:600;">-150</div>
+                </div>
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Min +4pp</div>
+                  <div id="ec-min" style="font-size:1.3rem;font-weight:600;color:var(--green);">-127</div>
+                </div>
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">+8pp Goldi cap</div>
+                  <div id="ec-max" style="font-size:1.3rem;font-weight:600;color:var(--green);">-108</div>
+                </div>
+              </div>
+              <div id="ec-zone" style="font-size:0.8rem;color:var(--text);line-height:1.5;margin-bottom:0.6rem;"></div>
+              <div style="display:flex;height:26px;border-radius:5px;overflow:hidden;font-size:0.56rem;border:1px solid var(--border);margin-bottom:1rem;">
+                <div style="flex:4;background:rgba(125,133,144,.18);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;">&lt;4 noise</div>
+                <div style="flex:4;background:rgba(63,185,80,.20);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:600;text-align:center;">4-8 GOLDILOCKS</div>
+                <div style="flex:7;background:rgba(210,153,34,.18);display:flex;align-items:center;justify-content:center;color:var(--yellow);text-align:center;">8-15 caution</div>
+                <div style="flex:4;background:rgba(248,81,73,.18);display:flex;align-items:center;justify-content:center;color:var(--red);text-align:center;">&gt;15 trap</div>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:0.8rem;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+                  <label for="ec-ln" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Check a line</label>
+                  <input type="number" id="ec-ln" value="-120" step="5" style="width:80px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+                  <span style="color:var(--muted);font-size:0.72rem;">e.g. -120 or +150</span>
+                </div>
+                <div id="ec-verdict" style="font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--bg-elev);border:1px solid var(--border);"></div>
+              </div>
+              <div style="font-size:0.68rem;color:var(--muted);line-height:1.5;margin-top:0.8rem;">Display-only -- the automated model gate stays frozen at 4-15pp; the 4-8pp Goldilocks tier is for your manual vetting. The 8-15pp band keeps logging into the OOS ledger for the July Upper-Band Edge Decay study. Edge vs Kalshi-fair; non-linear (a 4pp edge moves the line ~17 pts on a 54% fav, ~125 pts on an 84% fav). Never affects picks.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+<section id="health-card">
+    <h2>
+      <span>Pipeline health</span>
+      <span id="health-card-overall" class="health-overall-pill green">—</span>
+      <span id="health-card-checked-at" class="health-checked-at"></span>
+    </h2>
+    <div id="health-card-body" class="health-card-loading">
+      Loading health snapshot…
+    </div>
+  </section>
+</nav>
+
 
 <header>
   <h1>Gozorp's MLB edge</h1>
@@ -1899,19 +2052,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 </section>
 
 <main id="main-slate-anchor">
-  <div class="card" id="mlb-intro-card" style="display:none;">
-    <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
-    <h2>First time here? Here is what this dashboard does.</h2>
-    <p style="margin:0.3rem 0 0.6rem 0;font-size:0.92rem;color:var(--muted);line-height:1.55;">
-      mlb_edge predicts every MLB game on today's slate and grades how confident the model is in each pick. It uses a rule-based system trained on historical results, not a crystal ball — read it as <em>where the model thinks the market is wrong</em>, not as guaranteed winners.
-    </p>
-    <div class="intro-grid">
-      <div class="intro-step"><span class="num">1.</span> <strong>Pick the date</strong> with the date picker above. Today's slate auto-refreshes during games.</div>
-      <div class="intro-step"><span class="num">2.</span> <strong>Each row is one game.</strong> The <code>Pick</code> column is the team the model favors, with its win probability.</div>
-      <div class="intro-step"><span class="num">3.</span> <strong>Grade tells you conviction:</strong> A = strong, B = moderate, C/D = skip. Click any row for the full reasoning.</div>
-      <div class="intro-step"><span class="num">4.</span> <strong>Need more detail?</strong> Toggle <code>Advanced</code> mode below to show all columns. Click the <strong>?</strong> button in the header any time for the glossary.</div>
-    </div>
-  </div>
+  
   <div class="date-strip" id="dateStrip" style="display:none;">
     <span class="date-strip-label">Slates:</span>
     <span class="muted" style="font-size:0.85rem;align-self:center;">loading…</span>
@@ -1967,17 +2108,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
-      <div class="accordion-item" data-acc="bullpen-outlook">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Bullpen Outlook</span>
-          <span class="chev" aria-hidden="true">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="bullpen-outlook"></div>
-          </div>
-        </div>
-      </div>
+      
       <div class="accordion-item" data-acc="slate">
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
           <span>The Slate</span>
@@ -1989,17 +2120,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
-      <div class="accordion-item" data-acc="h2h-history">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Head-to-Head History</span>
-          <span class="chev" aria-hidden="true">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="h2h-history">Open to scan up to 30 days of historical picks for the current matchups.</div>
-          </div>
-        </div>
-      </div>
+      
       <div class="accordion-item" data-acc="perfect-pair">
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
           <span>Perfect Pair <span style="margin-left:8px;padding:1px 6px;border:1px solid var(--accent);border-radius:3px;color:var(--accent);font-size:.58rem;font-weight:700;letter-spacing:.4px;vertical-align:middle;">HEURISTIC</span></span>
@@ -2023,67 +2144,11 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
           </div>
         </div>
       </div>
-      <div class="accordion-item" data-acc="edge-calc">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Edge Calculator</span>
-          <span class="chev" aria-hidden="true">&#9662;</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="edge-calc" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;flex-wrap:wrap;">
-                <label for="ec-mp" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Model win prob</label>
-                <input type="range" id="ec-mp" min="1" max="99" value="60" step="1" style="flex:1;min-width:140px;">
-                <input type="number" id="ec-mpn" min="1" max="99" value="60" step="1" style="width:58px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
-                <span style="color:var(--muted);font-size:0.8rem;">%</span>
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:0.8rem;">
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Fair</div>
-                  <div id="ec-fair" style="font-size:1.3rem;font-weight:600;">-150</div>
-                </div>
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Min +4pp</div>
-                  <div id="ec-min" style="font-size:1.3rem;font-weight:600;color:var(--green);">-127</div>
-                </div>
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">+8pp Goldi cap</div>
-                  <div id="ec-max" style="font-size:1.3rem;font-weight:600;color:var(--green);">-108</div>
-                </div>
-              </div>
-              <div id="ec-zone" style="font-size:0.8rem;color:var(--text);line-height:1.5;margin-bottom:0.6rem;"></div>
-              <div style="display:flex;height:26px;border-radius:5px;overflow:hidden;font-size:0.56rem;border:1px solid var(--border);margin-bottom:1rem;">
-                <div style="flex:4;background:rgba(125,133,144,.18);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;">&lt;4 noise</div>
-                <div style="flex:4;background:rgba(63,185,80,.20);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:600;text-align:center;">4-8 GOLDILOCKS</div>
-                <div style="flex:7;background:rgba(210,153,34,.18);display:flex;align-items:center;justify-content:center;color:var(--yellow);text-align:center;">8-15 caution</div>
-                <div style="flex:4;background:rgba(248,81,73,.18);display:flex;align-items:center;justify-content:center;color:var(--red);text-align:center;">&gt;15 trap</div>
-              </div>
-              <div style="border-top:1px solid var(--border);padding-top:0.8rem;">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-                  <label for="ec-ln" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Check a line</label>
-                  <input type="number" id="ec-ln" value="-120" step="5" style="width:80px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
-                  <span style="color:var(--muted);font-size:0.72rem;">e.g. -120 or +150</span>
-                </div>
-                <div id="ec-verdict" style="font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--bg-elev);border:1px solid var(--border);"></div>
-              </div>
-              <div style="font-size:0.68rem;color:var(--muted);line-height:1.5;margin-top:0.8rem;">Display-only -- the automated model gate stays frozen at 4-15pp; the 4-8pp Goldilocks tier is for your manual vetting. The 8-15pp band keeps logging into the OOS ledger for the July Upper-Band Edge Decay study. Edge vs Kalshi-fair; non-linear (a 4pp edge moves the line ~17 pts on a 54% fav, ~125 pts on an 84% fav). Never affects picks.</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </section>
 
-  <section id="health-card">
-    <h2>
-      <span>Pipeline health</span>
-      <span id="health-card-overall" class="health-overall-pill green">—</span>
-      <span id="health-card-checked-at" class="health-checked-at"></span>
-    </h2>
-    <div id="health-card-body" class="health-card-loading">
-      Loading health snapshot…
-    </div>
-  </section>
+  
 
   <div id="parlay"></div>
 
@@ -9569,6 +9634,27 @@ document.addEventListener("click", function (e) {
     } catch (e) {}
     if (document.readyState !== "loading") debounced();
     else document.addEventListener("DOMContentLoaded", debounced);
+  })();
+  </script>
+  <script id="drawer-js">
+  /* Phase-1 drawer toggle: display-only, defensive */
+  (function () {
+    try {
+      var nav = document.getElementById("side-drawer");
+      var bd = document.getElementById("drawer-backdrop");
+      var tg = document.getElementById("drawer-toggle");
+      var cl = document.getElementById("drawer-close");
+      if (!nav || !tg) return;
+      function setOpen(open) {
+        nav.classList.toggle("open", open);
+        if (bd) bd.classList.toggle("open", open);
+        tg.setAttribute("aria-expanded", open ? "true" : "false");
+      }
+      tg.addEventListener("click", function () { setOpen(!nav.classList.contains("open")); });
+      if (cl) cl.addEventListener("click", function () { setOpen(false); });
+      if (bd) bd.addEventListener("click", function () { setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+    } catch (e) { /* never break the page */ }
   })();
   </script>
 </body>
