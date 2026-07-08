@@ -2168,6 +2168,100 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     body:not(.simple-mode) #slate .result-chip{ font-size: 0.6rem; }
   }
   </style>
+  <style id="garfield-theme">
+  /* ==========================================================
+     Phase 2b/4/5: logo, MODE toggle, and the Garfield comic
+     theme (cream / white / black-ink / signature orange) under
+     body[data-theme="garfield"]. Cascade-last, display-only.
+     ========================================================== */
+  #site-logo{ vertical-align: -8px; margin-right: 10px; }
+  header h1{ display: inline-block; }
+  #theme-toggle{
+    background: var(--bg-elev); color: var(--muted);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.08em; padding: 6px 10px; cursor: pointer;
+    margin-right: 8px;
+  }
+  #theme-toggle:hover{ color: var(--text); border-color: var(--accent); }
+  #theme-label{ color: var(--accent); }
+
+  /* ---------------- GARFIELD MODE ---------------- */
+  body[data-theme="garfield"]{
+    --bg: #FBF3E0;            /* cream canvas */
+    --bg-elev: #FFFFFF;       /* pure white cards */
+    --border: #111111;        /* black ink */
+    --text: #111111;
+    --muted: #6b5f4c;
+    --accent: #E65100;        /* signature orange */
+    --neon: #E65100;
+    --amber: #B45309;
+    --green: #1b7d33;
+    --red: #C62828;
+    --yellow: #B45309;
+    --zebra: #FFF3E0;         /* warm striping */
+    --row-hover: #FFE0B2;
+    --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  body[data-theme="garfield"] .card,
+  body[data-theme="garfield"] .accordion,
+  body[data-theme="garfield"] .picker,
+  body[data-theme="garfield"] .metric-card,
+  body[data-theme="garfield"] #side-drawer,
+  body[data-theme="garfield"] #mlb-intro-card{
+    background: var(--bg-elev);
+    border: 2px solid #111111;
+    box-shadow: 4px 4px 0px #111111;   /* hard, un-blurred comic offset */
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  body[data-theme="garfield"] #slate table:has(tr.row-clickable){
+    border: 3px solid #111111;
+    box-shadow: 4px 4px 0px #111111;
+    background: #FFFFFF;
+  }
+  body[data-theme="garfield"] #slate table thead th{
+    background: #FFFFFF; color: #111;
+    border-bottom: 2px solid #111111;
+    box-shadow: none;
+  }
+  /* pinned matchup column: solid white so panning reads cleanly */
+  body[data-theme="garfield"] #slate table:has(tr.row-clickable) tr.row-clickable td:nth-child(2),
+  body[data-theme="garfield"] #slate table:has(tr.row-clickable) thead th:nth-child(2){
+    background: #FFFFFF; backdrop-filter: none; -webkit-backdrop-filter: none;
+    border-right: 2px solid #111111;
+  }
+  body[data-theme="garfield"] #slate tbody tr.row-clickable:nth-child(4n+3) td:nth-child(2){
+    background: var(--zebra);
+  }
+  /* action-bubble badges: perfectly square, harsh 2px ink */
+  body[data-theme="garfield"] .tier-badge,
+  body[data-theme="garfield"] .result-chip,
+  body[data-theme="garfield"] .grade-A, body[data-theme="garfield"] .grade-A-,
+  body[data-theme="garfield"] .grade-Bp, body[data-theme="garfield"] .grade-B,
+  body[data-theme="garfield"] .grade-Bm, body[data-theme="garfield"] .grade-C,
+  body[data-theme="garfield"] .grade-D,
+  body[data-theme="garfield"] .q-chip{
+    border-radius: 0 !important;
+    border: 2px solid #111111 !important;
+    box-shadow: 2px 2px 0px #111111;
+    text-shadow: none !important;
+  }
+  body[data-theme="garfield"] .grade-A,
+  body[data-theme="garfield"] .grade-A-{
+    color: #E65100 !important; background: #FFF3E0 !important;
+  }
+  body[data-theme="garfield"] .mx-dot{ border: 2px solid #111; }
+  body[data-theme="garfield"] #drawer-toggle,
+  body[data-theme="garfield"] #rail-reopen,
+  body[data-theme="garfield"] #theme-toggle{
+    background: #FFFFFF; color: #111; border: 2px solid #111;
+    box-shadow: 3px 3px 0px #111111;
+  }
+  body[data-theme="garfield"] #theme-label{ color: #E65100; }
+  body[data-theme="garfield"] .hero-headline,
+  body[data-theme="garfield"] h1{ color: #111; text-shadow: none; }
+  body[data-theme="garfield"] #site-logo circle{ fill: #FFF8EE; }
+  </style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
@@ -2277,13 +2371,21 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 
 
 <header>
-  <h1>Gozorp's MLB edge</h1>
+  <svg id="site-logo" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true">
+  <circle cx="24" cy="24" r="20" fill="#ffffff" stroke="#111111" stroke-width="3.5"/>
+  <path d="M13 7 C 20 16, 20 32, 13 41" fill="none" stroke="#F57C00" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M35 7 C 28 16, 28 32, 35 41" fill="none" stroke="#F57C00" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M14.5 12 l3.4 1.1 M13.2 17 l3.6 0.6 M12.8 22 l3.7 0.1 M13 27 l3.7 -0.4 M13.9 32 l3.5 -0.9 M15.5 37 l3.2 -1.4" stroke="#F57C00" stroke-width="1.7" stroke-linecap="round"/>
+  <path d="M33.5 12 l-3.4 1.1 M34.8 17 l-3.6 0.6 M35.2 22 l-3.7 0.1 M35 27 l-3.7 -0.4 M34.1 32 l-3.5 -0.9 M32.5 37 l-3.2 -1.4" stroke="#F57C00" stroke-width="1.7" stroke-linecap="round"/>
+</svg>
+<h1>Gozorp's MLB edge</h1>
   <div class="meta">Daily MLB slate predictions with multi-rule grading</div>
   <span id="visitPill" class="visit-pill muted-dim" title="Unique visit counter — one bump per browser">
     <span class="visit-dot"></span>
     <span id="visitText">… loading visits</span>
   </span>
-  <button id="help-btn" title="Help &amp; glossary — what does each column mean?" aria-label="Open help panel">?</button>
+  <button id="theme-toggle" title="Switch visual theme" aria-label="Switch visual theme">MODE: <span id="theme-label">TACTICAL</span></button>
+<button id="help-btn" title="Help &amp; glossary — what does each column mean?" aria-label="Open help panel">?</button>
 </header>
 
 <section id="mlb-hero" aria-label="mlb_edge hero">
@@ -10108,6 +10210,40 @@ document.addEventListener("click", function (e) {
       if (closer) closer.addEventListener("click", function () { if (isDesktop()) set(true); });
       if (reopen) reopen.addEventListener("click", function () { set(false); });
       try { if (readCookie() === "1" && isDesktop()) set(true); } catch (e) {}
+    } catch (e) { /* never break the page */ }
+  })();
+  </script>
+  <script id="theme-js">
+  /* Phase 4: theme engine -- TACTICAL <-> COMIC (garfield). Cookie-persisted
+     (origin localStorage is quota-full; setItem throws). Display-only. */
+  (function () {
+    try {
+      var btn = document.getElementById("theme-toggle");
+      var label = document.getElementById("theme-label");
+      function readCookie() {
+        var m = document.cookie.match(/(?:^|;\s*)mlbedge_theme=(\w+)/);
+        return m ? m[1] : null;
+      }
+      function apply(theme) {
+        if (theme === "garfield") {
+          document.body.setAttribute("data-theme", "garfield");
+          if (label) label.textContent = "COMIC";
+        } else {
+          document.body.removeAttribute("data-theme");
+          if (label) label.textContent = "TACTICAL";
+        }
+        try {
+          document.cookie = "mlbedge_theme=" + (theme || "dark") +
+            ";path=/;max-age=31536000;SameSite=Lax";
+        } catch (e) {}
+        try { localStorage.setItem("theme", theme || "dark"); } catch (e) {}
+      }
+      if (btn) btn.addEventListener("click", function () {
+        apply(document.body.getAttribute("data-theme") === "garfield" ? "dark" : "garfield");
+      });
+      var saved = readCookie();
+      if (!saved) { try { saved = localStorage.getItem("theme"); } catch (e) {} }
+      if (saved === "garfield") apply("garfield");
     } catch (e) { /* never break the page */ }
   })();
   </script>
