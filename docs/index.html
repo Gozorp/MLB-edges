@@ -1732,6 +1732,10 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
       font-size: 0.68rem !important;
     }
     .wx-fcst-badge{ font-size: 0.62rem !important; }
+    .accordion-body-inner span[style*="font-size:0.5"],
+    td span[style*="font-size:0.5"]{
+      font-size: 0.62rem !important;   /* v3b: floor the 0.5x stragglers */
+    }
 
     /* (4) backstop: nothing escapes an accordion sideways;
        tables/pres inside keep their own scrollports */
@@ -1746,6 +1750,13 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     /* (3) long tokens in Top Probable Outcomes / card prose wrap
        instead of pushing past the viewport */
     #top-outcomes, .accordion-body-inner .card{ overflow-wrap: anywhere; }
+
+    /* -- responsive-v3b additions (same audit, phase 2) -- */
+    /* TPO: narrative lines wrap; the trailing result chip drops to
+       its own line instead of pushing past the right edge */
+    #top-outcomes :not(.result-chip){ white-space: normal; }
+    #top-outcomes .result-chip{ white-space: nowrap; }
+
   }
   </style>
 </head>
