@@ -1703,6 +1703,51 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     pre{ font-size: 11px; line-height: 1.45; }
   }
   </style>
+  <style id="responsive-v3">
+  /* ==========================================================
+     responsive-v3 (2026-07-08) -- per-feature fixes from the
+     390px audit: stack inline accordion grids (bullpen team
+     panels overflowed 838px; 1fr columns can't shrink below
+     content), floor inline micro-chip fonts for readability,
+     wrap long TPO spans, and clip stray accordion overflow.
+     Additive, cascade-after-v2, display-only.
+     Revert: delete this whole style block.
+     ========================================================== */
+
+  @media (max-width: 1099px){
+    /* (1) inline 2-col grids inside accordions -> single column;
+       children may shrink so inner table scrollports engage */
+    .accordion-body-inner [style*="grid-template-columns"]{
+      grid-template-columns: 1fr !important;
+    }
+    .accordion-body-inner [style*="display:grid"] > *,
+    .accordion-body-inner [style*="display:flex"] > *{
+      min-width: 0;
+    }
+
+    /* (2) readability floor: inline 0.6rem/0.62rem chip badges
+       (NORMAL / HOLDS / FADES etc.) and the 8px weather badge */
+    .accordion-body-inner span[style*="font-size:0.6"],
+    td span[style*="font-size:0.6"]{
+      font-size: 0.68rem !important;
+    }
+    .wx-fcst-badge{ font-size: 0.62rem !important; }
+
+    /* (4) backstop: nothing escapes an accordion sideways;
+       tables/pres inside keep their own scrollports */
+    .accordion-body-inner{
+      max-width: 100%;
+      overflow-x: hidden;
+      overflow-x: clip;
+    }
+  }
+
+  @media (max-width: 768px){
+    /* (3) long tokens in Top Probable Outcomes / card prose wrap
+       instead of pushing past the viewport */
+    #top-outcomes, .accordion-body-inner .card{ overflow-wrap: anywhere; }
+  }
+  </style>
 </head>
 <body>
 
