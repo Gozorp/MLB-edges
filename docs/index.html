@@ -2107,9 +2107,53 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   #side-drawer [style*="grid-template-columns"]{ grid-template-columns: 1fr !important; }
   #side-drawer [style*="display:grid"] > *, #side-drawer [style*="display:flex"] > *{ min-width: 0; }
   </style>
+  <style id="responsive-v5">
+  /* ==========================================================
+     responsive-v5 -- desktop comfort (user feedback: PC should
+     not slide). Full-width main at >=1100px (was capped 1400px,
+     forcing the 1578px slate to pan on every monitor); grid's
+     internal scrollbox removed (no wheel trap, no double
+     scrollbar -- table flows with the page, horizontal pan only
+     as a narrow-window fallback); rail is collapsible via the
+     drawer's X + a fixed reopen tab, persisted. Cascade-last,
+     display-only. Revert: delete block + #rail-reopen + rail-js.
+     ========================================================== */
+  @media (min-width: 1100px){
+    main{ max-width: none; margin: 0; padding: 1.6rem 2rem 2rem; }
+
+    /* no internal scrollbox: nothing traps the wheel; the page scrolls */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable){
+      max-height: none;
+      overscroll-behavior: auto;
+    }
+    /* tighter data cells so the full column set fits without panning */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable > td,
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th{
+      padding-left: 0.45rem; padding-right: 0.45rem;
+    }
+
+    /* collapsible rail */
+    body{ transition: padding-left 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    body.rail-collapsed{ padding-left: 0 !important; }
+    body.rail-collapsed #side-drawer{ transform: translateX(-102%); }
+    #rail-reopen{
+      display: none; position: fixed; top: 0.7rem; left: 0.7rem; z-index: 190;
+      background: var(--bg-elev); color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 1.05rem; padding: 7px 11px; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+    body.rail-collapsed #rail-reopen{ display: block; }
+    body.rail-collapsed header{ padding-left: 3.4rem; }
+  }
+  @media (max-width: 1099px){
+    #rail-reopen{ display: none !important; }
+  }
+  </style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
+<button id="rail-reopen" title="Reopen tools &amp; context rail" aria-label="Reopen sidebar rail">☰</button>
 <div id="drawer-backdrop"></div>
 <nav id="side-drawer" aria-label="Tools &amp; context">
   <div class="drawer-head">
@@ -10020,6 +10064,24 @@ document.addEventListener("click", function (e) {
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
     setInterval(health, 300000);
+  })();
+  </script>
+  <script id="rail-js">
+  /* responsive-v5: collapsible desktop rail (persisted). Display-only. */
+  (function () {
+    try {
+      var KEY = "mlbedge_rail_collapsed";
+      var reopen = document.getElementById("rail-reopen");
+      var closer = document.getElementById("drawer-close");
+      function isDesktop() { return window.matchMedia("(min-width: 1100px)").matches; }
+      function set(c) {
+        document.body.classList.toggle("rail-collapsed", c);
+        try { localStorage.setItem(KEY, c ? "1" : "0"); } catch (e) {}
+      }
+      if (closer) closer.addEventListener("click", function () { if (isDesktop()) set(true); });
+      if (reopen) reopen.addEventListener("click", function () { set(false); });
+      try { if (localStorage.getItem(KEY) === "1" && isDesktop()) set(true); } catch (e) {}
+    } catch (e) { /* never break the page */ }
   })();
   </script>
 </body>
