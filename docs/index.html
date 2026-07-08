@@ -2159,6 +2159,13 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable td:nth-child(1){
       display: none;
     }
+    /* rem-based bits ignore the em shrink -- scale them explicitly */
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) tr.row-clickable > td,
+    body:not(.simple-mode) #slate table:has(tr.row-clickable) thead th{
+      padding-left: 0.4rem; padding-right: 0.4rem;
+    }
+    body:not(.simple-mode) #slate .tier-badge,
+    body:not(.simple-mode) #slate .result-chip{ font-size: 0.6rem; }
   }
   </style>
 </head>
@@ -10085,13 +10092,22 @@ document.addEventListener("click", function (e) {
       var reopen = document.getElementById("rail-reopen");
       var closer = document.getElementById("drawer-close");
       function isDesktop() { return window.matchMedia("(min-width: 1100px)").matches; }
+      /* railCookie: localStorage on this origin is quota-full (site data
+         caching), so persist the preference in a small cookie instead. */
+      function readCookie() {
+        var m = document.cookie.match(/(?:^|;\s*)mlbedge_rail=(\d)/);
+        return m ? m[1] : null;
+      }
       function set(c) {
         document.body.classList.toggle("rail-collapsed", c);
-        try { localStorage.setItem(KEY, c ? "1" : "0"); } catch (e) {}
+        try {
+          document.cookie = "mlbedge_rail=" + (c ? "1" : "0") +
+            ";path=/;max-age=31536000;SameSite=Lax";
+        } catch (e) {}
       }
       if (closer) closer.addEventListener("click", function () { if (isDesktop()) set(true); });
       if (reopen) reopen.addEventListener("click", function () { set(false); });
-      try { if (localStorage.getItem(KEY) === "1" && isDesktop()) set(true); } catch (e) {}
+      try { if (readCookie() === "1" && isDesktop()) set(true); } catch (e) {}
     } catch (e) { /* never break the page */ }
   })();
   </script>
