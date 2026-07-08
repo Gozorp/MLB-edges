@@ -1806,23 +1806,35 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 
   /* ---- micro-viz: edge cell heat (tint + bottom bar) ----
      --eh (0..1) + eh-pos/eh-neg set by the #edge-heat script */
-  td.col-edge.eh-pos, td.col-edge.eh-neg{
+  /* edge heat = the model's own bands (matches the Goldilocks banner):
+     signed edge <4pp noise / 4-8 GOLDILOCKS / 8-15 caution / >15 trap.
+     Bar length = magnitude (capped 20pp); color = band semantics. */
+  td.col-edge.eh-noise, td.col-edge.eh-gold,
+  td.col-edge.eh-caution, td.col-edge.eh-trap{
     background-repeat: no-repeat, no-repeat;
     background-position: 0 0, left calc(100% - 3px);
-  }
-  td.col-edge.eh-pos{
-    background-image:
-      linear-gradient(rgba(63,185,80, calc(var(--eh, 0) * 0.15)),
-                      rgba(63,185,80, calc(var(--eh, 0) * 0.15))),
-      linear-gradient(90deg, rgba(183,255,46,0.85), rgba(63,185,80,0.25));
     background-size: 100% 100%, calc(var(--eh, 0) * 82%) 2px;
   }
-  td.col-edge.eh-neg{
+  td.col-edge.eh-noise{
+    color: var(--muted);
     background-image:
-      linear-gradient(rgba(248,81,73, calc(var(--eh, 0) * 0.13)),
-                      rgba(248,81,73, calc(var(--eh, 0) * 0.13))),
-      linear-gradient(90deg, rgba(248,81,73,0.8), rgba(248,81,73,0.2));
-    background-size: 100% 100%, calc(var(--eh, 0) * 82%) 2px;
+      linear-gradient(rgba(139,148,158,0.05), rgba(139,148,158,0.05)),
+      linear-gradient(90deg, rgba(139,148,158,0.45), rgba(139,148,158,0.15));
+  }
+  td.col-edge.eh-gold{
+    background-image:
+      linear-gradient(rgba(63,185,80,0.16), rgba(63,185,80,0.16)),
+      linear-gradient(90deg, rgba(183,255,46,0.9), rgba(63,185,80,0.3));
+  }
+  td.col-edge.eh-caution{
+    background-image:
+      linear-gradient(rgba(210,153,34,0.14), rgba(210,153,34,0.14)),
+      linear-gradient(90deg, rgba(255,180,84,0.9), rgba(210,153,34,0.3));
+  }
+  td.col-edge.eh-trap{
+    background-image:
+      linear-gradient(rgba(248,81,73,0.13), rgba(248,81,73,0.13)),
+      linear-gradient(90deg, rgba(248,81,73,0.85), rgba(248,81,73,0.25));
   }
 
   /* ---- depth: raised, tactile panels on the matte canvas ---- */
@@ -9539,10 +9551,14 @@ document.addEventListener("click", function (e) {
           if (!m) return;
           var v = parseFloat(m[0]);
           if (!isFinite(v) || v === 0) return;
-          var h = Math.min(Math.abs(v) / 15, 1);
-          td.style.setProperty("--eh", h.toFixed(3));
-          td.classList.toggle("eh-pos", v > 0);
-          td.classList.toggle("eh-neg", v < 0);
+          // band by the model's own semantics (signed edge, Goldilocks banner):
+          // <4 noise (incl. all negatives) / 4-8 goldilocks / 8-15 caution / >15 trap
+          var band = v >= 4 && v < 8 ? "eh-gold"
+                   : v >= 8 && v <= 15 ? "eh-caution"
+                   : v > 15 ? "eh-trap" : "eh-noise";
+          td.classList.remove("eh-pos", "eh-neg", "eh-noise", "eh-gold", "eh-caution", "eh-trap");
+          td.classList.add(band);
+          td.style.setProperty("--eh", Math.min(Math.abs(v) / 20, 1).toFixed(3));
         });
       } catch (e) { /* display-only: never break the page */ }
     }
