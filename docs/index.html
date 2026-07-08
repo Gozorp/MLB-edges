@@ -9807,7 +9807,7 @@ document.addEventListener("click", function (e) {
             if (!isFinite(v)) return;
             if (!best || v > best.v) {
               var mu = tr.querySelector("td:nth-child(2)");
-              var name = mu ? (mu.textContent || "").trim().split("\n")[0].slice(0, 22) : "";
+              var name = mu ? ((mu.textContent || "").trim().match(/^[A-Z]{2,3} @ [A-Z]{2,3}(?: \(G\d[^)]*\))?/) || [""])[0] : "";
               best = { v: v, name: name };
             }
           });
