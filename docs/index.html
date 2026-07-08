@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <title>Gozorp's MLB edge — daily slate</title>
 <style>
   :root {
@@ -1907,6 +1907,104 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     header{ padding-left: 3.4rem; }   /* clear the hamburger */
   }
   </style>
+  <style id="engine-css">
+  /* ==========================================================
+     Phases 2-4 styling (2026-07-08, user-directed): tactical
+     palette (#121212 matte / #1A1A1A zebra), metric row, sticky
+     table headers, tier pill badges, prose/mono typography split,
+     sortable-column cues. Cascade-last, display-only.
+     ========================================================== */
+  :root{
+    --bg: #121212;
+    --bg-elev: #191b1e;
+    --border: #2a2d31;
+    --zebra: #1A1A1A;
+    --row-hover: #22252a;
+    --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  /* ---- typography split: sans prose, mono strictly on data ---- */
+  body{ font-family: var(--sans); }
+  table, td, th, pre, code, kbd, input, select, textarea,
+  .picker, .picker *, .q-chip, .visit-pill, .hero-stat-value,
+  .metric-value, .metric-sub, .tier-badge, .result-chip,
+  [class*="chip"], [class*="pill"], [class*="badge"], .grade-row,
+  #slate, #slate *, #top-outcomes table *{
+    font-family: var(--mono);
+  }
+  h1, h2, h3, .accordion-header span, .accordion-eyebrow, .drawer-head,
+  .metric-label, .hero-eyebrow, .hero-headline, .hero-stat-label,
+  #slate h2, #slate h3, #top-outcomes h2, #top-outcomes h3{
+    font-family: "Space Grotesk", var(--sans);
+  }
+
+  /* ---- P2: metric row ---- */
+  #metric-row{
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem; margin: 0.9rem 0 1.1rem;
+  }
+  .metric-card{
+    background: var(--bg-elev);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 0.75rem 0.95rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 22px rgba(0,0,0,0.35);
+  }
+  .metric-label{
+    font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em;
+    color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .metric-value{ font-size: 1.45rem; font-weight: 700; line-height: 1.1; }
+  .metric-value.green{ color: var(--green); }
+  .metric-sub{ font-size: 0.68rem; color: var(--muted); margin-top: 0.25rem; }
+  .mx-dot{
+    display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+    margin-right: 8px; background: var(--muted); vertical-align: baseline;
+  }
+  .mx-dot.green{ background: var(--green); animation: mxpulse 2.2s ease-in-out infinite; }
+  .mx-dot.yellow{ background: var(--yellow); animation: mxpulse 2.2s ease-in-out infinite; }
+  .mx-dot.red{ background: var(--red); }
+  @keyframes mxpulse{
+    0%, 100%{ box-shadow: 0 0 0 0 rgba(63,185,80,0.45); }
+    50%{ box-shadow: 0 0 0 7px rgba(63,185,80,0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .mx-dot{ animation: none !important; } }
+  @media (max-width: 640px){ #metric-row{ grid-template-columns: 1fr; gap: 0.55rem; } }
+  @media (min-width: 641px) and (max-width: 1099px){ #metric-row{ grid-template-columns: repeat(3, 1fr); } }
+
+  /* ---- P3: zebra + hover (pair-aware; table mode only) ---- */
+  body:not(.simple-mode) #slate tbody tr.row-clickable:nth-child(4n+3){
+    background: var(--zebra);
+  }
+  body:not(.simple-mode) #slate tbody tr.row-clickable:hover{
+    background: var(--row-hover);
+  }
+
+  /* ---- P3: sticky column headers (desktop page scroll) ---- */
+  #slate table thead th{
+    position: sticky; top: 0; z-index: 7;
+    background: var(--bg-elev);
+    box-shadow: 0 1px 0 var(--border);
+  }
+
+  /* ---- P3: tier pill badges (enhancer wraps the raw text) ---- */
+  .tier-badge{
+    display: inline-block; padding: 1px 8px; border-radius: 999px;
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em;
+    border: 1px solid var(--border); color: var(--muted); background: rgba(139,148,158,0.08);
+  }
+  .tier-badge.tb-platinum{ color: #9ee6ff; border-color: rgba(158,230,255,0.5); background: rgba(158,230,255,0.08); }
+  .tier-badge.tb-diamond{ color: #d2b8ff; border-color: rgba(210,184,255,0.5); background: rgba(210,184,255,0.08); }
+  .tier-badge.tb-gold{ color: var(--amber); border-color: rgba(255,180,84,0.5); background: rgba(255,180,84,0.08); }
+  .tier-badge.tb-silver{ color: #c9d1d9; border-color: rgba(201,209,217,0.4); background: rgba(201,209,217,0.07); }
+  .tier-badge.tb-skip{ color: var(--muted); }
+  .tier-badge.tb-pending_sp_data{ color: var(--yellow); border-color: rgba(210,153,34,0.45); background: rgba(210,153,34,0.07); }
+
+  /* ---- P4: sortable header cues ---- */
+  #slate table thead th{ cursor: pointer; user-select: none; }
+  #slate table thead th.sort-asc::after{ content: " ▲"; color: var(--accent); font-size: 0.72em; }
+  #slate table thead th.sort-desc::after{ content: " ▼"; color: var(--accent); font-size: 0.72em; }
+  </style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
@@ -2093,7 +2191,24 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <div id="queryResult"></div>
   </div>
 
-  <section id="ask-the-slate-section">
+  <div id="metric-row" aria-label="Slate snapshot">
+  <div class="metric-card">
+    <div class="metric-label">A-GRADES TODAY</div>
+    <div class="metric-value green" id="mx-agrades">–</div>
+    <div class="metric-sub" id="mx-agrades-sub">of the full slate</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">BIGGEST EDGE</div>
+    <div class="metric-value" id="mx-edge">–</div>
+    <div class="metric-sub" id="mx-edge-sub">–</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">MODEL HEALTH</div>
+    <div class="metric-value" id="mx-health"><span id="mx-health-dot" class="mx-dot"></span><span id="mx-health-txt">…</span></div>
+    <div class="metric-sub" id="mx-health-sub">pipeline heartbeat</div>
+  </div>
+</div>
+<section id="ask-the-slate-section">
     <span class="accordion-eyebrow">Browse the slate</span>
     <h2>Ask the Slate</h2>
     <div class="accordion" role="tablist">
@@ -9655,6 +9770,154 @@ document.addEventListener("click", function (e) {
       if (bd) bd.addEventListener("click", function () { setOpen(false); });
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
     } catch (e) { /* never break the page */ }
+  })();
+  </script>
+  <script id="cc-widgets">
+  /* Phases 2-4 enhancers: metric row filler, tier badges, column sort.
+     All display-only + defensive; re-apply via debounced MutationObserver. */
+  (function () {
+    var GRADE_RANK = { "grade-A": 0, "grade-A-": 1, "grade-Bp": 2, "grade-B": 3,
+                       "grade-Bm": 4, "grade-C": 5, "grade-D": 6 };
+
+    function num(el, col) {
+      var td = el.children[col];
+      if (!td) return NaN;
+      var m = (td.textContent || "").match(/-?\d+(?:\.\d+)?/);
+      return m ? parseFloat(m[0]) : NaN;
+    }
+
+    /* ---- P2: metric row ---- */
+    function metrics() {
+      try {
+        var slate = document.getElementById("slate");
+        var agEl = document.getElementById("mx-agrades");
+        if (slate && agEl) {
+          var rows = slate.querySelectorAll("tbody tr.row-clickable");
+          var aCount = slate.querySelectorAll("tr.row-clickable .grade-A, tr.row-clickable .grade-A-").length;
+          agEl.textContent = String(aCount);
+          var sub = document.getElementById("mx-agrades-sub");
+          if (sub && rows.length) sub.textContent = "of " + rows.length + " games";
+          var best = null;
+          slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
+            var td = tr.querySelector("td.col-edge");
+            if (!td) return;
+            var m = (td.textContent || "").match(/-?\d+(?:\.\d+)?/);
+            if (!m) return;
+            var v = parseFloat(m[0]);
+            if (!isFinite(v)) return;
+            if (!best || v > best.v) {
+              var mu = tr.querySelector("td:nth-child(2)");
+              var name = mu ? (mu.textContent || "").trim().split("\n")[0].slice(0, 22) : "";
+              best = { v: v, name: name };
+            }
+          });
+          var be = document.getElementById("mx-edge"), bs = document.getElementById("mx-edge-sub");
+          if (be && best) {
+            be.textContent = (best.v > 0 ? "+" : "") + best.v.toFixed(1) + "pp";
+            be.style.color = best.v >= 4 && best.v < 8 ? "var(--green)"
+                           : best.v >= 8 && best.v <= 15 ? "var(--amber)"
+                           : best.v > 15 ? "var(--red)" : "var(--muted)";
+            if (bs) bs.textContent = best.name +
+              (best.v >= 4 && best.v < 8 ? " · goldilocks" :
+               best.v >= 8 && best.v <= 15 ? " · caution" :
+               best.v > 15 ? " · trap band" : " · noise band");
+          }
+        }
+      } catch (e) {}
+    }
+    function health() {
+      try {
+        fetch("./data/health.json", { cache: "no-store" }).then(function (r) { return r.json(); })
+          .then(function (h) {
+            var o = (h.overall || "").toLowerCase();
+            var dot = document.getElementById("mx-health-dot");
+            var txt = document.getElementById("mx-health-txt");
+            var sub = document.getElementById("mx-health-sub");
+            if (!dot || !txt) return;
+            var cls = o === "green" ? "green" : o === "red" ? "red" : "yellow";
+            dot.className = "mx-dot " + cls;
+            txt.textContent = o === "green" ? "LIVE" : o === "red" ? "CHECK" : "LIVE·FROZEN";
+            if (sub && h.checked_at) sub.textContent = "checked " + h.checked_at.slice(11, 16) + "Z";
+          }).catch(function () {});
+      } catch (e) {}
+    }
+
+    /* ---- P3: tier badges ---- */
+    var TIERS = /^(PLATINUM|DIAMOND|GOLD|SILVER|SKIP|PENDING_SP_DATA)\b/;
+    function badges() {
+      try {
+        document.querySelectorAll("#slate tr.row-clickable td").forEach(function (td) {
+          if (td.querySelector(".tier-badge") || td.children.length > 2) return;
+          var t = (td.textContent || "").trim();
+          var m = t.match(TIERS);
+          if (!m || t.length > 28) return;
+          var rest = t.slice(m[0].length).trim();
+          td.textContent = "";
+          var b = document.createElement("span");
+          b.className = "tier-badge tb-" + m[0].toLowerCase();
+          b.textContent = m[0];
+          td.appendChild(b);
+          if (rest) {
+            var s = document.createElement("span");
+            s.style.cssText = "font-size:0.64rem;color:var(--muted);margin-left:5px;";
+            s.textContent = rest;
+            td.appendChild(s);
+          }
+        });
+      } catch (e) {}
+    }
+
+    /* ---- P4: column sort (pair-aware, delegated) ---- */
+    document.addEventListener("click", function (e) {
+      var th = e.target.closest("#slate table thead th");
+      if (!th) return;
+      try {
+        var table = th.closest("table");
+        var tbody = table.querySelector("tbody");
+        if (!tbody) return;
+        var col = Array.prototype.indexOf.call(th.parentNode.children, th);
+        var label = (th.textContent || "").replace(/[▲▼]/g, "").trim().toUpperCase();
+        var isGrade = label.indexOf("GRADE") === 0;
+        var dir = th.dataset.dir === "asc" ? "desc" : th.dataset.dir === "desc" ? "asc"
+                : (isGrade ? "asc" : "desc");
+        Array.prototype.forEach.call(th.parentNode.children, function (h) {
+          h.classList.remove("sort-asc", "sort-desc"); delete h.dataset.dir;
+        });
+        th.dataset.dir = dir;
+        th.classList.add(dir === "asc" ? "sort-asc" : "sort-desc");
+        var pairs = Array.prototype.map.call(tbody.querySelectorAll("tr.row-clickable"), function (r) {
+          var d = r.nextElementSibling;
+          return { r: r, d: (d && d.classList.contains("details-row")) ? d : null };
+        });
+        pairs.forEach(function (p, i) {
+          var k;
+          if (isGrade) {
+            k = 50;
+            for (var cls in GRADE_RANK) {
+              if (p.r.querySelector("." + CSS.escape(cls))) { k = GRADE_RANK[cls]; break; }
+            }
+          } else {
+            k = num(p.r, col);
+            if (!isFinite(k)) k = dir === "asc" ? Infinity : -Infinity;
+          }
+          p.k = k; p.i = i;
+        });
+        pairs.sort(function (a, b) {
+          return (dir === "asc" ? a.k - b.k : b.k - a.k) || (a.i - b.i);
+        });
+        var frag = document.createDocumentFragment();
+        pairs.forEach(function (p) { frag.appendChild(p.r); if (p.d) frag.appendChild(p.d); });
+        tbody.appendChild(frag);
+      } catch (err) { /* display-only */ }
+    });
+
+    /* ---- shared observer ---- */
+    var t;
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); }, 400); }
+    try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+    if (document.readyState !== "loading") { tick(); health(); }
+    else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
+    setInterval(health, 300000);
   })();
   </script>
 </body>
