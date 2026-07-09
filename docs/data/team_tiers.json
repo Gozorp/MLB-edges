@@ -1,17 +1,9 @@
 {
- "generated_utc": "2026-07-09T09:50:24Z",
+ "generated_utc": "2026-07-09T13:50:07Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [
-  "ATL promoted: Above Average -> Elite (eff +1.07, mmr -0.33)",
-  "PHI demoted: Above Average -> Average (eff +0.15, mmr -0.14)",
-  "CWS demoted: Above Average -> Average (eff +0.11, mmr -0.13)",
-  "SEA demoted: Above Average -> Average (eff +0.21, mmr -0.03)",
-  "CLE demoted: Average -> Below Average (eff -0.23, mmr -0.17)",
-  "TOR promoted: Poor -> Below Average (eff -0.56, mmr -0.06)",
-  "BAL demoted: Below Average -> Poor (eff -0.84, mmr -0.19)"
- ],
+ "movements": [],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -64,8 +56,6 @@
     "z": 1.4,
     "mmr": -0.329,
     "eff": 1.071,
-    "movement": "promoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs SF (06-27)",
      "upset L vs SF (06-28)"
@@ -166,8 +156,6 @@
     "z": 0.295,
     "mmr": -0.14,
     "eff": 0.154,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs NYM (06-27)",
      "upset L vs KC (07-05)"
@@ -200,8 +188,6 @@
     "z": 0.243,
     "mmr": -0.13,
     "eff": 0.113,
-    "movement": "demoted",
-    "moved_from": "Above Average",
     "upsets": [
      "upset L vs KC (06-28)",
      "upset L vs BAL (07-01)"
@@ -217,9 +203,7 @@
     "rationale": "47-46 (.505), +24 run differential -- a solidly positive run margin.",
     "z": 0.24,
     "mmr": -0.031,
-    "eff": 0.209,
-    "movement": "demoted",
-    "moved_from": "Above Average"
+    "eff": 0.209
    },
    {
     "name": "Washington Nationals",
@@ -308,9 +292,7 @@
     "rationale": "47-46 (.505), -12 run differential -- a negative run margin. Results running below tier expectation (MMR -0.17).",
     "z": -0.062,
     "mmr": -0.168,
-    "eff": -0.229,
-    "movement": "demoted",
-    "moved_from": "Average"
+    "eff": -0.229
    },
    {
     "name": "Arizona Diamondbacks",
@@ -354,9 +336,7 @@
     "rationale": "44-49 (.473), -35 run differential -- a poor run margin.",
     "z": -0.507,
     "mmr": -0.056,
-    "eff": -0.562,
-    "movement": "promoted",
-    "moved_from": "Poor"
+    "eff": -0.562
    },
    {
     "name": "Houston Astros",
@@ -387,8 +367,6 @@
     "z": -0.656,
     "mmr": -0.187,
     "eff": -0.843,
-    "movement": "demoted",
-    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CWS (07-01)"
     ]

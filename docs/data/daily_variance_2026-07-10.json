@@ -1,6 +1,6 @@
 {
  "date": "2026-07-10",
- "generated": "2026-07-09T09:50:05Z",
+ "generated": "2026-07-09T13:49:55Z",
  "n_games": 15,
  "roster_delta": [
   {
@@ -100,6 +100,14 @@
    "desc": "Miami Marlins signed free agent RHP Lizdawin Paulino to a minor league contract."
   },
   {
+   "team": "BOS",
+   "date": "2026-07-09",
+   "code": "SC",
+   "type": "Status Change",
+   "cat": "activated",
+   "desc": "Boston Red Sox activated OF Nate Eaton."
+  },
+  {
    "team": "NYM",
    "date": "2026-07-08",
    "code": "DES",
@@ -158,14 +166,6 @@
   {
    "team": "LAA",
    "date": "2026-07-08",
-   "code": "DES",
-   "type": "Designated for Assignment",
-   "cat": "DFA",
-   "desc": "Los Angeles Angels designated 3B Donovan Walton for assignment."
-  },
-  {
-   "team": "LAA",
-   "date": "2026-07-08",
    "code": "SFA",
    "type": "Signed as Free Agent",
    "cat": "signed",
@@ -180,12 +180,12 @@
    "desc": "Los Angeles Angels activated CF Mike Trout from the 10-day injured list."
   },
   {
-   "team": "MIN",
+   "team": "LAA",
    "date": "2026-07-08",
-   "code": "SFA",
-   "type": "Signed as Free Agent",
-   "cat": "signed",
-   "desc": "Minnesota Twins signed free agent RHP Matt Bowman to a minor league contract."
+   "code": "DES",
+   "type": "Designated for Assignment",
+   "cat": "DFA",
+   "desc": "Los Angeles Angels designated 3B Donovan Walton for assignment."
   },
   {
    "team": "MIN",
@@ -196,12 +196,20 @@
    "desc": "Minnesota Twins placed RHP Marco Raya on the 15-day injured list retroactive to July 5, 2026. Right shoulder impingement."
   },
   {
+   "team": "MIN",
+   "date": "2026-07-08",
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Minnesota Twins signed free agent RHP Matt Bowman to a minor league contract."
+  },
+  {
    "team": "ATL",
    "date": "2026-07-08",
-   "code": "CU",
-   "type": "Recalled",
-   "cat": "recalled",
-   "desc": "Atlanta Braves recalled RHP Victor Mederos from Gwinnett Stripers."
+   "code": "OPT",
+   "type": "Optioned",
+   "cat": "optioned",
+   "desc": "Atlanta Braves optioned LHP Connor Thomas to Gwinnett Stripers."
   },
   {
    "team": "ATL",
@@ -214,10 +222,10 @@
   {
    "team": "ATL",
    "date": "2026-07-08",
-   "code": "OPT",
-   "type": "Optioned",
-   "cat": "optioned",
-   "desc": "Atlanta Braves optioned LHP Connor Thomas to Gwinnett Stripers."
+   "code": "CU",
+   "type": "Recalled",
+   "cat": "recalled",
+   "desc": "Atlanta Braves recalled RHP Victor Mederos from Gwinnett Stripers."
   },
   {
    "team": "STL",
@@ -230,18 +238,26 @@
   {
    "team": "STL",
    "date": "2026-07-08",
+   "code": "SE",
+   "type": "Selected",
+   "cat": "selected",
+   "desc": "St. Louis Cardinals selected the contract of RHP Luis Gastelum from Memphis Redbirds."
+  },
+  {
+   "team": "STL",
+   "date": "2026-07-08",
    "code": "OPT",
    "type": "Optioned",
    "cat": "optioned",
    "desc": "St. Louis Cardinals optioned RHP Hunter Dobbins to Memphis Redbirds."
   },
   {
-   "team": "STL",
+   "team": "TOR",
    "date": "2026-07-08",
-   "code": "SE",
-   "type": "Selected",
-   "cat": "selected",
-   "desc": "St. Louis Cardinals selected the contract of RHP Luis Gastelum from Memphis Redbirds."
+   "code": "SFA",
+   "type": "Signed as Free Agent",
+   "cat": "signed",
+   "desc": "Toronto Blue Jays signed free agent RF Daz Cameron to a minor league contract."
   },
   {
    "team": "SD",
@@ -278,7 +294,7 @@
  ],
  "roster_review": [],
  "roster_leaks": [],
- "roster_suppressed": 2,
+ "roster_suppressed": 3,
  "unknown_tx_codes": {},
  "sp_flags": [
   {
@@ -296,12 +312,6 @@
   {
    "game": "MIL @ PIT",
    "side": "away",
-   "sp": "TBD",
-   "flag": "NOT CONFIRMED \u2014 probable SP not posted"
-  },
-  {
-   "game": "MIL @ PIT",
-   "side": "home",
    "sp": "TBD",
    "flag": "NOT CONFIRMED \u2014 probable SP not posted"
   },
@@ -441,6 +451,11 @@
   }
  ],
  "platoon": [
+  {
+   "game": "MIL @ PIT",
+   "team": "MIL",
+   "note": "faces RHP (Braxton Ashcraft)"
+  },
   {
    "game": "NYY @ WSH",
    "team": "NYY",
