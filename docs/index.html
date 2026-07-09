@@ -1796,13 +1796,8 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     background: rgba(183, 255, 46, 0.08) !important;
     text-shadow: 0 0 12px rgba(183, 255, 46, 0.28);
   }
-  /* ---- de-emphasize the noise: D-grade rows recede ---- */
-  tbody tr.row-clickable:has(.grade-D){
-    opacity: 0.58;
-    transition: opacity 0.18s ease-out;
-  }
-  tbody tr.row-clickable:has(.grade-D):hover,
-  tbody tr.row-clickable:has(.grade-D):focus-within{ opacity: 1; }
+  /* (D-grade row dimming removed 2026-07-09 by user request -- the grade
+     badge carries the conviction signal; rows render full-strength.) */
 
   /* ---- micro-viz: edge cell heat (tint + bottom bar) ----
      --eh (0..1) + eh-pos/eh-neg set by the #edge-heat script */
