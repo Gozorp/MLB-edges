@@ -1,0 +1,173 @@
+{
+  "date": "2026-07-09",
+  "fit_at": "2026-07-09T18:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 11,
+  "patterns_recognized": [
+    "HARD CAP 1 (negative-edge GOLD/PLATINUM) must force SKIP regardless of the displayed tier label -- validated hard on 6/21 BAL@LAD (PLATINUM CONFIRMed anyway despite live CAP 1, lost 12-1) and the season's largest cap save, 6/14 COL@OAK (-17.48pp averted a 14-run blowout).",
+    "The CSV 'tier' field can lag the cap-adjusted grade_score (a documented pipeline lag -- e.g. HARD CAP 9 failing to fire on COL@LAD 7/6-7/7); today's slate shows the same symptom on CLE@MIN (tier=PLATINUM but grade=C/score=0) and OAK@DET (tier=GOLD but grade=D/score=-1). Always trust grade/grade_score over the literal tier string.",
+    "D-grade picks where SP xERA and PQI both oppose the model's own pick have repeatedly predicted the opposing team's win across June-July postgames (6/8, 6/14, 6/18, 7/7) -- treat as high-confidence SKIP, not a signal to chase.",
+    "PLATINUM tier has run roughly 43% historically, worse than GOLD -- apply extra scrutiny (reinforced by the 7/7 LAA@TEX PLATINUM DOWNGRADE, which was process-correct even though it missed a winner).",
+    "Bottom-bucket (pick_prob 0.50-0.55) picks without a Claude CONFIRM anchor have hit as low as 16-31% across multiple June slates -- HARD CAP 10 suppression is validated and should not be rescued without a strong secondary signal (OWNER BvP cluster or SP edge >= 1.0 xERA).",
+    "Carry-thesis OVERRIDE/DOWNGRADE thresholds (full_prob suppression gate, bullpen-gap magnitude, f5_full_delta cutoffs) flip-flopped repeatedly through June and were never fully stabilized -- not re-derived here; the hard-cap stack already prices in Stage 1/2 disagreement upstream.",
+    "PHI @ CIN recurred within days (7/7 and 7/9) with the model favoring CIN via a HARD-CAP-6-flagged hallucinated edge while the PHI starter held a decisive real xERA edge both times -- both instances support fading CIN in this specific matchup."
+  ],
+  "by_matchup": {
+    "ATL @ PIT": {
+      "model_pick": "PIT ML SKIP",
+      "model_prob": 0.545,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PIT",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.42,
+      "reasoning": "PIT (home) is a D-grade SKIP: SP xERA runs 1.76 against the pick and PQI is -20.1 against PIT, with Stage 1/2 disagreeing by 0.18 (f5_prob 0.775 vs full_prob 0.545). Platoon/BvP color reinforces the fade: Atlanta's Olson and Dubon are both OWNER-flagged against Keller, while Pittsburgh's top order is mostly WEAK_VS/SMALL_SAMPLE against Elder. CONFIRM the model's own SKIP.",
+      "lessons_applied": ["SP-xERA-against + PQI-against reliable loss predictor", "BvP OWNER asymmetry as color, not a decision driver"]
+    },
+    "KC @ NYM": {
+      "model_pick": "KC ML SKIP",
+      "model_prob": 0.5403,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "KC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.45,
+      "reasoning": "KC (away) is D-grade despite an F3 lineup signal (1668.4) because PQI runs +6.5 against the pick and Stage 1/2 disagree by 0.20 (f5_prob=0.158 for NYM vs full_prob=0.460). BvP shows OWNER-level history on both sides -- Witt and Perez vs Wacha for KC, Bichette vs Manaea for NYM -- a wash that doesn't tip the call. CONFIRM the SKIP.",
+      "lessons_applied": ["Stage 1/2 disagreement >0.15 is a bullpen/late-leverage red flag", "BvP OWNER counts roughly offsetting = no signal"]
+    },
+    "NYY @ TB": {
+      "model_pick": "TB ML SKIP",
+      "model_prob": 0.5049,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "TB's pre-cap B+ (SP +0.34 xERA, PQI +4.4, Stage agree) is undone by a -10.34pp negative edge that trips HARD CAP 1 (score 3->1) and then HARD CAP 10 (bottom-bucket pick_prob, no CONFIRM, score->0). F1_xera_gap=1.05* is starred/thin-sample and per the recurring lesson (6/12, 6/14) shouldn't carry a pick alone. CONFIRM the model's own SKIP; HARD CAP 1 has an unbroken protection record this season, including on strong pre-cap stacks.",
+      "lessons_applied": ["HARD CAP 1 negative-edge protection is non-negotiable on any grade", "F1* without independent F3 is unreliable"]
+    },
+    "CHC @ BAL": {
+      "model_pick": "CHC ML SKIP",
+      "model_prob": 0.5163,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.4,
+      "reasoning": "CHC (away) is a D-grade pick where Stage 1 (f5_prob=0.805) heavily favors home BAL while Stage 2 flips to CHC (full_prob=0.484 for BAL) -- a 0.19 disagreement, the classic late-leverage-carrying-the-pick pattern. SP xERA also runs 1.00 against CHC and PQI is +18.2 against, and the edge sits in the 18-25pp calibration-caution band (SOFT CAP 6.5). BvP is thin on both sides (mostly SMALL_SAMPLE) and adds no rescue signal. CONFIRM the SKIP.",
+      "lessons_applied": ["Large Stage 1/2 disagreement = late-leverage thesis carrying the pick, verify bullpen", "Calibration-caution 18-25pp band treated as exposure-capped, not a flip signal"]
+    },
+    "CLE @ MIN": {
+      "model_pick": "CLE ML PLATINUM",
+      "model_prob": 0.5181,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "CLE",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.45,
+      "reasoning": "The CSV tier field still reads PLATINUM, but grade_reasons show the pre-cap B+ (F3=4589, F5_bullpen_gap=+0.85, PQI confirms, Stage agree) was already collapsed to grade C/score 0 by HARD CAP 1 (-3.73pp negative edge) and HARD CAP 10 (pick_prob=0.518 bottom-bucket, no CONFIRM) stacking -- a stale label, similar to the pipeline lag documented 7/6-7/7 on COL@LAD. Per the 6/21 BAL@LAD lesson (PLATINUM CONFIRMed despite live CAP 1, lost 12-1), CAP 1 must force SKIP regardless of displayed tier. DOWNGRADE to SKIP to match the model's true post-cap grade.",
+      "lessons_applied": ["Tier label can lag cap-adjusted grade_score -- trust grade over tier string", "HARD CAP 1 forces SKIP on any tier including PLATINUM"]
+    },
+    "BOS @ CHW": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Patrick Sandoval (CHW) has only 0 Statcast pitches season-to-date, below the 100-pitch minimum for xERA scoring, so the pipeline correctly withheld a directional pick. No model pick exists to grade; treated as ungraded rather than forcing a call. Re-evaluate once starters and pitch-level data are confirmed closer to first pitch.",
+      "lessons_applied": ["PENDING_SP_DATA hard stop correctly withholds ungraded games"]
+    },
+    "OAK @ DET": {
+      "model_pick": "DET ML GOLD",
+      "model_prob": 0.5506,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "DET",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.4,
+      "reasoning": "Tier label shows GOLD, but grade_reasons already reduced this to D (score -1): SP xERA runs 0.32 against DET (Valdez profiles ahead of Perkins) and PQI is -8.9 against, with a slightly negative edge (-0.47pp) already forcing stake_mult=0. Stage 1/2 also disagree substantially (f5_prob=0.331 for DET's F5 vs full_prob=0.551). This matches the recurring SP-against + PQI-against loss pattern validated repeatedly since June. No batter-context JSON was populated for this game, so no BvP/platoon color is available. DOWNGRADE the displayed GOLD label to SKIP to match the true grade.",
+      "lessons_applied": ["Tier label can lag cap-adjusted grade -- trust grade over tier string", "SP-xERA-against + PQI-against reliable loss predictor"]
+    },
+    "SEA @ MIA": {
+      "model_pick": "MIA ML SKIP",
+      "model_prob": 0.6159,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.4,
+      "reasoning": "MIA is a D-grade home favorite (61.6% full_prob) undercut by SP xERA running 1.91 against the pick and PQI at -28.1, plus acute_roster and bullpen_fatigue stress flags. This sits just under the >65% home-favorite-overconfidence threshold, but the opposing SP/PQI combination is the dominant signal here. Edge (+15.84pp) sits just outside the preferred [4,15]pp band and adds no rescue case. CONFIRM the model's own SKIP.",
+      "lessons_applied": ["SP-xERA-against + PQI-against reliable loss predictor", "Home-favorite skepticism above ~60%"]
+    },
+    "PHI @ CIN": {
+      "model_pick": "CIN ML SKIP",
+      "model_prob": 0.6563,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "PHI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "CSV picks CIN, but HARD CAP 6 already flags the +28.36pp edge as a calibrator hallucination (fair_prob=0.373, well under the 0.42 market-rejection line), SP xERA runs 2.51 against CIN (Luzardo over Singer), and PQI is -45.7 -- the widest opposing-PQI reading on the slate. This is the same PHI@CIN matchup graded in the 7/7 postgame, where CIN was picked with a nearly identical hallucinated edge (+27.85pp, HARD CAP 6) and PHI won 4-1 on a Wheeler SP edge; today's Luzardo edge is even larger. OVERRIDE to PHI directionally; no stake exists either way since this is already SKIP.",
+      "lessons_applied": ["HARD CAP 6 edge>25pp = calibrator hallucination", "PHI@CIN recurring SP-edge-vs-hallucinated-CIN-edge pattern (7/7 precedent)"]
+    },
+    "MIL @ STL": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5129,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "STL's pre-cap B- (F3=1924, Stage agree, PQI -5.8 against) sits in the bottom-bucket pick_prob band and HARD CAP 10 correctly zeroes the score without a Claude CONFIRM rescue. Archive hit rate for non-CONFIRM bottom-bucket picks has run 16-31% across multiple slates, well below breakeven. No batter-context data was populated for this game. CONFIRM the SKIP; the bullpen_fatigue stress flag adds mild caution but not enough to change direction.",
+      "lessons_applied": ["HARD CAP 10 bottom-bucket non-CONFIRM underperforms 16-31%"]
+    },
+    "LAA @ TEX": {
+      "model_pick": "TEX ML SKIP",
+      "model_prob": 0.502,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TEX",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.38,
+      "reasoning": "TEX is a coin-flip-probability (50.2%) D-grade pick with SP xERA running 0.83 against (Detmers over Eovaldi) and PQI at -16.9, plus a negative edge (-7.74pp) that would trip HARD CAP 1 even if this weren't already SKIP. No batter-context JSON was populated for this game. This matches the well-validated SP-against + PQI-against D-grade loss signature seen repeatedly across June-July postgames. CONFIRM the SKIP.",
+      "lessons_applied": ["SP-xERA-against + PQI-against reliable loss predictor", "Negative edge on a coin-flip probability compounds the fade"]
+    },
+    "ARI @ SD": {
+      "model_pick": "ARI ML SKIP",
+      "model_prob": 0.5311,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.35,
+      "reasoning": "ARI (away) carries the largest opposing SP gap on the slate -- 2.97 xERA against the pick (Kelly well ahead of Canning) -- plus PQI at +22.9 against. No batter-context JSON was populated for this game. This is a textbook D-grade dual-opposing-signal SKIP, the pattern that has reliably predicted the opposing team's win across the tracked postgame window (e.g., 6/12-6/21 archive). CONFIRM the SKIP.",
+      "lessons_applied": ["SP-xERA-against + PQI-against reliable loss predictor"]
+    },
+    "COL @ SF": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Carson Whisenhunt (SF) has only 85 Statcast pitches season-to-date, below the 100-pitch xERA-scoring minimum, so the pipeline correctly withheld a directional pick. No model pick exists to grade; treated as ungraded. Re-evaluate once SP data clears the threshold.",
+      "lessons_applied": ["PENDING_SP_DATA hard stop correctly withholds ungraded games"]
+    }
+  }
+}
