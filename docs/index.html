@@ -2792,7 +2792,10 @@ async function _initVisitCounter() {
   const text = document.getElementById("visitText");
   if (!pill || !text) return;
 
-  const isNew = !localStorage.getItem(VISIT_KEY);
+  const bot = navigator.webdriver === true ||
+    /bot|crawl|spider|slurp|headless|lighthouse|prerender|preview|fetch|monitor|scan/i
+      .test(navigator.userAgent || "");
+  const isNew = !localStorage.getItem(VISIT_KEY) && !bot;
 
   // Show cached count immediately so the UI never shows "offline" while we wait
   // for the network.  We update it after the fetch succeeds.
@@ -2806,10 +2809,7 @@ async function _initVisitCounter() {
   // Both endpoints return the current count.
   const tryEndpoints = isNew
     ? [`https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`]
-    : [
-        `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/`,
-        `https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/up`,
-      ];
+    : [`https://api.counterapi.dev/v1/${NAMESPACE}/${COUNTER}/`];
 
   let count = null;
   for (const url of tryEndpoints) {
@@ -2837,7 +2837,21 @@ async function _initVisitCounter() {
   }
   // else: keep the cached count we already showed; don't flip to "offline"
 }
-document.addEventListener("DOMContentLoaded", _initVisitCounter);
+function _visitWhenTrulyVisible() {
+  const arm = () => {
+    if (document.visibilityState === "visible") { _initVisitCounter(); return; }
+    const h = () => {
+      if (document.visibilityState === "visible") {
+        document.removeEventListener("visibilitychange", h); _initVisitCounter();
+      }
+    };
+    document.addEventListener("visibilitychange", h);
+  };
+  if (document.prerendering) {
+    document.addEventListener("prerenderingchange", arm, { once: true });
+  } else { arm(); }
+}
+document.addEventListener("DOMContentLoaded", _visitWhenTrulyVisible);
 
 
 // =============================================================================
