@@ -1,9 +1,14 @@
 {
- "generated_utc": "2026-07-09T22:21:24Z",
+ "generated_utc": "2026-07-09T23:38:37Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "PIT demoted: Above Average -> Average (eff +0.24, mmr -0.03)",
+  "CLE promoted: Below Average -> Average (eff -0.08, mmr -0.09)",
+  "BOS promoted: Average -> Above Average (eff +0.50, mmr +0.56)",
+  "BAL promoted: Poor -> Below Average (eff -0.65, mmr -0.04)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -128,23 +133,21 @@
     ]
    },
    {
-    "name": "Pittsburgh Pirates",
-    "abbr": "PIT",
-    "w": 47,
-    "l": 47,
-    "pct": 0.5,
-    "rd": 33,
-    "rationale": "47-47 (.500), +33 run differential -- a strong run margin.",
-    "z": 0.274,
-    "mmr": -0.034,
-    "eff": 0.24,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
+    "name": "Boston Red Sox",
+    "abbr": "BOS",
+    "w": 43,
+    "l": 48,
+    "pct": 0.473,
+    "rd": 18,
+    "rationale": "43-48 (.473), +18 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.56).",
+    "z": -0.065,
+    "mmr": 0.564,
+    "eff": 0.498,
+    "movement": "promoted",
+    "moved_from": "Average",
     "upsets": [
-     "upset L vs CIN (06-26)",
-     "upset L vs CIN (06-27)"
+     "upset W vs NYY (06-25)",
+     "upset W vs NYY (06-26)"
     ]
    }
   ],
@@ -163,6 +166,24 @@
     "upsets": [
      "upset L vs NYM (06-27)",
      "upset L vs KC (07-05)"
+    ]
+   },
+   {
+    "name": "Pittsburgh Pirates",
+    "abbr": "PIT",
+    "w": 47,
+    "l": 47,
+    "pct": 0.5,
+    "rd": 33,
+    "rationale": "47-47 (.500), +33 run differential -- a strong run margin.",
+    "z": 0.274,
+    "mmr": -0.034,
+    "eff": 0.24,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset L vs CIN (06-26)",
+     "upset L vs CIN (06-27)"
     ]
    },
    {
@@ -221,24 +242,18 @@
     "eff": 0.247
    },
    {
-    "name": "Boston Red Sox",
-    "abbr": "BOS",
-    "w": 43,
-    "l": 48,
-    "pct": 0.473,
-    "rd": 18,
-    "rationale": "43-48 (.473), +18 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.56).",
-    "z": -0.065,
-    "mmr": 0.564,
-    "eff": 0.498,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs NYY (06-25)",
-     "upset W vs NYY (06-26)"
-    ]
+    "name": "Cleveland Guardians",
+    "abbr": "CLE",
+    "w": 48,
+    "l": 46,
+    "pct": 0.511,
+    "rd": -9,
+    "rationale": "48-46 (.511), -9 run differential -- a roughly even run margin.",
+    "z": 0.012,
+    "mmr": -0.089,
+    "eff": -0.077,
+    "movement": "promoted",
+    "moved_from": "Below Average"
    },
    {
     "name": "Texas Rangers",
@@ -289,22 +304,6 @@
    }
   ],
   "Below Average": [
-   {
-    "name": "Cleveland Guardians",
-    "abbr": "CLE",
-    "w": 48,
-    "l": 46,
-    "pct": 0.511,
-    "rd": -9,
-    "rationale": "48-46 (.511), -9 run differential -- a roughly even run margin.",
-    "z": 0.012,
-    "mmr": -0.089,
-    "eff": -0.077,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    }
-   },
    {
     "name": "Arizona Diamondbacks",
     "abbr": "AZ",
@@ -364,9 +363,7 @@
      "upset W vs TB (07-04)",
      "upset W vs TB (07-05)"
     ]
-   }
-  ],
-  "Poor": [
+   },
    {
     "name": "Baltimore Orioles",
     "abbr": "BAL",
@@ -378,14 +375,14 @@
     "z": -0.609,
     "mmr": -0.043,
     "eff": -0.652,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
+    "movement": "promoted",
+    "moved_from": "Poor",
     "upsets": [
      "upset W vs CHC (07-09)"
     ]
-   },
+   }
+  ],
+  "Poor": [
    {
     "name": "Cincinnati Reds",
     "abbr": "CIN",
