@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-09
-_Generated 2026-07-09T05:54:15Z · 13 games · significant deviations only_
+_Generated 2026-07-09T06:15:03Z · 13 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **ATL** [signed] — Atlanta Braves signed free agent 1B Rowdy Tellez to a minor league contract.
