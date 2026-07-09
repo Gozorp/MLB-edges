@@ -1,0 +1,150 @@
+{
+  "date": "2026-07-08",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-09T15:00:00Z",
+  "n_analyzed": 15,
+  "summary": "9 wins, 5 losses, 1 no-pick from 15 matchups (64.3% directional hit rate on 14 scored games). The sole elevated stake — BOS ML PLATINUM, Claude-elevated to GOLD — was a clean 5-0 WIN. Two GOLD directional wins (OAK@DET, ARI@SD) were suppressed by HARD CAP 1 intraday edge flips. The session exposed a critical process failure: Claude Brain misread the model pick column on 4 games (CHC@BAL, ATL@PIT, NYY@TB, HOU@WSH), consistently confusing Stage 2 full_prob direction for the pick when Stage 1 and Stage 2 disagree across the 50% threshold. LAA@TEX produced the worst directional miss (13-1 blowout) with five simultaneous opposing signals.",
+  "by_matchup": {
+    "TOR @ SF": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-0",
+      "headline": "TOR demolished SF 10-0; Stage 1 (SF only 33% F5) and SP xERA both pointed away from SF — Stage 2's flip to SF was decisively wrong.",
+      "hypothesis": "Model picked SF on Stage 2 full_prob (59.5%) despite Stage 1 giving SF only 33.3% in F5 (f5_full_delta=0.261) and SP xERA running 1.10 against SF. Dylan Cease (TOR, 36% K-pct) overwhelmed Webb's lineup from the first inning, producing a 10-0 blowout that Stage 1 essentially predicted. When Stage 1/2 delta exceeds 0.20 and SP xERA also opposes the Stage 2 pick, the Stage 2 direction is unreliable — the D-grade and SKIP were correct, but even the directional call should be treated as noise in this configuration.",
+      "signals_to_recheck": "f5_full_delta=0.2613 (extreme Stage 1/2 disagreement — Stage 1 was decisively right; when delta>0.20 AND SP xERA opposes Stage 2 pick, Stage 2 direction should be deprioritized)"
+    },
+    "CHC @ BAL": {
+      "verdict": "WIN",
+      "model_pick": "CHC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-7",
+      "headline": "CHC won 9-7; model correctly picked CHC on Stage 1 edge (51.8% F5), but Claude Brain misread the pick as BAL.",
+      "hypothesis": "Claude Brain read BAL as the model's pick, inferring from full_prob (BAL favored in the full game at ~51%) rather than reading the pick column directly (CSV pick=CHC). The model picked CHC because Stage 1 gave CHC a slight F5 edge (51.8%). CHC won 9-7, validating the Stage 1 direction. No material betting impact since both were SKIP tier. This is one of four documented pick-column misreads this slate — see patterns_observed.",
+      "signals_to_recheck": "claude_brain pick-column misread (read BAL from full_prob instead of CSV pick=CHC); f5_full_delta=0.0271 (Stage 1 says CHC, Stage 2 says BAL — pick column encodes Stage 1 direction which was correct)"
+    },
+    "OAK @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-6",
+      "headline": "DET won 6-1 behind solid F-signals; HARD CAP 1 blocked a clean GOLD win after runtime edge flipped -3.92pp from CSV's +8.30pp.",
+      "hypothesis": "The signal stack was genuinely strong (F1*=1.40 with F3=1890.7 corroborating above the 1000 threshold, SP xERA +1.54 for DET). The CSV edge was +8.30pp but market moved toward DET by ~12pp before claude_brain runtime, compressing the edge to -3.92pp and triggering HARD CAP 1. DET won 6-1. HARD CAP 1 was technically correct to fire on a negative-EV runtime edge, and one win does not retroactively make the blocked bet positive-EV. However, the CSV-to-runtime gap (market moving TOWARD the pick) is a different signal than market moving away — worth monitoring in the 30-pick GOLD CAP-1 window.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-3.92pp runtime vs +8.30pp CSV — ~12pp intraday swing from market moving toward DET, not away); F1_xera_gap=1.40* with F3=1890.7 corroboration (directionally validated)"
+    },
+    "ATL @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "3-0",
+      "headline": "ATL shut out PIT 3-0; model's PLATINUM conviction in PIT was wrong, and Claude Brain misread the pick as ATL.",
+      "hypothesis": "Two failures converged: (1) Claude Brain misread the pick column as ATL (inferring from f5_prob or p_model rather than reading pick=PIT from the CSV), and (2) the model's PLATINUM tier for PIT was directionally wrong — ATL won 3-0. Claude's DOWNGRADE rationale (PLATINUM ~43% historical hit rate, no SP-xERA anchor) was sound reasoning that would have been even more appropriate for PIT (which lost), though Claude applied it to the wrong team. The PLATINUM LOSS here reinforces that PLATINUM without a confirmed SP xERA anchor agreeing with the pick remains a red flag regardless of pre-cap grade.",
+      "signals_to_recheck": "claude_brain pick-column misread (read ATL from Stage 2 direction instead of CSV pick=PIT); PLATINUM calibration (43% historical hit rate — PIT PLATINUM LOSS reinforces PLATINUM fragility without SP-xERA agreement)"
+    },
+    "SEA @ MIA": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-2",
+      "headline": "MIA won 2-0; model's MIA SKIP pick was directionally correct, but Claude Brain mislabeled the game as PENDING_SP_DATA.",
+      "hypothesis": "The CSV had a scored SKIP pick for MIA, but Claude Brain labeled the game PENDING_SP_DATA (citing SP data not confirmed at live statsapi runtime). MIA won 2-0, validating the directional call. No betting impact since SKIP means no stake regardless. This is one of four PENDING_SP_DATA mislabels today — the underlying CSV picks were all scorable SKIP games, not truly pending.",
+      "signals_to_recheck": "PENDING_SP_DATA misclassification (CSV had MIA SKIP pick — live statsapi SP check incorrectly overriding a scored CSV pick; no betting impact since tier=SKIP)"
+    },
+    "NYY @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-3",
+      "headline": "TB won 3-0; model picked NYY on Stage 1 edge, Stage 2 (and the actual game) both said TB.",
+      "hypothesis": "Claude Brain misread the pick as TB (inferring from full_prob where TB was favored in the full game), while the CSV pick=NYY reflects Stage 1's slight F5 edge for NYY. TB won 3-0 — Stage 2 was correct here. Claude's misread accidentally identified the game winner (TB) but for the wrong reason. The model's NYY direction was wrong: NYY's Cole could not convert his presumed SP edge into a win against TB's McClanahan. Either the SP xERA signal overstated Cole's advantage for this matchup, or TB's offense overcame it.",
+      "signals_to_recheck": "claude_brain pick-column misread (read TB from full_prob instead of CSV pick=NYY); f5_full_delta (Stage 1 says NYY, Stage 2 says TB — Stage 2 was right; monitor Stage 1/2 flip games for model directional reliability)"
+    },
+    "HOU @ WSH": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-8",
+      "headline": "WSH dominated HOU 8-2; model correctly picked WSH, Claude Brain misread the pick as HOU.",
+      "hypothesis": "Claude Brain read HOU as the pick (likely from full_prob or p_model showing HOU above 50% in Stage 2), while the CSV pick=WSH. WSH won 8-2, validating the model's Stage 1 directional call. The SP edge (Griffin/WSH over Arrighetti/HOU) was real and decisive. Claude's misread backed the loser (HOU) while the model's actual pick was correct. No betting impact (SKIP tier) but this is the fourth pick-column misread of the slate.",
+      "signals_to_recheck": "claude_brain pick-column misread (read HOU from full_prob instead of CSV pick=WSH; fourth misread today); D-grade SKIP correctly withheld stake despite real underlying SP signal (Griffin over Arrighetti validated by 8-2 margin)"
+    },
+    "KC @ NYM": {
+      "verdict": "LOSS",
+      "model_pick": "KC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-6",
+      "headline": "NYM won 6-2; model picked KC but NYM won clearly.",
+      "hypothesis": "Claude Brain mislabeled KC@NYM as PENDING_SP_DATA despite the CSV having a scored SKIP pick for KC. NYM won 6-2, so the model's KC direction was wrong. SKIP tier meant no bet regardless. The 4-run margin suggests NYM had real advantages that the model's KC pick failed to capture. Without access to the full KC@NYM CSV signals (mislabel prevented analysis at claude_brain runtime), the root cause of the directional miss cannot be diagnosed beyond noting the result.",
+      "signals_to_recheck": "PENDING_SP_DATA misclassification (CSV had KC SKIP pick — signals not evaluated at runtime); KC directional miss (NYM won 6-2; model signal stack unknown due to PENDING mislabel)"
+    },
+    "PHI @ CIN": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-11",
+      "headline": "CIN won 11-5 emphatically; model correctly picked CIN, but Claude mislabeled as PENDING_SP_DATA.",
+      "hypothesis": "CSV had a scored SKIP pick for CIN, but Claude Brain labeled this PENDING_SP_DATA. CIN won 11-5 — a strong directional validation. The 6-run margin suggests the CIN home offense had real advantages against PHI's starter. No betting impact (SKIP tier). The PENDING mislabel prevented any signal analysis at runtime, so we cannot determine which features drove the correct CIN direction.",
+      "signals_to_recheck": "PENDING_SP_DATA misclassification (CSV had CIN SKIP pick; CIN won 11-5 validating direction — signals not evaluated)"
+    },
+    "CLE @ MIN": {
+      "verdict": "WIN",
+      "model_pick": "MIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-6",
+      "headline": "MIN edged CLE 6-5; model and Claude both correctly called MIN, but the tight margin confirms high variance on SKIP games.",
+      "hypothesis": "Clean CONFIRM with no misreads: MIN SKIP with B-grade, SP xERA +0.41 for Prielipp. MIN won 6-5 in a one-run game. The SP edge was real but the tight margin (one run) is consistent with SKIP's high-variance nature. No process failure — the decision chain was correct (B-grade SKIP, directionally accurate, appropriate tier). One-run game outcomes are largely variance.",
+      "signals_to_recheck": "CLE@MIN B-grade: SP xERA +0.41 for Prielipp directionally validated; one-run margin confirms SKIP appropriateness (high-variance outcome zone)"
+    },
+    "BOS @ CHW": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML PLATINUM",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-0",
+      "headline": "BOS dominated CHW 5-0; Claude's CAP-10 rescue with SP-anchor produced the day's sole elevated stake — a clean WIN.",
+      "hypothesis": "Best process execution of the slate: F3=7787.7 (well above the 2000 high-conviction floor) combined with SP xERA >= 1.0 anchor cleared the 'CAP-10 rescue requires anchor' threshold. Claude elevated from effective-SKIP (post-CAP-10 cap) to GOLD and BOS won 5-0. The GOLD (not PLATINUM) elevation was appropriately conservative given PLATINUM's 43% historical rate. This is a second confirmed CAP-10 anchor rescue succeeding in recent memory. The protocol is validated: with anchor, elevate to GOLD; without anchor, hold SKIP.",
+      "signals_to_recheck": "F3_swing_take_gap=7787.7 (extreme conviction signal validated by 5-0 shutout); SP xERA >= 1.0 anchor (CAP-10 rescue condition validated again — reinforce the anchor requirement)"
+    },
+    "MIL @ STL": {
+      "verdict": "WIN",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-5",
+      "headline": "STL won 5-1 with margin; model correctly picked STL, Claude mislabeled as PENDING_SP_DATA.",
+      "hypothesis": "CSV had a scored SKIP pick for STL but Claude Brain labeled the game PENDING_SP_DATA. STL won 5-1, a 4-run margin that suggests real home advantage and/or SP quality. No betting impact (SKIP tier). This is the fourth PENDING_SP_DATA mislabel of the slate. The pattern across all four mislabeled games (SEA@MIA, KC@NYM, PHI@CIN, MIL@STL) suggests Claude Brain's live statsapi SP confirmation check is incorrectly flagging already-scored SKIP games as pending.",
+      "signals_to_recheck": "PENDING_SP_DATA misclassification (CSV had STL SKIP pick; STL won 5-1); fourth PENDING mislabel today — see patterns_observed for systemic diagnosis"
+    },
+    "LAA @ TEX": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "13-1",
+      "headline": "LAA demolished TEX 13-1 in the day's worst directional miss; five independent signals all opposed the TEX pick — model direction was noise.",
+      "hypothesis": "Model picked TEX despite D-grade, SP xERA -0.59 (LAA starter better), PQI -13.2 against TEX, acute_roster_True, and confidence_downgrade_True — all five signal dimensions opposing the pick. LAA won 13-1. When every available signal dimension contradicts the model's pick direction, the direction itself is noise, not just the tier. The D-grade and SKIP tier correctly withheld any stake, preventing a financial loss. But the directional call (TEX) had essentially zero predictive value given this signal configuration. Process failure: this combination should trigger an explicit note that the pick direction is unreliable, not merely that the tier is low.",
+      "signals_to_recheck": "acute_roster_True; confidence_downgrade_True; F1_xera_gap AGAINST pick (SP edge -0.59 against TEX); PQI AGAINST pick (-13.2); D-grade (five-signal opposition = direction treated as noise, not a pick)"
+    },
+    "COL @ LAD": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-4",
+      "headline": "LAD won 4-3; no pick was possible (PENDING_SP_DATA in CSV). LAD reverses the two-day COL@LAD losing streak noted in 7/7 postgame.",
+      "hypothesis": "COL@LAD was the only game with a genuine PENDING_SP_DATA tier in the CSV (pick=TBD). No evaluation was possible. LAD won 4-3, breaking the two-day losing streak (7/6-7/7 postgame documented LAD DIAMOND losing both days). One win does not establish a reversal pattern — the prior warning about COL@LAD DIAMOND and HARD CAP 7 behavior remains active until a larger sample accumulates.",
+      "signals_to_recheck": "PENDING_SP_DATA (COL@LAD correctly held — only genuine PENDING game today); [HARD CAP 7] hl_bullpen_xwoba_gap pattern for COL@LAD context (monitor over next 10 games)"
+    },
+    "ARI @ SD": {
+      "verdict": "WIN",
+      "model_pick": "SD ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-10",
+      "headline": "SD won 10-4; another GOLD directional WIN blocked by HARD CAP 1 (runtime edge -5.96pp vs positive CSV edge).",
+      "hypothesis": "SD had a GOLD tier pick with F5_bullpen_gap=+1.14 as the primary signal, and SD won convincingly 10-4. Claude correctly confirmed SD's direction but applied HARD CAP 1 when the runtime edge was -5.96pp (compressed from a positive CSV edge by market movement toward SD). This is the second GOLD directional win blocked by HARD CAP 1 today (OAK@DET was the first). Both reflect the same pattern: market moved toward the pick between CSV generation and runtime, compressing positive edge into negative territory. HARD CAP 1 protocol was correctly applied on EV grounds, but two consecutive blocked GOLD wins in one slate warrants monitoring over the next 30-pick window.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-5.96pp runtime vs positive CSV edge — market moved toward SD; second GOLD CAP-1 blocked win today); F5_bullpen_gap=+1.14 (single-F signal, directionally valid)"
+    }
+  },
+  "patterns_observed": [
+    "CRITICAL — Pick-column misread on 4 of 15 games (27% error rate): Claude Brain misread the model pick direction for CHC@BAL (said BAL, CSV pick=CHC), ATL@PIT (said ATL, CSV pick=PIT), NYY@TB (said TB, CSV pick=NYY), and HOU@WSH (said HOU, CSV pick=WSH). All four follow the same root cause: when Stage 1 (f5_prob) and Stage 2 (full_prob) disagree across the 50% threshold, the model picks the Stage 1 direction — but full_prob shows the opposite team above 50%, and Claude inferred pick direction from full_prob instead of reading the pick column. Fix: at the start of each game evaluation, read and quote the pick column character-for-character before any other analysis. Do not consult f5_prob, full_prob, p_model, or pick_prob to determine which team the model picked.",
+    "HARD CAP 1 blocked both GOLD directional wins today — monitor trend: OAK@DET (CSV edge +8.3pp, runtime -3.92pp, DET won 6-1) and ARI@SD (CSV edge positive, runtime -5.96pp, SD won 10-4) were both correct directional calls blocked by HARD CAP 1 after the market moved TOWARD the picks. Two GOLD wins blocked in one slate is insufficient to revise the cap, but begin a 30-pick tracking window for GOLD/PLATINUM/DIAMOND picks blocked by CAP 1 to determine if market-toward-pick intraday compression produces a different win rate than market-away-from-pick cases.",
+    "LAA@TEX 13-1 blowout: five-signal opposition = direction is noise, not a pick. Model picked TEX despite D-grade + SP xERA against + negative PQI + acute_roster_True + confidence_downgrade_True all opposing the pick. Final: 13-1 blowout. Going forward: when four or more of {D-grade, negative SP xERA, negative PQI, acute_roster_True, confidence_downgrade_True} fire simultaneously against a model pick, flag the pick direction itself as unreliable (not just the tier), and note explicitly in the reasoning that the directional call should not be trusted regardless of what the pick column shows.",
+    "BOS@CHW CAP-10 anchor rescue validated (5-0 WIN): Claude elevated BOS from effective-SKIP to GOLD using the 'CAP-10 rescue requires SP-edge >= 1.0 anchor' rule (F3=7787.7 + SP xERA=1.28). BOS won 5-0. Reinforce protocol: anchor present → elevate to GOLD (not PLATINUM); anchor absent → hold SKIP. This is a confirmed second successful execution of the anchor-rescue heuristic."
+  ]
+}
