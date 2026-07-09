@@ -2783,6 +2783,35 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 // or after clearing storage will count as new.  For a static site without a
 // backend, that's the best we can do without third-party analytics.
 // =============================================================================
+// Storage janitor (2026-07-09): live_* win-prob trajectory caches grow ~2MB
+// per game and never evicted; at 10MB the shared gozorp.github.io origin
+// quota is exhausted and EVERY localStorage write on either terminal throws
+// (broke both visit counters). Evict oldest live_* caches beyond a 6MB
+// budget — they are re-fetchable caches, never source data.
+function _evictStaleLiveCaches() {
+  try {
+    const entries = [];
+    let total = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      const bytes = (k.length + (localStorage.getItem(k) || "").length) * 2;
+      total += bytes;
+      if (/^live_\d{4}-\d{2}-\d{2}_/.test(k)) entries.push({ k, bytes });
+    }
+    const BUDGET = 6 * 1048576;
+    if (total <= BUDGET) return;
+    entries.sort((a, b) => a.k < b.k ? -1 : 1);   // oldest date first
+    for (const e of entries) {
+      localStorage.removeItem(e.k);
+      total -= e.bytes;
+      if (total <= BUDGET) break;
+    }
+  } catch (e) { /* best effort */ }
+}
+_evictStaleLiveCaches();
+
+function _lsSetSafe(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+
 async function _initVisitCounter() {
   const VISIT_KEY = "mlbedge_visited_v1";
   const COUNT_KEY = "mlbedge_last_count_v1";  // cache the last known count
@@ -2795,7 +2824,9 @@ async function _initVisitCounter() {
   const bot = navigator.webdriver === true ||
     /bot|crawl|spider|slurp|headless|lighthouse|prerender|preview|fetch|monitor|scan/i
       .test(navigator.userAgent || "");
-  const isNew = !localStorage.getItem(VISIT_KEY) && !bot;
+  let seen = false;
+  try { seen = !!localStorage.getItem(VISIT_KEY) || document.cookie.indexOf("mlbedge_v=1") !== -1; } catch (e) {}
+  const isNew = !seen && !bot;
 
   // Show cached count immediately so the UI never shows "offline" while we wait
   // for the network.  We update it after the fetch succeeds.
@@ -2827,10 +2858,12 @@ async function _initVisitCounter() {
   }
 
   if (count != null) {
-    if (isNew) localStorage.setItem(VISIT_KEY, "1");
-    localStorage.setItem(COUNT_KEY, String(count));
     text.innerHTML = `<strong>${count.toLocaleString()}</strong> unique visit${count === 1 ? "" : "s"}`;
     pill.classList.remove("muted-dim");
+    if (isNew && !_lsSetSafe(VISIT_KEY, "1")) {
+      try { document.cookie = "mlbedge_v=1; max-age=31536000; path=/MLB-edges/; SameSite=Lax"; } catch (e) {}
+    }
+    _lsSetSafe(COUNT_KEY, String(count));
   } else if (cached <= 0) {
     // No network result and no cached count to fall back on
     text.textContent = "visits offline";
