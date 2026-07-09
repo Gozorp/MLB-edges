@@ -1,0 +1,83 @@
+{
+ "date": "2026-07-10",
+ "generated_utc": "2026-07-09T09:49:27+00:00",
+ "schema": "v2-era-gated-cascade",
+ "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
+ "sps": {
+  "Sonny Gray": {
+   "id": 543243,
+   "opp": "NYM",
+   "opp_id": 121,
+   "season_era": 2.61,
+   "season_hr9": 1.0,
+   "season_kbb": 16.4,
+   "era_tier": "ACE",
+   "matchup_w_hr": 1.5,
+   "matchup_w_ip": 8.0,
+   "matchup_seasons": [
+    {
+     "season": 2025,
+     "hr": 2,
+     "ip": 10.3,
+     "w": 0.6
+    },
+    {
+     "season": 2024,
+     "hr": 1,
+     "ip": 6.0,
+     "w": 0.3
+    }
+   ],
+   "smoothed_matchup_hr9": 1.2,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs NYM 3yr (2025:2HR/10IP,2024:1HR/6IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 0.89,
+   "l3_hr": 2,
+   "l3_hr_per_start": 0.67,
+   "l3_kbb": 27.6,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 0.89 vs season 2.61)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 1.0,
+   "hr_per_start": 0.67,
+   "era": 0.89,
+   "er_spike": false
+  },
+  "Nolan McLean": {
+   "id": 690997,
+   "opp": "BOS",
+   "opp_id": 111,
+   "season_era": 3.73,
+   "season_hr9": 0.89,
+   "season_kbb": 19.2,
+   "era_tier": "AVERAGE",
+   "matchup_w_hr": 0.0,
+   "matchup_w_ip": 0.0,
+   "matchup_seasons": [],
+   "smoothed_matchup_hr9": 0.89,
+   "matchup_freq": "SMALL",
+   "matchup_basis": "no vs-BOS history -> season HR/9 fallback",
+   "has_matchup": false,
+   "starts": 3,
+   "l3_era": 4.0,
+   "l3_hr": 2,
+   "l3_hr_per_start": 0.67,
+   "l3_kbb": 20.5,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 4.00 vs season 3.73)",
+   "risk_level": 4,
+   "risk_label": "Low",
+   "flag": null,
+   "mult": 0.74,
+   "hr_per_start": 0.67,
+   "era": 4.0,
+   "er_spike": false
+  }
+ }
+}

@@ -1,9 +1,17 @@
 {
- "generated_utc": "2026-07-09T06:15:30Z",
+ "generated_utc": "2026-07-09T09:50:24Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "ATL promoted: Above Average -> Elite (eff +1.07, mmr -0.33)",
+  "PHI demoted: Above Average -> Average (eff +0.15, mmr -0.14)",
+  "CWS demoted: Above Average -> Average (eff +0.11, mmr -0.13)",
+  "SEA demoted: Above Average -> Average (eff +0.21, mmr -0.03)",
+  "CLE demoted: Average -> Below Average (eff -0.23, mmr -0.17)",
+  "TOR promoted: Poor -> Below Average (eff -0.56, mmr -0.06)",
+  "BAL demoted: Below Average -> Poor (eff -0.84, mmr -0.19)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -46,6 +54,24 @@
     ]
    },
    {
+    "name": "Atlanta Braves",
+    "abbr": "ATL",
+    "w": 53,
+    "l": 38,
+    "pct": 0.582,
+    "rd": 90,
+    "rationale": "53-38 (.582), +90 run differential -- a dominant run margin. Results running below tier expectation (MMR -0.33).",
+    "z": 1.4,
+    "mmr": -0.329,
+    "eff": 1.071,
+    "movement": "promoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset L vs SF (06-27)",
+     "upset L vs SF (06-28)"
+    ]
+   },
+   {
     "name": "Tampa Bay Rays",
     "abbr": "TB",
     "w": 54,
@@ -79,26 +105,6 @@
    }
   ],
   "Above Average": [
-   {
-    "name": "Atlanta Braves",
-    "abbr": "ATL",
-    "w": 53,
-    "l": 38,
-    "pct": 0.582,
-    "rd": 90,
-    "rationale": "53-38 (.582), +90 run differential -- a dominant run margin. Results running below tier expectation (MMR -0.33).",
-    "z": 1.4,
-    "mmr": -0.329,
-    "eff": 1.071,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs SF (06-27)",
-     "upset L vs SF (06-28)"
-    ]
-   },
    {
     "name": "New York Yankees",
     "abbr": "NYY",
@@ -146,7 +152,9 @@
      "upset L vs CIN (06-26)",
      "upset L vs CIN (06-27)"
     ]
-   },
+   }
+  ],
+  "Average": [
    {
     "name": "Philadelphia Phillies",
     "abbr": "PHI",
@@ -158,53 +166,13 @@
     "z": 0.295,
     "mmr": -0.14,
     "eff": 0.154,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
+    "movement": "demoted",
+    "moved_from": "Above Average",
     "upsets": [
      "upset L vs NYM (06-27)",
      "upset L vs KC (07-05)"
     ]
    },
-   {
-    "name": "Chicago White Sox",
-    "abbr": "CWS",
-    "w": 47,
-    "l": 44,
-    "pct": 0.516,
-    "rd": 14,
-    "rationale": "47-44 (.516), +14 run differential -- a solidly positive run margin.",
-    "z": 0.243,
-    "mmr": -0.13,
-    "eff": 0.113,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs KC (06-28)",
-     "upset L vs BAL (07-01)"
-    ]
-   },
-   {
-    "name": "Seattle Mariners",
-    "abbr": "SEA",
-    "w": 47,
-    "l": 46,
-    "pct": 0.505,
-    "rd": 24,
-    "rationale": "47-46 (.505), +24 run differential -- a solidly positive run margin.",
-    "z": 0.24,
-    "mmr": -0.031,
-    "eff": 0.209,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    }
-   }
-  ],
-  "Average": [
    {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
@@ -222,6 +190,38 @@
     ]
    },
    {
+    "name": "Chicago White Sox",
+    "abbr": "CWS",
+    "w": 47,
+    "l": 44,
+    "pct": 0.516,
+    "rd": 14,
+    "rationale": "47-44 (.516), +14 run differential -- a solidly positive run margin.",
+    "z": 0.243,
+    "mmr": -0.13,
+    "eff": 0.113,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset L vs KC (06-28)",
+     "upset L vs BAL (07-01)"
+    ]
+   },
+   {
+    "name": "Seattle Mariners",
+    "abbr": "SEA",
+    "w": 47,
+    "l": 46,
+    "pct": 0.505,
+    "rd": 24,
+    "rationale": "47-46 (.505), +24 run differential -- a solidly positive run margin.",
+    "z": 0.24,
+    "mmr": -0.031,
+    "eff": 0.209,
+    "movement": "demoted",
+    "moved_from": "Above Average"
+   },
+   {
     "name": "Washington Nationals",
     "abbr": "WSH",
     "w": 48,
@@ -232,22 +232,6 @@
     "z": 0.195,
     "mmr": 0.052,
     "eff": 0.247
-   },
-   {
-    "name": "Cleveland Guardians",
-    "abbr": "CLE",
-    "w": 47,
-    "l": 46,
-    "pct": 0.505,
-    "rd": -12,
-    "rationale": "47-46 (.505), -12 run differential -- a negative run margin. Results running below tier expectation (MMR -0.17).",
-    "z": -0.062,
-    "mmr": -0.168,
-    "eff": -0.229,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    }
    },
    {
     "name": "Boston Red Sox",
@@ -315,6 +299,20 @@
   ],
   "Below Average": [
    {
+    "name": "Cleveland Guardians",
+    "abbr": "CLE",
+    "w": 47,
+    "l": 46,
+    "pct": 0.505,
+    "rd": -12,
+    "rationale": "47-46 (.505), -12 run differential -- a negative run margin. Results running below tier expectation (MMR -0.17).",
+    "z": -0.062,
+    "mmr": -0.168,
+    "eff": -0.229,
+    "movement": "demoted",
+    "moved_from": "Average"
+   },
+   {
     "name": "Arizona Diamondbacks",
     "abbr": "AZ",
     "w": 45,
@@ -347,6 +345,20 @@
     ]
    },
    {
+    "name": "Toronto Blue Jays",
+    "abbr": "TOR",
+    "w": 44,
+    "l": 49,
+    "pct": 0.473,
+    "rd": -35,
+    "rationale": "44-49 (.473), -35 run differential -- a poor run margin.",
+    "z": -0.507,
+    "mmr": -0.056,
+    "eff": -0.562,
+    "movement": "promoted",
+    "moved_from": "Poor"
+   },
+   {
     "name": "Houston Astros",
     "abbr": "HOU",
     "w": 46,
@@ -361,7 +373,9 @@
      "upset W vs TB (07-04)",
      "upset W vs TB (07-05)"
     ]
-   },
+   }
+  ],
+  "Poor": [
    {
     "name": "Baltimore Orioles",
     "abbr": "BAL",
@@ -373,31 +387,11 @@
     "z": -0.656,
     "mmr": -0.187,
     "eff": -0.843,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
+    "movement": "demoted",
+    "moved_from": "Below Average",
     "upsets": [
      "upset W vs CWS (07-01)"
     ]
-   }
-  ],
-  "Poor": [
-   {
-    "name": "Toronto Blue Jays",
-    "abbr": "TOR",
-    "w": 44,
-    "l": 49,
-    "pct": 0.473,
-    "rd": -35,
-    "rationale": "44-49 (.473), -35 run differential -- a poor run margin.",
-    "z": -0.507,
-    "mmr": -0.056,
-    "eff": -0.562,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    }
    },
    {
     "name": "Cincinnati Reds",
