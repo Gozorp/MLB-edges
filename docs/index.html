@@ -519,6 +519,14 @@
     margin-left: 0.5rem; transition: all 0.15s;
   }
   #help-btn:hover { border-color: var(--accent); color: var(--accent); }
+  /* Basketball site link (NBA edge) in header */
+  #nba-link {
+    background: transparent; border: 1px solid var(--border);
+    width: 1.8rem; height: 1.8rem; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: 0.5rem; transition: all 0.15s; text-decoration: none;
+  }
+  #nba-link:hover { border-color: var(--accent); transform: scale(1.06); }
   /* Slide-over help panel */
   #help-panel-backdrop {
     position: fixed; inset: 0; background: rgba(0,0,0,0.5);
@@ -2252,6 +2260,10 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     background: #FFFFFF; color: #111; border: 2px solid #111;
     box-shadow: 3px 3px 0px #111111;
   }
+  body[data-theme="garfield"] #nba-link{
+    background: #FFFFFF; border: 2px solid #111;
+    box-shadow: 3px 3px 0px #111111;
+  }
   body[data-theme="garfield"] #theme-label{ color: #E65100; }
   body[data-theme="garfield"] .hero-headline,
   body[data-theme="garfield"] h1{ color: #111; text-shadow: none; }
@@ -2289,7 +2301,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
       border: none; background: transparent; padding: 0 0 0 4px; margin: 0;
       min-height: 0; height: auto; color: var(--muted);
     }
-    #help-btn{
+    #help-btn, #nba-link{
       width: 34px; height: 34px; min-height: 34px;
       font-size: 0.8rem; padding: 0; border-radius: 50%;
       display: inline-flex; align-items: center; justify-content: center;
@@ -2307,100 +2319,188 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <span>TOOLS &amp; CONTEXT</span>
     <button id="drawer-close" aria-label="Close drawer">×</button>
   </div>
-<div class="card" id="mlb-intro-card" style="display:none;">
-    <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
-    <h2>First time here? Here is what this dashboard does.</h2>
-    <p style="margin:0.3rem 0 0.6rem 0;font-size:0.92rem;color:var(--muted);line-height:1.55;">
-      mlb_edge predicts every MLB game on today's slate and grades how confident the model is in each pick. It uses a rule-based system trained on historical results, not a crystal ball — read it as <em>where the model thinks the market is wrong</em>, not as guaranteed winners.
-    </p>
-    <div class="intro-grid">
-      <div class="intro-step"><span class="num">1.</span> <strong>Pick the date</strong> with the date picker above. Today's slate auto-refreshes during games.</div>
-      <div class="intro-step"><span class="num">2.</span> <strong>Each row is one game.</strong> The <code>Pick</code> column is the team the model favors, with its win probability.</div>
-      <div class="intro-step"><span class="num">3.</span> <strong>Grade tells you conviction:</strong> A = strong, B = moderate, C/D = skip. Click any row for the full reasoning.</div>
-      <div class="intro-step"><span class="num">4.</span> <strong>Need more detail?</strong> Toggle <code>Advanced</code> mode below to show all columns. Click the <strong>?</strong> button in the header any time for the glossary.</div>
-    </div>
+<div class="card" id="mlb-intro-card" style="display:none;">
+
+    <button class="intro-close" id="intro-close-btn" title="Got it, dismiss" aria-label="Dismiss intro">×</button>
+
+    <h2>First time here? Here is what this dashboard does.</h2>
+
+    <p style="margin:0.3rem 0 0.6rem 0;font-size:0.92rem;color:var(--muted);line-height:1.55;">
+
+      mlb_edge predicts every MLB game on today's slate and grades how confident the model is in each pick. It uses a rule-based system trained on historical results, not a crystal ball — read it as <em>where the model thinks the market is wrong</em>, not as guaranteed winners.
+
+    </p>
+
+    <div class="intro-grid">
+
+      <div class="intro-step"><span class="num">1.</span> <strong>Pick the date</strong> with the date picker above. Today's slate auto-refreshes during games.</div>
+
+      <div class="intro-step"><span class="num">2.</span> <strong>Each row is one game.</strong> The <code>Pick</code> column is the team the model favors, with its win probability.</div>
+
+      <div class="intro-step"><span class="num">3.</span> <strong>Grade tells you conviction:</strong> A = strong, B = moderate, C/D = skip. Click any row for the full reasoning.</div>
+
+      <div class="intro-step"><span class="num">4.</span> <strong>Need more detail?</strong> Toggle <code>Advanced</code> mode below to show all columns. Click the <strong>?</strong> button in the header any time for the glossary.</div>
+
+    </div>
+
   </div>
   <div class="accordion drawer-accordion" role="tablist">
-<div class="accordion-item" data-acc="bullpen-outlook">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Bullpen Outlook</span>
-          <span class="chev" aria-hidden="true">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="bullpen-outlook"></div>
-          </div>
-        </div>
+<div class="accordion-item" data-acc="bullpen-outlook">
+
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+
+          <span>Bullpen Outlook</span>
+
+          <span class="chev" aria-hidden="true">▾</span>
+
+        </button>
+
+        <div class="accordion-body">
+
+          <div class="accordion-body-inner">
+
+            <div id="bullpen-outlook"></div>
+
+          </div>
+
+        </div>
+
       </div>
-<div class="accordion-item" data-acc="h2h-history">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Head-to-Head History</span>
-          <span class="chev" aria-hidden="true">▾</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="h2h-history">Open to scan up to 30 days of historical picks for the current matchups.</div>
-          </div>
-        </div>
+<div class="accordion-item" data-acc="h2h-history">
+
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+
+          <span>Head-to-Head History</span>
+
+          <span class="chev" aria-hidden="true">▾</span>
+
+        </button>
+
+        <div class="accordion-body">
+
+          <div class="accordion-body-inner">
+
+            <div id="h2h-history">Open to scan up to 30 days of historical picks for the current matchups.</div>
+
+          </div>
+
+        </div>
+
       </div>
-<div class="accordion-item" data-acc="edge-calc">
-        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
-          <span>Edge Calculator</span>
-          <span class="chev" aria-hidden="true">&#9662;</span>
-        </button>
-        <div class="accordion-body">
-          <div class="accordion-body-inner">
-            <div id="edge-calc" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;flex-wrap:wrap;">
-                <label for="ec-mp" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Model win prob</label>
-                <input type="range" id="ec-mp" min="1" max="99" value="60" step="1" style="flex:1;min-width:140px;">
-                <input type="number" id="ec-mpn" min="1" max="99" value="60" step="1" style="width:58px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
-                <span style="color:var(--muted);font-size:0.8rem;">%</span>
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:0.8rem;">
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Fair</div>
-                  <div id="ec-fair" style="font-size:1.3rem;font-weight:600;">-150</div>
-                </div>
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Min +4pp</div>
-                  <div id="ec-min" style="font-size:1.3rem;font-weight:600;color:var(--green);">-127</div>
-                </div>
-                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
-                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">+8pp Goldi cap</div>
-                  <div id="ec-max" style="font-size:1.3rem;font-weight:600;color:var(--green);">-108</div>
-                </div>
-              </div>
-              <div id="ec-zone" style="font-size:0.8rem;color:var(--text);line-height:1.5;margin-bottom:0.6rem;"></div>
-              <div style="display:flex;height:26px;border-radius:5px;overflow:hidden;font-size:0.56rem;border:1px solid var(--border);margin-bottom:1rem;">
-                <div style="flex:4;background:rgba(125,133,144,.18);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;">&lt;4 noise</div>
-                <div style="flex:4;background:rgba(63,185,80,.20);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:600;text-align:center;">4-8 GOLDILOCKS</div>
-                <div style="flex:7;background:rgba(210,153,34,.18);display:flex;align-items:center;justify-content:center;color:var(--yellow);text-align:center;">8-15 caution</div>
-                <div style="flex:4;background:rgba(248,81,73,.18);display:flex;align-items:center;justify-content:center;color:var(--red);text-align:center;">&gt;15 trap</div>
-              </div>
-              <div style="border-top:1px solid var(--border);padding-top:0.8rem;">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-                  <label for="ec-ln" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Check a line</label>
-                  <input type="number" id="ec-ln" value="-120" step="5" style="width:80px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
-                  <span style="color:var(--muted);font-size:0.72rem;">e.g. -120 or +150</span>
-                </div>
-                <div id="ec-verdict" style="font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--bg-elev);border:1px solid var(--border);"></div>
-              </div>
-              <div style="font-size:0.68rem;color:var(--muted);line-height:1.5;margin-top:0.8rem;">Display-only -- the automated model gate stays frozen at 4-15pp; the 4-8pp Goldilocks tier is for your manual vetting. The 8-15pp band keeps logging into the OOS ledger for the July Upper-Band Edge Decay study. Edge vs Kalshi-fair; non-linear (a 4pp edge moves the line ~17 pts on a 54% fav, ~125 pts on an 84% fav). Never affects picks.</div>
-            </div>
-          </div>
-        </div>
+<div class="accordion-item" data-acc="edge-calc">
+
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+
+          <span>Edge Calculator</span>
+
+          <span class="chev" aria-hidden="true">&#9662;</span>
+
+        </button>
+
+        <div class="accordion-body">
+
+          <div class="accordion-body-inner">
+
+            <div id="edge-calc" style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;">
+
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.9rem;flex-wrap:wrap;">
+
+                <label for="ec-mp" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Model win prob</label>
+
+                <input type="range" id="ec-mp" min="1" max="99" value="60" step="1" style="flex:1;min-width:140px;">
+
+                <input type="number" id="ec-mpn" min="1" max="99" value="60" step="1" style="width:58px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+
+                <span style="color:var(--muted);font-size:0.8rem;">%</span>
+
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:8px;margin-bottom:0.8rem;">
+
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Fair</div>
+
+                  <div id="ec-fair" style="font-size:1.3rem;font-weight:600;">-150</div>
+
+                </div>
+
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">Min +4pp</div>
+
+                  <div id="ec-min" style="font-size:1.3rem;font-weight:600;color:var(--green);">-127</div>
+
+                </div>
+
+                <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:5px;padding:8px 10px;">
+
+                  <div style="color:var(--muted);font-size:0.64rem;text-transform:uppercase;letter-spacing:.04em;">+8pp Goldi cap</div>
+
+                  <div id="ec-max" style="font-size:1.3rem;font-weight:600;color:var(--green);">-108</div>
+
+                </div>
+
+              </div>
+
+              <div id="ec-zone" style="font-size:0.8rem;color:var(--text);line-height:1.5;margin-bottom:0.6rem;"></div>
+
+              <div style="display:flex;height:26px;border-radius:5px;overflow:hidden;font-size:0.56rem;border:1px solid var(--border);margin-bottom:1rem;">
+
+                <div style="flex:4;background:rgba(125,133,144,.18);display:flex;align-items:center;justify-content:center;color:var(--muted);text-align:center;">&lt;4 noise</div>
+
+                <div style="flex:4;background:rgba(63,185,80,.20);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:600;text-align:center;">4-8 GOLDILOCKS</div>
+
+                <div style="flex:7;background:rgba(210,153,34,.18);display:flex;align-items:center;justify-content:center;color:var(--yellow);text-align:center;">8-15 caution</div>
+
+                <div style="flex:4;background:rgba(248,81,73,.18);display:flex;align-items:center;justify-content:center;color:var(--red);text-align:center;">&gt;15 trap</div>
+
+              </div>
+
+              <div style="border-top:1px solid var(--border);padding-top:0.8rem;">
+
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+
+                  <label for="ec-ln" style="color:var(--muted);font-size:0.8rem;white-space:nowrap;">Check a line</label>
+
+                  <input type="number" id="ec-ln" value="-120" step="5" style="width:80px;background:var(--bg-elev);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:3px 5px;font-family:inherit;">
+
+                  <span style="color:var(--muted);font-size:0.72rem;">e.g. -120 or +150</span>
+
+                </div>
+
+                <div id="ec-verdict" style="font-size:0.82rem;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--bg-elev);border:1px solid var(--border);"></div>
+
+              </div>
+
+              <div style="font-size:0.68rem;color:var(--muted);line-height:1.5;margin-top:0.8rem;">Display-only -- the automated model gate stays frozen at 4-15pp; the 4-8pp Goldilocks tier is for your manual vetting. The 8-15pp band keeps logging into the OOS ledger for the July Upper-Band Edge Decay study. Edge vs Kalshi-fair; non-linear (a 4pp edge moves the line ~17 pts on a 54% fav, ~125 pts on an 84% fav). Never affects picks.</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
   </div>
-<section id="health-card">
-    <h2>
-      <span>Pipeline health</span>
-      <span id="health-card-overall" class="health-overall-pill green">—</span>
-      <span id="health-card-checked-at" class="health-checked-at"></span>
-    </h2>
-    <div id="health-card-body" class="health-card-loading">
-      Loading health snapshot…
-    </div>
+<section id="health-card">
+
+    <h2>
+
+      <span>Pipeline health</span>
+
+      <span id="health-card-overall" class="health-overall-pill green">—</span>
+
+      <span id="health-card-checked-at" class="health-checked-at"></span>
+
+    </h2>
+
+    <div id="health-card-body" class="health-card-loading">
+
+      Loading health snapshot…
+
+    </div>
+
   </section>
 </nav>
 
@@ -2421,6 +2521,15 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   </span>
   <button id="theme-toggle" title="Switch visual theme" aria-label="Switch visual theme">MODE: <span id="theme-label">TACTICAL</span></button>
 <button id="help-btn" title="Help &amp; glossary — what does each column mean?" aria-label="Open help panel">?</button>
+<a id="nba-link" href="https://gozorp.github.io/nba-edge/"
+   title="Basketball — Gozorp's NBA edge" aria-label="Go to the basketball site (NBA edge)">
+  <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true">
+    <circle cx="24" cy="24" r="20" fill="#E8590C" stroke="#111111" stroke-width="3"/>
+    <path d="M4 24 h40 M24 4 v40" stroke="#111111" stroke-width="2.4" fill="none"/>
+    <path d="M9.5 9.5 C 18 16.5, 30 16.5, 38.5 9.5" stroke="#111111" stroke-width="2.4" fill="none"/>
+    <path d="M9.5 38.5 C 18 31.5, 30 31.5, 38.5 38.5" stroke="#111111" stroke-width="2.4" fill="none"/>
+  </svg>
+</a>
 </header>
 
 <section id="mlb-hero" aria-label="mlb_edge hero">
