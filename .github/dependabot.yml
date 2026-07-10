@@ -1,0 +1,20 @@
+# Dependabot — automated update PRs for everything this static site actually
+# runs on (no CMS/plugins: the "software" here is GitHub Actions + Python deps).
+# Added 2026-07-10 as part of the security/stability hardening.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels: ["deps"]
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels: ["deps"]
