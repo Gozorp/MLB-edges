@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-10
-_Generated 2026-07-09T23:38:09Z · 15 games · significant deviations only_
+_Generated 2026-07-10T07:05:35Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [IL] — Philadelphia Phillies activated RHP Brad Keller from the 15-day injured list.
@@ -91,29 +91,33 @@ _Generated 2026-07-09T23:38:09Z · 15 games · significant deviations only_
 _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
+- **MIL @ PIT** (home SP Braxton Ashcraft): very high K% (28.1% vs lg 22.0)
 - **CHC @ CIN** (home SP Hunter Greene): thin sample / PENDING_SP_DATA — Hunter Greene has only 89 Statcast pitches season-to-date; need 100+ to score
-- **SEA @ TB** (home SP Nick Martinez): very low K% (14.1% vs lg 22.0)
-- **ATH @ CWS** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **HOU @ TEX** (home SP TBD): NOT CONFIRMED — probable SP not posted
-- **LAA @ MIN** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **ATL @ STL** (away SP Chris Sale): very high K% (28.0% vs lg 22.0)
-- **TOR @ SD** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **AZ @ LAD** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **COL @ SF** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **SEA @ TB** (home SP Nick Martinez): very low K% (13.5% vs lg 22.0)
 
 ## 3 · Bullpen Fatigue (last 3 games)
+- **PHI** Jhoan Duran — 2 apps / 41 pitches over last 3 games — monitor
+- **MIL** Aaron Ashby — 2 apps / 40 pitches over last 3 games — monitor
+- **MIL** Abner Uribe — 2 apps / 40 pitches over last 3 games — monitor
 - **PIT** Hunter Stratton — 2 apps / 44 pitches over last 3 games — monitor
 - **PIT** Dennis Santana — 2 apps / 41 pitches over last 3 games — monitor
 - **NYY** Brent Headrick — 2 apps / 36 pitches over last 3 games — monitor
 - **CHC** Ryan Rolison — 2 apps / 40 pitches over last 3 games — monitor
+- **SEA** Michael Rucker — 2 apps / 39 pitches over last 3 games — monitor
 - **CLE** Cade Smith — 2 apps / 40 pitches over last 3 games — monitor
 - **CLE** Matt Festa — 2 apps / 48 pitches over last 3 games — monitor
+- **MIA** Calvin Faucher — 2 apps / 43 pitches over last 3 games — monitor
 - **MIA** Cade Gibson — 2 apps / 38 pitches over last 3 games — monitor
 - **NYM** Huascar Brazobán — 2 apps / 48 pitches over last 3 games — monitor
+- **ATH** Jack Perkins — threw 67 pitches last night — likely unavailable
 - **CWS** Trevor Richards — 2 apps / 61 pitches over last 3 games — monitor
 - **HOU** Alimber Santa — 2 apps / 57 pitches over last 3 games — monitor
+- **TEX** Peyton Gray — 2 apps / 45 pitches over last 3 games — monitor
+- **TEX** Jacob Latz — threw 41 pitches last night — likely unavailable
 - **MIN** Kendry Rojas — threw 47 pitches last night — likely unavailable
-- **STL** JoJo Romero — 2 apps / 36 pitches over last 3 games — monitor
+- **STL** Gordon Graceffo — 2 apps / 48 pitches over last 3 games — monitor
+- **SD** Yuki Matsui — 2 apps / 43 pitches over last 3 games — monitor
+- **COL** TJ Shook — threw 52 pitches last night — likely unavailable
 - **SF** Ryan Walker — 2 apps / 46 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
@@ -133,12 +137,18 @@ _Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - CLE @ MIA — CLE faces RHP (Sandy Alcantara)
 - BOS @ NYM — NYM faces RHP (Sonny Gray)
 - BOS @ NYM — BOS faces RHP (Nolan McLean)
+- ATH @ CWS — CWS faces LHP (Jacob Lopez)
 - ATH @ CWS — ATH faces RHP (Sean Burke)
 - HOU @ TEX — TEX faces RHP (Hunter Brown)
+- HOU @ TEX — HOU faces RHP (Cal Quantrill)
+- LAA @ MIN — MIN faces RHP (Grayson Rodriguez)
 - LAA @ MIN — LAA faces RHP (Zebby Matthews)
 - ATL @ STL — STL faces LHP (Chris Sale)
 - ATL @ STL — ATL faces RHP (Kyle Leahy)
+- TOR @ SD — SD faces RHP (Shane Bieber)
 - TOR @ SD — TOR faces LHP (JP Sears)
+- AZ @ LAD — LAD faces LHP (Eduardo Rodriguez)
 - AZ @ LAD — AZ faces RHP (Shohei Ohtani)
 - COL @ SF — SF faces RHP (Tanner Gordon)
+- COL @ SF — COL faces LHP (Robbie Ray)
 
