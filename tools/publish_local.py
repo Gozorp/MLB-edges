@@ -169,6 +169,17 @@ for f in present:
     os.replace(f + ".tmp", f)  # atomic restore: a crash here can never leave a torn tracked file
 shutil.rmtree(tmp, ignore_errors=True)
 
+# ---- no-regression guard (2026-07-10 incident): never let a degraded bake
+# overwrite a better already-published slate. The guard compares each changed
+# picks_*_diag.csv (+ manifest) against origin/main and RESTORES the published
+# version on mass regression (scored-games drop >= 3 / vanishing games /
+# manifest newest-date loss). Fail-open on guard errors: a guard crash must
+# never block the nightly publish. Override: PUBLISH_ALLOW_REGRESSION=1.
+try:
+    subprocess.run([sys.executable, "tools/publish_guard.py"], timeout=180)
+except Exception as _e:
+    print("publish_guard skipped (%r) -- publishing without regression check" % (_e,))
+
 git("add", "--", *present)
 if subprocess.run(["git", "diff", "--cached", "--quiet"]).returncode == 0:
     print("publish: nothing changed vs origin -- already up to date"); raise SystemExit(0)

@@ -268,6 +268,14 @@ jobs:
             echo "::warning::no slate diag found; skipping display sidecars"
           fi
 
+      - name: Publish guard — never regress a published slate
+        # 2026-07-10 incident: this workflow's probables resolution broke
+        # (statsapi team-code renames) and it overwrote a fully-scored
+        # published slate with a 7-TBD one. The guard restores the published
+        # version of any diag whose scored-game count would mass-drop.
+        # Fail-open: a guard error never blocks the publish.
+        run: python tools/publish_guard.py || echo "::warning::publish_guard errored (fail-open)"
+
       - name: Commit + push slate output and baked data in one shot
         run: |
           git config user.name  "github-actions[bot]"
