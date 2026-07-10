@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-10
-_Generated 2026-07-10T07:05:35Z · 15 games · significant deviations only_
+_Generated 2026-07-10T19:36:52Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PHI** [IL] — Philadelphia Phillies activated RHP Brad Keller from the 15-day injured list.
@@ -13,15 +13,30 @@ _Generated 2026-07-10T07:05:35Z · 15 games · significant deviations only_
 - **MIL** [optioned] — Milwaukee Brewers optioned LHP Robert Gasser to ACL Brewers.
 - **MIL** [IL] — Milwaukee Brewers activated RHP Logan Henderson from the 15-day injured list.
 - **MIL** [optioned] — Milwaukee Brewers optioned RHP Garrett Stallings to Nashville Sounds.
+- **MIL** [signed] — Milwaukee Brewers signed free agent RHP Bryse Wilson.
+- **MIL** [DFA] — Milwaukee Brewers designated RHP Easton McGee for assignment.
+- **MIL** [optioned] — Milwaukee Brewers optioned LHP Drew Rom to Nashville Sounds.
 - **PIT** [IL] — Pittsburgh Pirates placed C Endy Rodríguez on the 10-day injured list retroactive to July 6, 2026. Left glute strain.
 - **PIT** [signed] — Pittsburgh Pirates signed free agent 3B Grae Kessinger to a minor league contract.
 - **PIT** [recalled] — Pittsburgh Pirates recalled C Rafael Flores Jr. from Indianapolis Indians.
+- **PIT** [recalled] — Pittsburgh Pirates recalled RHP Thomas Harrington from Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Cam Sanders to Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Hunter Stratton to Indianapolis Indians.
+- **PIT** [recalled] — Pittsburgh Pirates recalled RHP Antwone Kelly from Indianapolis Indians.
 - **WSH** [signed] — Washington Nationals signed free agent 3B Devin Ortiz to a minor league contract.
 - **WSH** [IL] — Washington Nationals placed RHP Brad Lord on the 15-day injured list retroactive to July 6, 2026. Left side tightness.
+- **WSH** [IL] — Washington Nationals transferred RHP Jake Irvin from the 15-day injured list to the 60-day injured list. Right shoulder strain.
+- **WSH** [selected] — Washington Nationals selected the contract of LHP Tom Cosgrove from Rochester Red Wings.
+- **KC** [IL] — Kansas City Royals activated 1B Vinnie Pasquantino from the 10-day injured list.
+- **KC** [recalled] — Kansas City Royals recalled RHP Eli Morgan from Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned RHP Jose Cuas to Omaha Storm Chasers.
+- **KC** [optioned] — Kansas City Royals optioned CF Kameron Misner to Omaha Storm Chasers.
 - **BAL** [outrighted] — Baltimore Orioles sent C Chadwick Tromp outright to Norfolk Tides.
 - **CHC** [signed] — Chicago Cubs signed LHP Josh Fleming.
 - **CIN** [signed] — Cincinnati Reds signed free agent LHP Manuel Sanchez to a minor league contract.
 - **CIN** [outrighted] — Cincinnati Reds sent RF Will Benson outright to Louisville Bats.
+- **CIN** [IL] — Cincinnati Reds placed 2B Matt McLain on the 10-day injured list retroactive to July 8, 2026. Left calf strain.
+- **CIN** [IL] — Cincinnati Reds activated 3B Ke'Bryan Hayes from the 10-day injured list.
 - **CLE** [IL] — Cleveland Guardians placed LHP Tim Herrin on the 15-day injured list. Left elbow contusion.
 - **CLE** [recalled] — Cleveland Guardians recalled RHP Codi Heuer from Columbus Clippers.
 - **CLE** [optioned] — Cleveland Guardians optioned C Cooper Ingle to Columbus Clippers.
@@ -37,39 +52,48 @@ _Generated 2026-07-10T07:05:35Z · 15 games · significant deviations only_
 - **BOS** [activated] — Boston Red Sox activated OF Nate Eaton.
 - **BOS** [IL] — Boston Red Sox placed LHP Ranger Suarez on the 15-day injured list retroactive to July 6, 2026. Left groin strain.
 - **BOS** [recalled] — Boston Red Sox recalled 3B Brett Harris from Worcester Red Sox.
-- **NYM** [IL] — New York Mets placed RHP Austin Warren on the 15-day injured list. Right forearm strain.
 - **NYM** [DFA] — New York Mets designated RHP Matt Seelinger for assignment.
+- **NYM** [IL] — New York Mets placed RHP Austin Warren on the 15-day injured list. Right forearm strain.
 - **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
 - **NYM** [selected] — New York Mets selected the contract of RHP Xzavion Curry from Syracuse Mets.
-- **NYM** [DFA] — New York Mets designated CF Jared Oliva for assignment.
 - **NYM** [released] — New York Mets released RHP Alex Carrillo.
-- **NYM** [outrighted] — New York Mets sent RHP Guillo Zuñiga outright to Syracuse Mets.
+- **NYM** [DFA] — New York Mets designated CF Jared Oliva for assignment.
 - **NYM** [selected] — New York Mets selected the contract of RHP Dan Hammer from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned RHP Tobias Myers to Syracuse Mets.
+- **NYM** [outrighted] — New York Mets sent RHP Guillo Zuñiga outright to Syracuse Mets.
+- **NYM** [IL] — New York Mets placed 1B Mark Vientos on the 10-day injured list. Right hand fracture.
+- **NYM** [DFA] — New York Mets designated RHP Dan Hammer for assignment.
+- **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
+- **NYM** [selected] — New York Mets selected the contract of SS Zack Short from Syracuse Mets.
 - **ATH** [IL] — Athletics activated LF Tyler Soderstrom from the 10-day injured list.
 - **ATH** [optioned] — Athletics optioned 3B Max Muncy to Las Vegas Aviators.
 - **CWS** [signed] — Chicago White Sox signed free agent 2B Riley Unroe to a minor league contract.
 - **CWS** [status] — Chicago White Sox placed RHP Trevor Richards on the bereavement list.
 - **CWS** [recalled] — Chicago White Sox recalled RHP Tyler Davis from Charlotte Knights.
+- **CWS** [IL] — Chicago White Sox activated 1B Munetaka Murakami from the 10-day injured list.
+- **CWS** [optioned] — Chicago White Sox optioned 1B Jacob Gonzalez to Charlotte Knights.
 - **TEX** [IL] — Texas Rangers activated LF Wyatt Langford from the 10-day injured list.
 - **TEX** [optioned] — Texas Rangers optioned 2B Josh Smith to Round Rock Express.
 - **LAA** [DFA] — Los Angeles Angels designated 3B Donovan Walton for assignment.
 - **LAA** [signed] — Los Angeles Angels signed free agent OF Pablo Reyes to a minor league contract.
 - **LAA** [IL] — Los Angeles Angels activated CF Mike Trout from the 10-day injured list.
-- **MIN** [signed] — Minnesota Twins signed free agent RHP Wisarly Reinoso to a minor league contract.
 - **MIN** [signed] — Minnesota Twins signed free agent RHP Matt Bowman to a minor league contract.
 - **MIN** [IL] — Minnesota Twins placed RHP Marco Raya on the 15-day injured list retroactive to July 5, 2026. Right shoulder impingement.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Wisarly Reinoso to a minor league contract.
 - **MIN** [IL] — Minnesota Twins placed LHP Connor Prielipp on the 15-day injured list. Left middle finger blister.
 - **MIN** [IL] — Minnesota Twins activated RHP Bailey Ober from the 15-day injured list.
 - **MIN** [recalled] — Minnesota Twins recalled LHP Kendry Rojas from St. Paul Saints.
+- **MIN** [IL] — Minnesota Twins activated C Ryan Jeffers from the 10-day injured list.
 - **MIN** [optioned] — Minnesota Twins optioned LF Kyler Fedko to St. Paul Saints.
 - **ATL** [outrighted] — Atlanta Braves sent RHP Carlos Carrasco outright to Gwinnett Stripers.
 - **ATL** [optioned] — Atlanta Braves optioned LHP Connor Thomas to Gwinnett Stripers.
 - **ATL** [recalled] — Atlanta Braves recalled RHP Victor Mederos from Gwinnett Stripers.
+- **ATL** [DFA] — Atlanta Braves designated RF José Azócar for assignment.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Carlos Carrasco to a minor league contract.
 - **ATL** [activated] — Atlanta Braves activated RF Eli White from the paternity list.
-- **ATL** [DFA] — Atlanta Braves designated RF José Azócar for assignment.
 - **ATL** [outrighted] — Atlanta Braves sent C Jair Camargo outright to Gwinnett Stripers.
+- **ATL** [activated] — Atlanta Braves activated RHP Tyler Kinley from the paternity list.
+- **ATL** [optioned] — Atlanta Braves optioned RHP Hurston Waldrep to Gwinnett Stripers.
 - **STL** [DFA] — St. Louis Cardinals designated LHP Jared Shuster for assignment.
 - **STL** [optioned] — St. Louis Cardinals optioned RHP Hunter Dobbins to Memphis Redbirds.
 - **STL** [selected] — St. Louis Cardinals selected the contract of RHP Luis Gastelum from Memphis Redbirds.

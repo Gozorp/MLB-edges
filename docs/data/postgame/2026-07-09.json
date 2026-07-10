@@ -1,0 +1,132 @@
+{
+  "date": "2026-07-09",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-10T12:00:00Z",
+  "n_analyzed": 13,
+  "summary": "5 wins, 6 losses, 2 no-picks from 13 matchups on the 7/9 slate (45.5% directional hit rate on 11 scored games). All games were SKIP-tier or PENDING — no stakes were placed or lost. Claude's OVERRIDE on PHI@CIN (HARD CAP 6 hallucination + real SP xERA gap) was validated for the second time in three days. Two DOWNGRADED picks (CLE@MIN, OAK@DET) had correct model directions, extending a three-slate streak of cap-blocked directional wins. The six directional losses are concentrated in D-grade games with high Stage 1/2 delta — the SKIP process was correct across the board, but the pattern reinforces that high-delta D-grade picks should be explicitly flagged as directional fades.",
+  "by_matchup": {
+    "ATL @ PIT": {
+      "verdict": "LOSS",
+      "model_pick": "PIT ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "10-5",
+      "headline": "ATL dominated PIT 10-5; D-grade signals (SP xERA 1.76 + PQI -20.1 against PIT) correctly predicted the loser, SKIP correctly withheld stake.",
+      "hypothesis": "Model picked PIT despite strong opposing signals: SP xERA 1.76 against PIT, PQI -20.1 against PIT, and Stage 1/2 delta of 0.249 (Stage 1 gave ATL a large F5 edge while Stage 2 narrowly reversed to PIT). ATL won convincingly 10-5. This is consistent with the recurring D-grade SP-against + PQI-against loss pattern — the signals correctly predicted the outcome. Process success; directional loss was expected behavior for this signal configuration.",
+      "signals_to_recheck": "f5_full_delta=0.249 (Stage 1 correctly predicted ATL F5 dominance; Stage 2 flip to PIT was wrong); SP xERA 1.76 against pick; PQI -20.1 against pick"
+    },
+    "KC @ NYM": {
+      "verdict": "LOSS",
+      "model_pick": "KC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-7",
+      "headline": "NYM won 7-3; Stage 1/2 delta of 0.302 (largest on slate) correctly signaled late-leverage NYM edge despite KC's F3 lineup signal.",
+      "hypothesis": "KC had a significant F3 swing-take signal (1668.4) suggesting lineup edge, but PQI +6.5 against KC and Stage 1/2 delta of 0.302 indicated the advantage would flip in late leverage. NYM won 7-3, validating Stage 1 over the F3 lineup metric. Process success (SKIP correct). When Stage 1/2 delta > 0.25, F3 lineup signals should be down-weighted as the late-leverage deficit encoded in Stage 2 appears to dominate.",
+      "signals_to_recheck": "f5_full_delta=0.302 (extreme Stage 1/2 disagreement — Stage 1 correctly predicted NYM; F3_swing_take_gap=1668.4 for KC was overridden by leverage factors)"
+    },
+    "NYY @ TB": {
+      "verdict": "LOSS",
+      "model_pick": "TB ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "12-4",
+      "headline": "NYY dominated TB 12-4; F1_xera_gap=1.05* (thin sample) overstated TB's SP advantage, HARD CAP 1 + CAP 10 stacking correctly suppressed stake.",
+      "hypothesis": "TB's pre-cap B+ (F1*=1.05, SP xERA +0.34, PQI +4.4) was neutralized by HARD CAP 1 (-10.34pp edge) and HARD CAP 10 (bottom-bucket pick_prob=0.528). NYY won 12-4 — a blowout inconsistent with a genuine TB SP advantage. The starred F1_xera_gap indicates a thin Rasmussen sample that overstated his edge over Blackburn. Both caps were correct: the direction was wrong and no stake was lost. Process success.",
+      "signals_to_recheck": "F1_xera_gap=1.05* (starred SP signal, thin sample — overstated TB advantage; NYY won 12-4); [HARD CAP 1] negative_edge_GOLD (-10.34pp); [HARD CAP 10] bottom-bucket marginal-favorite without CONFIRM"
+    },
+    "CHC @ BAL": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "BAL won 3-2 narrowly; Stage 1/2 disagreement (~0.19) and SP xERA against CHC both pointed to BAL, calibration-caution band correctly flagged edge.",
+      "hypothesis": "CHC's D-grade carried SP xERA 1.00 against the pick, PQI +18.2 against, and Stage 1/2 delta ~0.19 (Stage 1 heavily favored BAL in F5 while Stage 2 flipped to CHC for the full game). BAL won 3-2 in the narrowest margin on the slate. The 1-run game introduces variance ambiguity but the directional miss (CHC picked, BAL won) is consistent with the D-grade signal stack. The edge in the 18-25pp calibration-caution band was correctly capped. Process success; directional miss expected for this configuration.",
+      "signals_to_recheck": "f5_full_delta (~0.19, Stage 1 heavily favored BAL — Stage 2 flip to CHC was wrong); SP xERA against pick; [SOFT CAP 6.5] calibration_caution_18_25pp"
+    },
+    "CLE @ MIN": {
+      "verdict": "WIN",
+      "model_pick": "CLE ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "5-2",
+      "headline": "CLE won 5-2; pre-cap B+ signal stack directionally correct, but HARD CAP 1 + CAP 10 stacking correctly suppressed stake via DOWNGRADE.",
+      "hypothesis": "Pre-cap signals were strong for CLE (F3=4589, bullpen gap, PQI confirmed, Stage agreement) and CLE won 5-2. Claude's DOWNGRADE was mechanically correct: HARD CAP 1 (-3.73pp runtime edge) and HARD CAP 10 (bottom-bucket pick_prob=0.518) stacked to post-cap score=0. No stake was placed. The pre-cap direction was right. This is the third consecutive slate with a cap-blocked directional win pattern (7/8: OAK@DET, ARI@SD; 7/9: CLE@MIN, OAK@DET). The 30-pick tracking window for GOLD/PLATINUM pre-cap B+ picks blocked by CAP-1 should formally begin.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-3.73pp runtime); [HARD CAP 10] bottom-bucket marginal-favorite; pre-cap B+ direction validated (CLE won 5-2 — begin 30-pick CAP-1 pre-cap-B+ tracking window)"
+    },
+    "BOS @ CHW": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "BOS won 2-1; no model pick available (PENDING_SP_DATA — Sandoval below 100-pitch xERA threshold).",
+      "hypothesis": "Pipeline correctly withheld a pick due to insufficient SP data for Sandoval (0 Statcast pitches). BOS won 2-1. No evaluation of directional accuracy possible. The PENDING_SP_DATA hard stop was correctly applied. Not a process failure.",
+      "signals_to_recheck": "PENDING_SP_DATA (Sandoval xERA threshold not met; no directional call possible)"
+    },
+    "OAK @ DET": {
+      "verdict": "WIN",
+      "model_pick": "DET ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-4",
+      "headline": "DET won 4-1; stale GOLD label correctly downgraded (post-cap grade=D), directional call (DET) was right despite opposing signals.",
+      "hypothesis": "CSV tier showed GOLD but post-cap grade=D (SP xERA 0.32 against DET, PQI -8.9 against, negative edge -0.47pp). Claude correctly downgraded to SKIP. DET won 4-1. This is most likely variance — D-grade opposing-signal picks hit ~45% — or the SP-xERA signal against DET was less reliable for this specific matchup. No batter context was available. Combined with CLE@MIN, two downgraded picks had correct directions on this slate, consistent with the 7/8 pattern (OAK@DET, ARI@SD). Process was correct to downgrade; no stake was lost.",
+      "signals_to_recheck": "Grade=D with stale GOLD tier label (direction validated coincidentally); SP xERA against pick; PQI -8.9 against pick; no batter context available"
+    },
+    "SEA @ MIA": {
+      "verdict": "WIN",
+      "model_pick": "MIA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-8",
+      "headline": "MIA won 8-4 despite opposing SP xERA (1.91) and PQI (-28.1); D-grade directional WIN is variance — do not retroactively validate.",
+      "hypothesis": "All key signals opposed MIA: SP xERA 1.91 against the pick, PQI -28.1 against, acute_roster stress flag. MIA won 8-4. This is a variance WIN — the model correctly assigned D-grade (stake suppressed) but the pick direction happened to be right in a game where every signal said the opposite. This WIN should not soften the D-grade + opposing-SP + opposing-PQI framework. Process success (SKIP was correct); directional win is noise.",
+      "signals_to_recheck": "SP xERA 1.91 against pick (MIA); PQI -28.1 against pick; acute_roster_True — D-grade WIN despite all opposing signals is variance, do not retroactively validate this combination"
+    },
+    "PHI @ CIN": {
+      "verdict": "LOSS",
+      "model_pick": "CIN ML SKIP",
+      "claude_decision": "OVERRIDE",
+      "final_score": "1-0",
+      "headline": "PHI won 1-0; Claude's OVERRIDE to PHI validated — HARD CAP 6 hallucinated CIN edge correctly identified, PHI SP xERA advantage decisive.",
+      "hypothesis": "Model picked CIN with +28.36pp edge (calibrator hallucination flagged by HARD CAP 6, fair_prob=0.373). PHI won 1-0 on Luzardo's 2.51 xERA advantage over Singer. Claude's OVERRIDE was process-correct and outcome-correct. This is the second clean PHI@CIN validation in three days (PHI won 4-1 on 7/7; CIN won 11-5 on 7/8 but under a PENDING mislabel that prevented clean signal analysis). When HARD CAP 6 fires and the opposing SP holds a real xERA advantage > 2.0, the override to the SP-favored team is strongly supported.",
+      "signals_to_recheck": "[HARD CAP 6] extreme_positive_edge_hallucination (edge_pp=+28.36pp); SP xERA 2.51 against CIN pick (Luzardo over Singer); PQI -45.7 against CIN"
+    },
+    "MIL @ STL": {
+      "verdict": "LOSS",
+      "model_pick": "STL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "8-4",
+      "headline": "MIL dominated STL 8-4; HARD CAP 10 correctly suppressed a bottom-bucket pick whose direction (STL) was wrong by a wide margin.",
+      "hypothesis": "STL's C-grade had F3=1924 and Stage agreement, but HARD CAP 10 (bottom-bucket pick_prob) correctly zeroed the stake without a CONFIRM anchor. MIL won 8-4 — a 4-run margin suggesting genuine MIL quality advantages the model failed to encode. The F3 signal fired for STL but the outcome contradicts it decisively. No batter context available for additional diagnosis. HARD CAP 10 was correct both as a stake suppressant and as an implied directional skeptic — bottom-bucket non-CONFIRM picks remain unreliable directionally.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket marginal-favorite without CONFIRM; F3_swing_take_gap=1924 for STL (directionally wrong — MIL won 8-4); bullpen_fatigue stress flag (STL)"
+    },
+    "LAA @ TEX": {
+      "verdict": "WIN",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-7",
+      "headline": "TEX won 7-6 by 1 run despite D-grade opposing signals; 50.2% pick_prob coin-flip variance, not signal validation.",
+      "hypothesis": "Model picked TEX despite D-grade (SP xERA against TEX, PQI -16.9 against, negative edge -7.74pp). TEX won 7-6 in a 1-run game — the narrowest possible margin. Pick probability was 50.2%, making this essentially a coin flip. Process was correct (SKIP, no stake), and the negative edge would have made any bet negative-EV. This WIN is almost certainly variance given 50.2% implied probability and 1-run margin. Do not treat as signal validation.",
+      "signals_to_recheck": "SP xERA against pick (TEX, Detmers over Eovaldi); PQI -16.9 against pick; negative_edge_GOLD [HARD CAP 1] (-7.74pp) — 1-run WIN on 50.2% coin-flip is variance"
+    },
+    "ARI @ SD": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-1",
+      "headline": "ARI won 3-1 despite SP xERA 2.97 against the pick (largest opposing SP gap on slate); D-grade directional WIN is variance.",
+      "hypothesis": "Model picked ARI despite the largest opposing SP gap on the slate (SP xERA 2.97 against ARI, Kelly over Canning) and PQI +22.9 against. ARI won 3-1. Strong opposing SP signal did not materialize — either Canning outperformed his xERA or ARI's offense overcame the quality gap. No batter context available. With the signal stack this decisively against ARI, the WIN is variance. The SKIP was correct; this result should NOT soften the D-grade + large-SP-gap framework.",
+      "signals_to_recheck": "SP xERA 2.97 against pick (largest opposing SP gap on slate — Canning vs Kelly); PQI +22.9 against pick — D-grade WIN with extreme opposing SP signals is variance, not a framework exception"
+    },
+    "COL @ SF": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-8",
+      "headline": "SF won 8-2; no model pick available (PENDING_SP_DATA — Whisenhunt below 100-pitch xERA threshold).",
+      "hypothesis": "Pipeline correctly withheld a pick due to Whisenhunt's insufficient Statcast sample (85 pitches, below 100-pitch minimum). SF won convincingly 8-2. No directional evaluation possible. The PENDING_SP_DATA hard stop was correctly applied.",
+      "signals_to_recheck": "PENDING_SP_DATA (Whisenhunt 85 pitches below 100-pitch threshold; no xERA scoring possible)"
+    }
+  },
+  "patterns_observed": [
+    "D-grade picks with Stage 1/2 delta > 0.15 went 0/3 directionally today (ATL@PIT Δ=0.249 LOSS, KC@NYM Δ=0.302 LOSS, CHC@BAL Δ≈0.19 LOSS); combined with prior archive, treat D-grade + high-Stage-1/2-delta as a DIRECTIONAL FADE — when delta > 0.20 and grade = D, explicitly note the opposing team as the likely winner rather than only suppressing the stake.",
+    "Third consecutive slate with cap-blocked directional wins (CLE@MIN and OAK@DET today; OAK@DET and ARI@SD on 7/8): pre-cap B+ signal stacks continue to be directionally reliable even when HARD CAP 1 + CAP 10 stacking forces SKIP post-cap. Formal 30-pick tracking window now begins: log all GOLD/PLATINUM pre-cap-B+ picks killed by CAP-1 runtime edge compression — determine if market-moving-toward-pick compression produces a different win rate than market-moving-away-from-pick cases.",
+    "PHI@CIN HARD-CAP-6 OVERRIDE validated for 2nd clean case in 3 days (PHI won 1-0 today, 4-1 on 7/7; 7/8 CIN exception was under a PENDING mislabel): when CAP-6 hallucinated edge fires (edge_pp > +25pp) and the opposing SP holds a real xERA advantage > 2.0, override to the SP-favored team is strongly supported — cement as a repeatable Claude Brain rule.",
+    "F1_xera_gap* (starred, thin-sample SP signal) without F2/F3 corroboration produced a 12-4 blowout loss on NYY@TB despite pre-cap B+ grade: the starred flag is a true quality warning. In negative-edge context, F1* alone is insufficient to trust the pick direction, not just the tier. Reinforce: F1* requires at least one of {F2, F3, PQI confirm} to carry directional weight."
+  ]
+}
