@@ -2310,22 +2310,19 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   }
   </style>
 <style id="xfade-css">
-  /* Smooth cross-site transition (MLB edge <-> NBA edge, same origin).
-     Chromium: native cross-document view transition; others: fade fallback. */
-  html{background:#0d1117}
-  @view-transition { navigation: auto; }
-  ::view-transition-old(root){animation-duration:.32s;animation-timing-function:ease-in}
-  ::view-transition-new(root){animation-duration:.32s;animation-timing-function:ease-out}
-  #nba-link{view-transition-name:sport-switch}
+  /* xfade scoped 2026-07-10: the NBA hop fades ONLY when the NBA link is
+     clicked (JS below). The previous navigation:auto view-transition rule ran
+     a global freeze-fade on EVERY navigation, aborted with InvalidStateError
+     on rapid interactions, and prerendered the whole NBA site in the
+     background on each visit -- perceived as 'everything is bugged'. */
+  html{background:var(--bg, #0d1117)}
   body.xfade-leave{opacity:0;transition:opacity .18s ease}
   @media (prefers-reduced-motion: reduce){
-    ::view-transition-old(root),::view-transition-new(root){animation:none}
     body.xfade-leave{transition:none;opacity:1}
   }
 </style>
 <script type="speculationrules">
-{ "prerender": [ { "urls": ["/nba-edge/"] } ],
-  "prefetch":  [ { "urls": ["/nba-edge/"] } ] }
+{ "prefetch": [ { "urls": ["/nba-edge/"] } ] }
 </script>
 </head>
 <body>
@@ -10458,10 +10455,9 @@ document.addEventListener("click", function (e) {
   </script>
 <script id="xfade-js">
 (function () {
-  var vt = window.CSS && CSS.supports && CSS.supports("(view-transition-name: x)");
   var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var a = document.getElementById("nba-link");
-  if (a && !vt && !rm) {
+  if (a && !rm) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
       document.body.classList.add("xfade-leave");
