@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check out repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Full history. `git log --grep` heartbeats must find WEEKLY commits
           # (refit-calibrator: / weekly-backtest:), not just daily-slate:. At
