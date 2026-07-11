@@ -68,6 +68,12 @@ def main():
     log("python:    " + PY)
     log("=" * 64)
 
+    # 0) standings snapshot refresh (2026-07-10 flaw fix: the B-R scraper died
+    #    in April and team-quality gaps ran on 78-day-old records; this keeps
+    #    the bref-format snapshot same-day from statsapi). Non-fatal.
+    run([PY, "tools/refresh_standings_snapshot.py"],
+        "standings snapshot refresh", fatal=False)
+
     # 1) predict
     run([PY, "predict.py"] + ([date_arg] if date_arg else []) + ["--skip-weights"],
         "predict.py --skip-weights", fatal=True)
@@ -98,6 +104,15 @@ def main():
             os.replace(_dst + ".tmp", _dst)  # atomic: an interrupted copy (AV lock) can't leave a torn file
             n += 1
     log("  copied %d files into docs/data/" % n)
+
+    # 3.5) input-coverage sidecar (display/telemetry only; feeds the July
+    #      coverage-soft-cap prereg with accumulated per-bake data).
+    #      flush() first: the sidecar parses local_slate_run.log for the
+    #      Savant/FanGraphs endpoint counts of THIS run, not the previous one.
+    if slate:
+        flush()
+        run([PY, "tools/feature_coverage_report.py", slate],
+            "feature coverage sidecar", fatal=False)
 
     # 4) manifest.json
     dates = set()
