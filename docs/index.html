@@ -10452,10 +10452,23 @@ document.addEventListener("click", function (e) {
         });
       });
       (j.makeups || []).forEach(function (m) {
+        /* dh-ambiguous guard: on a doubleheader day the diag rows carry no
+           gamePk, so with fewer than 2 rows for the matchup we cannot tell
+           the makeup from the regular game -- chip NOTHING (the ghost row
+           carries the makeup identity). Chip real rows only when it's a
+           single-game day (no DH) or both sibling rows are present. */
+        var siblings = 0;
+        rows.forEach(function (tr) {
+          var mu = tr.querySelector("td:nth-child(2)");
+          if (mu && (mu.textContent || "").indexOf(m.matchup) === 0) siblings++;
+        });
+        var isDH = m.double_header && m.double_header !== "N";
+        if (isDH && siblings < 2) return;
         rows.forEach(function (tr) {
           if (tr.dataset.makeupDone) return;
           var mu = tr.querySelector("td:nth-child(2)");
           if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
+          if (isDH && !/\(G1\b/.test(mu.textContent || "")) return;
           tr.dataset.makeupDone = "1";
           mu.appendChild(ppdChip("MAKEUP \u00b7 from " + ppdFmt(m.makeup_of),
             "var(--amber, #ffb454)",
