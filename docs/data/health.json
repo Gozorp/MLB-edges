@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-11T21:24:53.566977+00:00",
+  "checked_at": "2026-07-11T22:25:53.171964+00:00",
   "overall": "yellow",
   "categories": {
     "workflows": "green",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 0.1h ago",
+      "message": "last slate publish 0.2h ago",
       "detail": {
-        "last_run_iso": "2026-07-11T14:17:16-07:00",
-        "age_hours": 0.13
+        "last_run_iso": "2026-07-11T15:16:31-07:00",
+        "age_hours": 0.16
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 6.6d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:28:18Z",
-        "age_hours": 157.94,
+        "age_hours": 158.96,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -36,7 +36,7 @@
       "message": "last fired 6.6d ago",
       "detail": {
         "last_run_iso": "2026-07-05T07:54:08Z",
-        "age_hours": 157.51,
+        "age_hours": 158.53,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.4h ago",
+      "message": "last fired 3.4h ago",
       "detail": {
         "last_run_iso": "2026-07-11T19:01:04Z",
-        "age_hours": 2.4,
+        "age_hours": 3.41,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,8 +71,8 @@
         "ok_rows": 15,
         "non_ok_pct": 6.2,
         "status_distribution": {
-          "fetched": 13,
-          "fetched_capped": 2,
+          "fetched": 11,
+          "fetched_capped": 4,
           "pending_sp_data": 1
         }
       },
@@ -98,7 +98,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-11T21:24:53.661Z",
+          "timestamp": "2026-07-11T22:25:53.323Z",
           "commit": "unknown",
           "region": "IAD"
         }
@@ -108,10 +108,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 912.7h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 913.7h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 912.66,
+        "age_hours": 913.67,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -139,11 +139,11 @@
     {
       "name": "stress_warning_rate",
       "severity": "yellow",
-      "message": "56% of slate stress-warned (9/16)",
+      "message": "62% of slate stress-warned (10/16)",
       "detail": {
         "total_rows": 16,
-        "stress_warned_count": 9,
-        "pct_of_slate": 56.2
+        "stress_warned_count": 10,
+        "pct_of_slate": 62.5
       },
       "category": "model"
     }
