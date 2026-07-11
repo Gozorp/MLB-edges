@@ -10480,30 +10480,41 @@ document.addEventListener("click", function (e) {
           /* a makeup day usually means a doubleheader: expect 2 rows for
              the matchup when the makeup shares the date with a regular game */
           if (seen === 0 || (m.double_header && m.double_header !== "N" && seen < 2)) {
-            missing.push(m.matchup + " (makeup of " + ppdFmt(m.makeup_of) +
-                         (m.double_header && m.double_header !== "N" ? ", doubleheader" : "") + ")");
+            missing.push({ key: m.matchup + "@" + m.makeup_of,
+                           matchup: m.matchup, fromTxt: ppdFmt(m.makeup_of) });
           }
         });
-        var note = document.getElementById("ppd-missing");
-        if (!missing.length) { if (note) note.remove(); return; }
-        var slate = document.getElementById("slate");
-        var h2 = null;
-        if (slate) slate.querySelectorAll("h2").forEach(function (h) {
-          if (!h2 && /Slate \(/.test(h.textContent || "") && h.offsetParent) h2 = h;
+        /* remove stale ghost rows whose real row has arrived */
+        document.querySelectorAll("tr.ppd-ghost-row").forEach(function (gr) {
+          if (!missing.some(function (m) { return m.key === gr.dataset.ghostKey; })) gr.remove();
         });
-        if (!h2) return;
-        if (!note) {
-          note = document.createElement("div");
-          note.id = "ppd-missing";
-          note.style.cssText =
-            "margin:6px 0 10px;padding:7px 12px;font-size:0.72rem;" +
-            "color:var(--muted,#8b949e);border:1px dashed var(--border,#30363d);" +
-            "border-radius:8px;";
-          var anchor = document.getElementById("pending-note") || h2;
-          anchor.insertAdjacentElement("afterend", note);
-        }
-        note.textContent = "\u26a0 Not yet on the board: " + missing.join(" \u00b7 ") +
-          " \u2014 joins automatically once MLB posts its starters.";
+        if (!missing.length) return;
+        var tbody = null;
+        var anyRow = document.querySelector("#slate tr.row-clickable");
+        if (anyRow) tbody = anyRow.parentElement;
+        if (!tbody) return;
+        missing.forEach(function (m) {
+          if (document.querySelector('tr.ppd-ghost-row[data-ghost-key="' + m.key + '"]')) return;
+          var tr = document.createElement("tr");
+          tr.className = "ppd-ghost-row";        /* NOT row-clickable: sort/metrics ignore it */
+          tr.dataset.ghostKey = m.key;
+          var td = document.createElement("td");
+          td.colSpan = 20;
+          td.style.cssText = "padding:10px 12px;border-top:1px dashed var(--border,#30363d);";
+          td.innerHTML =
+            '<span style="font-weight:700;">' + m.matchup + '</span>' +
+            ' <span style="display:inline-block;margin-left:6px;padding:1px 7px;font-size:0.62rem;' +
+            'font-weight:700;border-radius:999px;border:1px solid var(--amber,#ffb454);' +
+            'color:var(--amber,#ffb454);">MAKEUP \u00b7 from ' + m.fromTxt + '</span>' +
+            ' <span style="display:inline-block;margin-left:6px;padding:1px 7px;font-size:0.62rem;' +
+            'font-weight:700;border-radius:999px;border:1px solid var(--muted,#8b949e);' +
+            'color:var(--muted,#8b949e);">AWAITING STARTERS</span>' +
+            '<span style="margin-left:10px;font-size:0.7rem;color:var(--muted,#8b949e);">' +
+            'MLB has not announced pitchers for this game yet \u2014 it is scored and ' +
+            'joins the board automatically on the next refresh after they post.</span>';
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+        });
       } catch (e) { /* display-only */ }
     }
     function ppdApply() {
