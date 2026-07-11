@@ -32,17 +32,23 @@ csv.field_size_limit(10 ** 7)
 
 
 def parse_log():
+    """Endpoint counts print to whichever stream the bake ran under: direct
+    console runs land in local_slate_run.log, chain runs land in
+    logs/midnight.log. Check both; take the LAST occurrence (current bake)."""
     sav_ok = sav_tot = fg_ok = fg_tot = None
-    try:
-        txt = open("local_slate_run.log", encoding="utf-8", errors="replace").read()
-        m = re.search(r"\(Savant\):\s*(\d+)/(\d+)\s*endpoints OK", txt)
-        if m:
-            sav_ok, sav_tot = int(m.group(1)), int(m.group(2))
-        m = re.search(r"\(FanGraphs\):\s*(\d+)/(\d+)\s*endpoints OK", txt)
-        if m:
-            fg_ok, fg_tot = int(m.group(1)), int(m.group(2))
-    except OSError:
-        pass
+    for path in ("local_slate_run.log", os.path.join("logs", "midnight.log")):
+        try:
+            txt = open(path, encoding="utf-8", errors="replace").read()
+        except OSError:
+            continue
+        ms = list(re.finditer(r"\(Savant\):\s*(\d+)/(\d+)\s*endpoints OK", txt))
+        if ms:
+            sav_ok, sav_tot = int(ms[-1].group(1)), int(ms[-1].group(2))
+        ms = list(re.finditer(r"\(FanGraphs\):\s*(\d+)/(\d+)\s*endpoints OK", txt))
+        if ms:
+            fg_ok, fg_tot = int(ms[-1].group(1)), int(ms[-1].group(2))
+        if sav_ok is not None:
+            break
     return sav_ok, sav_tot, fg_ok, fg_tot
 
 
