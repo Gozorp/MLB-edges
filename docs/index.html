@@ -10471,7 +10471,8 @@ document.addEventListener("click", function (e) {
 })();
 </script>
   <script id="pending-banner-js">
-  /* pre-dawn banner: N games awaiting probable starters. Display-only. */
+  /* pre-dawn banner v2: anchors to the VISIBLE 'Slate (N games)' heading
+     (v1 anchored to the hidden Ask-Claude template card's h2). */
   (function () {
     function upsert() {
       try {
@@ -10481,13 +10482,17 @@ document.addEventListener("click", function (e) {
         slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
           if (/PENDING_SP_DATA/.test(tr.textContent || "")) pend++;
         });
-        var h2 = slate.querySelector(".card h2");
         var note = document.getElementById("pending-note");
         if (!pend) { if (note) note.remove(); return; }
-        var msg = pend + " game" + (pend > 1 ? "s" : "") +
+        var h2 = null;
+        slate.querySelectorAll("h2").forEach(function (h) {
+          if (!h2 && /Slate \(/.test(h.textContent || "") && h.offsetParent) h2 = h;
+        });
+        if (!h2) return;
+        var msg = "\u23f3 " + pend + " game" + (pend > 1 ? "s" : "") +
           " awaiting probable starters \u2014 picks fill in automatically as " +
-          "MLB announces them through the US morning (hourly refresh).";
-        if (!note && h2) {
+          "MLB announces them (hourly refresh).";
+        if (!note) {
           note = document.createElement("div");
           note.id = "pending-note";
           note.style.cssText =
@@ -10497,7 +10502,7 @@ document.addEventListener("click", function (e) {
             "background:rgba(255,180,84,0.06);";
           h2.insertAdjacentElement("afterend", note);
         }
-        if (note) note.textContent = "\u23f3 " + msg;
+        note.textContent = msg;
       } catch (e) { /* display-only */ }
     }
     var t;
@@ -10508,10 +10513,11 @@ document.addEventListener("click", function (e) {
   })();
   </script>
   <script id="ppd-js">
-  /* postponement conversion chips (2026-07-11): PPD games show where they
-     moved; makeup games show where they came from. Sidecar-driven, display-only. */
+  /* ppd-chips v2: postponement conversion chips. v1 had a cache-null race
+     (date pre-cached before fetch resolved). Now: resolved-only cache,
+     in-flight guard, idempotent per-row render on every tick. */
   (function () {
-    var cache = {};
+    var data = {}, inflight = {};
     function fmt(d) {
       try {
         var p = d.split("-");
@@ -10519,56 +10525,57 @@ document.addEventListener("click", function (e) {
                 "Sep", "Oct", "Nov", "Dec"][parseInt(p[1], 10)] + " " + parseInt(p[2], 10);
       } catch (e) { return d; }
     }
-    function chip(txt, color, title) {
+    function chip(txtv, color, title) {
       var s = document.createElement("span");
       s.className = "ppd-chip";
       s.title = title || "";
       s.style.cssText = "display:inline-block;margin-left:6px;padding:1px 7px;" +
         "font-size:0.62rem;font-weight:700;letter-spacing:0.05em;border-radius:999px;" +
         "border:1px solid " + color + ";color:" + color + ";white-space:nowrap;";
-      s.textContent = txt;
+      s.textContent = txtv;
       return s;
+    }
+    function render(j) {
+      if (!j) return;
+      var rows = document.querySelectorAll("#slate tr.row-clickable");
+      (j.postponed || []).forEach(function (p) {
+        rows.forEach(function (tr) {
+          if (tr.dataset.ppdDone) return;
+          var mu = tr.querySelector("td:nth-child(2)");
+          if (!mu || (mu.textContent || "").indexOf(p.matchup) !== 0) return;
+          tr.dataset.ppdDone = "1";
+          mu.appendChild(chip(
+            p.reschedule_date ? "PPD \u2192 " + fmt(p.reschedule_date) : "PPD",
+            "var(--red, #f85149)",
+            (p.reason || p.state || "Postponed") +
+            (p.reschedule_time_utc ? " \u00b7 makeup " + p.reschedule_time_utc : "")));
+        });
+      });
+      (j.makeups || []).forEach(function (m) {
+        rows.forEach(function (tr) {
+          if (tr.dataset.makeupDone) return;
+          var mu = tr.querySelector("td:nth-child(2)");
+          if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
+          tr.dataset.makeupDone = "1";
+          mu.appendChild(chip("MAKEUP \u00b7 from " + fmt(m.makeup_of),
+            "var(--amber, #ffb454)",
+            "Rescheduled from " + m.makeup_of +
+            (m.game_number > 1 ? " (game " + m.game_number + ")" : "")));
+        });
+      });
     }
     function apply() {
       try {
         var dp = document.getElementById("datePicker");
         var date = dp && dp.value;
         if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-        function render(j) {
-          if (!j) return;
-          var rows = document.querySelectorAll("#slate tr.row-clickable");
-          (j.postponed || []).forEach(function (p) {
-            rows.forEach(function (tr) {
-              if (tr.dataset.ppdDone) return;
-              var mu = tr.querySelector("td:nth-child(2)");
-              if (!mu || (mu.textContent || "").indexOf(p.matchup) !== 0) return;
-              tr.dataset.ppdDone = "1";
-              mu.appendChild(chip(
-                p.reschedule_date ? "PPD \u2192 " + fmt(p.reschedule_date) : "PPD",
-                "var(--red, #f85149)",
-                (p.reason || p.state || "Postponed") +
-                (p.reschedule_time_utc ? " \u00b7 makeup " + p.reschedule_time_utc : "")));
-            });
-          });
-          (j.makeups || []).forEach(function (m) {
-            rows.forEach(function (tr) {
-              if (tr.dataset.makeupDone) return;
-              var mu = tr.querySelector("td:nth-child(2)");
-              if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
-              tr.dataset.makeupDone = "1";
-              mu.appendChild(chip("MAKEUP \u00b7 from " + fmt(m.makeup_of),
-                "var(--amber, #ffb454)",
-                "Rescheduled from " + m.makeup_of +
-                (m.game_number > 1 ? " (game " + m.game_number + ")" : "")));
-            });
-          });
-        }
-        if (date in cache) { render(cache[date]); return; }
-        cache[date] = null;
+        if (date in data) { render(data[date]); return; }
+        if (inflight[date]) return;
+        inflight[date] = true;
         fetch("./data/postponed_" + date + ".json", { cache: "no-store" })
           .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (j) { cache[date] = j; render(j); })
-          .catch(function () {});
+          .then(function (j) { data[date] = j; render(j); })
+          .catch(function () { data[date] = null; });
       } catch (e) { /* display-only */ }
     }
     var t;
