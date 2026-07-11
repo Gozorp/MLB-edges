@@ -10384,9 +10384,104 @@ document.addEventListener("click", function (e) {
       } catch (err) { /* display-only */ }
     });
 
+    /* ---- pre-dawn pending banner (rides this cycle; standalone tag was inert) ---- */
+    function bannerUpsert() {
+      try {
+        var slate = document.getElementById("slate");
+        if (!slate) return;
+        var pend = 0;
+        slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
+          if (/PENDING_SP_DATA/.test(tr.textContent || "")) pend++;
+        });
+        var note = document.getElementById("pending-note");
+        if (!pend) { if (note) note.remove(); return; }
+        var h2 = null;
+        slate.querySelectorAll("h2").forEach(function (h) {
+          if (!h2 && /Slate \(/.test(h.textContent || "") && h.offsetParent) h2 = h;
+        });
+        if (!h2) return;
+        if (!note) {
+          note = document.createElement("div");
+          note.id = "pending-note";
+          note.style.cssText =
+            "margin:6px 0 10px;padding:7px 12px;font-size:0.72rem;" +
+            "color:var(--amber,#ffb454);border:1px solid rgba(255,180,84,0.35);" +
+            "border-left:3px solid var(--amber,#ffb454);border-radius:8px;" +
+            "background:rgba(255,180,84,0.06);";
+          h2.insertAdjacentElement("afterend", note);
+        }
+        note.textContent = "\u23f3 " + pend + " game" + (pend > 1 ? "s" : "") +
+          " awaiting probable starters \u2014 picks fill in automatically as " +
+          "MLB announces them (hourly refresh).";
+      } catch (e) { /* display-only */ }
+    }
+
+    /* ---- postponement conversion chips (rides this cycle) ---- */
+    var ppdData = {}, ppdInflight = {};
+    function ppdFmt(d) {
+      try {
+        var p = d.split("-");
+        return ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                "Sep", "Oct", "Nov", "Dec"][parseInt(p[1], 10)] + " " + parseInt(p[2], 10);
+      } catch (e) { return d; }
+    }
+    function ppdChip(txtv, color, title) {
+      var s = document.createElement("span");
+      s.className = "ppd-chip";
+      s.title = title || "";
+      s.style.cssText = "display:inline-block;margin-left:6px;padding:1px 7px;" +
+        "font-size:0.62rem;font-weight:700;letter-spacing:0.05em;border-radius:999px;" +
+        "border:1px solid " + color + ";color:" + color + ";white-space:nowrap;";
+      s.textContent = txtv;
+      return s;
+    }
+    function ppdRender(j) {
+      if (!j) return;
+      var rows = document.querySelectorAll("#slate tr.row-clickable");
+      (j.postponed || []).forEach(function (p) {
+        rows.forEach(function (tr) {
+          if (tr.dataset.ppdDone) return;
+          var mu = tr.querySelector("td:nth-child(2)");
+          if (!mu || (mu.textContent || "").indexOf(p.matchup) !== 0) return;
+          tr.dataset.ppdDone = "1";
+          mu.appendChild(ppdChip(
+            p.reschedule_date ? "PPD \u2192 " + ppdFmt(p.reschedule_date) : "PPD",
+            "var(--red, #f85149)",
+            (p.reason || p.state || "Postponed") +
+            (p.reschedule_time_utc ? " \u00b7 makeup " + p.reschedule_time_utc : "")));
+        });
+      });
+      (j.makeups || []).forEach(function (m) {
+        rows.forEach(function (tr) {
+          if (tr.dataset.makeupDone) return;
+          var mu = tr.querySelector("td:nth-child(2)");
+          if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
+          tr.dataset.makeupDone = "1";
+          mu.appendChild(ppdChip("MAKEUP \u00b7 from " + ppdFmt(m.makeup_of),
+            "var(--amber, #ffb454)",
+            "Rescheduled from " + m.makeup_of +
+            (m.game_number > 1 ? " (game " + m.game_number + ")" : "")));
+        });
+      });
+    }
+    function ppdApply() {
+      try {
+        var dp = document.getElementById("datePicker");
+        var date = dp && dp.value;
+        if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+        if (date in ppdData) { ppdRender(ppdData[date]); return; }
+        if (ppdInflight[date]) return;
+        ppdInflight[date] = true;
+        fetch("./data/postponed_" + date + ".json", { cache: "no-store" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) { ppdData[date] = j; ppdRender(j); })
+          .catch(function () { ppdData[date] = null; });
+      } catch (e) { /* display-only */ }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
@@ -10470,121 +10565,6 @@ document.addEventListener("click", function (e) {
   });
 })();
 </script>
-  <script id="pending-banner-js">
-  /* pre-dawn banner v2: anchors to the VISIBLE 'Slate (N games)' heading
-     (v1 anchored to the hidden Ask-Claude template card's h2). */
-  (function () {
-    function upsert() {
-      try {
-        var slate = document.getElementById("slate");
-        if (!slate) return;
-        var pend = 0;
-        slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
-          if (/PENDING_SP_DATA/.test(tr.textContent || "")) pend++;
-        });
-        var note = document.getElementById("pending-note");
-        if (!pend) { if (note) note.remove(); return; }
-        var h2 = null;
-        slate.querySelectorAll("h2").forEach(function (h) {
-          if (!h2 && /Slate \(/.test(h.textContent || "") && h.offsetParent) h2 = h;
-        });
-        if (!h2) return;
-        var msg = "\u23f3 " + pend + " game" + (pend > 1 ? "s" : "") +
-          " awaiting probable starters \u2014 picks fill in automatically as " +
-          "MLB announces them (hourly refresh).";
-        if (!note) {
-          note = document.createElement("div");
-          note.id = "pending-note";
-          note.style.cssText =
-            "margin:6px 0 10px;padding:7px 12px;font-size:0.72rem;" +
-            "color:var(--amber,#ffb454);border:1px solid rgba(255,180,84,0.35);" +
-            "border-left:3px solid var(--amber,#ffb454);border-radius:8px;" +
-            "background:rgba(255,180,84,0.06);";
-          h2.insertAdjacentElement("afterend", note);
-        }
-        note.textContent = msg;
-      } catch (e) { /* display-only */ }
-    }
-    var t;
-    function tick() { clearTimeout(t); t = setTimeout(upsert, 500); }
-    try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
-    if (document.readyState !== "loading") tick();
-    else document.addEventListener("DOMContentLoaded", tick);
-  })();
-  </script>
-  <script id="ppd-js">
-  /* ppd-chips v2: postponement conversion chips. v1 had a cache-null race
-     (date pre-cached before fetch resolved). Now: resolved-only cache,
-     in-flight guard, idempotent per-row render on every tick. */
-  (function () {
-    var data = {}, inflight = {};
-    function fmt(d) {
-      try {
-        var p = d.split("-");
-        return ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-                "Sep", "Oct", "Nov", "Dec"][parseInt(p[1], 10)] + " " + parseInt(p[2], 10);
-      } catch (e) { return d; }
-    }
-    function chip(txtv, color, title) {
-      var s = document.createElement("span");
-      s.className = "ppd-chip";
-      s.title = title || "";
-      s.style.cssText = "display:inline-block;margin-left:6px;padding:1px 7px;" +
-        "font-size:0.62rem;font-weight:700;letter-spacing:0.05em;border-radius:999px;" +
-        "border:1px solid " + color + ";color:" + color + ";white-space:nowrap;";
-      s.textContent = txtv;
-      return s;
-    }
-    function render(j) {
-      if (!j) return;
-      var rows = document.querySelectorAll("#slate tr.row-clickable");
-      (j.postponed || []).forEach(function (p) {
-        rows.forEach(function (tr) {
-          if (tr.dataset.ppdDone) return;
-          var mu = tr.querySelector("td:nth-child(2)");
-          if (!mu || (mu.textContent || "").indexOf(p.matchup) !== 0) return;
-          tr.dataset.ppdDone = "1";
-          mu.appendChild(chip(
-            p.reschedule_date ? "PPD \u2192 " + fmt(p.reschedule_date) : "PPD",
-            "var(--red, #f85149)",
-            (p.reason || p.state || "Postponed") +
-            (p.reschedule_time_utc ? " \u00b7 makeup " + p.reschedule_time_utc : "")));
-        });
-      });
-      (j.makeups || []).forEach(function (m) {
-        rows.forEach(function (tr) {
-          if (tr.dataset.makeupDone) return;
-          var mu = tr.querySelector("td:nth-child(2)");
-          if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
-          tr.dataset.makeupDone = "1";
-          mu.appendChild(chip("MAKEUP \u00b7 from " + fmt(m.makeup_of),
-            "var(--amber, #ffb454)",
-            "Rescheduled from " + m.makeup_of +
-            (m.game_number > 1 ? " (game " + m.game_number + ")" : "")));
-        });
-      });
-    }
-    function apply() {
-      try {
-        var dp = document.getElementById("datePicker");
-        var date = dp && dp.value;
-        if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-        if (date in data) { render(data[date]); return; }
-        if (inflight[date]) return;
-        inflight[date] = true;
-        fetch("./data/postponed_" + date + ".json", { cache: "no-store" })
-          .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (j) { data[date] = j; render(j); })
-          .catch(function () { data[date] = null; });
-      } catch (e) { /* display-only */ }
-    }
-    var t;
-    function tick() { clearTimeout(t); t = setTimeout(apply, 600); }
-    try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
-    if (document.readyState !== "loading") tick();
-    else document.addEventListener("DOMContentLoaded", tick);
-  })();
-  </script>
 </body>
 </html>
 
