@@ -10507,6 +10507,77 @@ document.addEventListener("click", function (e) {
     else document.addEventListener("DOMContentLoaded", tick);
   })();
   </script>
+  <script id="ppd-js">
+  /* postponement conversion chips (2026-07-11): PPD games show where they
+     moved; makeup games show where they came from. Sidecar-driven, display-only. */
+  (function () {
+    var cache = {};
+    function fmt(d) {
+      try {
+        var p = d.split("-");
+        return ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+                "Sep", "Oct", "Nov", "Dec"][parseInt(p[1], 10)] + " " + parseInt(p[2], 10);
+      } catch (e) { return d; }
+    }
+    function chip(txt, color, title) {
+      var s = document.createElement("span");
+      s.className = "ppd-chip";
+      s.title = title || "";
+      s.style.cssText = "display:inline-block;margin-left:6px;padding:1px 7px;" +
+        "font-size:0.62rem;font-weight:700;letter-spacing:0.05em;border-radius:999px;" +
+        "border:1px solid " + color + ";color:" + color + ";white-space:nowrap;";
+      s.textContent = txt;
+      return s;
+    }
+    function apply() {
+      try {
+        var dp = document.getElementById("datePicker");
+        var date = dp && dp.value;
+        if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+        function render(j) {
+          if (!j) return;
+          var rows = document.querySelectorAll("#slate tr.row-clickable");
+          (j.postponed || []).forEach(function (p) {
+            rows.forEach(function (tr) {
+              if (tr.dataset.ppdDone) return;
+              var mu = tr.querySelector("td:nth-child(2)");
+              if (!mu || (mu.textContent || "").indexOf(p.matchup) !== 0) return;
+              tr.dataset.ppdDone = "1";
+              mu.appendChild(chip(
+                p.reschedule_date ? "PPD \u2192 " + fmt(p.reschedule_date) : "PPD",
+                "var(--red, #f85149)",
+                (p.reason || p.state || "Postponed") +
+                (p.reschedule_time_utc ? " \u00b7 makeup " + p.reschedule_time_utc : "")));
+            });
+          });
+          (j.makeups || []).forEach(function (m) {
+            rows.forEach(function (tr) {
+              if (tr.dataset.makeupDone) return;
+              var mu = tr.querySelector("td:nth-child(2)");
+              if (!mu || (mu.textContent || "").indexOf(m.matchup) !== 0) return;
+              tr.dataset.makeupDone = "1";
+              mu.appendChild(chip("MAKEUP \u00b7 from " + fmt(m.makeup_of),
+                "var(--amber, #ffb454)",
+                "Rescheduled from " + m.makeup_of +
+                (m.game_number > 1 ? " (game " + m.game_number + ")" : "")));
+            });
+          });
+        }
+        if (date in cache) { render(cache[date]); return; }
+        cache[date] = null;
+        fetch("./data/postponed_" + date + ".json", { cache: "no-store" })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) { cache[date] = j; render(j); })
+          .catch(function () {});
+      } catch (e) { /* display-only */ }
+    }
+    var t;
+    function tick() { clearTimeout(t); t = setTimeout(apply, 600); }
+    try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+    if (document.readyState !== "loading") tick();
+    else document.addEventListener("DOMContentLoaded", tick);
+  })();
+  </script>
 </body>
 </html>
 
