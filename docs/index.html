@@ -10525,7 +10525,9 @@ document.addEventListener("click", function (e) {
             document.head.appendChild(st);
           }
           var tbl = tbody.closest("table");
-          var ths = tbl ? tbl.querySelectorAll("thead th") : [];
+          /* direct tHead only: querySelectorAll("thead th") leaks the nested
+             per-game drawer tables (583 cells observed) */
+          var ths = (tbl && tbl.tHead && tbl.tHead.rows.length) ? tbl.tHead.rows[0].cells : [];
           var tr = document.createElement("tr");
           tr.className = "ppd-ghost-row";        /* NOT row-clickable: sort ignores it */
           tr.dataset.ghostKey = m.key;
