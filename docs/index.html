@@ -10612,9 +10612,54 @@ document.addEventListener("click", function (e) {
       } catch (e) { /* display-only */ }
     }
 
+    /* ---- layout sentinel: display safety net. A malformed ghost row is
+       rebuilt in safe single-cell mode within one tick; real-row structure
+       problems are reported (window.__uiSentinel + console) so they can
+       never sit silent. Display-only, defensive. ---- */
+    function sentinel() {
+      try {
+        var firstReal = document.querySelector("#slate tr.row-clickable");
+        if (!firstReal) return;
+        var tbl = firstReal.closest("table");
+        if (!tbl || !tbl.tHead || !tbl.tHead.rows.length) return;
+        var want = tbl.tHead.rows[0].cells.length;
+        var issues = [];
+        document.querySelectorAll("#slate tr.ppd-ghost-row").forEach(function (g) {
+          if (g.children.length === 1 && (g.children[0].colSpan || 1) > 1) return; /* safe mode already */
+          var bad = g.children.length !== want;
+          if (!bad && g.children[1] && firstReal.children[1]) {
+            var dl = Math.abs(g.children[1].getBoundingClientRect().left -
+                              firstReal.children[1].getBoundingClientRect().left);
+            if (dl > 4 && g.offsetParent) bad = true;
+          }
+          if (bad) {
+            issues.push("ghost row degraded to safe mode (cells=" + g.children.length +
+                        " want=" + want + ")");
+            var label = ((g.children[1] && g.children[1].textContent) || "makeup game").trim();
+            g.innerHTML = "";
+            var td = document.createElement("td");
+            td.colSpan = want;
+            td.style.cssText = "padding:10px 12px;border-top:1px dashed var(--border,#30363d);" +
+                               "color:var(--muted,#8b949e);";
+            td.textContent = label + " (awaiting starters)";
+            g.appendChild(td);
+          }
+        });
+        var badRows = 0;
+        document.querySelectorAll("#slate tr.row-clickable").forEach(function (r) {
+          var n = 0;
+          for (var i = 0; i < r.children.length; i++) n += (r.children[i].colSpan || 1);
+          if (n !== want) badRows++;
+        });
+        if (badRows) issues.push(badRows + " slate row(s) with cell/colspan mismatch vs header");
+        window.__uiSentinel = { at: new Date().toISOString(), issues: issues };
+        if (issues.length) console.warn("[ui-sentinel]", issues.join("; "));
+      } catch (e) { /* display-only */ }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });

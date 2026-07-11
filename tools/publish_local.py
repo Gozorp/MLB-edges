@@ -184,6 +184,22 @@ try:
 except Exception as _e:
     print("publish_guard skipped (%r) -- publishing without regression check" % (_e,))
 
+# ---- UI integrity belt (2026-07-11): this publisher stages data files only,
+# but if docs/index.html ever differs from origin/main at this point, gate it
+# the same way the pre-push hook does and restore the published version on
+# failure. Fail-open: a checker crash must never block the nightly publish.
+try:
+    if subprocess.run(["git", "diff", "--quiet", "origin/main", "--",
+                       "docs/index.html"]).returncode != 0:
+        _ui = subprocess.run([sys.executable, "tools/ui_integrity_check.py",
+                              "--file", "docs/index.html"], timeout=120)
+        if _ui.returncode != 0:
+            subprocess.run(["git", "checkout", "origin/main", "--", "docs/index.html"])
+            print("::warning:: ui_integrity_check FAILED -- docs/index.html "
+                  "restored to the published version")
+except Exception as _e:
+    print("ui integrity belt skipped (%r)" % (_e,))
+
 git("add", "--", *present)
 if subprocess.run(["git", "diff", "--cached", "--quiet"]).returncode == 0:
     print("publish: nothing changed vs origin -- already up to date"); raise SystemExit(0)
