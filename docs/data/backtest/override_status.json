@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-08T14:37:56.157902Z",
+  "generated_at": "2026-07-11T13:43:42.853752Z",
   "verdict": {
-    "state": "inconclusive",
-    "reason": "out-of-sample n=9 below floor 10; keep current OVERRIDE behavior, re-run when more postgame data accumulates",
-    "n_out_of_sample": 9,
+    "state": "demote",
+    "reason": "reverse-direction sanity (Rule 11): 5 historical wins flipped >= limit 2; demote OVERRIDE to stake-size cap regardless of precision (50.0%)",
+    "n_out_of_sample": 10,
     "n_in_sample": 6,
-    "precision_pct": null,
-    "wins_flipped": null,
-    "losses_flipped": null,
+    "precision_pct": 50.0,
+    "wins_flipped": 5,
+    "losses_flipped": 5,
     "thresholds": {
       "freeze_date": "2026-05-21",
       "sample_floor": 10,
@@ -15,7 +15,7 @@
       "wins_flipped_limit": 2
     }
   },
-  "n_fires_total": 15,
+  "n_fires_total": 16,
   "out_of_sample_fires": [
     {
       "date": "2026-06-08",
@@ -96,6 +96,15 @@
       "verdict": "WIN",
       "final_score": "2-6",
       "model_pick": "NYM ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-07-09",
+      "matchup": "PHI @ CIN",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "1-0",
+      "model_pick": "CIN ML SKIP",
       "in_sample": false
     }
   ],
