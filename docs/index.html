@@ -10464,17 +10464,59 @@ document.addEventListener("click", function (e) {
         });
       });
     }
+    function ppdGhost(j) {
+      /* makeup/postponed games with NO row on this board (DH placeholder
+         collapse): list them so the board admits they exist. */
+      try {
+        var missing = [];
+        var rows = document.querySelectorAll("#slate tr.row-clickable");
+        ((j && j.makeups) || []).forEach(function (m) {
+          var seen = 0;
+          rows.forEach(function (tr) {
+            var mu = tr.querySelector("td:nth-child(2)");
+            if (mu && (mu.textContent || "").indexOf(m.matchup) === 0) seen++;
+          });
+          var expected = 1 + (m.game_number > 1 ? 0 : 0);
+          /* a makeup day usually means a doubleheader: expect 2 rows for
+             the matchup when the makeup shares the date with a regular game */
+          if (seen === 0 || (m.double_header && m.double_header !== "N" && seen < 2)) {
+            missing.push(m.matchup + " (makeup of " + ppdFmt(m.makeup_of) +
+                         (m.double_header && m.double_header !== "N" ? ", doubleheader" : "") + ")");
+          }
+        });
+        var note = document.getElementById("ppd-missing");
+        if (!missing.length) { if (note) note.remove(); return; }
+        var slate = document.getElementById("slate");
+        var h2 = null;
+        if (slate) slate.querySelectorAll("h2").forEach(function (h) {
+          if (!h2 && /Slate \(/.test(h.textContent || "") && h.offsetParent) h2 = h;
+        });
+        if (!h2) return;
+        if (!note) {
+          note = document.createElement("div");
+          note.id = "ppd-missing";
+          note.style.cssText =
+            "margin:6px 0 10px;padding:7px 12px;font-size:0.72rem;" +
+            "color:var(--muted,#8b949e);border:1px dashed var(--border,#30363d);" +
+            "border-radius:8px;";
+          var anchor = document.getElementById("pending-note") || h2;
+          anchor.insertAdjacentElement("afterend", note);
+        }
+        note.textContent = "\u26a0 Not yet on the board: " + missing.join(" \u00b7 ") +
+          " \u2014 joins automatically once MLB posts its starters.";
+      } catch (e) { /* display-only */ }
+    }
     function ppdApply() {
       try {
         var dp = document.getElementById("datePicker");
         var date = dp && dp.value;
         if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
-        if (date in ppdData) { ppdRender(ppdData[date]); return; }
+        if (date in ppdData) { ppdRender(ppdData[date]); ppdGhost(ppdData[date]); return; }
         if (ppdInflight[date]) return;
         ppdInflight[date] = true;
         fetch("./data/postponed_" + date + ".json", { cache: "no-store" })
           .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (j) { ppdData[date] = j; ppdRender(j); })
+          .then(function (j) { ppdData[date] = j; ppdRender(j); ppdGhost(j); })
           .catch(function () { ppdData[date] = null; });
       } catch (e) { /* display-only */ }
     }
