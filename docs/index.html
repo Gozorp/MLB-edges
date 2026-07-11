@@ -9981,7 +9981,7 @@ document.addEventListener("click", function (e) {
     const slate = window.__slate || {};
     const rows = slate.rows || [];
     const results = slate.results || {};
-    const games = rows.length;
+    const games = rows.length + document.querySelectorAll("#slate tr.ppd-ghost-row").length;
     const aGrades = rows.filter(r => {
       const g = (r.grade || "").trim();
       return g === "A" || g === "A-" || g === "A−";
@@ -10269,7 +10269,7 @@ document.addEventListener("click", function (e) {
           var aCount = slate.querySelectorAll("tr.row-clickable .grade-A, tr.row-clickable .grade-A-").length;
           agEl.textContent = String(aCount);
           var sub = document.getElementById("mx-agrades-sub");
-          if (sub && rows.length) sub.textContent = "of " + rows.length + " games";
+          if (sub && rows.length) sub.textContent = "of " + (rows.length + slate.querySelectorAll("tr.ppd-ghost-row").length) + " games";
           var best = null;
           slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
             var td = tr.querySelector("td.col-edge");
@@ -10393,6 +10393,7 @@ document.addEventListener("click", function (e) {
         slate.querySelectorAll("tr.row-clickable").forEach(function (tr) {
           if (/PENDING_SP_DATA/.test(tr.textContent || "")) pend++;
         });
+        pend += slate.querySelectorAll("tr.ppd-ghost-row").length;
         var note = document.getElementById("pending-note");
         if (!pend) { if (note) note.remove(); return; }
         var h2 = null;
@@ -10508,24 +10509,56 @@ document.addEventListener("click", function (e) {
         if (!tbody) return;
         missing.forEach(function (m) {
           if (document.querySelector('tr.ppd-ghost-row[data-ghost-key="' + m.key + '"]')) return;
+          /* v2: full-fledged pending row -- mirrors the real column set so the
+             makeup is a first-class slate entry (and counters count it). */
+          if (!document.getElementById("ppd-ghost-css")) {
+            var st = document.createElement("style");
+            st.id = "ppd-ghost-css";
+            st.textContent =
+              "tr.ppd-ghost-row td{border-top:1px dashed var(--border,#30363d);padding:10px 8px;}" +
+              "tr.ppd-ghost-row{opacity:0.92;}" +
+              "@media (max-width:1099px){tr.ppd-ghost-row{grid-column:1/-1;}}" +
+              "@media (max-width:768px){tr.ppd-ghost-row{display:block;padding:8px 10px;}" +
+              "tr.ppd-ghost-row td{display:none;}" +
+              "tr.ppd-ghost-row td:nth-child(2),tr.ppd-ghost-row td.col-tier" +
+              "{display:inline-block;border:none;}}";
+            document.head.appendChild(st);
+          }
+          var tbl = tbody.closest("table");
+          var ths = tbl ? tbl.querySelectorAll("thead th") : [];
           var tr = document.createElement("tr");
-          tr.className = "ppd-ghost-row";        /* NOT row-clickable: sort/metrics ignore it */
+          tr.className = "ppd-ghost-row";        /* NOT row-clickable: sort ignores it */
           tr.dataset.ghostKey = m.key;
-          var td = document.createElement("td");
-          td.colSpan = 20;
-          td.style.cssText = "padding:10px 12px;border-top:1px dashed var(--border,#30363d);";
-          td.innerHTML =
-            '<span style="font-weight:700;">' + m.matchup + '</span>' +
-            ' <span style="display:inline-block;margin-left:6px;padding:1px 7px;font-size:0.62rem;' +
-            'font-weight:700;border-radius:999px;border:1px solid var(--amber,#ffb454);' +
-            'color:var(--amber,#ffb454);">MAKEUP \u00b7 from ' + m.fromTxt + '</span>' +
-            ' <span style="display:inline-block;margin-left:6px;padding:1px 7px;font-size:0.62rem;' +
-            'font-weight:700;border-radius:999px;border:1px solid var(--muted,#8b949e);' +
-            'color:var(--muted,#8b949e);">AWAITING STARTERS</span>' +
-            '<span style="margin-left:10px;font-size:0.7rem;color:var(--muted,#8b949e);">' +
-            'MLB has not announced pitchers for this game yet \u2014 it is scored and ' +
-            'joins the board automatically on the next refresh after they post.</span>';
-          tr.appendChild(td);
+          tr.title = "Makeup of the " + m.fromTxt + " postponement. MLB has not announced " +
+                     "starting pitchers yet \u2014 the model scores it automatically on the " +
+                     "first refresh after they post (hourly).";
+          if (!ths.length) {
+            var td0 = document.createElement("td");
+            td0.colSpan = 20;
+            td0.textContent = m.matchup + " \u2014 MAKEUP \u00b7 from " + m.fromTxt +
+                              " \u2014 awaiting starters";
+            tr.appendChild(td0);
+          } else {
+            for (var ci = 0; ci < ths.length; ci++) {
+              var td = document.createElement("td");
+              var colCls = (ths[ci].className || "").split(/\s+/).filter(function (c) {
+                return c.indexOf("col-") === 0;
+              }).join(" ");
+              if (colCls) td.className = colCls;
+              if (ci === 1) {
+                td.innerHTML = "<strong>" + m.matchup + "</strong>";
+                td.appendChild(ppdChip("MAKEUP \u00b7 from " + m.fromTxt,
+                  "var(--amber, #ffb454)", "Rescheduled from " + m.fromTxt));
+              } else if (ci === 2) {
+                td.innerHTML = '<span style="font-weight:700;color:var(--muted,#8b949e);">TBD</span>';
+              } else if (colCls.indexOf("col-tier") !== -1) {
+                td.innerHTML = '<span class="tier-badge tb-pending_sp_data">PENDING_SP_DATA</span>';
+              } else if (ci > 0) {
+                td.innerHTML = '<span style="color:var(--muted,#8b949e);">\u2014</span>';
+              }
+              tr.appendChild(td);
+            }
+          }
           tbody.appendChild(tr);
         });
       } catch (e) { /* display-only */ }
@@ -10545,9 +10578,41 @@ document.addEventListener("click", function (e) {
       } catch (e) { /* display-only */ }
     }
 
+    /* ---- ghost-aware counters: hero stat, Slate(N) heading, Loaded status.
+       Only acts while ghost rows exist; otherwise renderers stay authoritative. ---- */
+    function countersUpsert() {
+      try {
+        var ghosts = document.querySelectorAll("#slate tr.ppd-ghost-row").length;
+        if (!ghosts) return;
+        var clickable = document.querySelectorAll("#slate tr.row-clickable").length;
+        if (!clickable) return;
+        var total = clickable + ghosts;
+        var sg = document.getElementById("hero-stat-games");
+        if (sg && sg.textContent.trim() !== String(total)) {
+          sg.setAttribute("data-target", String(total));
+          sg.textContent = String(total);
+        }
+        document.querySelectorAll("#slate h2").forEach(function (h) {
+          var tn = h.firstChild;
+          if (!tn || tn.nodeType !== 3) return;
+          var mm = (tn.nodeValue || "").match(/Slate \((\d+) games\)/);
+          if (mm && mm[1] !== String(total)) {
+            tn.nodeValue = tn.nodeValue.replace(/Slate \(\d+ games\)/, "Slate (" + total + " games)");
+          }
+        });
+        var stat = document.getElementById("status");
+        if (stat) {
+          var sm = (stat.textContent || "").match(/\((\d+) games/);
+          if (sm && sm[1] !== String(total)) {
+            stat.textContent = (stat.textContent || "").replace(/\((\d+) games/, "(" + total + " games");
+          }
+        }
+      } catch (e) { /* display-only */ }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
