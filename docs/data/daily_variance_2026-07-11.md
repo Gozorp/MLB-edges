@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-11
-_Generated 2026-07-11T07:05:56Z · 16 games · significant deviations only_
+_Generated 2026-07-11T09:35:46Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIL** [IL] — Milwaukee Brewers activated RHP Logan Henderson from the 15-day injured list.
