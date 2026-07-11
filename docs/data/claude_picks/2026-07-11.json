@@ -1,159 +1,182 @@
 {
   "date": "2026-07-11",
-  "fit_at": "2026-07-11T08:34:11Z",
+  "fit_at": "2026-07-11T19:55:00Z",
   "model_version": "claude-brain-v1",
-  "n_games": 15,
+  "n_games": 16,
   "patterns_recognized": [
-    "HARD CAP 10 four-dimension-affirm rescue fires twice today (MIL@PIT PLATINUM, OAK@CHW GOLD): both are pre-cap score=5 with F-signal, SP-xERA, PQI, and Stage 1/2 agreement all confirming the pick, the exact configuration the 6/12 ARI@CIN precedent and 7/10 CLE@MIA CONFIRM established as the CAP-10 rescue bar. CONFIRM at the CSV tier rather than treating as generic SKIP.",
-    "HARD CAP 1 (negative-edge) fires on five tier-elevated picks today (LAA@MIN -15.1pp, NYY@WSH -14.3pp, KC@BAL -10.9pp, CHC@CIN -1.5pp, ARI@LAD -20.4pp) — none are overridden upward despite several carrying agreeing SP-xERA and PQI signals, consistent with the archive's repeated lesson that CAP 1 is non-negotiable even on elite signal stacks (6/4 Sale/ATL loss, 6/21 BAL@LAD 12-1 loss after a CONFIRMed PLATINUM override).",
-    "HARD CAP 7 (pick-side bullpen disadvantage, 0-for-7 validated backtest through 7/10) fires on COL@SF DIAMOND (hl_bullpen_xwoba_gap=+0.0371 on a pre-cap score=8 pick) — DOWNGRADE applied per the standing non-negotiable rule rather than trusting the otherwise-elite signal stack.",
-    "Six SKIP-tier picks carry the dual-opposition SP-xERA-against + PQI-against signature (SEA@TB, PHI@DET, HOU@TEX, ATL@STL, TOR@SD, and CLE@MIA's own SP signals point against CLE despite CLE being the pick) that the 6/8, 6/14, 6/18, and 7/9 ATL@PIT postgames flagged as a reliable opposing-team-wins predictor; SKIP is correctly withheld on all six.",
-    "BOS@NYM PENDING_SP_DATA verified genuine via live statsapi: NYM confirms Freddy Peralta but BOS carries no probable-pitcher entry at all, unlike the 7/8 slate where four PENDING labels were mislabels of already-scored CSV picks. No override possible here."
+    "HARD CAP 1 dominates the slate — 7 of 11 scorable non-D games carry negative edge, preventing any GOLD+ stake; confirmed non-negotiable even on pre-cap A-/B+ stacks per 6/21 and 7/7 postgame archive.",
+    "D-grade dual-opposing-signal pattern (SP xERA against + PQI against) fires on 7 matchups today (NYY@WSH, SEA@TB, HOU@TEX, CHC@CIN, ATL@STL, TOR@SD, OAK@CHW); per the 7/8-7/9 archive, dual simultaneous opposing signals treat the pick direction as noise, not a bet.",
+    "F1_xera_gap* (starred thin-sample SP) recurs on MIL@PIT G1/G2 (Ashcraft/Sproat, Chandler/Drohan) and ARI@LAD (Yamamoto); even with F2/F3 corroboration, starred flag combined with negative market edge cannot be rescued per the 7/9 rule.",
+    "ARI@LAD carries F3=13767.8 (largest swing-take gap observed this season) yet market prices LAD at -19.44pp edge — Yamamoto is 0-for-2 in recent tracked ARI starts (6/10, 7/10); market has updated on live Yamamoto form faster than the xERA feature."
   ],
   "by_matchup": {
-    "MIL @ PIT": {
+    "MIL @ PIT G1": {
       "model_pick": "MIL ML PLATINUM",
-      "model_prob": 0.5523,
+      "model_prob": 0.5159,
       "model_tier": "PLATINUM",
-      "model_grade": "C",
+      "model_grade": "A-",
       "claude_decision": "CONFIRM",
       "claude_pick": "MIL",
-      "claude_tier": "PLATINUM",
-      "claude_confidence": 0.58,
-      "reasoning": "Pre-cap score=5/grade A: F-signal fires, SP edge 0.79 xERA (Drohan over Chandler) agrees, PQI confirms (Δ=-15.2), Stage 1/2 agree (Δ=0.01). Only HARD CAP 10 (pick_prob in (0.50,0.55]) suppresses it. This is the exact 4-dimension full-affirm profile the 6/12 ARI@CIN and 7/10 CLE@MIA precedents established as a CAP-10 rescue. Note: this is Game 2 of a MIL@PIT doubleheader (Game 1 has no announced starters yet). CONFIRM at PLATINUM.",
-      "lessons_applied": ["HARD CAP 10 four-dimension-affirm rescue (6/12 ARI@CIN, 7/10 CLE@MIA precedent)"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "All four grading dimensions fire (F1*=1.12+F3=1545.9+F5=+0.75, SP 0.79 agrees, PQI Δ=-14.7, Stage agree), raw pre-cap score=5. However, HARD CAP 1 (-2.05pp) is non-negotiable per the 6/21 and 7/7 archive — even elite triple-F stacks with small negative edges were confirmed as proper SKIPs. F1* is starred (thin Ashcraft sample) and F3=1545.9 is at the low end of meaningful. confidence_downgrade=True and BvP all NO_DATA/SMALL_SAMPLE. Makeup doubleheader context adds scheduling risk. SKIP endorsed.",
+      "lessons_applied": ["CAP-1-non-negotiable-even-small-negative-edge", "F1*-starred-requires-corroboration", "confidence_downgrade-adds-uncertainty"]
+    },
+    "MIL @ PIT G2": {
+      "model_pick": "MIL ML PLATINUM",
+      "model_prob": 0.5159,
+      "model_tier": "PLATINUM",
+      "model_grade": "A-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Same signal stack as G1 (F1*=1.12, F3=1545.9, F5=+0.75, all four dimensions fire at raw pre-cap=5). G2 SP pairing is Chandler vs Drohan — both with even thinner Statcast samples than G1, making F1*=1.12 less trustworthy. HARD CAP 1 (-2.05pp) confirmed non-negotiable. Home lineup concentration=1.002 (PIT perfectly balanced) does not add rescue signal. Doubleheader fatigue compounds uncertainty. SKIP endorsed.",
+      "lessons_applied": ["CAP-1-non-negotiable-even-small-negative-edge", "F1*-starred-requires-corroboration", "thin-SP-sample-doubleheader-context"]
     },
     "LAA @ MIN": {
       "model_pick": "MIN ML GOLD",
-      "model_prob": 0.5052,
+      "model_prob": 0.5629,
       "model_tier": "GOLD",
-      "model_grade": "C",
+      "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "MIN",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Large negative edge (-15.11pp) trips HARD CAP 1, Stage 1/2 disagree (Δ=0.18, a negative signal here rather than confirming), and HARD CAP 10 stacks on top. This is a double-cap suppression with a disagreeing Stage signal, not the 4-dimension affirm pattern -- no rescue case. CAP 1 is non-negotiable per archive (6/4, 6/21 failures on override). CONFIRM the SKIP.",
-      "lessons_applied": ["HARD CAP 1 non-negotiable even with agreeing SP/PQI", "Stage 1/2 disagreement blocks CAP-10 rescue eligibility"]
+      "claude_confidence": 0.51,
+      "reasoning": "Only F3=1766.4 fires (single signal, no F1 or F2). Stage 1/2 delta=0.2241 (Stage 1 gives LAA ~79% F5 probability). Per the 6/20 lesson, f5d≥0.18 combined with only F3 is insufficient for Stage-2 rescue — Stage 1's large LAA lean is a credible directional warning. confidence_downgrade=True and bullpen_fatigue compound uncertainty. The negative edge (-18.43pp) also triggers CAP 1. SKIP confirmed.",
+      "lessons_applied": ["f5d-ge-018-plus-single-F3-insufficient-rescue", "CAP-1-large-negative-edge", "confidence_downgrade-True"]
     },
     "OAK @ CHW": {
       "model_pick": "CHW ML GOLD",
-      "model_prob": 0.5065,
+      "model_prob": 0.5582,
       "model_tier": "GOLD",
-      "model_grade": "C",
+      "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHW",
-      "claude_tier": "GOLD",
-      "claude_confidence": 0.55,
-      "reasoning": "Pre-cap score=5/grade A: F-signal fires, SP edge 0.48 xERA (Hudson over Jump) agrees, PQI confirms (Δ=+7.3), Stage 1/2 agree (Δ=0.00). Only HARD CAP 10 (pick_prob=0.5065, bottom bucket) suppresses it. Same 4-dimension full-affirm profile as MIL@PIT tonight. CONFIRM at GOLD per the established CAP-10 rescue precedent.",
-      "lessons_applied": ["HARD CAP 10 four-dimension-affirm rescue (6/12 ARI@CIN, 7/10 CLE@MIA precedent)"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.45,
+      "reasoning": "F3=3353.3 fires but SP edge 0.66 xERA AGAINST CHW and PQI AGAINST (Δ=-10.3) produce grade=D, score=-1. Two independent opposing signals outweigh the single F3 signal. Per 7/8-7/9 archive, D-grade picks with SP against + PQI against are directional noise (~55% of outcomes favor the opposing team). The stale GOLD tier label does not change the D-grade reality. BvP all NO_DATA. SKIP and low confidence in CHW direction confirmed.",
+      "lessons_applied": ["D-grade-SP-against-PQI-against-directional-noise", "stale-tier-label-does-not-override-grade"]
     },
     "COL @ SF": {
       "model_pick": "SF ML DIAMOND",
-      "model_prob": 0.654,
+      "model_prob": 0.5857,
       "model_tier": "DIAMOND",
-      "model_grade": "B-",
-      "claude_decision": "DOWNGRADE",
+      "model_grade": "A-",
+      "claude_decision": "CONFIRM",
       "claude_pick": "SF",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.38,
-      "reasoning": "Pre-cap score=8 (clears every gate, F-signal, SP edge 1.64 agrees, PQI confirms Δ=+21.3, Stage agree) is the strongest raw stack on the slate, but HARD CAP 7 fires: hl_bullpen_xwoba_gap=+0.0371 means SF's own high-leverage pen is the weaker one on a tier-elevated pick. This cap has run 0-for-7 in the tracked backtest (through 7/10 KC@BAL) and is treated as non-negotiable. DOWNGRADE to SKIP.",
-      "lessons_applied": ["HARD CAP 7 pick-side bullpen disadvantage validated 0-for-7"]
+      "claude_confidence": 0.53,
+      "reasoning": "Strong signal stack: F1=2.03 (not starred), F5=+2.04, SP 1.64 agrees, PQI +20.8, Stage agree — raw pre-cap=5. SF home batters show 2 OWNER BvP signals vs Freeland (Ramos 16PA shrunk 0.861, Schmitt 10PA shrunk 0.890). Despite these qualitative strengths, HARD CAP 1 (-2.88pp) is non-negotiable; 7/7 BOS@CWS confirmed even small negative edges block elite triple-F stacks on long-run EV grounds. F3=125.5 is extremely weak. confidence_downgrade=True and acute_roster flag present. OWNER BvP noted but insufficient to rescue against CAP 1.",
+      "lessons_applied": ["CAP-1-non-negotiable-even-small-negative-edge", "OWNER-BvP-insufficient-to-rescue-CAP-1", "F3-125-too-weak-for-anchor"]
     },
     "NYY @ WSH": {
-      "model_pick": "NYY ML DIAMOND",
-      "model_prob": 0.4746,
-      "model_tier": "DIAMOND",
-      "model_grade": "C",
+      "model_pick": "WSH ML SKIP",
+      "model_prob": 0.5518,
+      "model_tier": "SKIP",
+      "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "NYY",
+      "claude_pick": "WSH",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Large negative edge (-14.27pp) trips HARD CAP 1 (score 3->1) and HARD CAP 10 stacks further (1->0), despite SP edge 2.02 xERA (Schlittler over Mikolas) and PQI both agreeing. The archive is explicit that CAP 1 must not be overridden upward regardless of agreeing SP/PQI signals (6/4 Sale/ATL, 6/21 BAL@LAD both failed on that exact override logic). CONFIRM the SKIP.",
-      "lessons_applied": ["HARD CAP 1 non-negotiable even on elite SP-edge stacks"]
+      "claude_confidence": 0.45,
+      "reasoning": "SP gap 2.02 xERA against WSH (Schlittler NYY >> Poulin WSH) plus PQI strongly against (-34.6) overwhelm F3=4955 and F5_bullpen=+1.64 positive signals. Market prices WSH fair_prob=38.8% (NYY implied ~61.2%), heavily confirming the opposing SP edge. hl_bullpen_xwoba_gap=-0.048 (WSH bullpen meaningfully better) and F3=4955 provide some directional support for WSH but are insufficient to overcome a 2.02 SP gap and -34.6 PQI. confidence_downgrade=True and short_term_skill flag further suppress. D-grade and WSH direction appear suspect; no OVERRIDE due to absent dual-OWNER BvP for NYY.",
+      "lessons_applied": ["2pp-plus-SP-gap-dominates-F-signals", "market-pricing-61pct-against-pick", "no-dual-OWNER-BvP-prevents-override"]
+    },
+    "BOS @ NYM": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "N/A",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "Eduardo Rivera (NYM home SP) has only 17 Statcast pitches season-to-date against the 100-pitch minimum required for xERA scoring. No SP edge can be scored; the pipeline correctly withholds the pick. No directional evaluation is possible without scored SP data. Process correct; hard stop confirmed.",
+      "lessons_applied": ["PENDING-SP-DATA-hard-stop-100-pitch-minimum"]
     },
     "SEA @ TB": {
       "model_pick": "TB ML SKIP",
-      "model_prob": 0.6662,
+      "model_prob": 0.6476,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.3,
-      "reasoning": "D-grade with SP edge 1.49 xERA (Gilbert over Jax) AGAINST the pick and PQI -19.2 against as well -- the dual-opposition signature the 6/8, 6/14, 6/18, and 7/9 ATL@PIT postgames flagged as reliably predicting the opposing team. Stage 1/2 agree (Δ=0.07) doesn't offset two opposing dimensions. CONFIRM the model's own SKIP.",
-      "lessons_applied": ["SP-xERA-against + PQI-against dual-opposition reliable loss predictor"]
+      "claude_confidence": 0.45,
+      "reasoning": "SP 1.48 xERA AGAINST TB (Logan Gilbert SEA > Griffin Jax TB) plus PQI AGAINST (-19.0) produce grade=D. Stage 1/2 delta=0.2421 means Stage 1 gives SEA ~60% F5 probability — a structural warning that the full-game TB call depends on late leverage the model may not reliably capture. SEA batters show elevated BvP vs Jax: Arozarena (7PA shrunk 0.881), Raleigh (8PA shrunk 1.021, near OWNER threshold). These BvP signals reinforce SEA's advantage. D-grade SKIP confirmed; TB direction appears structurally weak.",
+      "lessons_applied": ["D-grade-SP-against-PQI-against-directional-noise", "high-f5d-Stage1-favors-opposing-team", "BvP-supports-opposing-team"]
     },
     "CLE @ MIA": {
-      "model_pick": "CLE ML SKIP",
-      "model_prob": 0.4819,
+      "model_pick": "MIA ML SKIP",
+      "model_prob": 0.5308,
       "model_tier": "SKIP",
-      "model_grade": "D",
+      "model_grade": "A-",
       "claude_decision": "CONFIRM",
-      "claude_pick": "CLE",
+      "claude_pick": "MIA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.3,
-      "reasoning": "D-grade: SP edge 0.61 xERA (Perez over Bibee) AGAINST the CLE pick, PQI +18.0 against as well, fair_prob 0.409 below the 0.42 floor. This is a different signal profile from yesterday's 7/10 CLE@MIA (which had all 4 dimensions affirming CLE and was CONFIRMed at PLATINUM) -- today the same two teams meet again but the signals have flipped against CLE. CONFIRM the SKIP.",
-      "lessons_applied": ["SP-xERA-against + PQI-against dual-opposition reliable loss predictor", "Do not carry yesterday's CLE@MIA rescue into today -- signals reversed"]
+      "claude_confidence": 0.52,
+      "reasoning": "No F-signal fires (signals column empty); pre-cap A- (score=4) is built on SP edge 0.61 + PQI +11.1 + Stage agree only — three dimensions, not four. The CAP-10 rescue requires all four dimensions including F-signal; without it, rescue is disqualified regardless of pre-cap level. HARD CAP 1 (-3.36pp) plus CAP 10 plus confidence_downgrade=True plus bullpen_fatigue all suppress. Yesterday CLE won 3-2 in this matchup as the model pick; today's MIA reversal without F-signal backing warrants extra caution. SKIP confirmed.",
+      "lessons_applied": ["CAP-10-rescue-requires-F-signal-all-four-dimensions", "CAP-1-non-negotiable", "no-F-signal-pre-cap-A-insufficient"]
     },
     "PHI @ DET": {
       "model_pick": "DET ML SKIP",
       "model_prob": 0.5671,
       "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_grade": "B-",
       "claude_decision": "CONFIRM",
       "claude_pick": "DET",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Pre-cap score=1: F-signal fires but PQI runs -4.6 against the pick, and HARD CAP 10 (pick_prob=0.538) zeroes it. No SP-xERA dimension confirms, so this doesn't meet the 4-dimension affirm bar for a CAP-10 rescue (unlike MIL@PIT/OAK@CHW tonight, which had all four dimensions). Sánchez (PHI) is today's starter, not Nola, so the archive's Nola 3-for-3 note doesn't apply. CONFIRM the SKIP.",
-      "lessons_applied": ["CAP-10 rescue requires all 4 dimensions, not just F-signal + Stage agreement"]
+      "claude_confidence": 0.51,
+      "reasoning": "F3=328.8 barely fires (well below the 1000 meaningful threshold), PQI against DET (-4.6), and CAP 10 fires at pick_prob=0.540. PHI brings an elite lineup (Turner, Schwarber, Harper, Marsh) against Casey Mize; PHI batters' BvP vs Mize is thin SMALL_SAMPLE with neutral shrunk OPS. Pre-cap B- (score=1) with a weak single F-signal does not clear the rescue bar. No SP edge anchor (SP signals absent from grade_reasons). SKIP confirmed.",
+      "lessons_applied": ["F3-below-1000-insufficient-anchor", "CAP-10-bottom-bucket-suppression", "no-SP-edge-no-rescue"]
     },
     "KC @ BAL": {
       "model_pick": "BAL ML PLATINUM",
       "model_prob": 0.5069,
       "model_tier": "PLATINUM",
-      "model_grade": "C",
+      "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "BAL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Large negative edge (-10.88pp) trips HARD CAP 1 (score 3->1) and HARD CAP 10 stacks (1->0), despite SP edge 1.02 xERA (Bradish over Cameron) and PQI both agreeing. Same double-cap profile as LAA@MIN, NYY@WSH, and ARI@LAD tonight -- CAP 1 is treated as non-negotiable regardless of agreeing secondary signals. CONFIRM the SKIP.",
-      "lessons_applied": ["HARD CAP 1 non-negotiable even on elite SP-edge stacks"]
+      "claude_confidence": 0.53,
+      "reasoning": "F1=1.35 (not starred) plus F3=3325.5, SP 1.02 agrees, PQI +19.7 confirm — a solid B+ stack. However, pre-cap B+ (score=3) falls below the pre-cap A threshold needed for CAP-10 rescue. HARD CAP 1 (-9.65pp) is the primary suppressor; the 7/10 postgame confirmed this identical matchup as a proper SKIP when BAL last faced KC. Market has absorbed Bradish's value at -9.65pp. bullpen_fatigue flag noted. SKIP confirmed.",
+      "lessons_applied": ["CAP-1-large-negative-edge", "pre-cap-B-plus-insufficient-for-rescue", "7-10-same-matchup-cap-confirmed"]
     },
     "HOU @ TEX": {
       "model_pick": "TEX ML SKIP",
-      "model_prob": 0.5117,
+      "model_prob": 0.5155,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "TEX",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.3,
-      "reasoning": "D-grade: SP edge 1.05 xERA (Lambert over Rocker) AGAINST the TEX pick, PQI -18.2 against as well. Textbook dual-opposition SKIP signature. CONFIRM the model's own SKIP.",
-      "lessons_applied": ["SP-xERA-against + PQI-against dual-opposition reliable loss predictor"]
+      "claude_confidence": 0.46,
+      "reasoning": "SP 1.04 xERA AGAINST TEX (Rocker HOU > Lambert TEX) plus PQI AGAINST (-18.1) plus confidence_downgrade=True produce D-grade. TEX home batters show Joc Pederson as a single OWNER vs Lambert (19PA shrunk OPS 0.929), but OVERRIDE requires dual-OWNER signals plus SP gap favoring TEX — here SP runs against TEX. Edge is essentially flat (-0.23pp). One OWNER cannot flip D-grade with two opposing signals. SKIP and low confidence in TEX direction confirmed.",
+      "lessons_applied": ["single-OWNER-insufficient-for-override", "D-grade-SP-against-PQI-against-directional-noise", "dual-OWNER-required-for-override"]
     },
     "CHC @ CIN": {
-      "model_pick": "CHC ML SKIP",
-      "model_prob": 0.4829,
+      "model_pick": "CIN ML SKIP",
+      "model_prob": 0.5046,
       "model_tier": "SKIP",
-      "model_grade": "C",
+      "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "CHC",
+      "claude_pick": "CIN",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "No F-signal fires; SP edge 1.48 xERA (Assad over Lodolo) and PQI (Δ=-18.6) both agree with CHC, but a thin flat edge (-1.46pp) trips HARD CAP 1, and HARD CAP 10 stacks. With no F-signal present this also fails the CAP-10 rescue bar. CONFIRM the SKIP.",
-      "lessons_applied": ["HARD CAP 1 fires even on near-zero negative edge", "CAP-10 rescue requires F-signal presence"]
+      "claude_confidence": 0.45,
+      "reasoning": "SP 1.47 xERA AGAINST CIN (Assad CHC > Lodolo CIN) plus PQI AGAINST (-18.5) plus negative team_quality modifier — three dimensions opposing. CIN home batters vs Assad show De La Cruz MEANINGFUL (13PA shrunk 0.772) and Steer MEANINGFUL (20PA shrunk 0.646, near WEAK_VS territory) — no OWNER for CIN. CHC batters have zero BvP history vs Lodolo, preventing an OVERRIDE to CHC despite Assad's quality advantage. Market barely prices CIN at 50.6% (coin-flip). D-grade SKIP confirmed.",
+      "lessons_applied": ["D-grade-SP-against-PQI-against-directional-noise", "no-dual-OWNER-prevents-override", "BvP-neutral-for-picked-team"]
     },
     "ATL @ STL": {
       "model_pick": "STL ML SKIP",
-      "model_prob": 0.6603,
+      "model_prob": 0.665,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "STL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.3,
-      "reasoning": "D-grade: SP edge 1.00 xERA (Lopez over Liberatore) AGAINST the STL pick, PQI -21.5 against as well. Edge of +18.47pp sits in the SOFT CAP 6.5 calibration-caution band, but the underlying D-grade signal opposition is what's driving SKIP here, not just the edge band. CONFIRM the SKIP.",
-      "lessons_applied": ["SP-xERA-against + PQI-against dual-opposition reliable loss predictor"]
+      "claude_confidence": 0.46,
+      "reasoning": "SP 1.00 xERA AGAINST STL (López ATL > Liberatore STL) plus PQI strongly against (-23.3). All batter and BvP data empty, preventing any OVERRIDE anchor. hl_bullpen_xwoba_gap=-0.0175 gives STL a slight bullpen edge, the lone positive signal. Without BvP data or dual-OWNER signals, OVERRIDE to ATL is unwarranted. D-grade SKIP confirmed.",
+      "lessons_applied": ["D-grade-SP-against-PQI-against-directional-noise", "no-BvP-data-prevents-override"]
     },
     "TOR @ SD": {
       "model_pick": "SD ML SKIP",
@@ -163,33 +186,21 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "SD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.3,
-      "reasoning": "D-grade: SP edge 1.36 xERA (Yesavage over Buehler) AGAINST the SD pick, PQI -21.2 against, team_quality modifier also against (disabled but directionally noted). Clean dual/triple-opposition SKIP. CONFIRM.",
-      "lessons_applied": ["SP-xERA-against + PQI-against dual-opposition reliable loss predictor"]
+      "claude_confidence": 0.45,
+      "reasoning": "SP 1.36 xERA AGAINST SD (Yesavage TOR > Buehler SD — Buehler's injury-related regression suppresses his xERA) plus PQI AGAINST (-21.2) plus team_quality_mod negative, confidence_downgrade=True, acute_roster flag. All batter and BvP data empty. Market prices SD at only 50.6% (near coin-flip) while model gives SD 62.6%. Without BvP data for TOR vs Buehler, an OVERRIDE to TOR lacks the dual-OWNER anchor required. D-grade SKIP confirmed; SD direction appears structurally suspect.",
+      "lessons_applied": ["D-grade-SP-against-PQI-against-directional-noise", "no-BvP-data-prevents-override", "Buehler-injury-regression-reflected-in-xERA"]
     },
     "ARI @ LAD": {
       "model_pick": "LAD ML PLATINUM",
-      "model_prob": 0.5553,
+      "model_prob": 0.5676,
       "model_tier": "PLATINUM",
-      "model_grade": "C",
+      "model_grade": "B+",
       "claude_decision": "CONFIRM",
       "claude_pick": "LAD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.35,
-      "reasoning": "Large negative edge (-20.38pp) trips HARD CAP 1 (score 3->1) and HARD CAP 10 stacks (1->0). F1_xera_gap=1.67* is thin-sample-starred but F2 and F3 also fire alongside PQI confirmation, so HARD CAP 5's quarantine condition doesn't add further damage -- the negative-edge caps are what's controlling. pick_prob=0.555 keeps this under HARD CAP 9's 0.80 threshold. CONFIRM the SKIP; no override.",
-      "lessons_applied": ["HARD CAP 1 non-negotiable even on elite SP-edge stacks", "HARD CAP 5 quarantine satisfied by F2/F3/PQI corroboration but doesn't override CAP 1"]
-    },
-    "BOS @ NYM": {
-      "model_pick": "TBD ML PENDING_SP_DATA",
-      "model_prob": null,
-      "model_tier": "PENDING_SP_DATA",
-      "model_grade": "C",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
-      "claude_tier": "PENDING_SP_DATA",
-      "claude_confidence": null,
-      "reasoning": "Verified live via statsapi: NYM confirms Freddy Peralta as probable, but BOS carries no probable-pitcher entry at all -- this is a genuine data gap, not a mislabel of an already-scored CSV pick (contrast with the 7/8 slate's four false PENDING labels). No model pick exists to grade. CONFIRM the pending status.",
-      "lessons_applied": ["PENDING_SP_DATA hard stop correctly withholds ungraded games", "Verified genuine vs. the 7/8 false-PENDING pattern via live statsapi check"]
+      "claude_confidence": 0.52,
+      "reasoning": "F3=13767.8 (extraordinary, largest on slate), F2=0.040, F1*=1.67* (starred — thin Yamamoto live-season sample), SP 1.12 agrees, PQI +19.6. Despite the compelling F-signal stack, HARD CAP 1 at -19.44pp is decisive: the market has priced LAD well past the model's claimed edge. Yamamoto is 0-for-2 in recent tracked ARI starts (7/10 lost 9-3, 6/10 tracked loss) — the market appears to have updated on his live form faster than xERA. Stage 1 favors ARI in F5 (f5_prob=0.3961 for home team). Pre-cap B+ (score=3) falls below the A threshold for CAP-10 rescue. F3=13767.8 flagged for the 30-pick monitoring window.",
+      "lessons_applied": ["CAP-1-non-negotiable-large-negative-edge", "Yamamoto-0-for-2-recent-ARI-starts", "pre-cap-B-plus-insufficient-for-rescue", "F1*-starred-requires-corroboration", "F3-extreme-noted-for-tracking"]
     }
   }
 }
