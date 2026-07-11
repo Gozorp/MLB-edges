@@ -1171,7 +1171,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
 .gp-mini { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding: 2px 6px; }
 /* === end statcast-hitter-table-2026 === */
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style id="refine-layer-2026-06-10">
   /* ==========================================================
      Refinement layer (2026-06-10) -- Apple-grade execution of
@@ -2322,9 +2322,23 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     body.xfade-leave{transition:none;opacity:1}
   }
 </style>
-<script type="speculationrules">
-{ "prefetch": [ { "urls": ["/nba-edge/"] } ] }
-</script>
+<style id="perf-2026-07-11">
+  /* perf 2026-07-11 -- LCP/CLS layer.
+     The document shell paints in ~200ms; the slow part is data-driven render.
+     1) Reserve vertical space for the slate + widgets so below-fold cards do
+        not start inside the first viewport and get shoved down when the table
+        fills (this was the CLS 0.38 cluster, and it made the Parlay-report
+        ASCII <pre> the page's LCP element at 4.3s).
+     2) content-visibility keeps the big report blocks out of initial
+        layout/paint until scrolled near.
+     (The dead NBA-edge prefetch rule block that used to live here is
+      removed -- it requested a nonexistent /nba-edge/ page on every load.) */
+  #slate{min-height:60vh;}
+  #top-outcomes{min-height:120px;}
+  #metric-row{min-height:56px;}
+  #parlay pre,#pl-report-pre{content-visibility:auto;contain-intrinsic-size:auto 480px;}
+  #h2h-history,#bullpen-outlook{content-visibility:auto;contain-intrinsic-size:auto 500px;}
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
