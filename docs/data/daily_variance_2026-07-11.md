@@ -1,34 +1,47 @@
 # Daily Variance Report — 2026-07-11
-_Generated 2026-07-11T09:35:46Z · 16 games · significant deviations only_
+_Generated 2026-07-11T19:36:06Z · 16 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **MIL** [IL] — Milwaukee Brewers activated RHP Logan Henderson from the 15-day injured list.
 - **MIL** [optioned] — Milwaukee Brewers optioned RHP Garrett Stallings to Nashville Sounds.
-- **MIL** [signed] — Milwaukee Brewers signed free agent RHP Bryse Wilson.
 - **MIL** [DFA] — Milwaukee Brewers designated RHP Easton McGee for assignment.
+- **MIL** [signed] — Milwaukee Brewers signed free agent RHP Bryse Wilson.
 - **MIL** [optioned] — Milwaukee Brewers optioned LHP Drew Rom to Nashville Sounds.
+- **MIL** [IL] — Milwaukee Brewers placed LHP Kyle Harrison on the 15-day injured list retroactive to July 9, 2026. Left forearm tightness.
+- **MIL** [recalled] — Milwaukee Brewers recalled LHP Robert Gasser from Nashville Sounds.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Antwone Kelly from Indianapolis Indians.
-- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Hunter Stratton to Indianapolis Indians.
-- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Cam Sanders to Indianapolis Indians.
 - **PIT** [recalled] — Pittsburgh Pirates recalled RHP Thomas Harrington from Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Cam Sanders to Indianapolis Indians.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Hunter Stratton to Indianapolis Indians.
+- **PIT** [IL] — Pittsburgh Pirates transferred SS Konnor Griffin from the 10-day injured list to the 60-day injured list. Left ring finger sagittal back injury.
+- **PIT** [DFA] — Pittsburgh Pirates designated RHP Cam Sanders for assignment.
 - **PIT** [TRADE] — Chicago White Sox traded LHP Brandon Eisert and 1B Jacob Gonzalez to Pittsburgh Pirates for LHP Jaden Woods and Future Considerations.
 - **LAA** [IL] — Los Angeles Angels activated RHP Grayson Rodriguez from the 15-day injured list.
 - **LAA** [optioned] — Los Angeles Angels optioned LHP Tayler Saucedo to Salt Lake Bees.
-- **MIN** [IL] — Minnesota Twins activated RHP Bailey Ober from the 15-day injured list.
 - **MIN** [IL] — Minnesota Twins placed LHP Connor Prielipp on the 15-day injured list. Left middle finger blister.
+- **MIN** [IL] — Minnesota Twins activated RHP Bailey Ober from the 15-day injured list.
 - **MIN** [recalled] — Minnesota Twins recalled LHP Kendry Rojas from St. Paul Saints.
 - **MIN** [IL] — Minnesota Twins placed RHP Mick Abel on the 60-day injured list. Right elbow inflammation.
 - **MIN** [IL] — Minnesota Twins activated C Ryan Jeffers from the 10-day injured list.
 - **MIN** [TRADE] — Toronto Blue Jays traded RHP Tommy Nance to Minnesota Twins for C Ryan Sprock and Future Considerations.
 - **MIN** [optioned] — Minnesota Twins optioned LF Kyler Fedko to St. Paul Saints.
+- **MIN** [activated] — Minnesota Twins activated RHP Tommy Nance.
+- **MIN** [IL] — Minnesota Twins transferred LHP Anthony Banda from the 15-day injured list to the 60-day injured list. Left lat strain.
+- **MIN** [claimed] — Minnesota Twins claimed RHP Jack Anderson off waivers from Boston Red Sox.
+- **MIN** [optioned] — Minnesota Twins optioned RHP Eric Orze to St. Paul Saints.
 - **ATH** [IL] — Athletics placed 3B Zack Gelof on the 10-day injured list. Right knee laceration.
 - **ATH** [recalled] — Athletics recalled 1B Joey Meneses from Las Vegas Aviators.
+- **ATH** [IL] — Athletics placed 1B Nick Kurtz on the 10-day injured list retroactive to July 10, 2026. Right thumb capsule sprain.
+- **ATH** [recalled] — Athletics recalled C Brian Serven from Las Vegas Aviators.
 - **CWS** [status] — Chicago White Sox placed RHP Trevor Richards on the bereavement list.
 - **CWS** [recalled] — Chicago White Sox recalled RHP Tyler Davis from Charlotte Knights.
 - **CWS** [IL] — Chicago White Sox activated 1B Munetaka Murakami from the 10-day injured list.
 - **CWS** [optioned] — Chicago White Sox optioned 1B Jacob Gonzalez to Charlotte Knights.
 - **CWS** [TRADE] — Chicago White Sox traded LHP Brandon Eisert and 1B Jacob Gonzalez to Pittsburgh Pirates for LHP Jaden Woods and Future Considerations.
+- **CWS** [recalled] — Chicago White Sox recalled LHP Tyler Schweitzer from Charlotte Knights.
 - **COL** [signed] — Colorado Rockies signed free agent RHP John Brebbia to a minor league contract.
+- **COL** [optioned] — Colorado Rockies optioned RHP TJ Shook to Albuquerque Isotopes.
+- **COL** [recalled] — Colorado Rockies recalled RHP Jeff Criswell from Albuquerque Isotopes.
 - **SF** [optioned] — San Francisco Giants optioned RHP Ryan Walker to Sacramento River Cats.
 - **SF** [recalled] — San Francisco Giants recalled LHP Carson Whisenhunt from Sacramento River Cats.
 - **SF** [IL] — San Francisco Giants activated RHP Keaton Winn from the 15-day injured list.
@@ -38,18 +51,23 @@ _Generated 2026-07-11T09:35:46Z · 16 games · significant deviations only_
 - **WSH** [IL] — Washington Nationals placed RHP Brad Lord on the 15-day injured list retroactive to July 6, 2026. Left side tightness.
 - **WSH** [IL] — Washington Nationals transferred RHP Jake Irvin from the 15-day injured list to the 60-day injured list. Right shoulder strain.
 - **WSH** [selected] — Washington Nationals selected the contract of LHP Tom Cosgrove from Rochester Red Wings.
+- **WSH** [claimed] — Detroit Tigers claimed RHP Andre Granillo off waivers from Washington Nationals.
 - **BOS** [activated] — Boston Red Sox activated OF Nate Eaton.
 - **BOS** [IL] — Boston Red Sox placed LHP Ranger Suarez on the 15-day injured list retroactive to July 6, 2026. Left groin strain.
 - **BOS** [recalled] — Boston Red Sox recalled 3B Brett Harris from Worcester Red Sox.
-- **NYM** [released] — New York Mets released RHP Alex Carrillo.
+- **BOS** [claimed] — Minnesota Twins claimed RHP Jack Anderson off waivers from Boston Red Sox.
+- **BOS** [recalled] — Boston Red Sox recalled LHP Eduardo Rivera from Worcester Red Sox.
+- **BOS** [optioned] — Boston Red Sox optioned 3B Brett Harris to Worcester Red Sox.
 - **NYM** [DFA] — New York Mets designated CF Jared Oliva for assignment.
+- **NYM** [released] — New York Mets released RHP Alex Carrillo.
 - **NYM** [selected] — New York Mets selected the contract of RHP Dan Hammer from Syracuse Mets.
 - **NYM** [optioned] — New York Mets optioned RHP Tobias Myers to Syracuse Mets.
 - **NYM** [outrighted] — New York Mets sent RHP Guillo Zuñiga outright to Syracuse Mets.
 - **NYM** [IL] — New York Mets placed 1B Mark Vientos on the 10-day injured list. Right hand fracture.
 - **NYM** [DFA] — New York Mets designated RHP Dan Hammer for assignment.
-- **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
 - **NYM** [selected] — New York Mets selected the contract of SS Zack Short from Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Tobias Myers from Syracuse Mets.
+- **NYM** [outrighted] — New York Mets sent RHP Matt Seelinger outright to Syracuse Mets.
 - **CLE** [IL] — Cleveland Guardians placed LHP Tim Herrin on the 15-day injured list. Left elbow contusion.
 - **CLE** [recalled] — Cleveland Guardians recalled RHP Codi Heuer from Columbus Clippers.
 - **CLE** [optioned] — Cleveland Guardians optioned C Cooper Ingle to Columbus Clippers.
@@ -62,25 +80,29 @@ _Generated 2026-07-11T09:35:46Z · 16 games · significant deviations only_
 - **MIA** [optioned] — Miami Marlins optioned RHP Zach Brzykcy to Jacksonville Jumbo Shrimp.
 - **PHI** [IL] — Philadelphia Phillies placed LHP Tanner Banks on the 15-day injured list. Left forearm strain.
 - **PHI** [recalled] — Philadelphia Phillies recalled RHP Chase Shugart from Lehigh Valley IronPigs.
+- **PHI** [outrighted] — Philadelphia Phillies sent RHP Jean Cabrera outright to Reading Fightin Phils.
 - **DET** [DFA] — Detroit Tigers designated DH Jahmai Jones for assignment.
 - **DET** [recalled] — Detroit Tigers recalled C Eduardo Valencia from Toledo Mud Hens.
+- **DET** [claimed] — Detroit Tigers claimed RHP Andre Granillo off waivers from Washington Nationals.
+- **DET** [optioned] — Detroit Tigers optioned RHP Andre Granillo to Toledo Mud Hens.
 - **KC** [signed] — Kansas City Royals signed free agent RHP Vince Velasquez to a minor league contract.
 - **KC** [IL] — Kansas City Royals activated 1B Vinnie Pasquantino from the 10-day injured list.
 - **KC** [optioned] — Kansas City Royals optioned RHP Jose Cuas to Omaha Storm Chasers.
 - **KC** [recalled] — Kansas City Royals recalled RHP Eli Morgan from Omaha Storm Chasers.
 - **KC** [optioned] — Kansas City Royals optioned CF Kameron Misner to Omaha Storm Chasers.
-- **HOU** [DFA] — Houston Astros designated SS Braden Shewmake for assignment.
 - **HOU** [IL] — Houston Astros activated SS Jeremy Peña from the 10-day injured list.
+- **HOU** [DFA] — Houston Astros designated SS Braden Shewmake for assignment.
 - **TEX** [IL] — Texas Rangers activated LF Wyatt Langford from the 10-day injured list.
 - **TEX** [optioned] — Texas Rangers optioned 2B Josh Smith to Round Rock Express.
 - **CIN** [IL] — Cincinnati Reds placed 2B Matt McLain on the 10-day injured list retroactive to July 8, 2026. Left calf strain.
 - **CIN** [IL] — Cincinnati Reds activated 3B Ke'Bryan Hayes from the 10-day injured list.
-- **ATL** [DFA] — Atlanta Braves designated RF José Azócar for assignment.
 - **ATL** [signed] — Atlanta Braves signed free agent RHP Carlos Carrasco to a minor league contract.
+- **ATL** [DFA] — Atlanta Braves designated RF José Azócar for assignment.
 - **ATL** [activated] — Atlanta Braves activated RF Eli White from the paternity list.
 - **ATL** [outrighted] — Atlanta Braves sent C Jair Camargo outright to Gwinnett Stripers.
 - **ATL** [activated] — Atlanta Braves activated RHP Tyler Kinley from the paternity list.
 - **ATL** [optioned] — Atlanta Braves optioned RHP Hurston Waldrep to Gwinnett Stripers.
+- **ATL** [signed] — Atlanta Braves signed free agent LHP Braden Scott to a minor league contract.
 - **STL** [outrighted] — St. Louis Cardinals sent LHP Jared Shuster outright to Memphis Redbirds.
 - **TOR** [activated] — Toronto Blue Jays activated RHP Braydon Fisher from the bereavement list.
 - **TOR** [TRADE] — Toronto Blue Jays traded RHP Tommy Nance to Minnesota Twins for C Ryan Sprock and Future Considerations.
@@ -92,19 +114,19 @@ _Generated 2026-07-11T09:35:46Z · 16 games · significant deviations only_
 ## 1b · Unrecognized codes (review — kept, never dropped)
 - **BOS** code=SU — 1B Willson Contreras suspended.
 
-_Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+_Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
 
 ## 2 · Starting Pitcher Flags
-- **MIL @ PIT** (away SP TBD): NOT CONFIRMED — probable SP not posted
-- **MIL @ PIT** (home SP TBD): NOT CONFIRMED — probable SP not posted
 - **LAA @ MIN** (home SP Joe Ryan): very high K% (28.5% vs lg 22.0)
 - **NYY @ WSH** (away SP Cam Schlittler): very high K% (29.5% vs lg 22.0)
-- **NYY @ WSH** (home SP Miles Mikolas): very low K% (13.2% vs lg 22.0)
-- **BOS @ NYM** (away SP TBD): NOT CONFIRMED — probable SP not posted
+- **BOS @ NYM** (away SP Eduardo Rivera): thin sample / PENDING_SP_DATA — Eduardo Rivera has only 17 Statcast pitches season-to-date; need 100+ to score
 - **SEA @ TB** (away SP Logan Gilbert): very high K% (28.5% vs lg 22.0)
 - **PHI @ DET** (away SP Cristopher Sánchez): very high K% (28.4% vs lg 22.0)
 
 ## 3 · Bullpen Fatigue (last 3 games)
+- **MIL** Chad Patrick — 2 apps / 41 pitches over last 3 games — monitor
+- **MIL** Aaron Ashby — 2 apps / 46 pitches over last 3 games — monitor
+- **PIT** Carmen Mlodzinski — threw 57 pitches last night — likely unavailable
 - **PIT** Dennis Santana — 2 apps / 41 pitches over last 3 games — monitor
 - **LAA** Samy Natera Jr. — 2 apps / 58 pitches over last 3 games — monitor
 - **ATH** Mason Barnett — 2 apps / 50 pitches over last 3 games — monitor
@@ -130,6 +152,8 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - **LAD** Alex Vesia — 2 apps / 37 pitches over last 3 games — monitor
 
 ## 4 · Lineup / Platoon
+- MIL @ PIT — PIT faces RHP (Brandon Sproat)
+- MIL @ PIT — MIL faces RHP (Braxton Ashcraft)
 - MIL @ PIT — PIT faces LHP (Shane Drohan)
 - MIL @ PIT — MIL faces RHP (Bubba Chandler)
 - LAA @ MIN — MIN faces RHP (Ryan Johnson)
@@ -139,7 +163,8 @@ _Suppressed 4 minor/cosmetic move(s) (ASG/NUM); 1 unrecognized code-type(s) -> l
 - COL @ SF — SF faces LHP (Kyle Freeland)
 - COL @ SF — COL faces RHP (Tyler Mahle)
 - NYY @ WSH — WSH faces RHP (Cam Schlittler)
-- NYY @ WSH — NYY faces RHP (Miles Mikolas)
+- NYY @ WSH — NYY faces LHP (PJ Poulin)
+- BOS @ NYM — NYM faces LHP (Eduardo Rivera)
 - BOS @ NYM — BOS faces RHP (Freddy Peralta)
 - SEA @ TB — TB faces RHP (Logan Gilbert)
 - SEA @ TB — SEA faces RHP (Griffin Jax)
