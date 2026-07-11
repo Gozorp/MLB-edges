@@ -1,18 +1,18 @@
 {
   "date": "2026-07-10",
-  "model": "claude-sonnet-5",
-  "fit_at": "2026-07-11T12:00:00Z",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-11T14:30:00Z",
   "n_analyzed": 15,
-  "summary": "6 wins, 1 loss, 8 no-picks (7 PENDING_SP_DATA plus the postponed MIL@PIT) from 15 matchups — an 85.7% directional hit rate on the 7 scored games. The headline result is CLE@MIA: Claude rescued a HARD-CAP-10-zeroed pre-cap PLATINUM (all four grading dimensions affirming) back to full stake using the 6/12 ARI@CIN exception rule, and CLE won 3-2 — a second clean validation of that rescue heuristic. Three more CAP-10-suppressed SKIPs (PHI@DET, NYY@WSH, BOS@NYM) also won unstaked, an outlier against the bucket's cited 31.2% historical hit rate. HARD CAP 1 correctly flagged the slate's only loss (ATL@STL, Sale DIAMOND at -11.61pp edge), while HARD CAP 7 broke its 0-for-7 backtest streak on KC@BAL.",
+  "summary": "6 wins, 1 loss, 8 no-picks (7 PENDING_SP_DATA plus the postponed MIL@PIT) from 15 matchups — 85.7% directional hit rate on the 7 scored games. The headline result is CLE@MIA: Claude rescued a HARD-CAP-10-zeroed pre-cap PLATINUM (all four grading dimensions affirming) to a full PLATINUM stake using the 6/12 ARI@CIN exception rule, and CLE won 3-2 — a second clean validation of that rescue heuristic. Three additional CAP-10-suppressed SKIPs (PHI@DET, NYY@WSH, BOS@NYM) won unstaked, an extreme outlier vs the bucket's cited 31.2% non-CONFIRM hit rate. HARD CAP 1 correctly called the slate's only loss (ATL@STL, -11.61pp edge); HARD CAP 7 broke its 0-for-7 backtest streak on a marginal bullpen gap below the meaningful threshold.",
   "by_matchup": {
     "PHI @ DET": {
       "verdict": "WIN",
       "model_pick": "DET ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-10",
-      "headline": "DET routed PHI 10-2; a thin pre-cap score=1 SKIP (PQI against, CAP 10 suppressed) still won outright.",
-      "hypothesis": "DET was a thin pre-cap score=1 pick (only F3_swing_take_gap=1490.1 and Stage agreement affirming), with PQI actually running Δ=-9.6 against the pick and pick_prob=0.532 tripping HARD CAP 10 — appropriately suppressed to SKIP. DET blew out PHI 10-2 anyway, and Aaron Nola's (PHI) archive-noted 3-for-3 track record snapped. The 8-run margin suggests a team-quality gap (DET's lineup depth over Flaherty's start) the model's signals didn't fully capture, distinct from clean variance — though no batter-level data was populated to confirm.",
-      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.532) correctly withheld stake but the pick won 10-2 — one of three pure CAP-10 wins today, see patterns_observed; PQI Δ=-9.6 against pick did not predict the blowout margin."
+      "headline": "DET routed PHI 10-2; a pre-cap score=1 SKIP (PQI against, CAP 10 suppressed) won by 8 runs unstaked.",
+      "hypothesis": "DET's pre-cap score=1 stack (only F3_swing_take_gap=1490.1 and Stage agreement affirming) was correctly suppressed to SKIP by HARD CAP 10 (pick_prob=0.532, PQI Δ=-9.6 against). The 8-run blowout margin and Aaron Nola's (PHI) arch-noted 3-for-3 track record snapping both suggest a team-quality gap the model's thin signal couldn't encode. This is most likely variance within an already-thin pick: CAP 10 correctly withheld stake given the weak pre-cap stack.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.532) correctly withheld stake — one of three pure CAP-10 wins today (see patterns_observed); PQI Δ=-9.6 against pick did not predict blowout margin."
     },
     "MIL @ PIT": {
       "verdict": "NO_PICK",
@@ -20,80 +20,80 @@
       "claude_decision": "CONFIRM",
       "final_score": null,
       "headline": "Game postponed; no result to grade.",
-      "hypothesis": "MIL@PIT was postponed per statsapi. The D-grade SKIP pick (Ashcraft xERA 1.51 against MIL, PQI Δ+15.9 against) could not be evaluated against an actual outcome. No process or variance judgment is possible.",
-      "signals_to_recheck": "N/A — game postponed; revisit signal stack (SP xERA against, PQI against) when the game is rescheduled and played."
+      "hypothesis": "MIL@PIT was postponed per the results file. The D-grade SKIP pick (Ashcraft xERA 1.51 against MIL, PQI Δ=+15.9 against) carries a dual opposing-signal configuration that has been a reliable loss predictor in the archive (7/9 ATL@PIT pattern). No process or variance judgment possible on a postponed game.",
+      "signals_to_recheck": "N/A — game postponed; dual-opposing-signal stack (SP xERA against + PQI against) should be revisited when this game is rescheduled and played."
     },
     "NYY @ WSH": {
       "verdict": "WIN",
       "model_pick": "NYY ML PLATINUM",
       "claude_decision": "CONFIRM",
       "final_score": "5-3",
-      "headline": "NYY won 5-3; a CAP-10-suppressed PLATINUM pick paid off despite a thin pre-cap score=2 stack.",
-      "hypothesis": "NYY's pre-cap PLATINUM reached only score=2 (F3_swing_take_gap=3222.2 and F5_bullpen_gap=+1.60 affirming, no PQI or SP-xERA dimension scored) before pick_prob=0.533 tripped HARD CAP 10, correctly suppressing to SKIP given the thin stack. NYY won 5-3 regardless. Ryan Weathers (WSH) was flagged in the prior claude_picks entry as a 'developing-pitcher SP-xERA misfire' risk, but no misfire was needed — NYY won on its own lineup/bullpen signals.",
-      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.533) — second of three pure CAP-10 wins today (with PHI@DET, BOS@NYM); F3_swing_take_gap=3222.2 and F5_bullpen_gap=+1.60 both directionally validated."
+      "headline": "NYY won 5-3; a thin CAP-10-suppressed PLATINUM (score=2, no SP-xERA or PQI anchor) paid off unstaked.",
+      "hypothesis": "NYY's pre-cap PLATINUM reached only score=2 (F3_swing_take_gap=3222.2 and F5_bullpen_gap=+1.60 affirming; no PQI or SP-xERA support) before HARD CAP 10 suppressed it to SKIP at pick_prob=0.533. NYY won 5-3. Ryan Weathers (WSH) was flagged as a 'developing-pitcher SP-xERA misfire' risk by the prior claude_picks, and Weathers duly failed to contain NYY's lineup. The F3 and F5_bullpen signals were directionally correct. CAP 10 was correct to withhold stake given the thin stack (no four-dimension anchor), but the direction was right.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.533) — second of three pure CAP-10 wins today; F3_swing_take_gap=3222.2 and F5_bullpen_gap=+1.60 both directionally validated."
     },
     "KC @ BAL": {
       "verdict": "WIN",
       "model_pick": "BAL ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "3-5",
-      "headline": "BAL won 5-3; HARD CAP 7's previously perfect 0-for-7 backtest broke on a marginal bullpen-gap flag.",
-      "hypothesis": "BAL's pre-cap B+ (F-signal, PQI confirms Δ+9.5, Stage agreement, score=3) was capped to B- by HARD CAP 7 (pick-side bullpen disadvantage, hl_bullpen_xwoba_gap=+0.018), and Claude DOWNGRADED to SKIP citing the cap's 0-for-7 backtest record. BAL won 5-3 anyway — the first break in that streak. The underlying gap (+0.018) sits well under the 0.04 threshold the signal vocabulary calls 'meaningful,' suggesting CAP 7 fired on an immaterial bullpen difference this time.",
-      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage (hl_bullpen_xwoba_gap=+0.018, below the 0.04 'meaningful' threshold) — first loss to the cap's 0-for-7 backtest record; BAL won 5-3 despite the flag."
+      "headline": "BAL won 5-3; HARD CAP 7's previously perfect 0-for-7 backtest broke on a marginal +0.018 bullpen gap.",
+      "hypothesis": "BAL's pre-cap B+ (F-signal, PQI confirms Δ=+9.5, Stage agreement, score=3) was capped to B- by HARD CAP 7 (hl_bullpen_xwoba_gap=+0.018 >= 0, pick-side bullpen disadvantage on a tier-elevated pick), and Claude correctly applied the DOWNGRADE to SKIP citing the 0-for-7 backtest record. BAL won 5-3 — the first break of that streak. Crucially, the gap (+0.018) sat well below the 0.04 'meaningful' threshold defined in the signal vocabulary, suggesting CAP 7 fired on an immaterial bullpen difference. This is potentially a process failure in the cap's trigger sensitivity.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage fired on hl_bullpen_xwoba_gap=+0.018, below the 0.04 'meaningful' threshold — first break in 0-for-7 backtest; consider requiring |gap| > 0.04 to trigger CAP 7 on tier-elevated picks."
     },
     "CHC @ CIN": {
       "verdict": "NO_PICK",
       "model_pick": "TBD ML PENDING_SP_DATA",
       "claude_decision": "CONFIRM",
       "final_score": "0-4",
-      "headline": "CIN shut out CHC 4-0; no model pick existed (Hunter Greene below the 100-pitch Statcast gate).",
-      "hypothesis": "Hunter Greene (CIN) was below the 100-pitch Statcast xERA-scoring minimum in the diag CSV; live statsapi had already confirmed both Greene and Imanaga (CHC) as starters, so the pipeline should score this game on its next run. CIN won 4-0. No directional call was possible today.",
-      "signals_to_recheck": "PENDING_SP_DATA (Greene pitch-count gate) — re-score once the threshold clears; Imanaga's (CHC) archive track record should be weighed against today's shutout loss once graded."
+      "headline": "CIN shut out CHC 4-0; no model pick existed (Hunter Greene below the 100-pitch Statcast xERA gate).",
+      "hypothesis": "Hunter Greene (CIN) had only 89 Statcast pitches season-to-date per the diag CSV, below the 100-pitch minimum for xERA scoring. The pipeline correctly withheld a pick. CIN won 4-0 — a dominant performance consistent with Greene's elite xERA potential once the sample clears. No directional evaluation is possible without a scored pick.",
+      "signals_to_recheck": "PENDING_SP_DATA (Greene pitch-count gate, 89 of 100 required pitches) — re-score once threshold clears; Imanaga (CHC) archive track record should be revisited against today's shutout loss once the game grades."
     },
     "SEA @ TB": {
       "verdict": "WIN",
       "model_pick": "TB ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-7",
-      "headline": "TB won 7-2; a clean C-grade SKIP in an unresolved Stage 1/2 disagreement zone still landed on the right side.",
-      "hypothesis": "TB was a clean C-grade SKIP: PQI ran Δ=-3.6 against the pick and Stage 1/2 disagreed meaningfully (f5_full_delta=0.1797, above the 0.12 disagreement trigger) — a zone the archive has flip-flopped on all season with no stable rule. TB won 7-2, a comfortable margin favoring the Stage 2/full-game direction here, but one result doesn't resolve the standing ambiguity.",
-      "signals_to_recheck": "f5_full_delta=0.1797 (Stage 1/2 disagreement zone remains unresolved — today favored the pick/Stage-2 direction); PQI Δ=-3.6 against pick did not predict the 5-run TB margin."
+      "headline": "TB won 7-2; a C-grade SKIP in the unresolved Stage 1/2 disagreement zone (Δ=0.18) landed directionally correct by 5 runs.",
+      "hypothesis": "TB was a clean C-grade SKIP: PQI ran Δ=-3.6 against the pick, and Stage 1/2 disagreed above the 0.12 trigger (f5_full_delta=0.1797) — a zone the archive has flip-flopped on all season. TB won 7-2, a comfortable margin favoring the Stage 2/full-game direction and against Luis Castillo (SEA). The prior claude_picks noted Castillo's calibration-hallucination history (+49.79pp in the 6/7 context); today's +16.23pp did not repeat that extreme, but Castillo still allowed the 7-2 result. One result doesn't resolve the Stage 1/2 disagreement ambiguity.",
+      "signals_to_recheck": "f5_full_delta=0.1797 (Stage 1/2 disagreement zone — today Stage 2/full-game direction was correct by 5 runs; standing ambiguity remains unresolved); PQI Δ=-3.6 against pick did not predict the 5-run TB margin."
     },
     "CLE @ MIA": {
       "verdict": "WIN",
       "model_pick": "CLE ML PLATINUM",
       "claude_decision": "CONFIRM",
       "final_score": "3-2",
-      "headline": "CLE won 3-2 on the road; Claude's HARD-CAP-10 rescue (pre-cap score=5, all four dimensions affirming) paid off for a second consecutive validation of the 6/12 exception rule.",
-      "hypothesis": "CLE's pre-cap A-grade (score=5) had every dimension affirm: F-signal (F1_xera_gap=0.88*, F3=4043.1, F5_bullpen=+0.91), SP xERA +0.56 agreeing, PQI confirms Δ-6.5, and Stage 1/2 agreement (Δ=0.00) — the same four-dimension-affirm profile the 6/12 ARI@CIN postgame flagged as a legitimate exception to HARD CAP 10's bottom-bucket suppression. Claude applied that exception and confirmed at the full pre-cap PLATINUM level instead of accepting the capped SKIP. CLE won 3-2 over Sandy Alcantara (MIA), whose archive-tracked 3-1 record was a real caution but was outweighed by the complete signal affirmation. This is a genuine process win.",
-      "signals_to_recheck": "[HARD CAP 10] exception now validated twice (6/12 ARI@CIN, 7/10 CLE@MIA) — pre-cap score=5 with F-signal + SP-xERA + PQI + Stage-agreement all affirming simultaneously looks like a durable rescue condition worth formalizing in the pipeline; F1_xera_gap=0.88* (starred, thin sample) was corroborated by F3=4043.1, consistent with the 'F1* needs secondary confirmation' rule."
+      "headline": "CLE won 3-2; Claude's HARD-CAP-10 rescue (pre-cap score=5, all four grading dimensions affirming) paid off for a second consecutive validation of the 6/12 exception rule.",
+      "hypothesis": "CLE's pre-cap A-grade (score=5) had every dimension affirm simultaneously: F-signal (F1_xera_gap=0.88*, F3=4043.1, F5_bullpen=+0.91), SP xERA +0.56 agreeing, PQI confirms Δ=-6.5, and Stage 1/2 agreement (Δ=0.00). This is the exact four-dimension-affirming profile the 6/12 ARI@CIN postgame flagged as a legitimate HARD CAP 10 exception. Claude applied the exception and confirmed at the full pre-cap PLATINUM level instead of accepting the capped SKIP. CLE won 3-2 over Sandy Alcantara (MIA, 3-1 archive record) — the Alcantara caution was real but outweighed by the complete signal affirm. Clean process win. The F1_xera_gap=0.88* (starred, thin sample) was corroborated by F3=4043.1 and F5_bullpen=+0.91, consistent with the 'F1* requires secondary confirmation' rule.",
+      "signals_to_recheck": "[HARD CAP 10] exception validated twice (6/12 ARI@CIN, 7/10 CLE@MIA) — pre-cap score=5 with F-signal + SP-xERA + PQI + Stage-agreement all affirming simultaneously appears durable; F1_xera_gap=0.88* (starred) correctly corroborated by F3=4043.1 per the F1*-secondary-confirmation rule."
     },
     "BOS @ NYM": {
       "verdict": "WIN",
       "model_pick": "BOS ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "6-2",
-      "headline": "BOS won 6-2; a third CAP-10-suppressed pick to win outright today despite PQI running against it.",
-      "hypothesis": "BOS's pre-cap score=1 was thin — PQI ran Δ=+5.8 against the pick, leaving only F3 (6136.4) and Stage agreement affirming, well short of the CLE@MIA four-dimension bar. HARD CAP 10 correctly suppressed the stake (pick_prob=0.533). BOS won 6-2 regardless, extending today's CAP-10 pure-suppression win streak. Nolan McLean's (NYM) archive-noted dominant start did not repeat; McLean took the loss.",
-      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.533) — correctly withheld stake, but the pick won 6-2, the third such case today (see patterns_observed); PQI Δ=+5.8 against pick also failed to predict the loser."
+      "headline": "BOS won 6-2; a third CAP-10-suppressed pick won outright today despite PQI running against the BOS direction.",
+      "hypothesis": "BOS's pre-cap score=1 was thin: PQI ran Δ=+5.8 against the pick, leaving only F3_swing_take_gap=6136.4 and Stage agreement affirming — well short of the CLE@MIA four-dimension bar. HARD CAP 10 correctly suppressed to SKIP (pick_prob=0.533). BOS won 6-2 regardless, with the extreme F3 signal (6136.4, well above the 2000 high-conviction floor noted in the 7/8 postgame) appearing directionally decisive. Nolan McLean (NYM) did not repeat the dominant 6/17 start the prior claude_picks cited as a caution. This is likely a variance WIN within a correctly suppressed tier: CAP 10 was right to withhold stake given the thin stack, but the F3 signal alone may have more directional value than the post-cap grade implies.",
+      "signals_to_recheck": "[HARD CAP 10] bottom-bucket suppression (pick_prob=0.533) — correctly withheld stake, third CAP-10 pure-suppression win today (see patterns_observed); F3_swing_take_gap=6136.4 directionally validated (extreme F3 appears to carry independent signal even when PQI and full stack are thin)."
     },
     "ATL @ STL": {
       "verdict": "LOSS",
       "model_pick": "ATL ML DIAMOND",
       "claude_decision": "CONFIRM",
       "final_score": "1-2",
-      "headline": "STL edged ATL 2-1; HARD CAP 1's negative-edge suppression correctly called the slate's only loss despite an elite raw signal stack.",
-      "hypothesis": "ATL/Sale carried the strongest raw signal stack of the slate (SP xERA +2.12 agreeing, PQI confirms Δ-37.6, F-signal, Stage agreement — pre-cap score=4), but a real -11.61pp negative edge tripped HARD CAP 1, which the archive treats as non-negotiable even on elite SP-edge stacks (the 6/4 lesson: upgrading past CAP 1 on an 'ace start' thesis also lost, 7-2). CAP 10 then zeroed the residual. ATL lost 1-2 — the market's negative edge correctly anticipated the loser despite Sale's individual quality. Clean process success.",
-      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-11.61pp) correctly predicted the slate's only loss despite an elite pre-cap signal stack — second Sale/ATL confirmation of CAP 1's non-negotiable status (6/4, 7/10)."
+      "headline": "STL edged ATL 2-1; HARD CAP 1's negative-edge suppression correctly caught the slate's only loss despite an elite raw signal stack.",
+      "hypothesis": "ATL/Sale carried the strongest raw signal stack of the slate (SP xERA +2.12 agreeing, PQI confirms Δ=-37.6, F-signal fires, Stage agreement — pre-cap score=4, B+ before caps) but a real -11.61pp negative edge triggered HARD CAP 1, reducing score to 1, before HARD CAP 10 (pick_prob=0.531) zeroed it entirely. The market's -11.61pp negative edge correctly anticipated the loser despite Sale's individual quality and the model's strong pre-cap read. Kyle Leahy (STL) held ATL to 1 run — the market had correctly priced the matchup edge. This is a clean process success: both caps applied correctly, no stake was placed, and the model's direction (ATL) was wrong. Second Sale/ATL confirmation of CAP 1's non-negotiable status (6/4 lost 7-2; 7/10 lost 2-1).",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD (-11.61pp) correctly predicted the slate's only loss despite pre-cap B+ signal stack — second Sale/ATL confirmation that market edge overrides SP-quality signals when edge is materially negative; [HARD CAP 10] bottom-bucket marginal-favorite without CONFIRM (pick_prob=0.531) correctly zeroed residual grade."
     },
     "OAK @ CHW": {
       "verdict": "NO_PICK",
       "model_pick": "TBD ML PENDING_SP_DATA",
       "claude_decision": "CONFIRM",
       "final_score": "1-14",
-      "headline": "CHW blew out the Athletics 14-1; no model pick existed (OAK's SP unannounced in the diag CSV).",
-      "hypothesis": "OAK's probable SP (Jacob Lopez) was unannounced in the diag CSV; live statsapi had already confirmed Lopez vs Sean Burke, so the pipeline should pick this up next run. Athletics were blown out 14-1. No directional call was possible today.",
-      "signals_to_recheck": "PENDING_SP_DATA (OAK SP unannounced in CSV, confirmed at statsapi runtime) — re-score once the pipeline catches up."
+      "headline": "CHW blew out Oakland 14-1; no model pick existed (OAK's SP unannounced in the diag CSV).",
+      "hypothesis": "OAK's probable SP (Jacob Lopez) was unannounced in the diag CSV; live statsapi had already confirmed Lopez vs Sean Burke, so the pipeline should pick this up next run. Athletics were blown out 14-1. No directional call was possible today. The 13-run blowout margin is consistent with CHW showing late-season home lineup strength — no process judgment available without a scored pick.",
+      "signals_to_recheck": "PENDING_SP_DATA (OAK SP unannounced in CSV, confirmed at statsapi runtime as Jacob Lopez) — re-score once the pipeline catches up."
     },
     "HOU @ TEX": {
       "verdict": "NO_PICK",
@@ -101,8 +101,8 @@
       "claude_decision": "CONFIRM",
       "final_score": "3-7",
       "headline": "TEX won 7-3; no model pick existed (TEX's SP unannounced in the diag CSV).",
-      "hypothesis": "TEX's probable SP (Cal Quantrill) was unannounced in the CSV; statsapi confirmed Quantrill vs Hunter Brown. TEX won 7-3. No pick was graded.",
-      "signals_to_recheck": "PENDING_SP_DATA (TEX SP unannounced) — re-score once the pipeline catches up."
+      "hypothesis": "TEX's probable SP (Cal Quantrill) was unannounced in the CSV; statsapi confirmed Quantrill vs Hunter Brown. TEX won 7-3. No directional pick was possible. The 4-run margin suggests TEX had real advantages on the night.",
+      "signals_to_recheck": "PENDING_SP_DATA (TEX SP unannounced; confirmed at runtime as Cal Quantrill) — re-score once pipeline catches up."
     },
     "LAA @ MIN": {
       "verdict": "NO_PICK",
@@ -110,8 +110,8 @@
       "claude_decision": "CONFIRM",
       "final_score": "4-3",
       "headline": "LAA won 4-3 in a one-run game; no model pick existed (LAA's SP unannounced in the diag CSV).",
-      "hypothesis": "LAA's probable SP (Grayson Rodriguez) was unannounced in the CSV; statsapi confirmed Rodriguez vs Zebby Matthews. LAA won 4-3. No pick was graded.",
-      "signals_to_recheck": "PENDING_SP_DATA (LAA SP unannounced) — re-score once the pipeline catches up."
+      "hypothesis": "LAA's probable SP (Grayson Rodriguez) was unannounced in the CSV; statsapi confirmed Rodriguez vs Zebby Matthews. LAA won 4-3 in a tight one-run game. No directional evaluation possible. The narrow margin is consistent with a pick_prob coin-flip range — the pipeline's PENDING gate appropriately withheld a directional call.",
+      "signals_to_recheck": "PENDING_SP_DATA (LAA SP unannounced; confirmed at runtime as Grayson Rodriguez) — re-score once pipeline catches up."
     },
     "TOR @ SD": {
       "verdict": "NO_PICK",
@@ -119,32 +119,32 @@
       "claude_decision": "CONFIRM",
       "final_score": "5-3",
       "headline": "TOR won 5-3; no model pick existed (TOR's SP unannounced in the diag CSV).",
-      "hypothesis": "TOR's probable SP (Shane Bieber) was unannounced in the CSV; statsapi confirmed Bieber vs JP Sears. TOR won 5-3. No pick was graded.",
-      "signals_to_recheck": "PENDING_SP_DATA (TOR SP unannounced) — re-score once the pipeline catches up."
+      "hypothesis": "TOR's probable SP (Shane Bieber) was unannounced in the CSV; statsapi confirmed Bieber vs JP Sears. TOR won 5-3. No directional pick was possible. Bieber's historical xERA and strikeout profile would have been a relevant signal — worth checking when the pipeline re-scores.",
+      "signals_to_recheck": "PENDING_SP_DATA (TOR SP unannounced; confirmed at runtime as Shane Bieber) — re-score once pipeline catches up."
     },
     "ARI @ LAD": {
       "verdict": "NO_PICK",
       "model_pick": "TBD ML PENDING_SP_DATA",
       "claude_decision": "CONFIRM",
       "final_score": "9-3",
-      "headline": "ARI won convincingly 9-3; no model pick existed (ARI's SP unannounced in the diag CSV), and Ohtani (LAD) took the loss.",
-      "hypothesis": "ARI's probable SP (Eduardo Rodriguez) was unannounced in the CSV; statsapi confirmed E. Rodriguez vs Shohei Ohtani (LAD). Despite the archive's generally positive Ohtani-start track record, ARI won 9-3 and Ohtani took the loss. No pick was graded, but this is a second Ohtani loss in the tracked sample (6/10, 7/10).",
-      "signals_to_recheck": "PENDING_SP_DATA (ARI SP unannounced) — re-score once the pipeline catches up; Ohtani's start résumé now includes a second tracked loss, worth revisiting the 'generally positive' framing."
+      "headline": "ARI won 9-3 over LAD; no model pick existed (ARI's SP unannounced), and Ohtani took the loss.",
+      "hypothesis": "ARI's probable SP (Eduardo Rodriguez) was unannounced in the CSV; statsapi confirmed E. Rodriguez vs Shohei Ohtani (LAD). ARI won 9-3 and Ohtani took the loss, the second tracked Ohtani-start loss (also 6/10) against his generally positive archive track record. No pick was possible. The 6-run margin is notable: it suggests ARI's lineup overwhelmed even Ohtani-start quality on this date. The prior claude_picks entry flagged the 'generally positive Ohtani' framing as overdue for revisiting — this outcome reinforces that.",
+      "signals_to_recheck": "PENDING_SP_DATA (ARI SP unannounced; confirmed at runtime as Eduardo Rodriguez) — re-score once pipeline catches up; Ohtani-start résumé now includes two tracked losses (6/10, 7/10) — revise 'generally positive' framing to 'wins 3/5 tracked' for LAD."
     },
     "COL @ SF": {
       "verdict": "NO_PICK",
       "model_pick": "TBD ML PENDING_SP_DATA",
       "claude_decision": "CONFIRM",
       "final_score": "4-3",
-      "headline": "COL won 4-3 in a one-run game; no model pick existed (Robbie Ray below the 100-pitch Statcast gate).",
-      "hypothesis": "SF's probable SP (Robbie Ray) was below the 100-pitch Statcast xERA-scoring minimum; statsapi confirmed Ray vs Tanner Gordon (COL). COL won 4-3. No pick was graded.",
-      "signals_to_recheck": "PENDING_SP_DATA (Ray pitch-count gate) — re-score once the threshold clears."
+      "headline": "COL won 4-3 in a one-run game; no model pick existed (Robbie Ray below the 100-pitch Statcast xERA gate).",
+      "hypothesis": "SF's probable SP (Robbie Ray) was below the 100-pitch Statcast xERA-scoring minimum (85 pitches per the diag CSV); statsapi confirmed Tanner Gordon (COL) vs Ray. COL won 4-3 in the narrowest possible margin. No directional evaluation possible. The PENDING_SP_DATA hard stop was correctly applied.",
+      "signals_to_recheck": "PENDING_SP_DATA (Ray pitch-count gate, 85 of 100 required pitches) — re-score once threshold clears."
     }
   },
   "patterns_observed": [
-    "HARD CAP 10 bottom-bucket suppression (pick_prob 0.50-0.55, no CONFIRM) fired cleanly on 4 games today (PHI@DET, NYY@WSH, BOS@NYM, and CLE@MIA before Claude's rescue) — every one of them won (DET 10-2, NYY 5-3, BOS 6-2, CLE 3-2), sharply above the archive's cited 31.2% non-CONFIRM hit rate for this bucket. This doesn't override CAP 10 on one slate, but the bucket's hit rate should be tracked over the next 10-15 picks before treating 31.2% as settled.",
-    "CLE@MIA validates the HARD CAP 10 rescue exception (pre-cap score=5, all four dimensions — F-signal, SP-xERA, PQI, Stage agreement — affirming) for a second time (6/12 ARI@CIN, 7/10 CLE@MIA), both wins. Recommend formalizing this as a standing exception in the grading pipeline rather than a per-game Claude judgment call.",
-    "HARD CAP 7 (pick-side bullpen disadvantage) broke its 0-for-7 backtest streak today: BAL was downgraded on a hl_bullpen_xwoba_gap of only +0.018 — well under the 0.04 threshold the signal vocabulary calls 'meaningful' — and won 5-3 anyway. Consider requiring |gap| > 0.04 to fire CAP 7 rather than any gap >= 0.",
-    "HARD CAP 1 (negative-edge GOLD/DIAMOND) again correctly caught the slate's only loss — ATL/Sale's elite pre-cap signal stack (SP xERA +2.12, PQI confirms) was overridden by a real -11.61pp edge, and ATL lost 1-2, echoing the 6/4 Sale/ATL precedent. This remains the single most validated cap in the archive."
+    "HARD CAP 10 bottom-bucket suppression (pick_prob 0.50-0.55, no four-dimension rescue) fired on three picks today (PHI@DET, NYY@WSH, BOS@NYM) that all won — 3/3 vs the archive's cited 31.2% non-CONFIRM hit rate. One slate is insufficient to revise the protocol, but the extreme divergence warrants starting a 10-15 pick tracking log for this sub-bucket to determine whether the 31.2% baseline is still accurate or has drifted upward with recent model tuning.",
+    "CLE@MIA is the second clean validation of the pre-cap score=5 / all-four-dimensions-affirming HARD CAP 10 rescue exception (6/12 ARI@CIN 5-2 win; 7/10 CLE@MIA 3-2 win, both staked). The rescue condition — F-signal + SP-xERA agree + PQI confirms + Stage 1/2 agree, all four simultaneously at pre-cap score≥5 — appears durable enough to formalize in the grading pipeline rather than relying on per-game Claude judgment.",
+    "HARD CAP 7 (pick-side bullpen disadvantage) broke its 0-for-7 backtest streak on KC@BAL where hl_bullpen_xwoba_gap=+0.018, well below the 0.04 'meaningful' threshold defined in the signal vocabulary. Going forward, consider requiring |hl_bullpen_xwoba_gap| > 0.04 to trigger CAP 7 on tier-elevated picks — firing on a +0.018 gap may have introduced a false negative today.",
+    "HARD CAP 1 (negative-edge GOLD/DIAMOND) again correctly called the slate's only directional loss — ATL@STL carried an elite pre-cap signal stack (SP xERA +2.12, PQI Δ=-37.6, F-signal, Stage agree; pre-cap B+) that was overridden by a real -11.61pp market edge, and ATL lost 1-2. This is the second Sale/ATL confirmation (6/4 lost 7-2 after upgrading past CAP 1; 7/10 suppressed and correctly lost). CAP 1 remains the single most validated and non-negotiable cap in the archive."
   ]
 }
