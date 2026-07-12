@@ -91,6 +91,8 @@ candidates = [
     "docs/data/postponed_%s.json" % YEST,
     "docs/data/combo_%s.json" % TODAY,
     "docs/data/combo_%s.json" % YEST,
+    "docs/data/kprops_%s.json" % TODAY,
+    "docs/data/kprops_%s.json" % YEST,
 ]
 present = [f for f in candidates if os.path.exists(f)]
 

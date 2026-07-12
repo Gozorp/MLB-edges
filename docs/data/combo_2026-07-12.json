@@ -1,6 +1,6 @@
 {
  "date": "2026-07-12",
- "generated_utc": "2026-07-12T11:32:37Z",
+ "generated_utc": "2026-07-12T11:50:12Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -21,6 +21,12 @@
   "source": "oos_ledger empirical (frozen-window graded pairs)"
  },
  "combos": [],
+ "combo_pool": [],
+ "markets_status": {
+  "ML": "live (Kalshi devigged fair)",
+  "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
+  "K_PROP": "ODDS_API_KEY present but REJECTED (401) -- the lapsed pre-05/21 key is still in .env; replace it with a fresh the-odds-api key to light up K-prop shadow legs"
+ },
  "rejected": [
   {
    "matchup": "MIL @ PIT",
@@ -28,10 +34,12 @@
    "joint_prob": 0.3302,
    "blocked_by": [
     "grade",
+    "market_band",
     "stage_coherence"
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
+    "+10.2pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 33.0%"
    ]
   },
@@ -46,7 +54,7 @@
    ],
    "notes": [
     "final grade B- (need A/A-/B+/B)",
-    "+2.6pp vs fair -> noise band (model's own bands)",
+    "+2.6pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 47.7%"
    ]
   },
@@ -61,7 +69,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+3.5pp vs fair -> noise band (model's own bands)",
+    "+3.5pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 26.8% + Stage 1/2 disagree flag"
    ]
   },
@@ -77,7 +85,7 @@
    "notes": [
     "final grade C (need A/A-/B+/B)",
     "tier SKIP",
-    "-2.6pp vs fair -> noise band (model's own bands)"
+    "-2.6pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -91,7 +99,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+1.6pp vs fair -> noise band (model's own bands)",
+    "+1.6pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 34.5%"
    ]
   },
@@ -100,9 +108,11 @@
    "pick": "TB",
    "joint_prob": 0.4689,
    "blocked_by": [
+    "market_band",
     "stage_coherence"
    ],
    "notes": [
+    "+10.8pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 46.9%"
    ]
   },
@@ -118,7 +128,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+17.2pp vs fair -> trap band (model's own bands)"
+    "+17.2pp vs fair -> trap band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -131,7 +141,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+3.8pp vs fair -> noise band (model's own bands)"
+    "+3.8pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -160,7 +170,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+2.5pp vs fair -> noise band (model's own bands)",
+    "+2.5pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 44.9%"
    ]
   },
@@ -169,10 +179,12 @@
    "pick": "STL",
    "joint_prob": 0.6189,
    "blocked_by": [
-    "conviction_tier"
+    "conviction_tier",
+    "market_band"
    ],
    "notes": [
-    "tier SKIP"
+    "tier SKIP",
+    "+12.6pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -208,11 +220,13 @@
    "blocked_by": [
     "grade",
     "conviction_tier",
+    "market_band",
     "stage_coherence"
    ],
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
+    "+14.2pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 32.0%"
    ]
   }

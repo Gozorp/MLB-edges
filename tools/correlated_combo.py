@@ -250,8 +250,10 @@ def evaluate_game(r, ctx):
     gate("conviction_tier", "pass" if tier_ok else "veto", "tier %s" % (tier or "?"))
 
     band = band_of(edge) if edge is not None else "n/a"
-    gate("market_band", "pass" if band in ("goldilocks", "caution") else "veto",
-         "%+.1fpp vs fair -> %s band (model's own bands)" % (edge or 0.0, band))
+    # STRICT Goldilocks per Joe's 07-12 directive: 4-8pp ONLY (caution band
+    # 8-15 no longer passes; it had been allowed in v1).
+    gate("market_band", "pass" if band == "goldilocks" else "veto",
+         "%+.1fpp vs fair -> %s band (strict 4-8 goldilocks)" % (edge or 0.0, band))
 
     reasons = r.get("grade_reasons") or ""
     coherent = p_f5 >= 0.5 and "Stage 1/2 disagree" not in reasons
@@ -368,6 +370,42 @@ def build(date, root=None):
     passers.sort(key=lambda c: (c["legs"][0]["band"] != "goldilocks",
                                 -(c["correlation_lift_pp"] +
                                   (c["legs"][0]["edge_pp"] or 0))))
+
+    # ---- cross-market LEG POOL (Joe's step-6 architecture) -----------------
+    # Every PRICED leg that individually survives strict-goldilocks +
+    # unanimous consensus, across all live markets, sorted by edge desc.
+    # ML is live (Kalshi fair). O/U is a reserved slot (totals PAUSED by the
+    # locked 06-03 decision until the rebuild validates). K-props join as
+    # SHADOW legs when the odds adapter has a key + data.
+    pool = []
+    for c in cands:
+        ml = c["legs"][0]
+        if c["unanimous"] and ml["band"] == "goldilocks" and ml["edge_pp"] is not None:
+            pool.append({"market": "ML", "matchup": c["matchup"],
+                         "sel": ml["sel"], "model_prob": ml["prob"],
+                         "market_prob": ml["fair"], "edge_pp": ml["edge_pp"],
+                         "status": "live", "unanimous": True})
+    kprops = _read_json(os.path.join(dd, "kprops_%s.json" % date))
+    if kprops and kprops.get("status") == "ok":
+        for leg in kprops.get("legs", []):
+            e = _f(leg.get("edge_pp"))
+            if e is not None and 4.0 <= e < 8.0:
+                leg = dict(leg)
+                leg.update({"market": "K_PROP", "status": "shadow_validation",
+                            "unanimous": None,
+                            "note": "projection-vs-market edge; SHADOW until "
+                                    "the pre-registered OOS gate passes"})
+                pool.append(leg)
+    pool.sort(key=lambda x: -(x.get("edge_pp") or 0))
+    markets_status = {
+        "ML": "live (Kalshi devigged fair)",
+        "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); "
+              "unlocks after the rebuild passes its OOS validation protocol",
+        "K_PROP": (("live-shadow (%d legs)" % sum(1 for x in pool if x["market"] == "K_PROP"))
+                   if (kprops and kprops.get("status") == "ok")
+                   else (kprops or {}).get("status_note",
+                        "awaiting ODDS_API_KEY in .env -- adapter shipped "
+                        "(tools/kprop_odds.py)"))}
     rejected = [{"matchup": c["matchup"], "pick": c["pick"],
                  "joint_prob": c["joint_prob"],
                  "blocked_by": [g["sheet"] for g in c["gates"] if g["verdict"] == "veto"],
@@ -385,6 +423,8 @@ def build(date, root=None):
             "ML is the only market-anchored leg; the double is model-priced."],
         "correlation": ctx["corr"],
         "combos": passers[:MAX_COMBOS],
+        "combo_pool": pool,
+        "markets_status": markets_status,
         "rejected": rejected,
         "n_games": len(cands)}
     out_path = os.path.join(dd, "combo_%s.json" % date)
@@ -448,21 +488,35 @@ def selftest():
         c = payload["combos"][0]
         assert c["matchup"] == "AA @ BB" and c["unanimous"]
         assert c["correlation_lift_pp"] > 0
+        # cross-market pool: the surviving ML leg, sorted, statuses present
+        assert len(payload["combo_pool"]) == 1
+        assert payload["combo_pool"][0]["market"] == "ML"
+        assert payload["combo_pool"][0]["unanimous"] is True
+        assert set(payload["markets_status"]) == {"ML", "OU", "K_PROP"}
         assert any(g["sheet"] == "claude_review" and g["verdict"] == "n/a"
                    for g in c["gates"])                        # missing sheet != veto
         assert len(payload["rejected"]) == 1
         assert payload["rejected"][0]["blocked_by"] == ["grade"]
-        # stage-incoherent pick (F5 side < 0.5) must veto
+        # stage-incoherent pick (F5 side < 0.5) must veto; caution band (10pp)
+        # must now ALSO veto under the strict 4-8 rule
         with io.open(diag, "a", encoding="utf-8", newline="") as f:
-            csv.DictWriter(f, fieldnames=cols).writerow(
+            w2 = csv.DictWriter(f, fieldnames=cols)
+            w2.writerow(
                 {"matchup": "EE @ FF", "pick": "EE", "f5_prob": "0.60",
                  "pick_prob": "0.60", "full_prob": "0.60", "fair_prob": "0.54",
                  "edge_pp": "6.0", "tier": "GOLD", "grade": "B+",
                  "grade_reasons": "", "pen_strain_pick_side": "",
                  "home_sp_name": "X", "away_sp_name": "Y"})
+            w2.writerow(
+                {"matchup": "GG @ HH", "pick": "HH", "f5_prob": "0.60",
+                 "pick_prob": "0.62", "full_prob": "0.62", "fair_prob": "0.52",
+                 "edge_pp": "10.0", "tier": "GOLD", "grade": "B+",
+                 "grade_reasons": "", "pen_strain_pick_side": "",
+                 "home_sp_name": "X", "away_sp_name": "Y"})
         payload, _ = build("2026-07-12", root=tmp)
         rej = {r["matchup"]: r for r in payload["rejected"]}
         assert "EE @ FF" in rej and "stage_coherence" in rej["EE @ FF"]["blocked_by"]
+        assert "GG @ HH" in rej and "market_band" in rej["GG @ HH"]["blocked_by"]
         print("SELFTEST PASS -- corr recovery, marginal-consistent joint, "
               "Frechet bounds, unanimous gate + named vetoes, n/a-not-veto")
         return 0

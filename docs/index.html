@@ -10780,6 +10780,28 @@ document.addEventListener("click", function (e) {
             comboEsc((r.notes || []).join("; ")) + "</div></div>";
         });
       }
+      if (j.combo_pool) {
+        h += '<div style="margin-top:10px;font-weight:700;font-size:0.78rem;letter-spacing:0.04em;">CROSS-MARKET LEG POOL <span style="color:var(--muted);font-weight:400;font-size:0.66rem;">strict 4-8pp goldilocks + unanimous consensus, sorted by edge</span></div>';
+        if (j.combo_pool.length) {
+          j.combo_pool.forEach(function (l) {
+            h += '<div style="border:1px solid var(--border,#30363d);border-radius:8px;padding:6px 10px;margin:4px 0;font-size:0.75rem;">' +
+              '<span style="display:inline-block;min-width:56px;font-weight:700;color:var(--accent,#58a6ff);">' + comboEsc(l.market) + '</span>' +
+              comboEsc(l.sel) + ' \u00b7 <b>' + ((l.model_prob || 0) * 100).toFixed(1) + '%</b> model vs ' +
+              ((l.market_prob || 0) * 100).toFixed(1) + '% market \u00b7 <b>' +
+              (l.edge_pp > 0 ? "+" : "") + l.edge_pp + 'pp</b>' +
+              (l.status === "shadow_validation"
+                ? ' <span style="color:var(--amber,#ffb454);font-size:0.62rem;font-weight:700;" title="' + comboEsc(l.note || "") + '">SHADOW</span>'
+                : "") + "</div>";
+          });
+        } else {
+          h += '<div style="color:var(--muted);font-size:0.74rem;margin:4px 0;">No individual leg cleared strict goldilocks + unanimity today.</div>';
+        }
+        if (j.markets_status) {
+          h += '<div style="color:var(--muted);font-size:0.66rem;margin-top:4px;line-height:1.5;">Markets \u2014 <b>ML:</b> ' + comboEsc(j.markets_status.ML) +
+               ' \u00b7 <b>O/U:</b> ' + comboEsc(j.markets_status.OU) +
+               ' \u00b7 <b>K-props:</b> ' + comboEsc(j.markets_status.K_PROP) + "</div>";
+        }
+      }
       var co = j.correlation || {};
       h += "<details style=\"margin-top:6px;font-size:0.72rem;color:var(--muted,#8b949e);\">" +
         "<summary style=\"cursor:pointer;\">How the correlation is computed</summary>" +

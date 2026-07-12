@@ -114,6 +114,13 @@ def main():
         run([PY, "tools/feature_coverage_report.py", slate],
             "feature coverage sidecar", fatal=False)
 
+    # 3.55) K-prop odds ingestion (shadow legs for the combo pool). Chain-safe
+    #       no-op without ODDS_API_KEY; 20h internal cache means at most ONE
+    #       real API fetch per day even from the hourly job (quota guard).
+    if slate:
+        run([PY, "tools/kprop_odds.py", slate],
+            "kprop odds sidecar", fatal=False)
+
     # 3.6) correlated-combo sidecar (display-only: ML+F5 within-game double
     #      w/ ledger-derived correlation + unanimous consensus gates; feeds
     #      the COMBO chip card that replaced Best Pick). Non-fatal.
