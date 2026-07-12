@@ -1,26 +1,27 @@
 {
   "date": "2026-07-12",
-  "fit_at": "2026-07-12T09:12:10Z",
+  "fit_at": "2026-07-12T18:55:44Z",
   "model_version": "claude-brain-v1",
   "n_games": 15,
   "patterns_recognized": [
-    "D-grade dual-opposing-signal pattern (SP xERA against + PQI against) fires on 4 matchups today (PHI@DET, OAK@CHW, TOR@SD, and a milder C-grade version on MIL@PIT/HOU@TEX) — matches the validated 0-for-3 directional fade from the 7/9 archive (ATL@PIT, KC@NYM, CHC@BAL).",
-    "CAP-10 four-dimension rescue (F-signal + SP-xERA agree + PQI confirm + Stage agree, pre-cap score>=5) recurs on CLE@MIA — the identical matchup validated on 7/10 (3-2 win) — restored to full PLATINUM.",
-    "HARD CAP 7 fired again on a sub-0.04 marginal bullpen gap for KC@BAL (+0.0189), nearly the exact +0.018 gap that broke CAP 7's 0-for-7 backtest on this SAME matchup two days ago (7/10, BAL won 5-3). Applied a conservative partial rescue to GOLD.",
-    "PLATINUM tier explicitly 'WITHHELD' language (SP edge against pick, lineup-only conviction not rewarded) appears on MIL@PIT and HOU@TEX — both carry 2-3 simultaneously opposing dimensions, consistent with PLATINUM's documented ~43% historical hit rate fragility."
+    "ARI@LAD: F3 lineup signal has systematically over-rated LAD's lineup in 3 straight tracked losses to ARI pitching (6/10, 7/10 9-3, 7/11 9-2) — treat as a categorical SKIP / fade-toward-ARI if this fixture scores later today with market edge more negative than -10pp, regardless of F3 magnitude.",
+    "Large Stage 1/2 disagreement (f5_full_delta) no longer reliably points toward Stage 1's preferred team — the last two slates (7/10, 7/11) both saw Stage 2/full-game direction win even when SP-xERA also opposed the pick (SEA@TB, LAA@MIN). Do not use delta alone to justify an OVERRIDE; SKIP suppression via existing caps remains the correct response.",
+    "HARD CAP 7 fired again on a marginal +0.0189 bullpen-xwOBA gap for KC@BAL — nearly identical to the +0.018 gap that broke its 0-for-7 backtest on this exact fixture two days ago (7/10, BAL won 5-3). Applying a cautious partial rescue to GOLD pending a larger sample before trusting the cap's sub-0.04 sensitivity.",
+    "HARD CAP 10 four-dimension rescue rule (F-signal + SP-xERA agree + PQI confirm + Stage agree, pre-cap score>=5) is now validated on three occasions, twice on this exact CLE@MIA fixture (6/12 ARI@CIN, 7/10 CLE@MIA). Reapplied today at pre-cap score=10 with CLE having also won both recent head-to-head meetings outright.",
+    "D-grade picks with both SP-xERA and PQI opposing the pick keep splitting roughly 50/50 directionally across the archive (PHI@DET, LAA@MIN, OAK@CHW, HOU@TEX, TOR@SD tonight) — continuing to SKIP without fading to the opposing side, per repeated postgame guidance that D-grade opposition should suppress the stake, not flip the pick."
   ],
   "by_matchup": {
     "MIL @ PIT": {
       "model_pick": "MIL ML PLATINUM",
-      "model_prob": 0.5451,
+      "model_prob": 0.5463,
       "model_tier": "PLATINUM",
       "model_grade": "C",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "MIL",
       "claude_tier": "SKIP",
       "claude_confidence": 0.50,
-      "reasoning": "PLATINUM was explicitly WITHHELD by the pipeline itself (SP edge 0.70 xERA against MIL, PQI against Δ+6.2, only F5_bullpen=+0.83 agrees). Stage1/2 disagree by 0.215 (F5 favors PIT ~67%, full game favors MIL only 54.5%) — per the 6/20 lesson a delta this large with a single corroborating F-signal doesn't rescue a pick. HARD CAP 10 correctly zeroes the score. No live news counters the dual opposition. SKIP confirmed.",
-      "lessons_applied": ["PLATINUM-tier-withheld-SP-against", "f5d-large-single-F-insufficient-rescue", "CAP10-bottom-bucket-non-CONFIRM"]
+      "reasoning": "PLATINUM was explicitly WITHHELD by the pipeline (SP edge 0.69 xERA against MIL — Skenes on the mound; PQI against Δ+7.2). Stage 1/2 disagree by 0.216 (F5 favors PIT ~67%, full game favors MIL only 54.6%). PIT has also beaten MIL in both of the last two head-to-head games (7/11 G1/G2). No live news offsets the ace-SP and recency headwinds. SKIP confirmed.",
+      "lessons_applied": ["PLATINUM-tier-withheld-SP-against", "stage1-stage2-conflict-caution", "PIT-recent-dominance-vs-MIL"]
     },
     "KC @ BAL": {
       "model_pick": "BAL ML PLATINUM",
@@ -30,57 +31,57 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "BAL",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.55,
-      "reasoning": "Pre-cap A-grade (score=5): F1 agrees +2, F3=3830.6, PQI +19.7, Stage agree. HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0189 — nearly identical to the +0.018 gap that fired on this SAME KC@BAL matchup on 7/10 and broke CAP 7's 0-for-7 streak (BAL won 5-3). The 7/10 postgame flagged sub-0.04 gaps as possible false positives. Partial rescue to GOLD (not full PLATINUM) given only n=1 prior break.",
-      "lessons_applied": ["CAP7-marginal-gap-below-0.04-threshold", "7-10-same-matchup-precedent-win", "partial-rescue-conservative-GOLD"]
+      "claude_confidence": 0.60,
+      "reasoning": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0189, nearly identical to the +0.018 gap that broke CAP 7's 0-for-7 backtest in this exact KC@BAL fixture on 7/10 (BAL won 5-3). Underlying stack is strong: pre-cap score=5, SP edge 0.90 xERA agrees, PQI confirms Δ+15.8, Stage agree. Cautious partial rescue to GOLD given only one prior data point.",
+      "lessons_applied": ["cap7-marginal-gap-KCBAL-precedent", "cap7-not-yet-30pick-validated"]
     },
     "NYY @ WSH": {
       "model_pick": "NYY ML PLATINUM",
-      "model_prob": 0.5263,
+      "model_prob": 0.5463,
       "model_tier": "PLATINUM",
       "model_grade": "C",
-      "claude_decision": "DOWNGRADE",
+      "claude_decision": "CONFIRM",
       "claude_pick": "NYY",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.48,
-      "reasoning": "Only F3=4558.5 fires; no SP-xERA or PQI corroboration in grade_reasons. Stage1/2 disagree by 0.258 (F5 gives NYY 73%, full game only 52.6%) — a gap the 6/20 lesson says a lone F-signal cannot rescue. Edge +1.45pp is negligible and CAP 10 fires at pick_prob=0.533 in the bottom bucket without a CONFIRM anchor. No corroborating dimension to lean on. SKIP confirmed.",
-      "lessons_applied": ["f5d-0.258-single-F3-insufficient", "CAP10-bottom-bucket", "no-SP-PQI-anchor"]
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.55,
+      "reasoning": "NYY has swept the last two head-to-head meetings vs WSH (5-3 on 7/10, 4-2 on 7/11). Today's stack is thin (SP edge unconfirmed, F-signal fires) with HARD CAP 4 correctly flagging Stage1/2 disagreement (Δ=0.28) plus confidence_downgrade — keep tier modest rather than full PLATINUM.",
+      "lessons_applied": ["NYY-WSH-recent-sweep", "stage1-home-bias-tonight"]
     },
     "CHC @ CIN": {
       "model_pick": "CHC ML SKIP",
-      "model_prob": 0.5296,
+      "model_prob": 0.5488,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHC",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Negative edge (-2.58pp) and no F-signal fires; only team_quality and Stage-agree contribute pre-cap. Pipeline already SKIPs correctly and CAP 10 confirms at pick_prob=0.533, essentially a coin-flip. Nothing in the postgame archive argues for elevating a bare, signal-thin coin-flip game. SKIP confirmed.",
-      "lessons_applied": ["negative-edge-no-F-signal", "coin-flip-pick_prob-defer-to-model"]
+      "claude_confidence": 0.52,
+      "reasoning": "Clean but low-conviction pick: PQI and Stage agree, but edge is flat/negative (-1.34pp) and HARD CAP 10 correctly suppresses the bottom-bucket pick_prob (0.549). CHC beat CIN 5-3 on 7/11 (different SP pairing today), mildly supportive. No reason to deviate from SKIP.",
+      "lessons_applied": ["chc-cin-recent-trend", "cap10-band-low-conviction"]
     },
     "BOS @ NYM": {
       "model_pick": "BOS ML GOLD",
       "model_prob": 0.5523,
       "model_tier": "GOLD",
       "model_grade": "C",
-      "claude_decision": "DOWNGRADE",
+      "claude_decision": "CONFIRM",
       "claude_pick": "BOS",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Pre-cap score=3 rests on F3=4816.4 and PQI Δ-13.5 only — no SP-xERA dimension in the grade, missing the four-dimension bar the CLE@MIA rescue rule requires. HARD CAP 10 fires at pick_prob=0.535 without CONFIRM, and edge +1.56pp sits outside the [4,15]pp staking band. The same matchup won unstaked on 7/10 under a similarly thin stack, but one data point is insufficient to elevate conviction here.",
-      "lessons_applied": ["CAP10-requires-four-dimension-anchor", "no-SP-edge-dimension", "one-slate-insufficient-to-revise"]
+      "claude_confidence": 0.52,
+      "reasoning": "Part of tonight's repeated pattern: Stage 1 rates the home team (NYM) at 65.5% F5, but the full-game model flips to the away pick (BOS). F-signal and PQI both support BOS, but recent slates show Stage 2 direction has been reliable on its own without needing to fade it — HARD CAP 10 correctly keeps this at SKIP given the thin four-dimension stack.",
+      "lessons_applied": ["stage1-home-bias-tonight", "cap10-band-low-conviction"]
     },
     "SEA @ TB": {
       "model_pick": "TB ML GOLD",
-      "model_prob": 0.6683,
+      "model_prob": 0.6833,
       "model_tier": "GOLD",
       "model_grade": "A",
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.58,
-      "reasoning": "Clean, uncapped A-grade (score=5): F1*=1.14 starred but corroborated by SP edge 1.12 agreeing and PQI +17.2 confirming (satisfies the F1*-corroboration rule), Stage agree at Δ=0.07. Edge +10.07pp sits comfortably inside the healthy [4,15]pp band with no hard cap firing anywhere in grade_reasons — the strongest, most complete signal stack on today's slate. GOLD confirmed at full conviction.",
-      "lessons_applied": ["F1-starred-corroborated-by-SP-and-PQI", "clean-uncapped-stack", "healthy-edge-band"]
+      "claude_confidence": 0.65,
+      "reasoning": "Cleanest stack on the slate: SP edge 1.12 xERA agrees, PQI confirms strongly (Δ+17.3), Stage agree, no hard caps fired. The starred F1_xera_gap (thin Ian Seymour sample) is properly corroborated by the strong PQI confirmation per the HARD CAP 5 secondary-confirmation rule, so the star is not disqualifying here.",
+      "lessons_applied": ["cap5-f1-star-pqi-corroboration"]
     },
     "PHI @ DET": {
       "model_pick": "DET ML SKIP",
@@ -90,33 +91,33 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "DET",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.46,
-      "reasoning": "SP edge 0.49 xERA AGAINST DET plus PQI -14.1 AGAINST — the dual-opposing D-grade pattern that went 0-for-3 directionally on 7/9 (ATL@PIT, KC@NYM, CHC@BAL). Edge +17.16pp sits in the extreme zone just below HARD CAP 6's 25pp threshold, consistent with prior calibrator overstatement. Skubal's track record argues against fully fading DET and no live news confirms a PHI thesis, so no OVERRIDE — just treat the DET direction as unreliable. SKIP confirmed.",
-      "lessons_applied": ["D-grade-dual-opposing-directional-noise", "extreme-edge-near-CAP6-threshold", "no-live-news-for-override"]
+      "claude_confidence": 0.50,
+      "reasoning": "SP xERA and PQI both oppose DET. The last two meetings split evenly (DET won 10-2 on 7/10, PHI won 4-2 on 7/11) — a genuine coin-flip matchup. Per the archive's D-grade dual-opposition rule, this should suppress the stake, not flip the pick toward PHI. SKIP confirmed.",
+      "lessons_applied": ["d-grade-dual-opposition-no-fade", "phi-det-split-recent"]
     },
     "CLE @ MIA": {
       "model_pick": "CLE ML PLATINUM",
-      "model_prob": 0.5168,
+      "model_prob": 0.5378,
       "model_tier": "PLATINUM",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
       "claude_tier": "PLATINUM",
-      "claude_confidence": 0.54,
-      "reasoning": "Pre-cap score=5 with all four dimensions affirming simultaneously: F-signal (F1*=1.04 corroborated by F3=2778.7 and F5=+0.93), SP edge 0.73 agrees, PQI confirms Δ-4.3, Stage agree Δ=0.02. HARD CAP 10 zeroed it at pick_prob=0.532, but this is the exact same matchup and rescue profile validated on 7/10 (CLE won 3-2 after an identical four-dimension rescue). Applying the same rescue rule: restore full PLATINUM.",
-      "lessons_applied": ["CAP10-four-dimension-rescue-rule", "7-10-same-matchup-precedent-win", "F1-starred-corroborated"]
+      "claude_confidence": 0.62,
+      "reasoning": "Textbook HARD CAP 10 rescue: pre-cap score=10 with all four dimensions affirming (F-signal, SP edge agrees, PQI confirms Δ-4.2, Stage agree) — the exact profile validated twice already (6/12 ARI@CIN, 7/10 this same CLE@MIA fixture, both wins). CLE also won both of the last two head-to-head meetings outright (3-2 on 7/10, 4-1 on 7/11). Rescue to full PLATINUM.",
+      "lessons_applied": ["cap10-four-dimension-rescue-rule", "cle-mia-recent-cle-dominance"]
     },
     "LAA @ MIN": {
-      "model_pick": "MIN ML GOLD",
-      "model_prob": 0.5461,
-      "model_tier": "GOLD",
-      "model_grade": "C",
-      "claude_decision": "DOWNGRADE",
-      "claude_pick": "MIN",
+      "model_pick": "LAA ML SKIP",
+      "model_prob": 0.5077,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.48,
-      "reasoning": "Pre-cap score=3 (F1 agrees, PQI confirms) but Stage1/2 disagree by 0.14 (-1) and HARD CAP 1 fires on the -1.61pp negative edge. CAP 1 is the archive's most validated cap, non-negotiable even on elite stacks (ATL@STL 7/10, BOS@CHW 7/7). confidence_downgrade and bullpen_fatigue flags compound the caution. SKIP confirmed.",
-      "lessons_applied": ["CAP1-non-negotiable", "stage-disagree-compounds-caution"]
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade with SP edge against, team_quality modifier against, and Stage 1/2 disagreement (Δ=0.14). On 7/11 the model picked the other side (MIN) and MIN won 5-3 comfortably. Today's flip to LAA on an already-weak stack reinforces staying at SKIP with no fade toward MIN.",
+      "lessons_applied": ["d-grade-dual-opposition-no-fade", "laa-min-recent-min-win"]
     },
     "OAK @ CHW": {
       "model_pick": "CHW ML SKIP",
@@ -126,69 +127,69 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "CHW",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.46,
-      "reasoning": "SP edge 2.00 xERA AGAINST CHW plus PQI -30.9 AGAINST — the largest dual-opposition gap on the slate, matching the same D-grade fade pattern validated repeatedly since 7/8 (OAK@DET, LAA@TEX). Pick_prob is a near coin-flip (0.505). No countervailing information available. SKIP confirmed; treat CHW direction as low-confidence.",
-      "lessons_applied": ["D-grade-dual-opposing-directional-noise", "coin-flip-pick_prob"]
+      "claude_confidence": 0.52,
+      "reasoning": "SP xERA (2.00 against) and PQI (-31.0) both strongly oppose CHW, but CHW has won both of the last two tracked meetings vs OAK (14-1 on 7/10, 1-0 on 7/11), suggesting a real team-quality gap the signals aren't capturing. Directionally supportive but the D-grade stack keeps this a firm SKIP rather than an elevation.",
+      "lessons_applied": ["oak-chw-recent-chw-dominance", "d-grade-dual-opposition-no-fade"]
     },
     "ATL @ STL": {
-      "model_pick": "STL ML SKIP",
-      "model_prob": 0.6683,
-      "model_tier": "SKIP",
-      "model_grade": "A",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "STL",
+      "claude_pick": "TBD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "grade_reasons show a clean, uncapped score=5 stack (F1*=1.14 corroborated by F3=1305.6, SP edge 1.04 agrees, PQI +3.2, Stage agree) with edge +11.3pp inside the healthy band and no hard cap listed — yet the pipeline's own tier column already reads SKIP with no visible gate cited (why_skipped just restates 'tier SKIP'). Without visibility into that upstream gate, deferring to the model's own SKIP rather than elevating beyond its stated tier. SKIP confirmed, flagged for transparency.",
-      "lessons_applied": ["defer-to-opaque-pipeline-gate", "strong-stack-noted-not-elevated-beyond-model-tier"]
+      "claude_confidence": 0.50,
+      "reasoning": "Danny Young (STL) has only 46 Statcast pitches season-to-date, below the 100-pitch xERA-scoring gate. No directional pick is possible yet — the pipeline is correct to withhold. Revisit on the next intraday refresh once SP data clears.",
+      "lessons_applied": ["pending-sp-data-gate"]
     },
     "HOU @ TEX": {
       "model_pick": "HOU ML PLATINUM",
-      "model_prob": 0.5009,
+      "model_prob": 0.5069,
       "model_tier": "PLATINUM",
       "model_grade": "C",
-      "claude_decision": "DOWNGRADE",
+      "claude_decision": "CONFIRM",
       "claude_pick": "HOU",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.47,
-      "reasoning": "PLATINUM explicitly WITHHELD by the pipeline (SP edge 0.68 xERA against HOU, PQI Δ+5.8 against, Stage1/2 disagree by 0.20 — F5 gives HOU 84% but full game barely 50.1%). Three independent dimensions oppose the pick simultaneously, the same 'direction is noise' configuration flagged in the 7/8 LAA@TEX postgame (five-signal opposition, 13-1 blowout). Pick_prob is a coin-flip (0.5009). SKIP confirmed; HOU direction treated as unreliable.",
-      "lessons_applied": ["multi-signal-opposition-directional-noise", "PLATINUM-withheld-SP-against", "coin-flip-pick_prob"]
+      "claude_confidence": 0.50,
+      "reasoning": "PLATINUM was explicitly WITHHELD by the pipeline itself (SP edge 0.81 xERA against pick, PQI against Δ+8.1, Stage 1/2 disagree by 0.21). HOU won the last meeting 9-3, mildly supportive of today's HOU pick, but the internally conflicting stack keeps this at SKIP.",
+      "lessons_applied": ["PLATINUM-tier-withheld-SP-against", "hou-tex-recent-hou-blowout"]
     },
     "COL @ SF": {
       "model_pick": "SF ML PLATINUM",
-      "model_prob": 0.6353,
+      "model_prob": 0.6503,
       "model_tier": "PLATINUM",
       "model_grade": "B-",
-      "claude_decision": "DOWNGRADE",
+      "claude_decision": "CONFIRM",
       "claude_pick": "SF",
-      "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Pre-cap score=8, the strongest raw stack on the slate (F1*=1.73 corroborated by F3=1372.3 and F5=+2.06, SP edge 1.40 agrees, PQI +17.8, PLATINUM bonus). But HARD CAP 4 (Stage1/2 delta 0.13 combined with confidence_downgrade=True) forces score to 1 — a distinct, non-rescued cap with no documented exception in the archive (unlike CAP10's four-dimension rule). acute_roster and bullpen_fatigue flags add caution. SKIP confirmed; an elite stack alone doesn't override CAP 4.",
-      "lessons_applied": ["CAP4-no-documented-rescue", "elite-stack-does-not-override-CAP4", "acute-roster-bullpen-fatigue-compound"]
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.58,
+      "reasoning": "Pre-cap score=8, one of the strongest stacks on the slate: starred F1 corroborated by F3 and F5_bullpen, SP edge agrees, PQI confirms Δ+15.9. Only knock is Stage 1/2 disagreement (Δ=0.12) plus confidence_downgrade triggering the well-validated HARD CAP 4. SF also won 4-2 on 7/11 on a similarly strong stack blocked only by a marginal negative edge. Modest rescue to GOLD, not full PLATINUM, out of respect for CAP 4.",
+      "lessons_applied": ["cap4-respected", "sf-col-recent-sf-win"]
     },
     "ARI @ LAD": {
       "model_pick": "TBD ML PENDING_SP_DATA",
       "model_prob": null,
       "model_tier": "PENDING_SP_DATA",
-      "model_grade": "N/A",
+      "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "TBD",
-      "claude_tier": "PENDING_SP_DATA",
-      "claude_confidence": null,
-      "reasoning": "Mitch Bratt has only 54 Statcast pitches season-to-date, below the 100-pitch xERA-scoring minimum. The pipeline correctly withholds a pick until his sample clears. No directional evaluation is possible without a scored SP edge. Hard stop confirmed.",
-      "lessons_applied": ["PENDING-SP-DATA-100-pitch-minimum"]
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Mitch Bratt (LAD) has only 54 Statcast pitches season-to-date, below the 100-pitch gate — no pick yet. Flagging for later refreshes: ARI has beaten LAD in 3 straight tracked games (6/10, 7/10 9-3, 7/11 9-2), with LAD's F3 lineup signal systematically over-rated each time. If this scores later with LAD favored and market edge more negative than -10pp, treat as a categorical SKIP or fade toward ARI regardless of signal strength.",
+      "lessons_applied": ["ari-lad-f3-inflation-pattern"]
     },
     "TOR @ SD": {
       "model_pick": "SD ML SKIP",
-      "model_prob": 0.5967,
+      "model_prob": 0.6056,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "SD",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.46,
-      "reasoning": "SP edge 1.75 xERA AGAINST SD plus PQI -27.8 AGAINST — another instance of the dual-opposing D-grade fade pattern (matches OAK@CHW today and the 7/8-7/9 archive). Buehler's injury-related regression likely explains part of the SP gap. acute_roster and bullpen_fatigue flags compound caution. Market prices SD only marginally above coin-flip (fair_prob=0.4575) despite the model's 59.7% claim — a real edge (+13.91pp) built on an unreliable SP dimension. SKIP confirmed.",
-      "lessons_applied": ["D-grade-dual-opposing-directional-noise", "SP-gap-vs-injury-regression"]
+      "claude_confidence": 0.52,
+      "reasoning": "SP xERA (1.74 against) and PQI (-27.6) both oppose SD, but SD won the last meeting 8-7 on a nearly identical D-grade opposing profile. Directionally supportive, but per the D-grade dual-opposition rule the process response remains SKIP, not an elevation.",
+      "lessons_applied": ["d-grade-dual-opposition-no-fade", "tor-sd-recent-sd-win"]
     }
   }
 }
