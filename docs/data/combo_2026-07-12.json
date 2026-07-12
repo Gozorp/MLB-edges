@@ -1,6 +1,6 @@
 {
  "date": "2026-07-12",
- "generated_utc": "2026-07-12T15:16:05Z",
+ "generated_utc": "2026-07-12T16:15:33Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -92,10 +92,12 @@
    "joint_prob": 0.3446,
    "blocked_by": [
     "grade",
+    "market_band",
     "stage_coherence"
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
+    "+3.5pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 34.5%"
    ]
   },
@@ -108,7 +110,7 @@
     "stage_coherence"
    ],
    "notes": [
-    "+10.4pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "+9.9pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 46.9%"
    ]
   },
@@ -124,7 +126,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+14.7pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "+13.4pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -159,24 +161,13 @@
    "joint_prob": 0.4283,
    "blocked_by": [
     "grade",
-    "conviction_tier"
-   ],
-   "notes": [
-    "final grade D (need A/A-/B+/B)",
-    "tier SKIP"
-   ]
-  },
-  {
-   "matchup": "ATL @ STL",
-   "pick": "STL",
-   "joint_prob": 0.6189,
-   "blocked_by": [
     "conviction_tier",
     "market_band"
    ],
    "notes": [
+    "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+12.0pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "-8.6pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -223,5 +214,5 @@
    ]
   }
  ],
- "n_games": 14
+ "n_games": 13
 }
