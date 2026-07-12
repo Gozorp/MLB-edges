@@ -2339,6 +2339,17 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   #parlay pre,#pl-report-pre{content-visibility:auto;contain-intrinsic-size:auto 480px;}
   #h2h-history,#bullpen-outlook{content-visibility:auto;contain-intrinsic-size:auto 500px;}
 </style>
+<style id="hamburger-fix">
+  /* 2026-07-12: on mobile/tablet the fixed hamburger overlapped the sticky
+     picker's prev-arrow + date input (user screenshot). Give the sticky
+     controls card a left gutter the hamburger can dock into, and align the
+     button to the first controls row. Desktop (>=1100) hides the hamburger
+     entirely, so this is scoped below it. */
+  @media (max-width: 1099px){
+    .picker{ padding-left: 3.4rem; }
+    #drawer-toggle{ top: 0.55rem; left: 0.55rem; }
+  }
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
