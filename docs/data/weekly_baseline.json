@@ -1,50 +1,50 @@
 {
- "generated": "2026-06-21T07:30:01Z",
- "window_end": "2026-06-20",
+ "generated": "2026-07-12T07:30:01Z",
+ "window_end": "2026-07-11",
  "windows": {
   "14d": {
-   "start": "2026-06-06",
+   "start": "2026-06-27",
    "pitching": {
-    "k_pct": 21.96,
-    "bb_pct": 8.62,
-    "hr9": 1.413,
-    "era": 4.5,
-    "bf": 14678,
-    "ip": 3395.0
+    "k_pct": 22.1,
+    "bb_pct": 8.58,
+    "hr9": 1.36,
+    "era": 4.37,
+    "bf": 15555,
+    "ip": 3634.0
    },
    "hitting": {
-    "avg": 0.252,
-    "obp": 0.325,
-    "slg": 0.431,
-    "k_pct": 21.96,
-    "runs": 1830,
-    "pa": 14678
+    "avg": 0.247,
+    "obp": 0.318,
+    "slg": 0.417,
+    "k_pct": 22.1,
+    "runs": 1932,
+    "pa": 15555
    }
   },
   "30d": {
-   "start": "2026-05-21",
+   "start": "2026-06-11",
    "pitching": {
-    "k_pct": 21.89,
-    "bb_pct": 8.58,
-    "hr9": 1.312,
-    "era": 4.37,
-    "bf": 30319,
-    "ip": 7060.2
+    "k_pct": 22.24,
+    "bb_pct": 8.48,
+    "hr9": 1.352,
+    "era": 4.35,
+    "bf": 31048,
+    "ip": 7257.4
    },
    "hitting": {
-    "avg": 0.249,
-    "obp": 0.321,
+    "avg": 0.248,
+    "obp": 0.318,
     "slg": 0.419,
-    "k_pct": 21.89,
-    "runs": 3700,
-    "pa": 30319
+    "k_pct": 22.24,
+    "runs": 3830,
+    "pa": 31048
    }
   }
  },
  "season": {
   "xwoba_proxy": {
-   "xwoba_mean": 0.3045,
-   "n_hitters": 529
+   "xwoba_mean": 0.3001,
+   "n_hitters": 591
   }
  },
  "config_priors": {
@@ -58,196 +58,196 @@
  },
  "drift": {
   "k_pct": {
-   "rolling14": 21.96,
+   "rolling14": 22.1,
    "prior": 22.0,
-   "delta": -0.04
+   "delta": 0.1
   },
   "bb_pct": {
-   "rolling14": 8.62,
+   "rolling14": 8.58,
    "prior": 8.5,
-   "delta": 0.12
+   "delta": 0.08
   }
  },
  "power_ranking_14d": [
   [
-   "New York Yankees",
-   2.0,
-   70,
-   46
-  ],
-  [
-   "Milwaukee Brewers",
-   1.77,
-   78,
-   55
-  ],
-  [
-   "Miami Marlins",
-   1.77,
-   66,
-   43
-  ],
-  [
-   "Chicago Cubs",
-   1.38,
-   67,
-   49
-  ],
-  [
    "Detroit Tigers",
-   1.25,
-   54,
-   39
-  ],
-  [
-   "Los Angeles Angels",
-   1.0,
-   76,
-   62
-  ],
-  [
-   "Philadelphia Phillies",
-   0.92,
-   73,
-   61
-  ],
-  [
-   "Washington Nationals",
-   0.77,
-   68,
-   58
-  ],
-  [
-   "Los Angeles Dodgers",
-   0.77,
-   73,
-   63
-  ],
-  [
-   "Kansas City Royals",
-   0.62,
-   72,
-   64
-  ],
-  [
-   "St. Louis Cardinals",
-   0.54,
-   70,
-   63
-  ],
-  [
-   "San Diego Padres",
-   0.46,
-   58,
-   52
-  ],
-  [
-   "Minnesota Twins",
-   0.31,
-   83,
-   79
-  ],
-  [
-   "Cincinnati Reds",
-   -0.08,
-   54,
-   55
+   2.15,
+   74,
+   46
   ],
   [
    "Boston Red Sox",
-   -0.08,
-   45,
-   46
-  ],
-  [
-   "Colorado Rockies",
-   -0.23,
-   71,
-   74
+   1.92,
+   63,
+   38
   ],
   [
    "Tampa Bay Rays",
-   -0.31,
-   44,
-   48
+   1.43,
+   66,
+   46
   ],
   [
-   "San Francisco Giants",
-   -0.42,
-   48,
-   53
-  ],
-  [
-   "Houston Astros",
-   -0.54,
-   60,
-   67
-  ],
-  [
-   "Toronto Blue Jays",
-   -0.62,
-   56,
+   "Miami Marlins",
+   1.43,
+   84,
    64
   ],
   [
-   "Baltimore Orioles",
-   -0.64,
-   56,
-   65
+   "Chicago Cubs",
+   1.15,
+   75,
+   60
   ],
   [
-   "Seattle Mariners",
-   -0.79,
-   53,
-   64
+   "Los Angeles Dodgers",
+   0.93,
+   79,
+   66
   ],
   [
-   "Atlanta Braves",
-   -0.91,
-   38,
-   48
+   "Minnesota Twins",
+   0.92,
+   63,
+   51
   ],
   [
-   "Cleveland Guardians",
-   -0.92,
-   43,
+   "St. Louis Cardinals",
+   0.8,
+   67,
+   55
+  ],
+  [
+   "Pittsburgh Pirates",
+   0.71,
+   89,
+   79
+  ],
+  [
+   "Arizona Diamondbacks",
+   0.71,
+   64,
    54
   ],
   [
    "Chicago White Sox",
-   -1.0,
+   0.64,
+   59,
+   50
+  ],
+  [
+   "Washington Nationals",
+   0.54,
+   74,
+   67
+  ],
+  [
+   "Milwaukee Brewers",
+   0.5,
+   71,
+   63
+  ],
+  [
+   "Cleveland Guardians",
+   0.36,
+   59,
+   54
+  ],
+  [
+   "Seattle Mariners",
+   0.31,
    50,
-   62
+   46
   ],
   [
-   "Athletics",
-   -1.07,
-   91,
-   106
+   "Colorado Rockies",
+   0.27,
+   88,
+   84
   ],
   [
-   "Arizona Diamondbacks",
-   -1.08,
-   52,
-   66
-  ],
-  [
-   "New York Mets",
-   -1.46,
-   53,
+   "Houston Astros",
+   0.0,
+   72,
    72
   ],
   [
-   "Texas Rangers",
-   -1.69,
-   53,
-   75
+   "Baltimore Orioles",
+   -0.15,
+   54,
+   56
   ],
   [
-   "Pittsburgh Pirates",
-   -1.69,
-   55,
-   77
+   "Atlanta Braves",
+   -0.21,
+   68,
+   71
+  ],
+  [
+   "Texas Rangers",
+   -0.31,
+   63,
+   67
+  ],
+  [
+   "Toronto Blue Jays",
+   -0.38,
+   51,
+   56
+  ],
+  [
+   "Cincinnati Reds",
+   -0.57,
+   54,
+   62
+  ],
+  [
+   "San Francisco Giants",
+   -0.71,
+   63,
+   73
+  ],
+  [
+   "Los Angeles Angels",
+   -0.85,
+   51,
+   62
+  ],
+  [
+   "Kansas City Royals",
+   -0.92,
+   58,
+   70
+  ],
+  [
+   "New York Mets",
+   -1.14,
+   67,
+   83
+  ],
+  [
+   "New York Yankees",
+   -1.14,
+   53,
+   69
+  ],
+  [
+   "Philadelphia Phillies",
+   -1.43,
+   58,
+   78
+  ],
+  [
+   "San Diego Padres",
+   -3.0,
+   58,
+   103
+  ],
+  [
+   "Athletics",
+   -3.85,
+   37,
+   87
   ]
  ]
 }
