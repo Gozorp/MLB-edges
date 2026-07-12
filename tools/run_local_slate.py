@@ -114,6 +114,13 @@ def main():
         run([PY, "tools/feature_coverage_report.py", slate],
             "feature coverage sidecar", fatal=False)
 
+    # 3.6) correlated-combo sidecar (display-only: ML+F5 within-game double
+    #      w/ ledger-derived correlation + unanimous consensus gates; feeds
+    #      the COMBO chip card that replaced Best Pick). Non-fatal.
+    if slate:
+        run([PY, "tools/correlated_combo.py", slate],
+            "correlated combo sidecar", fatal=False)
+
     # 4) manifest.json
     dates = set()
     for f in dd.glob("picks_*_diag.csv"):

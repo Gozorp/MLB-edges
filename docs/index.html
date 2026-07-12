@@ -2623,7 +2623,7 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <span class="muted" id="status"></span>
     <div id="quick-chips" aria-label="Quick slate filters">
       <button type="button" class="q-chip" data-query="show A grades">A Grades</button>
-      <button type="button" class="q-chip" data-query="best pick">Best Pick</button>
+      <button type="button" class="q-chip" id="combo-chip" data-query="correlated combo" title="Correlated ML+F5 double with unanimous consensus gates (replaces Best Pick)">Combo</button>
       <button type="button" class="q-chip" data-query="parlay legs">Parlay Legs</button>
       <button type="button" class="q-chip" data-query="contrarian">Contrarian</button>
     </div>
@@ -10704,9 +10704,126 @@ document.addEventListener("click", function (e) {
       } catch (e) { /* display-only */ }
     }
 
+    /* ---- correlated COMBO card (replaces Best Pick; payload = the
+       combo_<date>.json sidecar). Fetch-on-click: zero page-load cost. ---- */
+    var comboData = {};
+    function comboEsc(s) {
+      return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+    function comboGateChips(gates) {
+      return (gates || []).map(function (g) {
+        var col = g.verdict === "pass" ? "var(--green,#3fb950)"
+                : g.verdict === "veto" ? "var(--red,#f85149)"
+                : "var(--muted,#8b949e)";
+        var mark = g.verdict === "pass" ? "\u2713" : g.verdict === "veto" ? "\u2717" : "\u2022";
+        return '<span title="' + comboEsc(g.note) + '" style="display:inline-block;' +
+          'margin:2px 6px 2px 0;padding:1px 8px;font-size:0.62rem;font-weight:700;' +
+          'border-radius:999px;border:1px solid ' + col + ';color:' + col + ';">' +
+          mark + " " + comboEsc(g.sheet) + "</span>";
+      }).join("");
+    }
+    function comboLegLine(l) {
+      var mkt = l.fair != null
+        ? (l.fair * 100).toFixed(1) + "% fair \u00b7 " +
+          (l.edge_pp > 0 ? "+" : "") + l.edge_pp + "pp " + comboEsc(l.band || "")
+        : comboEsc(l.market || "model-priced");
+      return '<div style="margin:2px 0;font-size:0.78rem;">' +
+        '<b>' + comboEsc(l.type) + '</b> \u2014 ' + comboEsc(l.sel) +
+        ' \u00b7 <b>' + (l.prob * 100).toFixed(1) + '%</b> model \u00b7 ' +
+        '<span style="color:var(--muted,#8b949e);">' + mkt + "</span></div>";
+    }
+    function comboCard(c) {
+      return '<div style="border:1px solid var(--border,#30363d);border-radius:10px;' +
+        'padding:10px 14px;margin:8px 0;">' +
+        '<div style="font-weight:700;">' + comboEsc(c.matchup) +
+        ' \u2014 <span style="color:var(--accent,#58a6ff);">' + comboEsc(c.pick) +
+        " double</span> <span style=\"color:var(--muted);font-size:0.7rem;\">grade " +
+        comboEsc(c.grade) + " \u00b7 " + comboEsc(c.tier) + "</span></div>" +
+        comboLegLine(c.legs[0]) + comboLegLine(c.legs[1]) +
+        '<div style="margin:4px 0;font-size:0.8rem;"><b>Joint ' +
+        (c.joint_prob * 100).toFixed(1) + "%</b> \u00b7 independence would say " +
+        (c.independence_prob * 100).toFixed(1) + "% \u00b7 correlation lift <b>" +
+        (c.correlation_lift_pp > 0 ? "+" : "") + c.correlation_lift_pp + "pp</b></div>" +
+        '<div style="font-size:0.72rem;color:var(--muted,#8b949e);margin:4px 0;">' +
+        comboEsc(c.narrative) + "</div>" +
+        '<div style="margin-top:4px;">' + comboGateChips(c.gates) + "</div></div>";
+    }
+    function comboRender(j, date) {
+      var host = document.getElementById("queryResult");
+      if (!host) return;
+      var h = '<div style="padding:4px 2px;">' +
+        '<div style="font-weight:700;letter-spacing:0.04em;">CORRELATED COMBO \u2014 ' +
+        comboEsc(date) + ' <span style="color:var(--muted);font-size:0.7rem;">' +
+        (j ? j.n_games + " games evaluated \u00b7 unanimous consensus required" : "") +
+        "</span></div>";
+      if (!j) {
+        h += '<div style="color:var(--muted);font-size:0.8rem;margin:8px 0;">Combo sheet not published for this date yet \u2014 it generates with each slate bake.</div></div>';
+        host.innerHTML = h;
+        return;
+      }
+      if (j.combos && j.combos.length) {
+        j.combos.forEach(function (c) { h += comboCard(c); });
+      } else {
+        h += '<div style="font-size:0.8rem;margin:6px 0;">No unanimous combo today \u2014 every candidate was blocked by at least one sheet (absolute-consensus rule).</div>';
+        var near = (j.rejected || []).slice().sort(function (a, b) {
+          return a.blocked_by.length - b.blocked_by.length || b.joint_prob - a.joint_prob;
+        }).slice(0, 3);
+        near.forEach(function (r) {
+          h += '<div style="border:1px dashed var(--border,#30363d);border-radius:10px;' +
+            'padding:8px 12px;margin:6px 0;font-size:0.75rem;">' +
+            "<b>" + comboEsc(r.matchup) + " \u2014 " + comboEsc(r.pick) + "</b>" +
+            ' \u00b7 joint ' + (r.joint_prob * 100).toFixed(1) + "%" +
+            ' \u00b7 <span style="color:var(--red,#f85149);">blocked by ' +
+            comboEsc(r.blocked_by.join(", ")) + "</span>" +
+            '<div style="color:var(--muted,#8b949e);margin-top:2px;">' +
+            comboEsc((r.notes || []).join("; ")) + "</div></div>";
+        });
+      }
+      var co = j.correlation || {};
+      h += "<details style=\"margin-top:6px;font-size:0.72rem;color:var(--muted,#8b949e);\">" +
+        "<summary style=\"cursor:pointer;\">How the correlation is computed</summary>" +
+        "<div style=\"margin:6px 0;line-height:1.5;\">Both legs are graded nightly in the out-of-sample ledger. Across " +
+        comboEsc(co.n_pairs) + " decided pairs: win the game " +
+        (co.p_full_given_f5w != null ? (100 * co.p_full_given_f5w).toFixed(1) : "?") +
+        "% when leading after 5 vs " +
+        (co.p_full_given_f5l != null ? (100 * co.p_full_given_f5l).toFixed(1) : "?") +
+        "% when trailing (ratio " + comboEsc(co.ratio_r) + ", \u03c6 " + comboEsc(co.phi) +
+        "). Today's joint probability rescales that conditional ratio to the model's " +
+        "marginals (Fr\u00e9chet-bounded), so the stated joint always reconstructs the " +
+        "model's own win probabilities. F5 ties void that leg (historical push rate " +
+        (co.f5_push_rate != null ? (100 * co.f5_push_rate).toFixed(1) : "?") + "%)." +
+        "<br>" + comboEsc((j.scope_notes || []).join(" ")) + "</div></details></div>";
+      host.innerHTML = h;
+    }
+    function comboClick() {
+      var dp = document.getElementById("datePicker");
+      var date = (dp && dp.value) || "";
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+      if (date in comboData) { comboRender(comboData[date], date); return; }
+      fetch("./data/combo_" + date + ".json", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { comboData[date] = j; comboRender(j, date); })
+        .catch(function () { comboRender(null, date); });
+    }
+    function comboWire() {
+      try {
+        var qc = document.getElementById("quick-chips");
+        if (!qc || qc.dataset.comboWired) return;
+        qc.dataset.comboWired = "1";
+        qc.addEventListener("click", function (e) {
+          var chip = e.target && e.target.closest && e.target.closest("#combo-chip");
+          if (!chip) return;
+          e.preventDefault();
+          e.stopImmediatePropagation();   /* bypass the query-preset handler */
+          comboClick();
+        }, true);
+      } catch (e) { /* display-only */ }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); hamDock(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); hamDock(); comboWire(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
     try { window.matchMedia("(max-width: 1099px)").addEventListener("change", function () { hamDock(); }); } catch (e) {}
     if (document.readyState !== "loading") { tick(); health(); }
