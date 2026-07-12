@@ -2340,14 +2340,20 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
   #h2h-history,#bullpen-outlook{content-visibility:auto;contain-intrinsic-size:auto 500px;}
 </style>
 <style id="hamburger-fix">
-  /* 2026-07-12: on mobile/tablet the fixed hamburger overlapped the sticky
-     picker's prev-arrow + date input (user screenshot). Give the sticky
-     controls card a left gutter the hamburger can dock into, and align the
-     button to the first controls row. Desktop (>=1100) hides the hamburger
-     entirely, so this is scoped below it. */
+  /* 2026-07-12 v2 (user: gutter looked asymmetrical): the hamburger DOCKS
+     into the sticky picker as its first control -- hamDock() in cc-widgets
+     moves the node on <=1099px. No floating overlay, no padding gutter; the
+     controls row composes symmetrically and the header needs no left
+     clearance anymore. Desktop >=1100 hides the button entirely. */
   @media (max-width: 1099px){
-    .picker{ padding-left: 3.4rem; }
-    #drawer-toggle{ top: 0.55rem; left: 0.55rem; }
+    .picker #drawer-toggle{
+      position: static; order: -1; align-self: center;
+      box-shadow: none; margin: 0;
+    }
+    header{ padding-left: 1rem; }
+  }
+  @media (max-width: 768px){
+    header{ padding-left: 0.9rem; }
   }
 </style>
 </head>
@@ -10682,10 +10688,27 @@ document.addEventListener("click", function (e) {
       } catch (e) { /* display-only */ }
     }
 
+    /* ---- hamburger dock: on <=1099px the drawer toggle lives INSIDE the
+       sticky picker (first control) instead of floating over it. Idempotent;
+       re-run on viewport-band changes. ---- */
+    function hamDock() {
+      try {
+        var ham = document.getElementById("drawer-toggle");
+        var pk = document.querySelector(".picker");
+        if (!ham || !pk) return;
+        if (window.matchMedia("(max-width: 1099px)").matches) {
+          if (ham.parentElement !== pk) pk.insertBefore(ham, pk.firstChild);
+        } else if (ham.parentElement === pk) {
+          document.body.insertBefore(ham, document.body.firstChild);
+        }
+      } catch (e) { /* display-only */ }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); hamDock(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
+    try { window.matchMedia("(max-width: 1099px)").addEventListener("change", function () { hamDock(); }); } catch (e) {}
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
     setInterval(health, 300000);
