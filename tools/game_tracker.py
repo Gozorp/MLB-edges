@@ -22,6 +22,14 @@ Files written to --outdir (created if missing; pass the directory you want):
   live_state.json       latest snapshot (inning/half/outs/bases/score + all
                         player lines), rewritten atomically per PA -- poll
                         this from anywhere for the rolling game state
+  final_boxscore.json   written ONCE when game conclusion is detected:
+  final_boxscore.csv    winner, end reason (regulation/walk-off/extras),
+  final_summary.txt     team totals + every player's complete line
+
+State lives in standard dictionaries (zero dependencies; every write is
+atomic). The exports load straight into pandas if you want frames:
+    df = pandas.read_csv("final_boxscore.csv")
+    box = pandas.json_normalize(json.load(open("final_boxscore.json"))["players"])
 
 Usage:
   python tools/game_tracker.py --outdir "D:/your/designated/path"
@@ -125,6 +133,7 @@ class GameState(object):
         self.bases = [None, None, None]            # 1B, 2B, 3B -> batter name
         self.score = {away: 0, home: 0}
         self.final = False
+        self.end_reason = None                     # set on conclusion detection
 
     def header(self):
         return "%s %s | %s %d - %s %d | %d out%s" % (
@@ -137,7 +146,7 @@ class GameState(object):
                 "label": "Inning %d, %s" % (self.inning, self.half),
                 "half": self.half, "outs": self.outs,
                 "bases": list(self.bases), "score": dict(self.score),
-                "final": self.final}
+                "final": self.final, "end_reason": self.end_reason}
 
 
 class BoxScoreLogger(object):
@@ -197,16 +206,63 @@ class BoxScoreLogger(object):
         self._persist(state, players)
 
     def on_final(self, state, players):
+        """Conclusion detected -> automatic final data dump. Writes the
+        dedicated end-of-game artifacts exactly once, alongside the rolling
+        files that tracked the game live."""
         self._emit("=" * 64)
+        self._emit("GAME OVER detected (%s) -- triggering final data dump"
+                   % (state.end_reason or "final"))
         self._emit("FINAL: %s %d - %s %d (%d innings)" % (
             state.away, state.score[state.away],
             state.home, state.score[state.home], state.inning))
         for line in self.box_lines(players):
             self._emit(line)
-        self._emit("=" * 64)
-        self._emit("playlog:  %s" % os.path.abspath(self.log_path))
-        self._emit("boxscore: %s" % os.path.abspath(self.box_path))
         self._persist(state, players)
+        # -- dedicated final artifacts (stable names, written once) ---------
+        totals = {}
+        for p in players.values():
+            t = totals.setdefault(p.team, {"ab": 0, "r": 0, "h": 0, "bb": 0,
+                                           "k": 0, "hr": 0, "rbi": 0})
+            for f in t:
+                t[f] += getattr(p, f if f != "2b" else "d2")
+        winner = max(state.score, key=lambda t: state.score[t])
+        final_obj = {
+            "state": state.as_dict(),
+            "winner": winner,
+            "team_totals": totals,
+            "players": [p.as_dict() for p in players.values()],
+            "plays": self.plays,
+            "concluded": datetime.datetime.now().isoformat(timespec="seconds"),
+            "rolling_files": {"playlog": os.path.abspath(self.log_path),
+                              "boxscore_json": os.path.abspath(self.box_path),
+                              "boxscore_csv": os.path.abspath(self.csv_path)}}
+        fin_json = os.path.join(self.outdir, "final_boxscore.json")
+        fin_csv = os.path.join(self.outdir, "final_boxscore.csv")
+        fin_txt = os.path.join(self.outdir, "final_summary.txt")
+        self._atomic_json(fin_json, final_obj)
+        tmp = fin_csv + ".tmp"
+        with io.open(tmp, "w", encoding="utf-8", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["team", "name", "pa", "ab", "r", "h", "bb", "k",
+                        "2b", "3b", "hr", "rbi", "avg"])
+            for p in players.values():
+                w.writerow([p.team, p.name, p.pa, p.ab, p.r, p.h, p.bb, p.k,
+                            p.d2, p.d3, p.hr, p.rbi, "%.3f" % p.avg])
+            for team, t in totals.items():
+                w.writerow([team, "TOTALS", "", t["ab"], t["r"], t["h"],
+                            t["bb"], t["k"], "", "", t["hr"], t["rbi"], ""])
+        os.replace(tmp, fin_csv)
+        with io.open(fin_txt, "w", encoding="utf-8") as f:
+            f.write("FINAL (%s): %s %d - %s %d in %d innings, %d plays\n\n"
+                    % (state.end_reason or "final", state.away,
+                       state.score[state.away], state.home,
+                       state.score[state.home], state.inning, self.plays))
+            f.write("\n".join(self.box_lines(players)) + "\n")
+        self._emit("=" * 64)
+        self._emit("final dump: %s" % os.path.abspath(fin_json))
+        self._emit("            %s" % os.path.abspath(fin_csv))
+        self._emit("            %s" % os.path.abspath(fin_txt))
+        self._emit("playlog:    %s" % os.path.abspath(self.log_path))
 
     # -- box score -----------------------------------------------------------
     def box_lines(self, players):
@@ -366,6 +422,7 @@ class GameSimulator(object):
 
     def play(self):
         st = self.state
+        walkoff = False
         while True:
             st.half = "Top"
             self._half_inning()
@@ -373,10 +430,17 @@ class GameSimulator(object):
             if not (st.inning >= 9 and home_leads):    # skip bottom if decided
                 st.half = "Bottom"
                 self._half_inning()
+                # early return with <3 outs and the lead = walk-off
+                walkoff = (st.inning >= 9 and st.outs < 3
+                           and st.score[st.home] > st.score[st.away])
+            # conclusion detection: 9+ innings and the score is not tied
             if st.inning >= 9 and st.score[st.home] != st.score[st.away]:
                 break
             st.inning += 1
         st.final = True
+        st.end_reason = ("walk-off" if walkoff
+                         else "regulation, 9 innings" if st.inning == 9
+                         else "extra innings, %d" % st.inning)
         self.logger.on_final(st, self.players)
         return st
 
@@ -416,6 +480,17 @@ def selftest():
         sim.substitute("LAD", "Miguel Rojas", "Kike Hernandez")
         assert "Kike Hernandez" in sim.players
         assert sim.lineups["LAD"][8] == "Kike Hernandez"
+        # conclusion detection -> automatic final dump artifacts
+        assert live["state"]["end_reason"] is not None
+        fin = json.load(io.open(os.path.join(tmp, "final_boxscore.json"),
+                                encoding="utf-8"))
+        assert fin["winner"] in (st.away, st.home)
+        assert fin["team_totals"][st.away]["h"] + \
+               fin["team_totals"][st.home]["h"] == total_h
+        fin_rows = list(csv.reader(io.open(os.path.join(tmp, "final_boxscore.csv"),
+                                           encoding="utf-8")))
+        assert len(fin_rows) == 1 + 18 + 2          # header + players + totals
+        assert os.path.exists(os.path.join(tmp, "final_summary.txt"))
         # determinism
         logger2 = BoxScoreLogger(tmp, ["Shohei Ohtani"], quiet_innings=True,
                                  echo=False)
