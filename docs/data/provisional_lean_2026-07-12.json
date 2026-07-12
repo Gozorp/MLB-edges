@@ -1,13 +1,26 @@
 {
   "date": "2026-07-12",
-  "generated_utc": "2026-07-12T07:06:44.482751+00:00",
+  "generated_utc": "2026-07-12T19:36:02.888891+00:00",
   "method": "sp-independent-team-strength",
   "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
   "games": {
+    "ATL @ STL": {
+      "provisional_pick": "ATL",
+      "p_pick": 0.719,
+      "p_home": 0.281,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "ATL",
+      "home": "STL",
+      "away_strength": 1.36,
+      "home_strength": 0.31
+    },
     "ARI @ LAD": {
       "provisional_pick": "LAD",
-      "p_pick": 0.936,
-      "p_home": 0.936,
+      "p_pick": 0.937,
+      "p_home": 0.937,
       "basis": "team-strength(win%+runDiff)+home-field",
       "confidence": "medium",
       "is_provisional": true,
@@ -15,7 +28,7 @@
       "away": "AZ",
       "home": "LAD",
       "away_strength": -0.09,
-      "home_strength": 2.32
+      "home_strength": 2.33
     }
   }
 }
