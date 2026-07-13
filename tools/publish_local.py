@@ -18,8 +18,37 @@ import sys, os, glob, csv, json, shutil, subprocess, datetime, tempfile
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 csv.field_size_limit(10 ** 7)
 label = sys.argv[1] if len(sys.argv) > 1 else "local"
-TODAY = datetime.datetime.utcnow().date().isoformat()
-YEST = (datetime.datetime.utcnow().date() - datetime.timedelta(days=1)).isoformat()
+
+
+def _slate_today():
+    """The active SLATE date, not the wall-clock UTC date.
+
+    2026-07-12 incident: evening bakes (after 00:00Z = 8PM ET) computed
+    TODAY=utc-tomorrow, found no diag for it, and ABORTED every publish for
+    the rest of the US night. The slate the pipeline just baked is the newest
+    picks_*_diag.csv on disk -- publish THAT date. Guardrails: only accept a
+    recently-modified diag (36h) within 1 day of UTC-today; else fall back to
+    the UTC date (original behavior)."""
+    utc_today = datetime.datetime.utcnow().date()
+    best = None
+    for p in glob.glob(os.path.join("docs", "data", "picks_*_diag.csv")):
+        base = os.path.basename(p)
+        try:
+            d = datetime.date.fromisoformat(base[6:16])
+        except ValueError:
+            continue
+        if abs((d - utc_today).days) > 1:
+            continue
+        age_h = (datetime.datetime.now().timestamp() - os.path.getmtime(p)) / 3600.0
+        if age_h > 36:
+            continue
+        if best is None or d > best:
+            best = d
+    return (best or utc_today).isoformat()
+
+
+TODAY = _slate_today()
+YEST = (datetime.date.fromisoformat(TODAY) - datetime.timedelta(days=1)).isoformat()
 
 
 class _Tee:
