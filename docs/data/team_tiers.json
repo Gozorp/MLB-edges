@@ -1,9 +1,15 @@
 {
- "generated_utc": "2026-07-13T07:01:32Z",
+ "generated_utc": "2026-07-13T19:31:11Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "CHC promoted: Above Average -> Elite (eff +1.05, mmr +0.13)",
+  "PHI promoted: Average -> Above Average (eff +0.38, mmr +0.01)",
+  "SEA promoted: Below Average -> Average (eff +0.00, mmr -0.09)",
+  "AZ promoted: Average -> Above Average (eff +0.40, mmr +0.43)",
+  "DET demoted: Above Average -> Average (eff +0.13, mmr +0.27)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -92,9 +98,7 @@
      "upset L vs HOU (07-04)",
      "upset L vs HOU (07-05)"
     ]
-   }
-  ],
-  "Above Average": [
+   },
    {
     "name": "Chicago Cubs",
     "abbr": "CHC",
@@ -106,15 +110,15 @@
     "z": 0.924,
     "mmr": 0.128,
     "eff": 1.053,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
+    "movement": "promoted",
+    "moved_from": "Above Average",
     "upsets": [
      "upset L vs BAL (07-09)",
      "upset L vs CIN (07-10)"
     ]
-   },
+   }
+  ],
+  "Above Average": [
    {
     "name": "Chicago White Sox",
     "abbr": "CWS",
@@ -160,6 +164,24 @@
     ]
    },
    {
+    "name": "Philadelphia Phillies",
+    "abbr": "PHI",
+    "w": 54,
+    "l": 43,
+    "pct": 0.557,
+    "rd": -10,
+    "rationale": "54-43 (.557), -10 run differential -- a roughly even run margin, winning above what that margin implies.",
+    "z": 0.37,
+    "mmr": 0.015,
+    "eff": 0.385,
+    "movement": "promoted",
+    "moved_from": "Average",
+    "upsets": [
+     "upset L vs KC (07-05)",
+     "upset L vs KC (07-06)"
+    ]
+   },
+   {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
     "w": 50,
@@ -188,47 +210,25 @@
     "eff": 0.665
    },
    {
-    "name": "Detroit Tigers",
-    "abbr": "DET",
-    "w": 44,
-    "l": 52,
-    "pct": 0.458,
-    "rd": 24,
-    "rationale": "44-52 (.458), +24 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.27).",
-    "z": -0.14,
-    "mmr": 0.268,
-    "eff": 0.128,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
+    "name": "Arizona Diamondbacks",
+    "abbr": "AZ",
+    "w": 49,
+    "l": 47,
+    "pct": 0.51,
+    "rd": -13,
+    "rationale": "49-47 (.510), -13 run differential -- a negative run margin. Results running above tier expectation (MMR +0.43).",
+    "z": -0.029,
+    "mmr": 0.425,
+    "eff": 0.396,
+    "movement": "promoted",
+    "moved_from": "Average",
     "upsets": [
-     "upset W vs NYY (06-29)",
-     "upset W vs NYY (06-30)"
+     "upset L vs SF (07-01)",
+     "upset W vs MIL (07-04)"
     ]
    }
   ],
   "Average": [
-   {
-    "name": "Philadelphia Phillies",
-    "abbr": "PHI",
-    "w": 54,
-    "l": 43,
-    "pct": 0.557,
-    "rd": -10,
-    "rationale": "54-43 (.557), -10 run differential -- a roughly even run margin, winning above what that margin implies.",
-    "z": 0.37,
-    "mmr": 0.015,
-    "eff": 0.385,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs KC (07-05)",
-     "upset L vs KC (07-06)"
-    ]
-   },
    {
     "name": "Cleveland Guardians",
     "abbr": "CLE",
@@ -240,6 +240,23 @@
     "z": 0.189,
     "mmr": 0.159,
     "eff": 0.347
+   },
+   {
+    "name": "Seattle Mariners",
+    "abbr": "SEA",
+    "w": 48,
+    "l": 49,
+    "pct": 0.495,
+    "rd": 16,
+    "rationale": "48-49 (.495), +16 run differential -- a solidly positive run margin.",
+    "z": 0.089,
+    "mmr": -0.087,
+    "eff": 0.002,
+    "movement": "promoted",
+    "moved_from": "Below Average",
+    "upsets": [
+     "upset W vs TB (07-12)"
+    ]
    },
    {
     "name": "Washington Nationals",
@@ -254,26 +271,6 @@
     "eff": -0.199
    },
    {
-    "name": "Arizona Diamondbacks",
-    "abbr": "AZ",
-    "w": 49,
-    "l": 47,
-    "pct": 0.51,
-    "rd": -13,
-    "rationale": "49-47 (.510), -13 run differential -- a negative run margin. Results running above tier expectation (MMR +0.43).",
-    "z": -0.029,
-    "mmr": 0.425,
-    "eff": 0.396,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs SF (07-01)",
-     "upset W vs MIL (07-04)"
-    ]
-   },
-   {
     "name": "Texas Rangers",
     "abbr": "TEX",
     "w": 49,
@@ -286,6 +283,24 @@
     "eff": 0.039,
     "upsets": [
      "upset L vs LAA (07-08)"
+    ]
+   },
+   {
+    "name": "Detroit Tigers",
+    "abbr": "DET",
+    "w": 44,
+    "l": 52,
+    "pct": 0.458,
+    "rd": 24,
+    "rationale": "44-52 (.458), +24 run differential -- a solidly positive run margin, winning below what that margin implies. Results running above tier expectation (MMR +0.27).",
+    "z": -0.14,
+    "mmr": 0.268,
+    "eff": 0.128,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset W vs NYY (06-29)",
+     "upset W vs NYY (06-30)"
     ]
    },
    {
@@ -306,25 +321,6 @@
    }
   ],
   "Below Average": [
-   {
-    "name": "Seattle Mariners",
-    "abbr": "SEA",
-    "w": 48,
-    "l": 49,
-    "pct": 0.495,
-    "rd": 16,
-    "rationale": "48-49 (.495), +16 run differential -- a solidly positive run margin.",
-    "z": 0.089,
-    "mmr": -0.087,
-    "eff": 0.002,
-    "pending": {
-     "dir": "up",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs TB (07-12)"
-    ]
-   },
    {
     "name": "San Diego Padres",
     "abbr": "SD",
