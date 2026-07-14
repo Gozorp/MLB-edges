@@ -1,0 +1,52 @@
+{
+ "date": "2026-07-14",
+ "generated_utc": "2026-07-14T07:02:29+00:00",
+ "schema": "v1-shadow",
+ "scope": "DISPLAY/SHADOW ONLY -- never feeds model/picks/stake",
+ "weights": {
+  "batter": 0.45,
+  "sp": 0.35,
+  "bp": 0.2,
+  "K_delta": 2.5,
+  "delta_cap": 7.0,
+  "interval_days": 5,
+  "gamma": 0.35,
+  "lineup_n": 9
+ },
+ "method": "0-100 ecosystem = 0.45*batter(top9 OPS/K%) + 0.35*SP_today(K-BB/WHIP/HR9) + 0.20*BP(relief exec + bullpen_meta fatigue); Interval_Delta=clamp(2.5*(W-E),-7,7) trailing 5d; shadow decompress logit += 0.35*z(eco_diff). statsapi-only. Hard-Hit%/lineup-specific = July.",
+ "teams": {
+  "NL": {
+   "batter": 50.0,
+   "sp_today": 50.0,
+   "sp_src": "default",
+   "bp_health": 50.0,
+   "ecosystem_score": 50.0,
+   "interval_delta": 0.0,
+   "interval_W_E": null
+  },
+  "AL": {
+   "batter": 50.0,
+   "sp_today": 50.0,
+   "sp_src": "default",
+   "bp_health": 50.0,
+   "ecosystem_score": 50.0,
+   "interval_delta": 0.0,
+   "interval_W_E": null
+  }
+ },
+ "games": [
+  {
+   "matchup": "AL @ NL",
+   "home": "NL",
+   "away": "AL",
+   "raw_home_prob": 0.665,
+   "home_eco": 50.0,
+   "away_eco": 50.0,
+   "pred_total": 9.36,
+   "total_line": null,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.665,
+   "confidence_delta_pp": 0.0
+  }
+ ]
+}
