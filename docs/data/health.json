@@ -1,31 +1,31 @@
 {
   "version": 2,
-  "checked_at": "2026-07-14T05:53:58.277726+00:00",
+  "checked_at": "2026-07-14T08:21:42.570878+00:00",
   "overall": "red",
   "categories": {
-    "workflows": "green",
+    "workflows": "yellow",
     "data_flow": "red",
     "deployment": "green",
-    "model": "yellow"
+    "model": "frozen"
   },
   "checks": [
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 6.7h ago",
+      "message": "last slate publish 0.2h ago",
       "detail": {
-        "last_run_iso": "2026-07-13T16:12:38-07:00",
-        "age_hours": 6.69
+        "last_run_iso": "2026-07-14T01:12:29-07:00",
+        "age_hours": 0.15
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 2.0d ago",
+      "message": "last fired 2.1d ago",
       "detail": {
         "last_run_iso": "2026-07-12T06:34:32Z",
-        "age_hours": 47.32,
+        "age_hours": 49.79,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,46 +33,58 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 1.9d ago",
+      "message": "last fired 2.0d ago",
       "detail": {
         "last_run_iso": "2026-07-12T07:26:41Z",
-        "age_hours": 46.45,
+        "age_hours": 48.92,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
     },
     {
       "name": "claude_brain_heartbeat",
-      "severity": "green",
-      "message": "last fired 1.5d ago",
+      "severity": "yellow",
+      "message": "last fired 1.6 days ago (threshold 2d)",
       "detail": {
         "last_run_iso": "2026-07-12T18:57:51Z",
-        "age_hours": 34.94,
+        "age_hours": 37.4,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
     },
     {
       "name": "bullpen_meta_freshness",
-      "severity": "red",
-      "message": "bullpen_meta_2026-07-14.json missing",
+      "severity": "green",
+      "message": "written 0.0h ago",
       "detail": {
-        "expected_path": "docs/data/bullpen_meta_2026-07-14.json"
+        "path": "docs/data/bullpen_meta_2026-07-14.json",
+        "mtime_age_hours": 0.0
       },
       "category": "data_flow"
     },
     {
       "name": "kalshi_coverage_rate",
       "severity": "red",
-      "message": "no picks_<today>_diag.csv found",
-      "detail": {},
+      "message": "100% of slate has no Kalshi moneyline",
+      "detail": {
+        "total_rows": 1,
+        "ok_rows": 0,
+        "non_ok_pct": 100.0,
+        "status_distribution": {
+          "all_empty": 1
+        }
+      },
       "category": "data_flow"
     },
     {
       "name": "pending_sp_data_rate",
-      "severity": "yellow",
-      "message": "no picks CSV for today",
-      "detail": {},
+      "severity": "green",
+      "message": "0/1 rows PENDING_SP_DATA",
+      "detail": {
+        "total_rows": 1,
+        "pending_sp_data_count": 0,
+        "pct_of_slate": 0.0
+      },
       "category": "data_flow"
     },
     {
@@ -84,9 +96,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-14T05:53:58.359Z",
+          "timestamp": "2026-07-14T08:21:42.669Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "ORD"
         }
       },
       "category": "deployment"
@@ -94,10 +106,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 969.1h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 971.6h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 969.14,
+        "age_hours": 971.6,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
@@ -124,9 +136,13 @@
     },
     {
       "name": "stress_warning_rate",
-      "severity": "yellow",
-      "message": "no picks CSV for today",
-      "detail": {},
+      "severity": "green",
+      "message": "0/1 rows stress-warned",
+      "detail": {
+        "total_rows": 1,
+        "stress_warned_count": 0,
+        "pct_of_slate": 0.0
+      },
       "category": "model"
     }
   ]
