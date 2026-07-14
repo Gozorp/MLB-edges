@@ -1,0 +1,23 @@
+{
+  "date": "2026-07-14",
+  "fit_at": "2026-07-14T08:57:28Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 1,
+  "patterns_recognized": [
+    "Today's slate contains only the MLB All-Star Game (AL @ NL) — no regular-season games are scheduled during the All-Star break. odds_status=all_empty confirms no sportsbook market exists for this exhibition, and fair_prob/edge_pp are both blank because there is no line to devig against. The pipeline still ran its regular-season scoring machinery on it anyway (D grade, score=-1, 'SP edge AGAINST pick' reason) which is a category error — All-Star rosters mix pitchers from many teams and don't reflect real starting-rotation matchups, so the SP-edge feature is meaningless here. Deferring entirely to the pipeline's own SKIP tier rather than engaging with the sub-score."
+  ],
+  "by_matchup": {
+    "AL @ NL": {
+      "model_pick": "NL ML SKIP",
+      "model_prob": 0.665,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.5,
+      "reasoning": "This is the MLB All-Star Game, not a regular-season matchup — odds_status=all_empty and fair_prob/edge_pp are both null, meaning there is no market to price an edge against. The pipeline's D-grade/score=-1 output comes from applying SP-xERA and Stage1/2 features designed for real rotations to an exhibition roster, which isn't a meaningful signal (All-Star 'starters' aren't a normal SP matchup and bullpen usage is exhibition-only). No postgame archive entries exist for All-Star Games to draw lessons from. SKIP confirmed — no bettable edge exists today regardless of the model's internal score.",
+      "lessons_applied": ["exhibition-game-no-market", "SP-edge-feature-inapplicable-to-ASG", "defer-to-pipeline-SKIP-no-odds"]
+    }
+  }
+}
