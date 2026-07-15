@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-14",
+  "model": "claude-sonnet-5",
+  "fit_at": "2026-07-15T13:53:51Z",
+  "n_analyzed": 1,
+  "summary": "One matchup on the slate (AL @ NL) and it was the MLB All-Star Game, not a regular-season game — odds_status=all_empty confirms no sportsbook market ever existed. The model's D-grade NL SKIP pick is not a bettable directional call (no fair_prob/edge_pp to grade against), so this slate produces zero wins/losses and no hit rate. AL won the exhibition 4-0. No lessons are extracted from All-Star rosters/pitching since the SP-xERA, PQI, and F-series lineup features are built for real starting rotations, not All-Star squads mixing pitchers across teams. Carry forward all patterns from 2026-07-11 (last regular-season postgame) unchanged into the next regular-season Claude Brain run.",
+  "by_matchup": {
+    "AL @ NL": {
+      "verdict": "NO_PICK",
+      "model_pick": "NL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-0",
+      "headline": "AL All-Stars beat NL All-Stars 4-0; not a bettable pick — no market exists for this exhibition (odds_status=all_empty).",
+      "hypothesis": "This is the MLB All-Star Game, not a regular-season matchup. The pipeline's D-grade/score=-1 NL pick came from applying SP-xERA (Sánchez vs Cease) and Stage 1/2 disagreement features to exhibition 'starters' who don't reflect a real rotation matchup, and fair_prob/edge_pp are both null since no sportsbook priced this game. Neither a process failure nor a variance failure applies — there was no real edge to evaluate in the first place, so grading AL's 4-0 win as a model 'loss' would be a category error.",
+      "signals_to_recheck": "N/A — exhibition game, no market (odds_status=all_empty); SP_xera_gap and PQI features are not applicable to All-Star rosters and should continue to be ignored on future ASG slates."
+    }
+  },
+  "patterns_observed": []
+}
