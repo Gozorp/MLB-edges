@@ -1,24 +1,32 @@
 {
   "date": "2026-07-16",
-  "fit_at": "2026-07-16T18:54:17Z",
+  "fit_at": "2026-07-16T14:00:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 1,
   "patterns_recognized": [
-    "HARD CAP 10 rescue (CONFIRM elevating a bottom-bucket 0.50-0.55 pick) has only proven durable when the pre-cap stack hits score>=4-5 with F-signal + SP-xERA + PQI + Stage-agreement all simultaneously affirming (validated 6/12 ARI@CIN, 7/10 CLE@MIA). Today's lone game (NYM@PHI) has pre_cap_score=0, zero F-signals, and PQI running against the pick — the opposite profile — so this is a clean CONFIRM-of-SKIP, not a rescue candidate.",
-    "Recent slates (7/9-7/11) show bottom-bucket non-CONFIRM SKIPs split roughly at their historical ~31% hit rate when the pre-cap stack is genuinely thin (no F-signal), versus surprising outperformance only when at least one meaningful F-signal (F3 > 1000) was present. NYM@PHI has no F-signal at all, which argues against optimism even directionally."
+    "F1*-starred GOLD picks without F3 ≥ 1000 as an independent corroborator produced three consecutive losses across two slates (MIL G1/G2 7/11, SEA@TB 7/12): F1* and SP-xERA draw from the same thin Statcast pool and are partially redundant, not independent corroborators. F3_swing_take_gap ≥ 1000 is now required as a third anchor before confirming any starred-F1 pick at GOLD or above.",
+    "Stage 2 full-game direction has consistently outperformed Stage 1 in high f5_full_delta zones (≥ 0.15) across 7/10-7/12: three consecutive large-delta cases (LAA@MIN delta=0.224, SEA@TB delta=0.242, NYY@WSH delta=0.293) all resolved in Stage 2's direction. Do not treat Stage 1 lean as an OVERRIDE trigger against Stage 2.",
+    "D-grade dual-opposing-signal picks (SP xERA against + PQI against) split 4W/3L directionally on 7/11 — directional ambiguity is genuine. The only correct response is SKIP; OVERRIDE toward the opposing team is not warranted even when both signals simultaneously oppose the model pick.",
+    "CAP 10 bottom-bucket CONFIRM-rescued picks hit 47.6% vs 31.2% non-CONFIRM (archive through 5/18), but the rescued rate is itself below 50% breakeven. The four-dimension rescue rule (F-signal + SP-xERA + PQI + Stage agree simultaneously at pre-cap score ≥ 5) remains the only validated elevation pathway — confirmed twice on CLE@MIA (7/10 and 7/12).",
+    "Pick-column misread risk documented on 7/8 (four misreads in one session): always read the `pick` column directly from the CSV. Do NOT infer the model pick from f5_prob, full_prob, or p_model, especially when Stage 1 and Stage 2 disagree across the 50% threshold."
   ],
   "by_matchup": {
     "NYM @ PHI": {
       "model_pick": "NYM ML SKIP",
-      "model_prob": 0.5463,
+      "model_prob": 0.5523,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "NYM",
       "claude_tier": "SKIP",
       "claude_confidence": 0.52,
-      "reasoning": "Only game on the slate and pre-cap score is already 0 — no F-signal fired at all (signals column empty), PQI runs against the pick (Δ+9.5), and team_quality_mod is also against (-1, disabled in scoring but directionally consistent). NYM sits at 40-57 vs PHI's 54-43, a real quality gap the model isn't rewarding NYM for overcoming. pick_prob=0.546 lands in the (0.50,0.55] marginal band where HARD CAP 10 already forced score to 0. Statsapi confirms Christian Scott (12 GS, 3.17 ERA, 999 pitches — no small-sample gate issue) vs Aaron Nola as probable starters, matching the CSV; no late scratch or lineup surprise to flag. No rescue-caliber stack here — straight CONFIRM of the SKIP.",
-      "lessons_applied": ["cap10-rescue-requires-score>=4", "weak-stack-bottom-bucket-stays-skip", "team-quality-gap-corroborates-pqi-against"]
+      "reasoning": "NYM correctly graded SKIP: score=0 (no F-signal fires, PQI Δ=+9.3 opposing NYM, CAP 10 fires at pick_prob=0.535). Four-dimension rescue (F-signal + SP-xERA + PQI + Stage agree at pre-cap ≥ 5) is unmet. Platoon context unavailable (vs_today_SP_OPS null throughout—lineups not yet posted). BvP: Soto is a strong OWNER vs Nola (59 PA, shrunk OPS 1.000, 0.085 HR/PA); Lindor historically struggles (42 PA, shrunk 0.666). One OWNER alone does not elevate a zero-signal pick per the BvP framework. Scott's K% edge (28.7% vs Nola 24.12%) modestly corroborates NYM's Stage 2 direction; no live injury or roster information is verifiable.",
+      "lessons_applied": [
+        "CAP-10 bottom-bucket suppression correct: no F-signal fires and PQI opposes NYM — four-dimension rescue threshold unmet",
+        "BvP one-OWNER rule: Soto OWNER vs Nola (59 PA, shrunk 1.000) noted but one OWNER is insufficient to elevate a zero-signal pick",
+        "Stage 2 full-game direction (NYM 55.2%) corroborated by Scott K% edge; Stage 1 lean (PHI 60% F5) does not override Stage 2 per 7/10-7/12 high-delta pattern",
+        "Pick-column discipline: model_pick=NYM read directly from CSV `pick` column, not inferred from f5_prob or full_prob"
+      ]
     }
   }
 }
