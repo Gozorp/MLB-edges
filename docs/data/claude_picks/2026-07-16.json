@@ -1,0 +1,24 @@
+{
+  "date": "2026-07-16",
+  "fit_at": "2026-07-16T18:54:17Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 1,
+  "patterns_recognized": [
+    "HARD CAP 10 rescue (CONFIRM elevating a bottom-bucket 0.50-0.55 pick) has only proven durable when the pre-cap stack hits score>=4-5 with F-signal + SP-xERA + PQI + Stage-agreement all simultaneously affirming (validated 6/12 ARI@CIN, 7/10 CLE@MIA). Today's lone game (NYM@PHI) has pre_cap_score=0, zero F-signals, and PQI running against the pick — the opposite profile — so this is a clean CONFIRM-of-SKIP, not a rescue candidate.",
+    "Recent slates (7/9-7/11) show bottom-bucket non-CONFIRM SKIPs split roughly at their historical ~31% hit rate when the pre-cap stack is genuinely thin (no F-signal), versus surprising outperformance only when at least one meaningful F-signal (F3 > 1000) was present. NYM@PHI has no F-signal at all, which argues against optimism even directionally."
+  ],
+  "by_matchup": {
+    "NYM @ PHI": {
+      "model_pick": "NYM ML SKIP",
+      "model_prob": 0.5463,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYM",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Only game on the slate and pre-cap score is already 0 — no F-signal fired at all (signals column empty), PQI runs against the pick (Δ+9.5), and team_quality_mod is also against (-1, disabled in scoring but directionally consistent). NYM sits at 40-57 vs PHI's 54-43, a real quality gap the model isn't rewarding NYM for overcoming. pick_prob=0.546 lands in the (0.50,0.55] marginal band where HARD CAP 10 already forced score to 0. Statsapi confirms Christian Scott (12 GS, 3.17 ERA, 999 pitches — no small-sample gate issue) vs Aaron Nola as probable starters, matching the CSV; no late scratch or lineup surprise to flag. No rescue-caliber stack here — straight CONFIRM of the SKIP.",
+      "lessons_applied": ["cap10-rescue-requires-score>=4", "weak-stack-bottom-bucket-stays-skip", "team-quality-gap-corroborates-pqi-against"]
+    }
+  }
+}
