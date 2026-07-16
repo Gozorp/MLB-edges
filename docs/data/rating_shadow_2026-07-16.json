@@ -1,0 +1,58 @@
+{
+ "date": "2026-07-16",
+ "generated_utc": "2026-07-16T19:32:38+00:00",
+ "schema": "v1-shadow",
+ "scope": "DISPLAY/SHADOW ONLY -- never feeds model/picks/stake",
+ "weights": {
+  "batter": 0.45,
+  "sp": 0.35,
+  "bp": 0.2,
+  "K_delta": 2.5,
+  "delta_cap": 7.0,
+  "interval_days": 5,
+  "gamma": 0.35,
+  "lineup_n": 9
+ },
+ "method": "0-100 ecosystem = 0.45*batter(top9 OPS/K%) + 0.35*SP_today(K-BB/WHIP/HR9) + 0.20*BP(relief exec + bullpen_meta fatigue); Interval_Delta=clamp(2.5*(W-E),-7,7) trailing 5d; shadow decompress logit += 0.35*z(eco_diff). statsapi-only. Hard-Hit%/lineup-specific = July.",
+ "teams": {
+  "PHI": {
+   "batter": 53.0,
+   "sp_today": 51.2,
+   "sp_src": "named",
+   "bp_health": 88.0,
+   "ecosystem_score": 59.4,
+   "interval_delta": 3.15,
+   "interval_W_E": [
+    2.0,
+    0.74
+   ]
+  },
+  "NYM": {
+   "batter": 48.8,
+   "sp_today": 65.0,
+   "sp_src": "named",
+   "bp_health": 76.4,
+   "ecosystem_score": 60.0,
+   "interval_delta": -1.12,
+   "interval_W_E": [
+    0.0,
+    0.45
+   ]
+  }
+ },
+ "games": [
+  {
+   "matchup": "NYM @ PHI",
+   "home": "PHI",
+   "away": "NYM",
+   "raw_home_prob": 0.4477,
+   "home_eco": 62.5,
+   "away_eco": 58.9,
+   "pred_total": 8.58,
+   "total_line": 9.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.6201,
+   "confidence_delta_pp": 17.2
+  }
+ ]
+}

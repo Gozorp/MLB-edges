@@ -1,7 +1,96 @@
 {
  "date": "2026-07-16",
- "generated_utc": "2026-07-16T07:03:13+00:00",
+ "generated_utc": "2026-07-16T19:32:30+00:00",
  "schema": "v2-era-gated-cascade",
  "method": "ERA-gated 5-tier cascade: GOD<=2.50 override / ACE<=3.40 cap-SMALL / AVG<=4.50 matchup+trend / HIGH>4.50. Opp HR = 3yr-decayed(1/.6/.3) vs-team gameLog, Bayesian-shrunk to season HR/9 (PAD 20IP); FREQ>1.5 SMALL<1.0. Trend=last3 ERA>season+1.5 or K-BB%% drop>=5pp. DISPLAY-ONLY.",
- "sps": {}
+ "sps": {
+  "Christian Scott": {
+   "id": 681035,
+   "opp": "PHI",
+   "opp_id": 143,
+   "season_era": 3.17,
+   "season_hr9": 1.17,
+   "season_kbb": 16.7,
+   "era_tier": "ACE",
+   "matchup_w_hr": 1.0,
+   "matchup_w_ip": 4.3,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 1,
+     "ip": 4.3,
+     "w": 1.0
+    }
+   ],
+   "smoothed_matchup_hr9": 1.33,
+   "matchup_freq": "MODERATE",
+   "matchup_basis": "vs PHI 3yr (2026:1HR/4IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 3.38,
+   "l3_hr": 3,
+   "l3_hr_per_start": 1.0,
+   "l3_kbb": 20.0,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 3.38 vs season 3.17)",
+   "risk_level": 4,
+   "risk_label": "Ace / Low",
+   "flag": null,
+   "mult": 1.11,
+   "hr_per_start": 1.0,
+   "era": 3.38,
+   "er_spike": false
+  },
+  "Aaron Nola": {
+   "id": 605400,
+   "opp": "NYM",
+   "opp_id": 121,
+   "season_era": 5.75,
+   "season_hr9": 1.86,
+   "season_kbb": 16.7,
+   "era_tier": "HIGH",
+   "matchup_w_hr": 3.8,
+   "matchup_w_ip": 16.4,
+   "matchup_seasons": [
+    {
+     "season": 2026,
+     "hr": 2,
+     "ip": 5.0,
+     "w": 1.0
+    },
+    {
+     "season": 2025,
+     "hr": 2,
+     "ip": 12.3,
+     "w": 0.6
+    },
+    {
+     "season": 2024,
+     "hr": 2,
+     "ip": 13.3,
+     "w": 0.3
+    }
+   ],
+   "smoothed_matchup_hr9": 1.96,
+   "matchup_freq": "FREQUENT",
+   "matchup_basis": "vs NYM 3yr (2026:2HR/5IP,2025:2HR/12IP,2024:2HR/13IP)",
+   "has_matchup": true,
+   "starts": 3,
+   "l3_era": 6.61,
+   "l3_hr": 3,
+   "l3_hr_per_start": 1.0,
+   "l3_kbb": 22.5,
+   "trend": "HOLD",
+   "trend_down": false,
+   "trend_basis": "holding form (L3 ERA 6.61 vs season 5.75)",
+   "risk_level": 1,
+   "risk_label": "Severe Risk",
+   "flag": "EXTREME",
+   "mult": 1.63,
+   "hr_per_start": 1.0,
+   "era": 6.61,
+   "er_spike": false
+  }
+ }
 }
