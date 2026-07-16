@@ -1,0 +1,19 @@
+{
+ "date": "2026-07-15",
+ "generated_utc": "2026-07-15T19:31:26+00:00",
+ "schema": "v1-shadow",
+ "scope": "DISPLAY/SHADOW ONLY -- never feeds model/picks/stake",
+ "weights": {
+  "batter": 0.45,
+  "sp": 0.35,
+  "bp": 0.2,
+  "K_delta": 2.5,
+  "delta_cap": 7.0,
+  "interval_days": 5,
+  "gamma": 0.35,
+  "lineup_n": 9
+ },
+ "method": "0-100 ecosystem = 0.45*batter(top9 OPS/K%) + 0.35*SP_today(K-BB/WHIP/HR9) + 0.20*BP(relief exec + bullpen_meta fatigue); Interval_Delta=clamp(2.5*(W-E),-7,7) trailing 5d; shadow decompress logit += 0.35*z(eco_diff). statsapi-only. Hard-Hit%/lineup-specific = July.",
+ "teams": {},
+ "games": []
+}

@@ -1,0 +1,50 @@
+{
+ "date": "2026-07-16",
+ "generated_utc": "2026-07-16T11:15:49Z",
+ "engine": "correlated-combo v1 (display-only; frozen model untouched)",
+ "scope_notes": [
+  "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
+  "ML is the only market-anchored leg; the double is model-priced."
+ ],
+ "correlation": {
+  "n_pairs": 312,
+  "n11": 133,
+  "n10": 25,
+  "n01": 28,
+  "n00": 126,
+  "f5_pushes": 67,
+  "f5_push_rate": 0.1768,
+  "p_full_given_f5w": 0.8418,
+  "p_full_given_f5l": 0.1818,
+  "ratio_r": 4.6297,
+  "phi": 0.6602,
+  "source": "oos_ledger empirical (frozen-window graded pairs)"
+ },
+ "combos": [],
+ "combo_pool": [],
+ "markets_status": {
+  "ML": "live (Kalshi devigged fair)",
+  "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
+  "K_PROP": "ODDS_API_KEY present but REJECTED (401) -- the lapsed pre-05/21 key is still in .env; replace it with a fresh the-odds-api key to light up K-prop shadow legs"
+ },
+ "rejected": [
+  {
+   "matchup": "NYM @ PHI",
+   "pick": "NYM",
+   "joint_prob": 0.3998,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "+9.2pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "F5 side prob 40.0%"
+   ]
+  }
+ ],
+ "n_games": 1
+}
