@@ -10,6 +10,19 @@ if not exist logs mkdir logs
 set "PATH=%PATH%;C:\Program Files\Git\cmd;C:\Program Files\Git\bin"
 set "PY=python"
 where python >nul 2>&1 || set "PY=py -3"
+REM ---- network gate (2026-07-16): wake-from-sleep runs fired before DNS
+REM      was up -> getaddrinfo failures -> stale re-bakes. Wait up to 4min.
+set NETTRIES=0
+:netwait
+%PY% -c "import socket;socket.getaddrinfo('statsapi.mlb.com',443)" >nul 2>&1 && goto netok
+set /a NETTRIES+=1
+if %NETTRIES% GEQ 24 goto netfail
+timeout /t 10 /nobreak >nul
+goto netwait
+:netfail
+echo ==== %DATE% %TIME% : SKIPPED - no network after 4min wait ==== >> "logs\midnight.log"
+exit /b 0
+:netok
 
 REM --- Locale-proof ISO slate date (UTC, to MATCH daily_variance + publish_local).
 REM     Do NOT use %%DATE%% -- it is locale-formatted ("Thu 06/05/2026") and breaks
