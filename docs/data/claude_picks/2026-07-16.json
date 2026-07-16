@@ -1,14 +1,14 @@
 {
   "date": "2026-07-16",
-  "fit_at": "2026-07-16T14:00:00Z",
+  "fit_at": "2026-07-16T23:17:28Z",
   "model_version": "claude-brain-v1",
   "n_games": 1,
   "patterns_recognized": [
-    "F1*-starred GOLD picks without F3 ≥ 1000 as an independent corroborator produced three consecutive losses across two slates (MIL G1/G2 7/11, SEA@TB 7/12): F1* and SP-xERA draw from the same thin Statcast pool and are partially redundant, not independent corroborators. F3_swing_take_gap ≥ 1000 is now required as a third anchor before confirming any starred-F1 pick at GOLD or above.",
-    "Stage 2 full-game direction has consistently outperformed Stage 1 in high f5_full_delta zones (≥ 0.15) across 7/10-7/12: three consecutive large-delta cases (LAA@MIN delta=0.224, SEA@TB delta=0.242, NYY@WSH delta=0.293) all resolved in Stage 2's direction. Do not treat Stage 1 lean as an OVERRIDE trigger against Stage 2.",
-    "D-grade dual-opposing-signal picks (SP xERA against + PQI against) split 4W/3L directionally on 7/11 — directional ambiguity is genuine. The only correct response is SKIP; OVERRIDE toward the opposing team is not warranted even when both signals simultaneously oppose the model pick.",
-    "CAP 10 bottom-bucket CONFIRM-rescued picks hit 47.6% vs 31.2% non-CONFIRM (archive through 5/18), but the rescued rate is itself below 50% breakeven. The four-dimension rescue rule (F-signal + SP-xERA + PQI + Stage agree simultaneously at pre-cap score ≥ 5) remains the only validated elevation pathway — confirmed twice on CLE@MIA (7/10 and 7/12).",
-    "Pick-column misread risk documented on 7/8 (four misreads in one session): always read the `pick` column directly from the CSV. Do NOT infer the model pick from f5_prob, full_prob, or p_model, especially when Stage 1 and Stage 2 disagree across the 50% threshold."
+    "Pick-column misread was a documented failure mode on 2026-07-08 (4 of 15 games misread: CHC@BAL, ATL@PIT, NYY@TB, HOU@WSH), always in the direction of inferring the pick from full_prob/f5_prob instead of the CSV `pick` column when Stage 1 and Stage 2 disagreed across 50%. Always read `pick` directly.",
+    "Stage 2 (full-game) direction has repeatedly outperformed Stage 1 in large f5_full_delta zones (>0.15) across 2026-07-09 through 07-11 (LAA@MIN Δ=0.224 win, SEA@TB Δ=0.18-0.24 on both 07-10 and 07-11 wins, KC@NYM Δ=0.302 loss where Stage 1 was right) — evidence is mixed enough that a large Stage 1/2 delta should inform caution, not drive an OVERRIDE toward Stage 1's side.",
+    "HARD CAP 10 bottom-bucket (pick_prob 0.50-0.55) suppression has noisy recent evidence: the cited archive baseline is 31.2% (non-CONFIRM) / 47.6% (CONFIRM-rescued) hit rate, both below breakeven, yet 2026-07-10 saw 3/3 CAP-10-suppressed picks win outright (PHI@DET, NYY@WSH, BOS@NYM). Treat the band as low-conviction either way — SKIP process discipline stays correct regardless of short-run outcome variance.",
+    "D-grade/C-grade picks resting on a single opposing signal (PQI or SP-xERA against, no F-signal) have split close to 50/50 directionally across 2026-07-07 through 07-11 — confirm the SKIP; do not OVERRIDE toward the opposing side on this signal profile alone.",
+    "The four-dimension CAP-10 rescue rule (F-signal + SP-xERA + PQI + Stage-1/2 agreement all affirming simultaneously at pre-cap score ≥ 5) is the only validated elevation pathway out of the bottom bucket, confirmed on CLE@MIA (2026-07-10 win). Today's NYM@PHI pre-cap score is 0 with no F-signal firing — not remotely close to qualifying."
   ],
   "by_matchup": {
     "NYM @ PHI": {
@@ -24,7 +24,7 @@
       "lessons_applied": [
         "CAP-10 bottom-bucket suppression correct: no F-signal fires and PQI opposes NYM — four-dimension rescue threshold unmet",
         "BvP one-OWNER rule: Soto OWNER vs Nola (59 PA, shrunk 1.000) noted but one OWNER is insufficient to elevate a zero-signal pick",
-        "Stage 2 full-game direction (NYM 55.2%) corroborated by Scott K% edge; Stage 1 lean (PHI 60% F5) does not override Stage 2 per 7/10-7/12 high-delta pattern",
+        "Stage 2 full-game direction (NYM 55.2%) corroborated by Scott K% edge; Stage 1 lean (PHI 60% F5) does not override Stage 2 per 07-09 through 07-11 high-delta pattern",
         "Pick-column discipline: model_pick=NYM read directly from CSV `pick` column, not inferred from f5_prob or full_prob"
       ]
     }
