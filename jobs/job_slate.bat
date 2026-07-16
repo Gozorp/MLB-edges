@@ -14,6 +14,7 @@ timeout /t 10 /nobreak >nul
 goto netwait
 :netfail
 echo ==== %DATE% %TIME% : SKIPPED - no network after 4min wait ==== >> "logs\slate.log"
+%PY% tools\pipeline_alert.py "CRITICAL: mlb_edge job skipped - network offline after 4min wait" >> "logs\slate.log" 2>&1
 exit /b 0
 :netok
 echo ==== %DATE% %TIME% : slate ==== >> "logs\slate.log"

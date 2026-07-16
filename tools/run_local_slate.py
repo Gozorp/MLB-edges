@@ -68,6 +68,51 @@ def main():
     log("python:    " + PY)
     log("=" * 64)
 
+    # 0.a) DATE-ASSERTION TRIPWIRE + no-stale-bake (Joe's 2026-07-16 checklist,
+    #      after the ASG-break incident: offline runs re-baked the stale 07-14
+    #      slate from caches for two days). Confirm the LIVE schedule for the
+    #      intended slate date BEFORE anything bakes:
+    #        network down / bad payload / date mismatch -> alert + exit 2
+    #        0 games scheduled (off-day, break)         -> clean no-op exit 0
+    #      Also pins the date explicitly for predict, so newest_diag_date()
+    #      can never silently substitute yesterday's slate.
+    intended = date_arg or datetime.date.today().isoformat()
+    try:
+        import urllib.request
+        req = urllib.request.Request(
+            "https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=" + intended,
+            headers={"User-Agent": "mlb_edge-tripwire/1.0"})
+        sched = json.load(urllib.request.urlopen(req, timeout=25))
+        dts = sched.get("dates", [])
+        n_games = sum(len(x.get("games", [])) for x in dts)
+        payload_date = dts[0].get("date") if dts else intended
+        if payload_date != intended:
+            raise AssertionError("schedule payload date %s != intended %s"
+                                 % (payload_date, intended))
+        log("tripwire: live schedule CONFIRMED for %s (%d games)"
+            % (intended, n_games))
+        if n_games == 0:
+            log("tripwire: 0 games scheduled for %s -> clean no-op "
+                "(no bake, nothing stale published)" % intended)
+            flush()
+            sys.exit(0)
+    except SystemExit:
+        raise
+    except Exception as e:
+        log("TRIPWIRE CRITICAL: cannot confirm live schedule for %s (%r)"
+            % (intended, e))
+        log("refusing to bake from caches; run halted (exit 2).")
+        flush()
+        try:
+            subprocess.run([PY, "tools/pipeline_alert.py",
+                            "CRITICAL: slate run halted for %s - live schedule "
+                            "unconfirmed (%s)" % (intended, str(e)[:120])],
+                           timeout=60)
+        except Exception:
+            pass
+        sys.exit(2)
+    date_arg = date_arg or intended   # pin the verified date downstream
+
     # 0) standings snapshot refresh (2026-07-10 flaw fix: the B-R scraper died
     #    in April and team-quality gaps ran on 78-day-old records; this keeps
     #    the bref-format snapshot same-day from statsapi). Non-fatal.
