@@ -2356,6 +2356,35 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     header{ padding-left: 0.9rem; }
   }
 </style>
+<style id="header-uniform">
+  /* 2026-07-16: centered, uniform header (user request). One centered strip,
+     everything vertically centered (was baseline -> ragged), all pills and
+     buttons share the 34px control rhythm the mobile header already uses.
+     The visit pill's margin-left:auto split the bar left/right -- removed. */
+  @media (min-width: 769px){
+    header{
+      justify-content: center;
+      align-items: center;
+      gap: 10px 14px;
+      padding-top: 1.1rem; padding-bottom: 1.1rem;
+      text-align: center;
+    }
+    header h1{ display: inline-flex; align-items: center; margin: 0; }
+    header .meta{ margin: 0; }
+    .visit-pill{ margin-left: 0; }
+    .visit-pill, #theme-toggle, header .wx-chip, header .wx-user-chip{
+      height: 34px; box-sizing: border-box;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 12px; margin-top: 0; margin-bottom: 0;
+      border-radius: 9px;
+    }
+    #help-btn, #nba-link{
+      width: 34px; height: 34px; min-height: 34px; box-sizing: border-box;
+      padding: 0; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+  }
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
