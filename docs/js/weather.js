@@ -665,15 +665,40 @@
     }
 
     let geo = null;
+    // 24h cookie cache first: the visitor's city rarely changes, and a fresh
+    // geolocation call per page load rate-limits the free providers fast
+    // (this exact chip went "unavail" after a heavy refresh day). The origin's
+    // localStorage is full, so a small cookie carries the cache.
     try {
-      const r = await fetch(IPAPI_URL, { cache: 'no-store' });
-      if (r.ok) {
-        const j = await r.json();
-        if (j.latitude && j.longitude) {
-          geo = { lat: +j.latitude, lon: +j.longitude, city: j.city || '' };
-        }
+      const m = document.cookie.match(/(?:^|;\s*)mlbedge_geo=([^;]+)/);
+      if (m) {
+        const c = JSON.parse(decodeURIComponent(m[1]));
+        if (c && isFinite(+c.lat) && isFinite(+c.lon)) geo = c;
       }
     } catch (e) { /* silent */ }
+    if (!geo) {
+      const providers = [
+        [IPAPI_URL,
+         j => (j.latitude && j.longitude) ? { lat: +j.latitude, lon: +j.longitude, city: j.city || '' } : null],
+        ['https://ipwho.is/',
+         j => (j.success !== false && j.latitude) ? { lat: +j.latitude, lon: +j.longitude, city: j.city || '' } : null],
+        ['https://get.geojs.io/v1/ip/geo.json',
+         j => j.latitude ? { lat: +j.latitude, lon: +j.longitude, city: j.city || '' } : null]
+      ];
+      for (const [url, parse] of providers) {
+        try {
+          const r = await fetch(url, { cache: 'no-store' });
+          if (!r.ok) continue;
+          geo = parse(await r.json());
+          if (geo) break;
+        } catch (e) { /* try the next provider */ }
+      }
+      if (geo) {
+        try {
+          document.cookie = 'mlbedge_geo=' + encodeURIComponent(JSON.stringify(geo)) + ';path=/;max-age=86400';
+        } catch (e) { /* silent */ }
+      }
+    }
 
     if (!geo) {
       chip.classList.remove('wx-loading');
