@@ -10851,11 +10851,61 @@ document.addEventListener("click", function (e) {
       } catch (e) { /* display-only */ }
     }
 
+    /* ---- scroll memory (Phase-4, 2026-07-16): the async slate render
+       defeats native scroll restoration (page is not tall enough when the
+       browser restores), so we save on pagehide and re-assert via this tick
+       until the document can hold the coordinate. 10-min expiry; the user
+       scrolling first cancels the pending restore. sessionStorage with a
+       cookie fallback (origin localStorage is quota-full). ---- */
+    var SCROLL_KEY = "mlbedge_scroll";
+    var scrollTarget = null;
+    function scrollSave() {
+      try {
+        var v = Math.round(window.scrollY || window.pageYOffset || 0);
+        var rec = v + ":" + Date.now();
+        try { sessionStorage.setItem(SCROLL_KEY, rec); }
+        catch (e) { document.cookie = SCROLL_KEY + "=" + rec + ";path=/;max-age=700"; }
+      } catch (e) { /* display-only */ }
+    }
+    function scrollLoadSaved() {
+      try {
+        var rec = null;
+        try { rec = sessionStorage.getItem(SCROLL_KEY); } catch (e) {}
+        if (!rec) {
+          var m = document.cookie.match(/(?:^|;\s*)mlbedge_scroll=(\d+):(\d+)/);
+          if (m) rec = m[1] + ":" + m[2];
+        }
+        if (!rec) return null;
+        var y = parseInt(rec.split(":")[0], 10);
+        var ts = parseInt(rec.split(":")[1], 10);
+        if (!isFinite(y) || y <= 0) return null;
+        if (!isFinite(ts) || Date.now() - ts > 600000) return null;
+        return y;
+      } catch (e) { return null; }
+    }
+    function scrollRestore() {
+      if (scrollTarget == null) return;
+      try {
+        if (document.documentElement.scrollHeight >= scrollTarget + window.innerHeight) {
+          window.scrollTo(0, scrollTarget);
+          scrollTarget = null;
+          try { sessionStorage.removeItem(SCROLL_KEY); } catch (e) {}
+          document.cookie = SCROLL_KEY + "=;path=/;max-age=0";
+        }
+      } catch (e) { scrollTarget = null; }
+    }
+
     /* ---- shared observer ---- */
     var t;
-    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); hamDock(); comboWire(); }, 400); }
+    function tick() { clearTimeout(t); t = setTimeout(function () { metrics(); badges(); bannerUpsert(); ppdApply(); countersUpsert(); sentinel(); hamDock(); comboWire(); scrollRestore(); }, 400); }
     try { new MutationObserver(tick).observe(document.body, { childList: true, subtree: true }); } catch (e) {}
     try { window.matchMedia("(max-width: 1099px)").addEventListener("change", function () { hamDock(); }); } catch (e) {}
+    try { history.scrollRestoration = "manual"; } catch (e) {}
+    try { window.addEventListener("pagehide", scrollSave); } catch (e) {}
+    try { window.addEventListener("wheel", function () { scrollTarget = null; }, { passive: true, once: true }); } catch (e) {}
+    try { window.addEventListener("touchmove", function () { scrollTarget = null; }, { passive: true, once: true }); } catch (e) {}
+    scrollTarget = scrollLoadSaved();
+    setTimeout(function () { scrollTarget = null; }, 15000);   /* stop trying; user is reading */
     if (document.readyState !== "loading") { tick(); health(); }
     else document.addEventListener("DOMContentLoaded", function () { tick(); health(); });
     setInterval(health, 300000);
