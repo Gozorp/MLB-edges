@@ -2385,6 +2385,37 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     }
   }
 </style>
+<style id="picker-uniform">
+  /* 2026-07-16: centered, uniform controls bar (matches #header-uniform).
+     Was: mixed heights (inputs vs buttons vs chips vs text), left-clustered
+     with dead space right, ragged second row. Now: one centered strip on a
+     34px rhythm; quick chips form their own centered row. */
+  @media (min-width: 769px){
+    .picker{
+      justify-content: center;
+      align-items: center;
+      gap: 10px 14px;
+    }
+    .picker input[type="date"], .picker button, .picker-arrow{
+      height: 34px; box-sizing: border-box; margin: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .picker input[type="date"]{ padding: 0 10px; }
+    .picker button{ padding: 0 16px; border-radius: 9px; }
+    .picker-arrow{ width: 40px; padding: 0; }
+    #liveIndicator{ display: inline-flex; align-items: center; min-height: 34px; margin: 0; }
+    .picker #status{ display: inline-flex; align-items: center; min-height: 34px; margin: 0; }
+    #quick-chips{
+      flex-basis: 100%; display: flex; justify-content: center;
+      gap: 8px; margin: 0; padding: 0;
+    }
+    .q-chip{
+      min-height: 34px; box-sizing: border-box;
+      display: inline-flex; align-items: center;
+      padding: 0 14px; border-radius: 9px;
+    }
+  }
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
