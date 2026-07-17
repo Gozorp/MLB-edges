@@ -3950,6 +3950,9 @@ async function fetchMLBResults(date) {
       entry.gameNumber = gameNumber;
       entry.isDoubleHeader = doubleHeader !== "N";
       const aliases = (a) => [a, TEAM_ABBR_ALIASES[a]].filter(Boolean);
+      // Exact per-game key (2026-07-17): diag rows now carry game_pk, the
+      // only identity that can never collide (DH, makeups, alias drift).
+      if (g.gamePk != null) { entry.gamePk = g.gamePk; out[`pk:${g.gamePk}`] = entry; }
       for (const aA of aliases(awayAbbr)) {
         for (const hA of aliases(homeAbbr)) {
           const k1 = `${aA}@${hA}`;
@@ -5997,6 +6000,12 @@ function _pickSideF5Prob(r) {
 
 function matchResult(r, results) {
   if (!results) return null;
+  // Exact per-game identity (2026-07-17): diag rows now carry game_pk from
+  // the MLB schedule. When present it is authoritative — no string matching,
+  // no doubleheader ambiguity. Everything below is legacy fallback for
+  // pre-game_pk CSVs.
+  const pk = parseInt(r.game_pk, 10);
+  if (!isNaN(pk) && results[`pk:${pk}`]) return results[`pk:${pk}`];
   const matchup = (r.matchup || "").trim();
   if (!matchup) return null;
   // Doubleheader disambiguation. Two distinct annotations can appear
@@ -6011,6 +6020,13 @@ function matchResult(r, results) {
   let gameNumber = null;
   const gMatch = matchup.match(/\(G([12])\)/);
   if (gMatch) gameNumber = parseInt(gMatch[1], 10);
+  // 2026-07-17 DH fix: series-labeled rows ("(G2 of 4)") never carry the
+  // bare "(G2)" marker, so a same-day game 2 fell through to the bare key
+  // (= game 1) and showed G1's WIN/LOSS while G2 was still in progress.
+  // _dedupDoubleheaders now stamps the day-occurrence on every row.
+  if (gameNumber == null && typeof r.__dhOcc === "number" && r.__dhOcc > 0) {
+    gameNumber = r.__dhOcc + 1;
+  }
   // Pull two ALL-CAPS abbrev tokens out of the matchup string
   const abbrs = matchup.match(/[A-Z]{2,4}/g);
   if (abbrs && abbrs.length >= 2) {

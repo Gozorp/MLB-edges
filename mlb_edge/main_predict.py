@@ -126,9 +126,14 @@ def overlay_live_features(games: pd.DataFrame, ctx: dict) -> pd.DataFrame:
 # matchup, and the validate step in daily-slate.yml excludes this tier from
 # its blank-row denominator since the blanks here are expected.
 def _pending_sp_data_row(*, away_abbr: str, home_abbr: str,
-                         why_skipped: str) -> dict:
+                         why_skipped: str,
+                         game_pk=None, game_num=None) -> dict:
     return {
         "matchup":              f"{away_abbr} @ {home_abbr}",
+        # Per-game identity (2026-07-17): matchup strings collide on
+        # doubleheaders; game_pk is THE disambiguator.
+        "game_pk":              game_pk,
+        "game_num":             game_num,
         "pick":                 "TBD",
         "f5_prob":              None,
         "full_prob":            None,
@@ -156,6 +161,17 @@ def append_unannounced_sp_pending_rows(table: pd.DataFrame,
     if not schedule:
         return table
     have_matchups = set(table["matchup"].tolist()) if not table.empty and "matchup" in table.columns else set()
+    # Per-game identity (2026-07-17): dedupe scheduled games against the
+    # table by game_pk. The old matchup-only check DROPPED a doubleheader
+    # game 2 whenever game 1 was already scored — the slate could not even
+    # represent two games of the same matchup.
+    have_pks = set()
+    if not table.empty and "game_pk" in table.columns:
+        have_pks = set(pd.to_numeric(table["game_pk"], errors="coerce")
+                       .dropna().astype(int).tolist())
+    if not table.empty and "game_id" in table.columns:
+        have_pks |= set(pd.to_numeric(table["game_id"], errors="coerce")
+                        .dropna().astype(int).tolist())
     additions = []
     for g in schedule:
         if g.get("home_sp_id") and g.get("away_sp_id"):
@@ -165,7 +181,12 @@ def append_unannounced_sp_pending_rows(table: pd.DataFrame,
         if not home_abbr or not away_abbr:
             continue
         matchup = f"{away_abbr} @ {home_abbr}"
-        if matchup in have_matchups:
+        pk = g.get("game_pk")
+        if pk:
+            if int(pk) in have_pks:
+                continue
+        elif matchup in have_matchups:
+            # legacy fallback when the schedule carries no game identity
             continue
         missing_sides = []
         if not g.get("home_sp_id"):
@@ -179,8 +200,11 @@ def append_unannounced_sp_pending_rows(table: pd.DataFrame,
         )
         additions.append(_pending_sp_data_row(
             away_abbr=away_abbr, home_abbr=home_abbr, why_skipped=why,
+            game_pk=pk, game_num=g.get("game_number") or 1,
         ))
         have_matchups.add(matchup)
+        if pk:
+            have_pks.add(int(pk))
     if not additions:
         return table
     log.info("Appended %d PENDING_SP_DATA rows for unannounced-SP games",
@@ -272,13 +296,14 @@ def build_diagnostic_table(games: pd.DataFrame,
                 f"{label} has only {n_disp} Statcast pitches season-to-date; "
                 f"need {SP_THIN_SAMPLE_THRESHOLD}+ to score"
             )
-        if thin_sides:
-            rows.append(_pending_sp_data_row(
-                away_abbr=away_abbr,
-                home_abbr=home_abbr,
-                why_skipped=" | ".join(thin_sides),
-            ))
-            continue
+        # 2026-07-17 (user-directed): thin-SP games are SCORED, not withheld.
+        # The old PENDING_SP_DATA placeholder left the row pick-less (TBD)
+        # all day — most visibly on DH game 2s started by call-ups. The
+        # model's prediction (SP features shrunken/NaN'd by pitcher_as_of,
+        # which XGBoost routes through its missing-value branches) is now
+        # published WITH the caveat in why_skipped, and the tier is forced
+        # to SKIP below so no stake ever rides on a sub-threshold sample.
+        thin_sp = bool(thin_sides)
 
         # Stage 1's F5 probability is exposed by model.predict() as `f5_prob`
         # (see mlb_edge.model.predict line ~557). Earlier drafts of this
@@ -407,6 +432,11 @@ def build_diagnostic_table(games: pd.DataFrame,
             why_skipped.append(f"edge {edge*100:+.2f}pp outside [{MIN_EDGE_PCT*100:.0f},{MAX_EDGE_PCT*100:.0f}]pp")
         if TIER_SIZES.get(conv.tier, 0.0) == 0.0:
             why_skipped.append(f"tier {conv.tier} -> stake_mult=0")
+        if thin_sp:
+            # Hard stake-safety cap: prediction shown, money withheld.
+            why_skipped = thin_sides + why_skipped
+            if TIER_SIZES.get("SKIP", 0.0) == 0.0 and conv.tier != "SKIP":
+                why_skipped.append("tier forced SKIP: thin SP Statcast sample")
 
         # Per-row odds status: distinguish "API didn't fire" from "API fired
         # but had no match for this matchup" so a downstream reader can tell
@@ -425,6 +455,11 @@ def build_diagnostic_table(games: pd.DataFrame,
 
         rows.append({
             "matchup": f"{away_abbr} @ {home_abbr}",
+            # Per-game identity (2026-07-17): gamePk + gameNumber from the
+            # MLB schedule. THE disambiguator for doubleheaders — every
+            # matchup-string join in the pipeline has collided on DH days.
+            "game_pk": (int(r["game_id"]) if pd.notna(r.get("game_id")) else None),
+            "game_num": (int(r["game_num"]) if pd.notna(r.get("game_num")) else None),
             "pick": picked,
             "f5_prob": round(f5_p, 4) if pd.notna(f5_p) else None,
             "full_prob": round(full_p, 4) if pd.notna(full_p) else None,
@@ -522,8 +557,9 @@ def build_diagnostic_table(games: pd.DataFrame,
                              if r.get("home_sp_name") else ""),
             "away_sp_name": (str(r.get("away_sp_name")).strip()
                              if r.get("away_sp_name") else ""),
-            "tier": conv.tier,
-            "signals": ", ".join(conv.signals_fired),
+            "tier": ("SKIP" if thin_sp else conv.tier),
+            "signals": ", ".join(list(conv.signals_fired)
+                                 + (["thin_sp_data"] if thin_sp else [])),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",
             "odds_status": row_odds_status,
         })
@@ -630,7 +666,11 @@ def _games_started_map(slate_date):
         with _ur.urlopen(url, timeout=10) as resp:
             j = _json.loads(resp.read().decode("utf-8"))
         for d in j.get("dates", []) or []:
-            for g in d.get("games", []) or []:
+            # Doubleheader-safe (2026-07-17): one started-flag PER GAME in
+            # gameNumber order. A single bool per matchup let G1 going Live
+            # mark G2 "started" too, which locked G1's pick onto the G2 row.
+            for g in sorted(d.get("games", []) or [],
+                            key=lambda x: x.get("gameNumber") or 1):
                 status = g.get("status") or {}
                 state = status.get("abstractGameState", "")
                 started = state in ("Live", "Final")
@@ -640,7 +680,9 @@ def _games_started_map(slate_date):
                 a = _canon_abbr(away.get("abbreviation") or "")
                 h = _canon_abbr(home.get("abbreviation") or "")
                 if a and h:
-                    out[f"{a} @ {h}"] = started
+                    out.setdefault(f"{a} @ {h}", []).append(started)
+                if g.get("gamePk"):
+                    out["pk::%s" % g["gamePk"]] = started
     except Exception as e:
         log.warning("[lock] failed to fetch MLB schedule: %s", e)
     return out
@@ -657,31 +699,59 @@ def _apply_started_game_lock(new_df, prior_df, started_map):
     if "matchup" not in new_df.columns or "matchup" not in prior_df.columns:
         return 0
     import re as _re
-    # Build prior lookup by matchup, taking the FIRST occurrence so a
-    # doubleheader doesn't blow up (downstream G2/G3 suffixing is
-    # applied at render time, not in the CSV).
+    # Doubleheader-safe (2026-07-17): pair the nth CSV row for a matchup
+    # with the nth game of the day (schedule/gameNumber order) on BOTH
+    # sides. The old first-occurrence lookup copied G1's locked pick onto
+    # the G2 row the moment G1 started.
     prior_idx = {}
     for _, pr in prior_df.iterrows():
         mk = str(pr.get("matchup", "")).strip()
-        if mk and mk not in prior_idx:
-            prior_idx[mk] = pr
+        if mk:
+            prior_idx.setdefault(mk, []).append(pr)
     n_locked = 0
+    occ_seen = {}
     for i, row in new_df.iterrows():
         mk = str(row.get("matchup", "")).strip()
         if not mk:
             continue
+        occ = occ_seen.get(mk, 0)
+        occ_seen[mk] = occ + 1
         # Strip any "(G2 of 3)" / "(G2)" suffix before matching the
         # MLB schedule (schedule keys are bare).
         bare = _re.sub(r"\s*\([^)]*\)\s*$", "", mk).strip()
         bare_canon = _canon_matchup(bare)
-        started = (started_map.get(bare_canon, False)
-                   or started_map.get(bare, False)
-                   or started_map.get(mk, False))
+        # game_pk is the exact game identity; occurrence order is only the
+        # fallback for prior CSVs written before game_pk existed.
+        pk = None
+        try:
+            _pkv = row.get("game_pk")
+            if pd.notna(_pkv):
+                pk = int(float(_pkv))
+        except Exception:
+            pk = None
+        if pk is not None and ("pk::%d" % pk) in started_map:
+            started = bool(started_map["pk::%d" % pk])
+        else:
+            flags = (started_map.get(bare_canon)
+                     or started_map.get(bare)
+                     or started_map.get(mk) or [])
+            started = bool(flags[occ]) if occ < len(flags) else False
         if not started:
             continue
-        if mk not in prior_idx:
-            continue
-        prior_row = prior_idx[mk]
+        prior_rows = prior_idx.get(mk) or []
+        prior_row = None
+        if pk is not None:
+            for _pr in prior_rows:
+                try:
+                    if pd.notna(_pr.get("game_pk")) and int(float(_pr.get("game_pk"))) == pk:
+                        prior_row = _pr
+                        break
+                except Exception:
+                    continue
+        if prior_row is None:
+            if occ >= len(prior_rows):
+                continue
+            prior_row = prior_rows[occ]
         # Only lock when the PRIOR pick was a real pick — don't freeze
         # TBD/PENDING; in that case let fresh model output stand.
         prior_pick = str(prior_row.get("pick", "")).strip().upper()

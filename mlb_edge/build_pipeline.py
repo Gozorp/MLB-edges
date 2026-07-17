@@ -446,6 +446,8 @@ def build_slate_frame(day: date,
         # Statcast sample) without re-fetching the schedule.
         row["home_sp_name"] = g.get("home_sp_name") or ""
         row["away_sp_name"] = g.get("away_sp_name") or ""
+        # Per-game identity for the diag (game_id/game_pk already in `row`).
+        row["game_num"] = g.get("game_number") or 1
         rows.append(row)
 
     return pd.DataFrame(rows) if rows else pd.DataFrame()

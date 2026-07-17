@@ -165,6 +165,11 @@ def fetch_schedule_mlb_api(day: date) -> List[Dict]:
                 "home_sp_name":   (g.get("teams", {}).get("home", {}).get("probablePitcher") or {}).get("fullName"),
                 "away_sp_name":   (g.get("teams", {}).get("away", {}).get("probablePitcher") or {}).get("fullName"),
                 "venue":          g.get("venue", {}).get("name"),
+                # Per-game identity (2026-07-17): gameNumber/doubleHeader let
+                # downstream code tell DH game 1 from game 2 — matchup
+                # strings alone collide and have caused a whole bug family.
+                "game_number":    g.get("gameNumber") or 1,
+                "double_header":  (g.get("doubleHeader") or "N"),
             })
     return games
 
