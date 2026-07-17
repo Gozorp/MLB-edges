@@ -242,7 +242,16 @@ def _per_team_block(team: str,
             ["pitcher_id", "rest_days", "consecutive_days"]
         ].copy()
 
-        merged = (per_pitcher
+        # Base population = EVERY reliever with an appearance in the FULL
+        # lookback, not just the 72h window. per_pitcher (72h counts) was the
+        # old merge base, which silently dropped any arm without a 72h outing
+        # -- invisible in normal weeks, but after the 2026 All-Star break it
+        # emptied every team (0 tracked, "bullpen list empty" on the board)
+        # even though the 7/10-7/12 appearances sat in the lookback log.
+        # Fresh arms now survive with pitches_72h filled as 0 below.
+        base = team_rel[["pitcher_id"]].drop_duplicates()
+        merged = (base
+                  .merge(per_pitcher, on="pitcher_id", how="left")
                   .merge(last_appearance_pitches, on="pitcher_id", how="left")
                   .merge(lev_df, on="pitcher_id", how="left")
                   .merge(team_rest, on="pitcher_id", how="left"))
@@ -284,9 +293,13 @@ def _per_team_block(team: str,
                 "available_today":         _available_today(rest, consec),
             })
 
-        # Team summary
-        n_b2b = sum(1 for r in relievers if r["consecutive_days"] == 2)
-        n_b2b2b = sum(1 for r in relievers if r["consecutive_days"] >= 3)
+        # Team summary. Consecutive-day streaks only count while CURRENT
+        # (rest_days <= 1): a back-to-back from before an off-day/break is
+        # history, not tonight's availability constraint (post-ASG fix).
+        n_b2b = sum(1 for r in relievers
+                    if r["consecutive_days"] == 2 and r["rest_days"] <= 1)
+        n_b2b2b = sum(1 for r in relievers
+                      if r["consecutive_days"] >= 3 and r["rest_days"] <= 1)
         avg_rest = (sum(r["rest_days"] for r in relievers) / len(relievers)
                     if relievers else 0.0)
 
