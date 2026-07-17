@@ -2423,6 +2423,46 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     }
   }
 </style>
+<style id="picker-uniform-mobile">
+  /* 2026-07-16: mobile counterpart of #picker-uniform. Centered strip,
+     uniform 40px touch-size controls (incl. the docked hamburger), quick
+     chips ride above, LIVE + Loaded status pinned as the bottom row. */
+  @media (max-width: 768px){
+    .picker{
+      justify-content: center;
+      align-items: center;
+      gap: 8px 10px;
+    }
+    .picker input[type="date"], .picker button, .picker-arrow,
+    .picker #drawer-toggle{
+      height: 40px; box-sizing: border-box; margin: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .picker button{ padding: 0 14px; border-radius: 9px; }
+    .picker-arrow{ width: 44px; padding: 0; }
+    #quick-chips{
+      order: 1; flex-basis: auto; max-width: 100%;
+      margin: 0 auto; padding: 0;
+    }
+    .q-chip{
+      min-height: 40px; box-sizing: border-box;
+      display: inline-flex; align-items: center; padding: 0 14px;
+      border-radius: 9px;
+    }
+    .picker::after{
+      content: ""; /* mobile row breaker */
+      flex-basis: 100%; height: 0; order: 4;
+    }
+    #liveIndicator{
+      order: 5; display: inline-flex; align-items: center;
+      min-height: 36px; margin: 0;
+    }
+    .picker #status{
+      order: 6; display: inline-flex; align-items: center;
+      min-height: 36px; margin: 0; text-align: center;
+    }
+  }
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
