@@ -1,5 +1,5 @@
 # Daily Variance Report — 2026-07-17
-_Generated 2026-07-17T02:57:20Z · 15 games · significant deviations only_
+_Generated 2026-07-17T07:05:34Z · 15 games · significant deviations only_
 
 ## 1 · Roster / Injury Delta
 - **PIT** [status] — CF Robert Hassell III roster status changed by Pittsburgh Pirates.
@@ -38,6 +38,20 @@ _Generated 2026-07-17T02:57:20Z · 15 games · significant deviations only_
 - **SD** [signed] — San Diego Padres signed free agent RHP Jackson Vasquez to a minor league contract.
 - **SD** [status] — San Diego Padres placed LHP Wandy Peralta on the bereavement list.
 - **SD** [recalled] — San Diego Padres recalled RHP Jhony Brito from El Paso Chihuahuas.
+- **CIN** [signed] — Cincinnati Reds signed 1B Mulivai Levu.
+- **CIN** [signed] — Cincinnati Reds signed RHP Calvin Proskey.
+- **CIN** [signed] — Cincinnati Reds signed OF Damian Ruiz.
+- **CIN** [signed] — Cincinnati Reds signed SS Justin Lebron.
+- **CIN** [signed] — Cincinnati Reds signed 3B Sherman Johnson.
+- **CIN** [signed] — Cincinnati Reds signed OF Jack Lausch.
+- **CIN** [signed] — Cincinnati Reds signed RHP Tristan Helmick.
+- **CIN** [signed] — Cincinnati Reds signed LHP Ethan Norby.
+- **CIN** [signed] — Cincinnati Reds signed RHP Victor Christal.
+- **CIN** [signed] — Cincinnati Reds signed C Brady Neal.
+- **CIN** [signed] — Cincinnati Reds signed RHP Brodie Purcell.
+- **CIN** [signed] — Cincinnati Reds signed RHP Conner Griffin.
+- **CIN** [signed] — Cincinnati Reds signed RHP Ray Ladd.
+- **CIN** [signed] — Cincinnati Reds signed RHP Tyner Horn.
 - **WSH** [IL] — Washington Nationals placed C Drew Millas on the 10-day injured list retroactive to July 12, 2026. Left index finger fracture.
 - **WSH** [IL] — Washington Nationals activated RHP Max Kranick from the 60-day injured list.
 - **WSH** [TRADE] — Washington Nationals traded CF Robert Hassell III to Pittsburgh Pirates for cash.
@@ -48,6 +62,7 @@ _Generated 2026-07-17T02:57:20Z · 15 games · significant deviations only_
 - **ATH** [recalled] — Athletics recalled LHP Brady Basso from Las Vegas Aviators.
 - **ATH** [selected] — Athletics selected the contract of RHP Yunior Tur from Las Vegas Aviators.
 - **ATH** [optioned] — Athletics optioned 1B Joey Meneses to Las Vegas Aviators.
+- **STL** [signed] — St. Louis Cardinals signed OF Trevor Condon.
 - **STL** [signed] — St. Louis Cardinals signed free agent RHP Rayner Reyes to a minor league contract.
 - **AZ** [IL] — Arizona Diamondbacks placed LF Tommy Troy on the 10-day injured list retroactive to July 12, 2026. Sprained right AC joint.
 - **AZ** [outrighted] — Arizona Diamondbacks sent 1B Pavin Smith outright to Reno Aces.

@@ -1,9 +1,12 @@
 {
- "generated_utc": "2026-07-17T02:58:30Z",
+ "generated_utc": "2026-07-17T07:06:33Z",
  "season": 2026,
  "basis": "Equal-weight z-score blend of run differential and winning %, season-to-date.",
  "mmr_basis": "Dynamic layer: 14d expected-vs-actual (Elo expectancy on composite z, scale 10), upset-weighted, 7d half-life, K=0.18, clamp 0.60z; tier flips need boundary +/-0.05 for 2 consecutive runs, one step per run. Display-only starting-guess parameters; the model never reads tiers.",
- "movements": [],
+ "movements": [
+  "PHI demoted: Above Average -> Average (eff +0.18, mmr -0.12)",
+  "AZ demoted: Above Average -> Average (eff +0.25, mmr +0.28)"
+ ],
  "tier_order": [
   "Elite",
   "Above Average",
@@ -152,26 +155,6 @@
     ]
    },
    {
-    "name": "Philadelphia Phillies",
-    "abbr": "PHI",
-    "w": 54,
-    "l": 44,
-    "pct": 0.551,
-    "rd": -13,
-    "rationale": "54-44 (.551), -13 run differential -- a negative run margin, winning above what that margin implies.",
-    "z": 0.3,
-    "mmr": -0.118,
-    "eff": 0.182,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset L vs KC (07-05)",
-     "upset L vs KC (07-06)"
-    ]
-   },
-   {
     "name": "St. Louis Cardinals",
     "abbr": "STL",
     "w": 50,
@@ -210,29 +193,27 @@
     "z": 0.131,
     "mmr": 0.38,
     "eff": 0.511
-   },
-   {
-    "name": "Arizona Diamondbacks",
-    "abbr": "AZ",
-    "w": 49,
-    "l": 47,
-    "pct": 0.51,
-    "rd": -13,
-    "rationale": "49-47 (.510), -13 run differential -- a negative run margin. Results running above tier expectation (MMR +0.28).",
-    "z": -0.028,
-    "mmr": 0.278,
-    "eff": 0.249,
-    "pending": {
-     "dir": "down",
-     "runs": 1
-    },
-    "upsets": [
-     "upset W vs MIL (07-04)",
-     "upset W vs LAD (07-10)"
-    ]
    }
   ],
   "Average": [
+   {
+    "name": "Philadelphia Phillies",
+    "abbr": "PHI",
+    "w": 54,
+    "l": 44,
+    "pct": 0.551,
+    "rd": -13,
+    "rationale": "54-44 (.551), -13 run differential -- a negative run margin, winning above what that margin implies.",
+    "z": 0.3,
+    "mmr": -0.118,
+    "eff": 0.182,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset L vs KC (07-05)",
+     "upset L vs KC (07-06)"
+    ]
+   },
    {
     "name": "Seattle Mariners",
     "abbr": "SEA",
@@ -259,6 +240,24 @@
     "z": 0.015,
     "mmr": -0.166,
     "eff": -0.15
+   },
+   {
+    "name": "Arizona Diamondbacks",
+    "abbr": "AZ",
+    "w": 49,
+    "l": 47,
+    "pct": 0.51,
+    "rd": -13,
+    "rationale": "49-47 (.510), -13 run differential -- a negative run margin. Results running above tier expectation (MMR +0.28).",
+    "z": -0.028,
+    "mmr": 0.278,
+    "eff": 0.249,
+    "movement": "demoted",
+    "moved_from": "Above Average",
+    "upsets": [
+     "upset W vs MIL (07-04)",
+     "upset W vs LAD (07-10)"
+    ]
    },
    {
     "name": "Texas Rangers",

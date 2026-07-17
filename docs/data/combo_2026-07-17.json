@@ -1,23 +1,23 @@
 {
  "date": "2026-07-17",
- "generated_utc": "2026-07-17T02:42:56Z",
+ "generated_utc": "2026-07-17T07:05:34Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
   "ML is the only market-anchored leg; the double is model-priced."
  ],
  "correlation": {
-  "n_pairs": 312,
-  "n11": 133,
+  "n_pairs": 313,
+  "n11": 134,
   "n10": 25,
   "n01": 28,
   "n00": 126,
   "f5_pushes": 67,
-  "f5_push_rate": 0.1768,
-  "p_full_given_f5w": 0.8418,
+  "f5_push_rate": 0.1763,
+  "p_full_given_f5w": 0.8428,
   "p_full_given_f5l": 0.1818,
-  "ratio_r": 4.6297,
-  "phi": 0.6602,
+  "ratio_r": 4.6352,
+  "phi": 0.6613,
   "source": "oos_ledger empirical (frozen-window graded pairs)"
  },
  "combos": [],
@@ -31,7 +31,7 @@
   {
    "matchup": "TB @ BOS",
    "pick": "BOS",
-   "joint_prob": 0.4884,
+   "joint_prob": 0.4885,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -65,7 +65,7 @@
    ],
    "notes": [
     "final grade D (need A/A-/B+/B)",
-    "-3.8pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "-3.5pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 75.6% + Stage 1/2 disagree flag"
    ]
   },
@@ -82,7 +82,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+18.4pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+18.8pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 33.6%"
    ]
   },
@@ -100,7 +100,7 @@
   {
    "matchup": "MIA @ MIL",
    "pick": "MIL",
-   "joint_prob": 0.4247,
+   "joint_prob": 0.4248,
    "blocked_by": [
     "grade",
     "stage_coherence"
@@ -139,22 +139,20 @@
   {
    "matchup": "SD @ KC",
    "pick": "KC",
-   "joint_prob": 0.4455,
+   "joint_prob": 0.4456,
    "blocked_by": [
     "grade",
-    "conviction_tier",
-    "market_band"
+    "conviction_tier"
    ],
    "notes": [
     "final grade D (need A/A-/B+/B)",
-    "tier SKIP",
-    "+3.2pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "tier SKIP"
    ]
   },
   {
    "matchup": "CIN @ COL",
    "pick": "CIN",
-   "joint_prob": 0.402,
+   "joint_prob": 0.4021,
    "blocked_by": [
     "grade",
     "market_band",
@@ -169,7 +167,7 @@
   {
    "matchup": "DET @ LAA",
    "pick": "LAA",
-   "joint_prob": 0.5098,
+   "joint_prob": 0.5099,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -194,14 +192,14 @@
    "notes": [
     "final grade C (need A/A-/B+/B)",
     "tier SKIP",
-    "+23.0pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+22.4pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 48.2%"
    ]
   },
   {
    "matchup": "SF @ SEA",
    "pick": "SF",
-   "joint_prob": 0.422,
+   "joint_prob": 0.4221,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -211,7 +209,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+11.7pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "+12.2pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 50.0%"
    ]
   }
