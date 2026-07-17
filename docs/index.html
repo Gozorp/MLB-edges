@@ -7278,6 +7278,14 @@ function _bullpenTeamProse(s, relievers) {
   // Mirrors the structure of _pitcherImpact: state -> alarms ->
   // rest -> top arm.
   const parts = [];
+  if (!s.n_relievers_tracked) {
+    // Empty window (off-days / All-Star break): 0 tracked with avg_rest 0.0
+    // previously fell into the "short rest -- constrained" branch, the exact
+    // opposite of reality. No appearances = every arm fully rested.
+    return `<strong style="color:var(--green,#3fb950);">Full rest — no appearances in the fatigue window.</strong> ` +
+           `Nobody in this pen has pitched inside the lookback (off-days or league break), so the full late-leverage ` +
+           `menu is available and there is no strain to report. Per-reliever tracking resumes as outings accrue.`;
+  }
   if (s.n_relievers_three_consecutive > 0) {
     const n = s.n_relievers_three_consecutive;
     parts.push(`<strong class="flag-red">${n} reliever${n>1?"s":""} on three consecutive days</strong> — effectively unavailable tonight; manager works with a shortened menu.`);
