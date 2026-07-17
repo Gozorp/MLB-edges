@@ -1,0 +1,21 @@
+{
+  "date": "2026-07-16",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-17T14:35:00Z",
+  "n_analyzed": 1,
+  "summary": "One matchup on the slate (NYM @ PHI), one directional WIN, zero losses (100% directional hit rate). The model picked NYM ML SKIP and NYM won 4-1; however, tier=SKIP means no stake was placed — this is a directional validation, not a P&L win. Christian Scott's K% edge (28.7% vs Nola 24.12%) materialized, and Stage 2's full-game direction (NYM 55.2%) again proved more reliable than Stage 1's F5 lean (PHI 60%), extending the documented pattern from 7/10–7/12. Claude correctly CONFIRMed the SKIP tier — no elevation was warranted given zero F-signals and PQI opposing NYM (Δ=+9.3). Small-sample slate: one pattern recorded.",
+  "by_matchup": {
+    "NYM @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "4-1",
+      "headline": "NYM won 4-1 on Scott's K% edge and Stage 2 direction; model correctly graded SKIP despite the directional read being right.",
+      "hypothesis": "The model picked NYM as the preferred full-game side (Stage 2: NYM 55.2%) but correctly self-graded SKIP: zero F-signals fired, PQI opposed NYM (Δ=+9.3, −1 score), and CAP 10 bottom-bucket suppression applied at pick_prob=0.535. NYM's 4-1 win is a variance WIN — the directional read was correct but the signal stack was too thin to warrant a stake. Scott's K% advantage (28.7% vs Nola 24.12%) and Stage 2's full-game edge appear to have been real, but signal discipline was appropriate given the absence of any F-series confirmation or SP xERA advantage. This is not a process failure; the SKIP tier correctly sized exposure at zero.",
+      "signals_to_recheck": "f5_full_delta=0.1526 (Stage 2 full-game direction correct again; NYM won despite PQI AGAINST on the pick side — pqi_diff=+9.3 opposing NYM did not predict direction here, consistent with PQI being a confidence-scaling/stake-reduction signal rather than a reliable direction-reversal signal when Stage 2 and Stage 1 disagree)."
+    }
+  },
+  "patterns_observed": [
+    "f5_full_delta ≥ 0.12 (Stage 1 F5-vs-Stage 2 full-game divergence) resolved in Stage 2's full-game direction for the fourth consecutive tracked occurrence: NYM@PHI (delta=0.1526, Stage 2 favored NYM, NYM won 4-1) extends the 7/10–7/12 three-case archive (LAA@MIN delta=0.224, SEA@TB delta=0.242, NYY@WSH delta=0.293). Stage 2 full-game direction remains consistently more reliable than Stage 1 F5 lean when the two diverge by ≥ 0.12; do not treat Stage 1 F5 lean as an OVERRIDE signal against Stage 2 in future high-delta games."
+  ]
+}
