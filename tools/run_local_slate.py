@@ -154,6 +154,9 @@ def _run():
         run([PY, "-m", "mlb_edge.main_totals", "--mode", "predict",
              "--date", slate, "--out", "picks_totals_%s.csv" % slate],
             "totals predict", fatal=False)
+        # post-hoc market-blend calibration columns (display/decision aid)
+        run([PY, "tools/totals_overlay.py", slate],
+            "totals calibration overlay", fatal=False)
     else:
         log("\n(totals skipped: no slate date or totals model)")
 

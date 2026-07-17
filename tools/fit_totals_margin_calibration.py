@@ -38,6 +38,7 @@ def _truth():
         date = S(d.get("date"))
         for m, i in (d.get("by_matchup", {}) or {}).items():
             if not isinstance(i, dict): continue
+            if "(G" in S(m): continue   # DH game-2 keys: first-game convention here
             sc = S(i.get("final_score")).strip()
             mm = re.match(r"\s*([A-Za-z0-9]+)\s*@\s*([A-Za-z0-9]+)", S(m))
             if mm and re.match(r"^\d+-\d+$", sc):

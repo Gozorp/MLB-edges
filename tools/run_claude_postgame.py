@@ -65,15 +65,18 @@ def fetch_results(date: str) -> Dict[str, Dict[str, Any]]:
     except Exception as e:
         log.warning("fetch_results(%s) failed: %s", date, e)
         return {}
-    out: Dict[str, Dict[str, Any]] = {}
+    # Doubleheader-safe (2026-07-17): each key holds a LIST of games in
+    # gameNumber order — previously G2 overwrote G1 under the same key, so
+    # G1 could be graded against G2's score and G2 was never analyzed.
+    out: Dict[str, list] = {}
     for d in j.get("dates", []):
-        for g in d.get("games", []):
+        for g in sorted(d.get("games", []), key=lambda x: x.get("gameNumber") or 1):
             t = g["teams"]
             a = t["away"]["team"].get("abbreviation") or ""
             h = t["home"]["team"].get("abbreviation") or ""
             ph = (t["home"].get("probablePitcher") or {}).get("fullName")
             pa = (t["away"].get("probablePitcher") or {}).get("fullName")
-            out[f"{a}@{h}"] = dict(
+            out.setdefault(f"{a}@{h}", []).append(dict(
                 away=a, home=h,
                 away_score=t["away"].get("score"),
                 home_score=t["home"].get("score"),
@@ -81,16 +84,20 @@ def fetch_results(date: str) -> Dict[str, Dict[str, Any]]:
                 statusText=g.get("status", {}).get("detailedState", ""),
                 away_pitcher=pa, home_pitcher=ph,
                 gamePk=g.get("gamePk"),
-            )
+                gameNumber=g.get("gameNumber") or 1,
+            ))
     return out
 
 
-def lookup(results: dict, away: str, home: str) -> Optional[Dict[str, Any]]:
+def lookup(results: dict, away: str, home: str,
+           occurrence: int = 0) -> Optional[Dict[str, Any]]:
+    """occurrence: 0 = first game of the day for this matchup, 1 = DH game 2."""
     keys = [f"{away}@{home}",
             f"{ABBR_FIX.get(away, away)}@{ABBR_FIX.get(home, home)}"]
     for k in keys:
-        if k in results:
-            return results[k]
+        games = results.get(k)
+        if games and occurrence < len(games):
+            return games[occurrence]
     return None
 
 
@@ -159,6 +166,7 @@ def main(argv=None) -> int:
 
     total_in = total_out = 0
     n_processed = 0
+    occ_seen: Dict[str, int] = {}   # DH-safe: nth diag row for a matchup = nth game
     for row in rows:
         if n_processed >= args.max_games:
             break
@@ -166,33 +174,38 @@ def main(argv=None) -> int:
         if not m:
             continue
         away, home = m.group(1), m.group(2)
-        res = lookup(results, away, home)
+        occ = occ_seen.get(row["matchup"], 0)
+        occ_seen[row["matchup"]] = occ + 1
+        # storage key: bare matchup for game 1 (back-compat with every
+        # by_matchup reader), " (G2)" suffix for doubleheader game 2+
+        mkey = row["matchup"] if occ == 0 else "%s (G%d)" % (row["matchup"], occ + 1)
+        res = lookup(results, away, home, occ)
         if not res or res["status"] not in ("Final", "Game Over", "Completed Early"):
             continue
         if res["away_score"] is None or res["home_score"] is None:
             continue
-        if row["matchup"] in by_matchup:
-            log.info("  %s already analyzed — skipping", row["matchup"])
+        if mkey in by_matchup:
+            log.info("  %s already analyzed — skipping", mkey)
             continue
 
         if args.dry_run:
-            log.info("  [dry] would analyze %s", row["matchup"])
+            log.info("  [dry] would analyze %s", mkey)
             n_processed += 1
             continue
 
         log.info("  analyzing %s (pick %s vs %s-%s) ...",
-                 row["matchup"], row.get("pick"),
+                 mkey, row.get("pick"),
                  res["away_score"], res["home_score"])
         resp = ca.postgame_for_pick(row, res)
         if not resp.ok:
             log.warning("  -> Claude error: %s", resp.error)
-            by_matchup[row["matchup"]] = {
+            by_matchup[mkey] = {
                 "verdict": "ERROR", "headline": resp.error[:200],
                 "hypothesis": "", "signals_to_recheck": [],
             }
         else:
             parsed = parse_claude_json(resp.text)
-            by_matchup[row["matchup"]] = parsed
+            by_matchup[mkey] = parsed
             total_in += resp.input_tokens
             total_out += resp.output_tokens
             log.info("  -> %s: %s",

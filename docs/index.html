@@ -8572,11 +8572,16 @@ function _tierChips(matchupKey){
 // Projected run differential for the favored team + a projected final score,
 // shown next to the win pick. Decoupled post-processing overlay written by
 // tools/spread_projection.py -- NEVER a model output.
-function _spreadChip(matchupKey){
+function _spreadChip(matchupKey, dhOcc){
   var S = window.__spread;
   if (!S || !S.games || !matchupKey) return "";
   var bare = ("" + matchupKey).split(" (")[0].trim();
-  var g = S.games[bare] || S.games[matchupKey];
+  // DH-safe (2026-07-17): game 2+ only matches its own "(G2)" key from
+  // spread_projection.py — never fall back to game 1's spread (that put a
+  // phantom G1 chip on the TBD G2 row and hid the provisional-lean badge).
+  var g = (dhOcc > 0)
+    ? S.games[bare + " (G" + (dhOcc + 1) + ")"]
+    : (S.games[bare] || S.games[matchupKey]);
   if (!g || g.spread == null) return "";
   var home = (bare.split(" @ ")[1] || "").trim();
   var favIsHome = (g.favored === home);
@@ -8728,7 +8733,13 @@ function renderSlate(rows, gradeMap, results) {
     // CSV writes pred_runs but leaves total_line/side/edge_runs as empty
     // strings. We detect this and render a "Model: X.X runs (no market)"
     // pill in the muted/flat style — still useful information for the user.
-    const tot = (window.__totalsByMatchup) ? (window.__totalsByMatchup[bareMatchupKey] || window.__totalsByMatchup[matchupKey]) : null;
+    // DH-safe: game 2+ looks up its own " #G2" totals key (see the loader).
+    const _dhOcc = r.__dhOcc || 0;
+    const tot = (window.__totalsByMatchup)
+      ? (_dhOcc > 0
+          ? (window.__totalsByMatchup[`${bareMatchupKey} #G${_dhOcc + 1}`] || null)
+          : (window.__totalsByMatchup[bareMatchupKey] || window.__totalsByMatchup[matchupKey]))
+      : null;
     let ouCell = "<td><span class='muted'>—</span></td>";
     // Player-aware tooltip lines (2026-05-23). Surfaces the lineup wRC+ /
     // xwOBA gaps + BvP signal strength that already feed pred_runs, so the
@@ -8823,7 +8834,7 @@ function renderSlate(rows, gradeMap, results) {
     html += `<tr class="row-clickable" data-row="${i}" onclick="toggleNarrative(${i})">
       <td><span class="chev" id="chev-${i}">▸</span></td>
       <td><strong>${matchupKey || "—"}</strong>${_tierChips(matchupKey)}${_skTeamChips(matchupKey)}${_wxBadge(matchupKey)}</td>
-      <td>${_pickOrTossup(r)}${_spreadChip(matchupKey)}${_provLeanChip(matchupKey)}</td>
+      <td>${_pickOrTossup(r)}${_spreadChip(matchupKey, _dhOcc)}${_provLeanChip(matchupKey)}</td>
       <td class="col-f5">${favTeamProb(matchupKey, r.f5_prob)}</td>
       <td>${favTeamProb(matchupKey, r.full_prob)}${_mcChip(r)}</td>
       <td class="col-fair">${fairFmt}</td>
@@ -9500,12 +9511,19 @@ function _dedupDoubleheaders(rows) {
   if (!Array.isArray(rows) || rows.length === 0) return rows;
   const counts = {};
   for (const r of rows) {
-    const m = (r && r.matchup || "").trim();
-    if (!m) continue;
-    counts[m] = (counts[m] || 0) + 1;
-    if (counts[m] > 1) {
-      // Append " (G2)" / " (G3)" etc. so the renderer sees a unique key.
-      r.matchup = `${m} (G${counts[m]})`;
+    const full = (r && r.matchup || "").trim();
+    if (!full) continue;
+    // 2026-07-17 DH fix: count on the BARE key. _addSeriesSuffix runs first
+    // and gives same-day DH rows DIFFERENT suffixes ("(G1 of 4)"/"(G2 of 4)"),
+    // so counting the full string never detected true doubleheaders. The
+    // day-occurrence is stamped on the row so sidecar joins (totals, spread)
+    // can pair the nth row with the nth game instead of colliding on G1.
+    const bare = full.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    const n = (counts[bare] = (counts[bare] || 0) + 1);
+    r.__dhOcc = n - 1;   // 0 = first game of the day, 1 = DH game 2, ...
+    if (n > 1 && !/\(G\d+ of \d+\)\s*$/.test(full)) {
+      // Append " (G2)" only when no series suffix already disambiguates.
+      r.matchup = `${full} (G${n})`;
     }
   }
   return rows;
@@ -9631,10 +9649,16 @@ async function loadSlate(date, { bust = false } = {}) {
       const _tot = await fetch(`./data/picks_totals_${date}.csv`, {cache: "no-store"});
       if (_tot.ok) {
         const totRows = parseCSV(await _tot.text());
+        // DH-safe (2026-07-17): bare key holds game 1; later same-day rows
+        // (schedule order) get " #G2"-suffixed keys so renderSlate can pair
+        // the nth diag row with the nth totals row instead of both games
+        // showing one game's O/U.
         const byMatchup = {};
+        const occ = {};
         for (const tr of totRows) {
-          const key = `${tr.away_team} @ ${tr.home_team}`;
-          byMatchup[key] = tr;
+          const bare = `${tr.away_team} @ ${tr.home_team}`;
+          const n = (occ[bare] = (occ[bare] || 0) + 1);
+          byMatchup[n === 1 ? bare : `${bare} #G${n}`] = tr;
         }
         window.__totalsByMatchup = byMatchup;
       } else {
