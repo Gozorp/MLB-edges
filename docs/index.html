@@ -10887,7 +10887,11 @@ document.addEventListener("click", function (e) {
       if (scrollTarget == null) return;
       try {
         if (document.documentElement.scrollHeight >= scrollTarget + window.innerHeight) {
-          window.scrollTo(0, scrollTarget);
+          /* snap, never animate: the polish layer sets scroll-behavior:smooth,
+             which would turn the restore into a visible glide (and freeze
+             entirely in occluded tabs). */
+          try { window.scrollTo({ top: scrollTarget, left: 0, behavior: "instant" }); }
+          catch (e2) { window.scrollTo(0, scrollTarget); }
           scrollTarget = null;
           try { sessionStorage.removeItem(SCROLL_KEY); } catch (e) {}
           document.cookie = SCROLL_KEY + "=;path=/;max-age=0";
