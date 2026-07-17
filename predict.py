@@ -17,8 +17,10 @@ import argparse
 import logging
 import os
 import sys
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from pathlib import Path
+
+from tools.slate_date import slate_today
 
 log = logging.getLogger("predict")
 
@@ -74,10 +76,12 @@ def _parse_args(argv):
 
 
 def _resolve_date(value):
+    # Defaults resolve in US Eastern (the MLB slate day) via tools/slate_date,
+    # not the PC-local or UTC date -- see the 2026-07-12 evening-mismatch bug.
     if value is None or value.lower() == "today":
-        return date.today()
+        return slate_today()
     if value.lower() == "yesterday":
-        return date.today() - timedelta(days=1)
+        return slate_today() - timedelta(days=1)
     try:
         return datetime.strptime(value, "%Y-%m-%d").date()
     except ValueError as e:

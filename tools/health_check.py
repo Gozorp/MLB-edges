@@ -783,11 +783,15 @@ def main() -> int:
             new_state["_daily_digest"] = {"last_fired_at": now.isoformat()}
         print(f"[health] daily digest fired: posted={ok}")
 
-    # Write outputs
+    # Write outputs (atomic: tmp + os.replace so a mid-write crash or a
+    # concurrent reader never sees a torn JSON)
     HEALTH_JSON.parent.mkdir(parents=True, exist_ok=True)
-    HEALTH_JSON.write_text(json.dumps(health, indent=2), encoding="utf-8")
-    ALERT_STATE_JSON.write_text(json.dumps(new_state, indent=2),
-                                 encoding="utf-8")
+    _tmp = Path(str(HEALTH_JSON) + ".tmp")
+    _tmp.write_text(json.dumps(health, indent=2), encoding="utf-8")
+    os.replace(_tmp, HEALTH_JSON)
+    _tmp = Path(str(ALERT_STATE_JSON) + ".tmp")
+    _tmp.write_text(json.dumps(new_state, indent=2), encoding="utf-8")
+    os.replace(_tmp, ALERT_STATE_JSON)
 
     print(f"[health] overall={overall}  "
           f"checks={ {r['name']: r['severity'] for r in results} }  "

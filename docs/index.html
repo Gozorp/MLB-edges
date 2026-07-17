@@ -2463,6 +2463,130 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     }
   }
 </style>
+<style id="apple-minimal-2026-07-17">
+  /* 2026-07-17 (user-directed, v2): Apple design language, DARK MODE —
+     the light pass read too bright. Apple dark palette: #000 canvas,
+     #1d1d1f tiles, #424245 hairlines, #2997ff accent, #f5f5f7 text for
+     maximum legibility. Plus a no-sharp-corners pass: pill controls,
+     20px surfaces. GARFIELD mode keeps its own token layer and is
+     scoped out of every component rule below. Cascade-last, display-only
+     (re-overrides the #engine-css token layer). Revert: delete block. */
+  :root {
+    --bg: #000000;
+    --bg-elev: #1d1d1f;
+    --border: #424245;
+    --zebra: #131315;
+    --row-hover: #28282b;
+    --text: #f5f5f7;
+    --muted: #a1a1a6;
+    --accent: #2997ff;
+    --green: #30d158;
+    --red: #ff453a;
+    --yellow: #ffd60a;
+    --orange: #ff9f0a;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+            "Helvetica Neue", "Segoe UI", "Inter", Arial, sans-serif;
+    --glass-bg: rgba(22, 22, 23, 0.8);
+  }
+  body:not([data-theme="garfield"]) {
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* system sans on data too (SF everywhere, like apple.com), with
+     tabular figures so columns still align; true code stays mono */
+  body:not([data-theme="garfield"]) table,
+  body:not([data-theme="garfield"]) td,
+  body:not([data-theme="garfield"]) th,
+  body:not([data-theme="garfield"]) input,
+  body:not([data-theme="garfield"]) select,
+  body:not([data-theme="garfield"]) .picker,
+  body:not([data-theme="garfield"]) .picker *,
+  body:not([data-theme="garfield"]) .q-chip,
+  body:not([data-theme="garfield"]) [class*="chip"],
+  body:not([data-theme="garfield"]) [class*="pill"],
+  body:not([data-theme="garfield"]) [class*="badge"],
+  body:not([data-theme="garfield"]) .metric-value,
+  body:not([data-theme="garfield"]) .metric-sub,
+  body:not([data-theme="garfield"]) #slate,
+  body:not([data-theme="garfield"]) #slate * {
+    font-family: var(--sans);
+    font-variant-numeric: tabular-nums;
+  }
+  body:not([data-theme="garfield"]) pre,
+  body:not([data-theme="garfield"]) code,
+  body:not([data-theme="garfield"]) kbd {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  body:not([data-theme="garfield"]) h1,
+  body:not([data-theme="garfield"]) h2,
+  body:not([data-theme="garfield"]) h3 {
+    letter-spacing: -0.015em; font-weight: 600;
+  }
+  .hero-headline,
+  #ask-the-slate-section > h2 {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text);
+    font-weight: 600;
+  }
+  body:not([data-theme="garfield"]) header {
+    background: rgba(22, 22, 23, 0.8);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    border-bottom: 1px solid var(--border);
+  }
+  /* pill controls */
+  body:not([data-theme="garfield"]) .picker button {
+    background: var(--bg-elev); color: var(--text);
+    border: 1px solid var(--border); border-radius: 980px;
+  }
+  body:not([data-theme="garfield"]) .picker button:hover {
+    opacity: 1; border-color: var(--accent); color: var(--accent);
+  }
+  body:not([data-theme="garfield"]) .picker .q-chip,
+  body:not([data-theme="garfield"]) .q-chip {
+    color: var(--text); background: var(--bg-elev);
+    border: 1px solid transparent; border-radius: 980px;
+  }
+  body:not([data-theme="garfield"]) .q-chip:hover {
+    background: #323236;
+  }
+  body:not([data-theme="garfield"]) .date-chip.active,
+  body:not([data-theme="garfield"]) .mode-toggle button.active {
+    background: var(--accent); color: #ffffff; border-color: var(--accent);
+  }
+  body:not([data-theme="garfield"]) .hero-cta {
+    background: var(--accent); color: #ffffff; border-radius: 980px;
+  }
+  /* no sharp corners anywhere: pills for controls, 20px for surfaces */
+  body:not([data-theme="garfield"]) button,
+  body:not([data-theme="garfield"]) .date-chip,
+  body:not([data-theme="garfield"]) select,
+  body:not([data-theme="garfield"]) input {
+    border-radius: 980px;
+  }
+  body:not([data-theme="garfield"]) .picker input[type="date"] {
+    color-scheme: dark; border-radius: 980px; padding-left: 14px;
+  }
+  body:not([data-theme="garfield"]) .card,
+  body:not([data-theme="garfield"]) .metric-card,
+  body:not([data-theme="garfield"]) .accordion,
+  body:not([data-theme="garfield"]) #mlb-intro-card,
+  body:not([data-theme="garfield"]) #help-panel,
+  body:not([data-theme="garfield"]) #side-drawer,
+  body:not([data-theme="garfield"]) .failure-card,
+  body:not([data-theme="garfield"]) .empty,
+  body:not([data-theme="garfield"]) .date-strip {
+    border-radius: 20px; box-shadow: none;
+  }
+  body:not([data-theme="garfield"]) .narrative,
+  body:not([data-theme="garfield"]) textarea,
+  body:not([data-theme="garfield"]) pre,
+  body:not([data-theme="garfield"]) .health-row,
+  body:not([data-theme="garfield"]) .accordion-body-inner {
+    border-radius: 14px;
+  }
+</style>
 </head>
 <body>
 <button id="drawer-toggle" aria-label="Open tools &amp; context drawer" aria-expanded="false">☰</button>
@@ -3045,7 +3169,7 @@ async function _ppProjectedLineups() {
   var out = {};
   try {
     var mf = await fetch("./data/manifest.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; });
-    var today = (window.__streaks && window.__streaks.date) || new Date().toISOString().slice(0, 10);
+    var today = (window.__streaks && window.__streaks.date) || todayISO();
     var dates = ((mf && mf.dates) || []).filter(function (d) { return d < today; }).sort().reverse().slice(0, 3);
     for (var di = 0; di < dates.length; di++) {
       var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: "force-cache" }).then(function (r) { return r.ok ? r.text() : null; });
@@ -3254,7 +3378,10 @@ async function _advEnsureIdx(){
     var mf = await fetch("./data/manifest.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; });
     var dates = ((mf && mf.dates) || []).slice().sort().reverse().slice(0, 14);
     for (var di = 0; di < dates.length; di++){
-      var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: "force-cache" }).then(function (r) { return r.ok ? r.text() : null; });
+      // Only strictly-past dates are immutable; today's diag can still be
+      // re-baked, so fetch it with default cache instead of force-cache.
+      var _cacheMode = dates[di] < todayISO() ? "force-cache" : "default";
+      var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: _cacheMode }).then(function (r) { return r.ok ? r.text() : null; });
       if (!txt) continue;
       var prows = [];
       try { prows = parseCSV(txt); } catch (_e) { continue; }
@@ -4079,7 +4206,8 @@ async function _fetchProjectedLineup(teamId) {
     // 1. Find the most recent Final game for this team (last 21 days)
     const today = new Date();
     const start = new Date(today.getTime() - 21 * 86400 * 1000);
-    const fmt = d => d.toISOString().split('T')[0];
+    // local date, not UTC — matches todayISO() convention
+    const fmt = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const url = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${teamId}&startDate=${fmt(start)}&endDate=${fmt(today)}`;
     const r = await fetch(url, { cache: 'no-store' });
     if (!r.ok) return [];
@@ -8066,12 +8194,14 @@ function _h2hPairKey(a, b) { return [a, b].sort().join("_"); }
 
 // Generate the last N dates (ISO yyyy-mm-dd), excluding today.
 function _h2hHistoricalDates(daysBack) {
+  // LOCAL-date formatting (same convention as todayISO()) — toISOString()
+  // is UTC and shifted the whole window during evening hours west of UTC.
   const dates = [];
   const now = new Date();
   for (let i = 1; i <= daysBack; i++) {
     const d = new Date(now);
     d.setDate(now.getDate() - i);
-    dates.push(d.toISOString().slice(0, 10));
+    dates.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
   }
   return dates;
 }
@@ -9183,8 +9313,15 @@ function stopPolling() {
   }
 }
 
+// Stale-response guard: rapid date switches (and background silentRefresh)
+// interleave their awaits, so whichever load finished LAST used to win the
+// DOM/globals — not necessarily the last one requested. Every loadSlate
+// bumps the sequence; in-flight loads/refreshes bail once superseded.
+let _slateSeq = 0;
+
 async function silentRefresh(date) {
   // Re-fetch with cache bust, compare signatures, re-render only if changed
+  const _seq = _slateSeq;   // read-only: superseded by any newer loadSlate
   try {
     const q = `?v=${Date.now()}`;
     const opts = { cache: "no-store" };
@@ -9192,6 +9329,7 @@ async function silentRefresh(date) {
       fetch(REPO_RAW_BASE + `picks_${date}_diag.csv` + q, opts).then(r => r.ok ? r.text() : null),
       fetch(REPO_RAW_BASE + `parlay_${date}.txt` + q, opts).then(r => r.ok ? r.text() : null),
     ]);
+    if (_seq !== _slateSeq) return;   // a loadSlate started meanwhile — it owns the UI
     const csvText    = csvR.status === "fulfilled" ? csvR.value : null;
     const parlayText = txtR.status === "fulfilled" ? txtR.value : null;
     if (!csvText) return;
@@ -9210,6 +9348,7 @@ async function silentRefresh(date) {
     const rows = _dedupDoubleheaders(_addSeriesSuffix(parseCSV(csvText), window.__seriesMeta));
     const gradeMap = parlayText ? parseParlayGrades(parlayText) : {};
     const results = await fetchMLBResults(date);
+    if (_seq !== _slateSeq) return;   // superseded mid-flight
     window.__slate = { date, rows, gradeMap, results, parlayText: parlayText || "" };
     // 2026-05-23: postponed games render via POSTPONED chip (amber);
     // no longer filtered out.
@@ -9373,6 +9512,7 @@ function _dedupDoubleheaders(rows) {
 }
 
 async function loadSlate(date, { bust = false } = {}) {
+  const _seq = ++_slateSeq;   // this load owns the UI until a newer one starts
   const status = document.getElementById("status");
   status.textContent = bust ? "Refreshing (bypassing cache)…" : "Loading…";
   // Tear down any live trackers from the previous slate before re-rendering
@@ -9425,6 +9565,7 @@ async function loadSlate(date, { bust = false } = {}) {
         .then(r => r.ok ? r.json() : null)
         .catch(() => null),
     ]);
+    if (_seq !== _slateSeq) return;   // superseded — don't clobber sidecar globals
 
     // Series-meta sidecar (series-game indicator).  Schema in
     // mlb_edge/series_meta_writer.py.  Accept v1 only.  Failure is
@@ -9462,6 +9603,7 @@ async function loadSlate(date, { bust = false } = {}) {
     const rows = _addPendingGames(rawRows, results);
 
     // Stash for the query interface
+    if (_seq !== _slateSeq) return;   // superseded during sidecar awaits
     window.__slate = {
       date,
       rows,
@@ -9519,6 +9661,7 @@ async function loadSlate(date, { bust = false } = {}) {
         window.__bullpenMeta = null;
       }
     } catch (_) { window.__bullpenMeta = null; }
+    if (_seq !== _slateSeq) return;   // superseded — a newer load renders the DOM
 
     // 2026-05-23: postponed games render via the POSTPONED chip
     // (amber) instead of being filtered out.  All 16 rows go through.
@@ -9880,7 +10023,7 @@ function _initPLReport(){
   if (!item || !pre) return;
   var d = (window.__spProj && window.__spProj.date)
        || (window.__streaks && window.__streaks.date)
-       || new Date().toISOString().slice(0, 10);
+       || todayISO();
   fetch('./data/PL_probables_' + d + '.md?cb=' + Date.now(), {cache: 'no-store'})
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(t){
@@ -11089,6 +11232,8 @@ document.addEventListener("click", function (e) {
   var a = document.getElementById("nba-link");
   if (a && !rm) {
     a.addEventListener("click", function (e) {
+      /* let modifier/middle clicks open a new tab natively */
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
       e.preventDefault();
       document.body.classList.add("xfade-leave");
       setTimeout(function () { location.href = a.href; }, 170);

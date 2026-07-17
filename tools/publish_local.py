@@ -14,10 +14,21 @@ Clean-room publish:
 
 Runs on the user's authed Windows git. Arg: short label for the commit.
 """
-import sys, os, glob, csv, json, shutil, subprocess, datetime, tempfile
+import sys, os, glob, csv, json, shutil, subprocess, datetime, tempfile, atexit
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 csv.field_size_limit(10 ** 7)
 label = sys.argv[1] if len(sys.argv) > 1 else "local"
+
+# ---- cross-job mutex (2026-07-17): serialize with run_local_slate + the other
+# publishes so two jobs can never interleave reset/commit/push. Straight-line
+# script with many SystemExit points, so release via atexit (fires on every
+# exit path, incl. exceptions) instead of one giant try/finally.
+import job_lock
+if not job_lock.acquire():
+    print("job_lock: another mlb_edge job is still running -- skipping this "
+          "publish (next scheduled cycle will retry)")
+    raise SystemExit(0)
+atexit.register(job_lock.release)
 
 
 def _slate_today():
@@ -86,6 +97,7 @@ candidates = [
     "docs/data/postgame/%s.json" % YEST,
     "data/savant_hitters_2026.csv",
     "data/state/weights_state.json",
+    "data/state/recalibration_log.jsonl",
     "models/calibration_v1.json",
     "docs/data/daily_variance_%s.md" % TODAY,
     "docs/data/daily_variance_%s.json" % TODAY,
@@ -200,11 +212,16 @@ if git("reset", "--hard", "origin/main") != 0:
     shutil.rmtree(tmp, ignore_errors=True)
     print("publish ABORT: could not sync to origin"); raise SystemExit(1)
 
-for f in present:
-    os.makedirs(os.path.dirname(f), exist_ok=True)
-    shutil.copy2(os.path.join(tmp, f), f + ".tmp")
-    os.replace(f + ".tmp", f)  # atomic restore: a crash here can never leave a torn tracked file
-shutil.rmtree(tmp, ignore_errors=True)
+def _restore_saved_outputs():
+    for f in present:
+        os.makedirs(os.path.dirname(f), exist_ok=True)
+        shutil.copy2(os.path.join(tmp, f), f + ".tmp")
+        os.replace(f + ".tmp", f)  # atomic restore: a crash here can never leave a torn tracked file
+
+
+_restore_saved_outputs()
+# tmp is kept until the end of the script so a rejected push can re-stage
+# from the saved copies (bounded retry below).
 
 # ---- no-regression guard (2026-07-10 incident): never let a degraded bake
 # overwrite a better already-published slate. The guard compares each changed
@@ -233,20 +250,51 @@ try:
 except Exception as _e:
     print("ui integrity belt skipped (%r)" % (_e,))
 
+def _push_with_phantom_check():
+    rc = git("push", "origin", "main")
+    if rc != 0:
+        # A push can return a "cannot lock ref ... is at <ourcommit>" retry-race error
+        # AFTER it actually landed. Re-check origin/main before declaring failure -- this is
+        # the phantom "PUBLISH FAILED" that scared us on the 2026-06-04 slate push.
+        _lh = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        subprocess.run(["git", "fetch", "origin", "main"], capture_output=True)
+        _oh = subprocess.run(["git", "rev-parse", "origin/main"], capture_output=True, text=True).stdout.strip()
+        if _lh and _lh == _oh:
+            print("note: push returned an error but origin/main already == our commit %s "
+                  "(retry-race false negative) -- treating as success" % _lh[:9])
+            rc = 0
+    return rc
+
+
 git("add", "--", *present)
 if subprocess.run(["git", "diff", "--cached", "--quiet"]).returncode == 0:
+    shutil.rmtree(tmp, ignore_errors=True)
     print("publish: nothing changed vs origin -- already up to date"); raise SystemExit(0)
 git("commit", "-m", "local-publish: %s %s" % (label, datetime.datetime.now().isoformat(timespec="minutes")))
-rc = git("push", "origin", "main")
-if rc != 0:
-    # A push can return a "cannot lock ref ... is at <ourcommit>" retry-race error
-    # AFTER it actually landed. Re-check origin/main before declaring failure -- this is
-    # the phantom "PUBLISH FAILED" that scared us on the 2026-06-04 slate push.
-    _lh = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    subprocess.run(["git", "fetch", "origin", "main"], capture_output=True)
-    _oh = subprocess.run(["git", "rev-parse", "origin/main"], capture_output=True, text=True).stdout.strip()
-    if _lh and _lh == _oh:
-        print("note: push returned an error but origin/main already == our commit %s "
-              "(retry-race false negative) -- treating as success" % _lh[:9])
+rc = _push_with_phantom_check()
+
+# ---- bounded retry (2026-07-17): a real rejection here usually means origin
+# advanced while we were committing (e.g. the cloud health-check cron pushed).
+# Re-sync and re-publish from the saved copies up to 2 more times before
+# declaring failure -- previously the slate silently stayed unpublished until
+# the next scheduled cycle.
+for _attempt in (1, 2):
+    if rc == 0:
+        break
+    print("push rejected -- retry %d/2: re-syncing to origin and re-publishing" % _attempt)
+    git("fetch", "origin", "main")
+    if git("reset", "--hard", "origin/main") != 0:
+        print("retry %d ABORT: could not re-sync to origin" % _attempt)
+        break
+    _restore_saved_outputs()
+    git("add", "--", *present)
+    if subprocess.run(["git", "diff", "--cached", "--quiet"]).returncode == 0:
+        print("retry %d: nothing changed vs origin -- already up to date" % _attempt)
         rc = 0
+        break
+    git("commit", "-m", "local-publish: %s %s (retry %d)"
+        % (label, datetime.datetime.now().isoformat(timespec="minutes"), _attempt))
+    rc = _push_with_phantom_check()
+
+shutil.rmtree(tmp, ignore_errors=True)
 print("PUBLISH OK -> origin/main (public dashboard now shows your local picks)" if rc == 0 else "PUBLISH FAILED -- see above")

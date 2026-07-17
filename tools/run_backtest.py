@@ -473,6 +473,13 @@ def cap_audit(start_bankroll=1000.0):
             continue  # pre-cap-era file
         n_dates_scanned += 1
         pg = (pg_by_date.get(date, {}) or {}).get("by_matchup", {})
+        # Doubleheader guard: the postgame by_matchup dict holds ONE entry per
+        # matchup string, so on a DH day the verdict is ambiguous for that
+        # matchup (which game does it grade?). Skip those rows rather than
+        # attributing game 1's result to both games.
+        _dup_matchups = set()
+        if "matchup" in df.columns:
+            _dup_matchups = set(df["matchup"][df["matchup"].duplicated(keep=False)])
 
         for _, r in df.iterrows():
             grade = r.get("grade"); pre_g = r.get("pre_cap_grade")
@@ -484,6 +491,7 @@ def cap_audit(start_bankroll=1000.0):
             if pd.isna(p) or pd.isna(ev) or p <= 0: continue
             decimal = (float(ev) + 1.0) / float(p)
             if decimal <= 1.0: continue
+            if r["matchup"] in _dup_matchups: continue  # DH: verdict ambiguous
             verdict = (pg.get(r["matchup"], {}) or {}).get("verdict", "")
             if verdict.upper() not in ("WIN", "LOSS"): continue
             won = verdict.upper() == "WIN"

@@ -28,6 +28,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 PY = sys.executable
 
+try:
+    import job_lock
+    from slate_date import slate_today
+except ImportError:                       # invoked as tools.run_local_slate
+    from tools import job_lock
+    from tools.slate_date import slate_today
+
 LOG = []
 def log(s=""):
     print(s)
@@ -60,6 +67,21 @@ def newest_diag_date():
     return m.group(1) if m else None
 
 def main():
+    # Cross-job mutex (2026-07-17): the scheduled slate task and the midnight
+    # chain both run this pipeline; unserialized overlap tore the diag CSV
+    # (the picks_*_diag.csv.corrupt* remnants). Skip-and-exit-0 keeps the
+    # chain green; the next scheduled cycle picks the slate up.
+    if not job_lock.acquire():
+        log("job_lock: another mlb_edge job is still running -- skipping this run")
+        flush()
+        sys.exit(0)
+    try:
+        _run()
+    finally:
+        job_lock.release()
+
+
+def _run():
     date_arg = sys.argv[1] if len(sys.argv) > 1 else None
     t0 = datetime.datetime.now()
     log("=" * 64)
@@ -76,7 +98,7 @@ def main():
     #        0 games scheduled (off-day, break)         -> clean no-op exit 0
     #      Also pins the date explicitly for predict, so newest_diag_date()
     #      can never silently substitute yesterday's slate.
-    intended = date_arg or datetime.date.today().isoformat()
+    intended = date_arg or slate_today().isoformat()   # US-Eastern slate day (tools/slate_date)
     try:
         import urllib.request
         req = urllib.request.Request(

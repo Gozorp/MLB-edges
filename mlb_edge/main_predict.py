@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import os
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
@@ -56,6 +57,16 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)-5s %(name)s: %(message)s",
 )
 log = logging.getLogger("mlb_edge.main_predict")
+
+
+def _atomic_to_csv(df, path):
+    """Write a CSV atomically: to <path>.tmp.<pid>, then os.replace().
+    The diag CSV at the repo root is read by concurrent jobs/sidecars; a
+    plain to_csv() leaves a torn file if two runs overlap or the process
+    dies mid-write (the picks_*_diag.csv.corrupt* incidents)."""
+    tmp = "%s.tmp.%d" % (path, os.getpid())
+    df.to_csv(tmp, index=False)
+    os.replace(tmp, path)
 
 
 # ---------------------------------------------------------------------------
@@ -746,7 +757,7 @@ def run(slate_date: date,
             )
             if not empty_table.empty:
                 Path(out_picks).parent.mkdir(parents=True, exist_ok=True)
-                empty_table.to_csv(out_picks, index=False)
+                _atomic_to_csv(empty_table, out_picks)
                 log.info("Wrote PENDING-only diagnostic table to %s "
                          "(%d games)", out_picks, len(empty_table))
         return
@@ -1258,7 +1269,7 @@ def run(slate_date: date,
             print(table.to_string(index=False))
             if out_picks:
                 Path(out_picks).parent.mkdir(parents=True, exist_ok=True)
-                table.to_csv(out_picks, index=False)
+                _atomic_to_csv(table, out_picks)
                 log.info("Wrote diagnostic table to %s", out_picks)
 
             # ----------------------------------------------------------
@@ -1317,7 +1328,7 @@ def run(slate_date: date,
                 # pre-grading table from line 800 and the weekly cap
                 # audit finds zero cap-era files.
                 if out_picks:
-                    graded.to_csv(out_picks, index=False)
+                    _atomic_to_csv(graded, out_picks)
                     log.info(
                         "Re-wrote diagnostic table with grade columns "
                         "to %s", out_picks)
@@ -1383,7 +1394,7 @@ def run(slate_date: date,
                         _ps.attach_top_5_to_diag(
                             graded, matchup_to_pk, matchup_to_sp_hand)
                         if out_picks:
-                            graded.to_csv(out_picks, index=False)
+                            _atomic_to_csv(graded, out_picks)
                             log.info("Attached top-5 batter JSON columns")
                 except Exception as e:
                     log.warning("platoon_splits attach failed "
@@ -1402,7 +1413,7 @@ def run(slate_date: date,
                         _bvp.attach_bvp_to_diag(
                             graded, matchup_to_pk, matchup_to_sp_ids)
                         if out_picks:
-                            graded.to_csv(out_picks, index=False)
+                            _atomic_to_csv(graded, out_picks)
                             log.info("Attached top-5 batter BvP JSON columns")
                     else:
                         log.info("bvp_brain skipped: no SP IDs available "
@@ -1443,7 +1454,7 @@ def run(slate_date: date,
 
     if out_picks:
         Path(out_picks).parent.mkdir(parents=True, exist_ok=True)
-        sheet.to_csv(out_picks, index=False)
+        _atomic_to_csv(sheet, out_picks)
         log.info("Wrote picks to %s", out_picks)
 
 

@@ -25,11 +25,11 @@ echo ==== %DATE% %TIME% : SKIPPED - no network after 4min wait ==== >> "logs\mid
 exit /b 0
 :netok
 
-REM --- Locale-proof ISO slate date (UTC, to MATCH daily_variance + publish_local).
+REM --- Locale-proof ISO slate date (US Eastern via tools\slate_date -- the ONE
+REM     shared definition predict.py / daily_variance / the other jobs now use).
 REM     Do NOT use %%DATE%% -- it is locale-formatted ("Thu 06/05/2026") and breaks
-REM     predict.py's strict YYYY-MM-DD parser. publish_local's candidate is
-REM     picks_<utcnow.date>_diag.csv, so the slate MUST be built for this same date.
-for /f %%d in ('%PY% -c "import datetime;print(datetime.datetime.now(datetime.timezone.utc).date().isoformat())"') do set "SLATE=%%d"
+REM     predict.py's strict YYYY-MM-DD parser.
+for /f %%d in ('%PY% -c "from tools.slate_date import slate_today;print(slate_today())"') do set "SLATE=%%d"
 
 echo ==== %DATE% %TIME% : nightly chain  slate=%SLATE% ====>> "logs\midnight.log"
 

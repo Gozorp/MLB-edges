@@ -17,6 +17,10 @@ Run:  python tools/daily_variance_report.py [YYYY-MM-DD]   (default = today UTC)
 import os, sys, json, csv, datetime, urllib.request, urllib.parse, urllib.error
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+try:
+    from slate_date import slate_today
+except ImportError:
+    from tools.slate_date import slate_today
 try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
 
@@ -123,9 +127,13 @@ def sp_flags(games, diag):
     out = []
     hi, lo, lk = _league_k_thresholds()           # league-relative gates (fallback to 28/15)
     lgs = (" vs lg %.1f" % lk) if lk else ""
+    seen = {}
     for g in games:
         m = "%s @ %s" % (g["away"]["abbr"], g["home"]["abbr"])
-        row = diag.get(m, {})
+        # doubleheader-safe: diag is keyed (matchup, occurrence); both sides
+        # iterate the schedule in the same order, so game 2 hits (m, 2).
+        seen[m] = seen.get(m, 0) + 1
+        row = diag.get((m, seen[m]), {})
         for who, s in (("away", g["away"]), ("home", g["home"])):
             name = s.get("sp") or ""
             if not name:
@@ -210,7 +218,7 @@ def platoon_notes(games):
     return notes
 
 def main():
-    day = sys.argv[1] if len(sys.argv) > 1 else datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+    day = sys.argv[1] if len(sys.argv) > 1 else slate_today().isoformat()
     games = slate(day)
     teams = []
     for g in games:
@@ -220,7 +228,13 @@ def main():
     diag = {}
     dp = "docs/data/picks_%s_diag.csv" % day
     if os.path.exists(dp):
-        for r in csv.DictReader(open(dp, encoding="utf-8")): diag[(r.get("matchup") or "").strip()] = r
+        # doubleheader-safe: key by (matchup, occurrence index) so DH game 2
+        # no longer overwrites game 1 (diag rows carry no gamePk column).
+        _occ = {}
+        for r in csv.DictReader(open(dp, encoding="utf-8")):
+            mk = (r.get("matchup") or "").strip()
+            _occ[mk] = _occ.get(mk, 0) + 1
+            diag[(mk, _occ[mk])] = r
 
     report = {"date": day, "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
               "n_games": len(games), "roster_delta": [], "roster_review": [], "roster_leaks": [],
