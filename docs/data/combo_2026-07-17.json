@@ -1,6 +1,6 @@
 {
  "date": "2026-07-17",
- "generated_utc": "2026-07-17T22:47:27Z",
+ "generated_utc": "2026-07-17T23:09:55Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -28,6 +28,21 @@
   "K_PROP": "ODDS_API_KEY present but REJECTED (401) -- the lapsed pre-05/21 key is still in .env; replace it with a fresh the-odds-api key to light up K-prop shadow legs"
  },
  "rejected": [
+  {
+   "matchup": "TB @ BOS",
+   "pick": "BOS",
+   "joint_prob": 0.4885,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "+0.0pp vs fair -> n/a band (strict 4-8 goldilocks)"
+   ]
+  },
   {
    "matchup": "TB @ BOS",
    "pick": "BOS",
@@ -218,5 +233,5 @@
    ]
   }
  ],
- "n_games": 13
+ "n_games": 14
 }
