@@ -141,6 +141,12 @@ def _run():
     run([PY, "tools/refresh_standings_snapshot.py"],
         "standings snapshot refresh", fatal=False)
 
+    # 0.c) model guardrail state refresh (calibration drift / tier demotions /
+    #      blind-spot teams from graded history) — BEFORE predict so today's
+    #      diag applies fresh caps. Non-fatal; missing state = static defaults.
+    run([PY, "tools/model_guardrails.py"],
+        "model guardrails refresh", fatal=False)
+
     # 1) predict
     run([PY, "predict.py"] + ([date_arg] if date_arg else []) + ["--skip-weights"],
         "predict.py --skip-weights", fatal=True)
@@ -196,6 +202,18 @@ def _run():
     if slate:
         run([PY, "tools/platoon_enrichment.py", slate],
             "platoon enrichment sidecar", fatal=False)
+
+    # 3.575) player-vector sidecar (blueprint 2026-07-18: ID-referenced
+    #        players/matchups schema + EWMA form decay for the bottom-up
+    #        O/U overlay). Reads the cached statcast frame; non-fatal.
+    if slate:
+        run([PY, "tools/player_vectors.py", slate],
+            "player vectors sidecar", fatal=False)
+
+    # 3.58) per-team model-accuracy ranking sidecar (display-only; feeds the
+    #       "Team Predictability" section in the tools drawer).
+    run([PY, "tools/team_predictability.py"],
+        "team predictability sidecar", fatal=False)
 
     # 3.6) correlated-combo sidecar (display-only: ML+F5 within-game double
     #      w/ ledger-derived correlation + unanimous consensus gates; feeds

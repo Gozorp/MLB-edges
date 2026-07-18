@@ -2665,6 +2665,27 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
         </div>
 
       </div>
+<div class="accordion-item" data-acc="team-predictability">
+
+        <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
+
+          <span>Team Predictability</span>
+
+          <span class="chev" aria-hidden="true">▾</span>
+
+        </button>
+
+        <div class="accordion-body">
+
+          <div class="accordion-body-inner">
+
+            <div id="team-predictability">Open to rank all teams by how often the model calls their games right.</div>
+
+          </div>
+
+        </div>
+
+      </div>
 <div class="accordion-item" data-acc="edge-calc">
 
         <button class="accordion-header" type="button" aria-expanded="false" data-acc-toggle>
@@ -6326,6 +6347,96 @@ function _batHandSuffix(b){
   return h ? " (" + String(h).trim() + ")" : "";
 }
 
+// ===== Bottom-up O/U overlay (blueprint 2026-07-18; player_vectors.json) =====
+// Player-level expected-run projection built from ID-referenced stat vectors
+// + EWMA form decay + official-lineup polling. DISPLAY ONLY — never touches
+// the model, totals model, or staking.
+function _pvHydrate(data){
+  // Blueprint step 1.2: flat vectors -> O(1) Map for lineup adjustments.
+  const m = new Map();
+  if (data && data.players){
+    Object.entries(data.players).forEach(([id, s]) => {
+      m.set(String(id), {
+        xwobaVsR: s[0], xwobaVsL: s[1], xslgVsR: s[2], xslgVsL: s[3],
+        decayMultiplier: (s[4] == null ? 1.0 : s[4]),
+        bbRate: s[5], seasonPA: s[6] || 0,
+      });
+    });
+  }
+  window.__playerMasterMap = m;
+  const byPk = {};
+  ((data && data.matchups) || []).forEach(mu => { if (mu.game_pk != null) byPk[String(mu.game_pk)] = mu; });
+  window.__pvMatchups = byPk;
+}
+function _getValidHitterProfile(hitterId, oppHand){
+  // Blueprint step 3.2: league fallback + Bayesian small-sample shrink.
+  const TH = 100, LEAGUE = ((window.__playerVectors || {}).meta || {}).league_xwoba || 0.315;
+  const p = window.__playerMasterMap && window.__playerMasterMap.get(String(hitterId));
+  if (!p) return { xwoba: LEAGUE, decayMultiplier: 1.0, known: false };
+  let xw = (oppHand === "L" ? p.xwobaVsL : p.xwobaVsR);
+  if (xw == null) xw = (oppHand === "L" ? p.xwobaVsR : p.xwobaVsL);   // side sample too thin
+  if (xw == null) return { xwoba: LEAGUE, decayMultiplier: 1.0, known: false };
+  if (p.seasonPA < TH){
+    const w = p.seasonPA / TH;
+    return { xwoba: w * xw + (1 - w) * LEAGUE, decayMultiplier: 1.0, known: true };
+  }
+  return { xwoba: xw, decayMultiplier: p.decayMultiplier, known: true };
+}
+async function checkOfficialLineups(gamePk){
+  // Blueprint step 3.1: poll the official boxscore batting order.
+  try {
+    const r = await fetch(`https://statsapi.mlb.com/api/v1/game/${gamePk}/boxscore`);
+    const box = await r.json();
+    const away = ((box.teams || {}).away || {}).battingOrder;
+    const home = ((box.teams || {}).home || {}).battingOrder;
+    if (away && away.length && home && home.length){
+      return { status: "OFFICIAL", away: away.map(String), home: home.map(String) };
+    }
+  } catch (e) { /* silent — EXPECTED fallback below */ }
+  return { status: "EXPECTED", away: null, home: null };
+}
+async function _pvPollOfficialLineups(){
+  // Called on load + every silent-refresh tick for today's unposted games.
+  const mus = window.__pvMatchups || {};
+  window.__officialLineups = window.__officialLineups || {};
+  for (const pk of Object.keys(mus)){
+    if ((window.__officialLineups[pk] || {}).status === "OFFICIAL") continue;
+    window.__officialLineups[pk] = await checkOfficialLineups(pk);
+  }
+}
+function _pvTeamRuns(ids, oppHand){
+  // Mean guarded lineup xwOBA -> runs. Anchor: league .315 xwOBA ~ 4.4 R/G,
+  // ~0.35 runs per 10 xwOBA points (display constant, not a model weight).
+  if (!ids || !ids.length) return null;
+  let sum = 0, known = 0;
+  ids.slice(0, 9).forEach(id => {
+    const h = _getValidHitterProfile(id, oppHand);
+    sum += h.xwoba * Math.max(0.85, Math.min(1.15, h.decayMultiplier));
+    if (h.known) known++;
+  });
+  const avg = sum / Math.min(ids.length, 9);
+  const LEAGUE = ((window.__playerVectors || {}).meta || {}).league_xwoba || 0.315;
+  return { runs: 4.4 + (avg - LEAGUE) * 35, known: known, of: Math.min(ids.length, 9) };
+}
+function _bottomUpLine(r){
+  // Tooltip line: bottom-up total for this row's game, if data allows.
+  const pk = String(r.game_pk || "");
+  const mu = pk && (window.__pvMatchups || {})[pk];
+  if (!mu) return "";
+  const off = (window.__officialLineups || {})[pk];
+  const awayIds = (off && off.status === "OFFICIAL" && off.away) || mu.away_lineup;
+  const homeIds = (off && off.status === "OFFICIAL" && off.home) || mu.home_lineup;
+  if (!awayIds || !awayIds.length || !homeIds || !homeIds.length) return "";
+  const P = ((window.__platoon || {}).pitchers) || {};
+  const hHand = (P[mu.home_sp] || {}).hand || "R";   // away hitters face home SP
+  const aHand = (P[mu.away_sp] || {}).hand || "R";
+  const a = _pvTeamRuns(awayIds, hHand), h = _pvTeamRuns(homeIds, aHand);
+  if (!a || !h) return "";
+  const status = (off && off.status === "OFFICIAL") ? "OFFICIAL" : "EXPECTED";
+  return `\nBottom-up lineup projection: ${(a.runs + h.runs).toFixed(1)} runs `
+    + `(${status} lineups, ${a.known + h.known}/${a.of + h.of} hitters known, EWMA form-adjusted)`;
+}
+
 function _spDisplay(spName, matchup, side){
   spName = (spName || "TBD").trim();
   if (spName && spName.toUpperCase() !== "TBD") return '<strong>' + spName + '</strong>' + _spPlatoonSuffix(spName);
@@ -8860,7 +8971,7 @@ function renderSlate(rows, gradeMap, results) {
       const _bookSuffix = _bookLabel ? `\nSource: ${_bookLabel}` : "";
       const _mcR = tot ? parseFloat(tot.pred_runs_mc) : NaN;
       const _mcSuffix = isFinite(_mcR) ? `\nMonte Carlo: ${_mcR.toFixed(1)}r (10K sims)` : "";
-      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}${_bookSuffix}${_mcSuffix}`;
+      const tooltip = `pred ${tot.pred_runs}r · Vegas ${tot.total_line} · stake ${tot.stake_units || "0"}u${_ouPlayerLines}${_bookSuffix}${_mcSuffix}${_bottomUpLine(r)}`;
       ouCell = `<td><span class="ou-pill ${cls}" title="${tooltip}">${arrow} ${initial} ${lineStr}${edgeStr}</span></td>`;
     } else if (tot && tot.pred_runs !== undefined && tot.pred_runs !== "" && isFinite(parseFloat(tot.pred_runs))) {
       // pred_runs-only mode: market columns blank, but model output present.
@@ -8869,7 +8980,7 @@ function renderSlate(rows, gradeMap, results) {
       // as a line break in every major browser's native tooltip.
       const _mcR2 = tot ? parseFloat(tot.pred_runs_mc) : NaN;
       const _mcSuffix2 = isFinite(_mcR2) ? `\nMonte Carlo: ${_mcR2.toFixed(1)}r (10K sims)` : "";
-      const tooltip = `Model projection: ${pred.toFixed(1)} runs (no market)${_ouPlayerLines}${_mcSuffix2}`;
+      const tooltip = `Model projection: ${pred.toFixed(1)} runs (no market)${_ouPlayerLines}${_mcSuffix2}${_bottomUpLine(r)}`;
       // Pill body: if BvP-adjusted shadow diverges by >=0.5r, show both so
       // the user sees the player adjustment moved the number.
       let pillBody;
@@ -9384,6 +9495,9 @@ let _slateSeq = 0;
 async function silentRefresh(date) {
   // Re-fetch with cache bust, compare signatures, re-render only if changed
   const _seq = _slateSeq;   // read-only: superseded by any newer loadSlate
+  // Blueprint step 3.1: keep official batting orders fresh on the same
+  // cadence (fire-and-forget; games already OFFICIAL are skipped).
+  try { _pvPollOfficialLineups(); } catch (_e) {}
   try {
     const q = `?v=${Date.now()}`;
     const opts = { cache: "no-store" };
@@ -9663,6 +9777,14 @@ async function loadSlate(date, { bust = false } = {}) {
     // handedness + per-side ERA-scale splits for the (R)/(L) + [ERA vs R/L]
     // name decorations. NEVER feeds the model.
     try { window.__platoon = await fetch(`./data/platoon_${date}.json`, {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__platoon = null; }
+    // Player-vector sidecar (blueprint 2026-07-18; tools/player_vectors.py):
+    // ID-referenced stat vectors + matchup shells for the bottom-up O/U
+    // overlay. Hydrated into an O(1) Map; official lineups polled async.
+    try {
+      window.__playerVectors = await fetch(`./data/player_vectors_${date}.json`, {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; });
+    } catch (_e) { window.__playerVectors = null; }
+    _pvHydrate(window.__playerVectors);
+    try { _pvPollOfficialLineups(); } catch (_e) {}   // fire-and-forget
     // Resolve the projection map BEFORE rows render: details panels (gp
     // preview etc.) are pre-built during the slate render, so the pre-posting
     // lineup fallback needs __ppProj available now, not 8s later.
@@ -10318,6 +10440,54 @@ document.addEventListener("click", function (e) {
     item.classList.toggle("open");
     btn.setAttribute("aria-expanded", String(willOpen));
     e.stopPropagation();
+  });
+})();
+
+// ===== Team Predictability ranking (drawer; tools/team_predictability.py) =====
+// Ranks every team best -> worst by how often the model's pick was CORRECT
+// in graded games involving that team. Lazy-loads once, on first open.
+(function () {
+  let loaded = false;
+  async function render() {
+    const el = document.getElementById("team-predictability");
+    if (!el) return;
+    el.innerHTML = '<div class="muted">Loading ranking…</div>';
+    let d = null;
+    try {
+      d = await fetch("./data/team_predictability.json", { cache: "no-store" })
+        .then(r => r.ok ? r.json() : null);
+    } catch (_) {}
+    if (!d || !Array.isArray(d.teams) || !d.teams.length) {
+      el.innerHTML = '<div class="muted">No graded history yet — the ranking appears once results are verified.</div>';
+      return;
+    }
+    const rows = d.teams.map((t, i) => {
+      const pct = (t.acc * 100).toFixed(1);
+      const bar = Math.max(2, Math.round(t.acc * 100));
+      const pickRec = t.picked_n
+        ? `${t.picked_wins}-${t.picked_n - t.picked_wins} when the model picked them`
+        : "never picked";
+      const tip = `${t.correct}/${t.n} games called right` +
+        (t.thin ? ` — thin sample (under ${d.min_n} games)` : "") + ` · ${pickRec}`;
+      return `<div title="${tip}" style="display:flex;align-items:center;gap:8px;padding:3px 0;${t.thin ? "opacity:.45;" : ""}">` +
+        `<span style="width:2.1em;text-align:right;color:var(--muted);font-size:.72rem;">${i + 1}.</span>` +
+        `<strong style="width:3em;">${t.team}</strong>` +
+        `<span style="flex:1;height:7px;background:var(--bg-elev);border-radius:980px;overflow:hidden;">` +
+        `<span style="display:block;height:100%;width:${bar}%;background:${t.acc >= 0.5 ? "var(--green)" : "var(--red)"};border-radius:980px;"></span></span>` +
+        `<span style="width:3.6em;text-align:right;font-variant-numeric:tabular-nums;">${pct}%</span>` +
+        `<span style="width:2.9em;text-align:right;color:var(--muted);font-size:.72rem;">n=${t.n}</span>` +
+        `</div>`;
+    }).join("");
+    el.innerHTML =
+      `<div class="muted" style="font-size:.78rem;margin-bottom:.5rem;">How often the model calls a team's games right — ` +
+      `${d.n_graded_picks} graded picks over ${d.n_dates} slates, best to worst. Hover a row for the model's record when it picked that team. Grayed = under ${d.min_n} games.</div>` +
+      rows;
+  }
+  document.addEventListener("click", function (e) {
+    const btn = e.target.closest('[data-acc="team-predictability"] [data-acc-toggle]');
+    if (!btn || loaded) return;
+    loaded = true;
+    render();
   });
 })();
 

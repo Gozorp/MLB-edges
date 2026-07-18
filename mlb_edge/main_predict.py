@@ -23,6 +23,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 from datetime import date, datetime, timedelta
@@ -125,6 +126,21 @@ def overlay_live_features(games: pd.DataFrame, ctx: dict) -> pd.DataFrame:
 # the dashboard at the full slate count instead of silently dropping the
 # matchup, and the validate step in daily-slate.yml excludes this tier from
 # its blank-row denominator since the blanks here are expected.
+def _load_model_guardrails() -> dict:
+    """Guardrail state fit by tools/model_guardrails.py from graded history
+    (calibration ceiling, tier demotions, blind-spot teams). Missing or
+    unreadable state degrades to static defaults -- never blocks a slate."""
+    try:
+        with open(os.path.join("data", "state", "model_guardrails.json"),
+                  encoding="utf-8") as fh:
+            return json.load(fh) or {}
+    except Exception:
+        return {}
+
+
+_GUARDRAILS = _load_model_guardrails()
+
+
 def _pending_sp_data_row(*, away_abbr: str, home_abbr: str,
                          why_skipped: str,
                          game_pk=None, game_num=None) -> dict:
@@ -362,6 +378,33 @@ def build_diagnostic_table(games: pd.DataFrame,
             side, p_model, fair = "away", 1 - full_p if pd.notna(full_p) else float("nan"), fair_a
             picked = away_abbr
 
+        # ---- probability guardrails (2026-07-17 audit; user-directed) ----
+        # Applied BEFORE edge/EV/Kelly/tier so every downstream number sees
+        # the guarded probability; the raw model output is preserved in the
+        # pick_prob_raw column (and full_prob stays untouched for eval).
+        p_model_raw = p_model
+        guard_sig = []
+        if thin_sp and pd.notna(p_model):
+            # (7) thin-SP shrink toward the coin, weighted by the thinner
+            # side's Statcast sample share (postmortem root cause #4: thin
+            # xERA is noise dressed as signal). Floor 0.25 keeps SOME lean.
+            _eff = []
+            for _na in (h_n_act, a_n_act):
+                try:
+                    _eff.append(min(1.0, (float(_na) if pd.notna(_na) else 0.0)
+                                    / float(SP_THIN_SAMPLE_THRESHOLD)))
+                except Exception:
+                    _eff.append(0.0)
+            _w = max(0.25, min(_eff) if _eff else 0.25)
+            p_model = 0.5 + (p_model - 0.5) * _w
+            guard_sig.append("thin_sp_shrunk_w=%.2f" % _w)
+        _ceil = float(_GUARDRAILS.get("prob_ceiling") or 0.70)
+        if pd.notna(p_model) and p_model > _ceil:
+            # (3) calibration ceiling: audited buckets above 0.65 ran
+            # +10.7pp / +22.8pp hot; the tail has not earned its confidence.
+            p_model = _ceil
+            guard_sig.append("prob_ceiling_%.2f" % _ceil)
+
         # Phase 4 shadow — pick-perspective probability under shrinkage.
         # Pick side is locked by the production model (above) so the shadow
         # is the shrinkage model's probability on the SAME pick. That way
@@ -432,11 +475,42 @@ def build_diagnostic_table(games: pd.DataFrame,
             why_skipped.append(f"edge {edge*100:+.2f}pp outside [{MIN_EDGE_PCT*100:.0f},{MAX_EDGE_PCT*100:.0f}]pp")
         if TIER_SIZES.get(conv.tier, 0.0) == 0.0:
             why_skipped.append(f"tier {conv.tier} -> stake_mult=0")
+
+        # ---- tier guardrails (2026-07-17 audit; user-directed) ----
+        # Applied to the tier LABEL so stake sizing (TIER_SIZES) and every
+        # downstream reader follow automatically. Order: data-driven
+        # demotion, then hard caps to SKIP.
+        tier_out = conv.tier
+        _dem = (_GUARDRAILS.get("tier_demotions") or {}).get(tier_out)
+        if _dem and TIER_SIZES.get(tier_out, 0.0) > TIER_SIZES.get(_dem, 0.0):
+            # (5) self-demotion: this tier's rolling win rate fell below the
+            # GOLD benchmark; it inherits GOLD sizing until it re-earns.
+            why_skipped.append("guardrail: %s demoted to %s (rolling win rate "
+                               "below benchmark)" % (tier_out, _dem))
+            guard_sig.append("tier_demoted_%s_to_%s" % (tier_out, _dem))
+            tier_out = _dem
+        _blind = set(_GUARDRAILS.get("blindspot_teams") or [])
+        if TIER_SIZES.get(tier_out, 0.0) > 0.0 and (home_abbr in _blind or away_abbr in _blind):
+            # (4) blind-spot cap: the model calls this team's games right
+            # <46% of the time over 25+ graded games — worse than a coin.
+            _bt = home_abbr if home_abbr in _blind else away_abbr
+            why_skipped.append("guardrail: blind-spot team %s (model <46%% "
+                               "accurate in its games) -> no stake" % _bt)
+            guard_sig.append("blindspot_%s" % _bt)
+            tier_out = "SKIP"
+        if TIER_SIZES.get(tier_out, 0.0) > 0.0 and pd.notna(fair) and fair < 0.5:
+            # (2) contrarian cap: picks against the market side graded 45.1%
+            # (n=153) — postmortem root cause #2, now a hard gate.
+            why_skipped.append("guardrail: contrarian cap — pick against the "
+                               "market side (fair %.3f) -> no stake" % fair)
+            guard_sig.append("contrarian_cap")
+            tier_out = "SKIP"
         if thin_sp:
             # Hard stake-safety cap: prediction shown, money withheld.
             why_skipped = thin_sides + why_skipped
-            if TIER_SIZES.get("SKIP", 0.0) == 0.0 and conv.tier != "SKIP":
+            if tier_out != "SKIP":
                 why_skipped.append("tier forced SKIP: thin SP Statcast sample")
+            tier_out = "SKIP"
 
         # Per-row odds status: distinguish "API didn't fire" from "API fired
         # but had no match for this matchup" so a downstream reader can tell
@@ -479,6 +553,11 @@ def build_diagnostic_table(games: pd.DataFrame,
             # home-perspective. Future readers: if you see both, they're equal
             # by construction — use whichever name you find more readable.
             "pick_prob": round(p_model, 4) if pd.notna(p_model) else None,
+            # Raw model output BEFORE the 2026-07-17 probability guardrails
+            # (thin-SP shrink, calibration ceiling). Calibration audits and
+            # tools/model_guardrails.py read this so the guards can never
+            # mask the drift they were built to detect.
+            "pick_prob_raw": round(p_model_raw, 4) if pd.notna(p_model_raw) else None,
             # Phase 4 shadow (pick-perspective). NaN when shadow disabled
             # via USE_BAYESIAN_SHRINKAGE_SHADOW=False or when shrinkage
             # raised an exception. Production picks/edges/tiers do NOT
@@ -557,9 +636,10 @@ def build_diagnostic_table(games: pd.DataFrame,
                              if r.get("home_sp_name") else ""),
             "away_sp_name": (str(r.get("away_sp_name")).strip()
                              if r.get("away_sp_name") else ""),
-            "tier": ("SKIP" if thin_sp else conv.tier),
+            "tier": tier_out,
             "signals": ", ".join(list(conv.signals_fired)
-                                 + (["thin_sp_data"] if thin_sp else [])),
+                                 + (["thin_sp_data"] if thin_sp else [])
+                                 + guard_sig),
             "why_skipped": " | ".join(why_skipped) if why_skipped else "",
             "odds_status": row_odds_status,
         })

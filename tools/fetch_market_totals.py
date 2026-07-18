@@ -70,6 +70,12 @@ def main():
         out = "docs/data/market_totals_%s.csv" % gd
         sub[cols].to_csv(out + ".tmp", index=False)
         os.replace(out + ".tmp", out)  # atomic
+        # CLV snapshot log (blueprint 2026-07-18 step 5): the per-date file
+        # above keeps only the LATEST fetch; this append-only log keeps every
+        # intraday snapshot so open-vs-close line movement is measurable.
+        logp = "docs/data/market_totals_log_%s.csv" % gd
+        sub[cols].to_csv(logp, mode="a", index=False,
+                         header=not os.path.exists(logp))
         total_games += len(sub)
         print("  wrote %d games -> %s  [%s]" % (len(sub), out, src))
         for _, r in sub.iterrows():
