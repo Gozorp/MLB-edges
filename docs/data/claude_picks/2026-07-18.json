@@ -1,14 +1,13 @@
 {
   "date": "2026-07-18",
-  "fit_at": "2026-07-18T18:10:00Z",
+  "fit_at": "2026-07-18T20:30:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 16,
   "patterns_recognized": [
-    "Stage 1/2 disagreement (f5_full_delta >= 0.12) has resolved in Stage 2/full_prob's direction across essentially every tracked case since 7/9 (LAA@MIN, SEA@TB, NYY@WSH, NYM@PHI on 7/16) -- never treat a large delta as an OVERRIDE signal toward Stage 1's lean; today's PIT@CLE (delta=0.27) and DET@LAA (delta=0.32) both fit this pattern.",
-    "D-grade picks with both SP-xERA and PQI opposing the pick split close to 50/50 directionally across the archive (e.g. 4W/3L on 7/11) -- SKIP is the correct response even on today's most lopsided cases (WSH@OAK, DET@LAA); fading to the opposing team is not supported by the data.",
-    "HARD CAP 1 (negative-edge GOLD/DIAMOND) remains the single most validated cap in the archive, correctly calling directional losses on elite pre-cap stacks on multiple days (7/9, 7/10, 7/11) -- never relax it, including on TEX@ATL today.",
-    "The HARD CAP 10 bottom-bucket 'CONFIRM rescue' to full pre-cap tier is only validated when CAP 10 is the sole blocker and all four dimensions (F-signal, SP-xERA, PQI, Stage-agree) affirm at pre-cap score>=5 (6/12 ARI@CIN, 7/10 CLE@MIA) -- it does not extend to games where HARD CAP 7 (bullpen disadvantage) also fires, since CAP 7 has its own separate ~7-for-8 validation record. MIA@MIL today hits both caps simultaneously despite a perfect pre-cap score=10 stack.",
-    "Today's slate is unusually thin -- every game is SKIP-tier or fully capped to non-bettable; the only two nominal PLATINUM/GOLD tiers (SD@KC, MIA@MIL) both collapse under HARD CAP 10, and MIA@MIL additionally triggers HARD CAP 7. Two starters (TB's Sandoval, ATL's Murphy) are also gated by the thin_sp_data HARD_VETO (<100 Statcast pitches)."
+    "F1_xera_gap* without F3 >= 1000 produces redundant corroboration: validated 4+ consecutive suppressions through 7/17 (LAD@NYY F1*=1.61 no F3, CHW@TOR F1*=1.87 no F3, both lost). Starred SP sample means F1 and SP xERA draw from the same thin Statcast pool — not independent anchors.",
+    "GOLD CONFIRM at the 65% home-favorite boundary requires an F-signal beyond BvP OWNERs: 7/17 BAL@HOU (pick_prob=65.3%, two OWNERs Altuve+Alvarez vs Kremer, no F-signal) was a P&L loss 3-2. BvP career splits share informational content with p_model and cannot serve as sole independent corroboration.",
+    "HARD CAP 7 false-negatives accumulate on sub-0.04 bullpen gaps: KC@BAL 7/10 (+0.018 gap, BAL won 5-3) and 7/12 (+0.0189, BAL won 8-2) both won after CAP 7 fired. Today's MIA@MIL has +0.0185 — same problematic range; monitoring warranted.",
+    "Stage 2 high-delta direction reliable unless |pqi_diff| > 20 and PQI opposes: first failure 7/17 STL@ARI (f5_full_delta=0.186, PQI delta=-25.8 opposing Stage 2, STL won 5-4). Four-of-five streak otherwise holds — do not cite Stage 2 direction as soft confirmation when large PQI strongly opposes."
   ],
   "by_matchup": {
     "PIT @ CLE": {
@@ -17,11 +16,11 @@
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "PIT",
+      "claude_pick": "PIT ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.55,
-      "reasoning": "Edge is a thin +2.46pp (outside the [4,15]pp actionable band) and HARD CAP 10 correctly zeroed the bottom-bucket pick_prob=0.513. Stage 1 gave CLE a big F5 lean (75.7%) but Stage 2/full_prob flipped to PIT (48.7% CLE, delta=0.27) -- per the 7/9-7/16 archive, Stage 2 direction has been the more reliable read on large deltas, so this is not an override signal. SP edge and PQI both agree with PIT but the pick stays correctly unstaked.",
-      "lessons_applied": ["Stage-2-full-prob-more-reliable-on-high-delta", "CAP-10-bottom-bucket"]
+      "claude_confidence": 0.51,
+      "reasoning": "SKIP on three grounds: edge +2.46pp is below the 4pp valid floor; f5_full_delta=0.2691 (Stage 1 gives CLE 75.65% F5 while Stage 2 flips to PIT 51.3%); HARD CAP 10 fires at pick_prob=0.513 with no F-signal present. SP edge 0.81 (Jared Jones) and PQI delta=-8.1 are genuinely positive but cannot rescue CAP 10 without an F-signal anchor. Stage 2 direction toward PIT is consistent with the high-delta archive pattern but no stake qualifies without four dimensions.",
+      "lessons_applied": ["HARD CAP 10 four-dimension rescue requires F-signal", "Edge below 4pp floor blocks stake"]
     },
     "MIN @ CHC": {
       "model_pick": "CHC ML SKIP",
@@ -29,11 +28,11 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "CHC",
+      "claude_pick": "CHC ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "Edge is -8.89pp (negative, outside band). Both SP xERA (Taj Bradley favored over Boyd by 1.08) and PQI (against CHC) oppose the pick -- a classic D-grade dual-opposing-signal configuration. The archive shows this signature splits close to 50/50 directionally (4W/3L on 7/11 alone), so SKIP is correct and no override to MIN is warranted.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.48,
+      "reasoning": "D-grade with dual opposing signals: Taj Bradley (MIN) holds a 1.08 xERA advantage over Matthew Boyd (CHC), PQI delta=-10.8 opposes CHC, and edge is -8.89pp (HARD CAP 1 fires). pick_prob=0.502 is the slate's closest coin-flip. D-grade dual-opposing (SP against + PQI against) has been the July archive's most reliable SKIP indicator — validated repeatedly through 7/17. CONFIRM SKIP.",
+      "lessons_applied": ["D-grade dual-opposing SP+PQI = reliable SKIP (7/11 through 7/17 archive)", "HARD CAP 1 negative edge non-negotiable"]
     },
     "CHW @ TOR": {
       "model_pick": "TOR ML SKIP",
@@ -41,11 +40,11 @@
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "TOR",
+      "claude_pick": "TOR ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.56,
-      "reasoning": "PQI confirms TOR (Δ=+8.5) and Stage 1/2 agree (Δ=0.03), a cleaner stack than most SKIPs today, but HARD CAP 10 zeroed it at pick_prob=0.530 (bottom-bucket, no CONFIRM rescue since pre-cap score was only 2/B). Edge (+4.73pp) sits inside the normally-actionable band, so this is a probability-bucket suppression rather than a signal-quality problem. Confirming the cap.",
-      "lessons_applied": ["CAP-10-bottom-bucket"]
+      "claude_confidence": 0.52,
+      "reasoning": "Two positive dimensions (PQI delta=+8.5, Stage agree delta=0.03) but no F-signal and no SP-xERA dimension in grade_reasons. HARD CAP 10 fires at pick_prob=0.530. Without an F-signal anchor, the two-dimension stack does not meet the CAP 10 four-dimension rescue threshold. Edge 4.73pp is at the valid-window floor but post-cap score is already 0. No live context justifies elevation. CONFIRM SKIP.",
+      "lessons_applied": ["HARD CAP 10 rescue requires F+SP+PQI+Stage simultaneously — two dimensions insufficient", "7/17 CHW@TOR DOWNGRADE validated (F1* no F3 lost 12-4)"]
     },
     "CIN @ COL": {
       "model_pick": "COL ML SKIP",
@@ -53,11 +52,11 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "COL",
+      "claude_pick": "COL ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "Edge +1.59pp is negligible. SP xERA (Rhett Lowder over Sugano, 1.59 gap) and PQI (Δ=-9.8) both oppose the COL pick, and Stage 1/2 agree so there's no disagreement nuance to weigh. Same D-grade dual-opposing pattern as MIN@CHC -- SKIP is correct, no override.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.48,
+      "reasoning": "D-grade with dual opposing signals: Rhett Lowder (CIN) holds a 1.59 xERA advantage over Tomoyuki Sugano (COL), PQI delta=-9.8 opposes COL, edge +1.31pp is below the 4pp floor. Stage 1/2 agree (delta=0.00) is the sole positive dimension. Note: 7/17 flagged CIN@COL as the strongest DOWNGRADE false-negative (CIN won 7-2) — but today's pick is COL, the opposing side, with the same SP-against configuration that drove CIN's win. CONFIRM SKIP.",
+      "lessons_applied": ["D-grade dual-opposing SP+PQI SKIP", "Edge below 4pp floor", "7/17 CIN@COL false-negative: CIN won, not COL — pick direction differs today"]
     },
     "NYM @ PHI": {
       "model_pick": "NYM ML SKIP",
@@ -65,11 +64,11 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "NYM",
+      "claude_pick": "NYM ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.45,
-      "reasoning": "Model picks NYM even though its own SP (Manaea) trails Luzardo (PHI) by 1.26 xERA, PQI runs Δ=+25.4 against NYM, and Vegas's fair_prob (0.373) is far below the model's implied confidence -- edge +16.46pp is large but stays below the +25pp CAP 6 hallucination line. This shape (big edge, fair_prob<0.42, SP+PQI both against) is close to what HARD CAP 6 targets; the existing D grade already reflects appropriate skepticism. CONFIRM SKIP, no stake either side.",
-      "lessons_applied": ["calibration-hallucination-watch-below-CAP-6-threshold", "D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.46,
+      "reasoning": "D-grade with structural SKIP on multiple gates: fair_prob=0.373 is below the 0.42 viability floor; Jesus Luzardo (PHI) holds a 1.26 xERA advantage over Sean Manaea (NYM); PQI delta=+25.4 opposes NYM; edge 16.46pp exceeds the 15pp ceiling. Market pricing NYM at 37.3% while model assigns 53.7% is a material calibration gap consistent with the hallucination-zone pattern (7/17 TEX@ATL, 7/17 WSH@OAK). Cannot verify live injury context. CONFIRM SKIP.",
+      "lessons_applied": ["fair_prob < 0.42 structural viability floor", "Edge above 15pp ceiling = SKIP", "D-grade dual-opposing + calibration-gap pattern"]
     },
     "BAL @ HOU": {
       "model_pick": "HOU ML SKIP",
@@ -77,23 +76,23 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "HOU",
+      "claude_pick": "HOU ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.5,
-      "reasoning": "HOU (home) is picked despite Trevor Rogers (BAL) holding a 0.93 xERA edge over Arrighetti and PQI running Δ=-12.6 against HOU. Stage 1/2 agree, so there's no disagreement complicating the read -- just a straightforward dual-opposing D-grade. Consistent with the archive's guidance to SKIP and not fade to BAL on this signature alone.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.46,
+      "reasoning": "D-grade with dual opposing signals approaching the home-favorite scrutiny boundary: Trevor Rogers (BAL) holds a 0.93 xERA advantage over Spencer Arrighetti (HOU), PQI delta=-12.6 opposes HOU. pick_prob=0.644 is just below the >65% over-confidence zone. Yesterday's BAL@HOU (7/17) was the sole staked GOLD CONFIRM and lost 3-2 — same matchup, same pitcher pairing context, no F-signal. D-grade + dual-opposing + home-favorite boundary: CONFIRM SKIP.",
+      "lessons_applied": ["Home-favorite >65% scrutiny boundary heuristic", "7/17 BAL@HOU GOLD loss (BvP OWNERs insufficient without F-signal)", "D-grade dual-opposing SKIP"]
     },
     "SD @ KC": {
-      "model_pick": "SD ML PLATINUM",
+      "model_pick": "SD ML GOLD",
       "model_prob": 0.5193,
-      "model_tier": "PLATINUM",
+      "model_tier": "GOLD",
       "model_grade": "C",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "SD",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "SD ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.5,
-      "reasoning": "The nominal PLATINUM tier is misleading: the only supporting signal is F3_swing_take_gap=613.5, well below the ~1000+ magnitude the archive treats as meaningful, with no SP-xERA or PQI corroboration (pre-cap score only 2/B). HARD CAP 10 correctly zeroed the bottom-bucket pick_prob=0.519. Combined with the standing PLATINUM-skepticism heuristic (~43% historical hit rate), there's no case for elevating out of SKIP.",
-      "lessons_applied": ["PLATINUM-43pct-skepticism", "F3-below-1000-weak-anchor", "CAP-10-bottom-bucket"]
+      "claude_confidence": 0.51,
+      "reasoning": "GOLD label overstates conviction: F3_swing_take_gap=613.5 is well below the 1000 meaningful threshold — per 7/11 postgame, sub-1000 F3 does not anchor a GOLD pick. Edge +0.16pp is trivially positive and outside the [4,15]pp valid window. HARD CAP 10 fires at pick_prob=0.519. F5_bullpen_gap=+1.44 is a soft positive; hl_bullpen_xwoba_gap=-0.039 shows SD's bullpen marginally better (sub-0.04 meaningful threshold). Without a valid F3 anchor or in-range edge, GOLD is misleading. DOWNGRADE to SKIP.",
+      "lessons_applied": ["F3 < 1000 is not a meaningful anchor (7/11 PHI@DET: F3=328.8 correctly suppressed)", "Edge outside [4,15]pp valid window blocks stake", "HARD CAP 10 bottom-bucket"]
     },
     "STL @ ARI": {
       "model_pick": "ARI ML SKIP",
@@ -101,47 +100,47 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "ARI",
+      "claude_pick": "ARI ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.5,
-      "reasoning": "Dustin May (STL) holds a 0.68 xERA edge over Pfaadt and PQI runs Δ=-6.5 against the ARI pick; Stage 1/2 agree. Another clean dual-opposing D-grade -- SKIP correct, no fade to STL per the archived rule against overriding this signature.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.48,
+      "reasoning": "D-grade with dual opposing signals and negative edge: Dustin May (STL) holds a 0.68 xERA advantage over Brandon Pfaadt (ARI), PQI delta=-6.5 opposes ARI, edge -0.34pp (HARD CAP 1 fires). Yesterday's STL@ARI (7/17) noted Stage 2 high-delta direction failed when |pqi_diff| > 20 opposing — today's PQI opposition is moderate (6.5), well below that threshold, so that exception does not apply. D-grade + negative edge + dual-opposing: CONFIRM SKIP.",
+      "lessons_applied": ["D-grade dual-opposing SKIP", "HARD CAP 1 negative edge non-negotiable", "7/17 STL@ARI PQI-vs-Stage-2 lesson (|pqi|>20 threshold not met today)"]
     },
     "TB @ BOS": {
       "model_pick": "BOS ML SKIP",
-      "model_prob": 0.519,
+      "model_prob": 0.5123,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "BOS",
+      "claude_pick": "BOS ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.5,
-      "reasoning": "Patrick Sandoval (TB) has thrown only 65 Statcast pitches this season (need 100+), triggering the sp_savant_gate HARD_VETO -- exactly the rookie/thin-sample SP blindspot the heuristics flag. HARD CAP 10 also zeroes the residual bottom-bucket score (pick_prob=0.519, pre-cap only 1/B-). CONFIRM SKIP -- no reliable edge exists until Sandoval clears the sample threshold.",
-      "lessons_applied": ["thin-sp-data-rookie-gate", "CAP-10-bottom-bucket"]
+      "claude_confidence": 0.51,
+      "reasoning": "sp_savant_gate=HARD_VETO fires because Patrick Sandoval has only 65 Statcast pitches (needs 100+) — SP xERA is unreliable. Edge -1.21pp is negative (HARD CAP 1). HARD CAP 10 fires at pick_prob=0.519. The F-signal (+1) in grade_reasons draws partly on Sandoval's vetoed data pool, reducing its independence. PQI delta=-8.5 also opposes BOS. 7/17 TB@BOS G2 confirmed sp_savant_gate=HARD_VETO was appropriate. CONFIRM SKIP.",
+      "lessons_applied": ["sp_savant_gate=HARD_VETO blocks thin SP sample", "HARD CAP 1 negative edge", "7/17 BOS G2 HARD_VETO validation"]
     },
     "TEX @ ATL": {
       "model_pick": "ATL ML SKIP",
-      "model_prob": 0.5112,
+      "model_prob": 0.5177,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "ATL",
+      "claude_pick": "ATL ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.53,
-      "reasoning": "Owen Murphy (ATL, the picked team's own starter) has just 67 Statcast pitches -- the same thin-sample HARD_VETO as TB@BOS, meaning ATL's own SP-quality signal is unreliable. Despite a decent pre-cap B+ stack (F-signal, PQI confirms Δ=+5.2, Stage agree, score=3), HARD CAP 1 (-0.36pp edge) and HARD CAP 10 (pick_prob=0.511) stack to zero it. CONFIRM SKIP; the rookie-SP uncertainty on ATL's own side reinforces the caution.",
-      "lessons_applied": ["thin-sp-data-rookie-gate", "CAP-1-non-negotiable", "CAP-10-bottom-bucket"]
+      "claude_confidence": 0.51,
+      "reasoning": "sp_savant_gate=HARD_VETO fires because Owen Murphy (ATL home SP) has only 67 Statcast pitches — SP data unreliable for the picked team's own starter. Edge -1.03pp triggers HARD CAP 1 (pre-cap score 3→1). HARD CAP 10 fires at pick_prob=0.518 (score 1→0). Pre-cap stack was positive (PQI +5.2, Stage agree delta=0.00, F-signal), but Murphy's gate plus negative edge block any rescue. 7/17 TEX@ATL saw ATL win 15-1 against model's ~50% with a similar market gap — different SPs today but same SKIP caution applies. CONFIRM SKIP.",
+      "lessons_applied": ["sp_savant_gate=HARD_VETO invalidates thin SP data", "HARD CAP 1 + HARD CAP 10 stacking", "7/17 TEX@ATL model-vs-market calibration gap lesson"]
     },
     "MIA @ MIL": {
-      "model_pick": "MIL ML PLATINUM",
-      "model_prob": 0.5961,
-      "model_tier": "PLATINUM",
+      "model_pick": "MIL ML GOLD",
+      "model_prob": 0.5553,
+      "model_tier": "GOLD",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "MIL",
+      "claude_pick": "MIL ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.6,
-      "reasoning": "MIL's pre-cap stack is the best on the slate (score=10/A): F-signal, SP edge agrees (+2), PQI confirms (Δ=+7.2), Stage 1/2 agree -- the exact four-dimension-affirming profile that justified the twice-validated HARD CAP 10 rescue (6/12 ARI@CIN, 7/10 CLE@MIA). But CAP 10 isn't the only blocker here: HARD CAP 7 (bullpen disadvantage, gap=+0.0185) also fires, and that cap has its own separate ~7-for-8 validation record distinct from the CAP-10-only rescue precedent. The lone CAP-7 miss (KC@BAL, +0.018 gap) was a near-identical sub-threshold magnitude, so there's a live question about whether this gap size is meaningful -- but not enough evidence to override two stacked caps at once on a single day's stack. CONFIRM SKIP; do not extend the CAP-10-only rescue exception to a game where CAP 7 also fires.",
-      "lessons_applied": ["CAP-10-rescue-requires-CAP-10-as-sole-blocker", "CAP-7-bullpen-disadvantage", "PLATINUM-43pct-skepticism"]
+      "claude_confidence": 0.55,
+      "reasoning": "Strong pre-cap stack (score=5: F3=3225.7, F5=+0.86, SP edge 0.41 agrees, PQI +7.2 confirms, Stage agree delta=0.02) reduced to no-stake by HARD CAP 7 (hl_bullpen_xwoba_gap=+0.0185 >= 0) and HARD CAP 10 (pick_prob=0.549). Note: +0.0185 is well below the 0.040 meaningful threshold; the archive records CAP 7 false negatives at this exact gap level (KC@BAL 7/10 +0.018 BAL won 5-3, 7/12 +0.0189 BAL won 8-2). Cap authority is maintained — the four-dimension CAP 10 rescue exception does not extend to games where CAP 7 also fires.",
+      "lessons_applied": ["HARD CAP 7 + HARD CAP 10 stacking — both caps authoritative", "CAP 10 rescue exception requires CAP 10 as sole blocker", "CAP 7 sub-0.04 gap false-negative tracking (KC@BAL 7/10 and 7/12 same range)"]
     },
     "SF @ SEA": {
       "model_pick": "SF ML SKIP",
@@ -149,23 +148,23 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "SF",
+      "claude_pick": "SF ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.5,
-      "reasoning": "Bryan Woo (SEA) holds a 0.45 xERA edge over Webb and PQI runs against the SF pick (Δ=+7.1); Stage 1/2 agree. Dual-opposing D-grade, same pattern as the other SKIPs today -- SKIP correct, no override.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.47,
+      "reasoning": "D-grade with dual opposing signals: Bryan Woo (SEA) holds a 0.45 xERA advantage over Logan Webb (SF), PQI delta=+7.1 opposes SF. Edge 8.09pp is within the valid window but D-grade correctly overrides tier eligibility. 7/17 SF@SEA (SF won 7-0 against all signals) was explicitly flagged as a variance outlier — 'do not extract a pattern from this win.' D-grade dual-opposing signals remain reliable SKIP indicators. CONFIRM SKIP.",
+      "lessons_applied": ["D-grade dual-opposing SP+PQI SKIP", "7/17 SF@SEA variance-win warning — do not generalize"]
     },
     "LAD @ NYY": {
       "model_pick": "NYY ML GOLD",
-      "model_prob": 0.5412,
+      "model_prob": 0.5462,
       "model_tier": "GOLD",
       "model_grade": "D",
-      "claude_decision": "CONFIRM",
-      "claude_pick": "NYY",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "NYY ML SKIP",
       "claude_tier": "SKIP",
       "claude_confidence": 0.48,
-      "reasoning": "The CSV still labels this GOLD, but the post-cap grade is D (score=-1): Emmet Sheehan (LAD) holds a 0.51 xERA edge over Weathers, PQI runs Δ=-11.0 against NYY, and only F5_bullpen_gap=+0.98 supports the pick. No hard cap needed to fire -- ordinary scoring already collapsed this to non-bettable. Treat the GOLD label as stale; CONFIRM the effective SKIP.",
-      "lessons_applied": ["stale-tier-label-trust-post-cap-grade", "D-grade-dual-opposing-no-override"]
+      "reasoning": "GOLD label on a D-grade pick (pre-cap score=-1): only F5_bullpen_gap=+0.98 supports NYY; SP edge 0.51 xERA AGAINST NYY (Emmet Sheehan LAD over Ryan Weathers NYY) and PQI delta=-11.0 opposing NYY pull the score negative. F5-only without F1 or F3 is an insufficient anchor per 7/12 SEA@TB (F1* no F3, 8-2 blowout loss) and 7/17 LAD@NYY (F1*+F5 no F3, DOWNGRADE confirmed correct). Rolling-win-rate guardrail already sets stake_mult=0 on GOLD. DOWNGRADE to SKIP.",
+      "lessons_applied": ["F5-only signal without F1/F3 insufficient for GOLD tier", "7/17 LAD@NYY DOWNGRADE lesson (F1*+F5 no F3 — LAD won 2-1)", "7/12 SEA@TB F1*-without-F3 process failure (8-2 blowout)"]
     },
     "WSH @ OAK": {
       "model_pick": "WSH ML SKIP",
@@ -173,11 +172,11 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "WSH",
+      "claude_pick": "WSH ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.42,
-      "reasoning": "This is the slate's most lopsided opposing stack: Zack Littell (OAK) holds a 2.32 xERA edge over Ginn, PQI runs Δ=+34.8 against WSH (the largest opposing PQI today), and the model's +16.08pp edge implies far more confidence than fair_prob (0.468) supports. This looks like a fade candidate, but per the 7/9 archive rule, D-grade dual-opposing picks should be SKIPped, not overridden to the other side -- the historical split (4W/3L) means directional certainty isn't there even with unusually strong opposing signals. CONFIRM SKIP.",
-      "lessons_applied": ["D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.44,
+      "reasoning": "D-grade with severe dual opposing signals: J.T. Ginn (OAK) holds a 2.32 xERA advantage over Zack Littell (WSH), PQI delta=+34.8 opposes WSH (among the largest on the slate). Edge 16.08pp exceeds the 15pp ceiling. Market assigns WSH ~53.2% implied (fair_prob=0.468 for OAK) while model assigns 62.9% — a material calibration gap. Yesterday's WSH@OAK 23-4 blowout is non-transferable (different SPs today); the postgame noted 'direction correct, probability inflated' — same caution applies. CONFIRM SKIP.",
+      "lessons_applied": ["D-grade dual-opposing SP+PQI SKIP", "Edge above 15pp ceiling", "7/17 WSH@OAK hallucination-zone direction-vs-probability lesson"]
     },
     "DET @ LAA": {
       "model_pick": "LAA ML SKIP",
@@ -185,11 +184,11 @@
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
-      "claude_pick": "LAA",
+      "claude_pick": "LAA ML SKIP",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.4,
-      "reasoning": "Worst grade on the slate (D, score=-4): Tarik Skubal (DET) carries a massive 3.78 xERA edge over Rodriguez, PQI runs Δ=-38.3 against LAA (largest on the slate), team_quality opposes, and Stage 1/2 disagree (Δ=0.14). Four-plus signals opposing simultaneously matches the archived 'signal-opposition = noise' pattern (see 7/8 LAA@TEX) -- treat the LAA direction itself as unreliable, not just low-tier. Already fully SKIP, so CONFIRM; no stake is at risk either way.",
-      "lessons_applied": ["signal-opposition-is-noise", "D-grade-dual-opposing-no-override"]
+      "claude_confidence": 0.34,
+      "reasoning": "Most extreme SKIP on the slate: Tarik Skubal (DET) holds a 3.78 xERA advantage over Grayson Rodriguez (LAA) — largest SP gap of any matchup today. PQI delta=-38.3 opposing LAA is the slate's largest opposition. fair_prob=0.336 (market gives LAA only 33.6%, below the 0.42 viability floor). Stage 1 gives LAA only 19.25% F5 probability. Grade D, score=-4. Five-signal opposition analogous to 7/8 LAA@TEX (13-1 blowout) — LAA model direction should be treated as noise. CONFIRM SKIP.",
+      "lessons_applied": ["Five-signal opposition = direction is noise (7/8 LAA@TEX 13-1 pattern)", "fair_prob < 0.42 viability floor", "Largest SP gap + largest PQI opposition on slate"]
     },
     "PIT @ CLE (G2)": {
       "model_pick": "TBD ML PENDING_SP_DATA",
@@ -197,11 +196,11 @@
       "model_tier": "PENDING_SP_DATA",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
-      "claude_pick": "TBD",
+      "claude_pick": "TBD ML PENDING_SP_DATA",
       "claude_tier": "PENDING_SP_DATA",
       "claude_confidence": null,
-      "reasoning": "Doubleheader nightcap; PIT's (away) probable SP is still unannounced both in the diag CSV and on live statsapi as of this run (CLE's home SP, Logan Allen, is confirmed). No pick is possible until PIT names its starter. CONFIRM the pending status.",
-      "lessons_applied": ["pending-sp-data-no-pick"]
+      "reasoning": "Probable SP for PIT (game 2) not yet announced. Pipeline correctly withholds a directional call until SP data clears the 100+ Statcast pitch minimum. No evaluation possible. Game 1 PIT@CLE is tracked separately above.",
+      "lessons_applied": ["PENDING_SP_DATA non-directional hold per pipeline gate"]
     }
   }
 }
