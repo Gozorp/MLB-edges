@@ -191,6 +191,12 @@ def _run():
         run([PY, "tools/kprop_odds.py", slate],
             "kprop odds sidecar", fatal=False)
 
+    # 3.57) SP handedness + platoon splits sidecar (display-only; the
+    #       dashboard appends "(R)/(L)" and [ERA vs R/L] to pitcher names).
+    if slate:
+        run([PY, "tools/platoon_enrichment.py", slate],
+            "platoon enrichment sidecar", fatal=False)
+
     # 3.6) correlated-combo sidecar (display-only: ML+F5 within-game double
     #      w/ ledger-derived correlation + unanimous consensus gates; feeds
     #      the COMBO chip card that replaced Best Pick). Non-fatal.

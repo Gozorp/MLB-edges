@@ -5803,7 +5803,7 @@ function _formatGamePreviewUpcoming(preview) {
     if (!bats || !bats.length) return `<li class="muted">No qualified hitters in the snapshot yet.</li>`;
     let html = "";
     for (const b of bats) {
-      html += `<li><strong><span class="adv-name" data-n="${b.name}">${b.name}</span></strong> (${b.pos}, ${b.ops} OPS, ${b.hr} HR / ${b.avg} AVG, ${b.pa} PA) — ${_batImpact(b.ops_f)}</li>`;
+      html += `<li><strong><span class="adv-name" data-n="${b.name}">${b.name}</span></strong>${_batHandSuffix(b)} (${b.pos}, ${b.ops} OPS, ${b.hr} HR / ${b.avg} AVG, ${b.pa} PA) — ${_batImpact(b.ops_f)}</li>`;
     }
     return html;
   };
@@ -5837,10 +5837,10 @@ function _formatGamePreviewUpcoming(preview) {
         ${_gpPitcherTable(preview.awayPitcher, preview.homePitcher, preview.awayAbbr || "Away", preview.homeAbbr || "Home")}
         <div class="np-2col">
           <div class="preview-impact">
-            ${preview.awayPitcher ? `<div><strong>${preview.awayPitcher.name}</strong> vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}</div>` : ""}
+            ${preview.awayPitcher ? `<div><strong>${preview.awayPitcher.name}</strong>${_spPlatoonSuffix(preview.awayPitcher.name)} vs ${preview.homeName}: ${_pitcherImpact(preview.awayPitcher, preview.homeName)}</div>` : ""}
           </div>
           <div class="preview-impact">
-            ${preview.homePitcher ? `<div><strong>${preview.homePitcher.name}</strong> vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}</div>` : ""}
+            ${preview.homePitcher ? `<div><strong>${preview.homePitcher.name}</strong>${_spPlatoonSuffix(preview.homePitcher.name)} vs ${preview.awayName}: ${_pitcherImpact(preview.homePitcher, preview.awayName)}</div>` : ""}
           </div>
         </div>
       </div>
@@ -5952,8 +5952,12 @@ function _gpPitcherTable(awayP, homeP, awayAbbr, homeAbbr){
   function prow(p, abbr){
     if (!p) return '<tr><td class="gp-name">' + abbr + '</td><td class="gp-await" colspan="5" style="padding:0.25rem 0.5rem;">TBD</td></tr>';
     var hand = (p.hand || "?") + "HP";
+    // Platoon decoration carries hand + [ERA vs R/L]; keep the small tag to
+    // just the team when the suffix already shows the throwing arm.
+    var pSuffix = _spPlatoonSuffix(p.name);
+    var smallTag = pSuffix ? abbr : (abbr + ' &middot; ' + hand);
     return '<tr>' +
-      '<td class="gp-name"><span class="gp-dot"></span>' + (p.name || "") + '<small>' + abbr + ' &middot; ' + hand + '</small></td>' +
+      '<td class="gp-name"><span class="gp-dot"></span>' + (p.name || "") + pSuffix + '<small>' + smallTag + '</small></td>' +
       '<td>' + (p.ip || "0") + '</td>' +
       '<td class="gp-ops ' + _gpHeatDir(parseFloat(p.era), 2.5, 3.9, 5.5, true) + '">' + (p.era || "-") + '</td>' +
       '<td class="gp-ops ' + _gpHeatDir(parseFloat(p.whip), 1.0, 1.25, 1.55, true) + '">' + (p.whip || "-") + '</td>' +
@@ -6217,7 +6221,7 @@ function _gpOps(v){
 function _gpTeamTable(bats, facingSP, label){
   if (!bats || !bats.length){
     return '<div class="gp-team"><div class="gp-th">' + label +
-      ' <span class="gp-vs">vs ' + facingSP + '</span></div>' +
+      ' <span class="gp-vs">vs. ' + facingSP + _spPlatoonSuffix(facingSP) + '</span></div>' +
       '<p class="gp-await">⌛ Awaiting Starting Lineup &mdash; posts ~3h before first pitch.</p></div>';
   }
   var rows = "";
@@ -6227,8 +6231,8 @@ function _gpTeamTable(bats, facingSP, label){
     var vsSP = (pa > 0) ? b.vs_today_SP_OPS : null;
     rows += '<tr>' +
       '<td class="gp-ord">' + (b.order != null ? b.order : "") + '</td>' +
-      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") + _skPlayerChip(b.name) +
-        '<small>' + (b.bat_side || "") + '</small></td>' +
+      '<td class="gp-name"><span class="gp-dot"></span>' + (b.name || "") + _batHandSuffix(b) + _skPlayerChip(b.name) +
+        '</td>' +
       _gpOps(b.vs_LHP_OPS_career) +
       _gpOps(b.vs_RHP_OPS_career) +
       _gpOps(vsSP) +
@@ -6236,7 +6240,7 @@ function _gpTeamTable(bats, facingSP, label){
       '</tr>';
   }
   return '<div class="gp-team"><div class="gp-th">' + label +
-    ' <span class="gp-vs">vs ' + facingSP + '</span></div>' +
+    ' <span class="gp-vs">vs. ' + facingSP + _spPlatoonSuffix(facingSP) + '</span></div>' +
     '<div class="gp-scroll"><table class="gp-tbl"><thead><tr>' +
     '<th class="gp-ord">#</th><th class="gp-name">Batter</th>' +
     '<th>vL OPS</th><th>vR OPS</th><th>vs SP</th><th>PA</th>' +
@@ -6291,9 +6295,40 @@ function _gpStatcastTable(bats, label){
     '<th>xwOBA</th><th>xBA</th><th>xSLG</th><th>K%</th><th>BB%</th><th>Sprint</th>' +
     '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
 }
+// ===== Platoon decorations (display-only; docs/data/platoon_<date>.json) =====
+// Appends "(R)/(L)" handedness and the "[ERA vs R: X.XX | ERA vs L: Y.YY]"
+// platoon bracket to pitcher names, and "(R)/(L)/(S)" to batter names.
+// The bracket numbers are per-side FIP on the ERA scale (see the sidecar's
+// basis note): true ERA is undefined for batter-hand splits, statsapi
+// returns era=null on every vs-hand split.
+function _platoonRec(name){
+  var P = window.__platoon && window.__platoon.pitchers;
+  return (P && name) ? (P[String(name).trim()] || null) : null;
+}
+function _spPlatoonSuffix(name){
+  var p = _platoonRec(name);
+  if (!p) return "";
+  var s = p.hand ? " (" + p.hand + ")" : "";
+  if (p.era_vs_r != null || p.era_vs_l != null){
+    var f = function(v){ return v == null ? "—" : Number(v).toFixed(2); };
+    var tip = "ERA-scale platoon split (per-side FIP + league cFIP; true ERA "
+      + "is undefined for batter-hand splits). Sample: " + (p.ip_vs_r || 0)
+      + " IP vs R, " + (p.ip_vs_l || 0) + " IP vs L"
+      + (p.small_sample ? " — SMALL SAMPLE" : "");
+    s += ' <span title="' + tip + '" style="font-size:.85em;color:var(--muted);'
+      + 'font-variant-numeric:tabular-nums;white-space:nowrap;">[ERA vs R: '
+      + f(p.era_vs_r) + ' | ERA vs L: ' + f(p.era_vs_l) + ']</span>';
+  }
+  return s;
+}
+function _batHandSuffix(b){
+  var h = b && (b.bat_side || b.batSide);
+  return h ? " (" + String(h).trim() + ")" : "";
+}
+
 function _spDisplay(spName, matchup, side){
   spName = (spName || "TBD").trim();
-  if (spName && spName.toUpperCase() !== "TBD") return '<strong>' + spName + '</strong>';
+  if (spName && spName.toUpperCase() !== "TBD") return '<strong>' + spName + '</strong>' + _spPlatoonSuffix(spName);
   var g = window.__spProj && window.__spProj.games;
   var pr = null;
   if (g){
@@ -9624,6 +9659,10 @@ async function loadSlate(date, { bust = false } = {}) {
     try { window.__bpProfiles = await fetch("./data/bp_fatigue_profiles.json", {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__bpProfiles = null; }
     // SP Dominance / ceiling sidecar (read-only display; tools/dominance_engine.py). NEVER feeds the model.
     try { window.__dom = await fetch(`./data/dominance_${date}.json`, {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__dom = null; }
+    // Platoon sidecar (read-only display; tools/platoon_enrichment.py): SP
+    // handedness + per-side ERA-scale splits for the (R)/(L) + [ERA vs R/L]
+    // name decorations. NEVER feeds the model.
+    try { window.__platoon = await fetch(`./data/platoon_${date}.json`, {cache: "no-store"}).then(function (r) { return r.ok ? r.json() : null; }); } catch (_e) { window.__platoon = null; }
     // Resolve the projection map BEFORE rows render: details panels (gp
     // preview etc.) are pre-built during the slate render, so the pre-posting
     // lineup fallback needs __ppProj available now, not 8s later.
