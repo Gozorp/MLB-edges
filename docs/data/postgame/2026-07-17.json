@@ -1,0 +1,150 @@
+{
+  "date": "2026-07-17",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-18T14:00:00Z",
+  "n_analyzed": 15,
+  "summary": "Slate ran 7W/7L directionally (50% hit rate) across 14 completed games, plus 1 postponed (PIT@CLE). The sole staked pick — BAL@HOU GOLD CONFIRM — was a loss (BAL 3-2), the only real P&L exposure. Claude's F1*-without-F3 DOWNGRADEs on LAD@NYY and CHW@TOR were both correct (NYY lost 2-1, TOR lost 12-4), extending the pattern to four documented validations. Two DOWNGRADEs missed wins (MIA@MIL PLATINUM, CIN@COL GOLD). Stage 2 high-delta direction failed for the first time in the recent archive (STL@ARI, f5_full_delta=0.186): PQI's strong opposition proved to be the better directional read.",
+  "by_matchup": {
+    "TB @ BOS (G1)": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "0-10",
+      "headline": "BOS dominated TB 10-0 in game 1; CONFIRM SKIP correct, directional pick right.",
+      "hypothesis": "BOS's home SP advantage (Jake Bennett vs Griffin Jax) and home-field edge materialized in a blowout. Both tier=SKIP and claude_decision=CONFIRM were appropriate — CAP 10 bottom-bucket applied at pick_prob=0.547 and no F-signal fired. Directional WIN but no P&L impact given zero stake. This is a variance WIN: process was correct regardless of outcome.",
+      "signals_to_recheck": "None — CONFIRM SKIP with CAP 10 bottom-bucket suppression was correct; no signal recalibration warranted from a no-stake directional win."
+    },
+    "TB @ BOS (G2)": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-5",
+      "headline": "BOS won game 2 5-3; CONFIRM SKIP correct, sp_savant_gate HARD_VETO justified.",
+      "hypothesis": "Second game of the doubleheader. Eduardo Rivera's thin Statcast sample (<100 pitches season-to-date) triggered sp_savant_gate=HARD_VETO, the primary SKIP driver. BOS winning 5-3 is consistent with the gate logic — thin SP data increases variance and makes a stake unjustified. Directional WIN but no P&L impact. No process failure.",
+      "signals_to_recheck": "sp_savant_gate=HARD_VETO — Rivera's <100-pitch sample was correctly blocked; BOS winning confirms the gate is appropriate, not a missed opportunity."
+    },
+    "LAD @ NYY": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "2-1",
+      "headline": "LAD won 2-1; DOWNGRADE of NYY GOLD (F1* without F3) was correct.",
+      "hypothesis": "Model assigned NYY GOLD on F1_xera_gap=1.61* (starred = Roki Sasaki thin Statcast sample) with no F3_swing_take_gap corroboration. Claude DOWNGRADEd citing the 7/12 SEA@TB lesson: F1* without F3 ≥ 1000 produces structurally redundant, not independent, corroboration. LAD winning 2-1 validates the suppression. Freddie Freeman's OWNER history vs Cole (22 PA, shrunk OPS 0.863) likely contributed a run. Both CAP 7 (+0.0176) and CAP 10 also fired. This is a process success for the DOWNGRADE rule.",
+      "signals_to_recheck": "F1_xera_gap* — starred F1 without F3_swing_take_gap corroboration remains the correct suppression trigger; fourth consecutive validation in the archive (7/12 SEA@TB, 7/17 LAD@NYY, 7/17 CHW@TOR)."
+    },
+    "TEX @ ATL": {
+      "verdict": "LOSS",
+      "model_pick": "TEX ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-15",
+      "headline": "ATL crushed TEX 15-1; model's ~50% for TEX was a major Stage 2 calibration error.",
+      "hypothesis": "ATL won by 14 runs while the market priced TEX at only 30.8% win probability (fair_prob=0.308) vs. model's 50.8% — a 20pp model-vs-market gap. Chris Sale's +1.15 xERA advantage for ATL, PQI -23.3 against TEX, and Matt Olson's OWNER vs Quantrill (13 PA, shrunk OPS 0.907) all signaled ATL overwhelmingly. The blowout confirms this was a Stage 2 probability failure: p_model=0.508 for TEX is implausible given those signals. CONFIRM SKIP was correct — tier SKIP correctly prevented any stake. No process failure in the decision, but the 20pp model-vs-market gap is a calibration blind spot to monitor.",
+      "signals_to_recheck": "fair_prob below 0.35 + SP xERA opposing pick — when market gives pick side <35% and SP xERA also opposes, p_model near 50% is almost certainly a calibration artifact; the SKIP gate is correctly catching this."
+    },
+    "CHW @ TOR": {
+      "verdict": "LOSS",
+      "model_pick": "TOR ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "12-4",
+      "headline": "CWS won 12-4; DOWNGRADE of TOR GOLD (F1* no F3, negative edge) was correct and decisive.",
+      "hypothesis": "TOR was tagged GOLD on F1_xera_gap=1.87* (Spencer Miles thin sample) with no F3 corroboration — structurally identical to LAD@NYY. CAP 1 (negative_edge_GOLD, -6.64pp) also fired. CWS winning by 8 runs is the largest margin among DOWNGRADEd picks on this slate. Both the F1*-without-F3 lesson and the negative-edge cap were validated. A GOLD stake on TOR would have been a significant loss. This is a clear process success.",
+      "signals_to_recheck": "F1_xera_gap*, negative_edge_GOLD — both fired on TOR and both proved correct; the co-occurrence of starred F1 + negative edge is a reliable double-suppression trigger."
+    },
+    "MIA @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML PLATINUM",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "1-2",
+      "headline": "MIL won 2-1 narrowly; DOWNGRADE missed a PLATINUM win but margin was thin.",
+      "hypothesis": "MIL's 2-1 win means the directional pick was correct but the DOWNGRADE cost a PLATINUM stake. Suppression signals were legitimate: negative edge (-3.63pp), acute_roster flag, confidence_downgrade=True, and Stage 1/Stage 2 direction flip above 0.12 (Stage 1 gave MIA 56.6% F5 probability). The 2-1 margin is narrow — one run either way. This may be variance: the DOWNGRADE reasoning was sound given the multi-flag configuration, and MIL squeaked through by a run. Not a clear process false-negative; the margin suggests the pick was genuinely marginal.",
+      "signals_to_recheck": "confidence_downgrade_True, acute_roster_True — both fired legitimately; the narrow 2-1 win margin is consistent with a genuinely uncertain game, not a suppressed high-confidence winner."
+    },
+    "MIN @ CHC": {
+      "verdict": "LOSS",
+      "model_pick": "CHC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-2",
+      "headline": "MIN won 5-2; CHC directional pick wrong, SKIP correctly prevented exposure.",
+      "hypothesis": "Bailey Ober's +1.37 xERA advantage vs Colin Rea, PQI -15.0 against CHC, negative edge (-8.97pp), and f5_full_delta=0.1758 (Stage 1 gave MIN 67.5% F5 win probability) all pointed to MIN. CHC's grade D and pick_prob=0.5009 confirmed uncertainty. MIN winning 5-2 validates all the opposing signals. CONFIRM SKIP was correct — no stake, no P&L damage. The D-grade + dual-opposing-signals pattern from the 7/9 archive continues to hold.",
+      "signals_to_recheck": "F1_xera_gap (opposing pick), pqi_diff — both opposed CHC and proved directionally correct; further evidence that D-grade + dual-opposing SP/PQI = reliable SKIP confirmation."
+    },
+    "BAL @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-2",
+      "headline": "BAL won 3-2; sole staked pick (HOU GOLD CONFIRM) was a P&L loss.",
+      "hypothesis": "HOU lost 3-2 despite two BvP OWNERs vs Kremer (Altuve shrunk OPS 0.912, Alvarez shrunk OPS 0.797), F5_bullpen_gap=+0.68, and PQI +8.7. The OWNERs did not materialize on the day. pick_prob=65.3% was right at the home-favorite scrutiny boundary (65%). This is likely a process failure: CONFIRMing GOLD at the 65% home-favorite boundary based primarily on BvP OWNERs without a fired F-signal may be insufficient independent corroboration. BvP OWNERs and bullpen gap share informational overlap with p_model — they are not fully independent supporting signals. Kremer may have pitched to OWNERs differently than career averages suggest.",
+      "signals_to_recheck": "pen_strain_pick_side, F5_bullpen_gap — bullpen edge (+0.68) did not protect HOU; BvP-driven CONFIRM at pick_prob ≥ 0.65 without an F-signal is the suspected process failure. Future GOLD CONFIRMs at the home-favorite scrutiny boundary should require F-signal in addition to BvP and PQI."
+    },
+    "SD @ KC": {
+      "verdict": "WIN",
+      "model_pick": "KC ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-7",
+      "headline": "KC edged SD 7-6; CONFIRM SKIP correct, directional read right by a run.",
+      "hypothesis": "KC narrowly beat SD 7-6 despite model grade D (Michael King held 0.93 xERA advantage, PQI -22.9 against KC) and market fading KC (fair_prob=0.4633 for SD). The close margin is consistent with the D-grade uncertainty. SKIP was correct — the opposing SP and PQI signals were real even if KC overcame them by a run. Directional WIN but no P&L impact. Variance WIN; no pattern to extract.",
+      "signals_to_recheck": "pqi_diff — PQI strongly opposed KC (delta=-22.9) but KC won anyway by a run; PQI directional accuracy should continue to be tracked as a confidence-scaling signal rather than a reliable direction-reversal signal in isolation."
+    },
+    "CIN @ COL": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "7-2",
+      "headline": "CIN won 7-2 convincingly; DOWNGRADE missed a real edge, strongest false-negative candidate on the slate.",
+      "hypothesis": "CIN dominated COL 7-2 — the largest margin among DOWNGRADE-missed-wins on this slate. The DOWNGRADE was driven by edge_pp below the 4pp minimum floor and CAP 10 bottom-bucket at pick_prob=0.533. CIN's 5-run margin suggests the directional edge was real and not marginal. PQI opposing CIN (delta=+18.4 favoring COL) was wrong directionally. The 4pp edge floor may be too restrictive when the stage signals and F5_bullpen_gap (+1.77) broadly support the pick — the negative signals were edge_pp (marginal) and PQI (directionally wrong here). This is a potential process false-negative worth tracking.",
+      "signals_to_recheck": "edge_pp below 4pp floor, confidence_downgrade_True — both fired on CIN but CIN won 7-2; CIN@COL is the first strong candidate for the 4pp edge floor being too conservative when F5_bullpen_gap is the primary signal driver."
+    },
+    "DET @ LAA": {
+      "verdict": "LOSS",
+      "model_pick": "LAA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-1",
+      "headline": "DET won 2-1; LAA SKIP correct, SP edge opposing pick directionally validated.",
+      "hypothesis": "DET winning 2-1 is consistent with Troy Melton holding a slight xERA edge over Reid Detmers and the market near coin-flip (fair_prob=0.494). Model assigned LAA 59.4% full-game but grade D — without F-signal or PQI support, the 59.4% figure lacks independent corroboration. SKIP was correct. Directional LOSS but no process failure; the SKIP tier performed its function. The close 2-1 margin suggests genuine uncertainty, consistent with the D-grade read.",
+      "signals_to_recheck": "F1_xera_gap (no F-signal on D-grade pick) — absence of F-signal on D-grade with market near coin-flip is a reliable SKIP indicator; confirmed again."
+    },
+    "WSH @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "23-4",
+      "headline": "WSH won 23-4 in a historic blowout; CONFIRM SKIP correct, hallucination-zone flag confirmed.",
+      "hypothesis": "WSH crushed ATH 23-4 despite model_prob=74.5% being in the calibration hallucination zone (above 0.72 valid range) and f5_full_delta=0.2638. The SKIP was correct: the hallucination zone flag (HARD CAP 9 adjacent zone) correctly identified that the 74.5% probability was inflated even if the direction (WSH) was right. WSH winning by 19 runs shows the directional read was massively correct; the calibration_caution_18_25pp warning correctly quarantined the edge estimate. The zone's utility is capturing probability uncertainty, not directional uncertainty — the direction was correct, just not reliably scaled. No process failure.",
+      "signals_to_recheck": "model_prob > 0.72 calibration hallucination zone — WSH winning 23-4 suggests this zone often has directional accuracy but probability inflation; consider tracking hallucination-zone directional hit rate separately to assess whether direction alone is usable."
+    },
+    "STL @ ARI": {
+      "verdict": "LOSS",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-4",
+      "headline": "STL won 5-4; Stage 2 high-delta direction failed for first time in the recent archive.",
+      "hypothesis": "Model picked ARI at SKIP; Stage 2 assigned ARI 65.6% with f5_full_delta=0.1864 (Stage 1 ~53% STL F5). Claude CONFIRMed SKIP but noted Stage 2's directional lean toward ARI as a soft signal. STL winning 5-4 breaks the 7/10-7/16 four-consecutive-correct streak of Stage 2 high-delta direction. The critical differentiator: PQI strongly opposed ARI (delta=-25.8, STL quality metrics dominant). When PQI strongly opposes the Stage 2 direction AND the magnitude of PQI disagreement exceeds 20pp, PQI proved to be the more reliable directional signal. Given SKIP tier, no P&L impact; but the soft-signal framing should be updated.",
+      "signals_to_recheck": "f5_full_delta, pqi_diff — when |pqi_diff| > 20 and PQI opposes Stage 2 direction, do not cite Stage 2 direction as a soft confirmation; this is the first instance in the archive where strong PQI opposition outperformed Stage 2 directional lean."
+    },
+    "SF @ SEA": {
+      "verdict": "WIN",
+      "model_pick": "SF ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-0",
+      "headline": "SF won 7-0 against every signal; SKIP correct, outcome is a major variance surprise.",
+      "hypothesis": "SF won 7-0 against every quantitative signal: Bryce Miller held +1.09 xERA over Landen Roupp, PQI +15.5 favored SEA, market gave SF only 34.4% win probability, and edge_pp triggered the upper-bound gate. Model assigned SF only 51.3% — essentially a coin-flip against opposing qualitative signals. SF's 7-0 blowout is a clear variance outcome driven by unobserved factors on the day (possibly Roupp overperforming his xERA, SEA lineup underperforming). All gates fired correctly; SKIP was the right call. Do not extract a pattern from this win.",
+      "signals_to_recheck": "fair_prob=0.344 opposing pick + D grade — SKIP was correct despite the directional win; result was pure variance and should not generate a pattern reversal for D-grade picks where fair_prob strongly opposes."
+    },
+    "PIT @ CLE": {
+      "verdict": "NO_PICK",
+      "model_pick": "CLE ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": null,
+      "headline": "Game postponed; no outcome to grade.",
+      "hypothesis": "PIT@CLE was postponed. Claude had DOWNGRADEd CLE GOLD to SKIP on the basis of D grade, SP edge opposing CLE (-2 score), negative edge_pp (-2.96pp), confidence_downgrade=True, and large f5_full_delta=0.2437 (Stage 1 gave CLE 75.65% F5 but Stage 2 only 51.29% full-game). No result available to grade the DOWNGRADE.",
+      "signals_to_recheck": "confidence_downgrade_True, negative_edge_GOLD — filed for future tracking when this game is rescheduled."
+    }
+  },
+  "patterns_observed": [
+    "F1_xera_gap* without F3_swing_take_gap corroboration: DOWNGRADE rule validated 2-for-2 this slate (LAD@NYY NYY lost 2-1, CHW@TOR TOR lost 12-4), extending the archive to 4+ consecutive correct suppressions across 7/12, 7/17 (two instances). Continue enforcing strictly: starred F1 without F3 >= 1000 = SKIP regardless of tier; no exception even when SP xERA gap looks large, because the sparse SP sample makes F1 and SP xERA edge partially redundant rather than independent.",
+    "Sole CONFIRM GOLD (BAL@HOU, pick_prob=0.653) was a P&L loss — BvP OWNERs alone at the 65% home-favorite boundary are insufficient for CONFIRM: two OWNERs (Altuve, Alvarez vs Kremer) plus F5_bullpen_gap=+0.68 and PQI +8.7 did not protect HOU in a 3-2 loss. Tighten GOLD CONFIRM when pick_prob is in [0.62, 0.68]: require an F-signal to fire in addition to BvP and PQI; BvP career-history OWNERs are not fully independent from p_model and cannot serve as the sole corroboration at the home-favorite scrutiny boundary.",
+    "Stage 2 high-delta direction failed for the first time in the archive (STL@ARI, f5_full_delta=0.186, Stage 2 assigned ARI 65.6%, STL won 5-4): when pqi_diff strongly opposes Stage 2 direction (|delta| > 20, opposing), PQI proved to be the correct directional signal. Update the Stage-2-is-reliable-at-high-delta rule: it holds when PQI is neutral or confirming, but when PQI strongly disagrees (>20pp opposing), treat Stage 2 directional lean as degraded. Do not cite Stage 2 as a soft confirmation in that configuration. Archive streak updates to 4-correct-of-5-tracked.",
+    "Two DOWNGRADEs missed wins (MIA@MIL PLATINUM 2-1, CIN@COL GOLD 7-2) driven by negative edge_pp + confidence_downgrade_True suppression: CIN's 7-2 margin is the stronger false-negative candidate — edge_pp below the 4pp minimum floor was the primary trigger, and CIN dominated. Begin tracking edge-floor-driven DOWNGRADEs separately: if edge_pp in (0, 4pp) with F5_bullpen_gap > 1.5 and Stage agree accumulates 3+ missed wins with >3-run margins across the next 10 slates, lower the floor from 4pp to 2pp when at least one F-signal fires."
+  ]
+}
