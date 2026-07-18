@@ -1,0 +1,97 @@
+{
+ "generated_utc": "2026-07-18T04:29:28Z",
+ "windows_days": {
+  "calibration": 30,
+  "tiers": 60
+ },
+ "prob_ceiling": 0.7,
+ "calibration": {
+  "buckets": [
+   {
+    "lo": 0.5,
+    "hi": 0.55,
+    "n": 72,
+    "pred": 0.522,
+    "actual": 0.569,
+    "gap_pp": -4.7
+   },
+   {
+    "lo": 0.55,
+    "hi": 0.6,
+    "n": 25,
+    "pred": 0.568,
+    "actual": 0.52,
+    "gap_pp": 4.8
+   },
+   {
+    "lo": 0.6,
+    "hi": 0.65,
+    "n": 19,
+    "pred": 0.63,
+    "actual": 0.632,
+    "gap_pp": -0.1
+   },
+   {
+    "lo": 0.65,
+    "hi": 0.7,
+    "n": 21,
+    "pred": 0.668,
+    "actual": 0.476,
+    "gap_pp": 19.2
+   },
+   {
+    "lo": 0.7,
+    "hi": 1.0,
+    "n": 5,
+    "pred": 0.846,
+    "actual": 0.6,
+    "gap_pp": 24.6
+   }
+  ],
+  "worst_gap_pp": 19.2,
+  "alert_gap_pp": 8.0,
+  "alert": true,
+  "n_graded": 142
+ },
+ "tier_demotions": {
+  "DIAMOND": "GOLD",
+  "PLATINUM": "GOLD"
+ },
+ "tier_stats": {
+  "DIAMOND": {
+   "n": 14,
+   "win_rate": 0.5
+  },
+  "PLATINUM": {
+   "n": 59,
+   "win_rate": 0.559
+  },
+  "GOLD": {
+   "n": 146,
+   "win_rate": 0.589
+  }
+ },
+ "blindspot_teams": [
+  "TOR",
+  "MIA",
+  "PIT"
+ ],
+ "blindspot_detail": [
+  {
+   "team": "TOR",
+   "acc": 0.455,
+   "n": 33
+  },
+  {
+   "team": "MIA",
+   "acc": 0.441,
+   "n": 34
+  },
+  {
+   "team": "PIT",
+   "acc": 0.438,
+   "n": 32
+  }
+ ],
+ "spec": "MODEL_IMPROVEMENT_AUDIT_2026-07-17.md"
+}
