@@ -1,63 +1,63 @@
 {
   "date": "2026-07-18",
-  "model": "claude-sonnet-5",
-  "fit_at": "2026-07-19T14:00:00Z",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-19T15:00:00Z",
   "n_analyzed": 16,
-  "summary": "16 matchups graded: 7 directional wins, 7 losses, 2 no-picks (LAD@NYY postponed; PIT@CLE G2 ungraded, pending SP data) — a 50% directional hit rate on the 14 gradeable games. Zero real P&L exposure: every SKIP-tier pick and all three model-flagged GOLD picks (SD@KC, MIA@MIL, LAD@NYY) ended at zero stake, either via Claude DOWNGRADE or the pipeline's own hard caps. SD@KC's downgrade was validated (SD lost 1-6), but MIA@MIL's zero-stake was a miss (MIL won 8-6) — the third HARD CAP 7 false negative in the sub-0.02 bullpen-gap band this month. WSH@OAK reversed a 23-4 WSH blowout into a 15-1 OAK blowout in 24 hours; SKIP correctly avoided exposure to both extremes.",
+  "summary": "7W / 7L across 14 gradeable matchups (50% hit rate); 2 no-picks (LAD@NYY postponed, PIT@CLE G2 pending SP data). Zero P&L exposure: all picks at SKIP tier or model-GOLDs capped to zero by hard caps. Claude's DOWNGRADE of SD@KC GOLD was correct (SD lost 6-1). HARD CAP 7 produced its third consecutive false negative in the sub-0.02 bullpen-gap band (MIA@MIL pre-cap score=5 grade-A, MIL won 8-6), crossing from monitoring-warranted to actionable. BAL beat model-favored HOU for the second straight day on the same opposing-signal shape; CIN@COL generated consecutive lopsided blowouts against the dual-opposing SKIP signal on opposite sides — both patterns demand scrutiny before next meeting.",
   "by_matchup": {
     "PIT @ CLE (G1)": {
       "verdict": "WIN",
       "model_pick": "PIT ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "7-1",
-      "headline": "PIT blew out CLE 7-1 in game 1; CONFIRM SKIP correct, directional pick right despite Stage 1/2 disagreement.",
-      "hypothesis": "f5_full_delta=0.2691 was one of the slate's largest Stage 1/2 splits (Stage 1 gave CLE 75.65% F5, Stage 2 flipped to PIT 51.3% full-game); Claude's CONFIRM noted Stage 2's direction was consistent with the high-delta archive pattern. PIT's 7-1 win extends that pattern (Stage 2 full-game direction beating Stage 1 F5 lean at high delta). Edge was only 2.46pp (below the 4pp floor) and HARD CAP 10 fired without an F-signal, so zero stake was correctly assigned — a directional WIN with no P&L impact.",
-      "signals_to_recheck": "f5_full_delta — Stage 2 full-game direction was right again at high delta (>0.12); continues to outperform Stage 1 F5 lean as a directional (not stake-sizing) signal."
+      "headline": "PIT blew out CLE 7-1; CONFIRM SKIP correct, and Stage 2 full-game direction (PIT) beat Stage 1 F5 lean (CLE 75.65%) at the slate's largest delta.",
+      "hypothesis": "f5_full_delta=0.2691 is the highest on this slate; Stage 1 assigned CLE 75.65% F5 while Stage 2 flipped to PIT 51.3% full-game. PIT's 7-1 win is consistent with the Stage-2-reliable-at-high-delta archive pattern (now 5-of-6 tracked), reinforcing that the full-game model outperforms F5 probability at large deltas even without a stake. Edge +2.46pp below the 4pp floor and HARD CAP 10 correctly kept stake at zero — directional WIN with no P&L impact.",
+      "signals_to_recheck": "f5_full_delta — Stage 2 full-game direction correct again at high delta (0.27); Stage 2 directional reliability at |delta|>0.12 continues to hold when PQI is not strongly opposing."
     },
     "MIN @ CHC": {
       "verdict": "WIN",
       "model_pick": "CHC ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-6",
-      "headline": "CHC beat MIN 6-2; D-grade dual-opposing SKIP was correctly sized at zero stake, but the opposing-signal direction flipped from yesterday's identical matchup.",
-      "hypothesis": "Taj Bradley's 1.08 xERA edge and PQI -10.8 opposed CHC, exactly as they opposed CHC in yesterday's MIN@CHC (7/17), where MIN won and validated the same dual-opposing SKIP read. Today CHC won instead, reversing the opposing signal's directional accuracy on the very next meeting between these teams. SKIP was still the correct stake size both days (D-grade, near-coinflip pick_prob), but SP+PQI opposition should be read as evidence of uncertainty, not a directional lean — it called the wrong winner two days running.",
-      "signals_to_recheck": "F1_xera_gap (opposing pick), pqi_diff — correctly triggered SKIP again, but directional accuracy flipped from 7/17 to 7/18 on the same matchup; treat as a stake-zeroing trigger only, not a soft direction signal."
+      "headline": "CHC beat MIN 6-2; D-grade dual-opposing SKIP was correctly sized at zero, but the opposing-signal direction was wrong again.",
+      "hypothesis": "Taj Bradley's 1.08 xERA edge and PQI -10.8 opposed CHC yet CHC won 6-2 — the opposing signals called the wrong winner, the same pair that correctly predicted MIN yesterday (7/17 MIN won 5-2). The stake-zeroing read was correct both days (D-grade near-coin-flip), but the dual-opposing SP+PQI configuration was directionally wrong today. Treat SP+PQI opposition as a reliable stake-suppression trigger, not a directional lean, when the matchup is at the margin (pick_prob near 0.50).",
+      "signals_to_recheck": "F1_xera_gap (opposing pick), pqi_diff — correctly triggered SKIP both days in this series but directional accuracy was 1-for-2 across 7/17 and 7/18; opposition signals on near-coinflip games should not be read as directional signals."
     },
     "CHW @ TOR": {
       "verdict": "WIN",
       "model_pick": "TOR ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "0-1",
-      "headline": "TOR edged CHW 1-0; CONFIRM SKIP correct on a two-dimension stack that fell short of the CAP 10 rescue threshold.",
-      "hypothesis": "PQI (+8.5) and Stage 1/2 agreement (delta=0.03) both supported TOR, but no F-signal fired, so HARD CAP 10's four-dimension rescue requirement (F+SP+PQI+Stage) wasn't met and the pick stayed at zero stake. TOR's 1-0 win in a tight game is consistent with genuine but insufficiently corroborated conviction on a near-coin-flip (pick_prob=0.530). Directional WIN, no P&L impact, no process failure.",
-      "signals_to_recheck": "None new — HARD CAP 10's two-dimension insufficiency held as designed; TOR's 1-run win doesn't argue for loosening the four-dimension rescue bar."
+      "headline": "TOR edged CHW 1-0; CONFIRM SKIP correct on a two-dimension stack that correctly failed to meet the CAP 10 rescue bar.",
+      "hypothesis": "PQI +8.5 and Stage agree delta=0.03 both supported TOR but no F-signal fired, so HARD CAP 10's four-dimension rescue requirement went unmet and stake stayed at zero. TOR's 1-run win reflects genuine but insufficiently-corroborated conviction on a near-coin-flip (pick_prob=0.530). Directional WIN, zero P&L impact, no process failure.",
+      "signals_to_recheck": "None — HARD CAP 10 two-dimension-insufficient rule held as designed; 1-run win margin does not argue for lowering the four-dimension rescue bar."
     },
     "CIN @ COL": {
       "verdict": "WIN",
       "model_pick": "COL ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "3-10",
-      "headline": "COL routed CIN 10-3; D-grade dual-opposing SKIP missed a lopsided win, mirroring yesterday's CIN@COL miss on the opposite side.",
-      "hypothesis": "Rhett Lowder's 1.59 xERA edge and PQI -9.8 opposed COL, triggering the same D-grade dual-opposing SKIP read that correctly zeroed stake. But COL won by 7 runs — the second straight day this exact matchup produced a lopsided win against the dual-opposing signal (7/17: CIN was the pick, SP+PQI opposed CIN, CIN still won 7-2 and was flagged as the slate's strongest false-negative candidate). Two consecutive blowout wins against the dual-opposing signal on the same team pair, on opposite sides, is a stronger false-negative signal than either day alone.",
-      "signals_to_recheck": "edge_pp below 4pp floor, F1_xera_gap/pqi_diff opposing pick — CIN@COL has now produced two consecutive lopsided wins (7-2, 10-3) against the dual-opposing SKIP signal on opposite sides of the same matchup; this specific team pair may have a structural signal blind spot (Coors park factors, or an SP-vs-lineup mismatch not captured by SP xERA) worth a dedicated look before the next CIN@COL game."
+      "headline": "COL routed CIN 10-3; D-grade dual-opposing SKIP correctly sized at zero but missed a 7-run blowout for the second straight day on this matchup.",
+      "hypothesis": "Rhett Lowder's 1.59 xERA edge and PQI -9.8 opposed COL — same dual-opposing structure that correctly suppressed a stake — but COL dominated by 7 runs. Yesterday (7/17), CIN was the pick, SP+PQI also opposed the pick, and CIN still won 7-2. Two consecutive matchday blowouts on opposite sides of the same team pair, both against the dual-opposing SKIP signal, is a stronger false-negative signal than either day alone: the SP-xERA and PQI features may be systematically misfiring for this pairing, possibly due to uncaptured Coors park factors or a structural SP-vs-lineup mismatch.",
+      "signals_to_recheck": "edge_pp below 4pp floor, F1_xera_gap/pqi_diff opposing pick — CIN@COL has now produced two consecutive 7+ run blowouts against the dual-opposing SKIP signal on opposite pick sides (7/17: CIN won 7-2, 7/18: COL won 10-3); inspect Coors park factor interaction before the next CIN@COL game."
     },
     "NYM @ PHI": {
       "verdict": "LOSS",
       "model_pick": "NYM ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "1-6",
-      "headline": "PHI beat NYM 6-1; SKIP correctly avoided a hallucination-zone pick that missed badly.",
-      "hypothesis": "fair_prob=0.373 (below the 0.42 viability floor), Luzardo's SP-xERA disadvantage, PQI+25.4 opposing NYM, and a 16.46pp edge above the 15pp ceiling all flagged this as a calibration-hallucination case. PHI's 6-1 win validates every opposing signal cleanly — a clean process success for the SKIP gate, not a variance failure.",
-      "signals_to_recheck": "fair_prob < 0.42 + edge_pp > 15pp ceiling — both fired correctly together again; continues to validate the hallucination-zone SKIP gate."
+      "headline": "PHI beat NYM 6-1; SKIP correctly avoided a hallucination-zone pick that badly missed.",
+      "hypothesis": "fair_prob=0.373 (below the 0.42 viability floor), Luzardo's 1.26 xERA advantage over Manaea, PQI +25.4 opposing NYM, and edge 16.46pp above the 15pp ceiling all flagged a calibration-hallucination case. PHI's 6-1 win validates every opposing gate cleanly — a process success, not a variance failure. Correct stakes: zero.",
+      "signals_to_recheck": "fair_prob < 0.42 + edge_pp > 15pp ceiling — both gates fired and both proved correct together; the dual-gate hallucination-zone SKIP continues to perform as designed."
     },
     "BAL @ HOU": {
       "verdict": "LOSS",
       "model_pick": "HOU ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "4-2",
-      "headline": "BAL beat HOU 4-2 — second consecutive day BAL has beaten a model-favored HOU in this exact head-to-head.",
-      "hypothesis": "Trevor Rogers' 0.93 xERA edge and PQI -12.6 opposed HOU, and pick_prob=0.644 sat just below the 65% home-favorite scrutiny boundary that burned yesterday's sole staked GOLD CONFIRM in this same series (7/17: HOU lost 3-2). Today's D-grade dual-opposing signals correctly kept the pick at SKIP, and BAL won again. Two straight BAL wins over a model-favored HOU with the same opposing-signal shape (SP xERA + PQI both against HOU) is worth tracking as a standing matchup-level caution, though the SKIP tier means zero P&L impact both times.",
-      "signals_to_recheck": "Home-favorite >65% scrutiny boundary — HOU has now lost as a model favorite in this series twice running (7/17 staked GOLD CONFIRM loss, 7/18 correctly-SKIPped loss); watch for a third instance before treating BAL@HOU specifically as a standing blind spot rather than noise."
+      "headline": "BAL beat HOU 4-2 — second consecutive day BAL won against a model-favored HOU in the same series.",
+      "hypothesis": "Trevor Rogers' 0.93 xERA edge and PQI -12.6 opposed HOU, with pick_prob=0.644 at the home-favorite scrutiny boundary (65%). Yesterday (7/17) the sole staked GOLD CONFIRM in this exact matchup lost 3-2; today D-grade dual-opposing signals correctly kept stake at zero and BAL won again. Two consecutive BAL wins over a model-favored HOU with the same SP+PQI opposing-signal shape (7/17 staked loss + 7/18 correctly-SKIPped loss) is a developing matchup-level caution worth tracking for a third instance. Zero net P&L impact so far due to 7/18 SKIP.",
+      "signals_to_recheck": "Home-favorite >65% scrutiny boundary — HOU has lost as the model favorite in this series two straight days (7/17 GOLD CONFIRM loss, 7/18 correctly-SKIPped); a third HOU-favored instance with same opposing shape should be treated as a standing blind spot."
     },
     "SD @ KC": {
       "verdict": "LOSS",
@@ -65,26 +65,26 @@
       "claude_decision": "DOWNGRADE",
       "final_score": "1-6",
       "headline": "KC blew out SD 6-1; DOWNGRADE of the GOLD SD pick was correct and protective.",
-      "hypothesis": "F3_swing_take_gap=613.5 was well below the 1000 meaningful-anchor threshold, edge +0.16pp was trivial and outside the [4,15]pp window, and HARD CAP 10 fired with no qualifying F-signal. DOWNGRADE to SKIP avoided what would have been a significant GOLD-tier loss — SD lost by 5 runs. A clear process success for both the F3-threshold rule and the DOWNGRADE decision.",
-      "signals_to_recheck": "F3_swing_take_gap < 1000 — again correctly treated as a non-anchor; SD's 5-run loss reinforces that sub-1000 F3 should not elevate a marginal-edge pick to GOLD."
+      "hypothesis": "F3_swing_take_gap=613.5 fell well below the 1000 meaningful-anchor threshold; edge +0.16pp was trivial and outside the [4,15]pp valid window; HARD CAP 10 fired with no qualifying F-signal. Claude's DOWNGRADE to SKIP avoided what would have been a significant GOLD-tier loss — SD lost by 5 runs. A clean process success for the F3-threshold rule and the DOWNGRADE decision.",
+      "signals_to_recheck": "F3_swing_take_gap < 1000 — again correctly treated as a non-anchor; SD's 5-run loss reinforces that sub-1000 F3 should not elevate a marginal-edge pick to GOLD tier."
     },
     "STL @ ARI": {
       "verdict": "WIN",
       "model_pick": "ARI ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "3-5",
-      "headline": "ARI beat STL 5-3; CONFIRM SKIP correct, and the pick direction flipped back in the model's favor from yesterday's STL@ARI loss.",
-      "hypothesis": "Dustin May's 0.68 xERA edge and PQI -6.5 opposed ARI, plus a negative edge (-0.34pp, HARD CAP 1), all correctly zeroed the stake. Yesterday's STL@ARI (7/17) saw Stage 2's high-delta lean toward ARI fail when PQI opposition exceeded 20pp; today's PQI opposition was much smaller (6.5) and ARI won, consistent with the 7/17 postgame's refined rule that only large (>20pp) PQI opposition degrades Stage 2 reliability. Directional WIN, no P&L impact, no process failure.",
-      "signals_to_recheck": "pqi_diff magnitude threshold (>20 vs opposing) — today's moderate opposition (6.5) did not override the pick direction, consistent with the 7/17 refinement; continues to hold."
+      "headline": "ARI beat STL 5-3; CONFIRM SKIP correct, and ARI's win is consistent with the refined Stage 2 + PQI interaction rule from 7/17.",
+      "hypothesis": "Dustin May's 0.68 xERA edge and PQI -6.5 opposed ARI, plus negative edge (-0.34pp, HARD CAP 1). Yesterday's STL@ARI established that Stage 2 high-delta direction degrades only when |pqi_diff| > 20 opposing; today's PQI opposition is 6.5 — well below that threshold — and ARI won, consistent with the refined rule. Directional WIN, no P&L impact, no process failure.",
+      "signals_to_recheck": "pqi_diff magnitude threshold (>20 vs opposing Stage 2 direction) — ARI winning with small-opposition PQI (6.5) reaffirms the 7/17 refinement: only large PQI opposition degrades Stage 2 directional reliability."
     },
     "TB @ BOS": {
       "verdict": "WIN",
       "model_pick": "BOS ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "6-7",
-      "headline": "BOS edged TB 7-6; sp_savant_gate=HARD_VETO on thin SP data correctly kept this at zero stake in a close game.",
-      "hypothesis": "Patrick Sandoval's 65-Statcast-pitch sample triggered sp_savant_gate=HARD_VETO, and a -1.21pp negative edge independently triggered HARD CAP 1. BOS's narrow 1-run win is consistent with genuine game-level uncertainty — exactly the kind of close game the thin-SP-data veto is designed to avoid staking on. Directional WIN, no P&L impact, no process failure.",
-      "signals_to_recheck": "sp_savant_gate=HARD_VETO — continues to correctly identify unstakeable thin-sample SP games regardless of outcome direction."
+      "headline": "BOS edged TB 7-6; sp_savant_gate=HARD_VETO and negative edge correctly kept this at zero stake on a genuinely close game.",
+      "hypothesis": "Patrick Sandoval's 65-Statcast-pitch sample triggered sp_savant_gate=HARD_VETO, and edge -1.21pp independently triggered HARD CAP 1. BOS's 1-run win reflects the game-level uncertainty the thin-SP-data veto is designed to avoid staking on. Directional WIN, zero P&L impact, no process failure.",
+      "signals_to_recheck": "sp_savant_gate=HARD_VETO — correctly identified an unstakeable thin-sample SP game; 1-run margin confirms the uncertainty the gate was protecting against."
     },
     "TEX @ ATL": {
       "verdict": "LOSS",
@@ -92,17 +92,17 @@
       "claude_decision": "CONFIRM",
       "final_score": "7-6",
       "headline": "TEX beat ATL 7-6; sp_savant_gate=HARD_VETO on Owen Murphy's thin sample correctly prevented a stake on a pick that lost.",
-      "hypothesis": "Owen Murphy's 67-Statcast-pitch sample (below the 100-pitch minimum) triggered sp_savant_gate=HARD_VETO on ATL's own starter, and a -1.03pp negative edge triggered HARD CAP 1. Despite a positive pre-cap stack (PQI+5.2, Stage agree, F-signal; PRE_CAP_SCORE=3), the thin-SP veto and negative edge correctly zeroed the stake, and TEX's narrow 1-run win validates the caution. Clean process success: the pre-cap stack looked good but the game-level uncertainty (7-6 final) matches a correctly-avoided coin-flip.",
-      "signals_to_recheck": "sp_savant_gate=HARD_VETO stacking with HARD CAP 1 — both fired on a game that finished within 1 run; the veto is earning its keep on close, thin-sample-SP games."
+      "hypothesis": "Owen Murphy's 67-Statcast-pitch sample triggered sp_savant_gate=HARD_VETO on ATL's own starter; edge -1.03pp triggered HARD CAP 1 (pre-cap score dropped 3→1→0). Despite a positive pre-cap stack (PQI +5.2, Stage agree, F-signal; PRE_CAP_SCORE=3), the thin-SP veto and negative edge correctly zeroed the stake and TEX's 1-run win validates the caution — a game within 1 run matches a correctly-avoided coin-flip.",
+      "signals_to_recheck": "sp_savant_gate=HARD_VETO stacking with HARD CAP 1 — both fired on a game that finished within 1 run; the veto continues to earn its keep on close thin-sample-SP games regardless of whether the pick won or lost."
     },
     "MIA @ MIL": {
       "verdict": "WIN",
       "model_pick": "MIL ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "6-8",
-      "headline": "MIL beat MIA 8-6; a strong 5-point pre-cap GOLD stack was zeroed by HARD CAP 7 on a marginal bullpen gap, and MIL's win extends CAP 7's false-negative streak to three.",
-      "hypothesis": "F3=3225.7, F5=+0.86, SP edge agreeing, and PQI+7.2 confirming produced a pre-cap score of 5 (grade A), but HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0185 — a gap the 7/17 postgame already flagged as sitting in the same problematic sub-0.02 range as two prior KC@BAL false negatives (7/10 +0.018 BAL won, 7/12 +0.0189 BAL won). MIL's win makes this the third consecutive false negative in that exact gap band. This crosses from 'monitoring warranted' to an actionable process issue: CAP 7's >=0 trigger is too tight and is suppressing real wins on marginal bullpen gaps that don't distinguish from noise.",
-      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — third false negative in the sub-0.02 hl_bullpen_xwoba_gap band (KC@BAL 7/10, 7/12; MIA@MIL 7/18); recommend raising the trigger threshold from >=0 to >=0.02, or requiring the same |gap|>0.04 meaningful threshold already used for hl_bullpen_xwoba_gap elsewhere."
+      "headline": "MIL beat MIA 8-6; a pre-cap score-5 grade-A GOLD stack was zeroed by HARD CAP 7 on a marginal bullpen gap — third false negative in the sub-0.02 band.",
+      "hypothesis": "F3=3225.7, F5=+0.86, SP xERA agreeing, and PQI +7.2 produced pre-cap score 5 (grade A), but HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0185 — a gap the 7/17 postgame already flagged as sitting in the same problematic sub-0.02 range as two prior KC@BAL false negatives (7/10 +0.018, 7/12 +0.0189, both BAL won). MIL winning makes this the third consecutive false negative in that exact gap band. This crosses from 'monitoring warranted' to an actionable process issue: CAP 7's >=0 trigger is too tight and is suppressing genuine wins on marginal bullpen gaps that don't distinguish from noise at the 0.02 level.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — third false negative in the sub-0.02 hl_bullpen_xwoba_gap band (KC@BAL 7/10 +0.018, 7/12 +0.0189, MIA@MIL 7/18 +0.0185); recommend raising the CAP 7 trigger from >=0 to >=0.02 so marginal positive gaps don't zero out strong multi-signal stacks."
     },
     "SF @ SEA": {
       "verdict": "LOSS",
@@ -110,8 +110,8 @@
       "claude_decision": "CONFIRM",
       "final_score": "3-4",
       "headline": "SEA beat SF 4-3; SKIP correct, and the loss confirms yesterday's 7-0 SF win was pure variance as flagged.",
-      "hypothesis": "Bryan Woo's 0.45 xERA edge and PQI+7.1 opposed SF, exactly the signal configuration that failed to predict the winner yesterday (7/17: SF won 7-0 against all signals, explicitly flagged 'do not extract a pattern from this win'). Today the same matchup and largely the same signal shape produced the expected result (SF lost), reasserting the underlying signal's validity. A clean confirmation that the prior blowout was noise, not evidence the model needs to reweight SF@SEA signals.",
-      "signals_to_recheck": "None — today's result reasserts the original SP-xERA/PQI read after 7/17's explicitly-flagged variance outlier; no signal recalibration needed."
+      "hypothesis": "Bryan Woo's 0.45 xERA edge and PQI +7.1 opposed SF — the same signal configuration that failed to prevent yesterday's 7-0 SF win (7/17), explicitly flagged 'do not extract a pattern from this win.' Today the expected directional result materialized (SF lost), reasserting the underlying signal's validity and confirming the prior blowout was noise. No process failure either day; SKIP was correct both times.",
+      "signals_to_recheck": "None — 7/18 result reasserts the original SP-xERA/PQI read after 7/17's explicitly-flagged variance outlier; no signal recalibration needed."
     },
     "LAD @ NYY": {
       "verdict": "NO_PICK",
@@ -119,8 +119,8 @@
       "claude_decision": "DOWNGRADE",
       "final_score": null,
       "headline": "Game postponed; no outcome to grade.",
-      "hypothesis": "Claude DOWNGRADEd NYY GOLD to SKIP on F5-only signal support (F5_bullpen_gap=+0.98) without F1 or F3 corroboration, plus SP-xERA and PQI (-11.0) opposing NYY, consistent with the 7/17 postgame's F5-only-insufficient-for-GOLD rule (validated that same day on this identical matchup: NYY lost 2-1 after an F1*-driven DOWNGRADE). No result available today since the game was postponed.",
-      "signals_to_recheck": "F5_bullpen_gap alone without F1/F3 — filed for future tracking when this game is rescheduled; unresolved today."
+      "hypothesis": "Claude DOWNGRADEd NYY GOLD to SKIP on F5-only signal support (F5_bullpen_gap=+0.98) without F1 or F3 corroboration, plus SP-xERA and PQI -11.0 opposing NYY, consistent with the 7/17 F5-only-insufficient rule validated that same day (this exact matchup: NYY lost 2-1 after an F1*-driven DOWNGRADE). No result available — game postponed.",
+      "signals_to_recheck": "F5_bullpen_gap alone without F1/F3 — unresolved today; filed for future tracking when this game is rescheduled."
     },
     "WSH @ OAK": {
       "verdict": "LOSS",
@@ -128,17 +128,17 @@
       "claude_decision": "CONFIRM",
       "final_score": "1-15",
       "headline": "OAK routed WSH 15-1 — a complete reversal of yesterday's 23-4 WSH blowout in the same head-to-head.",
-      "hypothesis": "J.T. Ginn's 2.32 xERA edge and PQI+34.8 (the slate's largest opposition) both opposed WSH, and the 16.08pp edge exceeded the 15pp ceiling — a much clearer opposition signature than yesterday's WSH@OAK (7/17), where WSH won 23-4 despite a milder hallucination-zone flag. Today's result validates the stronger opposing signals cleanly. Two consecutive 14+ run blowouts in opposite directions for the same team pair within 24 hours is itself notable: this matchup is running extremely high-variance, and SKIP correctly avoided staking on either day's extreme outcome.",
-      "signals_to_recheck": "fair_prob/edge_pp ceiling + PQI opposition — correctly caught a 14-run loss the day after a 19-run win for the same team pair; do not use yesterday's WSH result as a prior for today's game given the signal reversal."
+      "hypothesis": "J.T. Ginn's 2.32 xERA edge, PQI +34.8 (slate's largest PQI opposition), and edge 16.08pp above the 15pp ceiling all opposed WSH, forming a much stronger opposition signature than yesterday's WSH@OAK (7/17: WSH won 23-4 despite hallucination-zone flag). Today's result validates the stronger opposing signals cleanly. Two consecutive 14+ run blowouts in opposite directions for the same pair within 24 hours — SKIP correctly avoided both extremes.",
+      "signals_to_recheck": "fair_prob/edge_pp ceiling + PQI opposition — correctly caught a 14-run loss the day after a 19-run win for the same team pair; do not treat yesterday's WSH blowout result as a prior for this matchup given the signal reversal."
     },
     "DET @ LAA": {
       "verdict": "LOSS",
       "model_pick": "LAA ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "7-0",
-      "headline": "DET shut out LAA 7-0 — the slate's most extreme signal opposition (5 dimensions) predicted the loser correctly.",
-      "hypothesis": "Tarik Skubal's 3.78 xERA edge (largest SP gap on the slate), PQI-38.3 (largest PQI opposition on the slate), and fair_prob=0.336 (below the 0.42 floor) all opposed LAA, with Stage 1 giving LAA only 19.25% F5. DET's shutout win validates every opposing signal at the extreme end. Unlike the 7/8 LAA@TEX case cited in the archive as a 'noise' outlier where extreme opposition failed to predict the winner, today's extreme opposition predicted correctly — a reminder that the 7/8 case should still be read as the outlier, not the rule.",
-      "signals_to_recheck": "Five-dimension signal opposition — correctly predicted the loser today, unlike the 7/8 LAA@TEX outlier; extreme multi-signal opposition remains directionally reliable in the majority of cases even though it isn't infallible."
+      "headline": "DET shut out LAA 7-0; the slate's most extreme multi-signal opposition (5 dimensions) predicted the loser correctly.",
+      "hypothesis": "Tarik Skubal's 3.78 xERA advantage (slate's largest SP gap), PQI -38.3 (slate's largest PQI opposition), fair_prob=0.336 (below the 0.42 viability floor), Stage 1 giving LAA only 19.25% F5 probability, and grade D score=-4 all opposed LAA. DET's shutout validates every opposing signal at the extreme end. The 7/8 LAA@TEX outlier (13-1, extreme opposition failed) remains the exception; today reaffirms that extreme multi-signal opposition is directionally reliable in the majority of cases.",
+      "signals_to_recheck": "Five-dimension signal opposition — correctly predicted the loser again; extreme multi-signal stacks remain the archive's most reliable directional (not stake-sizing) signals even without a qualifying tier."
     },
     "PIT @ CLE (G2)": {
       "verdict": "NO_PICK",
@@ -146,14 +146,14 @@
       "claude_decision": "CONFIRM",
       "final_score": "3-5",
       "headline": "CLE won game 2 5-3; no pick was made since PIT's probable SP wasn't announced in time.",
-      "hypothesis": "Pipeline correctly withheld a directional call pending the 100+ Statcast pitch minimum for PIT's game-2 starter. No evaluation is possible; CLE's win is unscored against any model output.",
-      "signals_to_recheck": "PENDING_SP_DATA non-directional hold — no signal to recheck; the gate functioned as designed."
+      "hypothesis": "Pipeline correctly withheld a directional call pending the 100+ Statcast pitch minimum for PIT's game-2 starter. No evaluation is possible; CLE's win is unscored against any model output. The gate functioned as designed.",
+      "signals_to_recheck": "PENDING_SP_DATA non-directional hold — no signal to recheck; gate functioned as designed."
     }
   },
   "patterns_observed": [
-    "[HARD CAP 7] pick-side bullpen disadvantage has now false-negatived three times in the sub-0.02 hl_bullpen_xwoba_gap band (KC@BAL 7/10 +0.018 BAL won 5-3, 7/12 +0.0189 BAL won 8-2, MIA@MIL 7/18 +0.0185 MIL won 8-6, capping a pre-cap score-5/grade-A stack to zero). This crosses from 'monitoring warranted' to actionable: raise CAP 7's trigger from >=0 to >=0.02 (or the same |gap|>0.04 meaningful threshold already used for hl_bullpen_xwoba_gap elsewhere) so a marginal positive gap doesn't zero out a strong multi-signal stack.",
-    "BAL has beaten a model-favored HOU in back-to-back head-to-head games (7/17 3-2 as a staked GOLD CONFIRM loss, 7/18 4-2 as a correctly-SKIPped D-grade pick), both with SP-xERA and PQI opposing HOU. Zero net P&L impact so far since 7/18 was SKIPped, but if a third HOU-favorite game in this series shows the same opposing-signal shape, treat it as a standing matchup-level caution rather than isolated noise.",
-    "CIN@COL has produced two consecutive lopsided wins (CIN 7-2 on 7/17, COL 10-3 on 7/18) against the D-grade dual-opposing SP+PQI SKIP signal on opposite sides of the same matchup. The SKIP/zero-stake sizing was correct both days, but the underlying SP-xERA+PQI opposition read the wrong winner twice running on this specific pairing — worth a dedicated look at whether Coors park factors or an SP-vs-lineup mismatch is going uncaptured before the next CIN@COL game.",
-    "WSH@OAK swung from a 23-4 WSH blowout (7/17) to a 15-1 OAK blowout (7/18) on consecutive days for the same two teams, with the model picking WSH both times and SKIP correctly avoiding exposure to both extremes. This pairing is running extremely high-variance; do not use one day's WSH@OAK result as a prior for the next game in the series."
+    "[HARD CAP 7] pick-side bullpen disadvantage has now false-negatived three consecutive times in the sub-0.02 hl_bullpen_xwoba_gap band (KC@BAL 7/10 +0.018 BAL won 5-3, 7/12 +0.0189 BAL won 8-2, MIA@MIL 7/18 +0.0185 MIL won 8-6 on a pre-cap score-5/grade-A stack). This crosses from monitoring-warranted to actionable: raise CAP 7's trigger threshold from >=0 to >=0.02 (or apply the same |gap|>0.04 meaningful threshold already used for hl_bullpen_xwoba_gap elsewhere) so a marginal positive gap doesn't zero out a strong multi-signal stack.",
+    "BAL has beaten a model-favored HOU on back-to-back days in the same series (7/17: 3-2 as the sole staked GOLD CONFIRM loss; 7/18: 4-2 as a correctly-SKIPped D-grade CONFIRM), both with Trevor Rogers' SP-xERA edge and PQI opposing HOU. Zero net P&L impact since 7/18 was SKIPped, but if a third HOU-favorite game in this series presents the same opposing-signal shape (SP-xERA against + PQI against), treat it as a standing matchup-level caution rather than isolated noise.",
+    "CIN@COL has produced two consecutive lopsided blowouts (7/17: CIN won 7-2; 7/18: COL won 10-3) against the D-grade dual-opposing SP+PQI SKIP signal on opposite sides of the same matchup. Zero-stake sizing was correct both days, but the SP-xERA + PQI opposition called the wrong winner twice running on this pairing — inspect Coors park-factor interaction and the SP-vs-lineup matchup structure for CIN@COL before the next meeting, as the signal may be systematically misfiring on this team pair.",
+    "WSH@OAK swung from a 23-4 WSH blowout (7/17) to a 15-1 OAK blowout (7/18) on consecutive days, with the model picking WSH both times and SKIP correctly avoiding exposure to both extremes. Do not use one day's WSH@OAK result as a prior for the next game in this series; the matchup is running extreme-variance and directional accuracy depends entirely on which signal configuration is stronger on the day, not on recent results."
   ]
 }

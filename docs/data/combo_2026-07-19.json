@@ -1,6 +1,6 @@
 {
  "date": "2026-07-19",
- "generated_utc": "2026-07-19T14:15:16Z",
+ "generated_utc": "2026-07-19T15:15:40Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -46,12 +46,10 @@
    "pick": "NYY",
    "joint_prob": 0.4237,
    "blocked_by": [
-    "grade",
-    "market_band"
+    "grade"
    ],
    "notes": [
-    "final grade C (need A/A-/B+/B)",
-    "+3.7pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "final grade C (need A/A-/B+/B)"
    ]
   },
   {
@@ -66,7 +64,7 @@
    "notes": [
     "final grade B- (need A/A-/B+/B)",
     "tier SKIP",
-    "+10.5pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "+10.2pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -102,33 +100,35 @@
   {
    "matchup": "PIT @ CLE",
    "pick": "CLE",
-   "joint_prob": 0.3864,
+   "joint_prob": 0.3979,
    "blocked_by": [
     "grade",
     "conviction_tier",
+    "market_band",
     "stage_coherence"
    ],
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
+    "+0.4pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 42.4%"
    ]
   },
   {
    "matchup": "BAL @ HOU",
    "pick": "HOU",
-   "joint_prob": 0.5676,
+   "joint_prob": 0.5764,
    "blocked_by": [
     "market_band"
    ],
    "notes": [
-    "+12.9pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "+12.8pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
    "matchup": "SD @ KC",
    "pick": "SD",
-   "joint_prob": 0.3794,
+   "joint_prob": 0.3905,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -151,7 +151,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+3.0pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "+3.5pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 47.3%"
    ]
   },
@@ -168,7 +168,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+20.5pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+19.9pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 39.5%"
    ]
   },
@@ -211,7 +211,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+18.3pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+17.8pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 48.4%"
    ]
   },
