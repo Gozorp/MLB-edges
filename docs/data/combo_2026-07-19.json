@@ -1,6 +1,6 @@
 {
  "date": "2026-07-19",
- "generated_utc": "2026-07-19T11:16:01Z",
+ "generated_utc": "2026-07-19T12:15:26Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -30,8 +30,8 @@
      "type": "ML",
      "sel": "CIN wins",
      "prob": 0.6385,
-     "fair": 0.5841,
-     "edge_pp": 5.44,
+     "fair": 0.5822,
+     "edge_pp": 5.62,
      "band": "goldilocks",
      "market": "kalshi fair (devigged)"
     },
@@ -64,7 +64,7 @@
     {
      "sheet": "market_band",
      "verdict": "pass",
-     "note": "+5.4pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
+     "note": "+5.6pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
     },
     {
      "sheet": "stage_coherence",
@@ -100,8 +100,8 @@
    "matchup": "CIN @ COL",
    "sel": "CIN wins",
    "model_prob": 0.6385,
-   "market_prob": 0.5841,
-   "edge_pp": 5.44,
+   "market_prob": 0.5822,
+   "edge_pp": 5.62,
    "status": "live",
    "unanimous": true
   }
@@ -122,7 +122,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+1.7pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "+1.2pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -163,7 +163,7 @@
    ],
    "notes": [
     "tier SKIP",
-    "+15.8pp vs fair -> trap band (strict 4-8 goldilocks)"
+    "+15.1pp vs fair -> trap band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -179,7 +179,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+11.0pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "+9.2pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 38.8%"
    ]
   },
@@ -212,24 +212,22 @@
   {
    "matchup": "SD @ KC",
    "pick": "SD",
-   "joint_prob": 0.3909,
+   "joint_prob": 0.3794,
    "blocked_by": [
     "grade",
     "conviction_tier",
-    "market_band",
     "stage_coherence"
    ],
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+8.7pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 39.1%"
    ]
   },
   {
    "matchup": "MIA @ MIL",
    "pick": "MIL",
-   "joint_prob": 0.4631,
+   "joint_prob": 0.4667,
    "blocked_by": [
     "grade",
     "market_band",
@@ -237,7 +235,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+2.6pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "+3.0pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 47.3%"
    ]
   },
@@ -254,27 +252,29 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+19.9pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+20.5pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 39.5%"
    ]
   },
   {
    "matchup": "WSH @ OAK",
    "pick": "WSH",
-   "joint_prob": 0.4846,
+   "joint_prob": 0.4981,
    "blocked_by": [
     "grade",
-    "conviction_tier"
+    "conviction_tier",
+    "market_band"
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "tier SKIP"
+    "tier SKIP",
+    "-3.4pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
    "matchup": "DET @ LAA",
    "pick": "LAA",
-   "joint_prob": 0.4612,
+   "joint_prob": 0.4599,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -284,14 +284,14 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+18.2pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+18.0pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 48.4%"
    ]
   },
   {
    "matchup": "SF @ SEA",
    "pick": "SF",
-   "joint_prob": 0.3703,
+   "joint_prob": 0.3709,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -301,7 +301,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+15.6pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+16.4pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 37.1%"
    ]
   },
