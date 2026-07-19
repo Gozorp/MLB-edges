@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 cd /d "%~dp0"
 
 echo ============================================================
-echo  OVERRIDE DEMOTION  (auto-generated 2026-07-15 13:54 UTC)
+echo  OVERRIDE DEMOTION  (auto-generated 2026-07-19 13:42 UTC)
 echo  -----------------------------------------------------------
 echo  The out-of-sample OVERRIDE backtest hit the locked demote
 echo  threshold:
