@@ -1,6 +1,6 @@
 {
  "date": "2026-07-19",
- "generated_utc": "2026-07-19T13:15:50Z",
+ "generated_utc": "2026-07-19T14:15:16Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -20,92 +20,8 @@
   "phi": 0.6319,
   "source": "oos_ledger empirical (frozen-window graded pairs)"
  },
- "combos": [
-  {
-   "matchup": "CIN @ COL",
-   "pick": "CIN",
-   "opponent": "COL",
-   "legs": [
-    {
-     "type": "ML",
-     "sel": "CIN wins",
-     "prob": 0.6385,
-     "fair": 0.5822,
-     "edge_pp": 5.62,
-     "band": "goldilocks",
-     "market": "kalshi fair (devigged)"
-    },
-    {
-     "type": "F5",
-     "sel": "CIN leads after 5 (tie voids leg)",
-     "prob": 0.5828,
-     "fair": null,
-     "edge_pp": null,
-     "band": null,
-     "market": "model-priced (no F5 market feed)"
-    }
-   ],
-   "joint_prob": 0.5485,
-   "independence_prob": 0.3721,
-   "correlation_lift_pp": 17.64,
-   "grade": "B+",
-   "tier": "GOLD",
-   "gates": [
-    {
-     "sheet": "grade",
-     "verdict": "pass",
-     "note": "final grade B+ (need A/A-/B+/B)"
-    },
-    {
-     "sheet": "conviction_tier",
-     "verdict": "pass",
-     "note": "tier GOLD"
-    },
-    {
-     "sheet": "market_band",
-     "verdict": "pass",
-     "note": "+5.6pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
-    },
-    {
-     "sheet": "stage_coherence",
-     "verdict": "pass",
-     "note": "F5 side prob 58.3%"
-    },
-    {
-     "sheet": "claude_review",
-     "verdict": "n/a",
-     "note": "no review published today"
-    },
-    {
-     "sheet": "team_tiers",
-     "verdict": "n/a",
-     "note": "tier sheet unavailable for matchup"
-    },
-    {
-     "sheet": "streaks",
-     "verdict": "pass",
-     "note": "pick 7d INSUFF vs opp INSUFF"
-    }
-   ],
-   "unanimous": true,
-   "narrative": "CIN ML + CIN F5 lead: the same win path drives both legs -- historically, when the pick leads after 5 it wins the game 82% of the time vs 19% when it trails (ledger, n=337).",
-   "context": {
-    "pen_strain_pick_side": 0.1077
-   }
-  }
- ],
- "combo_pool": [
-  {
-   "market": "ML",
-   "matchup": "CIN @ COL",
-   "sel": "CIN wins",
-   "model_prob": 0.6385,
-   "market_prob": 0.5822,
-   "edge_pp": 5.62,
-   "status": "live",
-   "unanimous": true
-  }
- ],
+ "combos": [],
+ "combo_pool": [],
  "markets_status": {
   "ML": "live (Kalshi devigged fair)",
   "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
@@ -150,7 +66,7 @@
    "notes": [
     "final grade B- (need A/A-/B+/B)",
     "tier SKIP",
-    "+10.2pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "+10.5pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -201,12 +117,12 @@
   {
    "matchup": "BAL @ HOU",
    "pick": "HOU",
-   "joint_prob": 0.5632,
+   "joint_prob": 0.5676,
    "blocked_by": [
     "market_band"
    ],
    "notes": [
-    "+12.7pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "+12.9pp vs fair -> caution band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -257,6 +173,17 @@
    ]
   },
   {
+   "matchup": "CIN @ COL",
+   "pick": "CIN",
+   "joint_prob": 0.5614,
+   "blocked_by": [
+    "market_band"
+   ],
+   "notes": [
+    "+2.6pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
    "matchup": "WSH @ OAK",
    "pick": "WSH",
    "joint_prob": 0.4981,
@@ -284,7 +211,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+17.8pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+18.3pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 48.4%"
    ]
   },
@@ -301,7 +228,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+16.4pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+19.6pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 37.1%"
    ]
   },
