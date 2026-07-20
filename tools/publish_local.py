@@ -122,6 +122,14 @@ candidates = [
     # threw the fresh copy away and the dashboard served the 2026-07-17 commit
     # forever (frozen at 487 picks / 43 slates while local was already 514/45).
     "docs/data/team_predictability.json",
+    # 2026-07-20: bp_fatigue_* are written by tools/bp_fatigue_shadow_report.py,
+    # which is deliberately NOT in the nightly chain (offline shadow artifact for
+    # the July pre-registered study -- see that tool's docstring). Listing them
+    # here does NOT schedule anything; it only means that when the tool IS run
+    # by hand, the result can actually reach the site instead of being discarded
+    # by the next reset --hard. Absent files are skipped by the exists() filter.
+    "docs/data/bp_fatigue_profiles.json",
+    "docs/data/bp_fatigue_shadow.json",
     "docs/data/spread_%s.json" % TODAY,
     "docs/data/spread_%s.json" % YEST,
     "docs/data/sp_projection_%s.json" % TODAY,
