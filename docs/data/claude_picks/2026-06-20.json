@@ -1,0 +1,183 @@
+{
+  "date": "2026-06-20",
+  "fit_at": "2026-06-20T20:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 14,
+  "patterns_recognized": [
+    "f5_full_delta >= 0.12 with no F-series support reliably flags losers: CHW@DET (delta=0.23), SF@MIA (delta=0.17), BOS@SEA (delta=0.50) all match the 06-19 0-for-3 loss pattern on this combination.",
+    "f5_full_delta >= 0.12 WITH F-series support predicts Stage 2 correctness: TOR@CHC (F3=4999.5) and CLE@HOU (F3=1564.5) both carry F3 corroboration, matching 06-19 BOS@SEA win case.",
+    "SP edge AGAINST pick is a reliable structural veto: SF@MIA (-0.48 xERA), NYM@PHI (-0.78 xERA), MIN@ARI (-1.22 xERA) — 06-18 found all 4 SP-opposing picks lost same day.",
+    "HARD CAP 9 (pick_prob > 0.80 forces SKIP) appears not to have fired for PIT@COL at pick_prob=0.8218; grade reads A (score=5) rather than SKIP — likely pipeline code path gap requiring manual DOWNGRADE.",
+    "BAL@LAD (DIAMOND, Yamamoto, F1+F2+F3) and WSH@TB (F5+SP+Stage agree) are structural repeats of 06-19 matchups that both won; today's signal stacks are comparable."
+  ],
+  "by_matchup": {
+    "CHW @ DET": {
+      "model_pick": "CHW",
+      "model_prob": 0.5544,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHW",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Grade D SKIP is correctly assessed. f5_full_delta=0.2332 with zero F-series signals matches the 06-19 documented loss pattern exactly (0-for-3 on high-delta + no F-signal picks that day). No fair_prob available for market validation. Note: BvP shows 5 WEAK_VS entries for DET batters vs Newcomb, all uniformly at 10 PA / OPS 0.300 — data uniformity suggests a fill artifact; disregarding as unreliable. No qualitative reason to override the cap.",
+      "lessons_applied": ["f5_full_delta >= 0.12 + no F-series = SKIP (06-19 pattern)", "no market validation (fair_prob missing)"]
+    },
+    "CIN @ NYY": {
+      "model_pick": "NYY",
+      "model_prob": 0.6443,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.63,
+      "reasoning": "Pre-cap score was A (10 points): F1*+F3+F5 triple-signal with SP edge 1.23 xERA and Stage 1/2 near-perfect agreement (delta=0.005). HARD CAP 7 fired at hl_bullpen_xwoba_gap=+0.0243; fair_prob missing caps grade at C. BvP: Goldschmidt is OWNER vs Abbott (14 PA, shrunk OPS 0.814); Bellinger also favorable (small sample). From 06-19 postgame, same NYY win 5-0 under nearly identical CAP 7 setup; note was made CAP 7 may over-fire on multi-F PLATINUM stacks. Low delta + multi-F remains the strongest CONFIRM signal stack.",
+      "lessons_applied": ["low f5_full_delta (0.005) + multi-F = highest confidence class (06-19)", "CAP 7 may over-fire on multi-F stacks at sub-0.030 gap", "Goldschmidt OWNER BvP vs Abbott"]
+    },
+    "TOR @ CHC": {
+      "model_pick": "CHC",
+      "model_prob": 0.6048,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHC",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.58,
+      "reasoning": "f5_full_delta=0.1281 is above the 0.12 threshold, but F3=4999.5 fires for CHC — matching the 06-19 rule that F-series support rescues high-delta picks (BOS@SEA won with F3 despite f5d=0.24). BvP strongly favors CHC: Seiya Suzuki is OWNER vs Corbin (14 PA, shrunk OPS 0.991, 2 HR), Nico Hoerner MEANINGFUL (15 PA, OPS 0.829). HARD CAP 7 fires at gap=+0.0024 (sub-0.010; multiple postgames flag this magnitude as over-firing). PQI is negative (-9.8) but F3 and BvP are the dominant positive signals.",
+      "lessons_applied": ["f5_full_delta >= 0.12 + F3 fires = Stage 2 correct (06-19 rule)", "CAP 7 over-fires at sub-0.010 gap (06-17, 06-16 pattern)", "Suzuki OWNER BvP vs Corbin"]
+    },
+    "SD @ TEX": {
+      "model_pick": "SD",
+      "model_prob": 0.5511,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 10 correctly fired: pick_prob in (0.50, 0.55] band with acute_roster=True and confidence_downgrade=True. Tatis Jr is WEAK_VS Buehler (11 PA, shrunk OPS 0.658) — top SD batter historically struggles vs today's TEX SP. SD bullpen gap is favorable (hl_bullpen_xwoba_gap=-0.0338), but combined flags and marginal pick_prob warrant accepting CAP 10's SKIP. Per prompt: CONFIRM-rescued picks in this band still hit below 50% breakeven, so low-conviction stake-down designation is appropriate.",
+      "lessons_applied": ["HARD CAP 10 correct for marginal band + acute_roster + confidence_downgrade", "top batter WEAK_VS opposing SP reinforces caution", "06-19 SD@TEX was D-grade SKIP loss"]
+    },
+    "WSH @ TB": {
+      "model_pick": "TB",
+      "model_prob": 0.6713,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.62,
+      "reasoning": "Strong pre-cap A (score=5): F5_bullpen_gap=+0.91, SP edge 0.83 xERA (Seymour over Cavalli), PQI +15.2, Stage agree. HARD CAP 7 fires at gap=+0.0244, reducing to B-. From 06-19 postgame: identical WSH@TB matchup won 5-2 with the same F5_bullpen_gap=+0.91 signal described as 'load-bearing.' Gap of 0.0244 is not in the sub-0.010 over-fire zone but is still moderate. edge_pp=+13.96 within staking range but stake_mult=0. Directional conviction is high; no qualitative red flags.",
+      "lessons_applied": ["same WSH@TB F5+SP+Stage stack won 06-19", "pre-cap A on B- grade = genuine underlying quality", "CAP 7 at 0.0244 confirmed (not sub-0.010 over-fire)"]
+    },
+    "SF @ MIA": {
+      "model_pick": "SF",
+      "model_prob": 0.5193,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SF",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Grade D SKIP; directional pick SF looks structurally questionable. f5_full_delta=0.1678 with no F-series support for SF — matches 06-19 pattern exactly (SF@MIA was the sole staking-eligible LOSS that day, same matchup). SP edge is AGAINST the pick: Max Meyer (MIA home SP) has 0.48 xERA advantage over Trevor McDonald (SF). PQI also against SF. Market gives MIA fair_prob=0.409 (MIA favored at 59.06%). No qualitative information available to override; confirming the SKIP with note that MIA has structural advantage.",
+      "lessons_applied": ["f5_full_delta >= 0.12 + no F-series = SKIP (06-19 rule)", "SP AGAINST pick reliably signals loss (06-18 4/4 pattern)", "06-19 SF@MIA LOSS confirmed same structural setup"]
+    },
+    "MIL @ ATL": {
+      "model_pick": "ATL",
+      "model_prob": 0.5421,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ATL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 10 correctly fired: pick_prob=0.532 in marginal (0.50, 0.55] band with acute_roster=True and confidence_downgrade=True. Negative edge (-2.56pp) means market already prices MIL ahead of ATL (fair_prob=0.5676 for ATL). F3=3526.6 and Stage agree provide pre-cap signal, but two flags plus negative edge justify CAP 10. BvP shows Gary Sanchez WEAK_VS Chris Sale (29 PA, shrunk 0.607) — historically Sale dominates Sanchez, mild positive for ATL but insufficient to overcome the cap structure.",
+      "lessons_applied": ["HARD CAP 10 correct for marginal band + acute_roster + confidence_downgrade", "negative edge at -2.56pp means market correctly prices MIL advantage", "Sanchez WEAK_VS Sale is directional color only"]
+    },
+    "CLE @ HOU": {
+      "model_pick": "HOU",
+      "model_prob": 0.6281,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.59,
+      "reasoning": "f5_full_delta=0.1508 is above 0.12, but F3=1564.5 fires for HOU — applying the 06-19 rule that F-series support rescues large-delta Stage 2 picks. Stage 1/2 agree in the grader (+1) partially offsets the delta concern. PQI is mildly against (-5.4), a small drag. hl_bullpen_xwoba_gap=-0.0071 (HOU slightly better bullpen; CAP 7 does not fire). HOU lineup is elite (Yordan Alvarez, Walker, Paredes top-3). No caps fired to reduce the grade below B-; edge_pp=3.75 is just below the staking floor but directional call looks sound.",
+      "lessons_applied": ["f5_full_delta >= 0.12 + F3 fires = Stage 2 correct (06-19 rule)", "HOU home lineup quality with Yordan as anchor", "no hard caps reducing score (pre-cap = current score)"]
+    },
+    "NYM @ PHI": {
+      "model_pick": "NYM",
+      "model_prob": 0.5313,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "PHI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.62,
+      "reasoning": "OVERRIDE to PHI. Every structural signal contradicts the model's NYM pick: (1) SP edge -0.78 xERA AGAINST NYM (Cristopher Sanchez better than Freddy Peralta); (2) market fair_prob=0.336 for NYM means market prices PHI at 66.4%; (3) PHI BvP advantage vs Peralta is clear — Schwarber OWNER (20 PA, OPS 1.067, shrunk 0.859) and Harper OWNER (16 PA, OPS 1.027, shrunk 0.827); (4) calibration_caution_18_25pp fires on the claimed +19.52pp edge, flagging it as an artifact. On 06-18 PHI had similar BvP vs Manaea and NYM still won, so BvP alone is not decisive — but SP + market + BvP together form a clear thesis.",
+      "lessons_applied": ["SP AGAINST pick at 0.78 xERA = reliable directional veto (06-18 pattern)", "calibration_caution_18_25pp = edge is likely artifact", "PHI Schwarber + Harper dual OWNER BvP vs Peralta", "market at 66.4% for PHI is authoritative disagreement with model"]
+    },
+    "PIT @ COL": {
+      "model_pick": "PIT",
+      "model_prob": 0.8218,
+      "model_tier": "PLATINUM",
+      "model_grade": "A",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "PIT",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.70,
+      "reasoning": "DOWNGRADE: pick_prob=0.8218 exceeds the HARD CAP 9 threshold of 0.80 (top-bucket calibrator hallucination), yet the grade pipeline shows A (score=5) with no CAP 9 entry in grade_reasons — probable code path gap. The cap description documents 33.3% actual hit rate vs 87.3% predicted in this bucket. Paul Skenes vs Tomoyuki Sugano at Coors is genuinely strong (F1_xera_gap=5.99, SP edge 4.72 xERA, PQI=-57.4); market fair_prob=0.700 confirms PIT directional correctness. Using market probability 0.70 as more reliable anchor. Stake already restricted by why_skipped flag.",
+      "lessons_applied": ["HARD CAP 9 spirit: pick_prob > 0.80 = calibrator hallucination, use market as anchor", "CAP 9 appears not to have fired in pipeline — flag as code path gap", "Paul Skenes directional quality is real; 70% (market) vs 82% (model) is the calibration correction"]
+    },
+    "LAA @ OAK": {
+      "model_pick": "OAK",
+      "model_prob": 0.5615,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "OAK",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Grade C (score=0) after HARD CAP 10: pick_prob=0.541 in the marginal (0.50, 0.55] band without prior CONFIRM. Negative edge -6.58pp (market gives OAK 62.73% vs model's 56.15%) means OAK may already be over-priced. No F-series signals; only PQI confirms (+9.5, moderate). BvP data is empty for both sides. No qualitative reason to rescue this pick from CAP 10's correct fire. OAK J.T. Ginn vs LAA Walbert Ureña is not a differentiated matchup on available data.",
+      "lessons_applied": ["HARD CAP 10 correct for marginal band + negative edge", "market prices OAK higher than model (negative edge = market already absorbed)"]
+    },
+    "BAL @ LAD": {
+      "model_pick": "LAD",
+      "model_prob": 0.6443,
+      "model_tier": "DIAMOND",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.64,
+      "reasoning": "DIAMOND tier, Yoshinobu Yamamoto, triple F-signal stack (F1=1.72, F2=0.028, F3=7617.2), SP edge 1.06 xERA, PQI +20.7 — pre-cap A- (score=4). HARD CAP 1 fires at -7.87pp (market prices LAD at 72.3% vs model 64.43%); market already fully absorbed Yamamoto's advantage. 06-19 postgame for same BAL@LAD: LAD won 6-5, CAP 1 correctly blocked staking at -4.11pp, and noted 'market continues to price LAD past model on ace-led games.' Pattern repeats exactly. Directional call LAD is strongly supported; hl_bullpen_xwoba_gap=-0.0098 (sub-0.010, CAP 7 doesn't fire).",
+      "lessons_applied": ["same BAL@LAD triple-F Yamamoto/Sasaki pattern won 06-19", "HARD CAP 1 correctly blocks at -7.87pp market absorption", "sub-0.010 hl_bullpen_xwoba_gap = CAP 7 does not fire"]
+    },
+    "BOS @ SEA": {
+      "model_pick": "BOS",
+      "model_prob": 0.6743,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Grade D SKIP; f5_full_delta=0.4996 is the most extreme Stage 1/2 disagreement on today's slate — Stage 1 gives home SEA 82.53% F5 win probability while Stage 2 picks BOS at 67.43%. Zero F-series signals support the BOS Stage 2 pick. calibration_caution_18_25pp fires (edge=+21.68pp likely a calibrator artifact). Market gives SEA the edge (BOS fair_prob=0.4575 means market sees SEA at 54.25%). From 06-15 lesson: f5_full_delta ≥ 0.35 + no F-series is structural, not marginal. SKIP confirmed without reservation.",
+      "lessons_applied": ["f5_full_delta 0.50 + no F-series = structural loss predictor", "calibration_caution_18_25pp on edge = artifact, not value", "06-15 extreme-delta lesson: Stage 1 at 82% is a dominant structural signal"]
+    },
+    "MIN @ ARI": {
+      "model_pick": "ARI",
+      "model_prob": 0.6367,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Grade D SKIP; SP edge is 1.22 xERA AGAINST the ARI pick (Taj Bradley better than Zac Gallen). PQI also strongly against (Δ=-15.3). No F-series signals. f5_full_delta=0.1263 is just above 0.12 threshold with no F-series support. From 06-18 postgame pattern, SP AGAINST pick at this magnitude reliably predicts a loss. Note from 06-19: ARI won 9-5 when the home-favorite heuristic (DOWNGRADE >65%) was over-applied by Claude — but that game had full Stage 1/2 agreement and NO SP disadvantage. Today's situation is structurally different: SP explicitly opposes ARI.",
+      "lessons_applied": ["SP AGAINST pick 1.22 xERA = reliable D-grade loss predictor (06-18 4/4 pattern)", "f5_full_delta >= 0.12 + no F-series = additional SKIP signal", "06-19 ARI win was low-delta no-SP-gap; today is the opposite structural case"]
+    }
+  }
+}

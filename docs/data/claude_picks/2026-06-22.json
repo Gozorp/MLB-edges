@@ -1,0 +1,170 @@
+{
+  "date": "2026-06-22",
+  "fit_at": "2026-06-22T18:30:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 13,
+  "patterns_recognized": [
+    "CAP-1 (negative edge) = hard SKIP on any tier — BAL@LAD 06-21 lost 12-1 despite pre-cap A- PLATINUM CONFIRM; market absorption is unconditional regardless of pre-cap grade.",
+    "Pre-cap A rescue of CAP-10 has failed twice consecutively (BOS@SEA 06-20 and 06-21) — no bottom-bucket exception without OWNER BvP anchor (meaningful sample, shrunk OPS >= 0.800).",
+    "f5_prob(pick) < 0.35 is a reliable auto-SKIP signal across 06-16, 06-19, and 06-21 sessions — Stage 1 is authoritative when it assigns the pick team < 35% in F5.",
+    "Coors Field DOWNGRADE overcorrected on 06-21 (PIT won 8-6) — revised rule: at Coors with dual F-signals and pick_prob > 0.60, CONFIRM is appropriate; reserve full SKIP for single-F + pick_prob <= 0.60."
+  ],
+  "by_matchup": {
+    "NYY @ DET": {
+      "model_pick": "NYY ML PLATINUM",
+      "model_prob": 0.6359,
+      "model_tier": "PLATINUM",
+      "model_grade": "A",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "PLATINUM",
+      "claude_confidence": 0.64,
+      "reasoning": "Textbook PLATINUM CONFIRM: Gerrit Cole holds a 1.78 xERA advantage over Framber Valdez, F2_xwoba_gap and F5_bullpen_gap=+0.80 both fire, PQI delta=-27.2 strongly confirms, Stage 1/2 agree (delta=0.026), edge +8.05pp within valid range, no hard caps fired. NYY bullpen slightly better (hl_gap=-0.0149). BvP is SMALL_SAMPLE on both sides with no OWNER or WEAK_VS flags. No qualitative disqualifiers visible; this is a clean full-signal PLATINUM.",
+      "lessons_applied": ["full_signal_alignment_PLATINUM", "Cole_xERA_anchor", "no_cap_fires_clean_confirm"]
+    },
+    "KC @ TB": {
+      "model_pick": "TB ML GOLD",
+      "model_prob": 0.6671,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.62,
+      "reasoning": "CAP-7 correctly fired (hl_bullpen_xwoba_gap=+0.0026) reducing grade to B-; no stake warranted since edge=+0.33pp is below the 4pp floor. CONFIRM direction: Yandy Diaz is an OWNER vs Wacha (14 PA, shrunk OPS 0.927), and F1_xera_gap=1.29 supports TB SP edge. Single OWNER adds soft positive color but is not staking-grade. Direction is sound; exposure correctly capped by CAP-7 and edge floor.",
+      "lessons_applied": ["CAP7_correctly_capped_grade_not_direction", "OWNER_BvP_soft_confirm"]
+    },
+    "TEX @ MIA": {
+      "model_pick": "MIA ML SKIP",
+      "model_prob": 0.5399,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 (edge=-1.55pp) and HARD CAP 10 (pick_prob=0.540 bottom bucket) both fired. Per 06-21 lesson, CAP-1 forces SKIP on any tier — the market has absorbed MIA's structural advantage (pre-cap A-) into the closing line. No BvP data provides qualitative override. MIA had real pre-cap signals but negative edge is determinative. SKIP enforced.",
+      "lessons_applied": ["CAP1_negative_edge_hard_SKIP", "CAP10_bottom_bucket_enforced"]
+    },
+    "PHI @ WSH": {
+      "model_pick": "WSH ML SKIP",
+      "model_prob": 0.5924,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "WSH",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Pre-cap grade was already C (score=0): PQI AGAINST WSH (delta=-12.4), no F-signal or SP edge fires. Tim Mayza (PHI away SP) deployed as a starter is a risk factor for PHI's offense. All BvP data is SMALL_SAMPLE with no OWNER signals. WSH bullpen holds a structural edge (hl_gap=-0.0327) which is a soft positive, but without F-series corroboration SKIP is correct.",
+      "lessons_applied": ["PQI_against_no_F_signal_SKIP", "relief_as_SP_risk_flag"]
+    },
+    "HOU @ TOR": {
+      "model_pick": "HOU ML GOLD",
+      "model_prob": 0.5493,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "DOWNGRADE to SKIP: only F5_bullpen_gap=+1.13 fires (no F1 or F2), pick_prob=0.549 in bottom bucket (CAP-10 already blocked pre-cap B+), and f5_full_delta=0.109 shows Stage 1 giving TOR a slight F5 edge (55.96% home). Dylan Cease (TOR home SP) is a quality pitcher and HOU batter data vs Cease is unavailable (empty array). Single-F signal at borderline Stage 1 disagreement does not justify CONFIRM; 06-19 rule — f5_full_delta >= 0.12 + single-F = insufficient rescue — is nearly met here.",
+      "lessons_applied": ["single_F_bottom_bucket_insufficient", "missing_batter_data_uncertainty", "borderline_Stage1_disagree_caution"]
+    },
+    "CHC @ NYM": {
+      "model_pick": "CHC ML SKIP",
+      "model_prob": 0.5291,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 1 (edge=-1.34pp) fires — negative edge is a hard SKIP regardless of tier per 06-21 learning. Pre-cap A- had Imanaga's 1.47 xERA advantage and PQI=-13.8 supporting CHC, but market has fully priced this edge. NYM's loaded home lineup (Soto, Bichette, Semien) reinforces caution. confidence_downgrade=True. SKIP confirmed.",
+      "lessons_applied": ["CAP1_negative_edge_hard_SKIP", "CAP10_bottom_bucket_enforced"]
+    },
+    "LAD @ MIN": {
+      "model_pick": "MIN ML GOLD",
+      "model_prob": 0.5219,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "MIN",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "DOWNGRADE: fair_prob=0.397 prices MIN at ~40% implied (06-16 auto-SKIP pattern for fair_prob < 0.40), F1_xera_gap=1.55* has thin-sample asterisk, pick_prob=0.522 in bottom bucket. Buxton is an OWNER vs Lauer (12 PA, shrunk OPS 0.943) — a soft directional positive — but one OWNER against LAD caliber and market rejection at ~-12pp divergence is insufficient to rescue a CAP-10 bottom-bucket pick with a thin-sample F1.",
+      "lessons_applied": ["fair_prob_below_40_auto_SKIP", "F1_thin_sample_asterisk_caution", "single_OWNER_not_enough_vs_market_rejection"]
+    },
+    "CLE @ CHW": {
+      "model_pick": "CHW ML SKIP",
+      "model_prob": 0.6653,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHW",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade SKIP confirmed: SP edge AGAINST CHW (Gavin Williams 1.01 xERA better than Anthony Kay), PQI delta=-23.1 strongly against CHW late-game, edge=+17.14pp above [4,15]pp ceiling (market prices this as ~50/50 at fair_prob=0.494 vs model's 66.5% — calibration divergence). Despite Stage 1/2 both agreeing on CHW (~67-70%), SP and PQI vetoes plus edge artifact override. D-grade enforced.",
+      "lessons_applied": ["SP_xERA_against_pick_D_grade", "PQI_strongly_against_late_game", "edge_above_ceiling_calibration_artifact"]
+    },
+    "ARI @ STL": {
+      "model_pick": "STL ML DIAMOND",
+      "model_prob": 0.5389,
+      "model_tier": "DIAMOND",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Triple-F stack (F1_xera_gap=3.06, F2, F3=5439.5) with PQI delta=+32.0 is compelling, but HARD CAP 1 (edge=-4.05pp) fires — unconditional SKIP per 06-21. Additionally f5_prob(STL)=1-0.786=0.214, well below the 0.35 auto-SKIP threshold (06-16); Stage 1 assigns ARI 78.6% in F5. Market has absorbed STL's entire F-signal stack. SKIP confirmed despite DIAMOND designation.",
+      "lessons_applied": ["CAP1_negative_edge_hard_SKIP", "f5_prob_below_35_auto_SKIP", "market_absorbs_diamond_F_stack"]
+    },
+    "BOS @ COL": {
+      "model_pick": "BOS ML PLATINUM",
+      "model_prob": 0.6206,
+      "model_tier": "PLATINUM",
+      "model_grade": "A",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS",
+      "claude_tier": "PLATINUM",
+      "claude_confidence": 0.61,
+      "reasoning": "CONFIRM PLATINUM at Coors: grade A (7), dual F-signals (F3=1098.7 + F5_bullpen_gap=+1.78), PQI delta=-30.4 strongly confirms BOS, edge +6.52pp valid, pick_prob=0.621 above bottom bucket, BOS bullpen significantly better (hl_gap=-0.0379). No hard caps fired. Per 06-21 revised Coors rule: full SKIP only for single-F + pick_prob <= 0.60; dual F-signals and 62% clear that bar. SP edge unconfirmed (Bennett at altitude) is mild risk; bullpen advantage compensates.",
+      "lessons_applied": ["Coors_revised_rule_dual_F_CONFIRM", "PLATINUM_grade_A_no_cap_fires", "bullpen_gap_Coors_differentiator"]
+    },
+    "BAL @ LAA": {
+      "model_pick": "LAA ML SKIP",
+      "model_prob": 0.5302,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "SKIP confirmed: fair_prob=0.380 prices LAA at ~38% (06-16 auto-SKIP pattern: fair_prob < 0.40), edge=+15.03pp barely above ceiling (calibration suspect), PQI AGAINST LAA (delta=-6.5), no F-signals fire, confidence_downgrade=True, bullpen_fatigue flag. Kyle Bradish (BAL) may explain market's confidence in BAL. All adverse flags align; no qualitative override available.",
+      "lessons_applied": ["fair_prob_below_40_auto_SKIP", "edge_above_ceiling_caution", "PQI_against_no_F_SKIP"]
+    },
+    "ATL @ SD": {
+      "model_pick": "ATL ML SKIP",
+      "model_prob": 0.5443,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ATL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "CAP-10 fired (pick_prob=0.534 bottom bucket) and f5_prob(ATL)=1-0.666=0.334 is below the 0.35 auto-SKIP threshold (06-16). Stage 1 strongly favors SD home (66.6% F5); Michael King (SD) is a quality SP vs Grant Holmes (ATL). No F-signals fire and hl_bullpen_xwoba_gap=+0.016 slightly favors SD. Stage 1 conviction is determinative given absence of F-series support. SKIP confirmed.",
+      "lessons_applied": ["f5_prob_below_35_auto_SKIP", "CAP10_bottom_bucket_enforced", "no_F_signals_Stage1_authoritative"]
+    },
+    "MIL @ CIN": {
+      "model_pick": "PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PENDING_SP_DATA",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "MIL probable SP not yet announced; pipeline correctly withheld directional pick pending 100+ Statcast pitch sample. No qualitative context substitutes for missing xERA data. CONFIRM no-pick protocol per postgame precedents (06-21 MIN@ARI, 06-18 LAA@OAK).",
+      "lessons_applied": ["pending_SP_data_hard_stop"]
+    }
+  }
+}

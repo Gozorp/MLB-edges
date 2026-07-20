@@ -1,0 +1,182 @@
+{
+  "date": "2026-06-21",
+  "fit_at": "2026-06-21T12:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 14,
+  "patterns_recognized": [
+    "Pick-column verbatim rule: Claude Brain misread CHW@DET pick as CHW on both 06-19 and 06-20 by inferring from signals rather than the CSV column — corrected today by reading 'pick' field first before any signal analysis.",
+    "NYM@PHI OVERRIDE validated 06-20 (PHI 15-3): model D-grade NYM + elite PHI home SP + multiple PHI OWNER BvP vs opposing SP + market pricing PHI >63% = OVERRIDE to PHI. Today's triple-OWNER profile (Harper, Bohm, Sosa each with 11-28 PA vs Peterson) with Wheeler at 1.78 xERA gap is an even stronger repeat.",
+    "f5_full_delta >= 0.18 + single F-signal = insufficient Stage-2 rescue: CLE@HOU 06-20 (F3=4674, f5d=0.22) lost 8-1 to Stage 1. When delta is extreme (>0.18) and only one F-series fires, treat as equivalent to no-F for SKIP decisions.",
+    "Coors Field nullifies SP and bullpen model advantages: PIT@COL 06-20, Skenes F1_xera_gap=6.16 at pick_prob=0.82 — COL won 2-1. Park effect overrides xERA and F5_bullpen_gap signals at altitude; DOWNGRADE PIT picks at COL regardless of single-F signal strength."
+  ],
+  "by_matchup": {
+    "CIN @ NYY": {
+      "model_pick": "NYY ML PLATINUM",
+      "model_prob": 0.5482,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "HARD CAP 1 fired at -4.24pp (negative edge) and HARD CAP 10 fired on pick_prob=0.548 in the bottom bucket, collapsing the pre-cap B+ to grade C. CIN@NYY has played three consecutive days; yesterday Will Warren imploded for a 10-2 loss despite an identical F1+F3+F5 stack. Today's away SP Chase Burns (CIN) provides no reason to override the caps. Market has priced NYY's advantage past the model. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-1-negative-edge", "HARD-CAP-10-bottom-bucket", "market-absorption-validated-06-20"]
+    },
+    "MIL @ ATL": {
+      "model_pick": "MIL ML GOLD",
+      "model_prob": 0.5182,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 10 fired on pick_prob=0.528 in the marginal (0.50, 0.55] band, reducing pre-cap B (score=2) to grade C. Only F3_swing_take_gap=3732.9 fires; no F1, F2, or SP edge signal. MIL away SP Gasser faces ATL home SP Elder; ATL BvP vs Gasser is mostly NO_DATA. The 06-20 postgame confirmed ATL won 4-3 as the directional pick but CAP 10 correctly blocked staking. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-10-bottom-bucket", "F3-only-single-signal-insufficient", "06-20-MIL-ATL-CAP-10-validated"]
+    },
+    "WSH @ TB": {
+      "model_pick": "TB ML GOLD",
+      "model_prob": 0.6563,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.57,
+      "reasoning": "WSH@TB went WIN 06-19 then LOSS 06-20 — consecutive-day coin-flip pattern in a one-run game. HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0236, correctly reducing pre-cap B+ to B-. Rule layer says Stage 1/2 agree (delta=0.09); F5_bullpen_gap=+0.88 fires; edge=+8.66pp is positive and in-range. Nick Martinez (TB home SP) vs Andrew Alvarez (WSH). No qualitative trigger for DOWNGRADE beyond the already-applied CAP 7. CONFIRM low-stake B-.",
+      "lessons_applied": ["HARD-CAP-7-bullpen-disadvantage", "consecutive-day-matchup-variance-neutral", "positive-edge-in-range"]
+    },
+    "CHW @ DET": {
+      "model_pick": "DET ML GOLD",
+      "model_prob": 0.6323,
+      "model_tier": "GOLD",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "DET",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.57,
+      "reasoning": "Pick column: DET (verbatim — Claude Brain misread as CHW on 06-19 and 06-20, not repeating today). DET has won this matchup 2 consecutive days. Grade B- from F5_bullpen_gap=+0.62 and PQI Δ=+3.5 with Stage 1/2 disagree penalty (Δ=0.14) already applied. DET home batters Carpenter and Greene are OWNERs vs Davis Martin (shrunk 0.795 and 0.771, 11-12 PA). confidence_downgrade=True and acute_roster noted; no hard caps fired beyond the built-in disagree penalty. CONFIRM B-.",
+      "lessons_applied": ["pick-column-verbatim-first", "DET-consecutive-wins", "OWNER-BvP-DET-vs-Martin"]
+    },
+    "SF @ MIA": {
+      "model_pick": "SF ML GOLD",
+      "model_prob": 0.5837,
+      "model_tier": "GOLD",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SF",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.58,
+      "reasoning": "Prior SF@MIA losses (06-19 GOLD LOSS, 06-20 D-SKIP LOSS) both had f5d≥0.20 and no F-series. Today's profile is materially different: f5d=0.090 (Stage 1/2 agree), F5_bullpen_gap=+0.65 fires, Logan Webb (elite SP) pitching away, SF bullpen xwOBA advantage (hl_gap=-0.0196). Grade B (score=2), edge=+4.91pp. MIA BvP vs Webb is all SMALL_SAMPLE with low shrunk OPS. No caps fired. CONFIRM GOLD B.",
+      "lessons_applied": ["SF-MIA-pattern-low-f5d-reverses-loss", "Webb-elite-SP-quality", "SF-bullpen-advantage-hl-gap-negative"]
+    },
+    "CLE @ HOU": {
+      "model_pick": "HOU ML GOLD",
+      "model_prob": 0.5057,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Exact replay of 06-20 CLE@HOU: that pick had f5d=0.22 and single F3 signal, CLE won 8-1. Today Stage 1 gives HOU only 20.02% in F5 (f5_full_delta=0.348, largest on slate), PQI is AGAINST pick (Δ=-7.5), negative edge (-6.70pp), and grade D pre-cap. Only F3=4343.4 fires. Per 06-20 lesson, f5d≥0.18 + single F-signal = SKIP. CONFIRM D SKIP.",
+      "lessons_applied": ["06-20-CLE-HOU-loss-pattern-exact-repeat", "extreme-f5d-stage1-dominant", "single-F-insufficient-high-delta", "negative-edge-GOLD-cap1"]
+    },
+    "STL @ KC": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5493,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Tier SKIP with no F-series signals. HARD CAP 10 reduced pre-cap B- (score=1) to grade C. confidence_downgrade=True. STL batters show SMALL_SAMPLE BvP vs Kolek (Wetherholt shrunk 0.989, Burleson shrunk 0.914) but neither hits MEANINGFUL threshold. Positive edge=+5.53pp is the only supporting argument; insufficient to lift a no-F SKIP against a marginal bottom-bucket pick. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-10-bottom-bucket", "no-F-signal-tier-SKIP", "small-sample-bvp-not-decisive"]
+    },
+    "SD @ TEX": {
+      "model_pick": "SD ML PLATINUM",
+      "model_prob": 0.5283,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 6 fired at edge=+32.2pp (calibrator hallucination >25pp) — market prices TEX at 79.4% (fair_prob=0.206 for SD). Stage 1 gives TEX 67.98% in F5. confidence_downgrade=True, bullpen_fatigue stress, f5_full_delta=0.208. Manny Machado (MEANINGFUL, 20 PA) has shrunk OPS 0.692 vs Eovaldi — slightly below average. No qualitative basis to challenge TEX's dominant market position. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-6-hallucination-edge", "fair-prob-below-0.42-dual-flag", "market-pricing-79pct-veto"]
+    },
+    "PIT @ COL": {
+      "model_pick": "PIT ML GOLD",
+      "model_prob": 0.6813,
+      "model_tier": "GOLD",
+      "model_grade": "B+",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "PIT",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Coors Field pattern: 06-20, PIT pick_prob=0.82 with Skenes F1=6.16 xERA — COL won 2-1; park effect overrode elite SP. Today's B+ is built on a single signal (F5_bullpen_gap=+1.67) with no SP edge, confidence_downgrade=True, and external_modifiers stress. Bryan Reynolds (PIT #3 hitter) is WEAK_VS Lorenzen with a meaningful 18-PA sample (shrunk OPS 0.628). Coors inflates run scoring, neutralizing bullpen advantages. DOWNGRADE to SKIP.",
+      "lessons_applied": ["coors-field-park-factor-nullifier", "single-F-B-plus-insufficient-at-COL", "Reynolds-WEAK_VS-Lorenzen-18-PA", "confidence-downgrade-external-modifiers"]
+    },
+    "MIN @ ARI": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "SKIP",
+      "claude_confidence": null,
+      "reasoning": "PENDING_SP_DATA: Jose Cabrera (ARI) has 0 Statcast pitches season-to-date; the 100-pitch minimum for xERA scoring is not met. No pick possible. Protocol correctly withholds direction. No qualitative information available to override the structural data-quality hold. CONFIRM SKIP.",
+      "lessons_applied": ["pending-sp-data-hard-stop"]
+    },
+    "LAA @ OAK": {
+      "model_pick": "LAA ML GOLD",
+      "model_prob": 0.527,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "Stage 1 gives OAK 77.72% in F5 (f5_full_delta=0.304, second-largest on slate). HARD CAP 7 fired on hl_gap=+0.0022 and HARD CAP 10 on pick_prob=0.527 — dual-cap fire. F1_xera_gap=2.26* has asterisk (thin Statcast sample). LAA batters Adell and Schanuel show SMALL_SAMPLE OPS 0.0 vs Perkins (shrunk 0.655/0.635). Per 06-19/06-20 lessons, extreme f5d + thin F1* + bottom-bucket = SKIP. CONFIRM SKIP.",
+      "lessons_applied": ["extreme-f5d-stage1-dominant-77pct", "F1-asterisk-thin-sample-cap5", "dual-cap-7-10-fire", "LAA-bvp-weak-vs-Perkins"]
+    },
+    "BAL @ LAD": {
+      "model_pick": "LAD ML PLATINUM",
+      "model_prob": 0.6803,
+      "model_tier": "PLATINUM",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "PLATINUM",
+      "claude_confidence": 0.60,
+      "reasoning": "HARD CAP 1 fired at -4.27pp; market prices LAD at 72.3% (fair_prob=0.723) — market is MORE confident than the model's 68.03%. Pre-cap A- (score=4) with F2+F3=7809.5+SP edge 0.54+PQI+16.8+Stage agree — strong signal stack but no edge value. Pattern from 06-17/06-19: market absorbs LAD advantages past model; direction correct but staking unwarranted. BAL BvP vs Sheehan is SMALL_SAMPLE only (Ward 3 PA, Henderson 3 PA). CONFIRM B-.",
+      "lessons_applied": ["HARD-CAP-1-market-absorbs-LAD", "pre-cap-A-minus-direction-correct-no-stake", "BAL-LAD-recurring-CAP-1-pattern"]
+    },
+    "BOS @ SEA": {
+      "model_pick": "BOS ML GOLD",
+      "model_prob": 0.5463,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.58,
+      "reasoning": "Pre-cap A (score=5, maximum): F3=3614+SP edge 1.36 agrees with BOS (Tolle xERA better than Gilbert per model)+PQI-19.5+Stage agree Δ=0.05+edge=+10.17pp — all five grade dimensions fire positively. HARD CAP 10 reduced to grade C (pick_prob=0.546 bottom bucket). BOS has won BOS@SEA the last two days (6-2 on 06-19, 5-1 on 06-20). Jarren Duran is OWNER vs Gilbert (11 PA, shrunk 0.839). CAP 10 CONFIRM exception: pre-cap A with full multi-signal alignment rescues as low-conviction stake. CONFIRM GOLD.",
+      "lessons_applied": ["pre-cap-A-CAP-10-CONFIRM-rescue", "BOS-SEA-two-consecutive-wins", "Duran-OWNER-vs-Gilbert-meaningful", "full-signal-alignment-max-score"]
+    },
+    "NYM @ PHI": {
+      "model_pick": "NYM ML SKIP",
+      "model_prob": 0.5463,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "PHI",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.65,
+      "reasoning": "Override model's D-grade NYM pick to PHI. Near-identical to 06-20 (PHI won 15-3 on identical structural thesis): Zack Wheeler (PHI home SP, 1.78 xERA advantage over Peterson — larger gap than 06-20's 0.78) + market prices PHI at 64.46% + Stage 1 gives PHI 84.76% F5 + pre_cap=-4 (worst grade). Three PHI OWNERs vs Peterson with meaningful samples: Harper (28 PA, shrunk 0.886), Bohm (27 PA, shrunk 0.864), Sosa (11 PA, shrunk 0.986). Market+SP+triple-OWNER all contradicting the model is the validated OVERRIDE thesis.",
+      "lessons_applied": ["PHI-override-06-20-validated-pattern", "Wheeler-elite-SP-1.78-xERA-gap", "triple-OWNER-BvP-PHI-vs-Peterson", "market-64pct-PHI-vetos-model", "D-grade-opposite-side-override"]
+    }
+  }
+}

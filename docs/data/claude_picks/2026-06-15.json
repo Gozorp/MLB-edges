@@ -1,0 +1,135 @@
+{
+  "date": "2026-06-15",
+  "fit_at": "2026-06-15T12:40:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 10,
+  "patterns_recognized": [
+    "HARD CAP 1 unconditional at any negative edge on GOLD/PLATINUM: 6/14 COL@OAK (-17.48pp, pre-cap B+, COL won 23-9) is the season benchmark — no F-signal stack survives negative edge; market absorption of SP/lineup advantages is reliable regardless of signal strength.",
+    "F1* without independent F3 corroboration DOWNGRADE validated 3+ consecutive times (6/12 LAD@CHW, 6/13 NYY@TOR-direction, 6/14 ATL@NYM 8-1 blowout): starred thin-sample F1 as sole grading driver is structurally unreliable without F3 corroboration.",
+    "Carry-thesis DOWNGRADE overcorrects at |hl_bullpen_xwoba_gap| < 0.020: 6/14 TB@LAA misfired (TB won 8-3); revised rule requires gap > 0.020 OR simultaneous structural cap before applying DOWNGRADE on full_prob >= 0.62 picks.",
+    "D-grade dual-opposing signals (SP xERA AGAINST + PQI AGAINST pick simultaneously) is the strongest validated OVERRIDE trigger — confirmed 3+ times in 6/11-6/14 window; blocked today only by missing qualitative news and full_prob suppression gate.",
+    "B+ pre-cap grade without SP xERA dimension in grade_reasons is structurally vulnerable to SP blowup: 6/13 SD@BAL (F3=4532.3 + PQI, no SP xERA, lost 9-3); today PIT@OAK has the same structural gap (F5_bullpen_gap + PQI, no SP xERA scored)."
+  ],
+  "by_matchup": {
+    "MIA @ PHI": {
+      "model_pick": "MIA ML GOLD",
+      "model_prob": 0.5583,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIA",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "HARD CAP 10 correctly blocks this pick (pick_prob=0.558, bottom bucket, pre-cap score=1 B-). Only F3_swing_take_gap=1408.7 fires; PQI opposes MIA by 18.1pp. Critically, fair_prob=0.336 is a 22pp market rejection — Vegas prices Zack Wheeler's PHI as a massive favorite, confirming the model's claimed +22pp edge is a Soft Cap 6.5 calibrator artifact. Wheeler is one of the NL's best SPs; the market discount is genuine, not a hallucination. CONFIRM SKIP.",
+      "lessons_applied": ["HARD_CAP_10_pre_cap_1_no_rescue", "fair_prob_market_rejection_0.336", "soft_cap_6.5_edge_band_22pp"]
+    },
+    "KC @ WSH": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": 0.50,
+      "reasoning": "Mitch Spence has only 84 Statcast pitches season-to-date, below the 100-pitch xERA minimum. PENDING_SP_DATA hard stop is correctly applied. No directional commitment is possible without a qualified SP sample for the WSH home slot. CONFIRM no-pick.",
+      "lessons_applied": ["pending_sp_data_protocol_100_pitch_minimum"]
+    },
+    "NYM @ CIN": {
+      "model_pick": "CIN ML GOLD",
+      "model_prob": 0.5668,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CIN",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "Pre-cap A- (score=4): F3=2459.6, SP edge +0.47 xERA for Chase Burns over Myers, Stage agree (Δ=0.02). Strong directional stack for CIN. However HARD CAP 1 fires at -0.59pp — Burns' advantage is already priced into the market's closing line. confidence_downgrade=True adds structural uncertainty. HARD CAP 10 (pick_prob=0.535, bottom bucket) then zeros the grade. Both caps are unconditional regardless of pre-cap score. CONFIRM dual-cap SKIP.",
+      "lessons_applied": ["HARD_CAP_1_unconditional_negative_edge", "HARD_CAP_10_bottom_bucket", "market_prices_in_SP_advantage_pre_cap_4"]
+    },
+    "SD @ STL": {
+      "model_pick": "STL ML SKIP",
+      "model_prob": 0.5548,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Weakest fundamental stack on the slate: only Stage agree fires (pre-cap score=1 B-); no F-signal, no SP xERA, no PQI confirms STL. Edge is -4.87pp (negative). Wandy Peralta is listed as SD's SP — he is primarily a reliever, introducing SP uncertainty the xERA model may not capture cleanly. HARD CAP 10 (pick_prob=0.527, bottom bucket) zeros the grade. Single-dimension signal stack with negative edge: CONFIRM SKIP.",
+      "lessons_applied": ["HARD_CAP_10_bottom_bucket", "single_dimension_signal_stack_insufficient", "reliever_deployed_as_SP_uncertainty"]
+    },
+    "COL @ CHC": {
+      "model_pick": "CHC ML PLATINUM",
+      "model_prob": 0.571,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.56,
+      "reasoning": "All four grading dimensions affirm CHC: F3=4383.2, SP edge 2.00 xERA for Imanaga over Lorenzen, PQI confirms +27.3, Stage agree. Exceptional directional stack pre-cap. But edge is -12.95pp — the market has entirely absorbed Imanaga's advantage. Per 6/14 COL@OAK (-17.48pp, B+ pre-cap, 14-run blowout) and 6/12 PHI@MIL (-10.9pp): negative-edge PLATINUM/GOLD is unconditional regardless of F-signal strength. HARD CAP 1 fires correctly. CONFIRM SKIP.",
+      "lessons_applied": ["HARD_CAP_1_unconditional_negative_edge", "6/14_COL@OAK_benchmark_14run_blowout", "market_absorbs_large_SP_gap_at_neg_edge", "4_dimension_pre_cap_irrelevant_when_CAP1_fires"]
+    },
+    "DET @ HOU": {
+      "model_pick": "HOU ML GOLD",
+      "model_prob": 0.6353,
+      "model_tier": "GOLD",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.56,
+      "reasoning": "Only bet-eligible pick on this slate (grade=B, edge=9.86pp in [4,15]pp range, no caps fired). F3=1208.9 fires and SP edge +0.31 xERA supports HOU. The massive f5_full_delta=0.3932 (DET dominates F5, HOU only 24.2% in F5) and bullpen_fatigue flag are real concerns, but HOU full_prob=0.6353 activates the carry-thesis suppression gate (>= 0.62), blocking OVERRIDE. The 6/14 rule also blocks DOWNGRADE (|hl_bullpen_xwoba_gap|=0.0012 < 0.020 threshold). Stage disagree already penalized -1 in grade score. Moderate conviction only.",
+      "lessons_applied": ["carry_thesis_suppression_gate_full_prob_0.62", "6/14_DOWNGRADE_gap_threshold_0.020", "stage_disagree_already_priced_in_grade", "bullpen_fatigue_insufficient_without_gap"]
+    },
+    "LAA @ ARI": {
+      "model_pick": "ARI ML SKIP",
+      "model_prob": 0.761,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-4): SP xERA 2.08 AGAINST ARI (Ureña/LAA > Nelson/ARI), PQI -28.0 against ARI, Stage 1/2 disagree (Δ=0.14), confidence_downgrade=True. ARI's full_prob=0.761 is driven by team_quality_mod=1 (DISABLED in grading), not today's matchup signals. This matches the D-grade dual-opposing pattern validated in 6/11-6/13. However, full_prob=0.761 >> 0.62 suppression gate and no qualitative injury or lineup news is available to support an OVERRIDE. CONFIRM D-grade SKIP; LAA holds structural matchup advantages.",
+      "lessons_applied": ["D_grade_dual_opposing_signal_pattern_validated", "carry_thesis_suppression_gate_0.62", "team_quality_mod_disabled_inflating_full_prob", "no_qualitative_news_blocks_override"]
+    },
+    "PIT @ OAK": {
+      "model_pick": "OAK ML GOLD",
+      "model_prob": 0.509,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "OAK",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "HARD CAP 1 (-3.35pp negative edge) and HARD CAP 10 (pick_prob=0.523, bottom bucket) both fire. Pre-cap B+ (score=3): F5_bullpen_gap fires, PQI confirms +6.2, Stage agree (Δ=0.00). But no SP xERA dimension is scored — per 6/13 SD@BAL lesson (B+ without SP xERA, F3-only, lost 9-3 blowout), this stack is structurally incomplete. pick_prob=0.509 is the nearest coin-flip on the slate; confidence_downgrade=True confirms. Dual-cap SKIP confirmed.",
+      "lessons_applied": ["HARD_CAP_1_negative_edge", "HARD_CAP_10_bottom_bucket_0.523", "B_plus_without_SP_xERA_vulnerable_6/13_lesson", "coin_flip_pick_prob_0.509"]
+    },
+    "TB @ LAD": {
+      "model_pick": "LAD ML PLATINUM",
+      "model_prob": 0.6593,
+      "model_tier": "PLATINUM",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "D-grade (-1): SP xERA 0.78 AGAINST LAD (Martinez/TB > Lauer/LAD) and PQI slightly against (-3.2) dominate the grade calculation. However F3_swing_take_gap=12793.6 is the largest on the slate — LAD's hitters structurally punish Martinez's pitch mix. F2_xwoba_gap=0.049 also fires. Stage agree (both stages favor LAD, Δ=0.085). Edge=1.92pp is below the 4pp staking floor; no stake path exists regardless of grade. D-grade correctly reflects the SP-against penalty; CONFIRM SKIP with LAD directionally favored by extreme lineup signals.",
+      "lessons_applied": ["edge_below_4pp_staking_floor_no_stake", "SP_xERA_against_dominates_grade_calculation", "extreme_F3_12793_as_mitigating_context", "no_carry_thesis_stages_agree"]
+    },
+    "MIN @ TEX": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": 0.50,
+      "reasoning": "MIN probable SP not yet announced; pipeline correctly holds PENDING_SP_DATA until 100+ Statcast pitches are available. No directional commitment is possible. CONFIRM no-pick.",
+      "lessons_applied": ["pending_sp_data_protocol_100_pitch_minimum"]
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "date": "2026-06-04",
+  "fit_at": "2026-06-04T18:30:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 9,
+  "patterns_recognized": [
+    "HARD CAP 7 near-zero over-fire: |hl_bullpen_xwoba_gap| < 0.010 on pre-cap A-grade picks (score >= 4) went 4-for-4 wins across 6/2–6/3 (CIN +0.0019, ATL +0.0074, STL +0.0010, TOR/ATL +0.0049) and 1-for-1 on 5/30 (TEX +0.0019); treat gap < 0.010 as effectively neutral rather than a genuine bullpen disadvantage when pre-cap score >= 4 with multi-signal confirmation.",
+    "Stage-2 carry thesis reliably fails when |hl_bullpen_xwoba_gap| < 0.020 and the opposing SP is an established veteran (sub-4.00 xERA): MIA@WSH went 0-for-3 across 6/1 (Alcantara, LOSS 7-3), 6/2 (pick-direction error masked), 6/3 (Meyer, LOSS 4-1); reduce carry confidence by one tier when the gap is sub-meaningful and the opposing arm is proven.",
+    "D-grade dual-signal-against picks are directionally uninformative, not anti-directional: 2-2 on 6/3 (CHW won 8-0 and HOU won 11-9 despite dual opposing signals, CLE and OAK losses as expected) — SKIP only; do not bet the other side from a D-grade call.",
+    "BvP OWNER cluster in a team’s top-3 batting order (3 OWNERs, PA >= 10) vs today’s opposing SP is the strongest same-day confirming signal; 2+ OWNERs in top 3 supported multiple CONFIRM rescues across 5/28–6/3 and is a reliable directional add-on when other signals already align."
+  ],
+  "by_matchup": {
+    "SD @ PHI": {
+      "model_pick": "PHI",
+      "model_prob": 0.5691,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PHI",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.55,
+      "reasoning": "BvP asymmetry strongly favors PHI: Schwarber is an OWNER vs Giolito (shrunk 0.842, 21 PA), while SD’s top two (Tatis shrunk 0.633 WEAK_VS, Machado shrunk 0.604 WEAK_VS) have historically been helpless vs Wheeler. PQI confirms (+12.6), Stage 1/2 agree (Δ0.05), hl_bullpen_xwoba_gap=-0.0028 (neutral). Fair_prob is missing (odds API gap), preventing edge validation — treat this as a low-conviction GOLD stake candidate per CAP 10 rescue rules. CONFIRM rescues CAP 10; the BvP asymmetry (2 WEAK_VS on SD’s top-2 vs Wheeler, 1 OWNER on PHI’s top vs Giolito) is the deciding factor.",
+      "lessons_applied": ["bvp-OWNER-vs-WEAK_VS top-3 asymmetry as directional confirmer", "CAP-10-rescued-by-CONFIRM in bottom bucket", "missing-fair-prob-acknowledged low-conviction"]
+    },
+    "BAL @ BOS": {
+      "model_pick": "BAL",
+      "model_prob": 0.5007,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BAL",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.52,
+      "reasoning": "BAL’s top-3 batters (Ward, Henderson, Rutschman) are all OWNERs vs BOS home SP Brayan Bello (shrunk OPS 0.841, 0.905, 0.796 respectively) — the strongest BvP cluster on today’s slate. Pre-cap grade was A (score=5) supported by F1* SP edge, PQI (+14.4), and Stage 1/2 agreement (Δ0.00). HARD CAP 7 fired at near-zero gap (+0.0021), which postgames document as a 4-consecutive over-fire on A-grade picks (all four won). CONFIRM rescues CAP 10; effective grade is B- given pick_prob=0.5007 (near coin-flip). Fair_prob is missing; note as low-conviction.",
+      "lessons_applied": ["bvp-3-OWNER top-3 cluster as primary confirmer", "near-zero-CAP7-documented-over-fire on A-grade", "CAP-10-rescued-by-CONFIRM"]
+    },
+    "CLE @ NYY": {
+      "model_pick": "NYY",
+      "model_prob": 0.5198,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "HARD CAP 1 fires correctly: market prices NYY at 58.98% (fair_prob) while the model gives 51.98% (-7.0pp) — the market is meaningfully more bullish on NYY, and any stake at model odds is negative EV. f5_full_delta=0.1762 (Rodon dominates F5, NYY pen must carry the game) combined with near-zero hl_bullpen_xwoba_gap=+0.0022 makes the carry thesis structurally fragile. F3=5097 and PQI=+19.5 confirm NYY direction but cannot override market authority at -7pp disagreement. CONFIRM the SKIP.",
+      "lessons_applied": ["CAP-1-negative-edge-market-authority overrules directional signals", "carry-thesis-near-zero-bullpen-gap fragile"]
+    },
+    "SF @ MIL": {
+      "model_pick": "MIL",
+      "model_prob": 0.6833,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Fair_prob is missing (Odds API did not fire), correctly capping the pipeline at C per market-validation design — no edge can be confirmed without it. MIL’s F3=3130.5 and PQI=+32.6 show strong model conviction, but f5_full_delta=0.2045 requires a substantial bullpen carry, and hl_bullpen_xwoba_gap=-0.0018 is near-neutral (no confirmed pen advantage to support the carry). All SF BvP vs Houser is NO_DATA (neutral). Without market validation and with a large carry thesis on a near-zero bullpen gap, CONFIRM the SKIP.",
+      "lessons_applied": ["missing-fair-prob blocks market validation correctly", "large-delta carry-thesis undermined by near-zero bullpen gap"]
+    },
+    "TOR @ ATL": {
+      "model_pick": "ATL",
+      "model_prob": 0.6953,
+      "model_tier": "PLATINUM",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ATL",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.57,
+      "reasoning": "Chris Sale starts for ATL with strong F3 (6075.4) and PQI (+16.06) — genuine multi-signal conviction. HARD CAP 1 fired correctly: fair_prob=0.7356 prices ATL 4.0pp ABOVE the model (market is more bullish than the model), so no positive-EV stake exists at model odds. The B- effective grade (score=1) is appropriate: directional ATL conviction is maintained without recommending a stake. hl_bullpen_xwoba_gap=+0.0076 is near-zero (below the 0.010 threshold) and not a material concern. All ATL BvP vs Fluharty is NO_DATA. CONFIRM at B-/GOLD.",
+      "lessons_applied": ["CAP-1-market-prices-pick-higher-than-model no value bet", "Sale ace-start directional conviction maintained at B- level"]
+    },
+    "KC @ MIN": {
+      "model_pick": "MIN",
+      "model_prob": 0.5996,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIN",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.54,
+      "reasoning": "Seth Lugo (MIN) holds the strongest SP edge on today’s slate vs Morris (KC) at 1.69 xERA, with PQI strongly confirming MIN (+24.6). edge_pp=+10.56pp is in the valid staking window [4–15pp] and fair_prob=0.494 shows the market mildly favors KC, giving MIN a genuine +10.5pp model advantage. HARD CAP 7 fired at near-zero gap (+0.0092, below 0.010), which the 6/2–6/3 postgames document as a repeated over-fire on A-grade picks. CONFIRM rescues CAP 10; effective grade is B- (no parlay, low-conviction stake candidate). No BvP data available — neutral.",
+      "lessons_applied": ["near-zero-CAP7-over-fire on A-grade picks documented", "CAP-10-rescued-by-CONFIRM", "in-band positive edge with market underpricing MIN"]
+    },
+    "OAK @ CHC": {
+      "model_pick": "CHC",
+      "model_prob": 0.5858,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "CHC",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "confidence_downgrade=True is a pipeline-level warning of genuine model uncertainty, compounded by a weak signal stack: F3=731.6 (below the 1000 high-conviction threshold), PQI=+4.7 (barely confirming). edge_pp=+0.65pp is outside the valid staking window [4–15pp], making this non-actionable regardless of tier. Imanaga pitching for CHC is a genuine quality advantage but insufficient to overcome the combined confidence_downgrade flag and below-threshold signal profile. DOWNGRADE to SKIP; rescuing CAP 10 with an under-supported CONFIRM would inflate conviction above evidence.",
+      "lessons_applied": ["confidence_downgrade_True plus weak-F3-low-PQI warrants DOWNGRADE not CONFIRM", "edge-outside-valid-window non-actionable regardless of tier"]
+    },
+    "PIT @ HOU": {
+      "model_pick": "TBD",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NO_PICK",
+      "claude_tier": "SKIP",
+      "claude_confidence": null,
+      "reasoning": "Jared Jones (HOU, likely) has only 77 Statcast pitches season-to-date, below the 100-pitch minimum required for reliable F1 SP feature scoring. PENDING_SP_DATA protocol correctly blocks any directional commitment. Consistent with protocol validations on 5/26, 5/29, 6/1 (Richardson 11 pitches), 6/2 (Gage Jump 88 pitches), and 6/3 (MIL home SP unannounced). Outcome is unscoreable until the SP sample grows. CONFIRM NO_PICK.",
+      "lessons_applied": ["PENDING_SP_DATA-protocol correct-block on thin SP sample"]
+    },
+    "LAD @ ARI": {
+      "model_pick": "ARI",
+      "model_prob": 0.633,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.40,
+      "reasoning": "D-grade with dual-signal-against: LAD’s Wrobleski holds a 1.20 xERA edge over ARI’s Nelson, and PQI strongly opposes ARI (Δ=-21.8). Per the 6/3 postgame pattern, D-grade dual-signal-against is directionally uninformative (2-2 on 6/3 where the D-grade side won two blowouts) — SKIP is correct and betting LAD is not the inference. LAD has won consecutive ARI home games (7-0 on 6/3, 6-5 on 6/2), reinforcing structural concern. edge_pp=+20.57pp triggers calibration_caution_18_25pp soft cap. CONFIRM D-SKIP; no directional conviction.",
+      "lessons_applied": ["D-grade-dual-signal-against = SKIP not anti-directional bet", "calibration_caution_18_25pp soft cap on elevated edge", "consecutive LAD series wins in ARI noted"]
+    }
+  }
+}

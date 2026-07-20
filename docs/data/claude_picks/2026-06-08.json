@@ -1,0 +1,110 @@
+{
+  "date": "2026-06-08",
+  "fit_at": "2026-06-08T14:05:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 8,
+  "patterns_recognized": [
+    "Carry-thesis failure (f5_full_delta >= 0.15 + |hl_bullpen_xwoba_gap| < 0.020) confirmed 0-for-6 in recent archive. Today three candidates: SEA@BAL (gap=0.001, delta=0.303), PHI@TOR (gap=0.009, delta=0.463), WSH@SF (gap=0.008, delta=0.337). OVERRIDEs issued on PHI@TOR and WSH@SF where the pick side lacks bullpen ammunition to bridge a large F5 deficit.",
+    "BvP OWNER cluster (2+ OWNER-flagged batters in top-3 vs today's opposing SP with PA >= 10) is the strongest same-day directional confirmer: PHI top-3 vs Corbin shows Schwarber OWNER (28 PA, shrunk 0.843), Bohm OWNER (30 PA, shrunk 0.928), Harper LOTS_OF_HISTORY (56 PA, shrunk 0.822) — used alongside carry-thesis failure to support PHI@TOR OVERRIDE.",
+    "HARD CAP 1 market authority is non-negotiable regardless of signal stack: MIL@OAK pre-cap A- (score=4, strong F1/F3/PQI alignment) loses all staking eligibility at -7.13pp; the market has priced MIL higher than the model and staking at model odds is negative EV.",
+    "D-grade picks with confidence_downgrade=True are categorically unrescuable: NYY@CLE and HOU@LAA both carry this combination, blocking any BvP, F-signal, or edge-proximity rescue attempt per the 6/5 rule update."
+  ],
+  "by_matchup": {
+    "SEA @ BAL": {
+      "model_pick": "BAL ML GOLD",
+      "model_prob": 0.6365,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BAL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "BAL GOLD tier but SKIP due to edge=+17.9pp outside staking band and C-grade (score=0). F3_swing_take_gap=1305 fires (+1) but Stage 1/2 disagree (-1). Critical concern: f5_full_delta=0.303 with hl_bullpen_xwoba_gap=0.0007 (near-zero) — carry-thesis failure pattern (0-for-6 archive). SEA dominates F5 at 66.6%; BAL needs its pen to carry but has essentially no bullpen advantage. No stake regardless; carry-risk undermines directional confidence.",
+      "lessons_applied": ["carry-thesis-failure-f5-delta-ge-0.15-near-zero-gap", "edge-out-of-band-skip-mandatory", "C-grade-directional-unreliable"]
+    },
+    "BOS @ TB": {
+      "model_pick": "TB ML SKIP",
+      "model_prob": 0.6713,
+      "model_tier": "SKIP",
+      "model_grade": "A-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.62,
+      "reasoning": "Pre-cap A- (score=4): Connelly Early SP xERA edge agrees with TB, PQI+7.7 confirms, Stage 1/2 agree (delta=0.05). No carry-thesis concern (f5_full_delta=0.051, hl_bullpen_xwoba_gap=-0.007 neutral). Edge=+17.74pp outside [4,15]pp staking band — SKIP mandatory. BvP mostly NO_DATA on both sides; neutral. Directional conviction for TB appears sound; edge band blocks staking. CONFIRM SKIP.",
+      "lessons_applied": ["pre-cap-A-grade-direction-sound", "edge-out-of-band-staking-blocked", "no-carry-risk-Stage-1-2-agree", "BvP-NO_DATA-neutral"]
+    },
+    "NYY @ CLE": {
+      "model_pick": "CLE ML SKIP",
+      "model_prob": 0.5433,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CLE",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "D-grade (-4): Will Warren (NYY) has 0.88 xERA edge over Gavin Williams — SP AGAINST CLE pick. PQI=-7.0 against CLE, Stage 1/2 disagree (delta=0.23), confidence_downgrade=True. Near-zero edge (+0.09pp) insufficient for any rescue. f5_full_delta=0.23 with hl_bullpen_xwoba_gap=-0.0006 adds carry fragility. Per 6/5 rule, confidence_downgrade=True permanently suspends rescue. D-grade directional signal is unreliable; CONFIRM SKIP.",
+      "lessons_applied": ["D-grade-directional-unreliable", "confidence-downgrade-true-suspends-all-rescue", "Stage-1-2-disagree-carry-concern", "near-zero-edge-insufficient"]
+    },
+    "PHI @ TOR": {
+      "model_pick": "TOR ML SKIP",
+      "model_prob": 0.5497,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "PHI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.65,
+      "reasoning": "OVERRIDE to PHI. f5_full_delta=0.463 with hl_bullpen_xwoba_gap=-0.009 (<0.020) — textbook carry-thesis failure (0-for-6): TOR pick needs its pen after PHI dominates F5 at 91.3% but has no meaningful pen edge. PHI BvP vs Corbin: Schwarber OWNER (28 PA, shrunk 0.843), Bohm OWNER (30 PA, shrunk 0.928), Harper LOTS_OF_HISTORY (56 PA, shrunk 0.822). SP: Sanchez 2.45 xERA over Corbin. PQI=-39.8 against TOR. Market: TOR only 36% fair. SKIP confirmed regardless (fair_prob=0.360 < 0.42).",
+      "lessons_applied": ["carry-thesis-failure-0-for-6", "BvP-OWNER-cluster-two-plus", "extreme-f5-full-delta-0.46", "market-authority-fair-prob-below-0.42", "D-grade-neg5-opposing-SP-xERA-PQI"]
+    },
+    "HOU @ LAA": {
+      "model_pick": "HOU ML SKIP",
+      "model_prob": 0.5583,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Pre-cap B+ (score=3): SP xERA agrees with HOU (small-sample asterisk), PQI=-20.0 confirms, Stage 1/2 agree (delta=0.004). HARD CAP 10 demotes score to 0 (bottom-bucket). confidence_downgrade=True blocks near-zero edge (+0.30pp) rescue per 6/5 rule. No carry-thesis risk (f5_full_delta=0.004). Direction (HOU) has structural support but staking is blocked on two independent grounds. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-10-bottom-bucket-no-rescue", "confidence-downgrade-true-blocks-CAP-1-rescue", "near-zero-edge-insufficient"]
+    },
+    "CIN @ SD": {
+      "model_pick": "CIN ML SKIP",
+      "model_prob": 0.5253,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CIN",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.51,
+      "reasoning": "C-grade (score=0): PQI against CIN (delta=+7.6) balanced by Stage 1/2 agreement. hl_bullpen_xwoba_gap=+0.022 — CIN pick-side pen is meaningfully worse than SD's, a late-game negative. HARD CAP 10 fires (bottom-bucket pick_prob=0.519). Acute_roster stress adds structural uncertainty. No BvP data. No confirming F-signals for CIN. CONFIRM SKIP.",
+      "lessons_applied": ["C-grade-low-conviction-SKIP", "HARD-CAP-10-bottom-bucket", "pick-side-bullpen-disadvantage-positive-gap", "acute-roster-stress-flag"]
+    },
+    "WSH @ SF": {
+      "model_pick": "WSH ML SKIP",
+      "model_prob": 0.541,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "OVERRIDE",
+      "claude_pick": "SF",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.63,
+      "reasoning": "OVERRIDE to SF. Logan Webb (SF) has 1.34 xERA edge over Mikolas; SF dominates F5 at 79.6% (f5_full_delta=0.337). hl_bullpen_xwoba_gap=+0.008 — WSH pick-side pen is slightly WORSE than SF, so carry-thesis fails categorically (0-for-6 pattern). D-grade (-4): SP xERA and PQI both against WSH, Stage 1/2 major disagree. Market gives SF ~59% (fair_prob=0.409). No BvP data available. SKIP confirmed (fair_prob < 0.42).",
+      "lessons_applied": ["carry-thesis-failure-pick-side-pen-worse-than-opponent", "D-grade-opposing-SP-xERA-and-PQI", "Logan-Webb-F5-dominance", "market-59pct-SF-authoritative", "no-BvP-data-neutral"]
+    },
+    "MIL @ OAK": {
+      "model_pick": "MIL ML GOLD",
+      "model_prob": 0.5193,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Pre-cap A- (score=4): F1_xera_gap=1.20* (thin-sample asterisk on Jeffrey Springs), F3=864 (below 1000 threshold), SP xERA agrees (+0.89), PQI=-19.1 all confirm MIL direction. HARD CAP 1 fires at -7.13pp negative edge — market prices MIL even higher than model; staking negative EV regardless of signal quality per 6/4 rule. confidence_downgrade=True and acute_roster add structural uncertainty. Direction (MIL) appears sound but market authority non-negotiable. CONFIRM SKIP.",
+      "lessons_applied": ["HARD-CAP-1-negative-edge-non-negotiable-6/4-rule", "F1-asterisk-thin-sample-caution", "pre-cap-A-direction-valid-staking-blocked", "confidence-downgrade-true-structural-uncertainty"]
+    }
+  }
+}

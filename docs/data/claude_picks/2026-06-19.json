@@ -1,0 +1,183 @@
+{
+  "date": "2026-06-19",
+  "fit_at": "2026-06-19T13:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 14,
+  "patterns_recognized": [
+    "SP xERA AGAINST pick has been a near-perfect directional loss predictor across 06-16 through 06-18 postgames — every instance of D-grade with SP quality opposing the pick resulted in a directional loss; F3 swing-take signal alone cannot rescue a pick with meaningful SP disadvantage (06-18 CHW@NYY: F3=4189.1 with SP AGAINST lost 5-1).",
+    "HARD CAP 1 at >5pp adverse edge is unconditional — 06-14 COL@OAK (-17.48pp, lost 23-9) and 06-18 CLE@MIL (-15.2pp, lost 4-2) both confirmed the market has absorbed and exceeded model qualitative signals at those magnitudes; market pricing dominates F-series at large negative edges.",
+    "Home-favorite over-confidence at full_prob >0.65 without F-signal corroboration: heuristic 1 applies; model historically over-rates these picks; DOWNGRADE is the default unless a dominant SP gap or multi-F-signal fires.",
+    "Triple-flag combination (acute_roster + confidence_downgrade + SP xERA AGAINST pick) is a reliable auto-SKIP — 06-17 BAL@SEA confirmed this pattern as a loss predictor; WSH@TB today presents all three flags.",
+    "Bottom-bucket CONFIRM-rescued picks (pick_prob in 0.50-0.55 with CONFIRM) hit only 47.6% historically — treat as low-conviction directional signals, not staking targets; SKIP tier is appropriate even with CONFIRM on the weakest marginals."
+  ],
+  "by_matchup": {
+    "TOR @ CHC": {
+      "model_pick": "TOR",
+      "model_prob": 0.5159,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TOR",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Kevin Gausman (TOR) vs Ben Brown (CHC) with F3=4999.5 driving Stage 1 to give TOR 80% F5 win probability (f5_prob=0.2008 for CHC home). Alex Bregman is WEAK_VS Gausman (18 PA, shrunk OPS=0.602), weakening CHC's top-3. But Stage 1/2 disagree sharply (Δ=0.283) and full-game pick_prob=0.516 is marginal. HARD CAP 10 fires; CONFIRMing rescues the directional call since F3 and BvP both independently support TOR's F5 dominance, but bottom-bucket CONFIRM hits only 47.6% — treat as directional note only.",
+      "lessons_applied": ["bottom-bucket CONFIRM rescue (47.6% hit rate)", "BvP WEAK_VS: Bregman vs Gausman undermines CHC top-3", "F3=4999.5 supports TOR directional call despite thin full-game edge"]
+    },
+    "CHW @ DET": {
+      "model_pick": "CHW",
+      "model_prob": 0.5,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CHW",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.43,
+      "reasoning": "Tarik Skubal (DET home) holds a 1.28 xERA advantage over Erick Fedde (CHW) — Skubal is one of the AL's elite starters. Market prices CHW at only fair_prob=0.320 and the +18.02pp claimed edge falls in calibration_caution_18_25pp (probable artifact of sparse upper calibration bucket). SP xERA opposes the CHW pick and PQI also opposes (Δ=+19.2). Consistent with 06-18 pattern where SP xERA AGAINST was a perfect loss predictor. D-grade SKIP is fully correct.",
+      "lessons_applied": ["SP xERA AGAINST pick = D-grade loss pattern (06-18 confirmed across 4 games)", "calibration_caution_18_25pp: edge is artifact not genuine value", "fair_prob=0.320 market rejection dominates model signal"]
+    },
+    "CIN @ NYY": {
+      "model_pick": "NYY",
+      "model_prob": 0.6593,
+      "model_tier": "DIAMOND",
+      "model_grade": "B",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.62,
+      "reasoning": "NYY pre-cap A- (score=4) driven by F1_xera_gap=3.49 (Cam Schlittler vs Rhett Lowder), F3=2619.4, F5_bullpen_gap=+0.83, and PQI strongly confirming (Δ=+37.7) — multi-dimensional alignment. The -9.97pp negative edge means the market fully priced NYY's advantage and more, triggering edge-window SKIP. Schlittler's k_pct=27.5% vs Lowder's 16.6% is a real strikeout differential. CONFIRM the directional call; SKIP for staking per negative edge window and HARD CAP 1.",
+      "lessons_applied": ["negative edge window blocks staking even on strong pre-cap A- stack", "multi-F-signal + PQI convergence confirms directional NYY read", "HARD CAP 1 at -9.97pp fires; market has absorbed SP quality"]
+    },
+    "WSH @ TB": {
+      "model_pick": "TB",
+      "model_prob": 0.7113,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.47,
+      "reasoning": "TB carries a D-grade (-1): Griffin Jax (TB) has 0.49 xERA worse than PJ Poulin (WSH), acute_roster flag fires, and confidence_downgrade=True. Only F5_bullpen_gap=+0.91 supports TB. The 06-17 BAL@SEA postgame confirmed the triple-flag pattern (acute_roster + adverse SP + confidence_downgrade) as a reliable auto-SKIP and loss predictor. Stage 2 likes TB at 71% but SP quality and roster concerns override single-model conviction. SKIP is correct.",
+      "lessons_applied": ["triple-flag loss predictor: acute_roster + confidence_downgrade + SP AGAINST pick (06-17 BAL@SEA confirmed)", "D-grade SP-opposing signal: reliable directional loss predictor"]
+    },
+    "SF @ MIA": {
+      "model_pick": "SF",
+      "model_prob": 0.5343,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SF",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.54,
+      "reasoning": "Pre-cap B+ (score=3): F5_bullpen_gap=+0.56, PQI confirms (Δ=-5.6), Stage 1/2 agree perfectly (Δ=0.00). hl_bullpen_xwoba_gap=-0.0203 shows SF's high-leverage bullpen is meaningfully better. No SP xERA signal fires (Roupp vs Bachar close in quality). HARD CAP 10 fires at pick_prob=0.534 without CONFIRM; CONFIRMing restores B+ grade. BvP is all SMALL_SAMPLE noise. Low-conviction GOLD — bottom-bucket CONFIRM hits 47.6% historically.",
+      "lessons_applied": ["CONFIRM rescues HARD CAP 10, restoring pre-cap B+ grade", "hl_bullpen_xwoba_gap=-0.0203 is a real bullpen quality edge", "bottom-bucket 47.6% CONFIRM hit rate caveat applies"]
+    },
+    "MIL @ ATL": {
+      "model_pick": "MIL",
+      "model_prob": 0.5308,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "Jacob Misiorowski (MIL away) carries F1_xera_gap=3.53, F3=3526.6, and 1.99 xERA advantage over Martín Pérez — genuinely strong pitcher. But -9.65pp negative edge, confidence_downgrade=True, bullpen_fatigue, and all ATL BvP showing NO_DATA (fresh matchup, no exposure history). HARD CAP 1 fires at -9.65pp. Consistent with 06-14 COL@OAK lesson: even a large F1 gap at -17pp+ produced a 23-9 loss; market knows something. CONFIRM directional MIL; SKIP for staking per CAP 1.",
+      "lessons_applied": ["HARD CAP 1 at -9.65pp is non-negotiable regardless of F1_xera_gap magnitude", "confidence_downgrade + bullpen_fatigue doubly flag risk", "06-14 COL@OAK: large F1 + negative edge still lost 23-9"]
+    },
+    "SD @ TEX": {
+      "model_pick": "SD",
+      "model_prob": 0.5177,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "SD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.38,
+      "reasoning": "Jacob deGrom (TEX home) pitches against Randy Vásquez (SD away) with a 2.69 xERA advantage — deGrom is among baseball's most dominant pitchers. SP xERA AGAINST pick (-2) and PQI strongly opposing SD (Δ=+34.4) both veto the pick. Fair_prob=0.384 means the market prices SD at only 38%. No F-signal fires. Textbook D-grade SP-veto pattern that has been a reliable loss predictor throughout June. SKIP is unambiguously correct.",
+      "lessons_applied": ["SP xERA AGAINST pick = loss predictor (2.69 xERA gap, deGrom)", "PQI AGAINST pick (Δ=+34.4) veto", "fair_prob=0.384 market rejection confirms structural weakness"]
+    },
+    "CLE @ HOU": {
+      "model_pick": "HOU",
+      "model_prob": 0.5605,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "HOU",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.53,
+      "reasoning": "HOU at 56% full-game with F3=1564.5 (moderate) and Stage agree, but PQI slightly opposes (Δ=-9.5) and edge is only +1.80pp (below 4pp staking floor). Confidence_downgrade=True. Tanner Bibee (CLE) has better k% than Tatsuya Imai (HOU). Edge-below-floor correctly blocks staking even without HARD CAP 10 firing (pick_prob=0.5605 is above the 0.55 bucket threshold). CONFIRM the SKIP; the directional signal is marginal.",
+      "lessons_applied": ["edge below 4pp staking floor blocks action regardless of tier", "PQI AGAINST pick reduces conviction", "confidence_downgrade reinforces no-bet read"]
+    },
+    "STL @ KC": {
+      "model_pick": "STL",
+      "model_prob": 0.5343,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "STL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.49,
+      "reasoning": "Stage 1 gives KC home 61.9% F5 win probability (f5_prob=0.6192) while Stage 2 barely picks STL (full_prob=0.4657) — f5_full_delta=0.1535 is a meaningful disagree favoring KC. Seth Lugo (KC, 20.81% k) vs Michael McGreevy (STL, 13.79% k): Lugo is the stronger SP. No F-signal fires. Confidence_downgrade=True, bullpen_fatigue, edge=+0.26pp (well below 4pp floor). Multiple adverse flags with no supporting F-signal; SKIP is well-supported.",
+      "lessons_applied": ["Stage 1/2 disagree with Stage 1 opposing pick reduces full-game conviction", "no F-signal on SKIP pick = no bet", "confidence_downgrade + bullpen_fatigue + edge below floor = SKIP"]
+    },
+    "PIT @ COL": {
+      "model_pick": "PIT",
+      "model_prob": 0.5253,
+      "model_tier": "PLATINUM",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "PIT",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.55,
+      "reasoning": "Pre-cap A- (score=4): Bubba Chandler's F1_xera_gap=2.53 over Kyle Freeland, F5_bullpen_gap=+1.62, PQI strongly confirming (Δ=-27.5). But fair_prob=0.5727 means the market already prices PIT at 57.3% — the model (52.5%) lags the market, creating a -4.74pp negative edge. Coors Field altitude depresses away SP xERA metrics; Freeland is a known Coors specialist. HARD CAP 1 fires. CONFIRM directional PIT quality is real; no betting edge per market pricing.",
+      "lessons_applied": ["HARD CAP 1 at -4.74pp: market already priced PIT advantage past model estimate", "Coors Field altitude may suppress Chandler's effective xERA gap", "pre-cap A- confirms genuine multi-signal PIT quality"]
+    },
+    "LAA @ OAK": {
+      "model_pick": "OAK",
+      "model_prob": 0.5128,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "OAK",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.43,
+      "reasoning": "Fair_prob=0.6157 means the market prices LAA as a 61.6% favorite — a strong anti-OAK signal. The -10.29pp negative edge exceeds HARD CAP 1 threshold. Jeffrey Springs (OAK, 21.05% k) vs José Soriano (LAA, 27.24% k): Soriano has SP k% advantage. F3=1658.2 is the sole signal in grade_reasons — no SP xERA dimension. 06-13 SD@BAL demonstrated F3-only without SP xERA corroboration produced a 6-run blowout loss. Market rejection at 61.6% for LAA is authoritative.",
+      "lessons_applied": ["HARD CAP 1 at -10.29pp fires unconditionally", "F3 alone without SP xERA = vulnerable signal stack (06-13 SD@BAL: B+ with F3-only lost 9-3)", "market pricing LAA at 61.6% dominates model's OAK lean"]
+    },
+    "MIN @ ARI": {
+      "model_pick": "ARI",
+      "model_prob": 0.6713,
+      "model_tier": "SKIP",
+      "model_grade": "B",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "ARI",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.58,
+      "reasoning": "ARI home at 67.1% model probability triggers heuristic 1: home-favorite over-confidence at >65% is historically over-rated. No F-signal fires; only PQI (Δ=+8.7) and Stage agree (Δ=0.02) support the B-grade. Edge is only +3.12pp (below 4pp staking floor) and confidence_downgrade=True. Michael Soroka vs Connor Prielipp is a modest SP advantage for ARI, not a dominant signal. B-grade without F-series conviction on a 67%-rated home favorite deserves extra skepticism; DOWNGRADE reinforces SKIP.",
+      "lessons_applied": ["home-favorite over-confidence heuristic: >65% pick without F-signal fires = DOWNGRADE (heuristic 1)", "no F-signal on B-grade pick = reduced conviction", "confidence_downgrade + edge below floor = SKIP"]
+    },
+    "BAL @ LAD": {
+      "model_pick": "LAD",
+      "model_prob": 0.6593,
+      "model_tier": "PLATINUM",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "LAD",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.63,
+      "reasoning": "LAD pre-cap A- (score=4): F2_xwoba_gap=0.028, F3=7617.2 (very large), PQI=+25.7, Roki Sasaki 2.22 xERA advantage over Trey Gibson [96-PA small sample]. F2 and F3 fire independently of the SP signal, confirming multi-dimension alignment. Fair_prob=0.7004 means market prices LAD at 70% — beyond the model's 65.9% estimate, creating -4.11pp negative edge. HARD CAP 1 fires. CONFIRM: LAD's structural advantage is broad-based; no betting edge per market's -4pp discount of the model.",
+      "lessons_applied": ["HARD CAP 1 at -4.11pp: market already priced LAD past model estimate", "F2+F3 independent confirmation strengthens directional read despite small-sample Sasaki", "pre-cap A- multi-signal alignment validates LAD directional call"]
+    },
+    "BOS @ SEA": {
+      "model_pick": "BOS",
+      "model_prob": 0.5559,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.46,
+      "reasoning": "Bryce Miller (SEA home) holds a 1.07 xERA advantage over Ranger Suárez (BOS away). Stage 1 gives SEA 63.9% F5 win probability (f5_prob=0.6393 for home), while Stage 2 picks BOS — f5_full_delta=0.1952 is a significant carry-thesis concern. F3=3390.1 fires but 06-18 lesson: F3 cannot rescue a pick when SP xERA opposes (CHW@NYY: F3=4189.1 with SP AGAINST lost 5-1). PQI also opposes BOS (Δ=+12.4). D-grade SKIP with Miller at home is a genuine SP quality veto.",
+      "lessons_applied": ["SP xERA AGAINST pick veto: F3 cannot override (06-18 CHW@NYY confirmed)", "large Stage 1/2 disagree (Δ=0.195) signals carry-thesis concern favoring SEA", "PQI AGAINST pick reinforces D-grade read"]
+    }
+  }
+}

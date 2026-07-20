@@ -1,0 +1,15 @@
+{
+  "date": "2026-07-13",
+  "fit_at": "2026-07-13T19:45:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 0,
+  "slate_note": "MLB All-Star break — no regular-season games scheduled on 2026-07-13. The pipeline produced zero-game ancillary files (daily_variance n_games=0, provisional_lean games={}, sp_projection games={}) and no picks_2026-07-13_diag.csv was generated. No picks to analyze.",
+  "patterns_recognized": [
+    "F1*-starred picks without F3 ≥ 1000 as a third independent anchor have failed in three consecutive instances (MIL G1/G2 on 7/11, SEA@TB on 7/12); F3_swing_take_gap ≥ 1000 is now required before confirming any starred-F1 pick at GOLD or above.",
+    "Stage 2 full-game direction has been correct in every large-delta (≥ 0.12) case across the 7/10–7/12 archive — do not treat Stage 1 lean as an OVERRIDE signal toward the Stage-1 team.",
+    "CAP 4 (Stage1/2 delta ≥ 0.12 + confidence_downgrade) produced a false negative on 7/12 COL@SF (pre-cap score=8, SF won 3-1); begin tracking CAP 4 misses on score ≥ 6 stacks for a potential narrow rescue exception analogous to the CAP 10 four-dimension rule.",
+    "CLE@MIA four-dimension rescue rule validated twice (7/10: CLE 3-2, 7/12: CLE 5-2); when CLE is the pick side and all four dimensions agree simultaneously (F1+F3+SP edge+PQI+Stage agree), restore to full PLATINUM regardless of CAP 10 bottom-bucket suppression.",
+    "D-grade dual-opposing-signal picks (SP xERA against + PQI against) are bet-suppression signals only — directional ambiguity is genuine; never OVERRIDE to the opposing team on a D-grade, only SKIP the model's pick."
+  ],
+  "by_matchup": {}
+}

@@ -1,0 +1,110 @@
+{
+  "date": "2026-06-18",
+  "fit_at": "2026-06-18T18:00:00Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 8,
+  "patterns_recognized": [
+    "TOR@BOS structural repeat: model again picks BOS (Yesavage vs Sonny Gray) at D-grade (-3) with SP xERA AGAINST pick and PQI opposing — identical structural pattern to the 06-17 shutout loss 3-0 to Scherzer; no reason to deviate from D-grade SKIP.",
+    "Triple-flag auto-SKIP (STL@KC): acute_roster=True + F1_xera_gap=0.88* (thin-sample asterisk) + edge_pp=-0.99 all fire simultaneously — per 06-17 BAL@SEA lesson this exact combination is a confirmed LOSS predictor; confidence_downgrade=True further blocks CAP-1 rescue per 06-05 rule.",
+    "HARD CAP 1 over-fires at sub-5pp negative edges on pre-cap A- stacks per 06-17 (CHW@NYY -4.44pp won 10-5, TB@LAD -1.69pp won 5-4) — but that exception path requires confidence_downgrade=False; with confidence_downgrade=True the rescue window is permanently suspended.",
+    "PHI home BvP favors the non-model-pick side for NYM@PHI: Bryce Harper is OWNER vs Manaea (shrunk 0.836), Turner and Schwarber at MEANINGFUL — the PHI top-3 have collectively favorable history against today's NYM SP, undermining the pre-cap B- NYM pick."
+  ],
+  "by_matchup": {
+    "TOR @ BOS": {
+      "model_pick": "BOS ML SKIP",
+      "model_prob": 0.6893,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BOS ML SKIP",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "D-grade (-3) correctly suppresses BOS: Sonny Gray holds a 0.95 xERA edge over Trey Yesavage, and PQI opposes BOS late-game profile (Δ=-9.6). Yesterday TOR shut out BOS 3-0 against Scherzer — identical structural read today with Gray. f5_full_delta=0.2527 shows Stage 1 gives BOS only 43.7%, but BOS full_prob=0.6893 > 0.62 blocks carry-thesis OVERRIDE. No qualitative news available to override SP structural disadvantage. SKIP maintained.",
+      "lessons_applied": ["D-grade-SP-against-SKIP", "TOR@BOS-06-17-repeat-structural-pattern", "carry-thesis-suppression-gate-full_prob-0.62"]
+    },
+    "CLE @ MIL": {
+      "model_pick": "MIL ML GOLD",
+      "model_prob": 0.5804,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "MIL ML GOLD",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.54,
+      "reasoning": "Pre-cap B+ stack has real directional merit — F3 fired, Parker Messick holds SP xERA +0.35 over Shane Drohan, PQI +4.7 for MIL, Stage agree. However HARD CAP 1 at -15.2pp is categorical: market has absorbed MIL's structural edge. Per 06-14 COL@OAK lesson (23-9 blowout on -17.5pp cap), large negative edges are non-negotiable blocks regardless of F-signal or SP quality. CONFIRM direction; stake correctly zeroed.",
+      "lessons_applied": ["HARD-CAP-1-large-negative-edge-unconditional", "market-absorbs-SP-advantage-above-15pp", "06-14-COL@OAK-precedent"]
+    },
+    "MIN @ TEX": {
+      "model_pick": "TEX ML SKIP",
+      "model_prob": 0.5351,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TEX ML SKIP",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "D-grade (-2) with SP xERA 1.41 AGAINST TEX (Joe Ryan better than Jack Leiter) and PQI opposing (Δ=-20.4). Stage 1/2 perfectly agree (delta=0.00), so no carry-thesis concern. No market odds available (fetched_capped) — staking impossible regardless of decision. With two primary grade signals opposing the pick and no rescuing qualitative evidence available, SKIP is correct.",
+      "lessons_applied": ["D-grade-dual-opposing-signals-SKIP", "no-market-odds-no-stake", "SP-quality-gap-reliable-directional-veto"]
+    },
+    "BAL @ SEA": {
+      "model_pick": "BAL ML SKIP",
+      "model_prob": 0.5434,
+      "model_tier": "SKIP",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "BAL ML SKIP",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "D-grade (-2) with SP xERA 1.45 AGAINST BAL (Bryan Woo vs Shane Baz) and PQI opposing (Δ=+20.9). fair_prob=0.4206 sits right at the 0.42 market-rejection threshold. Stage 1/2 agree (delta=0.01), no carry-thesis concern. Yesterday's BAL win involved different pitchers and a triple-flag (acute_roster + F1* + negative edge) not present today; Woo's structural quality advantage over Baz remains the dominant signal. SKIP confirmed.",
+      "lessons_applied": ["D-grade-dual-opposing-SP-and-PQI-SKIP", "fair_prob-near-0.42-threshold", "Bryan-Woo-home-SP-quality-advantage"]
+    },
+    "NYM @ PHI": {
+      "model_pick": "NYM ML SKIP",
+      "model_prob": 0.5463,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYM ML SKIP",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Pre-cap B- (Stage agree only — no F-signal, no SP xERA dimension in grade_reasons). PHI home BvP works against the NYM pick: Bryce Harper is OWNER vs Manaea (shrunk 0.836), Turner at MEANINGFUL (0.747), Schwarber at MEANINGFUL (0.716) — PHI's top-3 collectively have favorable BvP history against today's NYM SP. Per 06-07 rule, strong F3 + Stage alignment is needed for HARD CAP 10 rescue; single-source Stage agree is insufficient. SKIP maintained.",
+      "lessons_applied": ["pre-cap-B--Stage-only-insufficient-CAP10-rescue", "home-BvP-OWNER-favors-PHI-against-model-pick", "HARD-CAP-10-bottom-bucket-no-rescue-path"]
+    },
+    "CHW @ NYY": {
+      "model_pick": "NYY ML GOLD",
+      "model_prob": 0.6593,
+      "model_tier": "GOLD",
+      "model_grade": "D",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "NYY ML GOLD",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.56,
+      "reasoning": "F3=4189.1 (strong lineup structural advantage for NYY) and Stage 1/2 agree (delta=0.06). SP edge opposes modestly: Sean Burke xERA 0.37 worse than Weathers. PQI nearly flat against NYY (-3.3). Staking blocked regardless by edge=3.2pp below the 4pp floor; confidence_downgrade=True permanently suspends any rescue per 06-05 rule. NYY's F3 conviction and pick_prob=0.6593 support directional lean. CONFIRM direction; no stake path exists.",
+      "lessons_applied": ["edge-below-4pp-floor-blocks-stake", "confidence_downgrade-suspends-rescue", "F3-strong-lineup-signal-directional-only"]
+    },
+    "STL @ KC": {
+      "model_pick": "KC ML GOLD",
+      "model_prob": 0.5019,
+      "model_tier": "GOLD",
+      "model_grade": "C",
+      "claude_decision": "DOWNGRADE",
+      "claude_pick": "KC ML SKIP",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.48,
+      "reasoning": "Pre-cap A (score=5) is notable, but three concurrent flags mandate SKIP: acute_roster=True, F1_xera_gap=0.88* (thin-sample asterisk), edge=-0.99pp. Per 06-17 lesson, this exact triple combination (acute_roster + starred F1 + negative edge) is a confirmed LOSS predictor — BAL@SEA exhibited all three flags yesterday and SEA lost as the opposing-model pick. confidence_downgrade=True permanently blocks CAP-1 rescue per 06-05 rule. F1* and SP xERA grade factors share the same thin-sample source, overstating the effective signal count. DOWNGRADE GOLD to SKIP.",
+      "lessons_applied": ["06-17-triple-flag-auto-SKIP-acute_roster+F1*+negative-edge", "confidence_downgrade-blocks-CAP1-rescue-06-05", "F1*-thin-sample-double-counts-SP-signal"]
+    },
+    "LAA @ OAK": {
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "model_prob": null,
+      "model_tier": "PENDING_SP_DATA",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TBD ML PENDING_SP_DATA",
+      "claude_tier": "PENDING_SP_DATA",
+      "claude_confidence": null,
+      "reasoning": "LAA probable SP not yet announced; xERA scoring requires 100+ Statcast pitches minimum. PENDING_SP_DATA hard stop correctly applied per established protocol. No directional commitment is appropriate without confirmed SP quality data. Await next pipeline run once LAA SP is announced.",
+      "lessons_applied": ["PENDING_SP_DATA-hard-stop-protocol"]
+    }
+  }
+}
