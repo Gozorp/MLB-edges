@@ -2647,17 +2647,21 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
      190/195/200 = drawer, 10000+ = help panel), so it cannot collide. */
   #support-wrap { position: relative; display: inline-flex; margin-left: 0.5rem; }
   #support-menu[hidden] { display: none; }
-  /* <header> sets backdrop-filter (the "layered glass" pass), which creates a
-     stacking context -- so the menu's z-index is trapped INSIDE the header and
-     #mlb-hero (a later positioned sibling) paints straight over it. Measured:
-     the hero was the top element at the menu's centre point.
-     Lift the header only while the menu is open, so the rest of the time the
-     stacking order is exactly what it was. 100 stays below the drawer (190/
-     195/200) and the help panel (10000+), and the JS closes the menu on scroll
-     so this can never fight the sticky .picker bar at z-index 60. */
-  header.support-open { position: relative; z-index: 100; }
+  /* The menu lives at BODY level and is position:fixed, NOT nested in the
+     header. That is deliberate and load-bearing:
+       <header> sets backdrop-filter ("layered glass"), which creates a
+       stacking context. Anything inside it -- at any z-index -- is trapped in
+       that context, so #mlb-hero and the slate below painted straight over the
+       popover. Lifting the header with a temporary z-index fixed it in some
+       page states but not others (wide viewport + rail open still clipped it),
+       because the header's context still has to compete with later positioned
+       siblings.
+     At body level in the root stacking context the question disappears: no
+     ancestor can occlude it, in any layout or theme. z-index 9000 clears every
+     page chrome value in use (60 picker / 190-200 drawer) while staying below
+     the help panel modal at 10000. Coordinates come from JS on open. */
   #support-menu {
-    position: absolute; top: calc(100% + 9px); right: 0; z-index: 90;
+    position: fixed; z-index: 9000;
     min-width: 178px; padding: 7px;
     background: var(--bg-elev);
     border: 1px solid var(--border); border-radius: 12px;
@@ -2952,8 +2956,8 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <path d="M9.5 38.5 C 18 31.5, 30 31.5, 38.5 38.5" stroke="#111111" stroke-width="2.4" fill="none"/>
   </svg>
 </a>
-<!-- Support menu. To change a destination or add another (Venmo, Ko-fi...),
-     edit the <a> list inside #support-menu below -- nothing else needs to change. -->
+<!-- The heart. Its menu is NOT nested here on purpose -- see #support-menu at
+     the end of <body>; the header's backdrop-filter would trap it. -->
 <span id="support-wrap">
   <button id="support-link" type="button"
           aria-haspopup="true" aria-expanded="false" aria-controls="support-menu"
@@ -2964,17 +2968,6 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1.1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
     </svg>
   </button>
-  <div id="support-menu" role="menu" aria-label="Donation options" hidden>
-    <div class="support-menu-head">Support this project</div>
-    <a role="menuitem" href="https://paypal.me/SaladinAlf"
-       target="_blank" rel="noopener noreferrer">
-      <span class="support-dot pp"></span>PayPal<span class="support-arrow">↗</span>
-    </a>
-    <a role="menuitem" href="https://cash.app/$Gozorp"
-       target="_blank" rel="noopener noreferrer">
-      <span class="support-dot ca"></span>Cash App<span class="support-arrow">↗</span>
-    </a>
-  </div>
 </span>
 </header>
 
@@ -11640,6 +11633,21 @@ document.addEventListener("click", function (e) {
   });
 })();
 </script>
+<!-- Support menu. Deliberately a direct child of <body>, not of <header>: the
+     header's backdrop-filter creates a stacking context that would trap it
+     behind the hero and the slate. To change a destination or add another
+     (Venmo, Ko-fi...), edit this <a> list -- nothing else needs to change. -->
+<div id="support-menu" role="menu" aria-label="Donation options" hidden>
+  <div class="support-menu-head">Support this project</div>
+  <a role="menuitem" href="https://paypal.me/SaladinAlf"
+     target="_blank" rel="noopener noreferrer">
+    <span class="support-dot pp"></span>PayPal<span class="support-arrow">↗</span>
+  </a>
+  <a role="menuitem" href="https://cash.app/$Gozorp"
+     target="_blank" rel="noopener noreferrer">
+    <span class="support-dot ca"></span>Cash App<span class="support-arrow">↗</span>
+  </a>
+</div>
 <script id="support-menu-js">
 /* Support popover: open/close for the header heart. Kept deliberately small
    -- no focus trap, because this is a 2-item menu, not a dialog: Escape and
@@ -11653,31 +11661,39 @@ document.addEventListener("click", function (e) {
   var menu = document.getElementById("support-menu");
   if (!btn || !menu) return;
 
-  /* Keep the popover on screen. The menu right-aligns to the heart, which is
-     correct on desktop where the heart is the last control on the right. On a
-     phone the header wraps and the heart can land at the LEFT edge -- measured
-     at 390px it put the menu 122px off-screen -- so nudge it back and move the
-     arrow the opposite way so it still points at the heart. */
-  var PAD = 10, BASE_ARROW = 12;
+  /* The menu is position:fixed at body level, so it needs explicit viewport
+     coordinates. Right-align it to the heart (the heart is the last control,
+     so the menu opens inward), then clamp to the viewport: on a 390px phone
+     the header wraps and the heart lands at the LEFT edge, which without the
+     clamp put the menu 122px off-screen. The arrow is then pointed back at
+     the heart's centre -- larger --arrow-right moves it further left. */
+  var PAD = 10;
   function place() {
-    menu.style.transform = "";
-    menu.style.setProperty("--arrow-right", BASE_ARROW + "px");
-    var r = menu.getBoundingClientRect();
-    var shift = 0;
-    if (r.left < PAD) shift = PAD - r.left;
-    else if (r.right > window.innerWidth - PAD) shift = (window.innerWidth - PAD) - r.right;
-    if (shift) {
-      menu.style.transform = "translateX(" + shift + "px)";
-      menu.style.setProperty("--arrow-right", (BASE_ARROW + shift) + "px");
-    }
-  }
+    var b = btn.getBoundingClientRect();
+    var w = menu.offsetWidth, h = menu.offsetHeight;
 
-  var hdr = btn.closest("header");
+    var left = b.right - w;                    /* right edges aligned */
+    if (left + w > window.innerWidth - PAD) left = window.innerWidth - PAD - w;
+    if (left < PAD) left = PAD;                /* left clamp wins on tiny screens */
+
+    var top = b.bottom + 9;
+    if (top + h > window.innerHeight - PAD) {  /* no room below -> flip above */
+      var above = b.top - 9 - h;
+      if (above >= PAD) top = above;
+    }
+
+    menu.style.left = Math.round(left) + "px";
+    menu.style.top  = Math.round(top) + "px";
+
+    /* keep the pointer over the heart, but never past the menu's own corners */
+    var arrow = (left + w) - (b.left + b.width / 2) - 4;
+    arrow = Math.max(9, Math.min(w - 17, arrow));
+    menu.style.setProperty("--arrow-right", Math.round(arrow) + "px");
+  }
 
   function setOpen(open) {
     menu.hidden = !open;
     btn.setAttribute("aria-expanded", open ? "true" : "false");
-    if (hdr) hdr.classList.toggle("support-open", open);
     if (open) place();
   }
 
@@ -11693,9 +11709,9 @@ document.addEventListener("click", function (e) {
 
   window.addEventListener("resize", function () { if (!menu.hidden) place(); });
 
-  /* The header is not sticky, so a scroll would carry the menu off with it --
-     and it is also what keeps the temporary header z-index lift from ever
-     overlapping the sticky .picker bar. Close instead of chasing the scroll. */
+  /* The menu is fixed to the viewport but anchored to a header that is NOT
+     sticky -- on scroll the heart moves and the menu would not. Close it
+     rather than chase the scroll. */
   window.addEventListener("scroll", function () {
     if (!menu.hidden) setOpen(false);
   }, { passive: true });
