@@ -1,0 +1,159 @@
+{
+  "date": "2026-07-19",
+  "model": "claude-sonnet-5",
+  "fit_at": "2026-07-20T15:00:00Z",
+  "n_analyzed": 16,
+  "summary": "9W / 6L across 15 graded matchups (60% hit rate); 1 NO_PICK (LAD@NYY G2, pending SP data). Real P&L exposure was limited to a single staked pick — BAL @ HOU GOLD/A, CONFIRMed on a 'signal shape inverted' read — which lost, extending HOU's losing streak as model-favorite to 3 straight days regardless of which way the underlying signals point. HARD CAP 7 zeroed two more winning GOLD stacks in the sub-0.02 bullpen-gap band (TB@BOS, MIA@MIL), its 4th consecutive false negative — the threshold fix proposed on 7/18 still hasn't shipped. Dual-opposing D-grade signals split close to even directionally today, reconfirming they're suppression-only signals, not a fade.",
+  "by_matchup": {
+    "CHW @ TOR": {
+      "verdict": "LOSS",
+      "model_pick": "TOR ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-0",
+      "headline": "CHW shut out TOR 3-0; a two-dimension score=2 stack never qualified for HARD CAP 10 rescue and correctly stayed at SKIP.",
+      "hypothesis": "PQI +6.2 and Stage agree (delta=0.04) were the only affirming signals, no F-signal fired, so HARD CAP 10 zeroed the score as designed. TOR's loss at a near-coinflip pick_prob (0.5001) is a variance failure, not a process failure — the stack correctly never earned elevation.",
+      "signals_to_recheck": "None — HARD CAP 10 two-dimension-insufficient rule held; the loss reflects an expected coinflip outcome, not a mis-scored signal."
+    },
+    "LAD @ NYY (G1)": {
+      "verdict": "LOSS",
+      "model_pick": "NYY ML GOLD",
+      "claude_decision": "DOWNGRADE",
+      "final_score": "8-2",
+      "headline": "LAD routed NYY 8-2; DOWNGRADE of the F5-only GOLD anchor was correct and protective for the second straight instance of this exact matchup.",
+      "hypothesis": "F5_bullpen_gap=+0.98 fired alone with no F1/F3 corroboration, matching the F5-only-insufficient rule already validated 7/17 in this same matchup (NYY lost 2-1). DOWNGRADE to SKIP avoided a real GOLD-tier loss on an 8-2 blowout — a clean process success.",
+      "signals_to_recheck": "F5_bullpen_gap alone without F1/F3 — now 2-for-2 validated as an insufficient GOLD anchor specifically in LAD@NYY (7/17 NYY lost 2-1, 7/19 NYY lost 2-8); treat any future F5-only GOLD signal in this matchup as a standing DOWNGRADE candidate."
+    },
+    "TB @ BOS": {
+      "verdict": "WIN",
+      "model_pick": "BOS ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-6",
+      "headline": "BOS beat TB 6-1; a genuine A- pre-cap stack (score 4) was zeroed by HARD CAP 7 in the sub-0.02 band for the 3rd time in the archive.",
+      "hypothesis": "Sonny Gray's SP edge, PQI +8.3, and Stage agreement produced a solid pre-cap A- (score 4), but HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0117 — inside the sub-0.02 false-negative band already flagged after 7/10, 7/12, and 7/18. BOS's comfortable win is a process failure (missed edge on a strong stack), not variance.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — another sub-0.02-band false negative (gap=+0.0117, BOS won 6-1); the 7/18-proposed >=0.02 threshold fix should ship before the next slate."
+    },
+    "NYM @ PHI": {
+      "verdict": "WIN",
+      "model_pick": "NYM ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "6-1",
+      "headline": "NYM beat PHI 6-1; CONFIRM SKIP correct on a below-GOLD-threshold score=2 stack with no process failure.",
+      "hypothesis": "Score 2 (B) with only PQI -5.5 and Stage agreement affirming, no F-signal or SP-xERA edge in the grade stack. Nolan McLean outpitched Alan Rangel and NYM won comfortably — a directionally correct but appropriately unstaked pick.",
+      "signals_to_recheck": "None — score=2 (B) correctly held below the GOLD threshold; the win reflects genuine but insufficiently corroborated conviction."
+    },
+    "TEX @ ATL": {
+      "verdict": "WIN",
+      "model_pick": "ATL ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-8",
+      "headline": "ATL beat TEX 8-5; SKIP correct, and the D-grade dual-opposing signal (which leaned toward TEX) called the wrong side.",
+      "hypothesis": "SP-xERA (Eovaldi/TEX) and PQI both opposed ATL, and the pre-game reasoning explicitly leaned toward TEX citing TEX's 7-6 win on 7/18 — but ATL won today. Had this dual-opposing read been treated as a directional fade instead of pure stake-suppression, it would have produced an OVERRIDE loss. Process success for holding CONFIRM/SKIP.",
+      "signals_to_recheck": "D-grade dual-opposing (SP-xERA + PQI against ATL) — called the wrong side again; reconfirms dual-opposing is stake-suppression only, never a directional fade."
+    },
+    "PIT @ CLE": {
+      "verdict": "LOSS",
+      "model_pick": "CLE ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-1",
+      "headline": "PIT (Skenes) blanked CLE 7-1; the D-grade dual-opposing signal correctly called the loser here, in contrast to TEX@ATL the same day.",
+      "hypothesis": "SP-xERA (Skenes, 1.17 edge) and PQI -12.7 both opposed CLE, and CLE lost badly — the opposing signal was directionally right this time. SKIP sizing was correct regardless of direction; the inconsistency versus TEX@ATL on the same slate is exactly why dual-opposing must stay a suppression-only signal rather than a fade.",
+      "signals_to_recheck": "D-grade dual-opposing — correctly predicted PIT (Skenes elite SP edge) same day TEX@ATL's identical signal type missed; too inconsistent game-to-game to promote to a directional rule."
+    },
+    "BAL @ HOU": {
+      "verdict": "LOSS",
+      "model_pick": "HOU ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-2",
+      "headline": "BAL beat HOU 5-2 — the model's only real-stake pick of the day, CONFIRMed at GOLD/A on a 'signal shape inverted' read, and it lost for a 3rd straight day in this series.",
+      "hypothesis": "Process failure. Today's CONFIRM reasoning argued the standing BAL@HOU caution didn't apply because SP-xERA and PQI both favored HOU (unlike 7/17-7/18, where they opposed HOU) — yet BAL won again, extending the series to 3-for-3 against a model-favored HOU regardless of which way the underlying signals pointed. The caution appears to be matchup/team-level, not conditional on signal shape, and today's CONFIRM mis-scoped its boundary condition.",
+      "signals_to_recheck": "BAL@HOU series caution — 3 consecutive HOU losses as model-favorite (7/17 staked GOLD loss with signals against HOU, 7/18 correctly-SKIPped loss with signals against HOU, 7/19 staked GOLD/A loss with signals FOR HOU); reframe the caution as team/series-level and apply it regardless of signal-shape direction."
+    },
+    "SD @ KC": {
+      "verdict": "WIN",
+      "model_pick": "SD ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "19-2",
+      "headline": "SD demolished KC 19-2; the D-grade dual-opposing signal (favoring KC) missed badly, reinforcing that dual-opposing is not a fade signal.",
+      "hypothesis": "SP-xERA opposed SD (Cameron/KC) and Stage 1/2 disagreement (delta=0.1246) flagged additional caution, but SD won by 17 runs. A second dual-opposing miss on the same slate as TEX@ATL. SKIP sizing was correct; overriding toward KC would have been badly wrong.",
+      "signals_to_recheck": "D-grade SP-xERA-against signal missed by 17 runs today, alongside similar misses on TEX@ATL and DET@LAA — the temptation to treat dual-opposing as a fade should stay firmly rejected."
+    },
+    "MIA @ MIL": {
+      "verdict": "WIN",
+      "model_pick": "MIL ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-3",
+      "headline": "MIL beat MIA 3-1; a pre-cap A- (score 4) GOLD stack was zeroed again by HARD CAP 7 in the sub-0.02 band — the 4th consecutive false negative.",
+      "hypothesis": "F3=3225.7, F5=+0.86, and SP-xERA agreement produced pre-cap score 4 (A-), but HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0185 (plus HARD CAP 10 and a 3.8pp edge just under the 4pp floor), zeroing the stake entirely. MIL won as the strong stack predicted. This is the 4th consecutive false negative in the CAP 7 sub-0.02 band (7/10, 7/12, 7/18, 7/19) — a clear process failure; the fix proposed in the 7/18 postgame still hasn't shipped.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — 4th consecutive sub-0.02-band false negative (7/10 +0.018, 7/12 +0.0189, 7/18 +0.0185, 7/19 +0.0185, all winners); deploy the >=0.02 threshold fix now, this is no longer a monitoring item."
+    },
+    "MIN @ CHC": {
+      "verdict": "LOSS",
+      "model_pick": "MIN ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-10",
+      "headline": "CHC (Imanaga) crushed MIN 10-1; the D-grade dual-opposing signal correctly flagged the elite SP edge, and SKIP protected against a lopsided loss.",
+      "hypothesis": "SP-xERA (Imanaga, 0.84 edge) and PQI +13.8 both opposed MIN, and the reasoning explicitly called Imanaga's edge 'real' before MIN lost by 9. Stake was correctly zero throughout the CHC/MIN series (now 1-2 in head-to-head with dual-opposing signals present in both CHC wins) — no fade should be inferred despite this correct call.",
+      "signals_to_recheck": "SP-xERA (Imanaga) opposing MIN — correctly predicted a 9-run MIN loss; still stake-suppression only, not a promotion to directional fade."
+    },
+    "CIN @ COL": {
+      "verdict": "WIN",
+      "model_pick": "CIN ML GOLD",
+      "claude_decision": "CONFIRM",
+      "final_score": "9-6",
+      "headline": "CIN beat COL 9-6; the F5-anchored GOLD pick was directionally right for the 2nd straight meeting, but the sub-4pp edge floor zeroed the stake again.",
+      "hypothesis": "F5_bullpen_gap=+1.77 fired, PQI -11.7 confirmed, and Stage agreed (score 3, B+), but edge_pp=3.4 sits just under the 4pp floor, zeroing stake_mult. CIN won by 3, matching the 7/17 meeting (CIN won 7-2, also blocked by the edge floor). This is now 2 of 2 tracked instances of a real GOLD-quality CIN@COL pick losing edge to the floor.",
+      "signals_to_recheck": "edge_pp below 4pp floor on F5-anchored GOLD picks — CIN@COL has missed 2 of its last 2 meetings to the floor (7/17 CIN won 7-2 edge<4pp, 7/19 CIN won 9-6 edge 3.4pp); one more instance should trigger the floor-lowering review already proposed in the archive."
+    },
+    "WSH @ OAK": {
+      "verdict": "WIN",
+      "model_pick": "WSH ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "5-2",
+      "headline": "WSH beat OAK 5-2; SKIP correctly avoided staking on the slate's most extreme-variance series, which has now flipped on 3 straight days.",
+      "hypothesis": "Negative edge (-1.23pp) and HARD CAP 10 zeroed the stake; PQI +5.5 mildly opposed WSH but WSH won comfortably. The series has now gone WSH 23-4 (7/17) -> OAK 15-1 (7/18) -> WSH 5-2 (7/19) — no single day's result or signal read should be treated as a stable prior for this matchup.",
+      "signals_to_recheck": "negative-edge + PQI opposition — correctly zero-staked a 3rd consecutive high-variance WSH@OAK result; keep treating this series as unpriceable rather than extracting a directional prior from any single day."
+    },
+    "DET @ LAA": {
+      "verdict": "WIN",
+      "model_pick": "LAA ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "2-3",
+      "headline": "LAA edged DET 3-2; the slate's most extreme 5-dimension opposition signal (which favored DET) missed for the first time in this pairing.",
+      "hypothesis": "fair_prob=0.3917, edge +17.53pp above the ceiling, SP-xERA (Mize, 1.89 edge) and PQI -22.6 all opposed LAA, and the reasoning called the DET lean 'sharp,' citing DET's 7-0 shutout of LAA on 7/18 with the same signal shape. LAA won instead, breaking that streak. SKIP sizing stayed correctly zero; the extreme multi-signal read (previously the archive's most reliable directional signal per 7/18) missed this time, showing it isn't infallible even at 5-dimension extremes.",
+      "signals_to_recheck": "Five-dimension signal opposition (fair_prob floor + edge ceiling + SP-xERA + PQI) — broke its recent streak of correct directional calls; a reminder to keep even extreme multi-signal stacks as stake-suppression tools, not standalone fade bets."
+    },
+    "SF @ SEA": {
+      "verdict": "LOSS",
+      "model_pick": "SF ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "3-6",
+      "headline": "SEA beat SF 6-3 — the 3rd consecutive SEA win over SF under the exact same dual-opposing signal shape.",
+      "hypothesis": "SP-xERA (Gilbert, 0.82 edge) and PQI +9.6 opposed SF, alongside fair_prob=0.358 (below the 0.42 floor) and edge 19.26pp above the ceiling (calibration_caution_18_25pp). SF lost, matching 7/17 and 7/18. Unlike the broader dual-opposing rule (which split close to even elsewhere on today's slate), this specific matchup+calibration-band combination is now 3-for-3 in this exact pairing — a localized, matchup-specific signal worth heightened confidence in the SKIP, distinct from a general directional-fade promotion.",
+      "signals_to_recheck": "calibration_caution_18_25pp + SP-xERA/PQI opposition — SF@SEA has now lost 3 straight to this exact combination (7/17, 7/18, 7/19); track as a matchup-specific pattern separate from the general (and less reliable) dual-opposing rule."
+    },
+    "STL @ ARI": {
+      "verdict": "WIN",
+      "model_pick": "ARI ML SKIP",
+      "claude_decision": "CONFIRM",
+      "final_score": "7-8",
+      "headline": "ARI outlasted STL 8-7; SKIP correct, and the D-grade dual-opposing signal (favoring STL) missed, joining today's majority-wrong dual-opposing reads.",
+      "hypothesis": "SP-xERA (Pallante, 1.32 edge) and PQI -18.8 opposed ARI, with PQI approaching but not crossing the >20 dominance threshold; Stage 1/2 agreement correctly stayed authoritative and ARI won a close one. Reaffirms the >20 PQI-dominance boundary rather than a lower one.",
+      "signals_to_recheck": "pqi_diff approaching the >20 dominance threshold (18.8) without crossing it — Stage 1/2 agreement stayed authoritative and ARI won, reaffirming the existing >20 boundary."
+    },
+    "LAD @ NYY (G2)": {
+      "verdict": "NO_PICK",
+      "model_pick": "TBD ML PENDING_SP_DATA",
+      "claude_decision": "CONFIRM",
+      "final_score": "1-2",
+      "headline": "NYY won game 2, 2-1; no pick was made since neither probable SP was announced in time for Statcast qualification.",
+      "hypothesis": "Pipeline correctly withheld a directional call pending the 100+ Statcast pitch minimum for both starters. No evaluation is possible against any model output; the gate functioned as designed.",
+      "signals_to_recheck": "PENDING_SP_DATA gate — no signal to recheck; functioned as designed."
+    }
+  },
+  "patterns_observed": [
+    "[HARD CAP 7] pick-side bullpen disadvantage produced its 4th consecutive false negative in the sub-0.02 hl_bullpen_xwoba_gap band today (TB@BOS gap=+0.0117, BOS won 6-1, pre-cap A-; MIA@MIL gap=+0.0185, MIL won 3-1, pre-cap A-), following 7/10, 7/12, and 7/18. This is no longer a monitoring item — deploy the previously-proposed threshold change from >=0 to >=0.02 before the next slate.",
+    "BAL has now beaten a model-favored HOU on 3 consecutive days (7/17 staked GOLD loss with signals against HOU, 7/18 correctly-SKIPped loss with signals against HOU, 7/19 staked GOLD/A CONFIRM loss with signals FOR HOU). Because the losing streak persisted even when the signal shape flipped to favor HOU, the caution is matchup/team-level, not conditional on SP-xERA/PQI direction — apply a standing DOWNGRADE to HOU-favored picks in this series until BAL's underlying form is investigated, independent of signal shape.",
+    "D-grade dual-opposing-signal picks split close to even on direction today (4 of 7 dual-opposing reads were wrong: TEX@ATL, SD@KC, DET@LAA, STL@ARI; 3 were right: PIT@CLE, MIN@CHC, SF@SEA) — this reconfirms the settled archive rule that dual-opposing (SP-xERA + PQI both against the pick) is a stake-suppression signal only, never a directional fade. Continue holding SKIP regardless of which way the opposing signals point.",
+    "CIN@COL's F5-anchored GOLD pick has now been directionally correct in 2 of its last 2 meetings (7/17 CIN won 7-2, 7/19 CIN won 9-6) while the sub-4pp edge floor zeroed the stake both times. The open tracking mandate to consider lowering the edge floor toward 2pp for F-signal-anchored GOLD picks is now at 2 of the 3 instances needed to trigger a formal review."
+  ]
+}
