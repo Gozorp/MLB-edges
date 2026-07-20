@@ -2620,8 +2620,9 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     box-sizing: border-box; padding: 0;
     border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
-    margin-left: 0.5rem;
     text-decoration: none;
+    font-family: inherit;
+    cursor: pointer;
     opacity: 0.88;
     transition: all 0.15s;
   }
@@ -2632,6 +2633,69 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     transform: scale(1.06);
   }
   #support-link:active { transform: scale(0.98); }
+  /* open state: hold the hover treatment while the menu is showing so the
+     heart reads as the thing the popover belongs to */
+  #support-link[aria-expanded="true"] {
+    border-color: var(--donate); opacity: 1;
+  }
+
+  /* ---- the two-option popover ----------------------------------------
+     Anchored to the wrapper (not the header) so it tracks the heart when
+     the header wraps to a second row on phones. Right-aligned because the
+     heart is the LAST control -- a left-aligned menu would hang off the
+     viewport edge. z-index 90 sits in the unused 61-189 band (60 = rail,
+     190/195/200 = drawer, 10000+ = help panel), so it cannot collide. */
+  #support-wrap { position: relative; display: inline-flex; margin-left: 0.5rem; }
+  #support-menu[hidden] { display: none; }
+  /* <header> sets backdrop-filter (the "layered glass" pass), which creates a
+     stacking context -- so the menu's z-index is trapped INSIDE the header and
+     #mlb-hero (a later positioned sibling) paints straight over it. Measured:
+     the hero was the top element at the menu's centre point.
+     Lift the header only while the menu is open, so the rest of the time the
+     stacking order is exactly what it was. 100 stays below the drawer (190/
+     195/200) and the help panel (10000+), and the JS closes the menu on scroll
+     so this can never fight the sticky .picker bar at z-index 60. */
+  header.support-open { position: relative; z-index: 100; }
+  #support-menu {
+    position: absolute; top: calc(100% + 9px); right: 0; z-index: 90;
+    min-width: 178px; padding: 7px;
+    background: var(--bg-elev);
+    border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    text-align: left;
+  }
+  #support-menu .support-menu-head {
+    font-size: 0.58rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 3px 9px 7px; white-space: nowrap;
+  }
+  #support-menu a {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 9px; border-radius: 8px;
+    color: var(--text); text-decoration: none;
+    font-size: 0.76rem; font-weight: 500; white-space: nowrap;
+    transition: background 0.12s;
+  }
+  #support-menu a:hover { background: var(--row-hover, rgba(255,255,255,0.07)); }
+  #support-menu a .support-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex: none;
+  }
+  /* brand-ish dots, dimmed so the menu stays quiet: PayPal blue, Cash green */
+  #support-menu a .support-dot.pp { background: #2f6fdb; }
+  #support-menu a .support-dot.ca { background: #00c244; }
+  #support-menu a .support-arrow {
+    margin-left: auto; color: var(--muted); font-size: 0.72rem;
+  }
+  /* The little pointer up at the heart. Its offset is a custom property
+     because the JS clamp below shifts the whole menu when it would run off
+     a phone edge -- the arrow has to travel the opposite way to stay over
+     the heart. Larger `right` = further left. */
+  #support-menu::before {
+    content: ""; position: absolute; top: -5px; right: var(--arrow-right, 12px);
+    width: 8px; height: 8px; transform: rotate(45deg);
+    background: var(--bg-elev);
+    border-left: 1px solid var(--border); border-top: 1px solid var(--border);
+  }
 
   /* Comic treatment mirroring #nba-link (2264-2267). Note: that sibling
      rule is currently outranked by the cascade-last apple-minimal block,
@@ -2888,16 +2952,30 @@ main h2{font-size:1.05rem!important;letter-spacing:.01em;margin:1rem 0 .5rem;}
     <path d="M9.5 38.5 C 18 31.5, 30 31.5, 38.5 38.5" stroke="#111111" stroke-width="2.4" fill="none"/>
   </svg>
 </a>
-<!-- Support link. To change the destination, edit the href below (one place). -->
-<a id="support-link" href="https://paypal.me/SaladinAlf"
-   target="_blank" rel="noopener noreferrer"
-   title="Support this project — the model, data and hosting are self-funded"
-   aria-label="Support this project with a donation (opens in a new tab)">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1.1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
-  </svg>
-</a>
+<!-- Support menu. To change a destination or add another (Venmo, Ko-fi...),
+     edit the <a> list inside #support-menu below -- nothing else needs to change. -->
+<span id="support-wrap">
+  <button id="support-link" type="button"
+          aria-haspopup="true" aria-expanded="false" aria-controls="support-menu"
+          title="Support this project — the model, data and hosting are self-funded"
+          aria-label="Support this project — show donation options">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.8 1.1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+    </svg>
+  </button>
+  <div id="support-menu" role="menu" aria-label="Donation options" hidden>
+    <div class="support-menu-head">Support this project</div>
+    <a role="menuitem" href="https://paypal.me/SaladinAlf"
+       target="_blank" rel="noopener noreferrer">
+      <span class="support-dot pp"></span>PayPal<span class="support-arrow">↗</span>
+    </a>
+    <a role="menuitem" href="https://cash.app/$Gozorp"
+       target="_blank" rel="noopener noreferrer">
+      <span class="support-dot ca"></span>Cash App<span class="support-arrow">↗</span>
+    </a>
+  </div>
+</span>
 </header>
 
 <section id="mlb-hero" aria-label="mlb_edge hero">
@@ -11559,6 +11637,83 @@ document.addEventListener("click", function (e) {
   }
   window.addEventListener("pageshow", function () {
     document.body.classList.remove("xfade-leave");
+  });
+})();
+</script>
+<script id="support-menu-js">
+/* Support popover: open/close for the header heart. Kept deliberately small
+   -- no focus trap, because this is a 2-item menu, not a dialog: Escape and
+   click-outside are enough, and trapping focus in it would be worse for
+   keyboard users than letting Tab walk out.
+   Note the page already has a global Escape handler that calls closeHelp()
+   (~10743). That is independent of this one and harmless -- closing an
+   already-closed help panel is a no-op -- so both can coexist. */
+(function () {
+  var btn  = document.getElementById("support-link");
+  var menu = document.getElementById("support-menu");
+  if (!btn || !menu) return;
+
+  /* Keep the popover on screen. The menu right-aligns to the heart, which is
+     correct on desktop where the heart is the last control on the right. On a
+     phone the header wraps and the heart can land at the LEFT edge -- measured
+     at 390px it put the menu 122px off-screen -- so nudge it back and move the
+     arrow the opposite way so it still points at the heart. */
+  var PAD = 10, BASE_ARROW = 12;
+  function place() {
+    menu.style.transform = "";
+    menu.style.setProperty("--arrow-right", BASE_ARROW + "px");
+    var r = menu.getBoundingClientRect();
+    var shift = 0;
+    if (r.left < PAD) shift = PAD - r.left;
+    else if (r.right > window.innerWidth - PAD) shift = (window.innerWidth - PAD) - r.right;
+    if (shift) {
+      menu.style.transform = "translateX(" + shift + "px)";
+      menu.style.setProperty("--arrow-right", (BASE_ARROW + shift) + "px");
+    }
+  }
+
+  var hdr = btn.closest("header");
+
+  function setOpen(open) {
+    menu.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (hdr) hdr.classList.toggle("support-open", open);
+    if (open) place();
+  }
+
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();          /* don't trip the document close handler */
+    var willOpen = menu.hidden;
+    setOpen(willOpen);
+    if (willOpen) {
+      var first = menu.querySelector("a");
+      if (first) first.focus();
+    }
+  });
+
+  window.addEventListener("resize", function () { if (!menu.hidden) place(); });
+
+  /* The header is not sticky, so a scroll would carry the menu off with it --
+     and it is also what keeps the temporary header z-index lift from ever
+     overlapping the sticky .picker bar. Close instead of chasing the scroll. */
+  window.addEventListener("scroll", function () {
+    if (!menu.hidden) setOpen(false);
+  }, { passive: true });
+
+  /* clicks inside the menu must not close it before the link resolves */
+  menu.addEventListener("click", function (e) { e.stopPropagation(); });
+
+  document.addEventListener("click", function (e) {
+    if (!menu.hidden && !menu.contains(e.target) && !btn.contains(e.target)) {
+      setOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !menu.hidden) {
+      setOpen(false);
+      btn.focus();
+    }
   });
 })();
 </script>
