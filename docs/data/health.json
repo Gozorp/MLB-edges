@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "checked_at": "2026-07-20T21:45:06.516217+00:00",
-  "overall": "green",
+  "checked_at": "2026-07-20T23:07:15.855567+00:00",
+  "overall": "yellow",
   "categories": {
-    "workflows": "green",
+    "workflows": "yellow",
     "data_flow": "green",
     "deployment": "green",
     "model": "frozen"
@@ -11,21 +11,21 @@
   "checks": [
     {
       "name": "daily_slate_heartbeat",
-      "severity": "green",
-      "message": "last slate publish 13.5h ago",
+      "severity": "yellow",
+      "message": "last slate publish 14.9h ago (threshold 14h)",
       "detail": {
         "last_run_iso": "2026-07-20T01:15:59-07:00",
-        "age_hours": 13.49
+        "age_hours": 14.85
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 1.6d ago",
+      "message": "last fired 1.7d ago",
       "detail": {
         "last_run_iso": "2026-07-19T06:31:12Z",
-        "age_hours": 39.23,
+        "age_hours": 40.6,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 1.6d ago",
+      "message": "last fired 1.7d ago",
       "detail": {
         "last_run_iso": "2026-07-19T07:25:07Z",
-        "age_hours": 38.33,
+        "age_hours": 39.7,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.3h ago",
+      "message": "last fired 3.6h ago",
       "detail": {
         "last_run_iso": "2026-07-20T19:29:14Z",
-        "age_hours": 2.26,
+        "age_hours": 3.63,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -96,9 +96,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-20T21:45:06.656Z",
+          "timestamp": "2026-07-20T23:07:15.987Z",
           "commit": "unknown",
-          "region": "LAX"
+          "region": "IAD"
         }
       },
       "category": "deployment"
@@ -106,10 +106,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "frozen",
-      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 1129.0h ago",
+      "message": "weights intentionally FROZEN (--skip-weights travel freeze, muted until 2026-07-20); last learned 1130.4h ago",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 1128.99,
+        "age_hours": 1130.36,
         "frozen_until": "2026-07-20"
       },
       "category": "model"
