@@ -116,6 +116,12 @@ candidates = [
     "docs/data/oos_ledger.jsonl",
     "docs/data/skip_shadow_ledger.jsonl",
     "docs/data/team_tiers.json",
+    # 2026-07-20: rolling, NOT date-stamped -- run_local_slate regenerates it
+    # every hour (tools/team_predictability.py, whole-history rescan), but it
+    # was never in this list, so the reset --hard at the top of each publish
+    # threw the fresh copy away and the dashboard served the 2026-07-17 commit
+    # forever (frozen at 487 picks / 43 slates while local was already 514/45).
+    "docs/data/team_predictability.json",
     "docs/data/spread_%s.json" % TODAY,
     "docs/data/spread_%s.json" % YEST,
     "docs/data/sp_projection_%s.json" % TODAY,
