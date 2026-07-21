@@ -1,0 +1,96 @@
+# =============================================================================
+# refresh-lineups.yml
+# -----------------------------------------------------------------------------
+# Surgically refresh ONLY the baked lineup columns
+# (away/home_top_5_batters_json) in docs/data/picks_<date>_diag.csv, so the
+# Statcast Game Preview shows today's REAL lineups as they post.
+#
+# WHY A SEPARATE JOB (not daily-slate.yml):
+#   MLB posts lineups only ~3h before first pitch. The daily-slate bakes run
+#   at 06:00 / 11:00 / 14:00 UTC (1am / 7am / 10am ET) -- all BEFORE most
+#   lineups post -- so every game's lineup JSON bakes as "[]" and the preview
+#   shows "Awaiting Starting Lineup" all day. The heavy daily-slate re-runs
+#   later don't reliably backfill lineups (full model re-score, started-game
+#   lock, probables/odds churn). This job is tiny and single-purpose: it does
+#   NOT touch the model -- it only rewrites the two lineup columns (see
+#   tools/refresh_lineups.py), leaving every other column byte-identical.
+#
+# SAFE vs the daily-slate structure gate: an empty fetch never overwrites a
+# populated lineup, and tools/slate_structure_gate.py carries HEAD's non-empty
+# lineups forward -- so a later daily-slate re-bake won't wipe what we filled.
+# Idempotent + hourly, so any transient regression self-heals within the hour.
+# =============================================================================
+name: Refresh lineups
+
+on:
+  schedule:
+    # Hourly across the afternoon/evening (12pm-7pm ET) — the window when MLB
+    # posts lineups (~3h before each first pitch). Afternoon-game cards land by
+    # ~16:00-18:00 UTC; evening-game cards by ~20:00-23:00 UTC.
+    - cron: "0 16 * * *"   # 12pm ET
+    - cron: "0 17 * * *"   #  1pm ET
+    - cron: "0 18 * * *"   #  2pm ET
+    - cron: "0 19 * * *"   #  3pm ET
+    - cron: "0 20 * * *"   #  4pm ET
+    - cron: "0 21 * * *"   #  5pm ET
+    - cron: "0 22 * * *"   #  6pm ET
+    - cron: "0 23 * * *"   #  7pm ET
+  workflow_dispatch:
+    inputs:
+      slate_date:
+        description: "Slate date YYYY-MM-DD (default: today UTC)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+# Never let two refresh runs push at once; the newer slate state wins.
+concurrency:
+  group: refresh-lineups
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # No pip install: tools/refresh_lineups.py uses only the stdlib
+      # (urllib/csv/json) plus the checked-out mlb_edge package.
+
+      - name: Refresh lineups, commit + push
+        # On a push race we do NOT rebase/merge the CSV (a whole-file conflict
+        # would clobber the other job's column edits). Instead we reset to the
+        # newest origin/main and RE-APPLY the lineup refresh to that fresh diag,
+        # so we only ever add posted-lineup data on top of the latest state.
+        run: |
+          DATE_ARG="${{ inputs.slate_date }}"
+          run_refresh() {
+            if [ -z "$DATE_ARG" ]; then python tools/refresh_lineups.py
+            else python tools/refresh_lineups.py "$DATE_ARG"; fi
+          }
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          run_refresh
+          for i in 1 2 3 4 5; do
+            git add docs/data/picks_*_diag.csv 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "no lineup changes to commit (nothing newly posted, or already current)"
+              exit 0
+            fi
+            git commit -m "refresh-lineups: $(date -u +%Y-%m-%dT%H:%MZ) posted lineups into preview"
+            if git push origin main; then echo "pushed (attempt $i)"; exit 0; fi
+            echo "push rejected (attempt $i) — resetting to origin/main and re-applying refresh..."
+            git fetch origin main || true
+            git reset --hard origin/main || true
+            run_refresh
+            sleep $((i * 2))
+          done
+          echo "::warning::push failed after 5 retries (race on main); next hourly run will re-refresh"
