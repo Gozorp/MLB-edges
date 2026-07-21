@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-21T01:01:29.585470+00:00",
+  "checked_at": "2026-07-21T04:21:14.663140+00:00",
   "overall": "red",
   "categories": {
     "workflows": "yellow",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "yellow",
-      "message": "last slate publish 16.8h ago (threshold 14h)",
+      "message": "last slate publish 20.1h ago (threshold 14h)",
       "detail": {
         "last_run_iso": "2026-07-20T01:15:59-07:00",
-        "age_hours": 16.76
+        "age_hours": 20.09
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 1.8d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-07-19T06:31:12Z",
-        "age_hours": 42.5,
+        "age_hours": 45.83,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 1.7d ago",
+      "message": "last fired 1.9d ago",
       "detail": {
         "last_run_iso": "2026-07-19T07:25:07Z",
-        "age_hours": 41.61,
+        "age_hours": 44.94,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 5.5h ago",
+      "message": "last fired 8.9h ago",
       "detail": {
         "last_run_iso": "2026-07-20T19:29:14Z",
-        "age_hours": 5.54,
+        "age_hours": 8.87,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -96,9 +96,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-21T01:01:29.724Z",
+          "timestamp": "2026-07-21T04:21:14.781Z",
           "commit": "unknown",
-          "region": "SJC"
+          "region": "SEA"
         }
       },
       "category": "deployment"
@@ -106,10 +106,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "red",
-      "message": "weights last learned 1132.3h ago (threshold 48h)",
+      "message": "weights last learned 1135.6h ago (threshold 48h)",
       "detail": {
         "last_entry_iso": "2026-06-03T20:45:30.781185+00:00",
-        "age_hours": 1132.27
+        "age_hours": 1135.6
       },
       "category": "model"
     },
