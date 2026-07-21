@@ -6,6 +6,7 @@ platoon_enrichment.py -- SP handedness + platoon splits sidecar. DISPLAY ONLY.
 For every probable/announced starter on the slate, fetches from statsapi:
   * throwing hand (R/L)
   * season splits vs RHB and vs LHB (IP, HR, BB, HBP, K)
+  * season splits home vs away (IP, ERA)
 and computes a per-side run-prevention number on the ERA scale.
 
 NOTE ON "ERA vs L/R": true earned-run average cannot be split by batter
@@ -16,6 +17,13 @@ pitcher. The standard substitute is per-side FIP on the ERA scale:
 with cFIP calibrated so league FIP == league ERA for the season. That is
 what ships in the era_vs_r / era_vs_l fields the dashboard renders as
 "[ERA vs R: X.XX | ERA vs L: Y.YY]".
+
+NOTE ON "ERA home/away": unlike the batter-hand split, a game is entirely
+home or away, so earned runs ARE attributable to a location -- statsapi
+publishes a real era on the h/a splits. We use it verbatim (no FIP proxy)
+in the era_home / era_away fields, rendered as "[Home X.XX | Away Y.YY]"
+with the side that applies to today's game (home SP -> home, away SP ->
+away) emphasized.
 
 Writes docs/data/platoon_<date>.json (atomic). Keyed by SP name (diag join)
 and by gamePk (exact). Batter handedness needs no fetch -- bat_side already
@@ -87,22 +95,36 @@ def _league_cfip(season):
 
 def _sp_splits(pid, season, cfip):
     out = {"era_vs_r": None, "era_vs_l": None, "ip_vs_r": 0.0, "ip_vs_l": 0.0,
+           "era_home": None, "era_away": None, "ip_home": 0.0, "ip_away": 0.0,
            "small_sample": False}
-    j = _get("%s/people/%d/stats?stats=statSplits&group=pitching&season=%d&sitCodes=vr,vl"
+    # One call covers both split families:
+    #   vr/vl -> per-side FIP (statsapi returns era=None for batter-hand splits)
+    #   h/a   -> TRUE season ERA. Earned runs belong to whole games, so the
+    #            home/away ERA is well-defined and statsapi reports it directly
+    #            -- no FIP proxy needed here.
+    j = _get("%s/people/%d/stats?stats=statSplits&group=pitching&season=%d&sitCodes=vr,vl,h,a"
              % (API, pid, season))
     for s in j.get("stats", []):
         for sp in s.get("splits", []):
             code = (sp.get("split") or {}).get("code")
             st = sp.get("stat", {})
             ip = _ip_float(st.get("inningsPitched"))
-            if code not in ("vr", "vl") or ip <= 0:
+            if ip <= 0:
                 continue
-            fip = (13 * int(st.get("homeRuns") or 0)
-                   + 3 * (int(st.get("baseOnBalls") or 0) + int(st.get("hitBatsmen") or 0))
-                   - 2 * int(st.get("strikeOuts") or 0)) / ip + cfip
-            side = "r" if code == "vr" else "l"
-            out["era_vs_" + side] = round(max(fip, 0.0), 2)
-            out["ip_vs_" + side] = round(ip, 1)
+            if code in ("vr", "vl"):
+                fip = (13 * int(st.get("homeRuns") or 0)
+                       + 3 * (int(st.get("baseOnBalls") or 0) + int(st.get("hitBatsmen") or 0))
+                       - 2 * int(st.get("strikeOuts") or 0)) / ip + cfip
+                side = "r" if code == "vr" else "l"
+                out["era_vs_" + side] = round(max(fip, 0.0), 2)
+                out["ip_vs_" + side] = round(ip, 1)
+            elif code in ("h", "a"):
+                loc = "home" if code == "h" else "away"
+                try:
+                    out["era_" + loc] = round(float(st.get("era")), 2)
+                except (TypeError, ValueError):
+                    out["era_" + loc] = None
+                out["ip_" + loc] = round(ip, 1)
     if 0 < min(out["ip_vs_r"] or 0, out["ip_vs_l"] or 0) < MIN_IP_SIDE:
         out["small_sample"] = True
     return out

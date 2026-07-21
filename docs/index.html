@@ -3324,14 +3324,18 @@ const FALLBACK_RAW_BASE = "https://raw.githubusercontent.com/Gozorp/MLB-edges/ma
 const USE_FALLBACK_ON_404 = true;   // set false when repo goes private
 
 async function _ppProjectedLineups() {
-  // Most recent POSTED lineup per team from the last 3 published diag dates.
+  // Most recent POSTED lineup per team from the last 10 published diag dates.
+  // (Was 3 — too shallow: a team returning from an off-day streak or the
+  // All-Star break, plus any thin/early bakes that captured no lineups, could
+  // fall outside a 3-date window and render a blank "Awaiting Starting Lineup"
+  // instead of its last real lineup. 10 comfortably spans a mid-season break.)
   // History is immutable -> force-cache; resolved once per session.
   if (window.__ppProj) return window.__ppProj;
   var out = {};
   try {
     var mf = await fetch("./data/manifest.json", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; });
     var today = (window.__streaks && window.__streaks.date) || todayISO();
-    var dates = ((mf && mf.dates) || []).filter(function (d) { return d < today; }).sort().reverse().slice(0, 3);
+    var dates = ((mf && mf.dates) || []).filter(function (d) { return d < today; }).sort().reverse().slice(0, 10);
     for (var di = 0; di < dates.length; di++) {
       var txt = await fetch("./data/picks_" + dates[di] + "_diag.csv", { cache: "force-cache" }).then(function (r) { return r.ok ? r.text() : null; });
       if (!txt) continue;
@@ -6482,6 +6486,24 @@ function _spPlatoonSuffix(name){
   }
   return s;
 }
+// Home/away ERA split — the TRUE season ERA by game location. statsapi reports
+// a real era for home vs away games (unlike the batter-hand splits above, which
+// need a FIP proxy). `isHome` says which side is live for THIS game: the home
+// team's SP pitches at home, the away team's SP on the road — the applicable
+// side is emphasized. Sidecar field source: tools/platoon_enrichment.py.
+function _spHomeAwaySuffix(name, isHome){
+  var p = _platoonRec(name);
+  if (!p || (p.era_home == null && p.era_away == null)) return "";
+  var f = function(v){ return v == null ? "—" : Number(v).toFixed(2); };
+  var hi = "color:var(--text);font-weight:700;";
+  var hs = '<span style="' + (isHome === true  ? hi : "") + '">Home ' + f(p.era_home) + '</span>';
+  var as = '<span style="' + (isHome === false ? hi : "") + '">Away ' + f(p.era_away) + '</span>';
+  var tip = "True season ERA by game location. Sample: " + (p.ip_home || 0)
+    + " IP home, " + (p.ip_away || 0) + " IP away."
+    + (isHome === true ? " Pitching at HOME today." : isHome === false ? " Pitching on the ROAD today." : "");
+  return ' <span title="' + tip + '" style="font-size:.85em;color:var(--muted);'
+    + 'font-variant-numeric:tabular-nums;white-space:nowrap;">[' + hs + ' | ' + as + ']</span>';
+}
 function _batHandSuffix(b){
   var h = b && (b.bat_side || b.batSide);
   return h ? " (" + String(h).trim() + ")" : "";
@@ -6622,8 +6644,8 @@ function _renderProjectedLineupTable(r){
     '<div class="gp-head">Statcast Game Preview' +
       '<span class="gp-sub">projected lineups &middot; OPS heatmap</span></div>' +
     '<div class="gp-matchup">' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': ' + _spDisplay(awaySP, matchup, "away") + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + _domChip(awaySP) + '</div>' +
-      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + _domChip(homeSP) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + awayAbbr + ': ' + _spDisplay(awaySP, matchup, "away") + _spHomeAwaySuffix(awaySP, false) + kbit(awayK) + _spHRFlagChip(_spHRMult(awaySP)) + _domChip(awaySP) + '</div>' +
+      '<div class="gp-sp"><span class="gp-spk">SP</span>' + homeAbbr + ': ' + _spDisplay(homeSP, matchup, "home") + _spHomeAwaySuffix(homeSP, true) + kbit(homeK) + _spHRFlagChip(_spHRMult(homeSP)) + _domChip(homeSP) + '</div>' +
     '</div>' +
     '<div class="gp-grid">' +
       _gpTeamTable(away, homeSP, awayAbbr + " Hitters" + gpProjTag(gpProjA)) +
