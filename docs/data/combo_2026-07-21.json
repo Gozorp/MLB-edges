@@ -1,0 +1,236 @@
+{
+ "date": "2026-07-21",
+ "generated_utc": "2026-07-21T16:59:26Z",
+ "engine": "correlated-combo v1 (display-only; frozen model untouched)",
+ "scope_notes": [
+  "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
+  "ML is the only market-anchored leg; the double is model-priced."
+ ],
+ "correlation": {
+  "n_pairs": 351,
+  "n11": 149,
+  "n10": 31,
+  "n01": 33,
+  "n00": 138,
+  "f5_pushes": 70,
+  "f5_push_rate": 0.1663,
+  "p_full_given_f5w": 0.8278,
+  "p_full_given_f5l": 0.193,
+  "ratio_r": 4.2894,
+  "phi": 0.635,
+  "source": "oos_ledger empirical (frozen-window graded pairs)"
+ },
+ "combos": [],
+ "combo_pool": [],
+ "markets_status": {
+  "ML": "live (Kalshi devigged fair)",
+  "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
+  "K_PROP": "awaiting ODDS_API_KEY in .env -- adapter shipped (tools/kprop_odds.py)"
+ },
+ "rejected": [
+  {
+   "matchup": "MIN @ CLE",
+   "pick": "MIN",
+   "joint_prob": 0.311,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "+12.2pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "F5 side prob 31.1%"
+   ]
+  },
+  {
+   "matchup": "LAD @ PHI",
+   "pick": "LAD",
+   "joint_prob": 0.1163,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+22.4pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "F5 side prob 11.6% + Stage 1/2 disagree flag"
+   ]
+  },
+  {
+   "matchup": "PIT @ NYY",
+   "pick": "NYY",
+   "joint_prob": 0.5345,
+   "blocked_by": [
+    "grade"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)"
+   ]
+  },
+  {
+   "matchup": "TB @ TOR",
+   "pick": "TB",
+   "joint_prob": 0.3781,
+   "blocked_by": [
+    "grade",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "+1.3pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "F5 side prob 37.8%"
+   ]
+  },
+  {
+   "matchup": "BAL @ BOS",
+   "pick": "BOS",
+   "joint_prob": 0.5873,
+   "blocked_by": [
+    "market_band"
+   ],
+   "notes": [
+    "+8.9pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "SD @ ATL",
+   "pick": "SD",
+   "joint_prob": 0.4914,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "+12.2pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "SF @ KC",
+   "pick": "SF",
+   "joint_prob": 0.4486,
+   "blocked_by": [
+    "grade",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "F5 side prob 48.8%"
+   ]
+  },
+  {
+   "matchup": "NYM @ MIL",
+   "pick": "MIL",
+   "joint_prob": 0.5024,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+9.9pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "DET @ CHC",
+   "pick": "DET",
+   "joint_prob": 0.4477,
+   "blocked_by": [
+    "grade"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)"
+   ]
+  },
+  {
+   "matchup": "CHW @ TEX",
+   "pick": "TEX",
+   "joint_prob": 0.5712,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+10.2pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "MIA @ HOU",
+   "pick": "HOU",
+   "joint_prob": 0.5201,
+   "blocked_by": [
+    "grade"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)"
+   ]
+  },
+  {
+   "matchup": "WSH @ COL",
+   "pick": "WSH",
+   "joint_prob": 0.3203,
+   "blocked_by": [
+    "grade",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "-0.6pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "F5 side prob 32.0%"
+   ]
+  },
+  {
+   "matchup": "STL @ LAA",
+   "pick": "LAA",
+   "joint_prob": 0.5053,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+16.1pp vs fair -> trap band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "OAK @ ARI",
+   "pick": "ARI",
+   "joint_prob": 0.4412,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "-2.4pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "CIN @ SEA",
+   "pick": "SEA",
+   "joint_prob": 0.5245,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+8.3pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  }
+ ],
+ "n_games": 15
+}
