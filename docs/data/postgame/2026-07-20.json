@@ -1,150 +1,150 @@
 {
   "date": "2026-07-20",
-  "model": "claude-sonnet-5",
-  "fit_at": "2026-07-21T14:09:41Z",
+  "model": "claude-sonnet-4-6",
+  "fit_at": "2026-07-21T14:31:00Z",
   "n_analyzed": 15,
-  "summary": "7W / 8L across all 15 matchups (47% hit rate). The lone real stake — CHW @ TEX GOLD, an OVERRIDE of HARD CAP 7's bullpen-gap suppression justified by deGrom as an offsetting ace — lost 10-3 after deGrom himself gave up 5 ER in 4.2 IP, directly undercutting the override's own logic. More broadly, the model's 7 GOLD-tier picks went 4-3 (57%) pre-review, but Claude's DOWNGRADEs suppressed all four winners (BAL@BOS, NYM@MIL, WSH@COL, STL@LAA) while the one OVERRIDE landed on the loser — a net-negative day for Claude's tier calls despite individually defensible reasoning. The OAK@ARI rookie-SP DOWNGRADE was correctly protective.",
+  "summary": "7W / 8L across all 15 matchups (47% hit rate on model directional picks). The only real P&L exposure was CHW @ TEX — Claude's sole OVERRIDE of HARD CAP 7's suppression, justified by citing deGrom as an offsetting ace — which lost 10-3 after deGrom allowed 5 ER in 4.2 IP, directly contradicting the override's own rationale. The model's 7 GOLD-tier picks went 4-3 directionally (57%), but Claude's intervention pattern was net-negative: 4 DOWNGRADEs suppressed real wins (BAL@BOS, NYM@MIL, WSH@COL, STL@LAA) while the one OVERRIDE landed on the loser. Two DOWNGRADEs (SF@KC, OAK@ARI) were correctly protective. The starring-F1-without-F3 auto-DOWNGRADE rule went 0-for-2 today and needs re-evaluation.",
   "by_matchup": {
     "MIN @ CLE": {
       "verdict": "LOSS",
       "model_pick": "MIN ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "4-13",
-      "headline": "CLE routed MIN 13-4; CONFIRM SKIP correctly avoided a lopsided loss on a marginal-favorite pick.",
-      "hypothesis": "HARD CAP 7 fired legitimately (hl_bullpen_xwoba_gap=0.0242, above the sub-0.02 false-negative band) and CAP 10 zeroed the bottom-bucket marginal favorite (pick_prob=0.534). MIN getting blown out by 9 is a clean process success — the suppression was correctly scoped outside the disputed band.",
-      "signals_to_recheck": "None — HARD CAP 7 correctly fired outside the sub-0.02 false-negative band (gap=0.0242); CAP 10 bottom-bucket held as designed."
+      "headline": "CLE routed MIN 13-4; CONFIRM SKIP correctly withheld stake on a bottom-bucket marginal favorite that got blown out.",
+      "hypothesis": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0242, sitting above the sub-0.02 false-negative band where the disputed pattern lives — a legitimate cap fire, not a misfire. CAP 10 also independently zeroed the bottom-bucket pick (pick_prob=0.534). CLE's 9-run margin validates both gates. No process failure; MIN was correctly treated as an unstakeable coin-flip.",
+      "signals_to_recheck": "HARD CAP 7 and HARD CAP 10 — both correctly fired here (gap=0.0242 above the disputed <0.02 band); this is NOT a false negative to track alongside the sub-0.02 pattern."
     },
     "PIT @ NYY": {
       "verdict": "WIN",
       "model_pick": "NYY ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "5-8",
-      "headline": "NYY beat PIT 8-5; a clean dual-opposing D-grade SKIP missed direction but sizing was correctly zero either way.",
-      "hypothesis": "SP-xERA and PQI both opposed NYY (grade D, score -2) yet NYY won anyway — another instance of dual-opposing missing direction while the suppression-only sizing rule held correctly (no stake regardless of outcome).",
-      "signals_to_recheck": "F1_xera_gap/pqi_diff dual-opposing — missed direction again (NYY won despite both opposing); reconfirms dual-opposing is stake-suppression only, not a fade."
+      "headline": "NYY beat PIT 8-5; dual-opposing D-grade SKIP was correctly zero-staked, and this time the directional read was also right.",
+      "hypothesis": "SP-xERA (1.11 against) and PQI (-17.6 against) both opposed NYY (grade D, score -2), yet NYY won — consistent with the settled archive rule that dual-opposing is stake-suppression only, not a fade. SKIP was correct regardless of direction; the directional WIN here is noise relative to the sizing rule. Variance, not process.",
+      "signals_to_recheck": "F1_xera_gap/pqi_diff dual-opposing at grade D — correctly zeroed the stake; directional accuracy was right this time but remains close-to-even across the archive, confirming suppression-only rule."
     },
     "TB @ TOR": {
       "verdict": "LOSS",
       "model_pick": "TOR ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "7-1",
-      "headline": "TB blew out TOR 7-1; CONFIRM SKIP protected against a lopsided loss on a Stage1/2-disagreement pick.",
-      "hypothesis": "f5_full_delta=0.386 was the slate's largest Stage1/2 split (Cease F5-heavy lean vs a near-coinflip full game), and HARD CAP 1 already zeroed the negative -5.16pp edge. TOR's 6-run loss validates the suppression cleanly.",
-      "signals_to_recheck": "f5_full_delta — a 0.386 Stage1/2 split correctly flagged instability; TOR's blowout loss supports treating large deltas as a stake-suppression trigger rather than a directional read."
+      "headline": "TB blew out TOR 7-1; CONFIRM SKIP correctly avoided a HARD CAP 1 + Stage1/2 disagreement pick that lost badly.",
+      "hypothesis": "f5_full_delta=0.386 was the slate's largest Stage1/2 split (Cease F5-dominant, near-even full-game), and HARD CAP 1 had already zeroed the negative -5.16pp edge (score 3→1). TOR's 6-run loss validates the suppression cleanly. The large delta flagged genuine model disagreement about the pick's stability — process success.",
+      "signals_to_recheck": "f5_full_delta and [HARD CAP 1] negative-edge GOLD — a 0.386 Stage1/2 split plus negative edge correctly flagged instability; TOR's blowout loss supports treating |delta|>0.25 as a hard stake-suppression trigger."
     },
     "BAL @ BOS": {
       "verdict": "WIN",
       "model_pick": "BOS ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "5-6",
-      "headline": "BOS edged BAL 6-5; the starred-F1-without-F3 DOWNGRADE missed a real win for the first time in the tracked streak.",
-      "hypothesis": "Process-failure candidate. F1_xera_gap=1.39* with no F3 corroboration triggered a DOWNGRADE under a rule the archive had validated 4+ straight times (7/12-7/19), but BOS pulled out a genuine pre-cap A-grade win (score 5) by one run. SP-xERA independently agreed with the pick too, not just the starred F1 — the rule's 'no independent corroboration' framing may be too strict when SP-xERA and F1 both point the same direction even without F3.",
-      "signals_to_recheck": "F1_xera_gap* without F3_swing_take_gap corroboration — broke its win streak today (BOS won 6-5 after DOWNGRADE); archive moves to 4-for-6, no longer an automatic-DOWNGRADE-with-no-exceptions case."
+      "headline": "BOS edged BAL 6-5; the starred-F1-without-F3 DOWNGRADE missed a real A-grade win for the first time in the tracked streak.",
+      "hypothesis": "Process-failure candidate. F1_xera_gap=1.39* fired with no F3 corroboration, triggering a DOWNGRADE under a rule the archive had validated 4+ consecutive times. But BOS won by 1 run on a genuine pre-cap A score-5 stack, and SP-xERA (Shane Baz, 1.34 edge) independently agreed with the BOS pick — meaning the SP-xERA signal is at least partially independent of the starred F1, not purely redundant as the rule assumes. Archive moves to 4-for-6 on this shape; the rule may need a carve-out when SP-xERA gap is also large on the same side.",
+      "signals_to_recheck": "F1_xera_gap* without F3_swing_take_gap — broke its streak today (BOS won 6-5 after DOWNGRADE); archive now 4W/2L on this rule shape. Consider whether a large SP-xERA gap (>1.0) on the same side as a starred F1 constitutes partial independent corroboration."
     },
     "LAD @ PHI": {
       "verdict": "LOSS",
       "model_pick": "LAD ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "7-10",
-      "headline": "PHI beat LAD 10-7; clean dual-opposing D-grade SKIP correctly called the loser.",
-      "hypothesis": "SP-xERA (0.69 against) and PQI (+14.4 against) both opposed LAD, and LAD lost by 3 — the opposing read was directionally right this time, consistent with dual-opposing splitting close to even rather than being a durable fade signal.",
-      "signals_to_recheck": "None — dual-opposing correctly predicted the loser here; sizing (SKIP) was correct regardless of direction."
+      "headline": "PHI beat LAD 10-7; clean dual-opposing D-grade SKIP was correctly sized, and the opposing read was also directionally right.",
+      "hypothesis": "SP-xERA (0.69 against LAD) and PQI (+14.4 against LAD) both opposed the pick, and PHI won — the opposing read was directionally correct this time. SKIP sizing was correct regardless. No process failure; the dual-opposing rule continues to function as designed (zero-stake, not a fade).",
+      "signals_to_recheck": "None — dual-opposing correctly predicted the loser here; consistency with the suppression-only rule, not a signal to promote to directional fade."
     },
     "SD @ ATL": {
       "verdict": "WIN",
       "model_pick": "ATL ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-3",
-      "headline": "ATL edged SD 3-2; CONFIRM SKIP correct on a coin-flip edge outside the acceptable band.",
-      "hypothesis": "Edge -8.31pp sat outside the [4,15]pp valid window and PQI leaned slightly against ATL, yet ATL won a one-run game — a genuinely marginal result consistent with the C-grade, score-0 read. No process failure either way.",
-      "signals_to_recheck": "None — a one-run win on a coin-flip-graded pick is consistent with correctly-suppressed uncertainty, not a missed signal."
+      "headline": "ATL edged SD 3-2; CONFIRM SKIP correct on a coin-flip pick outside the valid edge band.",
+      "hypothesis": "Edge -8.31pp sat outside the [4,15]pp valid window and PQI leaned slightly against ATL (Δ=-3.3). CAP 10 zeroed the marginal favorite at pick_prob=0.508. ATL's 1-run win is consistent with a correctly-suppressed near-coin-flip, not a missed signal. Neither process success nor process failure — variance on a correctly-untouched game.",
+      "signals_to_recheck": "None — edge outside acceptable band plus CAP 10 bottom-bucket correctly suppressed a coin-flip outcome."
     },
     "SF @ KC": {
       "verdict": "LOSS",
       "model_pick": "SF ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "3-4",
-      "headline": "KC beat SF 4-3; DOWNGRADE of the PLATINUM-demoted GOLD pick was correct and protective.",
-      "hypothesis": "Already demoted PLATINUM->GOLD by the rolling-benchmark guardrail, then zeroed further by CAP 10's marginal-favorite rule and a 0.27 Stage1/2 disagreement. SF's narrow loss validates holding this at SKIP — a clean process success.",
-      "signals_to_recheck": "None — PLATINUM guardrail demotion plus HARD CAP 10 correctly suppressed a losing marginal favorite."
+      "headline": "KC beat SF 4-3; DOWNGRADE of the PLATINUM-demoted/CAP10-zeroed GOLD pick was correct and protective.",
+      "hypothesis": "The PLATINUM→GOLD guardrail had already demoted SF (rolling hit rate ~43%), and Stage1/2 disagreed by 0.27 (Wacha F5-heavy vs a near-even full game), adding real instability. CAP 10 zeroed the marginal-favorite score to 0 after the demotion. SF's 1-run loss validates all three layers of suppression — a clean process success.",
+      "signals_to_recheck": "PLATINUM guardrail demotion plus Stage1/2 disagreement (f5_full_delta=0.2675) and HARD CAP 10 — three-layer suppression correctly called a losing marginal favorite."
     },
     "NYM @ MIL": {
       "verdict": "WIN",
       "model_pick": "MIL ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "3-8",
-      "headline": "MIL crushed NYM 8-3; the negative-edge DOWNGRADE missed a 5-run GOLD win.",
-      "hypothesis": "Process-failure candidate. HARD CAP 1 correctly capped the -3.19pp edge on paper, but the underlying pre-cap A- stack (SP-xERA +2, PQI +16.2, Stage agree, score 4) was directionally strong and MIL delivered a 5-run win. Same shape as 7/18-7/19's CAP-1-zeroing-real-winners pattern (MIA@MIL, TB@BOS) — negative-edge GOLD picks with a strong pre-cap score keep winning despite the cap.",
-      "signals_to_recheck": "[HARD CAP 1] negative-edge GOLD prevention — zeroed another strong pre-cap stack (score 4, A-) that went on to win by 5; joins TB@BOS/MIA@MIL (7/18-7/19) as evidence the cap may be too blunt when pre-cap score is 4+."
+      "headline": "MIL crushed NYM 8-3; the negative-edge DOWNGRADE (CAP 1) missed a 5-run GOLD win with a strong pre-cap A- stack.",
+      "hypothesis": "Process-failure candidate. HARD CAP 1 fired on the -3.19pp edge, correctly capping on paper, but the underlying pre-cap stack (SP-xERA +1.75, PQI +16.2, Stage agree, score 4/A-) was directionally strong and MIL won by 5 runs. This is the third consecutive instance (after TB@BOS and MIA@MIL on 7/18-7/19) of CAP 1 zeroing a pre-cap score-4+ stack that subsequently won. The cap appears too blunt when pre-cap score is ≥4, even on a slightly negative edge.",
+      "signals_to_recheck": "[HARD CAP 1] negative_edge_GOLD — zeroed a pre-cap A- score-4 stack (MIL won 8-3); now 3 consecutive occurrences of CAP 1 suppressing a score-4+ winner (TB@BOS 7/19, MIA@MIL 7/18-7/19, NYM@MIL today). Consider a CAP 1 carve-out when pre-cap score ≥4."
     },
     "DET @ CHC": {
       "verdict": "LOSS",
       "model_pick": "CHC ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "8-6",
-      "headline": "DET beat CHC 8-6; dual-opposing D-grade SKIP correctly called the loser.",
-      "hypothesis": "SP-xERA (1.18 against) and PQI (-11.0 against) both opposed CHC, and CHC lost — the opposing read was right this time, consistent with dual-opposing being roughly coinflip in aggregate but occasionally right.",
-      "signals_to_recheck": "None — dual-opposing called this one correctly; sizing (SKIP) was correct regardless of direction."
+      "headline": "DET beat CHC 8-6; dual-opposing D-grade SKIP correctly zero-staked, and the opposing read was directionally right.",
+      "hypothesis": "SP-xERA (1.18 against CHC) and PQI (-11.0 against CHC) both opposed the pick, and CHC lost — the opposing read called the right direction. SKIP was correctly sized at zero regardless. No process failure in either direction.",
+      "signals_to_recheck": "None — dual-opposing correctly predicted the loser; zero-stake sizing was right."
     },
     "CHW @ TEX": {
       "verdict": "LOSS",
       "model_pick": "TEX ML GOLD",
       "claude_decision": "OVERRIDE",
       "final_score": "10-3",
-      "headline": "CWS routed TEX 10-3 — Claude's only real stake of the day, an OVERRIDE of HARD CAP 7 suppression, was a clean process failure.",
-      "hypothesis": "Process failure. Claude overrode CAP 7's suppression on a +0.0077 bullpen gap, explicitly citing 'deGrom starting reduces reliance on the exact bullpen exposure the cap penalizes' as the offsetting factor — but deGrom himself was rocked for 5 ER in 4.2 IP and took the loss, directly contradicting the override's own rationale. The sub-0.02-band pattern itself still looks favorable in aggregate (6 of 7 tracked instances have now won, including today), but converting a population-level pattern into a single real stake carries real single-game variance, and the specific offsetting justification (an ace pitcher having a good day) was never independently checked against recent form.",
-      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — the override thesis took its first real-money loss (archive now 6-1 in the sub-0.02 band, still net-positive but no longer clean); deGrom's own poor start undercuts the ace-offsets-bullpen-exposure reasoning used to justify the override. Do not cite a starter's reputation as an offsetting factor without checking recent form/rest before converting a population-level pattern into a real stake."
+      "headline": "CWS routed TEX 10-3 — the slate's only real stake (GOLD OVERRIDE of HARD CAP 7) was a clear process failure.",
+      "hypothesis": "Process failure. Claude overrode CAP 7's suppression on hl_bullpen_xwoba_gap=+0.0077, citing deGrom's ace innings as an offsetting factor that reduces reliance on the bullpen exposure the cap penalizes. But deGrom allowed 5 ER in 4.2 IP and took the loss, directly falsifying the core override rationale. The sub-0.02 band pattern remains net-positive in aggregate (6-of-7 tracked instances won), but converting a population-level pattern into a single real stake using a starter's reputation — without checking recent form or rest — is a category error. This is the band's first real-stake loss.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage sub-0.02 band — first real-money stake on this pattern lost 10-3 (archive: 6-1 in sub-0.02 band but 0-1 when converted to real stake); do not cite a starter's reputation as offsetting-factor justification without checking recent ERA/IP before staking."
     },
     "MIA @ HOU": {
       "verdict": "WIN",
       "model_pick": "HOU ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "5-8",
-      "headline": "HOU beat MIA 8-5; CONFIRM SKIP correct on the sp_savant_gate HARD_VETO for Blanco's thin current-season sample.",
-      "hypothesis": "Ronel Blanco's 0-Statcast-pitch gate correctly withheld a stake despite his career track record; HOU winning comfortably doesn't argue against the veto since it's a data-availability gate, not a quality read.",
-      "signals_to_recheck": "None — sp_savant_gate=HARD_VETO functioned as designed on a thin-current-season-data case, independent of the directional win."
+      "headline": "HOU beat MIA 8-5; sp_savant_gate=HARD_VETO correctly withheld the stake on Blanco's 0-Statcast-pitch current-season sample.",
+      "hypothesis": "Ronel Blanco (career 45 GS / 3.45 ERA) triggered the sp_savant_gate HARD_VETO solely because of his 0 Statcast pitches tracked this season — a fresh return from injury/rehab that creates a current-season data void even without inexperience. HOU winning doesn't argue against the veto; it's a data-availability gate that functions independently of the directional outcome. Process success.",
+      "signals_to_recheck": "sp_savant_gate=HARD_VETO on thin_sp_data (0 current-season Statcast pitches) — functioned correctly; career track record does not override the current-season data gate."
     },
     "WSH @ COL": {
       "verdict": "WIN",
       "model_pick": "WSH ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "7-3",
-      "headline": "WSH throttled COL 7-3; the triple-stacked DOWNGRADE (CAP1 + CAP10 + starred-F1-no-F3) missed a 4-run GOLD win.",
-      "hypothesis": "Process-failure candidate, and paired with BAL@BOS makes the starred-F1-without-F3 rule 0-for-2 today. WSH's F1_xera_gap=1.50* had no F3 corroboration but did have F2_xwoba_gap and F5_bullpen_gap support, and the underlying pre-cap stack (score 4, A-) delivered comfortably. Combined with BAL@BOS, this is the clearest signal yet that the starred-F1-no-F3 auto-DOWNGRADE rule needs a secondary-signal carve-out (F2/F5 support) rather than treating F3 as the only valid corroboration.",
-      "signals_to_recheck": "F1_xera_gap* without F3_swing_take_gap corroboration — second miss today (WSH won 7-3 after DOWNGRADE); both of today's misses (BAL@BOS, WSH@COL) had F2/F5 support even without F3 — consider whether F2_xwoba_gap or F5_bullpen_gap should count as valid secondary corroboration alongside F3."
+      "headline": "WSH throttled COL 7-3; the triple-stacked DOWNGRADE (CAP1 + CAP10 + starred-F1-no-F3) missed a comfortable 4-run GOLD win.",
+      "hypothesis": "Process-failure candidate and paired with BAL@BOS makes the starred-F1-without-F3 rule 0-for-2 today. WSH's F1_xera_gap=1.50* had no F3 but did have F2_xwoba_gap=0.025 and F5_bullpen_gap=+1.05, and the underlying pre-cap stack (score 4, A-) delivered comfortably. Both of today's starred-F1 misses (BAL@BOS, WSH@COL) had F2/F5 support even without F3 — the rule may need a secondary-signal carve-out rather than treating F3 as the only valid corroboration.",
+      "signals_to_recheck": "F1_xera_gap* without F3_swing_take_gap — second miss today (WSH won 7-3 after DOWNGRADE, archive now 4-2 on this shape); both of today's misses had F2/F5 secondary support — consider whether F2_xwoba_gap or F5_bullpen_gap should qualify as valid corroboration alongside F3."
     },
     "OAK @ ARI": {
       "verdict": "LOSS",
       "model_pick": "ARI ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "5-2",
-      "headline": "OAK beat ARI 5-2; DOWNGRADE on the suspected CAP1 bypass plus rookie-SP blindspot was correct and protective.",
-      "hypothesis": "Process success. Mitch Bratt (2nd career MLB start) allowed 8 hits and 2 HR in 4.2 IP, validating the rookie-SP-blindspot flag independent of the suspected HARD CAP 1 code-path bypass (a negative-edge GOLD pick, edge_pp=-3.17, that reached Claude with no [HARD CAP 1] line in grade_reasons). Both reasons converged correctly on a loss.",
-      "signals_to_recheck": "small_sample_SP / rookie-SP blindspot (<6 career starts) — validated again (Bratt: 8 H, 2 HR allowed in 4.2 IP); also flag for engineering review — negative-edge GOLD (edge_pp=-3.17) reached Claude without a [HARD CAP 1] line in grade_reasons, a likely code-path gap distinct from the CAP 7 debate."
+      "headline": "OAK beat ARI 5-2; DOWNGRADE on the suspected CAP1 bypass plus rookie-SP blindspot (Bratt, 2nd career start) was correct and protective.",
+      "hypothesis": "Process success. Two independent reasons converged on the DOWNGRADE: (1) edge_pp=-3.17 is negative on a GOLD pick yet [HARD CAP 1] never appears in grade_reasons — a likely code-path bypass that Claude correctly identified and applied manually; (2) ARI's home SP Mitch Bratt had only 2 career MLB starts (6.00 ERA) — a textbook rookie-SP blindspot on the picked side. Bratt allowed 8 hits and 2 HRs in 4.2 IP, validating both flags.",
+      "signals_to_recheck": "small_sample_SP / rookie-SP blindspot (<6 career starts) confirmed on the picked side (Bratt: 8H/2HR/4.2IP); also flag for engineering: negative-edge GOLD (edge_pp=-3.17) reached Claude without a [HARD CAP 1] line in grade_reasons — a code-path gap distinct from the CAP 7 threshold debate."
     },
     "CIN @ SEA": {
       "verdict": "LOSS",
       "model_pick": "CIN ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "0-8",
-      "headline": "SEA shut out CIN 8-0; the slate's weakest D-grade stack (score -4) correctly called the loser by a wide margin.",
-      "hypothesis": "SP-xERA, PQI, and Stage1/2 disagreement all opposed CIN, plus fair_prob=0.397 sat below the 0.42 viability floor — every gate lined up against CIN and the 8-run shutout validates the read cleanly. Clean process success.",
-      "signals_to_recheck": "None — fair_prob<0.42 floor plus dual-opposing SP/PQI combined for the slate's most emphatic correct SKIP call."
+      "headline": "SEA shut out CIN 8-0; the slate's weakest D-grade stack (score -4) correctly called the loser in emphatic fashion.",
+      "hypothesis": "SP-xERA (0.89 against), PQI (+10.3 against), Stage1/2 disagreement (delta=0.19), and fair_prob=0.397 below the 0.42 viability floor all opposed CIN — the most complete opposing signal configuration on the slate. An 8-0 shutout validates every gate cleanly. Process success.",
+      "signals_to_recheck": "None — fair_prob<0.42 floor plus dual-opposing SP/PQI and Stage1/2 disagreement produced the slate's most emphatic correct SKIP call."
     },
     "STL @ LAA": {
       "verdict": "WIN",
       "model_pick": "LAA ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "2-3",
-      "headline": "LAA edged STL 3-2; the DOWNGRADE Claude chose not to extend the CHW@TEX-style override to still missed a win, by the narrowest possible margin.",
-      "hypothesis": "Genuinely mixed signal. Claude explicitly declined to override CAP 7 here (unlike CHW@TEX), citing a stacked bullpen_fatigue flag and a 15.06pp edge near the outer band with no offsetting ace factor — and LAA won by exactly 1 run, a margin consistent with real uncertainty rather than a clean miss. Combined with CHW@TEX, Claude's within-slate differentiation between two CAP-7-suppressed GOLD picks pointed the wrong way on both: the overridden game lost big, the left-suppressed game won narrow.",
-      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage — sub-0.02 band is now 6-1 across the July archive including today (STL@LAA won 3-2 while suppressed, CHW@TEX lost while overridden); the pattern is still net-positive but not clean enough to justify one-sided overriding without the >=0.02 threshold fix being backtested first."
+      "headline": "LAA edged STL 3-2; the conservative DOWNGRADE (choosing not to extend the CAP 7 override here as with CHW@TEX) still missed a narrow win.",
+      "hypothesis": "Claude explicitly declined to override CAP 7 on hl_bullpen_xwoba_gap=+0.0079 because this game stacked bullpen_fatigue and a 15.06pp edge near the outer band with no offsetting ace factor — unlike CHW@TEX. LAA won by 1, a margin consistent with real uncertainty. Combined with CHW@TEX losing 10-3, the within-slate differentiation pointed the wrong way on both: the overridden game lost big, the left-suppressed game won narrow. At the game level, this is close to variance; across both together, it is a net-negative day for CAP 7 override logic.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage sub-0.02 band — sub-0.02 archive is now 6-1 (STL@LAA won 3-2 while suppressed, CHW@TEX lost 10-3 while overridden); the population-level pattern remains net-positive but first real-stake conversion was a loss — do not override without >= 0.02 threshold fix first."
     }
   },
   "patterns_observed": [
-    "Claude's tier adjustments were net-negative today despite individually defensible reasoning: the model's 7 GOLD-tier picks went 4-3 (57%) pre-review, but Claude DOWNGRADEd 6 of the 7 to SKIP and OVERRODE the 7th (CHW@TEX) into a real stake — suppressing all 4 winners (BAL@BOS, NYM@MIL, WSH@COL, STL@LAA) while the sole real-money conviction landed on the one loser. Default posture on GOLD-tier picks should lean toward CONFIRM unless a specific rule has a strong recent track record; today shows that stacking several plausible-sounding suppression rules can collectively erase a tier that was actually beating coin-flip.",
-    "The starred-F1_xera_gap-without-F3-corroboration auto-DOWNGRADE rule went 0-for-2 today (BAL@BOS BOS won 6-5, WSH@COL WSH won 7-3), breaking a streak the operating brief described as '4+ consecutive validations' with 'no exception.' Archive moves to 4-for-6. Both of today's misses had F2_xwoba_gap or F5_bullpen_gap support even without F3 — recommend accepting F2/F5 as valid secondary corroboration alongside F3, and downgrading to half-Kelly rather than a full SKIP pending more data.",
-    "HARD CAP 7's sub-0.02 hl_bullpen_xwoba_gap band remains net-positive in aggregate (6 of 7 tracked instances won, including today's STL@LAA), but its first live conversion into a real stake (CHW@TEX OVERRIDE, citing deGrom as an offsetting ace) lost 10-3, and deGrom himself allowed 5 ER in 4.2 IP — directly falsifying the specific rationale used to justify the override. Keep tracking the band pattern for the proposed >=0.02 threshold fix, but stop using a starter's reputation alone as override justification; check recent form before staking real money on a population-level exception.",
-    "The rookie-SP blindspot flag (OAK@ARI, Mitch Bratt's 2nd career start: 8 H, 2 HR allowed in 4.2 IP) and the suspected HARD CAP 1 code-path bypass both correctly drove a protective DOWNGRADE on a losing pick — continue enforcing the rookie-SP flag as-is, and flag the CAP 1 grade_reasons gap (negative-edge GOLD reaching Claude uncapped) to engineering as a distinct bug from the CAP 7 threshold debate."
+    "Claude's tier decisions were collectively net-negative today despite individually defensible reasoning: the model's 7 GOLD picks went 4-3 directionally (57%), but Claude DOWNGRADEd 6 to SKIP (suppressing all 4 winners: BAL@BOS, NYM@MIL, WSH@COL, STL@LAA) and OVERRODe the 7th (CHW@TEX) into a real stake that lost 10-3. Going forward, default posture on GOLD picks should lean CONFIRM unless a specific rule has a recent track record ≥70% on that exact shape — today shows that stacking plausible-sounding suppression rules can erase a tier that was directionally beating the market.",
+    "The starred-F1_xera_gap-without-F3-corroboration auto-DOWNGRADE rule went 0-for-2 today (BAL@BOS BOS won 6-5; WSH@COL WSH won 7-3), breaking a streak described as '4+ consecutive validations.' Archive moves to 4W/2L on this shape. Critically, both of today's misses had F2_xwoba_gap or F5_bullpen_gap secondary support even without F3 — the rule should be revised to accept F2 or F5 as valid corroboration, not only F3, and demote to half-Kelly rather than a full SKIP pending 30+ data points on the revised shape.",
+    "[HARD CAP 1] negative_edge_GOLD prevention has now suppressed three consecutive pre-cap score-4+ GOLD stacks that went on to win (TB@BOS 7/19 pre-cap A-, MIA@MIL 7/18-19 pre-cap A-, NYM@MIL today pre-cap A-). The cap is too blunt when the underlying stack before the edge adjustment is ≥4 and at least two F-series/SP/PQI signals independently agree — consider a carve-out: when pre-cap score ≥4, treat the cap as a Kelly-damping rather than a full SKIP.",
+    "The CHW@TEX OVERRIDE (the first real-money stake on the HARD CAP 7 sub-0.02-band pattern) lost 10-3 after deGrom allowed 5 ER in 4.2 IP, directly negating the override rationale that cited deGrom's innings as offsetting the bullpen exposure. Rule going forward: a starting pitcher's reputation does not qualify as an offsetting factor for CAP 7 overrides without a concrete check of recent ERA, IP/start, and rest; population-level patterns must not be converted to single-game real stakes via qualitative logic that hasn't been independently verified."
   ]
 }
