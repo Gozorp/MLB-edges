@@ -1,6 +1,7 @@
 {
- "frozen": true,
- "reason": "SFO->Japan travel freeze: nightly chain runs predict.py --skip-weights, so model weights are intentionally frozen and the self-learn audit log does not advance. Mutes weights_state_freshness to FROZEN instead of false-RED.",
- "since": "2026-06-03",
- "until": "2026-07-20"
+  "frozen": false,
+  "reason": "Travel freeze ENDED 2026-07-21 (resumed on request). Weight learning re-enabled: run_local_slate.py now gates --skip-weights on this marker's 'frozen' flag instead of hardcoding it, so health_check + oos_ledger + the actual learning all read one source of truth. Kept (not deleted) so the freeze can be re-armed by setting frozen:true (+ optional 'until'). 'since'/'until' below are the historical freeze window.",
+  "since": "2026-06-03",
+  "until": "2026-07-20",
+  "resumed": "2026-07-21"
 }

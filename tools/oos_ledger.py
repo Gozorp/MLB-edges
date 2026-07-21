@@ -71,7 +71,19 @@ def log_predictions(slate):
     if not os.path.exists(path): print("[oos] no diag for %s"%slate); return 0
     seen={(r.get("slate_date"),r.get("matchup")) for r in _read() if r.get("phase")=="predict"}
     cal=_sig(os.path.join(ROOT,"models","calibration_v1.json"))
-    frozen=os.path.exists(os.path.join(ROOT,"data","state","weights_freeze.json"))
+    # 2026-07-21: tag by the frozen FLAG, not mere file existence -- the marker
+    # is kept (frozen:false) after the freeze ends so it can be flipped back, so
+    # existence no longer implies frozen.
+    def _is_frozen():
+        try:
+            _d=json.load(open(os.path.join(ROOT,"data","state","weights_freeze.json"),encoding="utf-8"))
+            if not _d.get("frozen"): return False
+            _u=_d.get("until")
+            if _u and datetime.date.today()>datetime.date.fromisoformat(_u): return False
+            return True
+        except Exception:
+            return False
+    frozen=_is_frozen()
     csv.field_size_limit(10**7); n=0
     for r in csv.DictReader(open(path,encoding="utf-8",errors="replace")):
         m=(r.get("matchup") or "").strip()

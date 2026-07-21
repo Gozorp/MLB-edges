@@ -147,9 +147,28 @@ def _run():
     run([PY, "tools/model_guardrails.py"],
         "model guardrails refresh", fatal=False)
 
-    # 1) predict
-    run([PY, "predict.py"] + ([date_arg] if date_arg else []) + ["--skip-weights"],
-        "predict.py --skip-weights", fatal=True)
+    # 1) predict -- weight learning is FREEZE-GATED (2026-07-21). The SFO/Japan
+    #    travel freeze used to HARDCODE --skip-weights here; now it's driven by
+    #    data/state/weights_freeze.json (the SAME marker health_check.py reads),
+    #    so the health badge and the actual learning behaviour stay in sync and
+    #    ONE flag controls everything. Frozen == marker exists AND frozen:true AND
+    #    (no 'until' OR today <= until). Missing/unreadable marker -> NOT frozen
+    #    (weights learn) = normal operation.
+    def _weights_frozen():
+        try:
+            _d = json.loads(Path("data/state/weights_freeze.json").read_text(encoding="utf-8"))
+            if not _d.get("frozen"):
+                return False
+            _until = _d.get("until")
+            if _until and datetime.date.today() > datetime.date.fromisoformat(_until):
+                return False
+            return True
+        except Exception:
+            return False
+    _skip = ["--skip-weights"] if _weights_frozen() else []
+    run([PY, "predict.py"] + ([date_arg] if date_arg else []) + _skip,
+        "predict.py" + (" --skip-weights (FROZEN)" if _skip else " (weights LIVE)"),
+        fatal=True)
 
     slate = date_arg or newest_diag_date()
     log("")
