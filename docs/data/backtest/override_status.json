@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-20T14:28:01.606597Z",
+  "generated_at": "2026-07-21T14:11:06.247015Z",
   "verdict": {
     "state": "demote",
-    "reason": "reverse-direction sanity (Rule 11): 5 historical wins flipped >= limit 2; demote OVERRIDE to stake-size cap regardless of precision (50.0%)",
-    "n_out_of_sample": 10,
+    "reason": "reverse-direction sanity (Rule 11): 5 historical wins flipped >= limit 2; demote OVERRIDE to stake-size cap regardless of precision (54.5%)",
+    "n_out_of_sample": 11,
     "n_in_sample": 6,
-    "precision_pct": 50.0,
+    "precision_pct": 54.55,
     "wins_flipped": 5,
-    "losses_flipped": 5,
+    "losses_flipped": 6,
     "thresholds": {
       "freeze_date": "2026-05-21",
       "sample_floor": 10,
@@ -15,7 +15,7 @@
       "wins_flipped_limit": 2
     }
   },
-  "n_fires_total": 16,
+  "n_fires_total": 17,
   "out_of_sample_fires": [
     {
       "date": "2026-06-08",
@@ -105,6 +105,15 @@
       "verdict": "LOSS",
       "final_score": "1-0",
       "model_pick": "CIN ML SKIP",
+      "in_sample": false
+    },
+    {
+      "date": "2026-07-20",
+      "matchup": "CHW @ TEX",
+      "decision": "OVERRIDE",
+      "verdict": "LOSS",
+      "final_score": "10-3",
+      "model_pick": "TEX ML GOLD",
       "in_sample": false
     }
   ],

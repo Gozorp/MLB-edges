@@ -3,15 +3,15 @@ setlocal EnableDelayedExpansion
 cd /d "%~dp0"
 
 echo ============================================================
-echo  OVERRIDE DEMOTION  (auto-generated 2026-07-20 14:28 UTC)
+echo  OVERRIDE DEMOTION  (auto-generated 2026-07-21 14:11 UTC)
 echo  -----------------------------------------------------------
 echo  The out-of-sample OVERRIDE backtest hit the locked demote
 echo  threshold:
 echo
-echo    out-of-sample n: 10
-echo    precision:       50.0%%   (threshold: 85%%)
+echo    out-of-sample n: 11
+echo    precision:       54.5%%   (threshold: 85%%)
 echo    wins flipped:    5  (limit: 2)
-echo    verdict reason:  reverse-direction sanity (Rule 11): 5 historical wins flipped >= limit 2; demote OVERRIDE to stake-size cap regardless of precision (50.0%)
+echo    verdict reason:  reverse-direction sanity (Rule 11): 5 historical wins flipped >= limit 2; demote OVERRIDE to stake-size cap regardless of precision (54.5%)
 echo
 echo  Per the locked policy (memory/project_override_backtest_thresholds.md),
 echo  OVERRIDE demotes from a direction-flip rule to a stake-size cap:
