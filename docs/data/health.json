@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-21T19:43:41.366833+00:00",
+  "checked_at": "2026-07-21T21:19:53.657012+00:00",
   "overall": "green",
   "categories": {
     "workflows": "green",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 0.5h ago",
+      "message": "last slate publish 0.1h ago",
       "detail": {
-        "last_run_iso": "2026-07-21T12:16:15-07:00",
-        "age_hours": 0.46
+        "last_run_iso": "2026-07-21T14:16:24-07:00",
+        "age_hours": 0.06
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-07-19T06:31:12Z",
-        "age_hours": 61.21,
+        "age_hours": 62.81,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 2.5d ago",
+      "message": "last fired 2.6d ago",
       "detail": {
         "last_run_iso": "2026-07-19T07:25:07Z",
-        "age_hours": 60.31,
+        "age_hours": 61.91,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 0.5h ago",
+      "message": "last fired 2.1h ago",
       "detail": {
         "last_run_iso": "2026-07-21T19:14:17Z",
-        "age_hours": 0.49,
+        "age_hours": 2.09,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -96,7 +96,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-21T19:43:41.489Z",
+          "timestamp": "2026-07-21T21:19:53.774Z",
           "commit": "unknown",
           "region": "SJC"
         }
@@ -106,10 +106,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 2.3h ago",
+      "message": "last learned 3.9h ago",
       "detail": {
         "last_entry_iso": "2026-07-21T17:27:52.584738+00:00",
-        "age_hours": 2.26
+        "age_hours": 3.87
       },
       "category": "model"
     },
