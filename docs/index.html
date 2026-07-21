@@ -10686,17 +10686,22 @@ document.addEventListener("click", function (e) {
       const g = (r.grade || "").trim();
       return g === "A" || g === "A-" || g === "A−";
     }).length;
-    let liveCount = 0;
+    // Count DISTINCT live games. The results map holds MANY keys per game
+    // (a pk:<gamePk> key, both away@home / home@away orderings, DH-suffixed
+    // variants, and team-abbreviation aliases like OAK/ATH), so counting keys
+    // and dividing by a fixed 4 badly overcounts (~8 keys/game, more for alias
+    // teams -> e.g. 92 live keys/4 = 23 when only 12 games are live). Dedupe on
+    // the game's true identity (gamePk) instead — can never exceed games-today.
+    const liveGames = new Set();
     for (const k of Object.keys(results)) {
       const r = results[k];
       const s = String(r.statusText || "").toLowerCase();
       if (/in progress|challenge|delayed(?! start)|review|replay|umpire/.test(s)) {
-        liveCount++;
+        liveGames.add(r.gamePk != null ? "pk:" + r.gamePk
+                      : (r.awayAbbr || "") + "@" + (r.homeAbbr || "") + "@G" + (r.gameNumber || 1));
       }
     }
-    // Each unique game has up to 4 keys in the results map (away@home,
-    // home@away, and DH variants). Divide by 4 as a rough dedupe.
-    liveCount = Math.round(liveCount / 4);
+    const liveCount = liveGames.size;
     const sg = document.getElementById("hero-stat-games");
     const sa = document.getElementById("hero-stat-a-grades");
     const sl = document.getElementById("hero-stat-live");
