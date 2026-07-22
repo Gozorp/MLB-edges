@@ -1,0 +1,340 @@
+{
+ "date": "2026-07-22",
+ "generated_utc": "2026-07-22T04:30:06Z",
+ "engine": "correlated-combo v1 (display-only; frozen model untouched)",
+ "scope_notes": [
+  "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
+  "ML is the only market-anchored leg; the double is model-priced."
+ ],
+ "correlation": {
+  "n_pairs": 351,
+  "n11": 149,
+  "n10": 31,
+  "n01": 33,
+  "n00": 138,
+  "f5_pushes": 70,
+  "f5_push_rate": 0.1663,
+  "p_full_given_f5w": 0.8278,
+  "p_full_given_f5l": 0.193,
+  "ratio_r": 4.2894,
+  "phi": 0.635,
+  "source": "oos_ledger empirical (frozen-window graded pairs)"
+ },
+ "combos": [
+  {
+   "matchup": "WSH @ COL",
+   "pick": "WSH",
+   "opponent": "COL",
+   "legs": [
+    {
+     "type": "ML",
+     "sel": "WSH wins",
+     "prob": 0.6209,
+     "fair": 0.5676,
+     "edge_pp": 5.32,
+     "band": "goldilocks",
+     "market": "kalshi fair (devigged)"
+    },
+    {
+     "type": "F5",
+     "sel": "WSH leads after 5 (tie voids leg)",
+     "prob": 0.5611,
+     "fair": null,
+     "edge_pp": null,
+     "band": null,
+     "market": "model-priced (no F5 market feed)"
+    }
+   ],
+   "joint_prob": 0.5251,
+   "independence_prob": 0.3484,
+   "correlation_lift_pp": 17.67,
+   "grade": "B",
+   "tier": "GOLD",
+   "gates": [
+    {
+     "sheet": "grade",
+     "verdict": "pass",
+     "note": "final grade B (need A/A-/B+/B)"
+    },
+    {
+     "sheet": "conviction_tier",
+     "verdict": "pass",
+     "note": "tier GOLD"
+    },
+    {
+     "sheet": "market_band",
+     "verdict": "pass",
+     "note": "+5.3pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
+    },
+    {
+     "sheet": "stage_coherence",
+     "verdict": "pass",
+     "note": "F5 side prob 56.1%"
+    },
+    {
+     "sheet": "claude_review",
+     "verdict": "n/a",
+     "note": "no review published today"
+    },
+    {
+     "sheet": "team_tiers",
+     "verdict": "n/a",
+     "note": "tier sheet unavailable for matchup"
+    },
+    {
+     "sheet": "streaks",
+     "verdict": "n/a",
+     "note": "streak sheet unavailable"
+    }
+   ],
+   "unanimous": true,
+   "narrative": "WSH ML + WSH F5 lead: the same win path drives both legs -- historically, when the pick leads after 5 it wins the game 83% of the time vs 19% when it trails (ledger, n=351).",
+   "context": {
+    "pen_strain_pick_side": 0.1177
+   }
+  }
+ ],
+ "combo_pool": [
+  {
+   "market": "ML",
+   "matchup": "WSH @ COL",
+   "sel": "WSH wins",
+   "model_prob": 0.6209,
+   "market_prob": 0.5676,
+   "edge_pp": 5.32,
+   "status": "live",
+   "unanimous": true
+  }
+ ],
+ "markets_status": {
+  "ML": "live (Kalshi devigged fair)",
+  "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
+  "K_PROP": "awaiting ODDS_API_KEY in .env -- adapter shipped (tools/kprop_odds.py)"
+ },
+ "rejected": [
+  {
+   "matchup": "PIT @ NYY",
+   "pick": "NYY",
+   "joint_prob": 0.5376,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "-1.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "PIT @ NYY",
+   "pick": "NYY",
+   "joint_prob": 0.5355,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+1.4pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "BAL @ BOS",
+   "pick": "BOS",
+   "joint_prob": 0.5688,
+   "blocked_by": [
+    "conviction_tier"
+   ],
+   "notes": [
+    "tier SKIP"
+   ]
+  },
+  {
+   "matchup": "SF @ KC",
+   "pick": "SF",
+   "joint_prob": 0.4859,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "+2.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "NYM @ MIL",
+   "pick": "MIL",
+   "joint_prob": 0.5422,
+   "blocked_by": [
+    "grade",
+    "market_band"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+3.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "OAK @ ARI",
+   "pick": "ARI",
+   "joint_prob": 0.3961,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+15.2pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "F5 side prob 39.6%"
+   ]
+  },
+  {
+   "matchup": "CIN @ SEA",
+   "pick": "CIN",
+   "joint_prob": 0.1316,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+12.3pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "F5 side prob 13.2% + Stage 1/2 disagree flag"
+   ]
+  },
+  {
+   "matchup": "STL @ LAA",
+   "pick": "LAA",
+   "joint_prob": 0.5408,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "+3.2pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "F5 side prob 84.6% + Stage 1/2 disagree flag"
+   ]
+  },
+  {
+   "matchup": "MIN @ CLE",
+   "pick": "MIN",
+   "joint_prob": 0.4393,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "+8.1pp vs fair -> caution band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "LAD @ PHI",
+   "pick": "LAD",
+   "joint_prob": 0.2362,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+17.6pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "F5 side prob 23.6%"
+   ]
+  },
+  {
+   "matchup": "TB @ TOR",
+   "pick": "TB",
+   "joint_prob": 0.4442,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "+2.8pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "SD @ ATL",
+   "pick": "ATL",
+   "joint_prob": 0.4195,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "tier SKIP",
+    "-0.0pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "F5 side prob 44.4%"
+   ]
+  },
+  {
+   "matchup": "CHW @ TEX",
+   "pick": "TEX",
+   "joint_prob": 0.3133,
+   "blocked_by": [
+    "grade",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade B- (need A/A-/B+/B)",
+    "+8.2pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "F5 side prob 31.3%"
+   ]
+  },
+  {
+   "matchup": "DET @ CHC",
+   "pick": "CHC",
+   "joint_prob": 0.4323,
+   "blocked_by": [
+    "grade",
+    "conviction_tier",
+    "market_band"
+   ],
+   "notes": [
+    "final grade D (need A/A-/B+/B)",
+    "tier SKIP",
+    "-1.1pp vs fair -> noise band (strict 4-8 goldilocks)"
+   ]
+  },
+  {
+   "matchup": "MIA @ HOU",
+   "pick": "HOU",
+   "joint_prob": 0.4028,
+   "blocked_by": [
+    "grade",
+    "market_band",
+    "stage_coherence"
+   ],
+   "notes": [
+    "final grade C (need A/A-/B+/B)",
+    "+2.3pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "F5 side prob 40.3%"
+   ]
+  }
+ ],
+ "n_games": 16
+}
