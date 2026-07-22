@@ -1,13 +1,14 @@
 {
   "date": "2026-07-22",
-  "fit_at": "2026-07-22T09:25:00Z",
+  "fit_at": "2026-07-22T19:01:00Z",
   "model_version": "claude-brain-v1",
-  "n_games": 16,
+  "n_games": 17,
   "patterns_recognized": [
-    "HARD CAP 7 (pick-side bullpen disadvantage) fires on three GOLD picks today (PIT@NYY G2 gap=+0.0216, NYM@MIL gap=+0.0001, CHW@TEX gap=+0.0060, MIA@HOU gap=+0.0205). The archive has repeatedly flagged the sub-0.02 band as a false-negative source, but the one time (7/20 CHW@TEX) this exact matchup's CAP7 fire was OVERRIDDEN upward on qualitative grounds (citing deGrom as an offsetting ace), it lost 10-3 and deGrom got shelled. Lesson applied today: agree with (DOWNGRADE to) the cap's suppression rather than override, especially on CHW@TEX where the starter (Tyler Alexander, not deGrom) doesn't even offer the same override temptation.",
-    "HARD CAP 1 (negative-edge GOLD) fires on PIT@NYY G1 (-1.99pp). The archive shows several recent false negatives on score>=4 pre-cap stacks, but the brain prompt explicitly states this cap is non-negotiable and validated 4-for-5 live -- trusted as-is rather than re-litigated.",
-    "Dual-opposing D-grade signals (SP xERA + PQI both against the pick) appear on OAK@ARI, CIN@SEA, LAD@PHI, TB@TOR, DET@CHC. The archive has settled this as a stake-suppression-only signal, never a directional fade -- applied by CONFIRMing SKIP without overriding toward the opposing team on any of these.",
-    "CHW@TEX is the same matchup graded two days ago (7/20) with an identical CAP7 fire in the same sub-0.02 band; that override lost badly. No F1*-without-F3 signals appear anywhere on today's slate, so the recently-shaky (4W-2L) starred-F1 auto-downgrade rule was not a factor in any decision today."
+    "HARD CAP 7's sub-0.02 hl_bullpen_xwoba_gap band remains genuinely disputed: it false-negatived winners on 7/10, 7/12, 7/18, 7/19, and 7/21 (CHW@TEX won 10-0 after being DOWNGRADEd), yet the one real-stake OVERRIDE of this exact cap (7/20 CHW@TEX, citing deGrom as an offsetting ace) lost 10-3, and the very next blanket 'prior-day-loss' DOWNGRADE rule (7/21) missed another 10-run TEX win. Applied today by deferring to the cap on NYM@MIL (gap=+0.0001) and CHW@TEX (gap=+0.0060) without inventing a directional override or a standing rule from a single prior day.",
+    "HARD CAP 10's CONFIRM-rescue mechanism is net-unprofitable in the archive: the prompt's own documentation shows CONFIRM-rescued bottom-bucket picks hit only 47.6% (below breakeven), and 7/21's three real-stake rescues went 1-for-3 (SD@ATL WIN with F3=2777.6 and full 4-dimension agreement; SF@KC LOSS and DET@CHC LOSS with weaker/inconsistent support). Applied today by NOT rescuing SF@KC (F3=735.3, the identical matchup to yesterday's rescue loss), SD@ATL (no F-signal firing, pre-cap score only 2), or MIN@CLE (CAP7 already legitimately fires independent of CAP10).",
+    "Dual-opposing SP-xERA + PQI signals (both against the pick) continue to be validated as stake-suppression-only, never a directional fade, across roughly 15 tracked instances from 7/17-7/21 regardless of which direction the opposition pointed. Applied today by holding SKIP (not fading) on OAK@ARI, CIN@SEA, LAD@PHI, TB@TOR, and DET@CHC.",
+    "HARD CAP 1 (negative-edge GOLD, PIT@NYY G1 edge=-4.41pp) and HARD CAP 6 (extreme positive-edge hallucination, PIT@NYY G2 edge=+28.17pp) both fire today. The brain prompt is explicit both caps are non-negotiable despite the archive flagging 3 consecutive CAP-1-suppressed score-4+ winners (TB@BOS, MIA@MIL, NYM@MIL on 7/18-20) — deferred to both without relitigating, per the prompt's standing guidance not to relax validated caps.",
+    "Two PIT@NYY-family and one BAL@BOS game were already in progress at the time of this run (PIT leading NYY 3-0; BOS leading BAL 6-2; SF@KC 0-0 early) per live statsapi data. Neither changes the underlying cap-driven decisions, but is noted as live color where relevant."
   ],
   "by_matchup": {
     "PIT @ NYY G1": {
@@ -18,45 +19,45 @@
       "claude_decision": "DOWNGRADE",
       "claude_pick": "NYY",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "Edge is -1.99pp, triggering HARD CAP 1 (negative-edge GOLD prevention), which collapsed the pre-cap A- stack to B-/score=1. The brain prompt is explicit that CAP 1 is non-negotiable (validated 4-for-5 live) and not to be relaxed even when the underlying F1/SP/PQI/Stage-agreement signals look strong. No live news changes the calculus. Defer to the cap.",
-      "lessons_applied": ["HARD-CAP-1-non-negotiable"]
+      "claude_confidence": 0.5,
+      "reasoning": "HARD CAP 1 fired on edge=-4.41pp, collapsing a pre-cap A- (score 4: F1 xERA gap 2.66 agrees, PQI Δ=+18.3 confirms, Stage 1/2 agree Δ=0.05) to B-/score1. The brain prompt treats CAP 1 as non-negotiable (validated 4-for-5 live) despite the archive flagging 3 recent instances where it suppressed score-4+ winners (7/18-7/20). Live: this game is already in progress with PIT leading 3-0. Defer to the cap.",
+      "lessons_applied": ["HARD-CAP-1-non-negotiable", "live-game-in-progress"]
     },
     "PIT @ NYY G2": {
       "model_pick": "NYY ML GOLD",
-      "model_prob": 0.6443,
+      "model_prob": 0.6293,
       "model_tier": "GOLD",
-      "model_grade": "B-",
+      "model_grade": "C",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "NYY",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0216, which sits at/above the disputed sub-0.02 false-negative band the archive has flagged repeatedly -- this gap is large enough to be a legitimate fire, not the marginal noise seen in the KC@BAL/MIA@MIL cases. Bubba Chandler (PIT SP) is a rookie-caliber arm which adds opposing-side uncertainty the model may not fully price. Defer to the cap.",
-      "lessons_applied": ["CAP7-sub-0.02-band-scrutiny"]
+      "claude_confidence": 0.48,
+      "reasoning": "HARD CAP 6 fired on edge=+28.17pp (>25pp), the calibrator-hallucination range, collapsing a pre-cap A (score 5) to C/score0 despite F-signal, SP edge (1.51 xERA), and PQI (Δ=+18.3) all agreeing with NYY. F1_xera_gap=1.31* is starred (thin sample), adding independent caution. CAP 6 is validated 3-for-3 in the archive and not to be relitigated. Defer to the cap.",
+      "lessons_applied": ["HARD-CAP-6-non-negotiable", "F1-starred-thin-sample"]
     },
     "BAL @ BOS G1": {
       "model_pick": "BOS ML SKIP",
-      "model_prob": 0.6376,
+      "model_prob": 0.6412,
       "model_tier": "SKIP",
       "model_grade": "B",
       "claude_decision": "CONFIRM",
       "claude_pick": "BOS",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.55,
-      "reasoning": "Model's own pipeline already assigns SKIP (stake_mult=0) despite a B-grade score of 2 -- edge is in-band (5.82pp) but the raw tier never elevated past SKIP. No hard cap needed to re-derive here; nothing in recent postgame history or live context argues for elevating a pick the model itself declined to stake.",
-      "lessons_applied": []
+      "claude_confidence": 0.53,
+      "reasoning": "Model's own pipeline already tiers this SKIP (grade B/score2, team_quality modifier disabled) with no hard cap needed — edge 6.19pp is in-band but the score never cleared elevation. Game is in progress with BOS already leading 6-2, consistent with the pick direction. Nothing in recent postgame history argues for elevating a pick the model itself declined to stake.",
+      "lessons_applied": ["live-game-in-progress"]
     },
     "SF @ KC": {
       "model_pick": "SF ML GOLD",
-      "model_prob": 0.5613,
+      "model_prob": 0.5673,
       "model_tier": "GOLD",
       "model_grade": "C",
       "claude_decision": "DOWNGRADE",
       "claude_pick": "SF",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "SF was demoted from DIAMOND to GOLD by the rolling-benchmark guardrail, then HARD CAP 10 zeroed the score (5->0) as a bottom-bucket marginal favorite without a Claude CONFIRM anchor. This is functionally the same setup as 7/20's SF@KC (DIAMOND->GOLD demotion, three-layer suppression), where KC won 4-3 and the suppression was validated. Defer to the caps.",
-      "lessons_applied": ["CAP10-bottom-bucket", "SF@KC-precedent-7/20"]
+      "claude_confidence": 0.5,
+      "reasoning": "SF was demoted DIAMOND->GOLD by the rolling-benchmark guardrail, then HARD CAP 10 zeroed a strong pre-cap A (score5: F-signal fires, SP edge 2.12 agrees, PQI Δ=-32.3 confirms, Stage agree) because pick_prob sits in the bottom bucket. This is the identical matchup to 7/21, where a similarly strong-looking CAP10-rescue CONFIRM (F3=822.2) lost 2-3. Today's F3=735.3 is again sub-1000. Given the fresh same-matchup precedent, do not rescue.",
+      "lessons_applied": ["CAP10-rescue-unprofitable", "SF@KC-precedent-7/21"]
     },
     "NYM @ MIL": {
       "model_pick": "MIL ML GOLD",
@@ -66,33 +67,33 @@
       "claude_decision": "DOWNGRADE",
       "claude_pick": "MIL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0001 -- essentially zero, the most extreme example yet of the disputed sub-0.02 false-negative band. The signal stack underneath (F-signal, SP edge 1.23 agreeing, PQI +19.9, Stage agree) is genuinely strong. However, the 7/20 lesson on this exact matchup (NYM@MIL CAP1 DOWNGRADE that missed a 5-run MIL win) and the CHW@TEX override loss both argue against converting a disputed-cap pattern into a real stake without the threshold fix shipped. Defer to the cap; flag for engineering.",
-      "lessons_applied": ["CAP7-sub-0.02-band-scrutiny", "no-override-without-threshold-fix"]
+      "claude_confidence": 0.5,
+      "reasoning": "HARD CAP 7 fired on hl_bullpen_xwoba_gap=+0.0001, the most extreme example yet of the disputed sub-0.02 false-negative band (winners suppressed 7/10, 7/12, 7/18, 7/19). But the one real-stake OVERRIDE of this cap type (7/20 CHW@TEX) lost 10-3, and F3=646.4 here is below the 1000 meaningful-anchor threshold (this exact matchup's 7/21 DOWNGRADE was correctly protective on a thin F3=243.9 stack). Mixed evidence; defer to the cap rather than override.",
+      "lessons_applied": ["CAP7-sub-0.02-band-disputed", "no-override-without-threshold-fix"]
     },
     "WSH @ COL": {
       "model_pick": "WSH ML GOLD",
-      "model_prob": 0.6209,
+      "model_prob": 0.6359,
       "model_tier": "GOLD",
       "model_grade": "B",
       "claude_decision": "CONFIRM",
       "claude_pick": "WSH",
       "claude_tier": "GOLD",
       "claude_confidence": 0.58,
-      "reasoning": "No starred F1 signal is present today (only F2_xwoba_gap=0.025 and F5_bullpen_gap=+1.07 fire), so the F1*-without-F3 downgrade rule that missed on this exact matchup on 7/20 (WSH won 7-3 after a DOWNGRADE) doesn't apply here -- there's no starred signal to distrust. Edge is in-band (5.32pp), Stage 1/2 agree exactly (delta=0.00), no hard cap fired. Sound pick.",
-      "lessons_applied": ["F1-star-rule-not-applicable-today"]
+      "reasoning": "Clean GOLD stack: F2_xwoba_gap=0.025 and F5_bullpen_gap=+1.07 both support WSH, Stage 1/2 agree exactly (Δ=0.00), edge 5.65pp sits comfortably in the valid [4,15]pp band, and no hard cap fires (pre-cap and post-cap score both 2/B). No starred F1 signal is present, so the F1*-without-F3 caution doesn't apply here. Sound pick with no suppression rationale.",
+      "lessons_applied": ["F1-star-rule-not-applicable"]
     },
     "OAK @ ARI": {
       "model_pick": "ARI ML SKIP",
-      "model_prob": 0.6953,
+      "model_prob": 0.7,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "SKIP",
       "claude_confidence": 0.45,
-      "reasoning": "D-grade with SP xERA and PQI both opposing the pick, and edge (+17.09pp) well outside the valid [4,15]pp band -- the pipeline already self-graded SKIP. This is the same matchup as 7/20 (ARI GOLD then, correctly DOWNGRADEd on a CAP1-bypass plus Gage Jump-style rookie-SP blindspot; OAK won). Dual-opposing signals are suppression-only, not a fade toward OAK -- hold SKIP.",
-      "lessons_applied": ["dual-opposing-suppression-only", "OAK@ARI-precedent-7/20"]
+      "reasoning": "D-grade (score=-3) with SP xERA (3.67 AGAINST) and PQI (Δ=-28.1 AGAINST) both opposing ARI, edge 14.47pp near the ceiling, and a prob_ceiling_0.70 flag. Per the settled archive rule (validated across ~15 instances 7/17-7/21), dual-opposing signals are stake-suppression only, never a directional fade — hold SKIP without fading toward OAK.",
+      "lessons_applied": ["dual-opposing-suppression-only"]
     },
     "CIN @ SEA": {
       "model_pick": "CIN ML SKIP",
@@ -103,32 +104,32 @@
       "claude_pick": "CIN",
       "claude_tier": "SKIP",
       "claude_confidence": 0.45,
-      "reasoning": "fair_prob=0.397 is below the 0.42 viability floor, SP xERA and PQI both oppose CIN, and Stage 1/2 disagree by 0.23. This is an identical setup to 7/20's CIN@SEA (same pick, same SKIP, same dual-opposing config), where SEA shut out CIN 8-0 and the SKIP was validated as the archive's most emphatic correct call. Hold SKIP.",
-      "lessons_applied": ["dual-opposing-suppression-only", "CIN@SEA-precedent-7/20"]
+      "reasoning": "fair_prob=0.3798 sits below the 0.42 viability floor, and SP xERA / PQI both oppose CIN (grade D, score=-4), with Stage 1/2 disagreeing by 0.23. This viability-floor-plus-dual-opposition shape has repeatedly validated correct SKIP calls in the archive (e.g., 7/21 MIN@CLE fair_prob=0.409 floor breach). No basis to deviate from the model's own SKIP.",
+      "lessons_applied": ["dual-opposing-suppression-only", "fair-prob-floor-0.42"]
     },
     "STL @ LAA": {
       "model_pick": "LAA ML SKIP",
-      "model_prob": 0.5637,
+      "model_prob": 0.5787,
       "model_tier": "SKIP",
       "model_grade": "C",
       "claude_decision": "CONFIRM",
       "claude_pick": "LAA",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Edge (+3.63pp) sits just below the 4pp floor, PQI opposes the pick, and CAP 10's bottom-bucket check applies to a marginal 56.4% favorite. Score is already 0 pre- and post-cap. No independent signal argues for elevating past the model's own SKIP.",
-      "lessons_applied": ["CAP10-bottom-bucket"]
+      "claude_confidence": 0.48,
+      "reasoning": "Edge 2.33pp sits below the 4pp floor, and the pre-cap score is already 0 (team_quality modifier -1, Stage 1/2 disagree Δ=0.19 offsetting PQI's +1). HARD CAP 10 fires but has no effect since the score was already zero on its own merits — this isn't a rescue candidate either way. Hold SKIP.",
+      "lessons_applied": ["CAP10-no-effect-already-zero"]
     },
     "MIN @ CLE": {
       "model_pick": "MIN ML SKIP",
       "model_prob": 0.5313,
       "model_tier": "SKIP",
       "model_grade": "C",
-      "claude_decision": "CONFIRM",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "MIN",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.48,
-      "reasoning": "Same matchup and same result-shape as 7/20: HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0254, above the disputed sub-0.02 false-negative band (this is a legitimate fire, not the marginal-noise pattern), and CAP 10 independently zeroes the bottom-bucket pick_prob=0.531. On 7/20 this exact matchup's CAP7+CAP10 suppression was validated when CLE routed MIN 13-4. Hold SKIP.",
-      "lessons_applied": ["CAP7-legitimate-fire-above-0.02", "CAP10-bottom-bucket", "MIN@CLE-precedent-7/20"]
+      "claude_confidence": 0.47,
+      "reasoning": "HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0254 — above the disputed <0.02 false-negative band, so this is a legitimate fire per the archive's own bright line, not the disputed pattern. HARD CAP 10 independently zeroes the bottom-bucket score afterward. This exact matchup was correctly SKIPped on both 7/20 (CLE won 13-4) and 7/21 (CLE won 5-2) under the same two-cap suppression. Decline to rescue.",
+      "lessons_applied": ["CAP7-legitimate-fire-above-0.02", "MIN@CLE-precedent-7/20-7/21"]
     },
     "LAD @ PHI": {
       "model_pick": "LAD ML SKIP",
@@ -139,8 +140,8 @@
       "claude_pick": "LAD",
       "claude_tier": "SKIP",
       "claude_confidence": 0.42,
-      "reasoning": "prob_ceiling_0.70 flag capped an inflated raw probability (0.8449), Stage 1/2 disagree by a massive 0.6086, SP xERA opposes LAD, and PQI is only marginally supportive. Same matchup and pick as 7/20, where PHI beat LAD 10-7 and the dual-opposing D-grade SKIP was correct. No basis to deviate; hold SKIP.",
-      "lessons_applied": ["dual-opposing-suppression-only", "LAD@PHI-precedent-7/20", "prob-ceiling-flag"]
+      "reasoning": "prob_ceiling_0.70 capped an inflated raw probability (0.8449), Stage 1/2 disagree by a massive 0.6086, and SP xERA/PQI both oppose LAD (grade D, score=-4). Same matchup and pick as 7/20 (PHI won 10-7, SKIP correct) and 7/21 (LAD won 2-1 anyway, but SKIP was still correctly zero-staked against triple-opposing signals per the postgame). Hold SKIP.",
+      "lessons_applied": ["dual-opposing-suppression-only", "LAD@PHI-precedent-7/20-7/21", "prob-ceiling-flag"]
     },
     "TB @ TOR": {
       "model_pick": "TB ML SKIP",
@@ -151,20 +152,20 @@
       "claude_pick": "TB",
       "claude_tier": "SKIP",
       "claude_confidence": 0.45,
-      "reasoning": "D-grade with SP xERA and PQI both opposing TB, edge (+3.73pp) below the 4pp floor. Note this matchup's model pick flipped sides versus 7/20 (TOR was picked then, TB is picked now) -- a reminder the underlying edge is thin and unstable either direction. Dual-opposing remains suppression-only; hold SKIP, no fade toward TOR.",
-      "lessons_applied": ["dual-opposing-suppression-only"]
+      "reasoning": "D-grade dual-opposing (SP xERA and PQI both against TB, score=-2), edge 3.73pp below the 4pp floor. Note the 7/21 lesson: Claude invented an unvalidated 'flat-edge market-priced' DOWNGRADE on this exact matchup when the model had it at GOLD, and TB won 12-2 — a costly, ungrounded call. Today the model's own pipeline already tiers this SKIP via dual-opposing D-grade, so no invented reasoning is needed; simply confirm the model's own call.",
+      "lessons_applied": ["dual-opposing-suppression-only", "no-invented-suppression-heuristics"]
     },
     "SD @ ATL": {
       "model_pick": "ATL ML SKIP",
       "model_prob": 0.542,
       "model_tier": "SKIP",
       "model_grade": "C",
-      "claude_decision": "CONFIRM",
+      "claude_decision": "DOWNGRADE",
       "claude_pick": "ATL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Edge is trivial (+0.53pp) and HARD CAP 10 zeroes the bottom-bucket marginal favorite (pick_prob=0.539). Same matchup, same pick, and near-identical pick_prob as 7/20's SD@ATL, where the CAP10 suppression on a near-coinflip was validated by a narrow 1-run ATL win. Hold SKIP.",
-      "lessons_applied": ["CAP10-bottom-bucket", "SD@ATL-precedent-7/20"]
+      "claude_confidence": 0.47,
+      "reasoning": "Edge is trivial (+1.76pp) and pre-cap score is only 2 (B) from PQI+Stage agreement alone — no F-signal fires, unlike 7/21's SD@ATL CAP10-rescue WIN which had F3=2777.6 and full 4-dimension corroboration. HARD CAP 10 zeroes this bottom-bucket pick (pick_prob~0.54); without the F-signal anchor that made yesterday's rescue work, this doesn't clear the bar for a CONFIRM-rescue. Decline to rescue.",
+      "lessons_applied": ["CAP10-rescue-unprofitable", "SD@ATL-precedent-7/21-needs-F-signal"]
     },
     "CHW @ TEX": {
       "model_pick": "TEX ML GOLD",
@@ -174,21 +175,21 @@
       "claude_decision": "DOWNGRADE",
       "claude_pick": "TEX",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0060, structurally identical to 7/20's CHW@TEX, where Claude OVERRODE this exact cap citing deGrom's ace innings as an offsetting factor -- deGrom then allowed 5 ER in 4.2 IP and CWS won 10-3, the slate's only real stake and its worst loss. Today's TEX starter is Tyler Alexander, not deGrom, removing even the (already-discredited) override rationale. Defer to the cap; do not repeat the mistake.",
-      "lessons_applied": ["CHW@TEX-override-loss-7/20", "no-reputation-based-cap-override"]
+      "claude_confidence": 0.5,
+      "reasoning": "HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0060, the disputed sub-0.02 band. This matchup has been volatile: 7/20's real-stake OVERRIDE of this cap lost 10-3 (deGrom), and 7/21's blanket DOWNGRADE-by-precedent missed a 10-0 TEX win — both extremes failed. Today's starter (Tyler Alexander) differs from both prior games. Rather than invent a new rule from one data point, defer to the cap per the prompt's standing non-override guidance.",
+      "lessons_applied": ["CAP7-sub-0.02-band-disputed", "no-reputation-based-cap-override", "no-precedent-blanket-rule"]
     },
     "DET @ CHC": {
       "model_pick": "CHC ML SKIP",
-      "model_prob": 0.5063,
+      "model_prob": 0.5213,
       "model_tier": "SKIP",
       "model_grade": "D",
       "claude_decision": "CONFIRM",
       "claude_pick": "CHC",
       "claude_tier": "SKIP",
       "claude_confidence": 0.45,
-      "reasoning": "D-grade, negative edge (-1.88pp), SP xERA and PQI both opposing CHC. Identical matchup and pick to 7/20's DET@CHC, where DET beat CHC 8-6 and the dual-opposing SKIP correctly called the loser. Hold SKIP without treating the opposing signals as a fade toward DET.",
-      "lessons_applied": ["dual-opposing-suppression-only", "DET@CHC-precedent-7/20"]
+      "reasoning": "D-grade dual-opposing (SP xERA and PQI both against CHC, score=-2), edge is negative (-1.55pp). Per the settled suppression-only rule, hold SKIP without treating the opposing signals as a fade toward DET. This is a different (CHC-picked) instance of the DET/CHC pairing than 7/21's DET-picked CAP10-rescue loss, so no direct precedent transfers.",
+      "lessons_applied": ["dual-opposing-suppression-only"]
     },
     "MIA @ HOU": {
       "model_pick": "HOU ML GOLD",
@@ -198,9 +199,9 @@
       "claude_decision": "DOWNGRADE",
       "claude_pick": "HOU",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.50,
-      "reasoning": "Double suppression: HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0205 (above the disputed sub-0.02 band, a legitimate fire) and HARD CAP 10 independently zeroes the bottom-bucket pick_prob=0.540 without a CONFIRM anchor. Two independent caps agreeing is stronger evidence than either alone. HOU has also been a recurring model-favorite loser in recent archive entries (BAL@HOU series, 3 straight losses); treat as added caution even though the opponent differs today.",
-      "lessons_applied": ["CAP7-legitimate-fire-above-0.02", "CAP10-bottom-bucket", "HOU-model-favorite-caution"]
+      "claude_confidence": 0.48,
+      "reasoning": "Double suppression: HARD CAP 7 fires on hl_bullpen_xwoba_gap=+0.0205 (above the disputed sub-0.02 band, a legitimate fire) knocking a pre-cap A (score5) down to B-/score1, then HARD CAP 10 independently zeroes the bottom-bucket score (pick_prob~0.54) to C/score0. Two independent, non-disputed caps agreeing is stronger evidence than either alone. Edge (2.92pp) is also below the 4pp floor. Decline to rescue.",
+      "lessons_applied": ["CAP7-legitimate-fire-above-0.02", "CAP10-rescue-unprofitable"]
     },
     "BAL @ BOS G2": {
       "model_pick": "TBD ML PENDING_SP_DATA",
@@ -211,7 +212,7 @@
       "claude_pick": "TBD",
       "claude_tier": "PENDING",
       "claude_confidence": 0.0,
-      "reasoning": "Diag CSV shows PENDING_SP_DATA (BOS home starter not yet confirmed with 100+ Statcast pitches). Verified live via statsapi: Boston's game-2 starter is still listed as TBD as of this run, confirming the pending state is accurate rather than a pipeline timing gap. No pick possible.",
+      "reasoning": "Diag CSV still shows PENDING_SP_DATA. Verified live via statsapi (2026-07-22 schedule): BOS's game-2 starter remains unannounced while BAL's Kyle Bradish is set, confirming the pending state is accurate rather than a pipeline timing gap. No pick possible.",
       "lessons_applied": ["PENDING_SP_DATA-verified-live"]
     }
   }
