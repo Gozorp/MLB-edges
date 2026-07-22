@@ -1,17 +1,17 @@
 {
   "date": "2026-07-21",
   "model": "claude-sonnet-4-6",
-  "fit_at": "2026-07-22T06:30:00Z",
+  "fit_at": "2026-07-22T14:30:00Z",
   "n_analyzed": 15,
-  "summary": "7W / 6L (53.8%) on the 13 decided matchups; PIT@NYY and BAL@BOS were postponed. Of the four real-stake GOLD CONFIRMs, results split 2-2: SD@ATL and MIA@HOU won, SF@KC and DET@CHC lost, with the two losers justified by the same 'four-dimension CAP10 rescue' logic that also produced the day's cleanest win (SD@ATL). Two DOWNGRADEs (TB@TOR on flat-edge reasoning, CHW@TEX on a single-prior-day overfit) each missed 10+ run blowout wins, and STL@LAA's code-level SKIP missed a real win for the second straight day. Directionally the model out-called Claude's suppressions more than it lost from them.",
+  "summary": "7W / 6L (53.8%) on 13 decided matchups; PIT@NYY and BAL@BOS were postponed. Of the four real-stake GOLD CONFIRMs on decided games, the slate split 2-2: SD@ATL and MIA@HOU won, SF@KC and DET@CHC lost. Two Claude DOWNGRADEs each missed 10-run blowout wins (TB@TOR on unvalidated 'flat-edge market-priced' reasoning, CHW@TEX on an n=1 prior-day overfit), both directly violating the 7/20 mandate to lean CONFIRM on GOLD unless a suppression rule has ≥70% recent track record on that exact shape. STL@LAA was suppressed by CAP7 and the edge ceiling for the second straight day despite the slate's strongest PQI confirmation.",
   "by_matchup": {
     "MIN @ CLE": {
       "verdict": "LOSS",
       "model_pick": "MIN ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-5",
-      "headline": "CLE beat MIN 5-2; CONFIRM SKIP correctly withheld any stake on a bottom-bucket marginal favorite that lost.",
-      "hypothesis": "fair_prob=0.409 sat below the 0.42 viability floor independent of other signals, and CAP 10 zeroed the bottom-bucket pick_prob=0.538 favorite; PQI (Δ=+17.6) also opposed MIN. MIN's loss validates the SKIP cleanly. No process failure — the fair-prob floor and CAP 10 both worked as designed.",
+      "headline": "CLE beat MIN 5-2; CONFIRM SKIP correctly withheld stake on a viability-floor-failing bottom-bucket marginal favorite.",
+      "hypothesis": "fair_prob=0.409 sat below the 0.42 viability floor independent of any other signal, CAP 10 zeroed the bottom-bucket pick (pick_prob=0.538 in (0.50,0.55]), and PQI (Δ=+17.6) opposed MIN. CLE's 3-run win validates all three suppression layers. No process failure — the fair-prob floor and CAP 10 both worked as designed.",
       "signals_to_recheck": "fair_prob<0.42 viability floor and [HARD CAP 10] bottom-bucket marginal-favorite — both correctly suppressed a loser; no revision needed."
     },
     "LAD @ PHI": {
@@ -19,27 +19,27 @@
       "model_pick": "LAD ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "2-1",
-      "headline": "LAD edged PHI 2-1; CONFIRM SKIP was zero-staked correctly even though the direction happened to be right.",
-      "hypothesis": "SP xERA (Wheeler), PQI (Δ=+15.7), and f5_full_delta=0.5611 (the slate's largest Stage 1/2 split) all opposed LAD, yet LAD won by 1 run inside the calibration-caution edge band (23.27pp). SKIP sizing was correct regardless of direction — a 1-run win against triple-opposing signals is variance, not evidence the dual-opposing rule should become a fade.",
-      "signals_to_recheck": "f5_full_delta (0.5611) and calibration_caution_18_25pp — both correctly zeroed a stake on a game that easily could have gone the other way by more; consistency with the suppression-only rule, not a signal to promote to directional fade."
+      "headline": "LAD edged PHI 2-1; CONFIRM SKIP zero-staked correctly even though the direction happened to be right.",
+      "hypothesis": "SP xERA (Wheeler, 1.49 for PHI), PQI (Δ=+15.7), and f5_full_delta=0.5611 (the slate's largest Stage 1/2 split) all opposed LAD, yet LAD won by 1 run in the calibration-caution edge band (23.27pp). A 1-run win against triple-opposing signals is variance, not evidence the dual-opposing rule should become a directional fade. Zero-stake was the correct sizing regardless of outcome.",
+      "signals_to_recheck": "f5_full_delta (0.5611) and calibration_caution_18_25pp — both correctly suppressed stake on a marginal outcome that easily could have gone the other way; dual-opposing suppression-only rule holds."
     },
     "TB @ TOR": {
       "verdict": "WIN",
       "model_pick": "TB ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "12-2",
-      "headline": "TB blew out TOR 12-2 — the flat-edge DOWNGRADE to SKIP missed a real GOLD win by a 10-run margin.",
-      "hypothesis": "Process failure. Claude downgraded on the reasoning that a 0.70pp edge means 'the market has fully priced' Gausman's advantage — an unvalidated heuristic with no prior track record, applied in direct tension with the 7/20 postgame's explicit mandate to lean CONFIRM on GOLD absent a suppression rule proven ≥70% on that exact shape. The underlying pre-cap stack was clean (SP xERA agrees, PQI confirms, F-signal fires); TB's 10-run blowout shows the flat-edge read was simply wrong, not just unlucky.",
-      "signals_to_recheck": "'flat-edge market-priced' DOWNGRADE reasoning — a novel, untracked suppression heuristic that just missed a 10-run win; treat edge_pp near the CAP boundaries as informational only until it accumulates its own hit-rate data, and do not let it override the 7/20 lean-CONFIRM mandate."
+      "headline": "TB demolished TOR 12-2 — the unvalidated 'flat-edge market-priced' DOWNGRADE to SKIP missed a 10-run blowout win.",
+      "hypothesis": "Process failure. Claude downgraded on the premise that a 0.70pp edge means the market has fully priced in Gausman's advantage — an invented heuristic with no prior track record, applied in direct conflict with the 7/20 mandate to lean CONFIRM on GOLD absent a ≥70%-validated suppression rule. The underlying pre-cap stack was clean (F1*=0.86 corroborated by SP xERA+PQI+Stage; pre-cap score=5/A); TB's 10-run blowout demonstrates the flat-edge read was factually wrong, not merely unlucky.",
+      "signals_to_recheck": "'flat-edge market-priced' DOWNGRADE rationale — a novel, unvalidated suppression heuristic that missed a 10-run win; treat edge_pp near the 4pp floor as a stake-sizing boundary only, not as evidence the market has eliminated an edge, and do not apply this reasoning to override the lean-CONFIRM mandate without a prior track record."
     },
     "SD @ ATL": {
       "verdict": "WIN",
       "model_pick": "SD ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "8-3",
-      "headline": "SD routed ATL 8-3 — the CAP10 CONFIRM-rescue on a PLATINUM-demoted favorite paid off with a real stake.",
-      "hypothesis": "Process success. Pre-cap B+ logic (F3=2777.6, well above the 1000 anchor; PQI confirms; Stage agrees) cleared the bar Claude set for rescuing a bottom-bucket favorite (pick_prob=0.538) out of CAP 10's default zero. SD's 5-run win validates both the PLATINUM-demotion scrutiny and the F3-above-1000 anchor requirement.",
-      "signals_to_recheck": "[HARD CAP 10] CONFIRM-rescue with F3_swing_take_gap>1000 as qualifier — worked here; the three real-stake CAP10-rescue CONFIRMs today (SD@ATL, SF@KC, DET@CHC) went 1-2 collectively, so keep tracking cumulative rescue hit rate before scaling further."
+      "headline": "SD routed ATL 8-3 — the CAP10 CONFIRM-rescue on a PLATINUM-demoted GOLD pick paid off with a real stake.",
+      "hypothesis": "Process success. Pre-cap B+ logic (F3=2777.6 well above the 1000 anchor, PQI confirms Δ=-6.9, Stage agrees) cleared the bar for rescuing a bottom-bucket favorite (pick_prob=0.538) from CAP 10's default zero. SD's 5-run win validates both the PLATINUM-demotion scrutiny and the F3>1000 anchor as a rescue qualifier. This was the day's only CAP10-rescue win; the other two rescue CONFIRMs (SF@KC, DET@CHC) lost.",
+      "signals_to_recheck": "[HARD CAP 10] CONFIRM-rescue with F3_swing_take_gap>1000 as anchor — worked here; track cumulative rescue hit rate across all three today's real-stake applications (SD@ATL WIN, SF@KC LOSS, DET@CHC LOSS = 1-for-3) before scaling stake size."
     },
     "SF @ KC": {
       "verdict": "LOSS",
@@ -47,8 +47,8 @@
       "claude_decision": "CONFIRM",
       "final_score": "2-3",
       "headline": "KC edged SF 3-2 — a real-stake CAP10-rescue CONFIRM lost by 1 run.",
-      "hypothesis": "Process-failure candidate, though the margin was thin. The 'four-dimension rescue' (SP xERA agrees, PQI confirms Δ=-14.5, Stage agrees, independent of starred F1_xera_gap=1.01*) cleared Claude's bar citing the CLE@MIA precedent, but F3=822.2 sat below the 1000-anchor threshold used to justify SD@ATL's rescue the same day — a weaker corroboration profile that still got staked. Combined with DET@CHC's larger loss on identical justification, the rescue rule went 1-for-3 on today's real stakes.",
-      "signals_to_recheck": "four-dimension CAP-10 rescue (CLE@MIA precedent) — 1-for-3 on today's real-stake applications; F3<1000 corroboration (822.2 here) may be a weaker rescue qualifier than F3>1000 (2777.6 at the day's only win, SD@ATL) — consider requiring F3>1000 specifically before staking a CAP10 rescue rather than accepting any independent SP+PQI+Stage combination."
+      "hypothesis": "Process-failure candidate, though the 1-run margin keeps variance in play. The rescue cited four-dimension corroboration (SP xERA +0.65 agrees, PQI Δ=-14.5 confirms, Stage agrees, independent of starred F1_xera_gap=1.01*) but F3=822.2 sat below the 1000-anchor threshold — a weaker profile than the day's only rescue win (SD@ATL, F3=2777.6). Combined with DET@CHC's 9-run loss on nearly identical rescue justification, the CAP10-rescue rule went 1-for-3 on real stakes today; an F3>1000 minimum may be needed specifically for bottom-bucket rescues.",
+      "signals_to_recheck": "four-dimension CAP-10 rescue — 1-for-3 on today's real stakes; F3<1000 corroboration (822.2 here) may be a weaker rescue qualifier than F3>1000; consider requiring F3>1000 as a minimum before staking a CAP10 rescue rather than accepting any SP+PQI+Stage independent combination."
     },
     "NYM @ MIL": {
       "verdict": "LOSS",
@@ -56,34 +56,34 @@
       "claude_decision": "DOWNGRADE",
       "final_score": "4-0",
       "headline": "NYM shut out MIL 4-0 — the sub-1000-F3 DOWNGRADE correctly protected against a real loss.",
-      "hypothesis": "Process success. F3=243.9 was well below the 1000 meaningful-anchor threshold, PQI opposed MIL (Δ=-9.0), and acute_roster plus confidence_downgrade both fired. MIL being shut out validates the DOWNGRADE cleanly — a genuinely thin B- stack, not a caps-suppressed strong pick, exactly as the reasoning distinguished.",
-      "signals_to_recheck": "sub-1000 F3_swing_take_gap as a non-anchor — correctly flagged a losing GOLD pick today; archive continues to support F3<1000 alone as insufficient for a GOLD-tier stake."
+      "hypothesis": "Process success. F3=243.9 was far below the 1000 meaningful-anchor threshold, PQI opposed MIL (Δ=-9.0), acute_roster and confidence_downgrade both fired, and f5_full_delta=0.1911 reflected Stage 1/2 divergence. MIL being shut out validates the DOWNGRADE cleanly — a genuinely thin B- stack, not a caps-suppressed strong pick, exactly as the reasoning distinguished. This is the correct use of the sub-1000-F3 rule.",
+      "signals_to_recheck": "sub-1000 F3_swing_take_gap as a non-anchor — correctly flagged a losing GOLD pick; archive continues to validate F3<1000 alone as insufficient for a GOLD-tier stake."
     },
     "DET @ CHC": {
       "verdict": "LOSS",
       "model_pick": "DET ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "2-11",
-      "headline": "CHC blew out DET 11-2 — a real-stake, four-dimension CAP10-rescue CONFIRM lost badly.",
-      "hypothesis": "Process-failure candidate. The reasoning cited a genuine four-dimension stack (F1=1.82 not starred, F3=1761.1 above 1000, SP edge 1.13 agrees, PQI confirms Δ=-13.2, Stage agrees) with no Statcast redundancy concern — on paper the strongest of today's three CAP10-rescue CONFIRMs. A 9-run loss against that profile points more toward an unforeseeable in-game information gap (CHC's offense/Valdez outperforming projection) than a flawed rescue rule, but the magnitude is large enough to log alongside SF@KC as a second same-day loss on the identical justification.",
-      "signals_to_recheck": "four-dimension CAP-10 rescue — second same-day real-stake loss (after SF@KC) despite F3>1000 and all four dimensions agreeing; check hl_bullpen_xwoba_gap and pen_strain_pick_side retroactively for whether CHC's offensive outperformance was foreseeable pre-game."
+      "headline": "CHC blew out DET 11-2 — the strongest four-dimension CAP10-rescue CONFIRM of the slate lost by 9 runs.",
+      "hypothesis": "Process-failure candidate. The reasoning cited a genuine pre-cap A stack (F1=1.82 not starred, F3=1761.1 above 1000, SP edge 1.13 agrees, PQI confirms Δ=-13.2, Stage agrees) — on paper the cleanest of today's three CAP10-rescue CONFIRMs. The 9-run loss against that profile points toward an unforeseeable in-game gap (Valdez / CHC offense outperforming projection) rather than a flawed rescue rule, but the magnitude is large enough that whether it is process or variance failure is genuinely uncertain. Log alongside SF@KC as a second same-day loss on identical rescue justification.",
+      "signals_to_recheck": "four-dimension CAP-10 rescue — second same-day real-stake loss despite F3>1000 and all four dimensions affirming; check hl_bullpen_xwoba_gap and pen_strain_pick_side retroactively to determine whether CHC's offensive blowout was foreseeable from pre-game data."
     },
     "CHW @ TEX": {
       "verdict": "WIN",
       "model_pick": "TEX ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": "0-10",
-      "headline": "TEX shut out CWS 10-0 in the identical Rocker-vs-Schultz matchup — yesterday's OVERRIDE-loss lesson, applied as a blanket DOWNGRADE, missed a 10-run win.",
-      "hypothesis": "Process-failure candidate, and a cautionary tale about over-generalizing from n=1. Yesterday's real-money OVERRIDE of CAP 7 in this exact matchup lost 10-3, and avoiding a repeat override was reasonable — but a single-game loss got converted into a blanket 'archive rule' that DOWNGRADEd today's otherwise-strong GOLD pick (F1*=2.04, SP edge 1.31 agrees, PQI confirms +14.9) to SKIP. TEX won by 10 today. The underlying CAP7 sub-0.02-band pattern remains net-positive across the broader archive; one bad override should not flip the default posture on the very next occurrence without more data.",
-      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage sub-0.02 band — now 7-1 in the broader archive (adds today's suppressed win) but 0-1 on real-money conversion (7/20 OVERRIDE loss); swinging from 'override on starter reputation' to 'blanket DOWNGRADE' cost a 10-run win the very next day. A middle path (half-Kelly sizing) may serve better than alternating extremes game to game."
+      "headline": "TEX shut out CHW 10-0 in the identical Rocker-vs-Schultz matchup — the n=1 prior-day-loss rule missed a 10-run win.",
+      "hypothesis": "Process-failure candidate. The 7/20 real-money OVERRIDE of CAP 7 in this exact matchup lost 10-3 — a legitimate lesson about not overriding CAP 7 via starter reputation. But that single loss was hardened into a blanket 'archive rule' that DOWNGRADEd today's otherwise-strong GOLD pick (F1*=2.04, SP edge 1.31 agrees, PQI confirms +14.9, Stage agree) entirely to SKIP. TEX won by 10 today. The 7/20 lesson addressed the override mechanism, not the directional pick; converting a single override loss into a same-direction DOWNGRADE on the very next occurrence violated the ≥70% rule-validation mandate.",
+      "signals_to_recheck": "[HARD CAP 7] pick-side bullpen disadvantage sub-0.02 band — a 10-run win missed the day after a 10-run loss because of overcorrection from OVERRIDE to DOWNGRADE; the sub-0.02 band pattern remains net-positive in the archive, suggesting half-Kelly sizing is preferable to alternating between full-stake and zero-stake game to game."
     },
     "MIA @ HOU": {
       "verdict": "WIN",
       "model_pick": "HOU ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "3-5",
-      "headline": "HOU beat MIA 5-3 — a clean real-stake CONFIRM on an already-penalized B-/score=1 stack came through.",
-      "hypothesis": "Process success. F3=1270 and F5=+1.14 provided multi-signal support with pick_prob=0.5991 outside the bottom bucket, and the model had already sized this down from PLATINUM to reflect PQI's mild opposition (Δ=-8.3). HOU's win validates both the underlying signals and the judgment that BAL-series caution from 7/17-7/19 didn't transfer to a structurally different MIA opponent.",
+      "headline": "HOU beat MIA 5-3 — a real-stake CONFIRM on an already-penalized B-/score=1 stack came through.",
+      "hypothesis": "Process success. F3=1270 and F5=+1.14 provided multi-signal support with pick_prob=0.5991 outside the bottom bucket (no CAP 10 rescue required), and the model had already sized this down from PLATINUM to reflect PQI's mild opposition (Δ=-8.3). HOU's win validates both the underlying signals and the judgment that the BAL-series caution from 7/17-7/19 did not transfer to a structurally different MIA opponent.",
       "signals_to_recheck": "None — F3/F5 multi-signal GOLD with pick_prob outside the bottom bucket converted cleanly; no revision needed."
     },
     "WSH @ COL": {
@@ -91,26 +91,26 @@
       "model_pick": "WSH ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "7-8",
-      "headline": "COL walked off WSH 8-7 — the edge-floor-enforced SKIP (directional CONFIRM, tier zeroed) avoided a real loss.",
-      "hypothesis": "Process success, and a useful contrast with 7/20's identical WSH@COL matchup (WSH won 7-3 that day after a DOWNGRADE that missed the win). Today the binding constraint was the same sub-4pp edge floor (2.53pp), but this time WSH lost — the code-level edge floor has now been wrong once (7/20) and right once (7/21) on the exact same matchup shape, arguing for treating it as two-way noise at this edge magnitude rather than a directional tell either way.",
-      "signals_to_recheck": "edge-floor-4pp binding — now 1-1 across 7/20 (missed a WSH win) and 7/21 (avoided a WSH loss) on the identical WSH@COL matchup; continue treating sub-4pp edge as a pure sizing/variance zone, not a quality signal about the pick's direction."
+      "headline": "COL walked off WSH 8-7 — the sub-4pp edge floor enforced SKIP, correctly avoiding a real stake on a pick that went the wrong way.",
+      "hypothesis": "Process success on sizing, direction wrong. The binding constraint was edge=2.53pp below the 4pp floor — a code-level stake-sizing gate, not a signal failure. WSH lost in a 1-run walkoff despite a pre-cap A stack (F2+F5 fire, SP xERA agrees, PQI confirms Δ=-6.3). Yesterday (7/20) the identical matchup saw WSH win 7-3 while the same floor blocked the stake. The floor has now been wrong once (7/20) and right once (7/21) in the same matchup on consecutive days — pure noise at this edge magnitude.",
+      "signals_to_recheck": "edge-floor-4pp binding — now 1-1 on WSH@COL consecutive days (missed WIN on 7/20, avoided LOSS on 7/21); treat sub-4pp edge as a pure stake-sizing variance zone with no directional information."
     },
     "STL @ LAA": {
       "verdict": "WIN",
       "model_pick": "LAA ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": "1-5",
-      "headline": "LAA beat STL 5-1 — CAP7 and the 15pp edge ceiling suppressed a real stake on a directionally-perfect pick for the second straight day.",
-      "hypothesis": "Process-failure candidate on sizing, not direction. F1=2.49 not starred, SP edge 1.97, and PQI +34.2 (the slate's strongest confirmation) were exactly right — LAA won by 4. The tier was zeroed purely by CAP 7 (gap=0.0080, sub-0.02 band) and the edge ceiling (17.77pp>15pp), both code-level gates rather than signal doubt. This is the second consecutive day (7/20 LAA won 3-2 suppressed; 7/21 LAA won 5-1 suppressed) these exact gates zeroed a real stake on a game the qualitative signals called correctly.",
-      "signals_to_recheck": "[HARD CAP 7] sub-0.02 band and the 15pp edge ceiling — now suppressed two consecutive STL@LAA wins (7/20 3-2, 7/21 5-1) despite the slate's strongest PQI confirmation both days; worth testing whether an exceptionally strong PQI/SP-edge combination (PQI>+30, SP edge>1.5) should earn a partial-Kelly carve-out from the edge ceiling."
+      "headline": "LAA beat STL 5-1 — CAP7 and the 15pp edge ceiling suppressed a real stake on the slate's strongest PQI confirmation for the second straight day.",
+      "hypothesis": "Process-failure candidate on sizing, not direction. F1=2.49 not starred, SP edge 1.97 (exceptional), PQI +34.2 (slate's strongest confirmation) — directionally perfect and LAA won by 4. The tier was zeroed by CAP 7 (hl_bullpen_xwoba_gap=+0.0080, sub-0.02 band) and the 15pp edge ceiling (17.77pp>15pp), both code-level gates rather than signal doubt. This is the second consecutive day (7/20: LAA won 3-2; 7/21: LAA won 5-1) that these gates zeroed a real stake on the model's strongest-PQI call.",
+      "signals_to_recheck": "[HARD CAP 7] sub-0.02 band and the 15pp edge ceiling — now suppressed STL@LAA stakes on two consecutive days (7/20 LAA won 3-2, 7/21 LAA won 5-1) with the slate's strongest PQI confirmation both times; PQI>+30 combined with SP-edge>1.5 should be evaluated as a potential partial-Kelly carve-out from the edge ceiling rather than a hard zero-stake."
     },
     "OAK @ ARI": {
       "verdict": "WIN",
       "model_pick": "ARI ML SKIP",
       "claude_decision": "CONFIRM",
       "final_score": "5-6",
-      "headline": "ARI beat OAK 6-5 — the sp_savant_gate HARD_VETO SKIP was directionally right, though the veto is a data-availability gate, not a prediction.",
-      "hypothesis": "Kohl Drake's 0-Statcast-pitch current-season sample triggered a non-negotiable HARD_VETO independent of direction; ARI winning is a favorable but incidental outcome relative to the veto's purpose. No process failure or success to score beyond confirming the veto continues functioning correctly on a genuine data void.",
+      "headline": "ARI edged OAK 6-5 — the sp_savant_gate HARD_VETO correctly withheld stake; ARI winning is incidental to the veto's purpose.",
+      "hypothesis": "Kohl Drake's 0-Statcast-pitch current-season sample triggered a non-negotiable HARD_VETO independent of direction. ARI winning 6-5 in a 1-run game is a favorable but incidental outcome — the veto functions as a data-availability gate, not a directional prediction, and the closeness of the result shows genuine uncertainty that the veto correctly reflected.",
       "signals_to_recheck": "sp_savant_gate=HARD_VETO on thin_sp_data — continues to function correctly as a non-directional data-availability gate; no revision needed."
     },
     "CIN @ SEA": {
@@ -119,16 +119,16 @@
       "claude_decision": "CONFIRM",
       "final_score": "4-2",
       "headline": "CIN beat SEA 4-2 — the dual-opposing D-grade SKIP correctly avoided a real loss.",
-      "hypothesis": "Process success. SP xERA (Castillo, 1.39 for CIN) and PQI (Δ=-19.6) both opposed SEA, and CIN's win validates the read. Per the settled archive rule this remains suppression-only (zero stake), not grounds for a directional CIN fade, but the opposing direction happened to be right again.",
-      "signals_to_recheck": "SP_xERA/PQI dual-opposing at grade D — correctly predicted the loser again; consistent with treating this as suppression-only, not a fade trigger."
+      "hypothesis": "Process success. SP xERA (Castillo, 1.39 edge for CIN) and PQI (Δ=-19.6) both opposed SEA, and CIN won validating the read. Per the settled archive rule this remains suppression-only (zero stake on SEA, no directional fade toward CIN), but the opposing direction called the correct side again — D-grade dual-opposing continues to be directionally accurate more often than not.",
+      "signals_to_recheck": "SP_xERA/PQI dual-opposing at grade D — correctly predicted the loser again; consistent with suppression-only treatment, not a promotion to a directional fade."
     },
     "PIT @ NYY": {
       "verdict": "NO_PICK",
       "model_pick": "NYY ML GOLD",
       "claude_decision": "DOWNGRADE",
       "final_score": null,
-      "headline": "Game postponed; no result to grade.",
-      "hypothesis": "PIT @ NYY did not complete on 2026-07-21 — no outcome to analyze.",
+      "headline": "Game postponed — no result to grade.",
+      "hypothesis": "PIT @ NYY did not complete on 2026-07-21. No outcome to analyze. The DOWNGRADE reasoning (F5-only GOLD anchor insufficient, SP xERA and PQI both opposing NYY, grade D/score=-1, bullpen_fatigue) stands on its merits but cannot be validated without a result.",
       "signals_to_recheck": "None — game postponed."
     },
     "BAL @ BOS": {
@@ -136,15 +136,15 @@
       "model_pick": "BOS ML GOLD",
       "claude_decision": "CONFIRM",
       "final_score": null,
-      "headline": "Game postponed; no result to grade.",
-      "hypothesis": "BAL @ BOS did not complete on 2026-07-21 — no outcome to analyze.",
+      "headline": "Game postponed — no result to grade.",
+      "hypothesis": "BAL @ BOS did not complete on 2026-07-21. No outcome to analyze. The CONFIRM reasoning (pre-cap A/score=5: F1*=0.76 corroborated by SP xERA+PQI+Stage four-dimension affirm, negative bullpen gap, edge 8.9pp in valid window) was the strongest unconditional GOLD CONFIRM on the slate and cannot be validated without a result.",
       "signals_to_recheck": "None — game postponed."
     }
   },
   "patterns_observed": [
-    "The 'four-dimension CAP10-rescue' CONFIRM logic (CLE@MIA precedent) went 1-for-3 on today's real stakes: SD@ATL (F3=2777.6, WIN) vs SF@KC (F3=822.2, LOSS) and DET@CHC (F3=1761.1, LOSS). F3>1000 alone doesn't fully separate winners from losers here (DET@CHC had it and still lost), so track cumulative rescue hit-rate closely before scaling stake size further on this exact justification.",
-    "Two DOWNGRADEs today (TB@TOR flat-edge, CHW@TEX single-prior-day overfit) missed blowout wins of 10+ runs by inventing or over-applying unvalidated suppression logic — directly in tension with the 7/20 mandate to lean CONFIRM on GOLD absent a ≥70%-validated rule. Treat 'market has priced it in' (flat edge) as informational only, and require multiple same-shape instances before generalizing a single prior-day loss into a blanket no-override rule.",
-    "CAP 7's sub-0.02 bullpen-gap band plus the 15pp edge ceiling have now suppressed a real STL@LAA stake for two consecutive days (7/20 LAA won 3-2, 7/21 LAA won 5-1) on the slate's strongest PQI confirmation both times. Consider a carve-out allowing partial-Kelly sizing past the edge ceiling when PQI confirms at >+30 alongside SP-edge>1.5, rather than zeroing to SKIP outright.",
-    "The WSH@COL sub-4pp edge floor is now split 1-1 across two consecutive days on the identical matchup (missed a win 7/20, avoided a loss 7/21) — treat sub-4pp edge as a pure stake-sizing/variance zone with no directional information, and stop citing this exact matchup's prior-day result as evidence for either a CONFIRM or a fade."
+    "Two DOWNGRADEs today (TB@TOR 'flat-edge market-priced' reasoning, CHW@TEX 'same-matchup-prior-day-loss' blanket rule) each missed a 10-run blowout win, directly violating the 7/20 mandate to lean CONFIRM on GOLD unless a suppression rule has ≥70% recent track record on that exact shape. Treating a sub-1pp edge as 'market has priced it in' and converting a single prior-day override loss into a standing DOWNGRADE rule are both n=1 generalizations with no validation history — together they cost two missed 10-run wins on the same slate.",
+    "The three CAP10-rescue CONFIRMs (SD@ATL F3=2777.6 WIN, SF@KC F3=822.2 LOSS, DET@CHC F3=1761.1 LOSS) went 1-for-3 on real stakes. F3>1000 did not cleanly separate winners from losers (DET@CHC had it and lost by 9 runs), suggesting the rescue rule's success depends on a factor not yet isolated. Track cumulative CAP10-rescue real-stake hit rate separately and hold stake size at minimum GOLD until at least 10 rescue instances accumulate.",
+    "STL@LAA has been suppressed by [HARD CAP 7] sub-0.02 band plus the 15pp edge ceiling on two consecutive days (7/20 LAA won 3-2, 7/21 LAA won 5-1), each time with the slate's strongest PQI confirmation (Δ>+30) and SP edge>1.5. Two same-shape suppressed wins is sufficient to evaluate whether PQI>+30 combined with SP-edge>1.5 should earn a partial-Kelly carve-out from the edge ceiling rather than a hard zero-stake.",
+    "WSH@COL's sub-4pp edge floor produced opposite outcomes on consecutive days in the identical matchup (missed WIN on 7/20, correctly avoided LOSS on 7/21), confirming the sub-4pp zone is pure stake-sizing noise with no directional information. Stop citing WSH@COL prior-day results as input for CONFIRM or DOWNGRADE logic; treat each sub-4pp-edge game as fully independent of the preceding day's outcome."
   ]
 }

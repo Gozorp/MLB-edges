@@ -1,6 +1,6 @@
 {
  "date": "2026-07-22",
- "generated_utc": "2026-07-22T14:15:45Z",
+ "generated_utc": "2026-07-22T15:16:37Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -29,9 +29,9 @@
     {
      "type": "ML",
      "sel": "WSH wins",
-     "prob": 0.6209,
-     "fair": 0.5676,
-     "edge_pp": 5.32,
+     "prob": 0.6359,
+     "fair": 0.5794,
+     "edge_pp": 5.65,
      "band": "goldilocks",
      "market": "kalshi fair (devigged)"
     },
@@ -45,9 +45,9 @@
      "market": "model-priced (no F5 market feed)"
     }
    ],
-   "joint_prob": 0.5273,
-   "independence_prob": 0.3484,
-   "correlation_lift_pp": 17.89,
+   "joint_prob": 0.54,
+   "independence_prob": 0.3568,
+   "correlation_lift_pp": 18.32,
    "grade": "B",
    "tier": "GOLD",
    "gates": [
@@ -64,7 +64,7 @@
     {
      "sheet": "market_band",
      "verdict": "pass",
-     "note": "+5.3pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
+     "note": "+5.7pp vs fair -> goldilocks band (strict 4-8 goldilocks)"
     },
     {
      "sheet": "stage_coherence",
@@ -99,9 +99,9 @@
    "market": "ML",
    "matchup": "WSH @ COL",
    "sel": "WSH wins",
-   "model_prob": 0.6209,
-   "market_prob": 0.5676,
-   "edge_pp": 5.32,
+   "model_prob": 0.6359,
+   "market_prob": 0.5794,
+   "edge_pp": 5.65,
    "status": "live",
    "unanimous": true
   }
@@ -150,14 +150,14 @@
   {
    "matchup": "SF @ KC",
    "pick": "SF",
-   "joint_prob": 0.5007,
+   "joint_prob": 0.5061,
    "blocked_by": [
     "grade",
     "market_band"
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+3.0pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "+3.1pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -184,7 +184,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+16.4pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+15.3pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 39.6%"
    ]
   },
@@ -208,7 +208,7 @@
   {
    "matchup": "STL @ LAA",
    "pick": "LAA",
-   "joint_prob": 0.5414,
+   "joint_prob": 0.5558,
    "blocked_by": [
     "grade",
     "conviction_tier",
@@ -218,7 +218,7 @@
    "notes": [
     "final grade C (need A/A-/B+/B)",
     "tier SKIP",
-    "+3.2pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "+2.3pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 84.6% + Stage 1/2 disagree flag"
    ]
   },
@@ -248,7 +248,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+16.3pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+15.8pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 23.6%"
    ]
   },
@@ -280,7 +280,7 @@
    "notes": [
     "final grade C (need A/A-/B+/B)",
     "tier SKIP",
-    "+1.0pp vs fair -> noise band (strict 4-8 goldilocks)",
+    "+1.8pp vs fair -> noise band (strict 4-8 goldilocks)",
     "F5 side prob 44.4%"
    ]
   },
@@ -295,7 +295,7 @@
    ],
    "notes": [
     "final grade B- (need A/A-/B+/B)",
-    "+9.4pp vs fair -> caution band (strict 4-8 goldilocks)",
+    "+9.1pp vs fair -> caution band (strict 4-8 goldilocks)",
     "F5 side prob 31.3%"
    ]
   },
