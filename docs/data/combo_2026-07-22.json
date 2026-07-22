@@ -1,6 +1,6 @@
 {
  "date": "2026-07-22",
- "generated_utc": "2026-07-22T04:30:06Z",
+ "generated_utc": "2026-07-22T05:18:08Z",
  "engine": "correlated-combo v1 (display-only; frozen model untouched)",
  "scope_notes": [
   "Legs limited to ML + F5 same team: totals product is PAUSED (2026-06-03, pred_runs r=0.05) and no props market feed exists; K-dominance and run-environment signals appear as context only.",
@@ -109,39 +109,39 @@
  "markets_status": {
   "ML": "live (Kalshi devigged fair)",
   "OU": "reserved -- totals PAUSED (locked 2026-06-03, pred_runs r=0.05); unlocks after the rebuild passes its OOS validation protocol",
-  "K_PROP": "awaiting ODDS_API_KEY in .env -- adapter shipped (tools/kprop_odds.py)"
+  "K_PROP": "ODDS_API_KEY present but REJECTED (401) -- the lapsed pre-05/21 key is still in .env; replace it with a fresh the-odds-api key to light up K-prop shadow legs"
  },
  "rejected": [
   {
    "matchup": "PIT @ NYY",
    "pick": "NYY",
-   "joint_prob": 0.5376,
+   "joint_prob": 0.5511,
    "blocked_by": [
     "grade",
     "market_band"
    ],
    "notes": [
     "final grade B- (need A/A-/B+/B)",
-    "-1.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "-1.5pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
    "matchup": "PIT @ NYY",
    "pick": "NYY",
-   "joint_prob": 0.5355,
+   "joint_prob": 0.5483,
    "blocked_by": [
     "grade",
     "market_band"
    ],
    "notes": [
     "final grade B- (need A/A-/B+/B)",
-    "+1.4pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "+1.7pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
    "matchup": "BAL @ BOS",
    "pick": "BOS",
-   "joint_prob": 0.5688,
+   "joint_prob": 0.5822,
    "blocked_by": [
     "conviction_tier"
    ],
@@ -159,7 +159,7 @@
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "+2.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "+2.2pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
@@ -167,12 +167,10 @@
    "pick": "MIL",
    "joint_prob": 0.5422,
    "blocked_by": [
-    "grade",
-    "market_band"
+    "grade"
    ],
    "notes": [
-    "final grade B- (need A/A-/B+/B)",
-    "+3.9pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "final grade B- (need A/A-/B+/B)"
    ]
   },
   {
@@ -188,7 +186,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+15.2pp vs fair -> trap band (strict 4-8 goldilocks)",
+    "+15.0pp vs fair -> trap band (strict 4-8 goldilocks)",
     "F5 side prob 39.6%"
    ]
   },
@@ -232,13 +230,11 @@
    "joint_prob": 0.4393,
    "blocked_by": [
     "grade",
-    "conviction_tier",
-    "market_band"
+    "conviction_tier"
    ],
    "notes": [
     "final grade C (need A/A-/B+/B)",
-    "tier SKIP",
-    "+8.1pp vs fair -> caution band (strict 4-8 goldilocks)"
+    "tier SKIP"
    ]
   },
   {
@@ -270,7 +266,7 @@
    "notes": [
     "final grade D (need A/A-/B+/B)",
     "tier SKIP",
-    "+2.8pp vs fair -> noise band (strict 4-8 goldilocks)"
+    "+3.7pp vs fair -> noise band (strict 4-8 goldilocks)"
    ]
   },
   {
