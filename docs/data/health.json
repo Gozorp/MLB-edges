@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-22T21:39:01.072321+00:00",
+  "checked_at": "2026-07-22T23:11:03.881978+00:00",
   "overall": "yellow",
   "categories": {
     "workflows": "green",
@@ -12,20 +12,20 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 0.4h ago",
+      "message": "last slate publish 0.9h ago",
       "detail": {
-        "last_run_iso": "2026-07-22T14:16:30-07:00",
-        "age_hours": 0.38
+        "last_run_iso": "2026-07-22T15:16:25-07:00",
+        "age_hours": 0.91
       },
       "category": "workflows"
     },
     {
       "name": "refit_calibrator_heartbeat",
       "severity": "green",
-      "message": "last fired 3.6d ago",
+      "message": "last fired 3.7d ago",
       "detail": {
         "last_run_iso": "2026-07-19T06:31:12Z",
-        "age_hours": 87.13,
+        "age_hours": 88.66,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 3.6d ago",
+      "message": "last fired 3.7d ago",
       "detail": {
         "last_run_iso": "2026-07-19T07:25:07Z",
-        "age_hours": 86.23,
+        "age_hours": 87.77,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 2.5h ago",
+      "message": "last fired 4.0h ago",
       "detail": {
         "last_run_iso": "2026-07-22T19:09:29Z",
-        "age_hours": 2.49,
+        "age_hours": 4.03,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,8 +71,8 @@
         "ok_rows": 17,
         "non_ok_pct": 0.0,
         "status_distribution": {
-          "fetched_capped": 5,
-          "fetched": 12
+          "fetched_capped": 7,
+          "fetched": 10
         }
       },
       "category": "data_flow"
@@ -97,7 +97,7 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-22T21:39:01.273Z",
+          "timestamp": "2026-07-22T23:11:04.097Z",
           "commit": "unknown",
           "region": "IAD"
         }
@@ -107,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 16.5h ago",
+      "message": "last learned 18.0h ago",
       "detail": {
         "last_entry_iso": "2026-07-22T05:11:01.069776+00:00",
-        "age_hours": 16.47
+        "age_hours": 18.0
       },
       "category": "model"
     },
