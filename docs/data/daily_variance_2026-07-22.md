@@ -1,0 +1,265 @@
+# Daily Variance Report — 2026-07-22
+_Generated 2026-07-22T07:50:51Z · 17 games · significant deviations only_
+
+## 1 · Roster / Injury Delta
+- **PIT** [signed] — Pittsburgh Pirates signed RHP Nathan Helman.
+- **PIT** [signed] — Pittsburgh Pirates signed RHP Griffin Stieg.
+- **PIT** [signed] — Pittsburgh Pirates signed RHP Liam O'Leary.
+- **PIT** [signed] — Pittsburgh Pirates signed free agent RHP Kyle Calzadiaz to a minor league contract.
+- **PIT** [signed] — Pittsburgh Pirates signed LHP Dakota Stone.
+- **NYY** [signed] — New York Yankees signed TWP Luke Pettitte.
+- **NYY** [signed] — New York Yankees signed SS Bayram Hot.
+- **NYY** [signed] — New York Yankees signed 3B Andrew Gonzalez.
+- **NYY** [signed] — New York Yankees signed RHP Michael Harpster.
+- **NYY** [signed] — New York Yankees signed C Bear Harrison.
+- **NYY** [signed] — New York Yankees signed OF Paul Gutierrez-Contreras II.
+- **NYY** [signed] — New York Yankees signed LHP Sean Duncan.
+- **NYY** [signed] — New York Yankees signed C Brendan Brock.
+- **NYY** [signed] — New York Yankees signed 1B Tyce Armstrong.
+- **NYY** [signed] — New York Yankees signed SS William Cutshall.
+- **NYY** [signed] — New York Yankees signed OF Blake Cyr.
+- **NYY** [signed] — New York Yankees signed RHP Garrett Ahern.
+- **NYY** [signed] — New York Yankees signed SS Anthony Potestio.
+- **NYY** [signed] — New York Yankees signed RHP Austin Berggren.
+- **NYY** [signed] — New York Yankees signed OF Lee Garris.
+- **NYY** [signed] — New York Yankees signed OF Diego Castellanos.
+- **NYY** [optioned] — New York Yankees optioned RHP Elmer Rodríguez to Scranton/Wilkes-Barre RailRiders.
+- **BAL** [IL] — Baltimore Orioles placed C Adley Rutschman on the 10-day injured list retroactive to July 19, 2026. Left wrist inflammation.
+- **BAL** [DFA] — Baltimore Orioles designated RF Rudy Martin Jr. for assignment.
+- **BAL** [selected] — Baltimore Orioles selected the contract of C Chadwick Tromp from Norfolk Tides.
+- **BOS** [IL] — Boston Red Sox placed RHP Zack Kelly on the 60-day injured list. Right elbow inflammation.
+- **BOS** [recalled] — Boston Red Sox recalled RHP Zack Kelly from Worcester Red Sox.
+- **SF** [IL] — San Francisco Giants placed RHP Trevor McDonald on the 15-day injured list. Right elbow strain.
+- **SF** [recalled] — San Francisco Giants recalled RHP Tristan Beck from Sacramento River Cats.
+- **KC** [signed] — Kansas City Royals signed RHP Grant Fontenot.
+- **KC** [signed] — Kansas City Royals signed RHP Taylor Rabe.
+- **KC** [signed] — Kansas City Royals signed OF Zion Rose.
+- **KC** [signed] — Kansas City Royals signed RHP Lance Hartley.
+- **KC** [signed] — Kansas City Royals signed OF Tanner Griffith.
+- **KC** [signed] — Kansas City Royals signed LHP Cooper Corkrean.
+- **KC** [signed] — Kansas City Royals signed RHP Dylan Vigue.
+- **KC** [signed] — Kansas City Royals signed LHP Maxx Yehl.
+- **KC** [signed] — Kansas City Royals signed OF Dominic Battista.
+- **KC** [signed] — Kansas City Royals signed LHP Madden Clement.
+- **KC** [signed] — Kansas City Royals signed RHP Richie Roman.
+- **KC** [signed] — Kansas City Royals signed free agent RHP Jackson Cleveland to a minor league contract.
+- **KC** [signed] — Kansas City Royals signed LHP Ethan McElvain.
+- **KC** [signed] — Kansas City Royals signed free agent 3B Jimmy Nati to a minor league contract.
+- **KC** [signed] — Kansas City Royals signed C Banks Wickersham.
+- **KC** [signed] — Kansas City Royals signed RHP Dalton Hill.
+- **KC** [signed] — Kansas City Royals signed LHP Justin LeGuernic.
+- **KC** [signed] — Kansas City Royals signed SS Camden Johnson.
+- **KC** [signed] — Kansas City Royals signed LHP Hunter Possehl.
+- **KC** [signed] — Kansas City Royals signed free agent SS Ben North to a minor league contract.
+- **KC** [signed] — Kansas City Royals signed RHP Jack Slightom.
+- **KC** [signed] — Kansas City Royals signed RHP Dylan Alonso.
+- **KC** [signed] — Kansas City Royals signed free agent LHP Aaron Bummer to a minor league contract.
+- **NYM** [signed] — New York Mets signed RHP Luke McNeillie.
+- **NYM** [signed] — New York Mets signed OF John Smith III.
+- **NYM** [signed] — New York Mets signed free agent SS Dylan Carey to a minor league contract.
+- **NYM** [IL] — New York Mets activated CF Luis Robert Jr. from the 60-day injured list.
+- **NYM** [signed] — New York Mets signed free agent OF Jack Toomey to a minor league contract.
+- **NYM** [signed] — New York Mets signed RHP AJ Krodel.
+- **NYM** [signed] — New York Mets signed C Ryan Tayman.
+- **NYM** [signed] — New York Mets signed RHP Landon Koenig.
+- **NYM** [signed] — New York Mets signed free agent SS Danny Melendez to a minor league contract.
+- **NYM** [signed] — New York Mets signed free agent SS Jake Ogden to a minor league contract.
+- **NYM** [signed] — New York Mets signed RHP Aidan Keenan.
+- **NYM** [signed] — New York Mets signed OF Aiden Robbins.
+- **NYM** [signed] — New York Mets signed SS Kooper Schulte.
+- **NYM** [signed] — New York Mets signed RHP Alex Petrovic.
+- **NYM** [signed] — New York Mets signed RHP Dustin Hagens Jr..
+- **NYM** [signed] — New York Mets signed OF Kuhio Aloy.
+- **NYM** [signed] — New York Mets signed RHP Cooper Dossett.
+- **NYM** [signed] — New York Mets signed RHP Nate Isler.
+- **NYM** [signed] — New York Mets signed RHP Gavin Guidry.
+- **NYM** [signed] — New York Mets signed free agent 1B Carter Dierdorf to a minor league contract.
+- **NYM** [signed] — New York Mets signed free agent LHP A.J. Colarusso to a minor league contract.
+- **NYM** [signed] — New York Mets signed LHP Zach Crotchfelt.
+- **NYM** [signed] — New York Mets signed free agent 1B Reed Stallman to a minor league contract.
+- **NYM** [signed] — New York Mets signed C Jacob Madrid.
+- **NYM** [signed] — New York Mets signed LHP Shane Sdao.
+- **NYM** [outrighted] — New York Mets sent SS Zack Short outright to Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned 1B Eric Wagaman to Syracuse Mets.
+- **NYM** [recalled] — New York Mets recalled RHP Daniel Duarte from Syracuse Mets.
+- **NYM** [optioned] — New York Mets optioned RHP Xzavion Curry to Syracuse Mets.
+- **WSH** [activated] — Washington Nationals activated RHP Miles Mikolas.
+- **WSH** [DFA] — Washington Nationals designated RHP Justin Lawrence for assignment.
+- **WSH** [recalled] — Washington Nationals recalled RHP Eddy Yean from Rochester Red Wings.
+- **COL** [optioned] — Colorado Rockies optioned RHP Nick Frasso to Albuquerque Isotopes.
+- **COL** [TRADE] — Colorado Rockies traded RHP Seth Halvorsen to Los Angeles Dodgers for RHP Nick Frasso and OF Landyn Vidourek.
+- **ATH** [outrighted] — Athletics sent 1B Joey Meneses outright to Las Vegas Aviators.
+- **ATH** [IL] — Athletics placed 3B Joshua Kuroda-Grauer on the 10-day injured list. Ruptured testicle surgery.
+- **ATH** [IL] — Athletics placed RHP Mark Leiter Jr. on the 15-day injured list retroactive to July 19, 2026. Right hip impingement.
+- **ATH** [recalled] — Athletics recalled 3B Max Muncy from Las Vegas Aviators.
+- **ATH** [recalled] — Athletics recalled RHP Hayden Juenger from Las Vegas Aviators.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Josh McDevitt.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Joseph Jasso.
+- **AZ** [signed] — Arizona Diamondbacks signed LHP Caleb Jameson.
+- **AZ** [signed] — Arizona Diamondbacks signed SS Carson Kerce.
+- **AZ** [signed] — Arizona Diamondbacks signed C Ryder Helfrick.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Mason Steele.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Andrew Evans.
+- **AZ** [signed] — Arizona Diamondbacks signed OF Brayden Dowd.
+- **AZ** [signed] — Arizona Diamondbacks signed SS Jack Spanier.
+- **AZ** [signed] — Arizona Diamondbacks signed C Weber Neels.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Brannon Westmoreland.
+- **AZ** [signed] — Arizona Diamondbacks signed OF Jake Duer.
+- **AZ** [signed] — Arizona Diamondbacks signed LHP Micah Worley.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Carson Turnquist.
+- **AZ** [signed] — Arizona Diamondbacks signed OF Paul Schoenfeld.
+- **AZ** [signed] — Arizona Diamondbacks signed 1B Chris Katz.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Blake Bryant.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP LJ Mercurius.
+- **AZ** [signed] — Arizona Diamondbacks signed RHP Andrew Wertz.
+- **AZ** [signed] — Arizona Diamondbacks signed 1B Cody Boshell.
+- **AZ** [optioned] — Arizona Diamondbacks optioned LHP Philip Abner to Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Juan Burgos from Reno Aces.
+- **AZ** [IL] — Arizona Diamondbacks placed RHP Drey Jameson on the 15-day injured list retroactive to July 20, 2026. Right hip inflammation.
+- **AZ** [recalled] — Arizona Diamondbacks recalled RHP Gerardo Carrillo from Reno Aces.
+- **AZ** [recalled] — Arizona Diamondbacks recalled LHP Kohl Drake from Reno Aces.
+- **AZ** [optioned] — Arizona Diamondbacks optioned RHP Juan Burgos to Reno Aces.
+- **CIN** [signed] — Cincinnati Reds signed SS Eric Becker.
+- **CIN** [signed] — Cincinnati Reds signed free agent LHP Anthony Misiewicz to a minor league contract.
+- **CIN** [signed] — Cincinnati Reds signed SS Dylan Bowen.
+- **SEA** [signed] — Seattle Mariners signed 3B Ace Reese.
+- **SEA** [signed] — Seattle Mariners signed free agent C Jake Harvey to a minor league contract.
+- **SEA** [signed] — Seattle Mariners signed free agent RHP Isaac Thornton to a minor league contract.
+- **SEA** [signed] — Seattle Mariners signed free agent C Jacob Galloway to a minor league contract.
+- **SEA** [signed] — Seattle Mariners signed free agent OF Kyle Boylston to a minor league contract.
+- **SEA** [outrighted] — Seattle Mariners sent 3B Miles Mastrobuoni outright to Tacoma Rainiers.
+- **LAA** [signed] — Los Angeles Angels signed free agent OF Cade Marlowe to a minor league contract.
+- **MIN** [IL] — Minnesota Twins activated CF Byron Buxton from the 10-day injured list.
+- **MIN** [optioned] — Minnesota Twins optioned SS Tristan Gray to St. Paul Saints.
+- **MIN** [recalled] — Minnesota Twins recalled RHP Jack Anderson from St. Paul Saints.
+- **MIN** [optioned] — Minnesota Twins optioned RHP Woo-Suk Go to St. Paul Saints.
+- **LAD** [optioned] — Los Angeles Dodgers optioned RHP Kyle Hurt to Oklahoma City Comets.
+- **LAD** [TRADE] — Colorado Rockies traded RHP Seth Halvorsen to Los Angeles Dodgers for RHP Nick Frasso and OF Landyn Vidourek.
+- **LAD** [IL] — Los Angeles Dodgers transferred C Will Smith from the 10-day injured list to the 60-day injured list. Neck inflammation.
+- **LAD** [selected] — Los Angeles Dodgers selected the contract of LHP Charlie Barnes from Oklahoma City Comets.
+- **LAD** [optioned] — Los Angeles Dodgers optioned RHP Landon Knack to Oklahoma City Comets.
+- **PHI** [recalled] — Philadelphia Phillies recalled RHP Alex McFarlane from Reading Fightin Phils.
+- **PHI** [optioned] — Philadelphia Phillies optioned RHP Alan Rangel to Lehigh Valley IronPigs.
+- **PHI** [IL] — Philadelphia Phillies placed C Garrett Stubbs on the 10-day injured list retroactive to July 18, 2026. Left wrist inflammation.
+- **PHI** [recalled] — Philadelphia Phillies recalled OF Bryan De La Cruz from Lehigh Valley IronPigs.
+- **SD** [IL] — San Diego Padres placed DH Miguel Andujar on the 10-day injured list. Right wrist fracture.
+- **SD** [recalled] — San Diego Padres recalled C Rodolfo Durán from El Paso Chihuahuas.
+- **ATL** [signed] — Atlanta Braves signed OF Caleb Klein.
+- **ATL** [signed] — Atlanta Braves signed LHP Ethan Stade.
+- **ATL** [signed] — Atlanta Braves signed C Austin Fawley.
+- **ATL** [signed] — Atlanta Braves signed RHP Nile Adcock.
+- **ATL** [signed] — Atlanta Braves signed free agent IF Joan Hernandez to a minor league contract.
+- **ATL** [signed] — Atlanta Braves signed C Dalton Harper.
+- **ATL** [signed] — Atlanta Braves signed C Dominic Kibler.
+- **ATL** [signed] — Atlanta Braves signed RHP John Damozonio.
+- **ATL** [signed] — Atlanta Braves signed RHP Brady Hamilton.
+- **ATL** [IL] — Atlanta Braves activated LF Mike Yastrzemski from the 10-day injured list.
+- **ATL** [released] — Atlanta Braves released DH Kyle Farmer.
+- **ATL** [signed] — Atlanta Braves signed free agent C Angelo Neira to a minor league contract.
+- **CWS** [IL] — Chicago White Sox placed C Kyle Teel on the 10-day injured list. Left ankle sprain.
+- **CWS** [recalled] — Chicago White Sox recalled C Edgar Quero from Charlotte Knights.
+- **TEX** [signed] — Texas Rangers signed C Max Kaufer.
+- **TEX** [signed] — Texas Rangers signed SS Connor Comeau.
+- **TEX** [signed] — Texas Rangers signed SS Kolby Branch.
+- **TEX** [signed] — Texas Rangers signed LHP Will Whelan.
+- **TEX** [signed] — Texas Rangers signed RHP Landon Brewer.
+- **TEX** [signed] — Texas Rangers signed RHP Hudson Calhoun.
+- **TEX** [signed] — Texas Rangers signed RHP Alfredo Capacete.
+- **TEX** [IL] — Texas Rangers placed RHP Jose Corniell on the 15-day injured list.
+- **TEX** [signed] — Texas Rangers signed LHP Gio Rojas.
+- **TEX** [signed] — Texas Rangers signed RHP Collin Cobb.
+- **TEX** [signed] — Texas Rangers signed 3B Brandon Crabtree.
+- **TEX** [signed] — Texas Rangers signed RHP Jackson Nash.
+- **TEX** [signed] — Texas Rangers signed OF Jordan Hawkins.
+- **TEX** [signed] — Texas Rangers signed LHP Brody Bumila.
+- **TEX** [selected] — Texas Rangers selected the contract of C Austin Wynns from Round Rock Express.
+- **TEX** [selected] — Texas Rangers selected the contract of LHP Marco Gonzales from Round Rock Express.
+- **DET** [IL] — Detroit Tigers activated 2B Gleyber Torres from the 10-day injured list.
+- **DET** [optioned] — Detroit Tigers optioned C Eduardo Valencia to Toledo Mud Hens.
+- **DET** [IL] — Detroit Tigers placed RHP Jack Flaherty on the 15-day injured list. Right flexor inflammation.
+- **DET** [recalled] — Detroit Tigers recalled RHP Ty Madden from Toledo Mud Hens.
+- **CHC** [activated] — Chicago Cubs activated RHP Aaron Civale.
+- **CHC** [IL] — Chicago Cubs placed RHP Phil Maton on the 15-day injured list. Right knee tendinitis.
+- **CHC** [DFA] — Chicago Cubs designated LHP Drew Pomeranz for assignment.
+- **CHC** [IL] — Chicago Cubs activated RHP Jameson Taillon from the 15-day injured list.
+- **CHC** [signed] — Chicago Cubs signed free agent LF Greg Jones to a minor league contract.
+- **MIA** [IL] — Miami Marlins placed RHP Max Meyer on the 15-day injured list retroactive to July 19, 2026. Neck strain.
+- **MIA** [recalled] — Miami Marlins recalled RHP Zach Brzykcy from Jacksonville Jumbo Shrimp.
+- **HOU** [IL] — Houston Astros activated LHP Bennett Sousa from the 60-day injured list.
+- **HOU** [IL] — Houston Astros activated RHP Ronel Blanco from the 60-day injured list.
+- **HOU** [optioned] — Houston Astros optioned 2B Raynel Delgado to Sugar Land Space Cowboys.
+- **HOU** [optioned] — Houston Astros optioned LHP Bryan King to Sugar Land Space Cowboys.
+
+_Suppressed 8 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+
+## 2 · Starting Pitcher Flags
+- **BAL @ BOS** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **NYM @ MIL** (away SP Christian Scott): very high K% (29.2% vs lg 22.6)
+- **LAD @ PHI** (away SP Eric Lauer): very low K% (14.6% vs lg 22.6)
+
+## 3 · Bullpen Fatigue (last 3 games)
+- **NYY** Angel Chivilli — 2 apps / 35 pitches over last 3 games — monitor
+- **MIL** Chad Patrick — 2 apps / 46 pitches over last 3 games — monitor
+- **MIL** Bryse Wilson — threw 65 pitches last night — likely unavailable
+- **WSH** Miles Mikolas — threw 66 pitches last night — likely unavailable
+- **WSH** Clayton Beeter — 2 apps / 40 pitches over last 3 games — monitor
+- **ATH** Elvis Alvarado — 2 apps / 37 pitches over last 3 games — monitor
+- **ATH** Brady Basso — 2 apps / 45 pitches over last 3 games — monitor
+- **ATH** Geoff Hartlieb — 2 apps / 37 pitches over last 3 games — monitor
+- **ATH** Hogan Harris — 2 apps / 38 pitches over last 3 games — monitor
+- **ATH** Luis Medina — 2 apps / 64 pitches over last 3 games — monitor
+- **AZ** Juan Morillo — 2 apps / 36 pitches over last 3 games — monitor
+- **STL** Scott Blewett — threw 42 pitches last night — likely unavailable
+- **LAA** Ryan Zeferjahn — 2 apps / 35 pitches over last 3 games — monitor
+- **MIN** Mike Paredes — threw 49 pitches last night — likely unavailable
+- **MIN** Woo-Suk Go — 2 apps / 47 pitches over last 3 games — monitor
+- **CLE** Shawn Armstrong — 2 apps / 36 pitches over last 3 games — monitor
+- **TOR** Lazaro Estrada — 2 apps / 51 pitches over last 3 games — monitor
+- **TOR** Patrick Corbin — threw 48 pitches last night — likely unavailable
+- **SD** Yuki Matsui — 2 apps / 40 pitches over last 3 games — monitor
+- **ATL** JR Ritchie — threw 68 pitches last night — likely unavailable
+- **CWS** Trevor Richards — 2 apps / 35 pitches over last 3 games — monitor
+- **CWS** Tyler Schweitzer — threw 61 pitches last night — likely unavailable
+- **TEX** Marco Gonzales — threw 49 pitches last night — likely unavailable
+- **TEX** Ben Peoples — 2 apps / 41 pitches over last 3 games — monitor
+- **TEX** Robby Ahlstrom — 2 apps / 42 pitches over last 3 games — monitor
+- **DET** Brenan Hanifee — 2 apps / 48 pitches over last 3 games — monitor
+- **DET** Kenley Jansen — 2 apps / 47 pitches over last 3 games — monitor
+- **DET** Ty Madden — threw 75 pitches last night — likely unavailable
+- **CHC** Aaron Civale — threw 47 pitches last night — likely unavailable
+
+## 4 · Lineup / Platoon
+- PIT @ NYY — NYY faces RHP (Mitch Keller)
+- PIT @ NYY — PIT faces RHP (Gerrit Cole)
+- PIT @ NYY — NYY faces RHP (Bubba Chandler)
+- PIT @ NYY — PIT faces LHP (Max Fried)
+- BAL @ BOS — BOS faces RHP (Dean Kremer)
+- BAL @ BOS — BAL faces LHP (Jake Bennett)
+- BAL @ BOS — BOS faces RHP (Kyle Bradish)
+- SF @ KC — KC faces RHP (Landen Roupp)
+- SF @ KC — SF faces RHP (Seth Lugo)
+- NYM @ MIL — MIL faces RHP (Christian Scott)
+- NYM @ MIL — NYM faces RHP (Logan Henderson)
+- WSH @ COL — COL faces RHP (Cade Cavalli)
+- WSH @ COL — WSH faces RHP (Gabriel Hughes)
+- ATH @ AZ — AZ faces LHP (Gage Jump)
+- ATH @ AZ — ATH faces RHP (Merrill Kelly)
+- CIN @ SEA — SEA faces RHP (Brady Singer)
+- CIN @ SEA — CIN faces RHP (Emerson Hancock)
+- STL @ LAA — LAA faces RHP (Hunter Dobbins)
+- STL @ LAA — STL faces LHP (Reid Detmers)
+- MIN @ CLE — CLE faces RHP (Bailey Ober)
+- MIN @ CLE — MIN faces RHP (Slade Cecconi)
+- LAD @ PHI — PHI faces LHP (Eric Lauer)
+- LAD @ PHI — LAD faces RHP (Aaron Nola)
+- TB @ TOR — TOR faces RHP (Griffin Jax)
+- TB @ TOR — TB faces RHP (Braydon Fisher)
+- SD @ ATL — ATL faces RHP (Michael King)
+- SD @ ATL — SD faces LHP (Martín Pérez)
+- CWS @ TEX — TEX faces LHP (Anthony Kay)
+- CWS @ TEX — CWS faces LHP (Tyler Alexander)
+- DET @ CHC — CHC faces RHP (Keider Montero)
+- DET @ CHC — DET faces RHP (Colin Rea)
+- MIA @ HOU — HOU faces RHP (Sandy Alcantara)
+- MIA @ HOU — MIA faces RHP (Peter Lambert)
+
