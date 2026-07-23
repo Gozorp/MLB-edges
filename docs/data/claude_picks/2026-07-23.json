@@ -1,0 +1,74 @@
+{
+  "date": "2026-07-23",
+  "fit_at": "2026-07-23T09:19:43Z",
+  "model_version": "claude-brain-v1",
+  "n_games": 5,
+  "patterns_recognized": [
+    "Thin slate: all 5 games arrive at SKIP already, most via [HARD CAP 10] bottom-bucket marginal-favorite (pick_prob in (0.50,0.55]) with decision='none' baked into the CSV. Per 7/21 archive, CONFIRM-rescue in this band hit 47.6% vs 31.2% non-CONFIRM, but even CONFIRM-rescued CAP10 stakes went only 1-for-3 in real money on 7/21 (SD@ATL WIN F3=2777.6, SF@KC LOSS F3=822.2, DET@CHC LOSS F3=1761.1) — rescue only where 3+ dimensions independently agree, not on F3-alone.",
+    "SD@ATL and KC@DET both show large negative edge_pp (-13.33, -11.57) on home favorites where fair_prob is well above pick_prob (model far more conservative than Vegas) — same model-vs-market-gap shape flagged in 7/21 CIN@SEA (~10pp gap). This is calibration caution correctly enforced by the edge-window skip, not evidence to fade toward the market.",
+    "TB@TOR recurs from 7/21, where an unvalidated 'flat-edge market-priced' DOWNGRADE was called a process failure after missing a 10-run TB blowout win. Today TB@TOR has the best pre-cap stack on the slate (B-/score1, edge 12.69pp inside the valid window, no hard cap fired) and is SKIP purely because of the system-wide 'staking disabled — model under repair' flag, not a signal judgment — no reason to invent a fresh fade.",
+    "ARI@STL shows the day's largest Stage1/2 split (f5_full_delta=0.2612) but, unlike the dual-opposing shapes flagged in past postgames, all three live signals (SP xERA, PQI Δ-19.7, F-signal with F3=5165.2, the largest F3 anchor seen in the archive) agree with the pick — a structurally different and more favorable shape than a dual-opposing SKIP."
+  ],
+  "by_matchup": {
+    "SD @ ATL": {
+      "model_pick": "ATL ML SKIP",
+      "model_prob": 0.5856,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ATL",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.54,
+      "reasoning": "Edge -13.33pp sits well outside the [4,15]pp valid window (why_skipped) and HARD CAP 10 independently zeroes pick_prob=0.545 in the bottom bucket. Underlying signals actually like ATL (Sale SP-edge +2, PQI Δ+25.2, F-signal), but fair_prob=0.7189 shows Vegas is even MORE bullish on ATL/Sale than the model — a model-vs-market gap, not a fade signal. Pre-cap B-/score1 is too thin post-edge-penalty to justify a rescue. CONFIRM SKIP.",
+      "lessons_applied": ["edge-window skip = model-vs-market gap (cf 7/21 CIN@SEA)", "CAP10 no-rescue on thin pre-cap B-/score1"]
+    },
+    "MIN @ CLE": {
+      "model_pick": "CLE ML SKIP",
+      "model_prob": 0.5364,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "CLE",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.50,
+      "reasoning": "Weakest stack on the slate (pre-cap score=0/C): SP-edge opposes CLE (Bradley's xERA beats Williams', -2) and team_quality_mod also opposes (-1). Edge -4.3pp sits outside the valid window and HARD CAP 10 fires on pick_prob=0.519. This recurring MIN@CLE fixture saw CLE win 5-2 on 7/21 while the model correctly SKIPped the (then-MIN) pick on the same bottom-bucket floor logic. No corroborating signal to rescue. CONFIRM SKIP.",
+      "lessons_applied": ["dual-opposition (SP+team_quality against) = no rescue", "CAP10 bottom-bucket", "MIN@CLE recurring-fixture SKIP precedent (7/21)"]
+    },
+    "TB @ TOR": {
+      "model_pick": "TB ML SKIP",
+      "model_prob": 0.6208,
+      "model_tier": "SKIP",
+      "model_grade": "B-",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "TB",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.58,
+      "reasoning": "Best pre-cap stack of the day (B-/score1: F-signal fires, PQI Δ-6.3 confirms) with edge 12.69pp squarely inside the valid [4,15]pp window — no HARD CAP fires here at all; SKIP is enforced only by the system-wide 'staking disabled — model under repair' flag (AUC 0.48), not a signal read. 7/21's TB@TOR DOWNGRADE ('flat-edge market-priced') was flagged as an unvalidated process failure that missed a 10-run TB win; no basis to repeat that mistake with a new invented fade. Stage1/2 delta=0.24 noted but doesn't flip direction. CONFIRM.",
+      "lessons_applied": ["7/21 TB@TOR unvalidated-DOWNGRADE-missed-blowout lesson", "staking-disabled is system-wide, not signal-driven", "no hard cap fired, edge in valid window"]
+    },
+    "ARI @ STL": {
+      "model_pick": "ARI ML SKIP",
+      "model_prob": 0.5642,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "ARI",
+      "claude_tier": "GOLD",
+      "claude_confidence": 0.53,
+      "reasoning": "Pre-cap B+/score3 with three independent dimensions agreeing: SP xERA edge 1.13 (Pfaadt over McGreevy), PQI Δ-19.7, and F3=5165.2 — the largest F-signal anchor seen in the archive, far above the 1000 threshold. Only HARD CAP 10 (pick_prob=0.536, bottom bucket) suppresses it; edge 9.6pp sits in the valid window. The large Stage1/2 split (f5_full_delta=0.2612) is real residual risk and CAP10-rescues are only 1-for-3 historically, so this is a moderate-confidence CONFIRM-rescue, not a strong one.",
+      "lessons_applied": ["CAP10 CONFIRM-rescue requires 3-dim agreement (SP+PQI+F3>>1000), unlike weaker single-anchor cases", "large Stage1/2 split ≠ dual-opposition, tempers but doesn't block rescue", "1-for-3 rescue track record (7/21) keeps confidence moderate"]
+    },
+    "KC @ DET": {
+      "model_pick": "DET ML SKIP",
+      "model_prob": 0.5723,
+      "model_tier": "SKIP",
+      "model_grade": "C",
+      "claude_decision": "CONFIRM",
+      "claude_pick": "DET",
+      "claude_tier": "SKIP",
+      "claude_confidence": 0.52,
+      "reasoning": "Pre-cap B-/score1 rests on only two dimensions (F3=2465.7 and PQI Δ+20.8 confirm); no SP-edge or team_quality signal fires at all, falling short of the 3-dimension bar that supported today's ARI@STL rescue. Edge -11.57pp sits outside the valid window (fair_prob=0.688 vs model's 0.5723, a large model-vs-market gap similar to SD@ATL) and HARD CAP 10 independently zeroes pick_prob=0.539. No qualitative override signal present. CONFIRM SKIP, no rescue.",
+      "lessons_applied": ["two-dimension stack insufficient for CAP10 rescue (needs SP or team_quality corroboration)", "edge-window skip = model-vs-market gap"]
+    }
+  }
+}
