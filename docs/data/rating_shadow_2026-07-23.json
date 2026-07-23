@@ -1,0 +1,206 @@
+{
+ "date": "2026-07-23",
+ "generated_utc": "2026-07-23T07:49:12+00:00",
+ "schema": "v1-shadow",
+ "scope": "DISPLAY/SHADOW ONLY -- never feeds model/picks/stake",
+ "weights": {
+  "batter": 0.45,
+  "sp": 0.35,
+  "bp": 0.2,
+  "K_delta": 2.5,
+  "delta_cap": 7.0,
+  "interval_days": 5,
+  "gamma": 0.35,
+  "lineup_n": 9
+ },
+ "method": "0-100 ecosystem = 0.45*batter(top9 OPS/K%) + 0.35*SP_today(K-BB/WHIP/HR9) + 0.20*BP(relief exec + bullpen_meta fatigue); Interval_Delta=clamp(2.5*(W-E),-7,7) trailing 5d; shadow decompress logit += 0.35*z(eco_diff). statsapi-only. Hard-Hit%/lineup-specific = July.",
+ "teams": {
+  "ATL": {
+   "batter": 66.1,
+   "sp_today": 89.6,
+   "sp_src": "named",
+   "bp_health": 90.8,
+   "ecosystem_score": 79.3,
+   "interval_delta": 0.95,
+   "interval_W_E": [
+    3.0,
+    2.62
+   ]
+  },
+  "SD": {
+   "batter": 52.3,
+   "sp_today": 30.6,
+   "sp_src": "named",
+   "bp_health": 68.8,
+   "ecosystem_score": 48.0,
+   "interval_delta": -1.33,
+   "interval_W_E": [
+    2.0,
+    2.53
+   ]
+  },
+  "CLE": {
+   "batter": 54.6,
+   "sp_today": 80.1,
+   "sp_src": "named",
+   "bp_health": 84.0,
+   "ecosystem_score": 69.4,
+   "interval_delta": 0.02,
+   "interval_W_E": [
+    3.0,
+    2.99
+   ]
+  },
+  "MIN": {
+   "batter": 63.2,
+   "sp_today": 67.4,
+   "sp_src": "named",
+   "bp_health": 13.8,
+   "ecosystem_score": 54.8,
+   "interval_delta": -4.17,
+   "interval_W_E": [
+    1.0,
+    2.67
+   ]
+  },
+  "TOR": {
+   "batter": 55.9,
+   "sp_today": 9.3,
+   "sp_src": "named",
+   "bp_health": 76.4,
+   "ecosystem_score": 43.7,
+   "interval_delta": -3.78,
+   "interval_W_E": [
+    1.0,
+    2.51
+   ]
+  },
+  "TB": {
+   "batter": 59.4,
+   "sp_today": 62.9,
+   "sp_src": "staff_avg",
+   "bp_health": 83.6,
+   "ecosystem_score": 65.5,
+   "interval_delta": 1.63,
+   "interval_W_E": [
+    3.0,
+    2.35
+   ]
+  },
+  "STL": {
+   "batter": 51.8,
+   "sp_today": 56.0,
+   "sp_src": "named",
+   "bp_health": 15.3,
+   "ecosystem_score": 46.0,
+   "interval_delta": -2.25,
+   "interval_W_E": [
+    1.0,
+    1.9
+   ]
+  },
+  "AZ": {
+   "batter": 57.2,
+   "sp_today": 33.8,
+   "sp_src": "staff_avg",
+   "bp_health": 67.0,
+   "ecosystem_score": 51.0,
+   "interval_delta": 2.12,
+   "interval_W_E": [
+    4.0,
+    3.15
+   ]
+  },
+  "DET": {
+   "batter": 57.0,
+   "sp_today": 79.1,
+   "sp_src": "named",
+   "bp_health": 32.8,
+   "ecosystem_score": 59.9,
+   "interval_delta": 1.61,
+   "interval_W_E": [
+    3.0,
+    2.36
+   ]
+  },
+  "KC": {
+   "batter": 56.1,
+   "sp_today": 46.4,
+   "sp_src": "staff_avg",
+   "bp_health": 1.6,
+   "ecosystem_score": 41.8,
+   "interval_delta": 4.34,
+   "interval_W_E": [
+    4.0,
+    2.26
+   ]
+  }
+ },
+ "games": [
+  {
+   "matchup": "SD @ ATL",
+   "home": "ATL",
+   "away": "SD",
+   "raw_home_prob": 0.5856,
+   "home_eco": 80.2,
+   "away_eco": 46.7,
+   "pred_total": 8.83,
+   "total_line": 8.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.784,
+   "confidence_delta_pp": 19.8
+  },
+  {
+   "matchup": "MIN @ CLE",
+   "home": "CLE",
+   "away": "MIN",
+   "raw_home_prob": 0.5364,
+   "home_eco": 69.4,
+   "away_eco": 50.6,
+   "pred_total": 9.24,
+   "total_line": 7.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.6623,
+   "confidence_delta_pp": 12.6
+  },
+  {
+   "matchup": "TB @ TOR",
+   "home": "TOR",
+   "away": "TB",
+   "raw_home_prob": 0.3792,
+   "home_eco": 39.9,
+   "away_eco": 67.1,
+   "pred_total": 8.96,
+   "total_line": 8.5,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.2214,
+   "confidence_delta_pp": -15.8
+  },
+  {
+   "matchup": "ARI @ STL",
+   "home": "STL",
+   "away": "AZ",
+   "raw_home_prob": 0.4508,
+   "home_eco": 43.8,
+   "away_eco": 53.1,
+   "pred_total": 8.67,
+   "total_line": 8.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.3868,
+   "confidence_delta_pp": -6.4
+  },
+  {
+   "matchup": "KC @ DET",
+   "home": "DET",
+   "away": "KC",
+   "raw_home_prob": 0.5723,
+   "home_eco": 61.5,
+   "away_eco": 46.1,
+   "pred_total": 10.08,
+   "total_line": 8.0,
+   "realized_total": null,
+   "shadow_decompressed_prob": 0.6733,
+   "confidence_delta_pp": 10.1
+  }
+ ]
+}
