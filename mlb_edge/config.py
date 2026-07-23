@@ -167,6 +167,24 @@ MAX_MODEL_PROB: float = 0.72          # avoid extreme chalk (value compression)
 KELLY_FRACTION: float = 0.25          # quarter-Kelly to control variance
 MAX_DAILY_RISK_UNITS: float = 15.0    # v12 structural cap per slate
 
+# ---------------------------------------------------------------------------
+# Master staking kill-switch (2026-07-21 audit; user-directed)
+# ---------------------------------------------------------------------------
+# When False, the pipeline still PUBLISHES every pick (for tracking + closing-
+# line-value measurement) but sizes NO money: recommend_slate() returns an
+# empty bet sheet and every diag row is forced to SKIP with zeroed Kelly
+# fractions.  This is an interim safety hold, not a permanent state.
+#
+# Why it is off: on N=792 graded live predictions the STAKED subset
+# (GOLD/PLATINUM/DIAMOND, n=409) had AUC 0.4819 -- below a coin flip -- and a
+# calibration slope of -0.406 (higher stated confidence -> LOWER win rate).
+# The whole-slate model also lost to a constant-base-rate predictor on Brier
+# (0.2554 vs 0.2490) and to the de-vigged market on the same games. Sizing
+# money off a probability with no demonstrated resolution is -EV. Re-enable
+# only after the model beats the constant, logistic, and market baselines on
+# untouched forward data (see tools/baseline_eval.py).
+STAKING_ENABLED: bool = False
+
 
 # ---------------------------------------------------------------------------
 # Bullpen fatigue rules

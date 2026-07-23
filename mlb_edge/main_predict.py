@@ -45,7 +45,8 @@ from .edge_calculator import (
 )
 from .config import (
     KELLY_FRACTION, MAX_DAILY_RISK_UNITS, MAX_EDGE_PCT, MAX_MODEL_PROB,
-    MIN_EDGE_PCT, MIN_FAIR_PROB, MIN_MODEL_PROB, SP_WEIGHTS, TIER_SIZES,
+    MIN_EDGE_PCT, MIN_FAIR_PROB, MIN_MODEL_PROB, SP_WEIGHTS, STAKING_ENABLED,
+    TIER_SIZES,
 )
 from .live_lineups import fetch_slate_meta
 from .live_weather import fetch_slate_weather
@@ -511,6 +512,17 @@ def build_diagnostic_table(games: pd.DataFrame,
             if tier_out != "SKIP":
                 why_skipped.append("tier forced SKIP: thin SP Statcast sample")
             tier_out = "SKIP"
+        if not STAKING_ENABLED:
+            # Master staking hold (config.STAKING_ENABLED; 2026-07-21 audit).
+            # Publish the pick for tracking/CLV, size no money. Applied AFTER
+            # every other gate so it is unconditional, and the informational
+            # Kelly columns are zeroed so a SKIP row never advertises a stake.
+            why_skipped.append("staking disabled — model under repair (staked "
+                               "tier AUC 0.48 < coin flip; see config."
+                               "STAKING_ENABLED)")
+            guard_sig.append("staking_disabled")
+            tier_out = "SKIP"
+            kelly_full = kelly_quarter = kelly_eighth = 0.0
 
         # Per-row odds status: distinguish "API didn't fire" from "API fired
         # but had no match for this matchup" so a downstream reader can tell

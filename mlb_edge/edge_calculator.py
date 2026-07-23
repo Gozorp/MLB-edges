@@ -33,6 +33,7 @@ from .config import (
     MIN_FAIR_PROB,
     MIN_MODEL_PROB,
     SP_WEIGHTS,
+    STAKING_ENABLED,
     TIER_SIZES,
 )
 from .market_analysis import shin
@@ -342,6 +343,17 @@ def recommend_slate(games: pd.DataFrame,
     uses end-to-end.
     """
     from .stadiums import normalize_team  # local import — avoid circularity
+
+    if not STAKING_ENABLED:
+        # Master staking hold (config.STAKING_ENABLED; 2026-07-21 audit). No
+        # money is sized while the model is under repair -> empty bet sheet.
+        # Picks are still published via the diag CSV path for CLV tracking;
+        # this only suppresses the staked recommendation sheet. Honored here
+        # (not just via TIER_SIZES) so the learned-conviction stake path, which
+        # bypasses TIER_SIZES, is covered too.
+        log.warning("STAKING_ENABLED is False — returning empty bet sheet "
+                    "(picks still publish for tracking)")
+        return pd.DataFrame()
 
     h2h = odds[odds["market"] == "h2h"].copy()
     if h2h.empty:
