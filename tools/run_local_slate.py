@@ -174,6 +174,14 @@ def _run():
     log("")
     log("slate date resolved: %s" % slate)
 
+    # 1.5) moneyline market-blend overlay (display/decision aid; 2026-07-22).
+    #      Appends pick_prob_blend / edge_pp_blend to today's diag BEFORE bake,
+    #      the same post-hoc pattern totals_overlay uses. Frozen model untouched;
+    #      fully sandboxed (leaves the CSV unchanged on any failure). Non-fatal.
+    if slate:
+        run([PY, "tools/moneyline_overlay.py", slate],
+            "moneyline market-blend overlay", fatal=False)
+
     # 2) totals (non-fatal -- matches cloud continue-on-error)
     if slate and os.path.exists("models/totals_latest.pkl"):
         run([PY, "-m", "mlb_edge.main_totals", "--mode", "predict",

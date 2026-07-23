@@ -1,0 +1,6 @@
+{
+  "model_weight": 0.25,
+  "fit_date": "2026-07-22",
+  "basis": "internal audit 2026-07-17 (25% model / 75% market -> Brier 0.2466) confirmed by tools/baseline_eval.py on local N=329 (best blend w=0.25 -> Brier 0.2444, beating model-only 0.2539 and market-only 0.2453). Refit by re-running baseline_eval and updating model_weight.",
+  "note": "Display/decision overlay only. Consumed by tools/moneyline_overlay.py; the frozen XGBoost model is untouched."
+}
