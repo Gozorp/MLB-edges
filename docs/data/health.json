@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "checked_at": "2026-07-23T17:56:17.808114+00:00",
+  "checked_at": "2026-07-23T19:37:57.148988+00:00",
   "overall": "yellow",
   "categories": {
     "workflows": "green",
@@ -12,10 +12,10 @@
     {
       "name": "daily_slate_heartbeat",
       "severity": "green",
-      "message": "last slate publish 0.7h ago",
+      "message": "last slate publish 0.4h ago",
       "detail": {
-        "last_run_iso": "2026-07-23T10:13:11-07:00",
-        "age_hours": 0.72
+        "last_run_iso": "2026-07-23T12:13:45-07:00",
+        "age_hours": 0.4
       },
       "category": "workflows"
     },
@@ -25,7 +25,7 @@
       "message": "last fired 4.5d ago",
       "detail": {
         "last_run_iso": "2026-07-19T06:31:12Z",
-        "age_hours": 107.42,
+        "age_hours": 109.11,
         "cadence": "weekly calibrator refit"
       },
       "category": "workflows"
@@ -33,10 +33,10 @@
     {
       "name": "weekly_backtest_heartbeat",
       "severity": "green",
-      "message": "last fired 4.4d ago",
+      "message": "last fired 4.5d ago",
       "detail": {
         "last_run_iso": "2026-07-19T07:25:07Z",
-        "age_hours": 106.52,
+        "age_hours": 108.21,
         "cadence": "weekly backtest"
       },
       "category": "workflows"
@@ -44,10 +44,10 @@
     {
       "name": "claude_brain_heartbeat",
       "severity": "green",
-      "message": "last fired 8.6h ago",
+      "message": "last fired 10.3h ago",
       "detail": {
         "last_run_iso": "2026-07-23T09:22:43Z",
-        "age_hours": 8.56,
+        "age_hours": 10.25,
         "cadence": "daily Claude Brain review"
       },
       "category": "workflows"
@@ -71,7 +71,8 @@
         "ok_rows": 5,
         "non_ok_pct": 0.0,
         "status_distribution": {
-          "fetched": 5
+          "fetched_capped": 1,
+          "fetched": 4
         }
       },
       "category": "data_flow"
@@ -96,9 +97,9 @@
         "status": "ok",
         "body": {
           "status": "ok",
-          "timestamp": "2026-07-23T17:56:17.925Z",
+          "timestamp": "2026-07-23T19:37:57.222Z",
           "commit": "unknown",
-          "region": "IAD"
+          "region": "SJC"
         }
       },
       "category": "deployment"
@@ -106,10 +107,10 @@
     {
       "name": "weights_state_freshness",
       "severity": "green",
-      "message": "last learned 13.8h ago",
+      "message": "last learned 15.4h ago",
       "detail": {
         "last_entry_iso": "2026-07-23T04:10:58.835992+00:00",
-        "age_hours": 13.76
+        "age_hours": 15.45
       },
       "category": "model"
     },
