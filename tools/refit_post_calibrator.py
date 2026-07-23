@@ -84,6 +84,65 @@ def lookup_result(date_results: dict, away: str, home: str) -> dict | None:
     return None
 
 
+def _num(row: dict, key: str) -> float | None:
+    """Parse a CSV cell as float. Returns None for missing/blank/unparseable.
+
+    Deliberately NOT `float(row.get(k) or 0)`: a legitimate 0.0 is falsy and
+    would silently fall through to the next candidate column.
+    """
+    v = row.get(key)
+    if v is None:
+        return None
+    v = str(v).strip()
+    if not v or v.lower() in ("nan", "none", ""):
+        return None
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def _pick_side_prob(row: dict, pick_is_home: bool) -> float | None:
+    """P(picked side wins), whatever column the diag CSV happens to carry.
+
+    Column semantics are defined in mlb_edge/main_predict.py:242-251:
+      pick_prob / p_model -> already PICK-perspective (>=0.5 by construction)
+      full_prob           -> HOME-perspective, must be flipped for away picks
+    """
+    for key in ("pick_prob", "p_model"):
+        p = _num(row, key)
+        if p is not None:
+            return p
+    p = _num(row, "full_prob")
+    if p is not None:
+        return p if pick_is_home else 1.0 - p
+    return None
+
+
+def assert_pick_perspective(pairs: List[Tuple[float, int]],
+                            tol: float = 0.02) -> None:
+    """Tripwire: a pick-side sample cannot have real mass below p=0.5.
+
+    main_predict.py:374-379 always picks the side with prob >= 0.5, so a
+    correctly-oriented fit sample is entirely >= 0.5 (modulo post-hoc shrink
+    landing a hair under). More than `tol` of the mass below 0.5 means the
+    probability and the outcome disagree about perspective -- the exact
+    2026-07-20 defect this guard exists to prevent recurring.
+    """
+    if not pairs:
+        return
+    below = sum(1 for p, _ in pairs if p < 0.5)
+    frac = below / len(pairs)
+    if frac > tol:
+        raise SystemExit(
+            f"ORIENTATION CHECK FAILED: {below}/{len(pairs)} ({frac:.1%}) of the "
+            f"fit sample is below p=0.5, but pick-perspective probabilities are "
+            f">=0.5 by construction. The probability column and the outcome "
+            f"column are on different perspectives -- refusing to write a "
+            f"scrambled calibration table. See main_predict.py:242-251."
+        )
+
+
 def collect_pairs(repo_root: Path) -> List[Tuple[float, int]]:
     """Walk docs/data/picks_*_diag.csv, fetch outcomes, return (prob, won) pairs."""
     data_dir = repo_root / "docs" / "data"
@@ -118,11 +177,20 @@ def collect_pairs(repo_root: Path) -> List[Tuple[float, int]]:
                 pick_is_home = pick_norm == res["home"] or pick == res["home"]
                 home_won = res["home_score"] > res["away_score"]
                 pick_won = (pick_is_home and home_won) or (not pick_is_home and not home_won)
-                try:
-                    p = float(row.get("full_prob") or row.get("p_model") or 0)
-                except (TypeError, ValueError):
-                    continue
-                if 0.0 < p < 1.0:
+                # ORIENTATION (2026-07-21 fix): the outcome above is
+                # PICK-perspective, so the probability must be too.  This read
+                # used to prefer `full_prob`, which main_predict._build_table
+                # documents as HOME-perspective ("DO NOT REINVERT — eval bug
+                # 2026-05-02").  On the ~39% of rows where the pick is the away
+                # team that paired 1-P(pick wins) with "pick won", scrambling
+                # the fit: the shipped 955-row table carried 377 observations
+                # (39.5%) below p=0.5, which is impossible for a pick-side
+                # probability -- p_model is >=0.5 by construction
+                # (main_predict.py:374-379).  Prefer the explicitly
+                # pick-perspective columns; only fall back to full_prob when we
+                # can re-orient it ourselves.
+                p = _pick_side_prob(row, pick_is_home)
+                if p is not None and 0.0 < p < 1.0:
                     pairs.append((p, 1 if pick_won else 0))
     log.info("collected %d (prob, outcome) pairs", len(pairs))
     return pairs
@@ -207,6 +275,7 @@ def main(argv=None) -> int:
     if len(pairs) < 30:
         log.warning("only %d pairs — too few to refit (need >=30); skipping", len(pairs))
         return 0
+    assert_pick_perspective(pairs)
 
     new_table = fit_calibrator(pairs)
     new_brier = brier_score(pairs, new_table)
