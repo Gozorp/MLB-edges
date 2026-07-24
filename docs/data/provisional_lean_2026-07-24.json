@@ -1,0 +1,34 @@
+{
+  "date": "2026-07-24",
+  "generated_utc": "2026-07-24T07:51:50.322953+00:00",
+  "method": "sp-independent-team-strength",
+  "note": "DISPLAY-ONLY provisional lean; never feeds the model or staking",
+  "games": {
+    "ATL @ BAL": {
+      "provisional_pick": "ATL",
+      "p_pick": 0.84,
+      "p_home": 0.16,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "ATL",
+      "home": "BAL",
+      "away_strength": 1.51,
+      "home_strength": -0.22
+    },
+    "SD @ MIA": {
+      "provisional_pick": "MIA",
+      "p_pick": 0.657,
+      "p_home": 0.657,
+      "basis": "team-strength(win%+runDiff)+home-field",
+      "confidence": "medium",
+      "is_provisional": true,
+      "no_sp": true,
+      "away": "SD",
+      "home": "MIA",
+      "away_strength": -0.35,
+      "home_strength": 0.12
+    }
+  }
+}

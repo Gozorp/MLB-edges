@@ -1,0 +1,169 @@
+# Daily Variance Report — 2026-07-24
+_Generated 2026-07-24T07:50:33Z · 15 games · significant deviations only_
+
+## 1 · Roster / Injury Delta
+- **KC** [IL] — Kansas City Royals transferred RHP Stephen Kolek from the 15-day injured list to the 60-day injured list. Right flexor strain.
+- **KC** [signed] — Kansas City Royals signed free agent 2B Alejo Lopez to a minor league contract.
+- **KC** [IL] — Kansas City Royals placed SS Bobby Witt Jr. on the 10-day injured list retroactive to July 21, 2026. Low back tightness.
+- **KC** [DFA] — Kansas City Royals designated CF Kameron Misner for assignment.
+- **KC** [selected] — Kansas City Royals selected the contract of SS Andrew Velazquez from Omaha Storm Chasers.
+- **KC** [TRADE] — Houston Astros traded RHP Nate Pearson to Kansas City Royals for RHP Max Martin.
+- **DET** [signed] — Detroit Tigers signed free agent C Carlos Pérez to a minor league contract.
+- **CHC** [optioned] — Chicago Cubs optioned DH Kevin Alcántara to Iowa Cubs.
+- **CHC** [outrighted] — Chicago Cubs sent LHP Drew Pomeranz outright to Iowa Cubs.
+- **PIT** [signed] — Pittsburgh Pirates signed 2B Chris Rembert.
+- **PIT** [recalled] — Pittsburgh Pirates recalled RHP Noah Murdock from Indianapolis Indians.
+- **PIT** [DFA] — Pittsburgh Pirates designated RHP Dennis Santana for assignment.
+- **PIT** [signed] — Pittsburgh Pirates signed OF Andruw Giles.
+- **PIT** [signed] — Pittsburgh Pirates signed SS Aiden Ruiz.
+- **PIT** [signed] — Pittsburgh Pirates signed LHP Spencer Evans.
+- **PIT** [signed] — Pittsburgh Pirates signed RHP Jason DeCaro.
+- **PIT** [TRADE] — San Diego Padres traded RHP Ron Marinaccio to Pittsburgh Pirates for Future Considerations.
+- **PIT** [optioned] — Pittsburgh Pirates optioned RHP Noah Murdock to Indianapolis Indians.
+- **WSH** [signed] — Washington Nationals signed 2B Chris Hacopian.
+- **WSH** [signed] — Washington Nationals signed OF Jack Brooks.
+- **WSH** [signed] — Washington Nationals signed OF Nick Williams.
+- **WSH** [signed] — Washington Nationals signed C Cashel Dugger.
+- **WSH** [signed] — Washington Nationals signed RHP Weston Moss.
+- **WSH** [signed] — Washington Nationals signed LHP Matthew Dallas.
+- **WSH** [signed] — Washington Nationals signed RHP Cody Howard.
+- **WSH** [signed] — Washington Nationals signed RHP Zack Konstantinovsky.
+- **WSH** [signed] — Washington Nationals signed C Francisco Rivero.
+- **WSH** [signed] — Washington Nationals signed RHP Max Hansmann.
+- **WSH** [signed] — Washington Nationals signed RHP Gage Peterson.
+- **WSH** [signed] — Washington Nationals signed RHP Cooper Allen.
+- **WSH** [signed] — Washington Nationals signed 3B Daniel Cuvet.
+- **WSH** [signed] — Washington Nationals signed RHP Cooper Harris.
+- **WSH** [signed] — Washington Nationals signed SS Luke Williams.
+- **WSH** [signed] — Washington Nationals signed OF Chase Brunson.
+- **WSH** [signed] — Washington Nationals signed IF Avery Ortiz.
+- **WSH** [signed] — Washington Nationals signed RHP Anson Seibert.
+- **WSH** [outrighted] — Washington Nationals sent RHP Justin Lawrence outright to Rochester Red Wings.
+- **NYY** [IL] — New York Yankees activated LHP Max Fried from the 15-day injured list.
+- **NYY** [recalled] — New York Yankees recalled CF Spencer Jones from Scranton/Wilkes-Barre RailRiders.
+- **NYY** [optioned] — New York Yankees optioned RHP Kervin Castro to Scranton/Wilkes-Barre RailRiders.
+- **NYY** [optioned] — New York Yankees optioned CF Spencer Jones to Scranton/Wilkes-Barre RailRiders.
+- **ATL** [IL] — Atlanta Braves activated LHP Martín Pérez from the 15-day injured list.
+- **ATL** [optioned] — Atlanta Braves optioned RHP JR Ritchie to Gwinnett Stripers.
+- **BAL** [IL] — Baltimore Orioles placed C Samuel Basallo on the 10-day injured list retroactive to July 20, 2026. Right shoulder inflammation.
+- **BAL** [recalled] — Baltimore Orioles recalled RF Johnathan Rodríguez from Norfolk Tides.
+- **BAL** [recalled] — Baltimore Orioles recalled LHP Josh Walker from Norfolk Tides.
+- **BAL** [DFA] — Baltimore Orioles designated RF Johnathan Rodríguez for assignment.
+- **BAL** [claimed] — Baltimore Orioles claimed C Yohel Pozo off waivers from St. Louis Cardinals.
+- **BAL** [optioned] — Baltimore Orioles optioned C Yohel Pozo to Norfolk Tides.
+- **BAL** [optioned] — Baltimore Orioles optioned RF Johnathan Rodríguez to Norfolk Tides.
+- **BAL** [optioned] — Baltimore Orioles optioned LHP Josh Walker to Norfolk Tides.
+- **BAL** [claimed] — Toronto Blue Jays claimed RF Rudy Martin Jr. off waivers from Baltimore Orioles.
+- **CLE** [IL] — Cleveland Guardians activated 3B José Ramírez from the 10-day injured list.
+- **CLE** [optioned] — Cleveland Guardians optioned RF Kahlil Watson to Columbus Clippers.
+- **TB** [IL] — Tampa Bay Rays activated RHP Jesse Scholtens from the 15-day injured list.
+- **TB** [optioned] — Tampa Bay Rays optioned RHP Jesse Scholtens to Durham Bulls.
+- **SD** [TRADE] — San Diego Padres traded RHP Ron Marinaccio to Pittsburgh Pirates for Future Considerations.
+- **MIA** [IL] — Miami Marlins activated LHP John King from the 15-day injured list.
+- **MIA** [optioned] — Miami Marlins optioned RHP Zach Brzykcy to Jacksonville Jumbo Shrimp.
+- **TOR** [IL] — Toronto Blue Jays placed LF Jonatan Clase on the 10-day injured list retroactive to July 21, 2026. Left plantar fasciitis.
+- **TOR** [recalled] — Toronto Blue Jays recalled RHP CJ Van Eyk from Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned RHP Lazaro Estrada to Buffalo Bisons.
+- **TOR** [recalled] — Toronto Blue Jays recalled LF Yohendrick Piñango from Buffalo Bisons.
+- **TOR** [IL] — Toronto Blue Jays placed LHP Patrick Corbin on the 15-day injured list retroactive to July 22, 2026. Left teres major strain.
+- **TOR** [IL] — Toronto Blue Jays transferred RF Addison Barger from the 10-day injured list to the 60-day injured list. Right elbow inflammation.
+- **TOR** [signed] — Toronto Blue Jays signed RHP Mathis Nayral.
+- **TOR** [signed] — Toronto Blue Jays signed free agent OF Ian Taylor to a minor league contract.
+- **TOR** [signed] — Toronto Blue Jays signed RHP Connor Kelley.
+- **TOR** [recalled] — Toronto Blue Jays recalled LF Davis Schneider from Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned DH Sean Keys to Buffalo Bisons.
+- **TOR** [optioned] — Toronto Blue Jays optioned RF Rudy Martin Jr. to Buffalo Bisons.
+- **TOR** [claimed] — Toronto Blue Jays claimed RF Rudy Martin Jr. off waivers from Baltimore Orioles.
+- **TOR** [recalled] — Toronto Blue Jays recalled LHP Adam Macko from Buffalo Bisons.
+- **BOS** [recalled] — Boston Red Sox recalled LHP Alec Gamboa from Worcester Red Sox.
+- **BOS** [optioned] — Boston Red Sox optioned LHP Eduardo Rivera to Worcester Red Sox.
+- **HOU** [signed] — Houston Astros signed OF Logan Hughes.
+- **HOU** [signed] — Houston Astros signed RHP Jack Radel.
+- **HOU** [TRADE] — Houston Astros traded RHP Nate Pearson to Kansas City Royals for RHP Max Martin.
+- **ATH** [IL] — Athletics placed RHP J.T. Ginn on the 15-day injured list retroactive to July 18, 2026. Right middle finger blister.
+- **ATH** [recalled] — Athletics recalled RHP Mason Barnett from Las Vegas Aviators.
+- **ATH** [optioned] — Athletics optioned RHP Yunior Tur to Las Vegas Aviators.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Tyler Bryan to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed SS Charlie Scholvin.
+- **MIN** [signed] — Minnesota Twins signed RHP Connor Mattison.
+- **MIN** [signed] — Minnesota Twins signed C Carson Tinney.
+- **MIN** [signed] — Minnesota Twins signed RHP Brett Renfrow.
+- **MIN** [signed] — Minnesota Twins signed RHP Ethan Wachsmann.
+- **MIN** [signed] — Minnesota Twins signed C Vahn Lackey.
+- **MIN** [signed] — Minnesota Twins signed RHP JT Raab.
+- **MIN** [signed] — Minnesota Twins signed RHP Thomas Burns.
+- **MIN** [signed] — Minnesota Twins signed C Hideki Prather.
+- **MIN** [signed] — Minnesota Twins signed RHP Michael Barnett.
+- **MIN** [signed] — Minnesota Twins signed RHP Max Bayles.
+- **MIN** [signed] — Minnesota Twins signed RHP Ethan Lay.
+- **MIN** [signed] — Minnesota Twins signed RHP Steele Murdock.
+- **MIN** [signed] — Minnesota Twins signed OF Aidan Teel.
+- **MIN** [signed] — Minnesota Twins signed SS PJ Moutzouridis.
+- **MIN** [signed] — Minnesota Twins signed RHP Tommy LaPour.
+- **MIN** [signed] — Minnesota Twins signed RHP Kole Klecker.
+- **MIN** [signed] — Minnesota Twins signed 2B Colby Turner.
+- **MIN** [signed] — Minnesota Twins signed RHP Colter McAnelly.
+- **MIN** [signed] — Minnesota Twins signed SS Isaiah Lane.
+- **MIN** [signed] — Minnesota Twins signed RHP Alec Bouchard.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Brian Strange to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Jackson Sleeper to a minor league contract.
+- **MIN** [signed] — Minnesota Twins signed free agent RHP Ryne Palmer to a minor league contract.
+- **CIN** [signed] — Cincinnati Reds signed free agent RHP Christopher Asencio to a minor league contract.
+- **STL** [DFA] — St. Louis Cardinals designated RHP Scott Blewett for assignment.
+- **STL** [recalled] — St. Louis Cardinals recalled RHP Hunter Dobbins from Memphis Redbirds.
+- **STL** [claimed] — Baltimore Orioles claimed C Yohel Pozo off waivers from St. Louis Cardinals.
+- **SF** [released] — San Francisco Giants released C Eric Haase.
+
+_Suppressed 6 minor/cosmetic move(s) (ASG/NUM); 0 unrecognized code-type(s) -> logs/unknown_tx_codes.log._
+
+## 2 · Starting Pitcher Flags
+- **COL @ MIL** (away SP Tomoyuki Sugano): very low K% (13.4% vs lg 22.6)
+- **KC @ DET** (home SP Tarik Skubal): very high K% (30.9% vs lg 22.6)
+- **NYY @ PHI** (home SP Jesús Luzardo): very high K% (28.9% vs lg 22.6)
+- **ATL @ BAL** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **SD @ MIA** (home SP TBD): NOT CONFIRMED — probable SP not posted
+- **SEA @ TEX** (away SP Bryce Miller): very high K% (30.2% vs lg 22.6)
+
+## 3 · Bullpen Fatigue (last 3 games)
+- **COL** Jimmy Herget — 2 apps / 49 pitches over last 3 games — monitor
+- **KC** Steven Cruz — 2 apps / 39 pitches over last 3 games — monitor
+- **KC** John Schreiber — 2 apps / 40 pitches over last 3 games — monitor
+- **AZ** Ryan Thompson — 2 apps / 43 pitches over last 3 games — monitor
+- **TB** Ian Seymour — threw 87 pitches last night — likely unavailable
+- **SD** Griffin Canning — threw 59 pitches last night — likely unavailable
+- **SD** Yuki Matsui — 2 apps / 38 pitches over last 3 games — monitor
+- **MIN** Andrew Morris — 2 apps / 44 pitches over last 3 games — monitor
+- **MIN** Yoendrys Gómez — 2 apps / 36 pitches over last 3 games — monitor
+- **MIN** Taylor Rogers — 2 apps / 41 pitches over last 3 games — monitor
+- **STL** Matt Svanson — 2 apps / 42 pitches over last 3 games — monitor
+
+## 4 · Lineup / Platoon
+- COL @ MIL — MIL faces RHP (Tomoyuki Sugano)
+- COL @ MIL — COL faces LHP (Shane Drohan)
+- KC @ DET — DET faces RHP (Beck Way)
+- KC @ DET — KC faces LHP (Tarik Skubal)
+- CHC @ PIT — PIT faces LHP (Matthew Boyd)
+- CHC @ PIT — CHC faces RHP (Jared Jones)
+- AZ @ WSH — WSH faces LHP (Eduardo Rodriguez)
+- AZ @ WSH — AZ faces LHP (Carson Palmquist)
+- NYY @ PHI — PHI faces RHP (Will Warren)
+- NYY @ PHI — NYY faces LHP (Jesús Luzardo)
+- ATL @ BAL — BAL faces RHP (Grant Holmes)
+- LAD @ NYM — NYM faces RHP (Roki Sasaki)
+- LAD @ NYM — LAD faces LHP (Sean Manaea)
+- CLE @ TB — TB faces LHP (Joey Cantillo)
+- CLE @ TB — CLE faces LHP (Shane McClanahan)
+- SD @ MIA — MIA faces RHP (Germán Márquez)
+- TOR @ BOS — BOS faces RHP (Trey Yesavage)
+- TOR @ BOS — TOR faces LHP (Patrick Sandoval)
+- HOU @ CWS — CWS faces RHP (Spencer Arrighetti)
+- HOU @ CWS — HOU faces RHP (Davis Martin)
+- SEA @ TEX — TEX faces RHP (Bryce Miller)
+- SEA @ TEX — SEA faces LHP (MacKenzie Gore)
+- ATH @ MIN — MIN faces LHP (Jacob Lopez)
+- ATH @ MIN — ATH faces RHP (Zebby Matthews)
+- CIN @ STL — STL faces RHP (Rhett Lowder)
+- CIN @ STL — CIN faces RHP (Dustin May)
+- LAA @ SF — SF faces RHP (Grayson Rodriguez)
+- LAA @ SF — LAA faces RHP (Logan Webb)
+
