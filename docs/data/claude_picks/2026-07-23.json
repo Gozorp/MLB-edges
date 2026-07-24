@@ -1,14 +1,13 @@
 {
   "date": "2026-07-23",
-  "fit_at": "2026-07-23T23:32:53Z",
+  "fit_at": "2026-07-23T18:00:00Z",
   "model_version": "claude-brain-v1",
   "n_games": 5,
   "patterns_recognized": [
-    "All five picks today arrive as tier=SKIP because config.STAKING_ENABLED=False (model under repair, staked-tier AUC 0.48 < coin flip) — this is a system-level gate, not a per-game signal failure; claude_tier below reflects directional/quality conviction independent of the staking freeze.",
-    "Negative-edge picks outside the [4,15]pp staking band (SD@ATL -12.62pp, KC@DET -14.31pp) mirror the Chris Sale/ATL negative-edge pattern validated twice in the archive (6/4, 7/10 CAP1-caught losses; Sale/ATL only won on 7/17 when the edge was positive) — a reliable non-bettable signal regardless of who wins on the field.",
-    "TB@TOR: the 7/21 postgame log explicitly flagged a DOWNGRADE that day ('market has priced in the edge') as an unvalidated, factually-wrong heuristic that missed a 12-2 blowout win, in direct violation of the 7/20 mandate to lean CONFIRM on GOLD-shape picks absent a >=70%-validated suppression rule — applying that lesson today.",
-    "ARI@STL's F3_swing_take_gap (5165.2) is the strongest CAP10-rescue anchor seen in the recent archive, clearing the >1000 threshold that separated 7/21's one winning rescue (SD@ATL, F3=2777.6) from its two losing rescues (F3=822.2 and 1761.1) by a wide margin.",
-    "MIN@CLE is a same-matchup rematch of 7/21 (CLE won 5-2 with an identical bottom-bucket SKIP/CONFIRM disposition explicitly validated in that postgame file); today's SP-xERA signal additionally opposes the CLE pick, reinforcing the same read."
+    "Unvalidated DOWNGRADE heuristics (flat-edge = market-priced; same-matchup single-prior-day-loss blanket rule) each missed a 10-run blowout win on 2026-07-21, directly violating the ≥70%-validated mandate — lean CONFIRM on GOLD absent a proven suppression rule.",
+    "CAP10-rescue CONFIRMs went 1-for-3 on real stakes on 2026-07-21 (SD@ATL F3=2777.6 WIN, SF@KC F3=822.2 LOSS, DET@CHC F3=1761.1 LOSS); F3>1000 alone did not cleanly separate winners; hold CAP10-rescue at minimum GOLD stake pending ≥10 cumulative rescue instances.",
+    "STL@LAA suppressed on consecutive days (2026-07-20, 2026-07-21) by CAP7 sub-0.02 band + 15pp edge ceiling despite the slate's strongest PQI and SP-edge both times — evaluate PQI>+30 combined with SP-edge>1.5 as a partial-Kelly carve-out candidate from the edge ceiling.",
+    "Model staking globally disabled (staked-tier AUC 0.48 < coin flip threshold); today's SKIP tiers partly reflect this system-level gate rather than pure signal failure — do not conflate structural SKIP with signal-driven SKIP when reviewing patterns."
   ],
   "by_matchup": {
     "SD @ ATL": {
@@ -19,9 +18,13 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "ATL",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.55,
-      "reasoning": "Edge is -12.62pp, well outside the staking band (market implies 73.6% for ATL vs our model's 60.9%) — this magnitude of model/market disagreement echoes the Sale/ATL negative-edge pattern that correctly flagged CAP1-style losses on 6/4 and 7/10 (Sale/ATL only won 7/17 with a positive edge). SD just routed ATL 8-3 in this same series two days ago (7/21). Bullpen gap (-0.02) and lineup concentration are roughly neutral. SKIP is the right call regardless of on-field outcome.",
-      "lessons_applied": ["sale-atl-negative-edge-cap1-pattern", "7-21-sd-atl-8-3-recency"]
+      "claude_confidence": 0.57,
+      "reasoning": "Negative edge (−12.62pp) correctly caps this pick despite a strong pre-cap signal stack (F-signal, Sale SP xERA +1.63, PQI Δ=+25.2). Stage 1/2 disagree by 0.155 — SD wins F5, ATL full game — and SD's BvP data shows Tatis (OWNER, shrunk OPS .800 vs Sale) and Machado (OWNER, shrunk OPS .880 vs Sale) have historically punished Sale, adding real F5-side risk consistent with the negative-edge read. No qualitative basis to OVERRIDE.",
+      "lessons_applied": [
+        "negative-edge HARD CAP 1 suppression validated",
+        "Stage 1/2 delta 0.155 flags bullpen/late-leverage dependency",
+        "BvP OWNER pair on opposing side reinforces SKIP"
+      ]
     },
     "MIN @ CLE": {
       "model_pick": "CLE ML SKIP",
@@ -31,9 +34,12 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "CLE",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.52,
-      "reasoning": "SP-xERA actually favors Taj Bradley over Gavin Williams (-2 score, opposes the CLE pick), and pick_prob (0.519-0.536 depending on blend) sits in the bottom bucket that HARD CAP 10 zeroes absent a CONFIRM. This is the identical MIN@CLE matchup from 7/21, where CLE won 5-2 and the same SKIP disposition was explicitly validated in that postgame file. hl_bullpen_xwoba_gap (+0.025) also mildly favors MIN's bullpen. Thin edge, opposing SP signal, and a directly-validated precedent all point the same way.",
-      "lessons_applied": ["7-21-min-cle-rematch-validated", "sp-xera-opposing-pick-reinforces-skip"]
+      "claude_confidence": 0.53,
+      "reasoning": "Weakest stack on the slate — pre-cap score=0 (grade C) with SP edge 0.46 xERA AGAINST the CLE pick (Taj Bradley marginally better than Gavin Williams, −2 score). Negative edge (−5.43pp) and confidence_downgrade=True both fire. BvP is mixed (Lee WEAK_VS, Buxton OWNER vs Williams) — insufficient to rescue a dual-signal-against grade-C stack. HARD CAP 10 independently zeros pick_prob=0.519. No basis to OVERRIDE.",
+      "lessons_applied": [
+        "SP-xERA opposing pick + confidence_downgrade = reliable SKIP confirmation",
+        "BvP mixed split cannot rescue a two-signal-against grade-C stack"
+      ]
     },
     "TB @ TOR": {
       "model_pick": "TB ML SKIP",
@@ -43,9 +49,13 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "TB",
       "claude_tier": "SKIP",
-      "claude_confidence": 0.56,
-      "reasoning": "Edge is thin (+0.66pp) and HARD CAP 10 zeroes the stake, but the directional read is sound. TB has beaten TOR in two of the last three meetings including a 12-2 blowout on 7/21 — the postgame log explicitly flagged that day's DOWNGRADE ('market has priced in the edge') as an unvalidated, factually-wrong heuristic that missed the win. PQI confirms TB (Δ=-6.2) and the F-signal fires. No stake either way given the config-wide staking freeze, but I lean with TB rather than fight the pick.",
-      "lessons_applied": ["7-21-tb-tor-downgrade-mistake", "lean-confirm-on-thin-edge-absent-validated-suppression"]
+      "claude_confidence": 0.52,
+      "reasoning": "Edge +0.66pp is far below the 4pp floor — well inside the stake-sizing noise band per the 2026-07-21 lesson ('treat edge near the 4pp floor as stake-sizing boundary only, not directional evidence'). Pre-cap score=1 (B−) then zeroed by CAP10 (pick_prob=0.509 in bottom bucket). Stage 1/2 disagree by 0.175 — TB's full-game thesis depends on bullpen — and BvP vs Bieber is almost entirely SMALL_SAMPLE. confidence_downgrade=True and acute_roster both fire. CONFIRM SKIP.",
+      "lessons_applied": [
+        "sub-4pp edge = stake-sizing noise per 2026-07-21 postgame lesson",
+        "confidence_downgrade + acute_roster = validated SKIP confirmation",
+        "Stage 1/2 delta 0.175 flags bullpen-dependent thesis without adequate margin"
+      ]
     },
     "ARI @ STL": {
       "model_pick": "ARI ML SKIP",
@@ -55,9 +65,13 @@
       "claude_decision": "CONFIRM",
       "claude_pick": "ARI",
       "claude_tier": "GOLD",
-      "claude_confidence": 0.58,
-      "reasoning": "Pre-cap this graded B+ (score 3) before HARD CAP 10 zeroed it for lacking a CONFIRM. F3_swing_take_gap is 5165.2 — well above the >1000 anchor that separated 7/21's one winning CAP10 rescue (SD@ATL, F3=2777.6) from its two losses (F3=822/1761), and the strongest such reading in recent memory. SP-xERA (1.13, Pfaadt over McGreevy) and PQI (Δ=-19.7) both agree with ARI, and the PLATINUM→GOLD guardrail demotion already addressed overconfidence risk. Marking claude_tier GOLD to flag this as the slate's best directional read, though nothing stakes given the global config freeze.",
-      "lessons_applied": ["cap10-rescue-f3-anchor-strongest-of-slate", "7-21-cap10-rescue-f3-threshold-precedent", "platinum-demotion-guardrail-already-applied"]
+      "claude_confidence": 0.55,
+      "reasoning": "CONFIRM rescue from CAP10 zero: pre-cap score=3 (B+) with three independent dimensions agreeing — Pfaadt SP xERA +1.13 over McGreevy, PQI Δ=−19.7 confirming ARI, F3_swing_take_gap=5165.2 (the slate's strongest F-signal and largest seen in recent archive). Edge +8.2pp sits in the valid [4,15]pp window. STL's top-2 batters (Walker WEAK_VS shrunk .624, Burleson WEAK_VS shrunk .634 vs Pfaadt) structurally support the ARI pick. Primary risk: Stage 1/2 delta 0.2612 — ARI's thesis depends on innings 6–9 with only a marginal bullpen edge (hl_bullpen_xwoba_gap=−0.0038). Staking globally disabled regardless.",
+      "lessons_applied": [
+        "CAP10-rescue CONFIRM: three independent dimensions (SP + PQI + F3>>1000)",
+        "BvP WEAK_VS on STL top-2 vs opposing SP as rescue-confirming signal",
+        "Stage 1/2 delta 0.2612 = bullpen-dependency risk, tempers but does not block three-dim rescue"
+      ]
     },
     "KC @ DET": {
       "model_pick": "DET ML SKIP",
@@ -68,8 +82,12 @@
       "claude_pick": "DET",
       "claude_tier": "SKIP",
       "claude_confidence": 0.54,
-      "reasoning": "DET is picked (56.9% model prob) but the market prices them far richer (71.2% implied), a -14.31pp gap outside the staking band — comparable in size to the Sale/ATL negative-edge pattern that has proven a reliable non-bettable signal. DET is playing well (11-2 and 8-6 wins in its last two logged games) so a DET win on the field wouldn't be surprising, but hl_bullpen_xwoba_gap (+0.012) and a Stage 1/2 disagreement (Δ=0.13, not offset by a >20pp PQI edge) add caution. The price here isn't offering value regardless of outcome; CONFIRM SKIP.",
-      "lessons_applied": ["large-negative-edge-market-vs-model-divergence", "det-hot-streak-noted-but-price-not-value"]
+      "reasoning": "Edge −15.41pp is the most negative on the slate — market prices DET at 72.3% (fair_prob=0.723) vs model's 56.89%, a 15.4pp market-vs-model divergence indicating the market holds information the model lacks. Pre-cap score=1 (B−) rests on only F3=2465.7 and PQI Δ=+20.8 — no SP edge or additional corroboration. BvP for both sides is almost entirely NO_DATA against each SP. HARD CAP 10 fires on pick_prob=0.538. No qualitative rescue signal present; CONFIRM SKIP.",
+      "lessons_applied": [
+        "large negative edge = market-vs-model divergence, market likely right",
+        "two-dimension stack (F3 + PQI only) insufficient for CAP10 rescue without SP or team-quality corroboration",
+        "NO_DATA BvP on both sides cannot rescue a marginal pre-cap B− stack"
+      ]
     }
   }
 }
